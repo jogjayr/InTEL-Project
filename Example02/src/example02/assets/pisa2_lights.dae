@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Calvin Ashmore</author>
+      <authoring_tool>Maya 7.0 | ColladaMaya v3.00 | FCollada v3.0</authoring_tool>
+      <comments>Collada Maya Export Options: bakeTransforms=1;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
+curveConstrainSampling=0;exportCameraAsLookat=0;
+exportLights=1;exportCameras=0;exportJointsAndSkin=1;
+exportAnimations=1;exportTriangles=1;exportInvisibleNodes=0;
+exportNormals=1;exportTexCoords=1;exportVertexColors=0;exportTangents=0;
+exportTexTangents=0;exportConstraints=0;exportPhysics=0;exportXRefs=0;
+dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
+      <source_data>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/pisa_25.mb</source_data>
+    </contributor>
+    <created>2007-08-08T16:33:35Z</created>
+    <modified>2007-08-08T16:33:35Z</modified>
+    <unit meter="0.010000" name="centimeter"/>
+    <up_axis>Y_UP</up_axis>
+  </asset>
+  <library_lights>
+    <light id="directionalLightShape3-lib" name="directionalLightShape3">
+      <technique_common>
+        <directional>
+          <color>1.000000 1.000000 1.000000</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1.000000</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>180.000000</falloff_angle>
+          <falloff_exponent>0</falloff_exponent>
+          <intensity>0.200000</intensity>
+          <outer_cone>180.000000</outer_cone>
+          <aspect_ratio>1.000000</aspect_ratio>
+          <overshoot>1</overshoot>
+          <target_default_dist>240.000000</target_default_dist>
+        </technique>
+      </extra>
+    </light>
+    <light id="directionalLightShape1-lib" name="directionalLightShape1">
+      <technique_common>
+        <directional>
+          <color>1.000000 1.000000 1.000000</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1.000000</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>180.000000</falloff_angle>
+          <falloff_exponent>0</falloff_exponent>
+          <intensity>2.314000</intensity>
+          <outer_cone>180.000000</outer_cone>
+          <aspect_ratio>1.000000</aspect_ratio>
+          <overshoot>1</overshoot>
+          <target_default_dist>240.000000</target_default_dist>
+        </technique>
+      </extra>
+    </light>
+    <light id="directionalLightShape2-lib" name="directionalLightShape2">
+      <technique_common>
+        <directional>
+          <color>1.000000 1.000000 1.000000</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1.000000</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>180.000000</falloff_angle>
+          <falloff_exponent>0</falloff_exponent>
+          <intensity>0.743800</intensity>
+          <outer_cone>180.000000</outer_cone>
+          <aspect_ratio>1.000000</aspect_ratio>
+          <overshoot>1</overshoot>
+          <target_default_dist>240.000000</target_default_dist>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="pisa_25">
+      <node id="directionalLight3" name="directionalLight3" type="NODE">
+        <matrix sid="transform">0.142337 0.516771 -0.844208 -104.799919 0.136281 0.834538 0.533829 67.812851 0.980392 -0.191033 0.048360 6.443563 0 0 0 1.000000</matrix>
+        <instance_light url="#directionalLightShape3-lib"/>
+      </node>
+      <node id="directionalLight1" name="directionalLight1" type="NODE">
+        <matrix sid="transform">0.960170 -0.135611 0.244301 24.144350 -0.024997 0.829132 0.558494 60.673855 -0.278295 -0.542356 0.792718 80.428291 0 0 0 1.000000</matrix>
+        <instance_light url="#directionalLightShape1-lib"/>
+      </node>
+      <node id="directionalLight2" name="directionalLight2" type="NODE">
+        <matrix sid="transform">-0.773821 0.033334 0.632526 46.947033 0.014654 0.999289 -0.034735 5.044878 -0.633235 -0.017609 -0.773760 -53.774178 0 0 0 1.000000</matrix>
+        <instance_light url="#directionalLightShape2-lib"/>
+      </node>
+      <extra>
+        <technique profile="FCOLLADA">
+          <start_time>0.041667</start_time>
+          <end_time>15.000000</end_time>
+        </technique>
+      </extra>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
