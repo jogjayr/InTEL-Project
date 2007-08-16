@@ -6,36 +6,33 @@
       <authoring_tool>Maya 7.0 | ColladaMaya v3.00 | FCollada v3.0</authoring_tool>
       <comments>Collada Maya Export Options: bakeTransforms=1;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
 curveConstrainSampling=0;exportCameraAsLookat=0;
-exportLights=0;exportCameras=0;exportJointsAndSkin=1;
-exportAnimations=1;exportTriangles=1;exportInvisibleNodes=0;
+exportLights=1;exportCameras=0;exportJointsAndSkin=1;
+exportAnimations=0;exportTriangles=1;exportInvisibleNodes=0;
 exportNormals=1;exportTexCoords=1;exportVertexColors=0;exportTangents=0;
 exportTexTangents=0;exportConstraints=0;exportPhysics=0;exportXRefs=0;
 dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
-      <source_data>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/pisa_25.mb</source_data>
+      <source_data>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/pisa_26.mb</source_data>
     </contributor>
-    <created>2007-08-08T16:33:16Z</created>
-    <modified>2007-08-08T16:33:18Z</modified>
+    <created>2007-08-16T18:26:04Z</created>
+    <modified>2007-08-16T18:26:15Z</modified>
     <unit meter="0.010000" name="centimeter"/>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images>
     <image id="file5" name="file5">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/rimAlpha.bmp</init_from>
-    </image>
-    <image id="file10" name="file10">
-      <init_from>file:///C:/Documents%20and%20Settings/Owner/Desktop/Statics/pisa/sky.bmp</init_from>
+      <init_from>rimAlpha.png</init_from>
     </image>
     <image id="file9" name="file9">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/cloudAlpha2.bmp</init_from>
+      <init_from>cloudAlpha2.png</init_from>
     </image>
     <image id="file7" name="file7">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/cloudAlpha3.bmp</init_from>
+      <init_from>cloudAlpha3.png</init_from>
     </image>
     <image id="file17" name="file17">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/cloudAlpha4.bmp</init_from>
+      <init_from>cloudAlpha4.png</init_from>
     </image>
     <image id="file8" name="file8">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/Pisa/cloudAlpha.bmp</init_from>
+      <init_from>cloudAlpha.png</init_from>
     </image>
   </library_images>
   <library_materials>
@@ -96,7 +93,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.376000 0.226618 0.141000 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -125,7 +122,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0 0.214880 0.008559 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -220,7 +217,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.479340 0.479340 0.479340 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -249,7 +246,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.137394 0.359000 0.058517 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -267,47 +264,10 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
     </effect>
     <effect id="lambert5-fx">
       <profile_COMMON>
-        <newparam sid="file10-surface">
-          <surface type="2D">
-            <init_from>file10</init_from>
-            <format>A8R8G8B8</format>
-          </surface>
-        </newparam>
-        <newparam sid="file10-sampler">
-          <sampler2D>
-            <source>file10-surface</source>
-            <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
-            <magfilter>LINEAR</magfilter>
-          </sampler2D>
-        </newparam>
         <technique sid="common">
           <lambert>
             <emission>
-              <texture texture="file10-sampler" texcoord="TEX0">
-                <extra>
-                  <technique profile="MAYA">
-                    <wrapU>1</wrapU>
-                    <wrapV>1</wrapV>
-                    <mirrorU>0</mirrorU>
-                    <mirrorV>0</mirrorV>
-                    <coverageU>1.000000</coverageU>
-                    <coverageV>1.000000</coverageV>
-                    <translateFrameU>0</translateFrameU>
-                    <translateFrameV>0</translateFrameV>
-                    <rotateFrame>0</rotateFrame>
-                    <stagger>0</stagger>
-                    <fast>0</fast>
-                    <repeatU>1.000000</repeatU>
-                    <repeatV>1.000000</repeatV>
-                    <offsetU>0</offsetU>
-                    <offsetV>0</offsetV>
-                    <rotateUV>0</rotateUV>
-                    <noiseU>0</noiseU>
-                    <noiseV>0</noiseV>
-                    <blend_mode>NONE</blend_mode>
-                  </technique>
-                </extra>
-              </texture>
+              <color>0 0 0 1.000000</color>
             </emission>
             <ambient>
               <color>0 0 0 1.000000</color>
@@ -315,7 +275,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.578520 0.578520 0.578520 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -344,7 +304,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.660585 0.661160 0.553391 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -373,7 +333,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.438020 0.426931 0.395094 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -402,7 +362,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0.471000 0.450362 0.371619 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -563,7 +523,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
             <diffuse>
               <color>0 0 0 1.000000</color>
             </diffuse>
-            <transparent opaque="A_ONE">
+            <transparent opaque="RGB_ZERO">
               <color>0 0 0 1.000000</color>
             </transparent>
             <transparency>
@@ -16586,19 +16546,19 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
         <vertices id="polySurfaceShape535-lib-vertices">
           <input semantic="POSITION" source="#polySurfaceShape535-lib-positions"/>
         </vertices>
-        <!--<triangles material="initialShadingGroup" count="0">
+        <triangles material="initialShadingGroup" count="0">
           <input semantic="VERTEX" source="#polySurfaceShape535-lib-vertices" offset="0"/>
           <input semantic="NORMAL" source="#polySurfaceShape535-lib-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#polySurfaceShape535-lib-map1" offset="2" set="0"/>
           <p/>
-        </triangles>-->
+        </triangles>
         <triangles material="lambert4SG" count="287">
           <input semantic="VERTEX" source="#polySurfaceShape535-lib-vertices" offset="0"/>
           <input semantic="NORMAL" source="#polySurfaceShape535-lib-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#polySurfaceShape535-lib-map1" offset="2" set="0"/>
           <p>44 112 35 45 113 36 35 114 37 33 116 39 35 117 40 46 115 38 46 115 38 35 117 40 45 118 36 33 119 41 47 120 42 36 121 43 36 123 43 47 124 42 48 122 44 48 122 44 47 124 42 67 125 45 36 126 43 48 127 44 37 128 46 37 130 48 49 131 49 38 129 47 38 129 47 49 131 49 50 132 50 38 133 51 50 134 50 51 135 52 39 136 53 53 137 54 52 138 55 40 139 56 54 140 57 41 141 58 39 143 60 41 144 61 55 142 59 55 142 59 41 144 61 54 145 57 54 147 57 40 148 56 56 146 62 56 146 62 40 148 56 34 149 63 56 151 62 34 152 65 57 150 64 57 150 64 34 152 65 42 153 66 58 154 67 59 155 68 42 156 69 43 158 71 66 159 72 44 157 70 44 157 70 66 159 72 45 160 36 67 162 45 47 163 42 46 161 38 46 161 38 47 163 42 33 164 39 67 166 45 49 167 49 48 165 44 48 165 44 49 167 49 37 168 48 69 170 74 51 171 75 68 169 73 68 169 73 51 171 75 50 172 50 61 174 77 52 175 78 73 173 76 73 173 76 52 175 78 53 176 54 73 178 76 53 179 54 55 177 59 55 177 59 53 179 54 39 180 60 54 182 57 56 183 62 74 181 79 74 181 79 56 183 62 57 184 64 75 186 80 57 187 64 59 185 68 59 185 68 57 187 64 42 188 66 60 190 82 75 191 80 58 189 81 58 189 81 75 191 80 59 192 68 89 194 84 78 195 85 63 193 83 63 193 83 78 195 85 62 196 86 65 198 88 82 199 89 43 197 87 43 197 87 82 199 89 66 200 72 66 202 72 94 203 90 45 201 36 45 201 36 94 203 90 46 204 38 50 206 50 49 207 49 68 205 73 68 205 73 49 207 49 97 208 91 83 210 93 84 211 94 71 209 92 71 209 92 84 211 94 70 212 95 54 214 57 74 215 79 55 213 59 55 213 59 74 215 79 102 216 96 76 217 97 87 218 98 60 219 99 77 221 100 61 222 101 89 220 84 89 220 84 61 222 101 73 223 76 63 224 83 77 225 102 89 226 84 62 227 103 78 228 85 64 229 104 120 231 105 90 232 106 78 230 85 78 230 85 90 232 106 64 233 104 64 235 108 90 236 106 79 234 107 79 234 107 90 236 106 107 237 109 82 238 89 65 239 110 81 240 111 95 241 112 67 242 45 46 243 38 67 245 45 96 246 113 49 244 49 49 244 49 96 246 113 97 247 91 97 249 91 98 250 114 68 248 73 68 248 73 98 250 114 69 251 115 83 252 116 69 253 115 98 254 114 70 256 118 84 257 94 72 255 117 72 255 117 84 257 94 99 258 119 85 259 120 72 260 121 112 261 122 131 263 123 112 261 122 99 262 119 99 262 119 112 261 122 72 264 121 55 266 59 101 267 124 73 265 76 73 265 76 101 267 124 89 268 84 57 270 64 103 271 125 74 269 79 74 269 79 103 271 125 102 272 96 75 274 80 104 275 126 57 273 64 57 273 64 104 275 126 103 276 125 104 278 126 75 279 80 87 277 98 87 277 98 75 279 80 60 280 99 114 282 128 87 283 98 86 281 127 86 281 127 87 283 98 76 284 129 79 285 130 107 286 109 91 287 131 92 288 132 124 289 133 80 290 134 142 291 135 110 292 136 124 289 133 124 289 133 110 292 136 80 293 134 93 295 138 80 296 139 111 294 137 111 294 137 80 296 139 110 297 136 82 299 89 81 300 111 111 298 137 111 298 137 81 300 111 93 301 140 94 303 90 66 304 72 125 302 141 125 302 141 66 304 72 82 305 89 126 306 142 95 307 112 94 309 90 95 307 112 46 308 38 94 309 90 127 311 143 96 312 113 95 310 112 95 310 112 96 312 113 67 313 45 98 314 114 84 315 94 83 316 93 55 319 59 102 320 96 101 318 124 101 318 124 102 320 96 134 321 146 86 322 127 105 323 147 114 324 128 105 326 148 88 327 149 114 325 128 114 325 128 88 327 149 115 328 150 88 330 151 106 331 152 115 329 150 115 329 150 106 331 152 138 332 153 89 333 84 118 334 154 78 336 85 118 334 154 119 335 155 78 336 85 78 337 85 119 338 155 120 339 105 90 341 106 121 342 156 107 340 109 107 340 109 121 342 156 91 343 157 90 344 106 120 345 105 121 346 156 139 348 158 108 349 159 121 347 156 121 347 156 108 349 159 91 350 157 96 353 113 128 354 162 97 352 91 97 352 91 128 354 162 129 355 163 97 357 91 129 358 163 98 356 114 98 356 114 129 358 163 84 359 94 99 361 119 84 362 94 130 360 164 130 360 164 84 362 94 129 363 163 100 317 166 132 364 165 113 365 167 89 367 84 101 368 124 118 366 154 118 366 154 101 368 124 134 369 146 103 371 125 135 372 168 102 370 96 102 370 96 135 372 168 134 373 146 104 375 126 136 376 169 103 374 125 103 374 125 136 376 169 135 377 168 104 379 126 87 380 98 137 378 170 137 378 170 87 380 98 114 381 128 117 382 171 138 383 153 106 384 172 108 385 173 139 386 158 122 387 174 139 389 158 140 390 175 122 388 174 122 388 174 140 390 175 123 391 176 123 392 177 141 393 178 109 351 179 142 395 135 143 396 180 111 394 137 111 394 137 143 396 180 82 397 89 111 398 137 110 399 136 142 400 135 125 401 141 82 402 89 143 403 180 126 404 142 94 405 90 125 406 141 126 408 142 154 409 181 95 407 112 95 407 112 154 409 181 127 410 143 155 412 182 128 413 162 127 411 143 127 411 143 128 413 162 96 414 113 99 415 119 130 416 164 131 263 123 131 263 123 130 416 164 157 417 183 159 420 185 144 421 186 132 419 165 132 419 165 144 421 186 113 422 167 113 423 187 144 424 186 133 425 188 104 426 126 137 427 170 136 428 169 115 430 150 145 431 189 114 429 128 114 429 128 145 431 189 137 432 170 147 434 190 146 435 191 115 433 150 115 433 150 146 435 191 145 436 189 115 438 150 138 439 153 147 437 190 147 437 190 138 439 153 117 440 192 117 442 192 116 443 193 147 441 190 147 441 190 116 443 193 148 444 194 144 446 186 148 447 194 133 445 188 133 445 188 148 447 194 116 448 195 119 450 155 118 451 154 149 449 196 149 449 196 118 451 154 134 452 146 120 455 105 119 456 155 151 454 198 150 453 197 151 454 198 119 456 155 120 458 105 152 459 199 121 457 156 121 457 156 152 459 199 139 460 158 120 461 105 151 462 198 152 463 199 140 464 175 141 465 178 123 466 177 126 469 142 125 470 141 153 468 201 153 468 201 125 470 141 143 471 180 128 473 162 156 474 202 129 472 163 129 472 163 156 474 202 130 475 164 135 477 168 160 478 203 134 476 146 134 476 146 160 478 203 149 479 196 136 480 169 161 481 204 135 482 168 136 484 169 137 485 170 162 483 205 162 483 205 137 485 170 145 486 189 170 487 206 147 488 190 148 489 194 149 490 196 150 491 197 119 492 155 152 494 199 163 495 207 139 493 158 139 493 158 163 495 207 140 496 175 140 497 175 164 498 208 141 393 178 141 393 178 164 498 208 165 467 200 166 499 209 143 500 180 142 291 135 154 501 181 126 502 142 153 503 201 127 505 143 154 506 181 155 504 182 155 504 182 154 506 181 176 507 210 156 508 202 128 509 162 155 510 182 130 511 164 156 512 202 157 417 183 157 417 183 156 512 202 177 513 211 159 515 185 132 364 165 158 418 184 159 517 185 167 518 213 144 516 186 144 516 186 167 518 213 148 519 194 181 521 214 160 522 203 161 520 204 161 520 204 160 522 203 135 523 168 182 525 215 161 526 204 162 524 205 162 524 205 161 526 204 136 527 169 146 529 191 168 530 216 145 528 189 145 528 189 168 530 216 162 531 205 147 533 190 169 534 217 146 532 191 146 532 191 169 534 217 168 535 216 172 537 219 150 538 197 171 536 218 171 536 218 150 538 197 149 539 196 150 540 197 172 541 219 151 542 198 152 544 199 151 545 198 173 543 220 173 543 220 151 545 198 172 546 219 173 548 220 174 549 221 152 547 199 152 547 199 174 549 221 163 550 207 140 552 175 163 553 207 164 551 208 164 551 208 163 553 207 174 554 221 143 557 180 166 499 209 153 556 201 153 556 201 166 499 209 175 558 223 153 560 201 175 558 223 154 559 181 154 559 181 175 558 223 176 561 210 156 562 202 155 563 182 177 513 211 177 513 211 155 563 182 176 561 210 180 565 225 159 566 185 179 564 224 179 564 224 159 566 185 158 567 184 167 568 213 159 569 185 180 570 225 148 572 194 167 573 213 170 571 206 170 571 206 167 573 213 180 574 225 149 576 196 160 577 203 171 575 218 171 575 218 160 577 203 181 578 214 147 580 190 170 581 206 169 579 217 169 579 217 170 581 206 186 582 226 164 583 208 183 584 227 165 467 200 165 467 200 183 584 227 184 555 222 179 586 224 158 418 184 178 514 212 161 587 204 182 588 215 181 589 214 162 590 205 168 591 216 182 592 215 182 594 215 168 595 216 185 593 229 185 593 229 168 595 216 169 596 217 172 598 219 171 599 218 188 597 230 188 597 230 171 599 218 187 600 231 173 603 220 172 604 219 189 602 232 188 601 230 189 602 232 172 604 219 189 607 232 183 608 227 173 606 220 174 605 221 173 606 220 183 608 227 174 609 221 183 610 227 164 611 208 179 615 224 178 616 212 193 614 235 193 614 235 178 616 212 192 617 236 180 618 225 179 619 224 193 620 235 170 622 206 180 623 225 186 621 226 186 621 226 180 623 225 193 624 235 181 625 214 187 626 231 171 627 218 182 629 215 194 630 237 181 628 214 181 628 214 194 630 237 187 631 231 169 633 217 186 634 226 185 632 229 185 632 229 186 634 226 196 635 238 189 636 232 195 637 239 183 639 227 195 637 239 184 638 222 183 639 227 192 640 236 178 514 212 191 585 228 182 642 215 185 643 229 194 641 237 194 641 237 185 643 229 196 644 238 213 651 245 214 650 244 187 653 231 195 659 239 190 612 233 184 555 222 227 664 256 225 663 255 191 665 228 224 667 258 191 668 228 222 666 257 222 666 257 191 668 228 225 663 255 186 675 226 193 676 235 196 677 238 212 678 266 211 681 268 188 680 230 188 680 230 211 681 268 189 682 232 203 685 271 195 704 239 202 686 272 202 686 272 195 704 239 205 697 285 203 685 271 201 660 252 195 705 239 195 705 239 201 660 252 190 612 233 205 697 285 195 706 239 206 695 283 207 683 269 195 708 239 204 684 270 189 707 232 204 684 270 195 708 239 207 683 269 206 695 283 195 709 239 204 684 270 189 710 232 208 658 251 189 710 232 209 655 248 208 658 251 209 655 248 189 711 232 211 681 268 210 647 242 212 678 266 188 712 230 214 650 244 210 647 242 187 713 231 187 713 231 210 647 242 188 714 230 187 715 231 194 716 237 213 651 245 213 651 245 194 716 237 215 652 246 215 652 246 194 717 237 216 691 277 216 691 277 194 718 237 218 692 278 194 719 237 196 720 238 218 692 278 218 692 278 196 720 238 219 703 290 217 673 264 219 703 290 196 721 238 220 674 265 217 673 264 193 722 235 193 722 235 217 673 264 196 723 238 220 674 265 193 725 235 221 672 262 192 724 236 221 672 262 193 725 235 191 727 228 224 667 258 192 726 236 192 726 236 224 667 258 223 688 274 223 688 274 221 672 262 192 728 236 227 664 256 191 585 228 228 661 253 228 661 253 191 585 228 226 613 234</p>
         </triangles>
-        <!--<triangles material="lambert5SG" count="0">
+        <triangles material="lambert5SG" count="0">
           <input semantic="VERTEX" source="#polySurfaceShape535-lib-vertices" offset="0"/>
           <input semantic="NORMAL" source="#polySurfaceShape535-lib-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#polySurfaceShape535-lib-map1" offset="2" set="0"/>
@@ -16609,7 +16569,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
           <input semantic="NORMAL" source="#polySurfaceShape535-lib-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#polySurfaceShape535-lib-map1" offset="2" set="0"/>
           <p/>
-        </triangles>-->
+        </triangles>
         <triangles material="lambert9SG" count="85">
           <input semantic="VERTEX" source="#polySurfaceShape535-lib-vertices" offset="0"/>
           <input semantic="NORMAL" source="#polySurfaceShape535-lib-normals" offset="1"/>
@@ -17289,7 +17249,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
     </geometry>
   </library_geometries>
   <library_visual_scenes>
-    <visual_scene id="VisualSceneNode" name="pisa_25">
+    <visual_scene id="VisualSceneNode" name="pisa_26">
       <node id="Pisa_Geometry" name="Pisa_Geometry" type="NODE">
         <matrix sid="transform">1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000</matrix>
         <node id="group29" name="group29" type="NODE">
@@ -20782,9 +20742,7 @@ dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
               <technique_common>
                 <instance_material symbol="initialShadingGroup" target="#lambert1"/>
                 <instance_material symbol="lambert4SG" target="#lambert4"/>
-                <instance_material symbol="lambert5SG" target="#lambert5">
-                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
-                </instance_material>
+                <instance_material symbol="lambert5SG" target="#lambert5"/>
                 <instance_material symbol="lambert6SG" target="#lambert6"/>
                 <instance_material symbol="lambert9SG" target="#lambert9"/>
                 <instance_material symbol="lambert12SG" target="#lambert12"/>
