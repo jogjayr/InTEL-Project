@@ -234,6 +234,8 @@ public class World {
             //r.clearBuffers();
             if(layer.isEnabled()) {
                 r.draw(getNode(layer));
+                r.renderQueue();
+                //GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER).execute();
                 
                 /*
                 if(layer == RepresentationLayer.vectors)

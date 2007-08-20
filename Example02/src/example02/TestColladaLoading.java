@@ -46,12 +46,10 @@ public class TestColladaLoading extends SimpleGame {
     protected void simpleInitGame() {
         KeyBindingManager.getKeyBindingManager().set( "bones", KeyInput.KEY_SPACE );
         
-        //Our model is Z up so orient the camera properly.
-        //cam.setAxes(new Vector3f(-1,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
         cam.setLocation(new Vector3f(0,20,20));
         input = new FirstPersonHandler( cam, 80, 1 );
         
-        //lightState.detachAll();
+        lightState.detachAll();
         
         //url to the location of the model's textures
         URL url = TestColladaLoading.class.getClassLoader().getResource("example02/assets/");
@@ -60,13 +58,6 @@ public class TestColladaLoading extends SimpleGame {
         inputStream = getClass().getClassLoader().getResourceAsStream("example02/assets/pisa1_background.dae");
         ColladaImporter.load(inputStream, url, "model");
 
-        /*Matrix3f rotation = new Matrix3f();
-        rotation.fromStartEndVectors(Vector3f.UNIT_Z.negate(), Vector3f.UNIT_Y);
-        ColladaImporter.getModel().setModelBound(new BoundingBox());
-        ColladaImporter.getModel().updateModelBound();
-        ColladaImporter.getModel().updateRenderState();
-        ColladaImporter.getModel().setLocalRotation(rotation);*/
-        
         rootNode.attachChild(ColladaImporter.getModel());
         
         
