@@ -64,6 +64,11 @@ public class Exercise {
     }
     
     public void initExercise() {
+        // this handles things before the interface has been constructed:
+        // should be material such as doing display and problem manipulation.
+    }
+    
+    public void loadExercise() {
         // for file based, can involve deserialization
         // for code based can just create objects as is.
     }

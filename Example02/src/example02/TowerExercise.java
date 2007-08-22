@@ -40,9 +40,8 @@ public class TowerExercise extends Exercise {
     }
     
     public void initExercise() {
-        ExerciseWorld world = getWorld();
-        
         setName("Tower of Pisa");
+        
         setDescription(
                 "<html><body>" +
                 "This is the tower of Pisa, solve for the reaction forces at its base." +
@@ -54,6 +53,11 @@ public class TowerExercise extends Exercise {
                 worldDistanceMultiplier = 1f;
             }
         });
+    }
+    
+    public void loadExercise() {
+        ExerciseWorld world = getWorld();
+        
         
         //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));

@@ -36,6 +36,7 @@ public class RootInterface extends AppInterface {
     
     public static final int windowSpacing = 3;
     public static final int borderSize = 3;
+    public static final int sidebarSize = 150;
     
     /** Creates a new instance of RootInterface */
     public RootInterface() {
@@ -47,7 +48,7 @@ public class RootInterface extends AppInterface {
         getBuiNode().addWindow(modeControl);
         modeControl.pack();
         dim = modeControl.getPreferredSize(0,0);
-        modeControl.setBounds(0,0,150, dim.height);
+        modeControl.setBounds(0,0,sidebarSize, dim.height);
         modeControl.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - windowSpacing - borderSize);
         
         distance += dim.height + windowSpacing + borderSize;
@@ -56,7 +57,7 @@ public class RootInterface extends AppInterface {
         getBuiNode().addWindow(displayControl);
         displayControl.pack();
         dim = displayControl.getPreferredSize(0,0);
-        displayControl.setBounds(0,0,150, dim.height);
+        displayControl.setBounds(0,0,sidebarSize, dim.height);
         displayControl.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - distance - windowSpacing);
         
         distance += dim.height + windowSpacing;
@@ -65,7 +66,7 @@ public class RootInterface extends AppInterface {
         getBuiNode().addWindow(coordinateSystem);
         coordinateSystem.pack();
         dim = coordinateSystem.getPreferredSize(0,0);
-        coordinateSystem.setBounds(0,0,150, dim.height);
+        coordinateSystem.setBounds(0,0,sidebarSize, dim.height);
         coordinateSystem.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - distance - windowSpacing);
         distance += dim.height + windowSpacing;
         
@@ -107,11 +108,17 @@ public class RootInterface extends AppInterface {
     
     public void setBorderColor(ColorRGBA color) {
         //border1.getBackground()
-        //border1.getBackground()
+        ((TintedBackground)border1.getBackground()).setColor(color);
+        ((TintedBackground)border2.getBackground()).setColor(color);
+        ((TintedBackground)border3.getBackground()).setColor(color);
+        ((TintedBackground)border4.getBackground()).setColor(color);
     }
     
     public void setSubTitle(String subTitle) {
         titleWindow.setSubTitle(subTitle);
+        titleWindow.pack();
+        titleWindow.center();
+        titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight() - windowSpacing - borderSize);
     }
     
     public void update() {

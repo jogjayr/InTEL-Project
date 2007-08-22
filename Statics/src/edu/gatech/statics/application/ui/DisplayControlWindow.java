@@ -10,11 +10,17 @@
 package edu.gatech.statics.application.ui;
 
 import com.jmex.bui.BCheckBox;
+import com.jmex.bui.BContainer;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.application.StaticsApplication;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,33 +28,57 @@ import edu.gatech.statics.application.StaticsApplication;
  */
 public class DisplayControlWindow extends AppWindow {
     
-    BCheckBox check1, check2, check3, check4;
+    private BCheckBox grayCheck;
+    private Map<BCheckBox, DisplayGroup> groupChecks = new HashMap();
     
     /** Creates a new instance of DisplayControlWindow */
     public DisplayControlWindow() {
-        super(GroupLayout.makeVert(GroupLayout.TOP));
+        super(new BorderLayout());
+        
+        //super(GroupLayout.makeVert(GroupLayout.TOP));
+        
+        BContainer title = new BContainer(new BorderLayout());
+        BLabel titleLabel = new BLabel("Views","title_container");
+        title.add(titleLabel, BorderLayout.CENTER);
+        title.setPreferredSize(RootInterface.sidebarSize, -1);
+        add(title, BorderLayout.NORTH);
+        
+        BContainer content = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+        content.setStyleClass("content_container");
+        add(content, BorderLayout.CENTER);
         
         ActionListener listener = new DisplayListener();
         
-        check1 = new BCheckBox("schematic");
+        
+        List<String> groupNames = DisplayGroup.getGroupNames();
+        for(String groupName : groupNames) {
+            BCheckBox check = new BCheckBox(groupName);
+            check.addListener(listener);
+            check.setSelected(true);
+            content.add(check);
+            
+            groupChecks.put(check, DisplayGroup.getGroup(groupName));
+        }
+        
+        /*check1 = new BCheckBox("schematic");
         check1.addListener(listener);
         check1.setSelected(true);
-        add(check1);
+        content.add(check1);
         
         check2 = new BCheckBox("bones");
         check2.addListener(listener);
         check2.setSelected(true);
-        add(check2);
+        content.add(check2);
         
         check3 = new BCheckBox("real world");
         check3.addListener(listener);
         check3.setSelected(true);
-        add(check3);
+        content.add(check3);*/
         
-        check4 = new BCheckBox("grayouts");
-        check4.addListener(listener);
-        check4.setSelected(true);
-        add(check4);
+        grayCheck = new BCheckBox("Grayouts");
+        grayCheck.addListener(listener);
+        grayCheck.setSelected(true);
+        content.add(grayCheck);
         
         //BLabel label1 = new BLabel("Display 1");
         //add(label1);
@@ -59,6 +89,7 @@ public class DisplayControlWindow extends AppWindow {
     
     private class DisplayListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
+            /*
             if(event.getSource() == check1) {
                 if(check1.isSelected()) {
                     RepresentationLayer.labels.setEnabled(true);
@@ -94,11 +125,18 @@ public class DisplayControlWindow extends AppWindow {
                 } else {
                     RepresentationLayer.modelBodies.setEnabled(false);
                 }
+            }*/
+            
+            if(event.getSource() == grayCheck) {
+                StaticsApplication.getApp().hideGrays(!grayCheck.isSelected());
+                
+            } else {
+                DisplayGroup group = groupChecks.get(event.getSource());
+                if(group != null) {
+                    group.setEnabled( ((BCheckBox)event.getSource()).isSelected() );
+                }
             }
             
-            if(event.getSource() == check4) {
-                StaticsApplication.getApp().hideGrays(!check4.isSelected());
-            }
         }
     }
     

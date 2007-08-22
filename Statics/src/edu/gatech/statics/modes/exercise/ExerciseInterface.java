@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.modes.exercise;
 
-import com.jmex.bui.BLabel;
+import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
@@ -21,20 +21,16 @@ import edu.gatech.statics.application.ui.*;
  */
 public class ExerciseInterface extends AppInterface {
     
-    //private BWindow titleWindow;
     private BWindow descriptionWindow;
     private ExercizeFBDBar fbdBar;
+
+    public void activate() {
+        getRootInterface().setBorderColor(new ColorRGBA(.5f,.5f,.5f,1));
+        getRootInterface().setSubTitle("Overview");
+    }
     
     /** Creates a new instance of ExercizeInterface */
     public ExerciseInterface() {
-        
-        //titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        //titleWindow.setStyleClass("info_window");
-        //titleWindow.add(new BLabel("Exercize"), BorderLayout.CENTER);
-        //getBuiNode().addWindow(titleWindow);
-        //titleWindow.pack();
-        //titleWindow.center();
-        //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight());
         
         descriptionWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
         descriptionWindow.setStyleClass("info_window");
@@ -43,7 +39,6 @@ public class ExerciseInterface extends AppInterface {
         view.setContents(getApp().getExercise().getDescription());
         descriptionWindow.add(view, BorderLayout.CENTER);
         getBuiNode().addWindow(descriptionWindow);
-        //descriptionWindow.setBounds(getRightAnchor(descriptionWindow),getTopAnchor(descriptionWindow),200,200);
         descriptionWindow.setBounds(0,0,200,200);
         descriptionWindow.setLocation(
                 getScreenWidth()-200 - RootInterface.borderSize - RootInterface.windowSpacing,

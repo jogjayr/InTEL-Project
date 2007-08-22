@@ -20,7 +20,6 @@ import com.jme.input.MouseInput;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
@@ -29,6 +28,7 @@ import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jmex.bui.BStyleSheet;
+import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
@@ -57,6 +57,9 @@ public class StaticsApplication {
     private AppInterface currentInterface;
     private BStyleSheet buiStyle;
     public BStyleSheet getBuiStyle() {return buiStyle;}
+    
+    public RootInterface getRootInterface() {return rootInterface;}
+    public AppInterface getCurrentInterface() {return currentInterface;}
     
     private boolean selectionEnabled = true;
     private boolean hideGrays;
@@ -178,6 +181,9 @@ public class StaticsApplication {
 
     public void init() {
         
+        // initialization of the exercise
+        getExercise().initExercise();
+        
         LoggingSystem.getLogger().setLevel(Level.WARNING);
         
         input = new InputHandler();
@@ -223,8 +229,8 @@ public class StaticsApplication {
         };
         input.addAction(selector);
         
-        // load exercise here?
-        getExercise().initExercise();
+        // load exercise here
+        getExercise().loadExercise();
         loadExercizeWorld();
     }
     
@@ -232,7 +238,9 @@ public class StaticsApplication {
         
         if(currentInterface != null)
             currentInterface.dispose();
+        
         currentInterface = newInterface;
+        currentInterface.activate();
     }
     
     public void loadFBD(FBDWorld fbd) {
@@ -316,5 +324,9 @@ public class StaticsApplication {
     public void finish() {finished = true;}
     boolean isFinished() {
         return finished;
+    }
+    
+    public void createDisplayGroup(String groupName, String ... layers) {
+        DisplayGroup.addGroup(new DisplayGroup(groupName, layers));
     }
 }

@@ -16,6 +16,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.*;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.background.TintedBackground;
@@ -36,19 +37,16 @@ public class FBDInterface extends AppInterface {
     //private BWindow titleWindow;
     private FBDPaletteBar palette;
     private CheckWindow checkWindow;
+
+    public void activate() {
+        getRootInterface().setBorderColor(new ColorRGBA(1,0,0,1));
+        getRootInterface().setSubTitle("Free Body Diagram");
+    }
     
     
     /** Creates a new instance of FBDInterface */
     public FBDInterface(FBDWorld fbd) {
         this.fbd = fbd;
-        
-        //titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        //titleWindow.setStyleClass("info_window");
-        //titleWindow.add(new BLabel("Free Body Diagram"), BorderLayout.CENTER);
-        //getBuiNode().addWindow(titleWindow);
-        //titleWindow.pack();
-        //titleWindow.center();
-        //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight());
         
         checkWindow = new CheckWindow(this, fbd);
         getBuiNode().addWindow(checkWindow);
@@ -58,7 +56,6 @@ public class FBDInterface extends AppInterface {
         
         palette = new FBDPaletteBar(fbd);
         getBuiNode().addWindow(palette);
-        //palette.setBounds(0,0,getScreenWidth(),100);
         palette.layoutToolbar();
         
         ActionListener buttonListener1 = new ActionListener() {
@@ -95,26 +92,6 @@ public class FBDInterface extends AppInterface {
             BIcon icon;
             BButton button;
 
-            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/beam.png")));
-            button = new BButton(icon, buttonListener1, "beam");
-            palette.add(button);
-
-            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/cable.png")));
-            button = new BButton(icon, buttonListener1, "cable");
-            palette.add(button);
-
-            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/plate.png")));
-            button = new BButton(icon, buttonListener1, "plate");
-            palette.add(button);
-
-            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/centerOfMass.png")));
-            button = new BButton(icon, buttonListener1, "centerOfMass");
-            palette.add(button);
-
-            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/point.png")));
-            button = new BButton(icon, buttonListener1, "point");
-            palette.add(button);
-
             icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/label.png")));
             button = new BButton(icon, buttonListener2, "label");
             palette.add(button);
@@ -134,6 +111,28 @@ public class FBDInterface extends AppInterface {
 
             icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/moment.png")));
             button = new BButton(icon, buttonListener2, "moment");
+            palette.add(button);
+            
+            
+
+            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/beam.png")));
+            button = new BButton(icon, buttonListener1, "beam");
+            palette.add(button);
+
+            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/cable.png")));
+            button = new BButton(icon, buttonListener1, "cable");
+            palette.add(button);
+
+            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/plate.png")));
+            button = new BButton(icon, buttonListener1, "plate");
+            palette.add(button);
+
+            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/centerOfMass.png")));
+            button = new BButton(icon, buttonListener1, "centerOfMass");
+            palette.add(button);
+
+            icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/point.png")));
+            button = new BButton(icon, buttonListener1, "point");
             palette.add(button);
 
             icon = new ImageIcon(new BImage(AppInterface.class.getClassLoader().getResource("rsrc/FBD_Interface/pin.png")));

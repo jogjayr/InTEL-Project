@@ -27,11 +27,10 @@ public class TitleWindow extends AppWindow {
         super(new BorderLayout());
         setStyleClass("title_container");
         
-        titleLabel = new BLabel(StaticsApplication.getApp().getExercise().getName());
+        titleLabel = new BLabel("@=#F8F400("+StaticsApplication.getApp().getExercise().getName()+")");
         add(titleLabel, BorderLayout.CENTER);
         
         subTitle = new BLabel("");
-        subTitle.setStyleClass("subTitle");
         add(subTitle, BorderLayout.SOUTH);
     }
 

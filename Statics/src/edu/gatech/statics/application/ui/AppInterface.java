@@ -82,10 +82,8 @@ public class AppInterface {
     private PolledRootNode buiNode;
     public PolledRootNode getBuiNode() {return buiNode;}
     
-    //private Node node;
-    //public Node getNode() {return node;}
-    //private StaticsApplication app;
     protected StaticsApplication getApp() {return StaticsApplication.getApp();}
+    protected RootInterface getRootInterface() {return getApp().getRootInterface();}
     
     /** Creates a new instance of AppInterface */
     public AppInterface() {
@@ -108,6 +106,8 @@ public class AppInterface {
     public void dispose() {
         buiNode.removeAllWindows();
     }
+    
+    public void activate() {}
     
     public void update() {}
     

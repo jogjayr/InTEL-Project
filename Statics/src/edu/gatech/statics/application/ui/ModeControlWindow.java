@@ -9,7 +9,9 @@
 
 package edu.gatech.statics.application.ui;
 
+import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 
 /**
@@ -20,16 +22,26 @@ public class ModeControlWindow extends AppWindow {
     
     /** Creates a new instance of ModeControlWindow */
     public ModeControlWindow() {
-        super(GroupLayout.makeVert(GroupLayout.TOP));
+        super(new BorderLayout());
+        
+        BContainer title = new BContainer(new BorderLayout());
+        BLabel titleLabel = new BLabel("Mode","title_container");
+        title.add(titleLabel, BorderLayout.CENTER);
+        title.setPreferredSize(RootInterface.sidebarSize, -1);
+        add(title, BorderLayout.NORTH);
+        
+        BContainer content = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+        content.setStyleClass("content_container");
+        add(content, BorderLayout.CENTER);
         
         BLabel label1 = new BLabel("Basic Diagram");
-        add(label1);
+        content.add(label1);
         
         BLabel label2 = new BLabel("FBD");
-        add(label2);
+        content.add(label2);
         
         BLabel label3 = new BLabel("Equilibrium");
-        add(label3);
+        content.add(label3);
     }
     
 }

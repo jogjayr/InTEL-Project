@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.modes.equation;
 
+import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.application.ui.AppInterface;
 import edu.gatech.statics.application.ui.Toolbar;
 
@@ -21,6 +22,11 @@ public class EquationInterface extends AppInterface {
     private EquationWorld equation;
     //private BWindow titleWindow;
     private Toolbar palette;
+
+    public void activate() {
+        getRootInterface().setBorderColor(new ColorRGBA(.25f,.25f,1,1));
+        getRootInterface().setSubTitle("Equilibrium Equation");
+    }
     
     void setPalette(Toolbar palette) {
         if(this.palette != null)

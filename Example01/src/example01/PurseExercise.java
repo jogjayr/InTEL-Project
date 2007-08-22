@@ -40,11 +40,11 @@ public class PurseExercise extends Exercise {
     public PurseExercise() {
         super(new ExerciseWorld());
     }
-    
+
     public void initExercise() {
-        ExerciseWorld world = getWorld();
-        
         setName("Holding a Purse");
+        StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
+        
         setDescription(
                 "<html><body>" +
                 "Here is a simplified version of the human arm. Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
@@ -57,11 +57,19 @@ public class PurseExercise extends Exercise {
                 worldDistanceMultiplier = 10f;
             }
         });
+    }
+    
+    public void loadExercise() {
+        
+        ExerciseWorld world = getWorld();
+        
         
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
         
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 55.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
+        
+        
         
         Point A = new Point(new Vector3f(-17,-16+6,0));
         Connector2ForceMember2d B = new Connector2ForceMember2d(new Vector3f(13,-16+6,0));

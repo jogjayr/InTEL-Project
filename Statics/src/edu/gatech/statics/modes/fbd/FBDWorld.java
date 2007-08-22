@@ -65,12 +65,13 @@ public class FBDWorld extends World {
         assert bodies != null : "Bodies cannot be null in constructing FBD!";
         assert !bodies.isEmpty() : "Bodies cannot be empty in constructing FBD!";
         
-        //setExercise(parentWorld.getExercise());
-        
         enableSelectMultiple(false);
         
         this.parentWorld = parentWorld;
         this.bodies = bodies;
+        
+        for(SimulationObject obj : parentWorld.allObjects())
+            add(obj);
         
         for(Body body : bodies) {
             fbdObjects.add(body);
@@ -86,7 +87,6 @@ public class FBDWorld extends World {
     public void activate() {
         
         for(SimulationObject obj : parentWorld.allObjects()) {
-            add(obj);
             
             // set all non-FBD objects to be grayed.
             // forces and moments remain selectable that they may be added to

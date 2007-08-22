@@ -19,11 +19,11 @@ window {
 
 // most windows in Statics derive from this class
 info_window {
-  //border: 1 solid #000000;
-  //border: 2 solid #000000;
-  //background: solid #aaaaaa88;
-  background: solid #f4eaa2ff;
-  padding: 5 5 5 5;
+    //border: 1 solid #000000;
+    //border: 2 solid #000000;
+    //background: solid #aaaaaa88;
+    background: solid #f4eaa2ff;
+    padding: 1 1 1 1;
 }
 
 border {
@@ -31,18 +31,17 @@ border {
 }
 
 
-subTitle {
-    color: #ffffff;
-    font: "Dialog" plain 16;
-}
-
 // this is the title for windows
 // it does not extend window, but rather BContainer
 title_container {
-  background: solid #773802ff;
-  color: #ff7b00;
-  font: "Dialog" plain 18;
-  padding: 5 5 5 5;
+    background: solid #773802ff;
+    color: #ff7b00;
+    font: "Dialog" plain 18;
+    padding: 5 5 5 5;
+}
+
+content_container {
+    padding: 5 5 5 5;
 }
 
 decoratedwindow {
