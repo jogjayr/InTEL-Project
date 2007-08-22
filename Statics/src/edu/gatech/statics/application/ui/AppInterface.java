@@ -72,10 +72,10 @@ public class AppInterface {
     
     public static int getScreenWidth() {return DisplaySystem.getDisplaySystem().getWidth();}
     public static int getScreenHeight() {return DisplaySystem.getDisplaySystem().getHeight();}
-    public static int getRightAnchor(BWindow window) {return getScreenWidth() - window.getWidth();}
-    public static int getTopAnchor(BWindow window) {return getScreenHeight() - window.getHeight();}
-    public static int getVCenterAnchor(BWindow window) {return (getScreenHeight() - window.getHeight())/2;}
-    public static int getHCenterAnchor(BWindow window) {return (getScreenWidth() - window.getWidth())/2;}
+    //public static int getRightAnchor(BWindow window) {return getScreenWidth() - window.getPreferredSize(0,0).width;}
+    //public static int getTopAnchor(BWindow window) {return getScreenHeight() - window.getPreferredSize(0,0).height;}
+    //public static int getVCenterAnchor(BWindow window) {return (getScreenHeight() - window.getPreferredSize(0,0).height)/2;}
+    //public static int getHCenterAnchor(BWindow window) {return (getScreenWidth() - window.getPreferredSize(0,0).width)/2;}
     
     // defines program interface
     

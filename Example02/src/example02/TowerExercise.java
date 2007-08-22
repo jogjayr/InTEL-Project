@@ -12,7 +12,9 @@ package example02;
 import com.jme.light.Light;
 import com.jme.light.LightNode;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.state.LightState;
+import com.jme.system.DisplaySystem;
 import edu.gatech.newcollada.ColladaImporter;
 import edu.gatech.statics.application.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
@@ -40,7 +42,7 @@ public class TowerExercise extends Exercise {
     public void initExercise() {
         ExerciseWorld world = getWorld();
         
-        
+        setName("Tower of Pisa");
         setDescription(
                 "<html><body>" +
                 "This is the tower of Pisa, solve for the reaction forces at its base." +
@@ -53,6 +55,8 @@ public class TowerExercise extends Exercise {
             }
         });
         
+        //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
         
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 20.0f, 60.0f ));
         StaticsApplication.getApp().setDrawScale(2f);

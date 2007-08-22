@@ -18,7 +18,6 @@ import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.World;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.util.ToolFinishListener;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class ExercizeFBDBar extends AppWindow {
+public class ExercizeFBDBar extends Toolbar {
     
     private BButton selectButton;
     private Map<FBDWorld, FBDIcon> iconMap = new HashMap();

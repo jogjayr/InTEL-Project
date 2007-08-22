@@ -32,6 +32,10 @@ public class Exercise {
     public void setUnits(Units units) {this.units = units;}
     public Units getUnits() {return units;}
     
+    private String name = "Exercise";
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+    
     private String description;
     public String getDescription() {return description;}
     public void setDescription(String description) {this.description = description;}
@@ -63,5 +67,4 @@ public class Exercise {
         // for file based, can involve deserialization
         // for code based can just create objects as is.
     }
-    
 }

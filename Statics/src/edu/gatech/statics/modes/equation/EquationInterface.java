@@ -9,16 +9,8 @@
 
 package edu.gatech.statics.modes.equation;
 
-import com.jmex.bui.BButton;
-import com.jmex.bui.BImage;
-import com.jmex.bui.BLabel;
-import com.jmex.bui.BWindow;
-import com.jmex.bui.event.ActionEvent;
-import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.icon.BIcon;
-import com.jmex.bui.icon.ImageIcon;
-import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.ui.AppInterface;
+import edu.gatech.statics.application.ui.Toolbar;
 
 /**
  *
@@ -27,10 +19,10 @@ import edu.gatech.statics.application.ui.AppInterface;
 public class EquationInterface extends AppInterface {
     
     private EquationWorld equation;
-    private BWindow titleWindow;
-    private BWindow palette;
+    //private BWindow titleWindow;
+    private Toolbar palette;
     
-    void setPalette(BWindow palette) {
+    void setPalette(Toolbar palette) {
         if(this.palette != null)
             this.palette.dismiss();
         
@@ -39,7 +31,8 @@ public class EquationInterface extends AppInterface {
         
         this.palette = palette;
         getBuiNode().addWindow(palette);
-        palette.setBounds(0,0,getScreenWidth(),100);
+        //palette.setBounds(0,0,getScreenWidth(),100);
+        palette.layoutToolbar();
         
         if(palette instanceof SumBar)
             equation.setSumBar((SumBar) palette);
@@ -49,17 +42,7 @@ public class EquationInterface extends AppInterface {
     /** Creates a new instance of EquationInterface */
     public EquationInterface(EquationWorld equation) {
         this.equation = equation;
-        
-        titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        titleWindow.setStyleClass("info_window");
-        titleWindow.add(new BLabel("Equilibrium Equations"), BorderLayout.CENTER);
-        getBuiNode().addWindow(titleWindow);
-        titleWindow.pack();
-        titleWindow.center();
-        titleWindow.setLocation(titleWindow.getX(), getTopAnchor(titleWindow));
-        
         setPalette( null );
-        
     }
     
 }

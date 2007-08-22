@@ -17,14 +17,14 @@ import com.jmex.bui.icon.BIcon;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.application.ui.AppInterface;
-import edu.gatech.statics.application.ui.AppWindow;
+import edu.gatech.statics.application.ui.Toolbar;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class EquationBar extends AppWindow {
+public class EquationBar extends Toolbar {
     
     private EquationWorld equation;
     private BButton returnButton;

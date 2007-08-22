@@ -43,6 +43,9 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         drawRightBar = right;
     }
     
+    private ColorRGBA color = ColorRGBA.white;
+    public void setColor(ColorRGBA color) {this.color = color;}
+    
     //public void drawLabel(boolean drawLabel) {this.drawLabel = drawLabel;}
     
     /** Creates a new instance of DistanceRepresentation */
@@ -70,6 +73,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     public void update() {
         super.update();
         label.update();
+        label.setAmbient(color);
+        label.setDiffuse(color);
     }
 
     public void draw(Renderer r) {
@@ -103,7 +108,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
             labelCenter = pCenter.add( offsetDirection.mult(12*worldRatio) );
         
             // draw line:
-            CurveUtil.renderLine(r, ColorRGBA.black,
+            CurveUtil.renderLine(r, color,
                     pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
                     pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)));
             
@@ -112,25 +117,25 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
             labelCenter = pCenter;
         
             // draw lines:
-            CurveUtil.renderLine(r, ColorRGBA.black,
+            CurveUtil.renderLine(r, color,
                     pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
                     pCenter.add(pDirection.mult(textWorldLength/2 + worldRatio*margin)));
-            CurveUtil.renderLine(r, ColorRGBA.black,
+            CurveUtil.renderLine(r, color,
                     pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
                     pCenter.subtract(pDirection.mult(textWorldLength/2 + worldRatio*margin)));
         }
         
         // draw arrowheads:
-        CurveUtil.renderLine(r, ColorRGBA.black,
+        CurveUtil.renderLine(r, color,
                 pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
                 pCenter.add(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).add(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, ColorRGBA.black,
+        CurveUtil.renderLine(r, color,
                 pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
                 pCenter.add(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).subtract(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, ColorRGBA.black,
+        CurveUtil.renderLine(r, color,
                 pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
                 pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).add(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, ColorRGBA.black,
+        CurveUtil.renderLine(r, color,
                 pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
                 pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).subtract(offsetDirection.mult(worldRatio*arrowsize))));
         
@@ -139,13 +144,13 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         if(drawLeftBar) {
             Vector3f p1a = getTarget().getPoint1().add( offsetDirection.mult(offset + edgeWidth/2) );
             Vector3f p1b = getTarget().getPoint1().add( offsetDirection.mult(offset - edgeWidth/2) );
-            CurveUtil.renderLine(r, ColorRGBA.black, p1a, p1b);
+            CurveUtil.renderLine(r, color, p1a, p1b);
         }
         
         if(drawRightBar) {
             Vector3f p2a = getTarget().getPoint2().add( offsetDirection.mult(offset + edgeWidth/2) );
             Vector3f p2b = getTarget().getPoint2().add( offsetDirection.mult(offset - edgeWidth/2) );
-            CurveUtil.renderLine(r, ColorRGBA.black, p2a, p2b);
+            CurveUtil.renderLine(r, color, p2a, p2b);
         }
         
     }

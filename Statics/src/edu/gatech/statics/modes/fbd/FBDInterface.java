@@ -17,9 +17,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import edu.gatech.statics.application.ui.*;
-import com.jmex.bui.BLabel;
 import com.jmex.bui.BPopupWindow;
-import com.jmex.bui.BWindow;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.icon.BIcon;
@@ -35,7 +33,7 @@ import edu.gatech.statics.objects.manipulators.CreateMomentTool2D;
 public class FBDInterface extends AppInterface {
     
     private FBDWorld fbd;
-    private BWindow titleWindow;
+    //private BWindow titleWindow;
     private FBDPaletteBar palette;
     private CheckWindow checkWindow;
     
@@ -44,22 +42,24 @@ public class FBDInterface extends AppInterface {
     public FBDInterface(FBDWorld fbd) {
         this.fbd = fbd;
         
-        titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        titleWindow.setStyleClass("info_window");
-        titleWindow.add(new BLabel("Free Body Diagram"), BorderLayout.CENTER);
-        getBuiNode().addWindow(titleWindow);
-        titleWindow.pack();
-        titleWindow.center();
-        titleWindow.setLocation(titleWindow.getX(), getTopAnchor(titleWindow));
+        //titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
+        //titleWindow.setStyleClass("info_window");
+        //titleWindow.add(new BLabel("Free Body Diagram"), BorderLayout.CENTER);
+        //getBuiNode().addWindow(titleWindow);
+        //titleWindow.pack();
+        //titleWindow.center();
+        //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight());
         
         checkWindow = new CheckWindow(this, fbd);
         getBuiNode().addWindow(checkWindow);
         checkWindow.pack();
-        checkWindow.setLocation(getRightAnchor(checkWindow)-10, 110);
+        //checkWindow.setLocation(getRightAnchor(checkWindow)-10, 110);
+        // THIS WILL BE MOVED
         
         palette = new FBDPaletteBar(fbd);
         getBuiNode().addWindow(palette);
-        palette.setBounds(0,0,getScreenWidth(),100);
+        //palette.setBounds(0,0,getScreenWidth(),100);
+        palette.layoutToolbar();
         
         ActionListener buttonListener1 = new ActionListener() {
             public void actionPerformed(ActionEvent event) {

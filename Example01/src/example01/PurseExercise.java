@@ -11,6 +11,8 @@ package example01;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
+import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.Exercise;
@@ -42,6 +44,7 @@ public class PurseExercise extends Exercise {
     public void initExercise() {
         ExerciseWorld world = getWorld();
         
+        setName("Holding a Purse");
         setDescription(
                 "<html><body>" +
                 "Here is a simplified version of the human arm. Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
@@ -55,6 +58,8 @@ public class PurseExercise extends Exercise {
             }
         });
         
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
+        
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 55.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
         
@@ -67,23 +72,23 @@ public class PurseExercise extends Exercise {
         Point G = new Point(new Vector3f(3.0f,-16+6,0));
         
         DistanceMeasurement distance1 = new DistanceMeasurement(A.getTranslation(), C.getTranslation());
-        distance1.createDefaultSchematicRepresentation(4f);
+        distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);
         
         DistanceMeasurement distance2 = new DistanceMeasurement(G.getTranslation(), B.getTranslation());
-        distance2.createDefaultSchematicRepresentation(2f);
+        distance2.createDefaultSchematicRepresentation(3f);
         world.add(distance2);
         
         DistanceMeasurement distance3 = new DistanceMeasurement(B.getTranslation(), C.getTranslation());
-        distance3.createDefaultSchematicRepresentation(2f);
+        distance3.createDefaultSchematicRepresentation(3f);
         world.add(distance3);
         
         DistanceMeasurement distance4 = new DistanceMeasurement(C.getTranslation(), D.getTranslation());
-        distance4.createDefaultSchematicRepresentation(2f);
+        distance4.createDefaultSchematicRepresentation(3f);
         world.add(distance4);
         
         DistanceMeasurement distance5 = new DistanceMeasurement(D.getTranslation(), E.getTranslation());
-        distance5.createDefaultSchematicRepresentation(2f);
+        distance5.createDefaultSchematicRepresentation(3f);
         world.add(distance5);
 
         Body upperArm = new Beam(E,C);

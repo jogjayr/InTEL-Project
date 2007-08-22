@@ -209,7 +209,7 @@ public class StaticsApplication {
         camera.update();
         
         display.getRenderer().setCamera(camera);
-        display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
+        //display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         
         selector = new MousePick(this) {
             public void hover(SimulationObject obj) {

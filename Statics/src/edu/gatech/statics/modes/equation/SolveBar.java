@@ -18,7 +18,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.application.ui.AppWindow;
+import edu.gatech.statics.application.ui.Toolbar;
 import edu.gatech.statics.objects.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class SolveBar extends AppWindow {
+public class SolveBar extends Toolbar {
     
     private Map<String, BLabel> unknownMap = new HashMap();
     private List<String> unknownList = new ArrayList();

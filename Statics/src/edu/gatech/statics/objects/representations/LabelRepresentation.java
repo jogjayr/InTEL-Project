@@ -75,8 +75,8 @@ public class LabelRepresentation extends Representation {
         text.setRenderState(alphaState);
         
         matState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
-        matState.setAmbient(ColorRGBA.black);
-        matState.setDiffuse(ColorRGBA.black);
+        matState.setAmbient(ColorRGBA.white);
+        matState.setDiffuse(ColorRGBA.white);
         text.setRenderState(matState);
         
         text.setLocalTranslation(1.5f, 1.5f, 0);

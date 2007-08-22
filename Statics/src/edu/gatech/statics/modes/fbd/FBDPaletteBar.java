@@ -10,7 +10,6 @@
 package edu.gatech.statics.modes.fbd;
 
 import edu.gatech.statics.application.ui.*;
-import edu.gatech.statics.application.StaticsApplication;
 import com.jmex.bui.BButton;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
@@ -20,7 +19,7 @@ import com.jmex.bui.layout.GroupLayout;
  *
  * @author Calvin Ashmore
  */
-public class FBDPaletteBar extends AppWindow {
+public class FBDPaletteBar extends Toolbar {
     
     private BButton returnButton;
     private BButton nextButton;

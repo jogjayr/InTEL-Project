@@ -1,10 +1,10 @@
-Aug 17, 2007 1:57:26 PM com.jme.app.BaseGame start
+Aug 22, 2007 10:27:23 AM com.jme.app.BaseGame start
 INFO: Application started.
-Aug 17, 2007 1:57:26 PM com.jme.system.PropertiesIO <init>
+Aug 22, 2007 10:27:23 AM com.jme.system.PropertiesIO <init>
 INFO: PropertiesIO created
-Aug 17, 2007 1:57:26 PM com.jme.system.PropertiesIO load
+Aug 22, 2007 10:27:23 AM com.jme.system.PropertiesIO load
 INFO: Read properties
-Aug 17, 2007 1:57:26 PM com.jme.system.lwjgl.LWJGLDisplaySystem <init>
+Aug 22, 2007 10:27:23 AM com.jme.system.lwjgl.LWJGLDisplaySystem <init>
 INFO: LWJGL Display System created.
-Aug 17, 2007 1:57:27 PM com.jme.renderer.lwjgl.LWJGLRenderer <init>
+Aug 22, 2007 10:27:24 AM com.jme.renderer.lwjgl.LWJGLRenderer <init>
 INFO: LWJGLRenderer created. W:  1024H: 768

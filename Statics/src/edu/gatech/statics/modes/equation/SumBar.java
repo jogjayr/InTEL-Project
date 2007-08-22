@@ -31,7 +31,7 @@ import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
-import edu.gatech.statics.application.ui.AppWindow;
+import edu.gatech.statics.application.ui.Toolbar;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.Vector;
 import java.io.IOException;
@@ -42,7 +42,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class SumBar extends AppWindow {
+public class SumBar extends Toolbar {
     
     private EquationMath math;
     private EquationInterface iface;

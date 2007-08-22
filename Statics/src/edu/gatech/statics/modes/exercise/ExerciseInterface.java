@@ -21,20 +21,20 @@ import edu.gatech.statics.application.ui.*;
  */
 public class ExerciseInterface extends AppInterface {
     
-    private BWindow titleWindow;
+    //private BWindow titleWindow;
     private BWindow descriptionWindow;
     private ExercizeFBDBar fbdBar;
     
     /** Creates a new instance of ExercizeInterface */
     public ExerciseInterface() {
         
-        titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        titleWindow.setStyleClass("info_window");
-        titleWindow.add(new BLabel("Exercize"), BorderLayout.CENTER);
-        getBuiNode().addWindow(titleWindow);
-        titleWindow.pack();
-        titleWindow.center();
-        titleWindow.setLocation(titleWindow.getX(), getTopAnchor(titleWindow));
+        //titleWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
+        //titleWindow.setStyleClass("info_window");
+        //titleWindow.add(new BLabel("Exercize"), BorderLayout.CENTER);
+        //getBuiNode().addWindow(titleWindow);
+        //titleWindow.pack();
+        //titleWindow.center();
+        //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight());
         
         descriptionWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
         descriptionWindow.setStyleClass("info_window");
@@ -45,11 +45,13 @@ public class ExerciseInterface extends AppInterface {
         getBuiNode().addWindow(descriptionWindow);
         //descriptionWindow.setBounds(getRightAnchor(descriptionWindow),getTopAnchor(descriptionWindow),200,200);
         descriptionWindow.setBounds(0,0,200,200);
-        descriptionWindow.setLocation(getRightAnchor(descriptionWindow),getTopAnchor(descriptionWindow));
+        descriptionWindow.setLocation(
+                getScreenWidth()-200 - RootInterface.borderSize - RootInterface.windowSpacing,
+                getScreenHeight()-200 - RootInterface.borderSize - RootInterface.windowSpacing);
         
         fbdBar = new ExercizeFBDBar();
         getBuiNode().addWindow(fbdBar);
-        fbdBar.setBounds(0,0,getScreenWidth(),100);
+        fbdBar.layoutToolbar();
         
         getBuiNode().updateGeometricState(0, true);
     }
