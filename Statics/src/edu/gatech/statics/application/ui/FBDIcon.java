@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.application.ui;
 
+import com.jmex.bui.icon.BIcon;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.application.StaticsApplication;
 import com.jmex.bui.BContainer;
@@ -26,6 +27,8 @@ public class FBDIcon extends BContainer {
         //super(app.getBuiStyle(), new BorderLayout());
         setStyleClass("info_window");
         setPreferredSize(90,90);
+        
+        
         
         BLabel label = new BLabel("FBD "+fbd.getBodies());
         add(label,BorderLayout.CENTER);
