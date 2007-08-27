@@ -19,6 +19,7 @@
         <copyfile src="properties.cfg" dest="dist/properties.cfg" />
         <unjar src="windows_natives.jar" dest="dist/"/>
         <unjar src="macosx_natives.jar" dest="dist/"/>
+        <unjar src="linux_natives.jar" dest="dist/"/>
     </target>
     
     <!--
