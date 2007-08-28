@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class ExercizeFBDBar extends Toolbar {
     
-    private BButton selectButton;
+    BButton selectButton;
     private Map<FBDWorld, FBDIcon> iconMap = new HashMap();
     
     /** Creates a new instance of ExercizeFBDBar */
@@ -45,12 +45,18 @@ public class ExercizeFBDBar extends Toolbar {
         }
     }
 
+    public void activate() {
+        for(FBDIcon icon : iconMap.values())
+            icon.update();
+    }
+    
+
     private void addFBD(FBDWorld fbd) {
         
         if(iconMap.containsKey(fbd))
             return;
         
-        FBDIcon icon = new FBDIcon(getApp(), fbd);
+        FBDIcon icon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
         icon.addListener(new FBDClickListener(fbd));
         add(icon);
         iconMap.put(fbd, icon);
@@ -90,19 +96,6 @@ public class ExercizeFBDBar extends Toolbar {
             selector.activate();
         }
     }
-    
-    /*
-     * **** REPLACE THIS WITH BODY SELECTION TOOL
-    private class ButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            SimulationObject selected = getApp().getCurrentWorld().getSelected();
-            if(selected instanceof Body) {
-                FBDWorld fbd = getApp().getExercise().constructFBD(Collections.singletonList((Body)selected));
-                addFBD(fbd);
-                //validate();
-            }
-        }
-    }*/
     
     private class FBDClickListener implements MouseListener {
         private FBDWorld fbd;

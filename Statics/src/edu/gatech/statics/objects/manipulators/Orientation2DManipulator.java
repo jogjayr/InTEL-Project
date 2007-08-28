@@ -16,11 +16,8 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import edu.gatech.statics.objects.manipulators.Manipulator;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -34,6 +31,7 @@ public class Orientation2DManipulator extends Manipulator {
     protected Vector3f startDirection = Vector3f.UNIT_Z;
     
     public void setStartDirection(Vector3f direction) {this.startDirection = direction;}
+    public Vector3f getStartDirection() {return startDirection;}
     
     /** Creates a new instance of Orientation2DManipulator */
     public Orientation2DManipulator(SimulationObject target, Vector3f rotationAxis) {

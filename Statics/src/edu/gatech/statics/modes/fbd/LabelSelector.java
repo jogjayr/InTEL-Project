@@ -34,6 +34,7 @@ import edu.gatech.statics.objects.manipulators.SelectionTool;
 public class LabelSelector extends SelectionTool {
     
     private BWindow popupRoot;
+    private String hintText = null;
     
     /** Creates a new instance of LabelSelector */
     public LabelSelector(World world, BWindow popupRoot) {
@@ -70,6 +71,10 @@ public class LabelSelector extends SelectionTool {
         }
     }
 
+    void setHintText(String text) {
+        hintText = text;
+    }
+
     private void createPopup(final Vector obj) {
         
         StaticsApplication.getApp().setAdvice("Please input a numerical value or a symbol for the "+
@@ -84,7 +89,11 @@ public class LabelSelector extends SelectionTool {
         popup.add(label, BorderLayout.NORTH);
         
         final BTextField textfield = new BTextField();
-        textfield.setText(obj.getLabelText());
+        
+        if(hintText == null)
+            textfield.setText(obj.getLabelText());
+        else textfield.setText(hintText);
+        
         popup.add(textfield, BorderLayout.CENTER);
         textfield.requestFocus();
         

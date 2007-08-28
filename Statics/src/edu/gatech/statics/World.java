@@ -11,12 +11,10 @@ package edu.gatech.statics;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.application.Exercise;
 import com.jme.scene.Node;
 import com.jme.scene.state.RenderState;
-import com.jme.util.geom.Debugger;
 import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.util.SelectionListener;
 import edu.gatech.statics.objects.Body;
@@ -81,7 +79,7 @@ public class World {
     
     private CoordinateSystem coordinateSystem = new CoordinateSystem();
     public CoordinateSystem getCoordinateSystem() {return coordinateSystem;}
-    public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = coordinateSystem;}
+    public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = sys;}
     
     private List<SelectionListener> selectionListeners = new ArrayList();
     public void addSelectionListener(SelectionListener listener) {selectionListeners.add(listener);}

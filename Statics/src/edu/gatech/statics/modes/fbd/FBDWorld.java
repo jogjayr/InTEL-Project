@@ -9,9 +9,15 @@
 
 package edu.gatech.statics.modes.fbd;
 
+import com.jme.image.Texture;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Renderer;
+import com.jme.renderer.TextureRenderer;
+import com.jme.scene.Node;
+import com.jme.system.DisplaySystem;
 import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.application.ui.FBDIcon;
 import edu.gatech.statics.modes.equation.EquationWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -82,7 +88,51 @@ public class FBDWorld extends World {
                 else if(obj instanceof Force || obj instanceof Moment)
                     externalForces.add((Vector) obj);
         }
+        
+        updateNodes();
+        setupIcon();
+        
+        //icon = new FBDIcon(this);
     }
+    
+    //private FBDIcon icon;
+    //public FBDIcon getIcon() {return icon;}
+    private TextureRenderer iconRenderer;
+    private Texture iconTexture;
+    public FBDIcon getIcon() {
+        return new FBDIcon(iconTexture);
+    }
+    
+    private void setupIcon() {
+        iconRenderer = DisplaySystem.getDisplaySystem().createTextureRenderer(128, 128, TextureRenderer.RENDER_TEXTURE_2D);
+        iconRenderer.setBackgroundColor(DisplaySystem.getDisplaySystem().getRenderer().getBackgroundColor());
+        iconTexture = new Texture();
+        if(iconRenderer.isSupported()) {
+            iconRenderer.setupTexture(iconTexture);
+        }
+    }
+    private void renderIcon() {
+        /*Camera cam = DisplaySystem.getDisplaySystem().getRenderer().createCamera(90, 90);
+        cam.setDirection(StaticsApplication.getApp().getCamera().getDirection());
+        cam.setUp(StaticsApplication.getApp().getCamera().getUp());
+        cam.setLeft(StaticsApplication.getApp().getCamera().getLeft());
+        cam.setLocation(StaticsApplication.getApp().getCamera().getLocation());
+        tRenderer.setCamera(cam);*/
+        
+        Node targetNode = getNode(RepresentationLayer.modelBodies);
+        
+        if(targetNode != null) {
+            iconRenderer.setCamera(StaticsApplication.getApp().getCamera());
+            iconRenderer.setupTexture(iconTexture);
+            iconRenderer.render(targetNode, iconTexture);
+        }
+    }
+
+    public void render(Renderer r) {
+        super.render(r);
+        renderIcon();
+    }
+    
     
     public void activate() {
         

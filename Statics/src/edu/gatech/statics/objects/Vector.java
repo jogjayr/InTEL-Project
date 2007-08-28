@@ -13,7 +13,6 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.*;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
-import edu.gatech.statics.objects.representations.LabelRepresentation;
 
 /**
  *
@@ -59,7 +58,8 @@ public class Vector extends SimulationObject {
     
     public void setRotation(Matrix3f mat) {
         Vector3f v = mat.mult(Vector3f.UNIT_Z);
-        v.mult(magnitude);
+        v.multLocal(magnitude);
+        //if(!v.equals(value))
         value = v;
     }
     

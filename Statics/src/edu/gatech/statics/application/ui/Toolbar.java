@@ -29,4 +29,6 @@ public class Toolbar extends AppWindow {
                 RootInterface.getScreenWidth() - 2*RootInterface.borderSize,
                 100);
     }
+
+    public void activate() {}
 }

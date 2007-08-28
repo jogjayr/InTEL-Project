@@ -10,6 +10,7 @@
 package edu.gatech.statics.modes.fbd;
 
 import com.jme.renderer.ColorRGBA;
+import com.jmex.bui.Spacer;
 import edu.gatech.statics.application.ui.*;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BImage;
@@ -25,8 +26,8 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.objects.manipulators.CreateForceTool2D;
-import edu.gatech.statics.objects.manipulators.CreateMomentTool2D;
+import edu.gatech.statics.modes.fbd.CreateForceTool2D;
+import edu.gatech.statics.modes.fbd.CreateMomentTool2D;
 
 /**
  *
@@ -37,6 +38,7 @@ public class FBDPaletteBar extends Toolbar {
     private BButton returnButton;
     private BButton nextButton;
     private FBDWorld fbd;
+    private FBDIcon fbdIcon;
     
     /** Creates a new instance of FBDPaletteBar */
     public FBDPaletteBar(final FBDWorld fbd) {
@@ -64,7 +66,7 @@ public class FBDPaletteBar extends Toolbar {
         else nextButton.setText("Check");
         add(nextButton);
         
-        FBDIcon fbdIcon = new FBDIcon(getApp(), fbd);
+        fbdIcon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
         add(fbdIcon);
         
         ActionListener warningListener = new WarningListener();
@@ -97,7 +99,11 @@ public class FBDPaletteBar extends Toolbar {
             add(button);
             
             
-
+            
+            add(new Spacer(20,1));
+            
+            
+            
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/beam.png")));
             button = new BButton(icon, warningListener, "beam");
             add(button);
@@ -132,6 +138,11 @@ public class FBDPaletteBar extends Toolbar {
         
         } catch(Exception e) {}
     }
+
+    public void activate() {
+        fbdIcon.update();
+    }
+    
     
     public void enableEquationButton() {nextButton.setEnabled(true);}
     

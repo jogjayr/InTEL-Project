@@ -22,8 +22,10 @@ public class EquationInterface extends AppInterface {
     private EquationWorld equation;
     //private BWindow titleWindow;
     private Toolbar palette;
+    public Toolbar getToolbar() {return palette;}
 
     public void activate() {
+        super.activate();
         getRootInterface().setBorderColor(new ColorRGBA(.25f,.25f,1,1));
         getRootInterface().setSubTitle("Equilibrium Equation");
     }

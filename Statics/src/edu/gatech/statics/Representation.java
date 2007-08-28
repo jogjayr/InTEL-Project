@@ -42,10 +42,24 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     private ColorRGBA ambient;// = new ColorRGBA(.2f, .2f, .2f, 1f);
     private ColorRGBA diffuse;// = new ColorRGBA(.8f, .8f, .8f, 1f);;
     private ColorRGBA specular;
+    private ColorRGBA emissive = ColorRGBA.black;
+    
+    private ColorRGBA selectEmissive = new ColorRGBA(.40f,.40f,.40f,1f);
+    private ColorRGBA hoverEmissive = new ColorRGBA(.20f,.20f,.20f,1f);
+    
+    private ColorRGBA grayColor = new ColorRGBA(.2f,.2f,.2f, 1f);
+    private ColorRGBA grayEmissive = new ColorRGBA(.40f,.40f,.40f,1f);
     
     public ColorRGBA getAmbient() {return ambient;}
     public ColorRGBA getDiffuse() {return diffuse;}
     public ColorRGBA getSpecular() {return specular;}
+    public ColorRGBA getEmissive() {return emissive;}
+    
+    public ColorRGBA getSelectEmissive() {return selectEmissive;}
+    public ColorRGBA getHoverEmissive() {return hoverEmissive;}
+    
+    public ColorRGBA getGrayColor() {return grayColor;}
+    public ColorRGBA getGrayEmissive() {return grayEmissive;}
     
     private boolean useWorldScale = true;
     private boolean synchronizeTranslation = true;
@@ -61,9 +75,16 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         this.specular = specular;
         updateMaterial();
     }
-    public void setAmbient(ColorRGBA ambient) {this.ambient = ambient; updateMaterial();}
-    public void setDiffuse(ColorRGBA diffuse) {this.diffuse = diffuse; updateMaterial();}
-    public void setSpecular(ColorRGBA specular) {this.specular = specular; updateMaterial();}
+    public void setAmbient(ColorRGBA ambient) {this.ambient = ambient;}
+    public void setDiffuse(ColorRGBA diffuse) {this.diffuse = diffuse;}
+    public void setSpecular(ColorRGBA specular) {this.specular = specular;}
+    public void setEmissive(ColorRGBA emissive) {this.emissive = emissive;}
+    
+    public void setSelectEmissive(ColorRGBA selectEmissive) {this.selectEmissive = selectEmissive;}
+    public void setHoverEmissive(ColorRGBA hoverEmissive) {this.hoverEmissive = hoverEmissive;}
+    
+    public void setGrayColor(ColorRGBA grayColor) {this.grayColor = grayColor;}
+    public void setGrayEmissive(ColorRGBA grayEmissive) {this.grayEmissive = grayEmissive;}
     
     /** Creates a new instance of Representation */
     public Representation(SimType target) {
@@ -125,32 +146,24 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     
     private void updateMaterial() {
         
-        /*if(hidden || (grayed && StaticsApplication.getApp().isHidingGrays())) {
-            setCullMode(CULL_ALWAYS);
-        } else {
-            setCullMode(CULL_NEVER);
-        }*/
-        
         if(selected) {
-            materialState.setEmissive(new ColorRGBA(.40f,.40f,.40f,1f));
+            materialState.setEmissive(selectEmissive);
             materialState.setAmbient(ambient);
             materialState.setDiffuse(diffuse);
             materialState.setSpecular(specular);
             
-        } else if(hover) {
-            materialState.setEmissive(new ColorRGBA(.20f,.20f,.20f,1f));
-            materialState.setAmbient(ambient);
-            materialState.setDiffuse(diffuse);
-            materialState.setSpecular(specular);
+        }  else if(grayed) {
+            if(hover) materialState.setEmissive(hoverEmissive);
+            else materialState.setEmissive(grayEmissive);
             
-        } else if(grayed) {
-            materialState.setEmissive(new ColorRGBA(.40f,.40f,.40f,1f));
-            materialState.setAmbient(new ColorRGBA(.2f,.2f,.2f, 1f));
-            materialState.setDiffuse(new ColorRGBA(.2f,.2f,.2f, 1f));
+            materialState.setAmbient(grayColor);
+            materialState.setDiffuse(grayColor);
             materialState.setSpecular(ColorRGBA.black);
             
         } else { // default appearance
-            materialState.setEmissive(ColorRGBA.black);
+            if(hover) materialState.setEmissive(hoverEmissive);
+            else materialState.setEmissive(emissive);
+            
             materialState.setAmbient(ambient);
             materialState.setDiffuse(diffuse);
             materialState.setSpecular(specular);

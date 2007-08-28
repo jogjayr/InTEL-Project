@@ -31,6 +31,8 @@ public class AppInterface {
     private static StyleSheet htmlStyle;
     public static StyleSheet getHtmlStyle() {return htmlStyle;}
     
+    public Toolbar getToolbar() {return null;}
+    
     static {
         htmlStyle = new StyleSheet() {
             public Font getFont (AttributeSet attrs) {
@@ -107,7 +109,10 @@ public class AppInterface {
         buiNode.removeAllWindows();
     }
     
-    public void activate() {}
+    public void activate() {
+        if(getToolbar() != null)
+            getToolbar().activate();
+    }
     
     public void update() {}
     

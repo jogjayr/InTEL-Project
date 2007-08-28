@@ -7,10 +7,12 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.objects.manipulators;
+package edu.gatech.statics.modes.fbd;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.util.ClickListener;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
@@ -72,7 +74,6 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         runtimeOrientationManipulator.removeClickListener(this);
         runtimeOrientationManipulator.addClickListener(new ClickListener() {
             public void onClick(Manipulator m) {
-                force.setValue(runtimeOrientationManipulator.getCurrentSnap());
                 world.clearSelection();
             }
             public void onRelease(Manipulator m) {}
@@ -84,6 +85,12 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, force);
         runtimeDeletionManipulator.setEnabled(false);
         force.addManipulator(runtimeDeletionManipulator);
+        
+        
+        LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
+        labelTool.setHintText("");
+        labelTool.activate();
+        labelTool.onClick(force);
     }
     
     protected void enableDragManipulator() {
@@ -139,8 +146,8 @@ public class CreateForceTool2D extends Tool implements ClickListener {
                 removeFromAttachedHandlers(orientationManipulator);
                 //orientationManipulator = null;
 
-                finishForce();
                 finish();
+                finishForce();
             }
         }
     }

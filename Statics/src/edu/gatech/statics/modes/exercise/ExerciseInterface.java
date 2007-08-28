@@ -23,8 +23,11 @@ public class ExerciseInterface extends AppInterface {
     
     private BWindow descriptionWindow;
     private ExercizeFBDBar fbdBar;
+    
+    public Toolbar getToolbar() {return fbdBar;}
 
     public void activate() {
+        super.activate();
         getRootInterface().setBorderColor(new ColorRGBA(.5f,.5f,.5f,1));
         getRootInterface().setSubTitle("Overview");
     }

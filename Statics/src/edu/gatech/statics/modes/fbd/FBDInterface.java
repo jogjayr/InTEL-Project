@@ -20,8 +20,10 @@ public class FBDInterface extends AppInterface {
     
     private FBDWorld fbd;
     private FBDPaletteBar palette;
+    public Toolbar getToolbar() {return palette;}
 
     public void activate() {
+        super.activate();
         getRootInterface().setBorderColor(new ColorRGBA(1,0,0,1));
         getRootInterface().setSubTitle("Free Body Diagram");
     }
