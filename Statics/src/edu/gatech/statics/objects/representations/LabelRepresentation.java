@@ -24,7 +24,6 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
-import junit.framework.Test;
 
 /**
  *

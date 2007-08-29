@@ -22,20 +22,26 @@ import edu.gatech.statics.objects.Vector;
  */
 public class ArrowRepresentation extends Representation<Vector> {
     
-    protected float tipWidth = .2f;
-    protected float tipHeight = 1.0f;
-    protected float tailWidth = .06f;
+    protected float tipWidth = .4f;
+    protected float tipHeight = 2.0f;
+    protected float tailWidth = .12f;
+    
+    protected boolean hasHead;
     
     protected Cylinder tip;
     protected Cylinder tail;
     
-    /** Creates a new instance of ArrowRepresentation */
     public ArrowRepresentation(Vector target) {
+        this(target, true);
+    }
+    
+    /** Creates a new instance of ArrowRepresentation */
+    public ArrowRepresentation(Vector target, boolean hasHead) {
         super(target);
+        this.hasHead = hasHead;
         setLayer(RepresentationLayer.vectors);
         
         buildGeometry();
-        
         
         //setModelBound(new OrientedBoundingBox());
         setModelBound(new BoundingBox());
@@ -56,42 +62,51 @@ public class ArrowRepresentation extends Representation<Vector> {
         tail = new Cylinder("", 6, 6, 1f, 1f, true);
         attachChild(tail);
         
-        tip = new Cylinder("", 6, 12, 1f, 1f, true);
-        tip.setRadius1(0);
-        attachChild(tip);
+        if(hasHead) {
+            tip = new Cylinder("", 6, 12, 1f, 1f, true);
+            tip.setRadius1(0);
+            attachChild(tip);
+        }
     }
 
     protected void setMagnitude(float magnitude) {
         
-        float tailMagnitude;
-        float tipMagnitude;
-        
         //magnitude /= StaticsApplication.getApp().getDrawScale();
         
-        if(magnitude < 2*tipHeight) {
-            tailMagnitude = magnitude*.5f*tipHeight;
-            tipMagnitude = magnitude-tailMagnitude;
+        if(hasHead) {
+            float tailMagnitude;
+            float tipMagnitude;
+
+            if(magnitude < 2*tipHeight) {
+                tailMagnitude = magnitude*.5f*tipHeight;
+                tipMagnitude = magnitude-tailMagnitude;
+            } else {
+                tipMagnitude = tipHeight;
+                tailMagnitude = magnitude-tipMagnitude;
+            }
+
+            if(magnitude < .05) {
+                setCullMode(CULL_ALWAYS);
+            } else {
+                setCullMode(CULL_NEVER);
+            }
+
+            tail.setLocalTranslation(0,0,tailMagnitude/2);
+            tail.setLocalScale(new Vector3f( tailWidth, tailWidth, tailMagnitude ));
+            //tail.setHeight(tailMagnitude);
+            //tail.setDefaultColor(color);
+
+            tip.setLocalTranslation(0,0,tailMagnitude+tipMagnitude/2);
+            tip.setLocalScale(new Vector3f( tipWidth, tipWidth, tipMagnitude ));
+            //tip.setHeight(tipMagnitude);
+            //tip.setDefaultColor(color);
+            
         } else {
-            tipMagnitude = tipHeight;
-            tailMagnitude = magnitude-tipMagnitude;
+            
+            tail.setLocalTranslation(0,0,magnitude/2);
+            tail.setLocalScale(new Vector3f( tailWidth, tailWidth, magnitude ));
+            
         }
-        
-        if(magnitude < .05) {
-            setCullMode(CULL_ALWAYS);
-        } else {
-            setCullMode(CULL_NEVER);
-        }
-        
-        tail.setLocalTranslation(0,0,tailMagnitude/2);
-        tail.setLocalScale(new Vector3f( tailWidth, tailWidth, tailMagnitude ));
-        //tail.setHeight(tailMagnitude);
-        //tail.setDefaultColor(color);
-        
-        tip.setLocalTranslation(0,0,tailMagnitude+tipMagnitude/2);
-        tip.setLocalScale(new Vector3f( tipWidth, tipWidth, tipMagnitude ));
-        //tip.setHeight(tipMagnitude);
-        //tip.setDefaultColor(color);
-        
     }
     
 }

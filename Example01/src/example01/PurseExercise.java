@@ -109,7 +109,7 @@ public class PurseExercise extends Exercise {
         Force purse = new Force(A, new Vector3f(0,-19.6f,0));
         forearm.addObject(purse);
         
-        Moment shoulder = new Moment(E, new Vector3f(0,0,-1)); // use symbol here
+        Moment shoulder = new Moment(E, new Vector3f(0,0,1)); // use symbol here
         shoulder.setName("M shoulder");
         upperArm.addObject(shoulder);
         shoulder.setSymbol(true);

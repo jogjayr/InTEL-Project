@@ -159,7 +159,7 @@ public class EquationWorld extends World {
         momentArm = new Vector(targetPoint, armDirection);
         momentArmTarget = target;
         
-        ArrowRepresentation rep = new ArrowRepresentation(momentArm);
+        ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);
         rep.setAmbient(ColorRGBA.yellow);
         rep.setDiffuse(ColorRGBA.yellow);
         momentArm.addRepresentation(rep);

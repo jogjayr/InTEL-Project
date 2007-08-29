@@ -17,7 +17,7 @@ import edu.gatech.statics.objects.Vector;
  */
 public class ArrowRepresentationFixedLength extends ArrowRepresentation {
     
-    private float length = 2.5f;
+    private float length = 4.0f;
     public void setLength(float length) {this.length = length;}
     
     /** Creates a new instance of ArrowRepresentationFixedLength */

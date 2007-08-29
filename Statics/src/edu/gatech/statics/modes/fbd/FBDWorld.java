@@ -11,7 +11,7 @@ package edu.gatech.statics.modes.fbd;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
 import com.jme.renderer.TextureRenderer;
 import com.jme.scene.Node;
@@ -124,16 +124,17 @@ public class FBDWorld extends World {
         image = new BImage(iconTexture, 90, 90, 128, 128);
     }
     private void renderIcon() {
-        /*Camera cam = DisplaySystem.getDisplaySystem().getRenderer().createCamera(90, 90);
-        cam.setDirection(StaticsApplication.getApp().getCamera().getDirection());
-        cam.setUp(StaticsApplication.getApp().getCamera().getUp());
-        cam.setLeft(StaticsApplication.getApp().getCamera().getLeft());
-        cam.setLocation(StaticsApplication.getApp().getCamera().getLocation());
-        tRenderer.setCamera(cam);*/
         
         Node targetNode = getNode(RepresentationLayer.modelBodies);
         
         if(targetNode != null) {
+            /*Camera cam = DisplaySystem.getDisplaySystem().getRenderer().createCamera(128, 128);
+            cam.setDirection(StaticsApplication.getApp().getCamera().getDirection());
+            cam.setUp(StaticsApplication.getApp().getCamera().getUp());
+            cam.setLeft(StaticsApplication.getApp().getCamera().getLeft());
+            cam.setLocation(StaticsApplication.getApp().getCamera().getLocation());
+            iconRenderer.setCamera(cam);*/
+            
             iconRenderer.setCamera(StaticsApplication.getApp().getCamera());
             iconRenderer.setupTexture(iconTexture);
             iconRenderer.render(targetNode, iconTexture);
