@@ -11,10 +11,12 @@ package edu.gatech.statics.modes.fbd;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.renderer.TextureRenderer;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
+import com.jmex.bui.BImage;
 import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.FBDIcon;
@@ -99,17 +101,27 @@ public class FBDWorld extends World {
     //public FBDIcon getIcon() {return icon;}
     private TextureRenderer iconRenderer;
     private Texture iconTexture;
+    private BImage image;
+    //private boolean iconFinished = false;
     public FBDIcon getIcon() {
-        return new FBDIcon(iconTexture);
+        //return new FBDIcon(iconTexture);
+        return new FBDIcon(image);
     }
     
     private void setupIcon() {
+        
+        /*iconTexture = TextureManager.loadTexture(
+                getClass().getResource("rsrc/FBD_Interface/cable.png"),
+                Texture.MM_LINEAR, Texture.FM_LINEAR);*/
+        //iconTexture = new Texture();
+        
         iconRenderer = DisplaySystem.getDisplaySystem().createTextureRenderer(128, 128, TextureRenderer.RENDER_TEXTURE_2D);
         iconRenderer.setBackgroundColor(DisplaySystem.getDisplaySystem().getRenderer().getBackgroundColor());
         iconTexture = new Texture();
         if(iconRenderer.isSupported()) {
             iconRenderer.setupTexture(iconTexture);
         }
+        image = new BImage(iconTexture, 90, 90, 128, 128);
     }
     private void renderIcon() {
         /*Camera cam = DisplaySystem.getDisplaySystem().getRenderer().createCamera(90, 90);
@@ -125,6 +137,9 @@ public class FBDWorld extends World {
             iconRenderer.setCamera(StaticsApplication.getApp().getCamera());
             iconRenderer.setupTexture(iconTexture);
             iconRenderer.render(targetNode, iconTexture);
+            iconTexture = iconTexture.createSimpleClone();
+            
+            image = new BImage(iconTexture, 90, 90, 128, 128);
         }
     }
 

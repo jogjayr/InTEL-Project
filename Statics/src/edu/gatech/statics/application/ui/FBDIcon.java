@@ -32,15 +32,16 @@ public class FBDIcon extends BContainer {
     private BImage image;
     
     /** Creates a new instance of FBDIcon */
-    public FBDIcon(Texture tex) {
+    public FBDIcon(BImage image) {//(Texture tex) {
         setStyleClass("info_window");
         setPreferredSize(90, 90);
+        this.image = image;
 
         //Texture tex = TextureManager.loadTexture(
         //        getClass().getClassLoader().getResource("rsrc/FBD_Interface/cable.png"),
         //        Texture.MM_LINEAR, Texture.FM_LINEAR);
 
-        image = new BImage(tex, 90, 90, 60, 55);
+        //image = new BImage(tex, 90, 90, 128, 128);
         BIcon icon = new ImageIcon(image);
         label = new BLabel(icon);
         //new BLabel("FBD "+fbd.getBodies());
