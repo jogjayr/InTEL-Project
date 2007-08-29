@@ -5,6 +5,11 @@
 <project name="Example01" default="default" basedir=".">
     <description>Builds, tests, and runs the project Example01.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="-post-jar">
+        <signjar jar="dist/Example01.jar" alias="mykey" storepass="monkeys" keystore="../Statics/.keystore"/>
+        <copyfile src="dist/Example01.jar" dest="../applet/Example01.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
