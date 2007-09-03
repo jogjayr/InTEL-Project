@@ -25,13 +25,13 @@ public class TitleWindow extends AppWindow {
     /** Creates a new instance of TitleWindow */
     public TitleWindow() {
         super(new BorderLayout());
-        setStyleClass("title_container");
+        setStyleClass("main_title");
         
-        titleLabel = new BLabel("@=#F8F400("+StaticsApplication.getApp().getExercise().getName()+")");
+        titleLabel = new BLabel("@=#F8F400("+StaticsApplication.getApp().getExercise().getName()+":)   ");
         add(titleLabel, BorderLayout.CENTER);
         
         subTitle = new BLabel("");
-        add(subTitle, BorderLayout.SOUTH);
+        add(subTitle, BorderLayout.EAST);
     }
 
     void setSubTitle(String subTitle) {

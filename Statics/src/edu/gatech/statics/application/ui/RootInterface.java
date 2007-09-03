@@ -11,9 +11,7 @@ package edu.gatech.statics.application.ui;
 
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BWindow;
-import com.jmex.bui.background.BBackground;
 import com.jmex.bui.background.TintedBackground;
-import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 
@@ -28,6 +26,7 @@ public class RootInterface extends AppInterface {
     private DisplayControlWindow displayControl;
     private CoordinateSystemWindow coordinateSystem;
     private TitleWindow titleWindow;
+    private DescriptionIcon descriptionIcon;
     
     private BWindow border1;
     private BWindow border2;
@@ -44,14 +43,33 @@ public class RootInterface extends AppInterface {
         int distance = 0;
         Dimension dim;
         
+        titleWindow = new TitleWindow();
+        getBuiNode().addWindow(titleWindow);
+        titleWindow.pack();
+        dim = titleWindow.getPreferredSize(0,0);
+        //titleWindow.center();
+        titleWindow.setBounds(0,0,dim.width, dim.height);
+        titleWindow.setLocation(windowSpacing + borderSize, getScreenHeight() - dim.height - windowSpacing - borderSize);
+        
+        distance += dim.height + windowSpacing + borderSize;
+        
         modeControl = new ModeControlWindow();
         getBuiNode().addWindow(modeControl);
         modeControl.pack();
         dim = modeControl.getPreferredSize(0,0);
         modeControl.setBounds(0,0,sidebarSize, dim.height);
-        modeControl.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - windowSpacing - borderSize);
+        modeControl.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - distance - windowSpacing);
         
-        distance += dim.height + windowSpacing + borderSize;
+        distance += dim.height + windowSpacing;
+        
+        descriptionIcon = new DescriptionIcon();
+        getBuiNode().addWindow(descriptionIcon);
+        descriptionIcon.pack();
+        dim = descriptionIcon.getPreferredSize(0,0);
+        descriptionIcon.setBounds(0,0,sidebarSize, dim.height);
+        descriptionIcon.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - distance - windowSpacing);
+        
+        distance += dim.height + windowSpacing;
         
         displayControl = new DisplayControlWindow();
         getBuiNode().addWindow(displayControl);
@@ -71,11 +89,6 @@ public class RootInterface extends AppInterface {
         distance += dim.height + windowSpacing;
         
         
-        titleWindow = new TitleWindow();
-        getBuiNode().addWindow(titleWindow);
-        titleWindow.pack();
-        titleWindow.center();
-        titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight() - windowSpacing - borderSize);
         
         border1 = new BWindow(StaticsApplication.getApp().getBuiStyle(), null);
         border2 = new BWindow(StaticsApplication.getApp().getBuiStyle(), null);
@@ -117,8 +130,8 @@ public class RootInterface extends AppInterface {
     public void setSubTitle(String subTitle) {
         titleWindow.setSubTitle(subTitle);
         titleWindow.pack();
-        titleWindow.center();
-        titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight() - windowSpacing - borderSize);
+        //titleWindow.center();
+        //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight() - windowSpacing - borderSize);
     }
     
     public void update() {

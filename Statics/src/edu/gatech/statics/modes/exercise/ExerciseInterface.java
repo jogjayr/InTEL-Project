@@ -21,7 +21,7 @@ import edu.gatech.statics.application.ui.*;
  */
 public class ExerciseInterface extends AppInterface {
     
-    private BWindow descriptionWindow;
+    //private BWindow descriptionWindow;
     private ExercizeFBDBar fbdBar;
     
     public Toolbar getToolbar() {return fbdBar;}
@@ -35,6 +35,7 @@ public class ExerciseInterface extends AppInterface {
     /** Creates a new instance of ExercizeInterface */
     public ExerciseInterface() {
         
+        /*
         descriptionWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
         descriptionWindow.setStyleClass("info_window");
         HTMLView view = new HTMLView();
@@ -46,6 +47,7 @@ public class ExerciseInterface extends AppInterface {
         descriptionWindow.setLocation(
                 getScreenWidth()-200 - RootInterface.borderSize - RootInterface.windowSpacing,
                 getScreenHeight()-200 - RootInterface.borderSize - RootInterface.windowSpacing);
+        */
         
         fbdBar = new ExercizeFBDBar();
         getBuiNode().addWindow(fbdBar);

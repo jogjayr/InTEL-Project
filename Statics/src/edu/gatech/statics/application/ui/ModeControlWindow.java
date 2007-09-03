@@ -30,7 +30,10 @@ public class ModeControlWindow extends AppWindow {
         title.setPreferredSize(RootInterface.sidebarSize, -1);
         add(title, BorderLayout.NORTH);
         
-        BContainer content = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+        
+        GroupLayout contentLayout = GroupLayout.makeVert(GroupLayout.TOP);
+        contentLayout.setOffAxisJustification(GroupLayout.LEFT);
+        BContainer content = new BContainer(contentLayout);
         content.setStyleClass("content_container");
         add(content, BorderLayout.CENTER);
         

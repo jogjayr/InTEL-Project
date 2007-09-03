@@ -155,59 +155,69 @@ public class PurseExercise extends Exercise {
         RepresentationLayer.addLayer(bones);
         
         ImageRepresentation imageRep;
-        float repScale = .12f;
+        //float repScale = .12f;
+        float repScale = .04f;
         
         imageRep = new ImageRepresentation(forearm, 
                 TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/lowerArm.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
-        imageRep.setScale(repScale * 368f,repScale * 96f);
+        //imageRep.setScale(repScale * 368f,repScale * 96f);
+        imageRep.setScale(repScale * 1024f,repScale * 295f);
         imageRep.setTranslation(-2,0,0);
         forearm.addRepresentation(imageRep);
         
         imageRep = new ImageRepresentation(forearm, 
-                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/lowerBone.png"),
+                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/lowerArm_bone.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
         imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 368f,repScale * 96f);
+        //imageRep.setScale(repScale * 368f,repScale * 96f);
+        imageRep.setScale(repScale * 1024f,repScale * 196f);
         imageRep.setTranslation(-2,0,.02f);
         forearm.addRepresentation(imageRep);
         
-        repScale = .11f;
+        //repScale = .11f;
+        repScale = .03f;
         
         imageRep = new ImageRepresentation(upperArm, 
                 TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/upperArm.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
-        imageRep.setScale(repScale * 121f,repScale * 347f);
+        //imageRep.setScale(repScale * 121f,repScale * 347f);
+        imageRep.setScale(repScale * 512f,repScale * 1631f);
         imageRep.setTranslation(-1,-.0f,0);
         upperArm.addRepresentation(imageRep);
         
         imageRep = new ImageRepresentation(upperArm, 
-                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/upperBone.png"),
+                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/upperArm_bone.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
         imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 121f,repScale * 347f);
+        //imageRep.setScale(repScale * 121f,repScale * 347f);
+        imageRep.setScale(repScale * 128f,repScale * 974f);
         imageRep.setTranslation(-2,0,0);
         upperArm.addRepresentation(imageRep);
+        
+        repScale = .04f;
         
         imageRep = new ImageRepresentation(A, 
                 TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/purse.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
-        imageRep.setScale(repScale * 180f,repScale * 240f);
+        //imageRep.setScale(repScale * 180f,repScale * 240f);
+        imageRep.setScale(repScale * 512f,repScale * 795f);
         imageRep.setTranslation(0,-11.0f,.02f);
         A.addRepresentation(imageRep);
         
         imageRep = new ImageRepresentation(tendon, 
-                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/tendon.png"),
+                TextureManager.loadTexture(getClass().getClassLoader().getResource("example01/assets/muscle.png"),
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
         imageRep.setLayer(bones);
         imageRep.setRotation(-.05f);
-        imageRep.setScale(repScale * 121f,repScale * 347f);
+        //imageRep.setScale(repScale * 121f,repScale * 347f);
+        imageRep.setScale(repScale * 128f,repScale * 800f);
         imageRep.setTranslation(1.5f,1.0f,.05f);
         tendon.addRepresentation(imageRep);
     }

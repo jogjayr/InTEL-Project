@@ -75,6 +75,7 @@ public class ImageRepresentation extends Representation {
         
         updateRenderState();
         quad.updateRenderState();
+        quad.updateGeometricState(0, true);
         update();
     }
     

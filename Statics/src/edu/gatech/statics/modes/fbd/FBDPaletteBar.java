@@ -13,6 +13,8 @@ import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.Spacer;
 import edu.gatech.statics.application.ui.*;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BComboBox;
+import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.background.TintedBackground;
@@ -26,9 +28,6 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.modes.fbd.CreateForceTool2D;
-import edu.gatech.statics.modes.fbd.CreateMomentTool2D;
-
 /**
  *
  * @author Calvin Ashmore
@@ -51,7 +50,6 @@ public class FBDPaletteBar extends Toolbar {
                 getApp().loadExercizeWorld();
             }
         }, "return");
-        add(returnButton);
         
         nextButton = new BButton("next", new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -64,7 +62,23 @@ public class FBDPaletteBar extends Toolbar {
         if(fbd.isLocked())
             nextButton.setText("Equation");
         else nextButton.setText("Check");
-        add(nextButton);
+        
+        
+        // THIS is the container that will have the drop down for other FBDs below it.
+        BContainer controlContainer = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+        BContainer actionContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
+        actionContainer.add(returnButton);
+        actionContainer.add(nextButton);
+        controlContainer.add(actionContainer);
+        
+        BComboBox fbdCombo = new BComboBox();
+        for(FBDWorld fbd1 : StaticsApplication.getApp().getExercise().getDiagrams()) {
+            fbdCombo.addItem(fbd1);
+        }
+        // add listeners to fbdCombo
+        fbdCombo.selectItem(fbd);
+        //controlContainer.add(fbdCombo);
+        add(controlContainer);
         
         fbdIcon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
         add(fbdIcon);
@@ -76,14 +90,16 @@ public class FBDPaletteBar extends Toolbar {
         
             BIcon icon;
             BButton button;
+            
+            BContainer buttonBar1 = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/label.png")));
             button = new BButton(icon, toolListener, "label");
-            add(button);
+            buttonBar1.add(button);
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/force.png")));
             button = new BButton(icon, toolListener, "force");
-            add(button);
+            buttonBar1.add(button);
             /*
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/weight.png")));
             button = new BButton(icon, buttonListener2, "weight");
@@ -96,45 +112,72 @@ public class FBDPaletteBar extends Toolbar {
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/moment.png")));
             button = new BButton(icon, toolListener, "moment");
-            add(button);
+            buttonBar1.add(button);
             
+            add(buttonBar1);
             
             
             add(new Spacer(20,1));
             
+            GroupLayout bar2Layout = GroupLayout.makeHoriz(GroupLayout.LEFT);
+            bar2Layout.setOffAxisJustification(GroupLayout.TOP);
+            BContainer buttonBar2 = new BContainer(bar2Layout);
+            BContainer vertGroup;
             
+            vertGroup = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/pulley.png")));
+            button = new BButton(icon, warningListener, "pulley");
+            vertGroup.add(button);
             
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/beam.png")));
-            button = new BButton(icon, warningListener, "beam");
-            add(button);
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cable.png")));
-            button = new BButton(icon, warningListener, "cable");
-            add(button);
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plate.png")));
-            button = new BButton(icon, warningListener, "plate");
-            add(button);
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/centerOfMass.png")));
-            button = new BButton(icon, warningListener, "centerOfMass");
-            add(button);
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/point.png")));
-            button = new BButton(icon, warningListener, "point");
-            add(button);
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/pin.png")));
-            button = new BButton(icon, warningListener, "pin");
-            add(button);
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/roller.png")));
+            button = new BButton(icon, warningListener, "roller");
+            vertGroup.add(button);
+            
+            buttonBar2.add(vertGroup);
+            vertGroup = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/fixed.png")));
             button = new BButton(icon, warningListener, "fixed");
-            add(button);
+            vertGroup.add(button);
+            
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/pin.png")));
+            button = new BButton(icon, warningListener, "pin");
+            vertGroup.add(button);
+            
+            buttonBar2.add(vertGroup);
+            vertGroup = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+            
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cable.png")));
+            button = new BButton(icon, warningListener, "cable");
+            vertGroup.add(button);
 
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/roller.png")));
-            button = new BButton(icon, warningListener, "roller");
-            add(button);
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plate.png")));
+            button = new BButton(icon, warningListener, "plate");
+            vertGroup.add(button);
+            
+            buttonBar2.add(vertGroup);
+            vertGroup = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+            
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/beam.png")));
+            button = new BButton(icon, warningListener, "beam");
+            vertGroup.add(button);
+            
+            buttonBar2.add(vertGroup);
+            vertGroup = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/point.png")));
+            button = new BButton(icon, warningListener, "point");
+            vertGroup.add(button);
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/centerOfMass.png")));
+            button = new BButton(icon, warningListener, "centerOfMass");
+            vertGroup.add(button);
+            
+            buttonBar2.add(vertGroup);
+            
+            add(buttonBar2);
         
         } catch(Exception e) {}
     }
