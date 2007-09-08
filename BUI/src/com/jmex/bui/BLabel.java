@@ -164,7 +164,7 @@ public class BLabel extends BTextComponent
     }
 
     // documentation inherited
-    protected void layout ()
+    public void layout ()
     {
         super.layout();
         _label.layout(getInsets(), getWidth(), getHeight());

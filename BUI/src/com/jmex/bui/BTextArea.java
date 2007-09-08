@@ -38,29 +38,26 @@ import com.jmex.bui.util.Insets;
  * characters in the appended text will result in line breaks in the
  * on-screen layout.
  */
-public class BTextArea extends BContainer
-{
+public class BTextArea extends BContainer {
     /** A font style constant. */
     public static final int PLAIN = 0;
-
+    
     /** A font style constant. */
     public static final int BOLD = 1;
-
+    
     /** A font style constant. */
     public static final int ITALIC = 2;
-
+    
     /** A font style constant. */
     public static final int UNDERLINE = 3;
-
-    public BTextArea ()
-    {
+    
+    public BTextArea() {
         this(null);
     }
-
-    public BTextArea (String text)
-    {
+    
+    public BTextArea(String text) {
         _model.addChangeListener(new ChangeListener() {
-            public void stateChanged (ChangeEvent event) {
+            public void stateChanged(ChangeEvent event) {
                 modelDidChange();
             }
         });
@@ -68,24 +65,22 @@ public class BTextArea extends BContainer
             setText(text);
         }
     }
-
+    
     /**
      * Returns the horizontal alignment for this component's text.
      */
-    public int getHorizontalAlignment ()
-    {
+    public int getHorizontalAlignment() {
         if (_haligns != null) {
             int halign = _haligns[getState()];
             return (halign != -1) ? halign : _haligns[DEFAULT];
         }
         return BConstants.LEFT;
     }
-
+    
     /**
      * Returns the vertical alignment for this component's text.
      */
-    public int getVerticalAlignment ()
-    {
+    public int getVerticalAlignment() {
         if (_valigns != null) {
             int valign = _valigns[getState()];
             return (valign != -1) ? valign : _valigns[DEFAULT];
@@ -97,58 +92,51 @@ public class BTextArea extends BContainer
      * Configures the preferred width of this text area (the preferred height
      * will be calculated from the font).
      */
-    public void setPreferredWidth (int width)
-    {
+    public void setPreferredWidth(int width) {
         _prefWidth = width;
     }
-
+    
     /**
      * Returns a model that can be wired to a scroll bar to allow
      * scrolling up and down through the lines in this text area.
      */
-    public BoundedRangeModel getScrollModel ()
-    {
+    public BoundedRangeModel getScrollModel() {
         return _model;
     }
-
+    
     /**
      * Clears any text in this text area and appends the supplied text.
      */
-    public void setText (String text)
-    {
+    public void setText(String text) {
         clearText();
         appendText(text);
     }
-
+    
     /**
      * Appends text with the foreground color in the plain style.
      */
-    public void appendText (String text)
-    {
+    public void appendText(String text) {
         appendText(text, null);
     }
-
+    
     /**
      * Appends text with the specified color in the plain style.
      */
-    public void appendText (String text, ColorRGBA color)
-    {
+    public void appendText(String text, ColorRGBA color) {
         appendText(text, color, PLAIN);
     }
-
+    
     /**
      * Appends text with the foreground color in the specified style.
      */
-    public void appendText (String text, int style)
-    {
+    public void appendText(String text, int style) {
         appendText(text, null, style);
     }
-
+    
     /**
      * Appends text with the specified color and style.
      */
-    public void appendText (String text, ColorRGBA color, int style)
-    {
+    public void appendText(String text, ColorRGBA color, int style) {
         int offset = 0, nlidx;
         while ((nlidx = text.indexOf("\n", offset)) != -1) {
             String line = text.substring(offset, nlidx);
@@ -161,86 +149,77 @@ public class BTextArea extends BContainer
         // TODO: optimize appending
         invalidate();
     }
-
+    
     /**
      * Clears out the text displayed in this area.
      */
-    public void clearText ()
-    {
+    public void clearText() {
         _runs.clear();
         invalidate();
     }
-
+    
     /**
      * Scrolls our display such that the sepecified line is visible.
      */
-    public void scrollToLine (int line)
-    {
+    public void scrollToLine(int line) {
         // TODO
     }
-
+    
     /**
      * Returns the number of lines of text contained in this area.
      */
-    public int getLineCount ()
-    {
+    public int getLineCount() {
         return _lines.size();
     }
-
+    
     /**
      * Returns a text factory suitable for creating text in the style defined
      * by the component's current state.
      */
-    public BTextFactory getTextFactory ()
-    {
+    public BTextFactory getTextFactory() {
         BTextFactory textfact = _textfacts[getState()];
         return (textfact != null) ? textfact : _textfacts[DEFAULT];
     }
-
+    
     @Override // from BTextArea
-    public void setEnabled (boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
         boolean wasEnabled = isEnabled();
         super.setEnabled(enabled);
         if (isAdded() && wasEnabled != isEnabled()) {
             refigureContents(getWidth());
         }
     }
-
+    
     @Override // from BTextArea
-    protected String getDefaultStyleClass ()
-    {
+    protected String getDefaultStyleClass() {
         return "textarea";
     }
-
+    
     @Override // from BTextArea
-    protected void wasAdded ()
-    {
+    protected void wasAdded() {
         super.wasAdded();
-
+        
         for (int ii = 0, ll = _lines.size(); ii < ll; ii++) {
             _lines.get(ii).wasAdded();
         }
     }
-
+    
     // documentation inherited
-    protected void wasRemoved ()
-    {
+    protected void wasRemoved() {
         super.wasRemoved();
-
+        
         for (int ii = 0, ll = _lines.size(); ii < ll; ii++) {
             _lines.get(ii).wasRemoved();
         }
     }
-
+    
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
-    {
+    public void configureStyle(BStyleSheet style) {
         super.configureStyle(style);
-
+        
         for (int ii = 0; ii < getStateCount(); ii++) {
             _textfacts[ii] = style.getTextFactory(
-                this, getStatePseudoClass(ii));
+                    this, getStatePseudoClass(ii));
         }
         
         int[] haligns = new int[getStateCount()];
@@ -248,17 +227,16 @@ public class BTextArea extends BContainer
             haligns[ii] = style.getTextAlignment(this, getStatePseudoClass(ii));
         }
         _haligns = checkNonDefault(haligns, BConstants.LEFT);
-
+        
         int[] valigns = new int[getStateCount()];
         for (int ii = 0; ii < getStateCount(); ii++) {
             valigns[ii] = style.getVerticalAlignment(
-                this, getStatePseudoClass(ii));
+                    this, getStatePseudoClass(ii));
         }
         _valigns = checkNonDefault(valigns, BConstants.CENTER);
     }
-
-    protected int[] checkNonDefault (int[] styles, int defval)
-    {
+    
+    protected int[] checkNonDefault(int[] styles, int defval) {
         for (int ii = 0; ii < styles.length; ii++) {
             if (styles[ii] != -1 && styles[ii] != defval) {
                 return styles;
@@ -268,24 +246,22 @@ public class BTextArea extends BContainer
     }
     
     // documentation inherited
-    protected void layout ()
-    {
+    protected void layout() {
         super.layout();
-
+        
         refigureContents(getWidth());
     }
-
+    
     // documentation inherited
-    protected void renderComponent (Renderer renderer)
-    {
+    protected void renderComponent(Renderer renderer) {
         super.renderComponent(renderer);
-
+        
         int halign = getHorizontalAlignment(),
-            valign = getVerticalAlignment();
+                valign = getVerticalAlignment();
         
         // compute the total height of the lines
         int start = _model.getValue(), stop = start + _model.getExtent(),
-            lheight = 0;
+                lheight = 0;
         for (int ii = start; ii < stop; ii++) {
             lheight += _lines.get(ii).height;
         }
@@ -298,7 +274,7 @@ public class BTextArea extends BContainer
             y = lheight + insets.bottom;
         } else { // valign == BConstants.CENTER
             y = lheight + insets.bottom +
-                (_height - insets.getVertical() - lheight) / 2;
+                    (_height - insets.getVertical() - lheight) / 2;
         }
         
         // render the lines
@@ -309,15 +285,14 @@ public class BTextArea extends BContainer
                 x = _width - line.getWidth() - insets.right;
             } else if (halign == BConstants.CENTER) {
                 x = insets.left +
-                    (_width - insets.getHorizontal() - line.getWidth()) / 2;
+                        (_width - insets.getHorizontal() - line.getWidth()) / 2;
             }
             line.render(renderer, x, y, _alpha);
         }
     }
     
     // documentation inherited
-    protected Dimension computePreferredSize (int whint, int hhint)
-    {
+    protected Dimension computePreferredSize(int whint, int hhint) {
         // lay out our text if we have not yet done so
         if (_lines.size() == 0) {
             if (_prefWidth > 0) {
@@ -330,7 +305,7 @@ public class BTextArea extends BContainer
             }
             refigureContents(whint);
         }
-
+        
         // compute our dimensions based on the dimensions of our text
         Dimension d = new Dimension();
         for (int ii = 0, ll = _lines.size(); ii < ll; ii++) {
@@ -338,29 +313,28 @@ public class BTextArea extends BContainer
             d.width = Math.max(line.getWidth(), d.width);
             d.height += line.height;
         }
-
+        
         return d;
     }
-
+    
     /**
      * Reflows the entirety of our text.
      */
-    protected void refigureContents (int width)
-    {
+    protected void refigureContents(int width) {
         // if we're not yet added to the heirarchy, we can stop now
         if (!isAdded()) {
             return;
         }
-
+        
         // remove and recreate our existing lines
         for (int ii = 0, ll = _lines.size(); ii < ll; ii++) {
             _lines.get(ii).wasRemoved();
         }
         _lines.clear();
-
+        
         int insets = getInsets().getHorizontal();
         int maxWidth = (width - insets);
-
+        
         // wrap our text into lines
         Line current = null;
         for (int ii = 0, ll = _runs.size(); ii < ll; ii++) {
@@ -371,17 +345,17 @@ public class BTextArea extends BContainer
             int offset = 0;
             ColorRGBA color = (run.color == null) ? getColor() : run.color;
             while ((offset = current.addRun(
-                        getTextFactory(), run, color, maxWidth, offset)) > 0) {
+                    getTextFactory(), run, color, maxWidth, offset)) > 0) {
                 _lines.add(current = new Line());
             }
             if (run.endsLine) {
                 current = null;
             }
         }
-
+        
         // determine how many lines we can display in total
         insets = getInsets().getVertical();
-
+        
         // start at the last line and see how many we can fit
         int lines = 0, lheight = 0;
         for (int ll = _lines.size()-1; ll >= 0; ll--) {
@@ -391,7 +365,7 @@ public class BTextArea extends BContainer
             }
             lines++;
         }
-
+        
         // update our model (which will cause the text to be repositioned)
         int sline = Math.max(0, _lines.size() - lines);
         if (!_model.setRange(0, sline, lines, _lines.size())) {
@@ -401,57 +375,53 @@ public class BTextArea extends BContainer
             modelDidChange();
         }
     }
-
+    
     /**
      * Called when our model has changed (due to scrolling by a scroll bar
      * or a call to {@link #scrollToLine}, etc.).
      */
-    protected void modelDidChange ()
-    {
+    protected void modelDidChange() {
     }
-
+    
     /** Used to associate a style with a run of text. */
-    protected static class Run
-    {
+    protected static class Run {
         public String text;
         public ColorRGBA color;
         public int style;
         public boolean endsLine;
-
-        public Run (String text, ColorRGBA color, int style, boolean endsLine) {
+        
+        public Run(String text, ColorRGBA color, int style, boolean endsLine) {
             this.text = text;
             this.color = color;
             this.style = style;
             this.endsLine = endsLine;
         }
     }
-
+    
     /** Contains the segments of text on a single line. */
-    protected static class Line
-    {
+    protected static class Line {
         /** The run that starts this line. */
         public Run start;
-
+        
         /** The run that ends this line. */
         public Run end;
-
+        
         /** The current x position at which new text will be appended. */
         public int dx;
-
+        
         /** The height of this line. */
         public int height;
-
+        
         /** A list of {@link BText} instances for the text on this line. */
         public ArrayList<BText> segments = new ArrayList<BText>();
-
+        
         /**
          * Adds the supplied run to the line using the supplied text
          * factory, returns the offset into the run that must be appeneded
          * to a new line or -1 if the entire run was appended.
          */
-        public int addRun (BTextFactory tfact, Run run, ColorRGBA color,
-                           int maxWidth, int offset)
-        {
+        public int addRun(BTextFactory tfact, Run run, ColorRGBA color,
+                int maxWidth, int offset) {
             if (dx == 0) {
                 start = run;
             }
@@ -467,12 +437,11 @@ public class BTextArea extends BContainer
             dx += text[0].getSize().width;
             return (remainder == 0) ? -1 : run.text.length() - remainder;
         }
-
+        
         /**
          * Renders this line of text.
          */
-        public void render (Renderer renderer, int x, int y, float alpha)
-        {
+        public void render(Renderer renderer, int x, int y, float alpha) {
             int dx = x;
             for (int ii = 0, ll = segments.size(); ii < ll; ii++) {
                 BText text = segments.get(ii);
@@ -480,34 +449,31 @@ public class BTextArea extends BContainer
                 dx += text.getSize().width;
             }
         }
-
+        
         /**
          * Returns the width of this line.
          */
-        public int getWidth ()
-        {
+        public int getWidth() {
             int width = 0;
             for (int ii = 0, ll = segments.size(); ii < ll; ii++) {
                 width += segments.get(ii).getSize().width;
             }
             return width;
         }
-
-        public void wasAdded ()
-        {
+        
+        public void wasAdded() {
             for (int ii = 0, ll = segments.size(); ii < ll; ii++) {
                 segments.get(ii).wasAdded();
             }
         }
-
-        public void wasRemoved ()
-        {
+        
+        public void wasRemoved() {
             for (int ii = 0, ll = segments.size(); ii < ll; ii++) {
                 segments.get(ii).wasRemoved();
             }
         }
     }
-
+    
     protected int[] _haligns;
     protected int[] _valigns;
     protected BTextFactory[] _textfacts = new BTextFactory[getStateCount()];

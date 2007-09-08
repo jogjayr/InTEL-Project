@@ -9,17 +9,10 @@
 
 package edu.gatech.statics.objects.representations;
 
-import com.jme.image.Texture;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
-import com.jme.scene.SceneElement;
-import com.jme.scene.Text;
-import com.jme.scene.state.AlphaState;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
-import com.jmex.font2d.Font2D;
+import com.jmex.bui.BLabel;
+import com.jmex.bui.BWindow;
+import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.SimulationObject;
@@ -31,92 +24,74 @@ import edu.gatech.statics.application.StaticsApplication;
  */
 public class LabelRepresentation extends Representation {
     
-    private static Font2D font = new Font2D("rsrc/labelfont.tga");
-    private MaterialState matState;
-    private Text text;
+    private BWindow bWindow;
+    private BLabel label;
+    
     private Vector3f offset = new Vector3f();
     
-    public Text getText() {return text;}
+    //public Text getText() {return text;}
+    public float getWidth() {return bWindow.getWidth();}
+    public float getHeight() {return bWindow.getHeight();}
     
     public void setOffset(float xOffset, float yOffset) {
         offset = new Vector3f(xOffset, yOffset, 0);
     }
     
-    /*public void setFontColor(ColorRGBA color) {
-        matState.setAmbient(color);
-        matState.setDiffuse(color);
-    } */
+    public void addToInterface() {
+        StaticsApplication.getApp().getLabelNode().addWindow(bWindow);
+        bWindow.pack();
+    }
     
-
+    public void removeFromInterface() {
+        StaticsApplication.getApp().getLabelNode().removeWindow(bWindow);
+    }
     
     /** Creates a new instance of LabelRepresentation */
-    public LabelRepresentation(SimulationObject target) {
+    public LabelRepresentation(SimulationObject target, String style) {
         super(target);
         setLayer(RepresentationLayer.labels);
         
-        //Text2D text = new Text2D(font, target.getName(), 1f, 0);
-        //Text text = Text.createDefaultTextLabel("",target.getName());
-        text = new Text("", target.getLabelText()); //Text.createDefaultTextLabel("",target.getName());
-        text.setCullMode( SceneElement.CULL_NEVER );
+        bWindow = new BWindow(
+                StaticsApplication.getApp().getBuiStyle(),
+                new BorderLayout());
+        //bWindow.setStyleClass("info_window");
         
-        TextureState texState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-        texState.setTexture( TextureManager.loadTexture(
-                LabelRepresentation.class.getClassLoader().getResource( "rsrc/defaultfont.png" ), Texture.MM_LINEAR, Texture.FM_LINEAR ) );
-        texState.setEnabled( true );
-        text.setRenderState( texState );
+        label = new BLabel("");
+        label.setText(target.getLabelText());
+        label.configureStyle(StaticsApplication.getApp().getBuiStyle());
         
-        AlphaState alphaState = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
-        alphaState.setBlendEnabled( true );
-        alphaState.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-        alphaState.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
-        alphaState.setTestEnabled( true );
-        alphaState.setTestFunction( AlphaState.TF_ALWAYS );
-        text.setRenderState(alphaState);
+        bWindow.setStyleClass(style);
+        label.setStyleClass(style);
         
-        matState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
-        matState.setAmbient(ColorRGBA.white);
-        matState.setDiffuse(ColorRGBA.white);
-        text.setRenderState(matState);
-        
-        text.setLocalTranslation(1.5f, 1.5f, 0);
-        
-        text.updateGeometricState(0, true);
-        text.updateRenderState();
-        
-        attachChild(text);
+        bWindow.add(label, BorderLayout.CENTER);
+        //StaticsApplication.getApp().getLabelNode().addWindow(bWindow);
+        //bWindow.pack();
         
         setUseWorldScale(false);
         
-        //Text3D text = font.createText(target.getName(), 0.5f, 0);
-        //attachChild(text);
-        
-        //text.setLocalTranslation(.33f,-.125f,0);
-        
-        //text.updateRenderState();
+        setSynchronizeRotation(false);
+        setSynchronizeTranslation(false);
         
         updateRenderState();
         update();
     }
-
+    
     protected Vector3f getDisplayCenter() {
         return getTarget().getDisplayCenter();
     }
-
+    
+    private Vector3f pos2d;
+    
     public void update() {
         //super.update();
         
-        matState.setAmbient( getAmbient() );
-        matState.setDiffuse( getDiffuse() );
-        
-        text.print( getTarget().getLabelText() );
-        
         StaticsApplication app = StaticsApplication.getApp();
-        Vector3f pos2d = app.getCamera().getScreenCoordinates( getDisplayCenter() );
-        pos2d.addLocal( -text.getWidth()/2, -text.getHeight()/2, 0 );
+        pos2d = app.getCamera().getScreenCoordinates( getDisplayCenter() );
+        pos2d.addLocal( -getWidth()/2, -getHeight()/2, 0 );
         pos2d.addLocal( offset );
-        setLocalTranslation(pos2d);
+        pos2d.z = 0;
         
-        // face camera?
+        bWindow.setLocation((int)pos2d.x, (int)pos2d.y);
     }
     
 }

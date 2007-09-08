@@ -53,14 +53,14 @@ public class RootInterface extends AppInterface {
         
         distance += dim.height + windowSpacing + borderSize;
         
-        modeControl = new ModeControlWindow();
+        /*modeControl = new ModeControlWindow();
         getBuiNode().addWindow(modeControl);
         modeControl.pack();
         dim = modeControl.getPreferredSize(0,0);
         modeControl.setBounds(0,0,sidebarSize, dim.height);
         modeControl.setLocation(windowSpacing + borderSize, getScreenHeight()-dim.height - distance - windowSpacing);
         
-        distance += dim.height + windowSpacing;
+        distance += dim.height + windowSpacing;*/
         
         descriptionIcon = new DescriptionIcon();
         getBuiNode().addWindow(descriptionIcon);

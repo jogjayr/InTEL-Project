@@ -58,7 +58,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         setSynchronizeRotation(false);
         setSynchronizeTranslation(false);
         
-        label = new LabelRepresentation(target) {
+        label = new LabelRepresentation(target, "label_measurement") {
             protected Vector3f getDisplayCenter() {
                 return labelCenter;
             }
@@ -92,7 +92,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         float horizontalRatio = Math.abs(pDirection.dot( r.getCamera().getLeft() ));
         float lineLength = p1.distance(p2);
         // this is a strange way of estimating the size, but it may be effective...
-        float textScreenSize = label.getText().getWidth() * horizontalRatio + label.getText().getHeight() * (1 - horizontalRatio);
+        float textScreenSize = label.getWidth() * horizontalRatio + label.getHeight() * (1 - horizontalRatio);
         
         // screen distance.
         float screenLength = r.getCamera().getScreenCoordinates(p1).distance( r.getCamera().getScreenCoordinates(p2) );

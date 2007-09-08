@@ -14,7 +14,9 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.application.Exercise;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.util.SelectionListener;
 import edu.gatech.statics.objects.Body;
@@ -101,6 +103,9 @@ public class World {
     public void enableSelectMultipleDefault() {enableSelectMultiple = enableSelectMultipleDefault;}
     protected boolean enableSelectMultiple() {return enableSelectMultiple;}
     
+    private List<LabelRepresentation> labels = new ArrayList();
+    public List<LabelRepresentation> getLabels() {return labels;}
+    
     /** Creates a new instance of World */
     public World() {
         setSelectableFilterDefault();
@@ -109,6 +114,8 @@ public class World {
     public void updateNodes() {
         representationNodes.clear();
         List<RepresentationLayer> allLayers = RepresentationLayer.getLayers();
+        
+        labels.clear();
         
         for(RepresentationLayer layer : allLayers) {
             
@@ -120,8 +127,10 @@ public class World {
             node.detachAllChildren();
             
             for(Representation r : getRepresentations(layer))
-                if(!r.isHidden())
+                if(!r.isHidden()) {
                     node.attachChild(r);
+                    addLabels(r);
+                }
             
             for(RenderState renderState : layer.getRenderStates())
                 node.setRenderState(renderState);
@@ -131,6 +140,22 @@ public class World {
             node.updateModelBound();
             node.updateRenderState();
         }
+    }
+    
+    private void addLabels(Node node) {
+        
+        // search children 
+        // this seems cheap, but otherwise seems to be the best way to collect
+        // label representations...
+        
+        if(node.getChildren() != null)
+            for(Spatial child : node.getChildren())
+                if(child instanceof Node)
+                    addLabels((Node) child);
+    
+        if(node instanceof LabelRepresentation &&
+                ((LabelRepresentation)node).getLayer().isEnabled())
+            labels.add((LabelRepresentation) node);
     }
     
     public void update() {

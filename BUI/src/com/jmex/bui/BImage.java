@@ -287,11 +287,16 @@ public class BImage extends Quad {
      * Renders a region of this image at the specified coordinates, scaled to the specified size.
      */
     public void render(Renderer renderer, int sx, int sy, int swidth, int sheight, int tx, int ty, int twidth, int theight, float alpha) {
-        if (_referents == 0) {
-            Log.log.warning("Unreferenced image rendered " + this + "!");
-            Thread.dumpStack();
-            return;
-        }
+        // NOTE: this modification is a break from the regular BUI
+        // means of operations; our goal here is to use the BImage without adding it to the system
+        // hence the perversion of the render function here.
+        // It would be wise to develop a work-around that does not require this modification.
+
+        //if (_referents == 0) {
+        //    Log.log.warning("Unreferenced image rendered " + this + "!");
+        //    Thread.dumpStack();
+        //    return;
+        //}
 
         setTextureCoords(sx, sy, swidth, sheight);
 

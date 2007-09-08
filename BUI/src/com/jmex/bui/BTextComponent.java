@@ -110,7 +110,7 @@ public abstract class BTextComponent extends BComponent
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    public void configureStyle (BStyleSheet style)
     {
         super.configureStyle(style);
 

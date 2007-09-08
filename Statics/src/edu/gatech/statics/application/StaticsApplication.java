@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.application;
 
+import com.jmex.bui.PolledRootNode;
 import edu.gatech.statics.application.ui.AppInterface;
 import edu.gatech.statics.modes.exercise.ExerciseInterface;
 import edu.gatech.statics.modes.fbd.FBDInterface;
@@ -27,6 +28,7 @@ import com.jme.util.GameTaskQueueManager;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
+import com.jmex.bui.BRootNode;
 import com.jmex.bui.BStyleSheet;
 import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.modes.fbd.FBDWorld;
@@ -34,8 +36,11 @@ import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.modes.equation.EquationInterface;
 import edu.gatech.statics.objects.manipulators.Tool;
+import edu.gatech.statics.objects.representations.LabelRepresentation;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -45,6 +50,7 @@ import java.util.logging.Level;
 public class StaticsApplication {
     
     private static StaticsApplication app;
+
     public static StaticsApplication getApp() {return app;}
     
     // the engine/graphical/interface view of the exercize.
@@ -53,10 +59,13 @@ public class StaticsApplication {
     private Exercise currentExercise;
     private World currentWorld;
     
+    private PolledRootNode labelNode;
     private RootInterface rootInterface;
     private AppInterface currentInterface;
     private BStyleSheet buiStyle;
     public BStyleSheet getBuiStyle() {return buiStyle;}
+    
+    private List<LabelRepresentation> activeLabels = new ArrayList();
     
     public RootInterface getRootInterface() {return rootInterface;}
     public AppInterface getCurrentInterface() {return currentInterface;}
@@ -154,10 +163,28 @@ public class StaticsApplication {
         }
         
         currentWorld.update();
+        updateLabels();
+        
         if(currentInterface != null)
             currentInterface.getBuiNode().updateGeometricState(0,true);
         if(rootInterface != null)
             rootInterface.getBuiNode().updateGeometricState(0, true);
+        labelNode.updateGeometricState(0, true);
+    }
+    
+    private void updateLabels() {
+        for(LabelRepresentation label : currentWorld.getLabels())
+            if(!activeLabels.contains(label)) {
+                activeLabels.add(label);
+                label.addToInterface();
+            }
+        
+        List<LabelRepresentation> removeLabels = new ArrayList(activeLabels);
+        removeLabels.removeAll(currentWorld.getLabels());
+        for(LabelRepresentation label : removeLabels) {
+            activeLabels.remove(label);
+            label.removeFromInterface();
+        }
     }
     
     public void render() {
@@ -175,6 +202,7 @@ public class StaticsApplication {
         // Render UI
         r.draw(rootInterface.getBuiNode());
         r.draw(currentInterface.getBuiNode());
+        r.draw(labelNode);
         r.renderQueue();
         r.clearQueue();
     }
@@ -202,6 +230,7 @@ public class StaticsApplication {
         MouseInput.get().setCursorVisible(true);
         
         rootInterface = new RootInterface();
+        labelNode = new PolledRootNode(timer, input);
         
         camera = display.getRenderer().createCamera( display.getWidth(), display.getHeight() );
         Vector3f loc = new Vector3f( 0.0f, 0.0f, 25.0f );
@@ -232,6 +261,11 @@ public class StaticsApplication {
         // load exercise here
         getExercise().loadExercise();
         loadExercizeWorld();
+    }
+    
+
+    public BRootNode getLabelNode() {
+        return labelNode;
     }
     
     private void setCurrentInterface(AppInterface newInterface) {

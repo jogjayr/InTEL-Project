@@ -288,7 +288,7 @@ public class BTextField extends BTextComponent
     }
 
     // documentation inherited
-    protected void configureStyle (BStyleSheet style)
+    public void configureStyle (BStyleSheet style)
     {
         super.configureStyle(style);
 
