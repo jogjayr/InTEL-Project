@@ -67,7 +67,10 @@ public class ImageIcon extends BIcon
     public void render (Renderer renderer, int x, int y, float alpha)
     {
         super.render(renderer, x, y, alpha);
-        _image.render(renderer, x, y, alpha);
+        //_image.render(renderer, x, y, alpha);
+        _image.render(renderer,
+                0, 0, getWidth(), getHeight(),
+                x, y, getWidth(), getHeight(), alpha);
     }
 
     protected BImage _image;
