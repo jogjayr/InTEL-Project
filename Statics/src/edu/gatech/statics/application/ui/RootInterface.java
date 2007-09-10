@@ -113,6 +113,9 @@ public class RootInterface extends AppInterface {
         adviceWindow = new AdviceWindow();
         getBuiNode().addWindow(adviceWindow);
         adviceWindow.setBounds(windowSpacing+borderSize,100+windowSpacing+borderSize,200,100);
+        
+        // when the root interface is first created, launch the description popup
+        descriptionIcon.doPopup();
     }
     
     public void setAdvice(String advice) {

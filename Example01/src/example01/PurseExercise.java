@@ -47,6 +47,7 @@ public class PurseExercise extends Exercise {
         
         setDescription(
                 "<html><body>" +
+                "<center><font size=\"6\">"+getName()+"</font></center>"+
                 "Here is a simplified version of the human arm. Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
                 "The weight of the forearm is 9 N." +
                 "</body></html>"

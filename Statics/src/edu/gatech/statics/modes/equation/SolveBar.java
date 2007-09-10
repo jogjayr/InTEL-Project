@@ -66,8 +66,14 @@ public class SolveBar extends Toolbar {
         add(backButton);
         add(solveButton);
         
-        BContainer systemContainer = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
-        BContainer solveContainer = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
+        GroupLayout systemLayout = GroupLayout.makeVert(GroupLayout.TOP);
+        GroupLayout solveLayout = GroupLayout.makeVert(GroupLayout.TOP);
+        systemLayout.setOffAxisJustification(GroupLayout.LEFT);
+        solveLayout.setOffAxisJustification(GroupLayout.LEFT);
+        
+        BContainer systemContainer = new BContainer(systemLayout);
+        BContainer solveContainer = new BContainer(solveLayout);
+        
         add(systemContainer);
         add(solveContainer);
         

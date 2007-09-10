@@ -36,15 +36,15 @@ public class FBDBodySelector extends SelectionTool {
     public void onSelect(SimulationObject obj) {
         super.onSelect(obj);
         
-        if(!getWorld().getSelectedObjects().isEmpty()) {
+        //if(!getWorld().getSelectedObjects().isEmpty()) {
             StaticsApplication.getApp().setAdvice(
                     "Selection Tool: now press ENTER, or select more bodies.");
             ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Continue");
-        } else {
-            StaticsApplication.getApp().setAdvice(
-                    "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
-            ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Create FBD");
-        }
+        //} else {
+        //    StaticsApplication.getApp().setAdvice(
+        //            "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
+        //    ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Create FBD");
+        //}
     }
 
     protected void onCancel() {

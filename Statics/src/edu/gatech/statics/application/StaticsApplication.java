@@ -80,6 +80,7 @@ public class StaticsApplication {
             currentTool.cancel();
         currentTool = tool;
     }
+    public Tool getCurrentTool() {return currentTool;}
     
     private float drawScale = 1.0f;
     public float getDrawScale() {return drawScale;}
@@ -200,9 +201,9 @@ public class StaticsApplication {
         currentWorld.render(r);
         
         // Render UI
+        r.draw(labelNode);
         r.draw(rootInterface.getBuiNode());
         r.draw(currentInterface.getBuiNode());
-        r.draw(labelNode);
         r.renderQueue();
         r.clearQueue();
     }

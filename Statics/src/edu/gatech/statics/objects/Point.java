@@ -29,7 +29,7 @@ public class Point extends SimulationObject {
     public void createDefaultSchematicRepresentation() {
         Representation rep1 = new PointRepresentation(this);
         LabelRepresentation rep2 = new LabelRepresentation(this, "label_point");
-        rep2.setOffset(10, 10);
+        rep2.setOffset(15, 15);
         
         addRepresentation(rep1);
         addRepresentation(rep2);

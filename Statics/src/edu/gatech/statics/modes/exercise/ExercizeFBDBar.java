@@ -43,14 +43,16 @@ public class ExercizeFBDBar extends Toolbar {
         for(FBDWorld fbd : getApp().getExercise().getDiagrams()) {
             addFBD(fbd);
         }
+        
+        activateSelector();
     }
-
+    
     public void activate() {
         for(FBDIcon icon : iconMap.values())
             icon.update();
     }
     
-
+    
     private void addFBD(FBDWorld fbd) {
         
         if(iconMap.containsKey(fbd))
@@ -66,35 +68,42 @@ public class ExercizeFBDBar extends Toolbar {
     
     private class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            
-            // if our selector tool is active,
-            // finish the tool
-            if(selector != null && selector.isActive()) {
-                selector.finish();
-                return;
-            }
-            
-            // activate body selection tool?
-            final World world = getApp().getCurrentWorld();
-            selector = new FBDBodySelector(world);
-            selector.addFinishListener(new ToolFinishListener() {
-                public void finished() {
-                    List bodies = world.getSelectedObjects();
-                    if(!bodies.isEmpty()) {
-                        FBDWorld fbd = getApp().getExercise().constructFBD(bodies);
-                        addFBD(fbd);
-                        
-                        getApp().loadFBD(fbd);
+            activateSelector();
+        }
+    }
+    
+    void activateSelector() {
+        
+        final World world = getApp().getCurrentWorld();
+        
+        // if our selector tool is active,
+        // finish
+        if(     selector != null && 
+                selector.isActive() && 
+                !world.getSelectedObjects().isEmpty()) {
+            selector.finish();
+            return;
+        }
+        
+        // activate body selection tool?
+        selector = new FBDBodySelector(world);
+        selector.addFinishListener(new ToolFinishListener() {
+            public void finished() {
+                List bodies = world.getSelectedObjects();
+                if(!bodies.isEmpty()) {
+                    FBDWorld fbd = getApp().getExercise().constructFBD(bodies);
+                    addFBD(fbd);
+                    
+                    getApp().loadFBD(fbd);
                     
                         /*StaticsApplication.getApp().setAdvice(
                                 "You have created a Free Body Diagram from the bodies you have selected! " +
                                 "There is an icon for it on the toolbar below.");*/
-                    }
-                    world.clearSelection();
                 }
-            });
-            selector.activate();
-        }
+                world.clearSelection();
+            }
+        });
+        selector.activate();
     }
     
     private class FBDClickListener implements MouseListener {
@@ -104,13 +113,13 @@ public class ExercizeFBDBar extends Toolbar {
         }
         
         public void mousePressed(MouseEvent event) {}
-
+        
         public void mouseReleased(MouseEvent event) {
             // load FBD view in main window.
             System.out.println("loading fbd view");
             getApp().loadFBD(fbd);
         }
-
+        
         // maybe hover rollover in these...
         public void mouseEntered(MouseEvent event) {}
         public void mouseExited(MouseEvent event) {}

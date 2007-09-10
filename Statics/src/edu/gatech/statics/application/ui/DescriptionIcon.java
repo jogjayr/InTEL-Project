@@ -39,21 +39,29 @@ public class DescriptionIcon extends AppWindow {
     void doPopup() {
         final BPopupWindow window = new BPopupWindow(this, new BorderLayout());
         window.setModal(true);
-        window.setStyleClass("infoWindow");
+        window.setStyleClass("description_window");
 
         HTMLView view = new HTMLView();
         //view.setStyleSheet("infoWindow");
         view.setContents(StaticsApplication.getApp().getExercise().getDescription());
         
         window.add(view, BorderLayout.CENTER);
-        window.addListener(new MouseListener() {
+        
+        BButton button = new BButton("OK",new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                window.dismiss();
+            }
+        },"ok");
+        window.add(button, BorderLayout.SOUTH);
+        
+        /*window.addListener(new MouseListener() {
             public void mousePressed(MouseEvent event) {}
             public void mouseReleased(MouseEvent event) {
                 window.dismiss();
             }
             public void mouseEntered(MouseEvent event) {}
             public void mouseExited(MouseEvent event) {}
-        });
+        });*/
         
         window.popup(0,0,true);
         //window.popup(0, 0, true);

@@ -164,7 +164,7 @@ public class FBDWorld extends World {
                 } else
                     obj.setSelectable(false);
                 
-                if(!externalForcesAdded.contains(obj))
+                if(!externalForcesAdded.contains(obj) && !(obj instanceof Measurement))
                     obj.setDisplayGrayed(true);
             }
         }
@@ -187,13 +187,13 @@ public class FBDWorld extends World {
         for(SelectionListener listener : getSelectionListeners())
             listener.onSelect(obj);
 
-        if(externalForces.contains(obj)) {
+        if(externalForces.contains(obj) && obj.isGiven()) {
             
             // this force or moment was added externally.
             // for now, we toggle its state as grayed.
             
             // however, do nothing if we have selection listeners.
-            // this is awkward, however, we do not want 
+            // this is awkward, however, we do not want selection problems to occur
             if(getSelectionListeners().isEmpty()) {
                 if(!externalForcesAdded.contains(obj)) {
                     obj.setDisplayGrayed( false );
@@ -255,24 +255,32 @@ public class FBDWorld extends World {
     
     boolean checkDiagram() {
         
-        // step 1: for vectors that we can click on and add, ie, external added forces,
-        // make sure that the user has added all of them.
-        if(!externalForcesAdded.containsAll(externalForces)) {
-            System.out.println("check: diagram does not contain external forces");
-            System.out.println("check: FAILED");
-            
-            StaticsApplication.getApp().setAdvice(
-                    "FBD Check: Your FBD is not yet correct. " +
-                    "Your diagram must include external forces applied to the bodies in the diagram.");
-            return false;
-        }
         
-        // step 2: assemble a list of all the forces the user has added.
+        // step 1: assemble a list of all the forces the user has added.
         List<Vector> addedForces = getAddedForces();
         System.out.println("check: user added forces: "+addedForces);
         
         // make list for weights, as we will need these later.
         List<Force> weights = new ArrayList();
+        
+        // step 2: for vectors that we can click on and add, ie, external added forces,
+        // make sure that the user has added all of them.
+        for(Vector external : externalForces) {
+            if(!externalForcesAdded.contains(external)) {
+                if(addedForces.contains(external)) {
+                    System.out.println("check: removing external force "+external);
+                    addedForces.remove(external);
+                } else {
+                    System.out.println("check: diagram does not contain external forces");
+                    System.out.println("check: FAILED");
+
+                    StaticsApplication.getApp().setAdvice(
+                            "FBD Check: Your FBD is not yet correct. " +
+                            "Your diagram must include external forces applied to the bodies in the diagram.");
+                    return false;
+                }
+            }
+        }
         
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for(Body body : bodies) {
@@ -439,6 +447,9 @@ public class FBDWorld extends World {
                                 "Unknown Error!");
                         return false;
                     }
+                    
+                } else if(externalForces.contains(force)) {
+                    // OK, do nothing
                     
                 } else {
                     System.out.println("check: force should not be numeric: "+force);

@@ -73,6 +73,10 @@ public class EquationWorld extends World {
     public void click(SimulationObject obj) {
         super.click(obj);
         
+        if(     StaticsApplication.getApp().getCurrentTool() != null &&
+                StaticsApplication.getApp().getCurrentTool().isActive())
+            return; // do not select points if we have a tool active
+        
         if(obj != null && obj instanceof Vector) {
             if(sumBar == null)
                 return;
@@ -114,6 +118,12 @@ public class EquationWorld extends World {
         
         if(showingCurve) {
             CurveUtil.renderCurve(r, ColorRGBA.blue, curvePoints);
+        }
+        
+        if(     sumBar != null &&
+                sumBar.getMath() == sumMp &&
+                sumMp.getObservationPointSet()) {
+            CurveUtil.renderCircle(r, ColorRGBA.blue, sumMp.getObservationPoint(), 2, r.getCamera().getDirection());
         }
     }
     

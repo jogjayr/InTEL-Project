@@ -85,6 +85,8 @@ public class LabelRepresentation extends Representation {
     public void update() {
         //super.update();
         
+        label.setText(getTarget().getLabelText());
+        
         StaticsApplication app = StaticsApplication.getApp();
         pos2d = app.getCamera().getScreenCoordinates( getDisplayCenter() );
         pos2d.addLocal( -getWidth()/2, -getHeight()/2, 0 );
@@ -92,6 +94,7 @@ public class LabelRepresentation extends Representation {
         pos2d.z = 0;
         
         bWindow.setLocation((int)pos2d.x, (int)pos2d.y);
+        bWindow.pack();
     }
     
 }

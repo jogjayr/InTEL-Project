@@ -42,6 +42,7 @@ public class Moment extends Vector {
         rep.setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
         
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
+        label.setOffset(0,40);
         addRepresentation(label);
     }
     

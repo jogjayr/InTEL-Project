@@ -11,10 +11,10 @@ root {
 
 label_point {
     color: #ffff00;
-    font: "Arial" bold 22;
+    font: "Arial" bold 24;
     
     text-effect: outline;
-    effect-size: 2;
+    effect-size: 3;
     effect-color: #000000aa;
 }
 
@@ -30,13 +30,14 @@ label_force {
     color: #ff0000;
     font: "Arial" bold 16;
     background: solid #88888888;
-    
+    padding: 2 2 2 2;    
+
     text-effect: shadow;
     effect-color: #000000aa;
 }
 
 root:disabled {
-  color: #BBBBBB;
+  color: #888888;
 }
 
 window {
@@ -52,6 +53,12 @@ info_window {
     text-align: left;
     background: solid #f4eaa2ff;
     padding: 1 1 1 1;
+}
+
+description_window {
+    border: 2 solid #773802ff;
+    background: solid #f4eaa2ff;
+    padding: 5 5 5 5;
 }
 
 border {
