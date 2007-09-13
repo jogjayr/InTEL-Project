@@ -32,7 +32,7 @@ label_force {
     background: solid #88888888;
     padding: 2 2 2 2;    
 
-    text-effect: shadow;
+    text-effect: outline;
     effect-color: #000000aa;
 }
 

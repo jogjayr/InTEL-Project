@@ -100,7 +100,7 @@ public class EquationWorld extends World {
         }
         
         StaticsApplication.getApp().setDefaultAdvice(
-                "This is the equation mode. After solving each equilibrium equation, you may solve for the unknowns.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
         StaticsApplication.getApp().resetAdvice();
     }
 

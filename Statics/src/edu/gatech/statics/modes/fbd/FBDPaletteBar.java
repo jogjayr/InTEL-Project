@@ -247,10 +247,8 @@ public class FBDPaletteBar extends Toolbar {
             fbd.setLocked();
             
             nextButton.setText("Equation");
-        
-            StaticsApplication.getApp().setAdvice(
-                    "FBD Check: Congratulations, your FBD is correct! " +
-                    "You can now go to the Equilibrium Equation mode.");
+            getApp().loadEquation(fbd);
+            
         } else {
             System.out.println("test failed!");
         }

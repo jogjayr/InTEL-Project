@@ -27,16 +27,19 @@ public class DisplayGroup {
     static private Map<String, DisplayGroup> allGroups = new HashMap();
     
     static {
-        addGroup(measurements = new DisplayGroup("Measurements",
+        addGroup(measurements = new DisplayGroup(
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("interface_DisplayGroup_Measurements"),
                 RepresentationLayer.measurement.getName()));
         
-        addGroup(schematic = new DisplayGroup("Schematic",
+        addGroup(schematic = new DisplayGroup(
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("interface_DisplayGroup_Schematic"),
                 RepresentationLayer.labels.getName(),
                 RepresentationLayer.points.getName(),
                 RepresentationLayer.vectors.getName(),
                 RepresentationLayer.schematicBodies.getName()));
         
-        addGroup(realWorld = new DisplayGroup("Real World",
+        addGroup(realWorld = new DisplayGroup(
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("interface_DisplayGroup_Real_World"),
                 RepresentationLayer.modelBodies.getName()));
     }
     

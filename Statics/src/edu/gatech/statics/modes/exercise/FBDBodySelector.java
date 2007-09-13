@@ -30,7 +30,7 @@ public class FBDBodySelector extends SelectionTool {
         super.onActivate();
         
         StaticsApplication.getApp().setAdvice(
-                "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("exercise_tools_Selection1"));
     }
     
     public void onSelect(SimulationObject obj) {
@@ -38,8 +38,9 @@ public class FBDBodySelector extends SelectionTool {
         
         //if(!getWorld().getSelectedObjects().isEmpty()) {
             StaticsApplication.getApp().setAdvice(
-                    "Selection Tool: now press ENTER, or select more bodies.");
-            ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Continue");
+                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("exercise_tools_Selection2"));
+            if(StaticsApplication.getApp().getCurrentInterface().getToolbar() instanceof ExercizeFBDBar)
+                ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Continue");
         //} else {
         //    StaticsApplication.getApp().setAdvice(
         //            "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
@@ -49,8 +50,9 @@ public class FBDBodySelector extends SelectionTool {
 
     protected void onCancel() {
         StaticsApplication.getApp().setAdvice(
-                "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
-        ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Create FBD");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("exercise_tools_Selection1"));
+        if(StaticsApplication.getApp().getCurrentInterface().getToolbar() instanceof ExercizeFBDBar)
+            ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Create FBD");
     }
     
     

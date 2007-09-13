@@ -49,9 +49,10 @@ public class FBDWorld extends World {
         enableManipulatorsOnSelectDefault(false);
         enableSelectMultipleDefault(false);
         
-        StaticsApplication.getApp().setDefaultAdvice(
-                "Congratulations, your FBD is finished! " +
-                "Now you can go to the equation mode and solve for the unknowns.");
+        String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
+        StaticsApplication.getApp().setAdvice(advice);
+        StaticsApplication.getApp().setDefaultAdvice(advice);
+        
         StaticsApplication.getApp().resetAdvice();
     }
     
@@ -170,8 +171,7 @@ public class FBDWorld extends World {
         }
         
         StaticsApplication.getApp().setDefaultAdvice(
-                "This is the FBD mode. Add forces, or click on existing ones to add them to your diagram." +
-                "Select 'Check' to check your diagram and enable Equation mode.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
         StaticsApplication.getApp().resetAdvice();
         
         if(locked)
@@ -275,8 +275,7 @@ public class FBDWorld extends World {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            "FBD Check: Your FBD is not yet correct. " +
-                            "Your diagram must include external forces applied to the bodies in the diagram.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_external"));
                     return false;
                 }
             }
@@ -298,8 +297,7 @@ public class FBDWorld extends World {
                     System.out.println("check: FAILED");
                     
                     StaticsApplication.getApp().setAdvice(
-                            "FBD Check: Your FBD is not yet correct. " +
-                            "Your diagram must include weights for bodies with mass.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_weight"));
                     return false;
                 }
             }
@@ -341,8 +339,7 @@ public class FBDWorld extends World {
                         System.out.println("check: FAILED");
                         
                         StaticsApplication.getApp().setAdvice(
-                                "FBD Check: Your FBD is not yet correct. " +
-                                "Your diagram is missing a reaction force.");
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_reaction"));
                         return false;
                     }
                 } else {
@@ -351,8 +348,7 @@ public class FBDWorld extends World {
                         System.out.println("check: FAILED");
                         
                         StaticsApplication.getApp().setAdvice(
-                                "FBD Check: Your FBD is not yet correct. " +
-                                "Your diagram is missing a reaction force.");
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_reaction"));
                         return false;
                     }
                 }
@@ -366,8 +362,7 @@ public class FBDWorld extends World {
             System.out.println("check: FAILED");
 
             StaticsApplication.getApp().setAdvice(
-                    "FBD Check: Your FBD is not yet correct. " +
-                    "Your diagram has more forces and/or moments than necessary.");
+                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_additional"));
             return false;
         }
         
@@ -392,8 +387,7 @@ public class FBDWorld extends World {
                     System.out.println("check: FAILED");
                     
                     StaticsApplication.getApp().setAdvice(
-                            "FBD Check: Your FBD is not yet correct. " +
-                            "One of your forces should not be a symbol.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_symbol"));
                     return false;
                 }
                 
@@ -404,9 +398,7 @@ public class FBDWorld extends World {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            "FBD Check: Your FBD is not yet correct. " +
-                            "You cannot have duplicate names in the FBD. " +
-                            "Please use the Label tool and give each unknown a unique name.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_duplicate"));
                     return false;
                 }
                 names.add(name);
@@ -431,8 +423,7 @@ public class FBDWorld extends World {
                                 System.out.println("check: FAILED");
 
                                 StaticsApplication.getApp().setAdvice(
-                                        "FBD Check: Your FBD is not yet correct. " +
-                                        "The weight of one of your bodies is not the correct value.");
+                                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_wrongWeight"));
                                 return false;
                             }
                         }
@@ -443,8 +434,7 @@ public class FBDWorld extends World {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                "FBD Check: Your FBD is not yet correct. " +
-                                "Unknown Error!");
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_unknown"));
                         return false;
                     }
                     
@@ -456,8 +446,7 @@ public class FBDWorld extends World {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            "FBD Check: Your FBD is not yet correct. " +
-                            "One of your forces should not be numeric.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_numeric"));
                     return false;
                 }
             }

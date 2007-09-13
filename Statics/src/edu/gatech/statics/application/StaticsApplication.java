@@ -86,7 +86,7 @@ public class StaticsApplication {
     public float getDrawScale() {return drawScale;}
     public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
     
-    private String defaultAdvice = "Welcome to Statics!";
+    private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
     public void setAdvice(String advice) {rootInterface.setAdvice(advice);}
     public void resetAdvice() {rootInterface.setAdvice(defaultAdvice);}
     public void setDefaultAdvice(String advice) {defaultAdvice = advice;}

@@ -27,7 +27,7 @@ public class PointSelector extends SelectionTool {
     
     protected void onActivate() {
         super.onActivate();
-        StaticsApplication.getApp().setAdvice("Select the point about which to calculate the moment.");
+        StaticsApplication.getApp().setAdvice(java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_momentPointSelect"));
     }
     
     public void onClick(SimulationObject obj) {
