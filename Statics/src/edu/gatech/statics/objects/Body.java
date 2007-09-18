@@ -48,7 +48,10 @@ abstract public class Body extends SimulationObject {
     
     public Vector3f getCenterOfMass() {return getTranslation();}
     
-    public void setCenterOfMassPoint(Point p) {this.centerOfMassPoint = p;}
+    public void setCenterOfMassPoint(Point p) {
+        this.centerOfMassPoint = p;
+        addObject(p);
+    }
     public Point getCenterOfMassPoint() {return centerOfMassPoint;}
     
     /*

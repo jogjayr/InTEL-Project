@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.objects.representations;
 
+import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.util.TextureKey;
 import com.jme.util.export.binary.BinaryImporter;
@@ -33,10 +34,16 @@ public class ModelRepresentation extends Representation {
     
     private Node modelNode;
     
+    public void setModelOffset(Vector3f offset) {
+        modelNode.setLocalTranslation(offset);
+    }
+    
     /** Creates a new instance of ModelRepresentation */
     public ModelRepresentation(SimulationObject target, String textureDirectory, String filename) {
         super(target);
         setLayer(RepresentationLayer.modelBodies);
+        
+        setUseWorldScale(false);
         
         URL fileUrl = getClass().getClassLoader().getResource(filename);
         URL textureUrl = getClass().getClassLoader().getResource(textureDirectory);

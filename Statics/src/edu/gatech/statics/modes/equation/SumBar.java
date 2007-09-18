@@ -44,6 +44,8 @@ import java.util.Map;
  */
 public class SumBar extends Toolbar {
     
+    private BButton backButton;
+    
     private EquationMath math;
     private EquationInterface iface;
     private Map<Vector, TermBox> terms = new HashMap();
@@ -173,7 +175,7 @@ public class SumBar extends Toolbar {
             }
         };
         
-        BButton backButton = new BButton("Return",listener,"return");
+        backButton = new BButton("Return",listener,"return");
         BButton checkButton = new BButton("Check",listener,"check");
         
         add(backButton);
@@ -272,6 +274,8 @@ public class SumBar extends Toolbar {
         for(TermBox box : terms.values())
             box.coefficient.setEnabled(false);
         locked = true;
+        
+        backButton.setText("Next");
         
         try {
             ImageIcon icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/check.png")));

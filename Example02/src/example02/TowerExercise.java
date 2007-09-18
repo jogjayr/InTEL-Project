@@ -44,12 +44,15 @@ public class TowerExercise extends Exercise {
         
         setDescription(
                 "<html><body>" +
-                "This is the tower of Pisa, solve for the reaction forces at its base." +
+                "<center><font size=\"6\">"+getName()+"</font></center>"+
+                "This is a model of the tower of Pisa, solve for the reaction forces at its base. " +
+                "The tower's weight is 14700 tons." +
                 "</body></html>"
                 );
         setUnits( new Units() { {
                 distance = "m";
-                moment = "N*m";
+                moment = "T*m";
+                force = "T";
                 worldDistanceMultiplier = 1f;
             }
         });
@@ -62,12 +65,17 @@ public class TowerExercise extends Exercise {
         //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
         
-        StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 20.0f, 60.0f ));
-        StaticsApplication.getApp().setDrawScale(2f);
+        //StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 10.0f, 60.0f ));
+        StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 24.0f, 100.0f ));
+        StaticsApplication.getApp().setDrawScale(3.5f);
         
-        Point A = new Fix2d(new Vector3f(0,0,0));
-        Point B = new Point(new Vector3f(0,22,0));
+        Fix2d A = new Fix2d(new Vector3f(0,0,0));
+        Point B = new Point(new Vector3f(2.5f,55,0));
         Point G = new Point(A.getTranslation().add(B.getTranslation()).mult(.5f));
+        A.setName("A");
+        B.setName("B");
+        G.setName("G");
+        
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         G.createDefaultSchematicRepresentation();
@@ -75,16 +83,21 @@ public class TowerExercise extends Exercise {
         Body tower = new Beam(A,B);
         tower.setCenterOfMassPoint(G);
         tower.createDefaultSchematicRepresentation();
+        tower.setWeight(14700f);
         world.add(tower);
+        
+        A.attach(tower, null);
+        
+        float scale = 4f;
         
         ModelRepresentation rep;
         rep = new ModelRepresentation(A, "example02/assets/", "example02/assets/pisa1_background.dae");
-        rep.setLocalScale(.25f);
+        rep.setLocalScale(scale);
         A.addRepresentation(rep);
         
-        rep = new ModelRepresentation(A, "example02/assets/", "example02/assets/pisa3_tower.dae");
-        rep.setLocalScale(.25f);
-        //rep.setS
+        rep = new ModelRepresentation(tower, "example02/assets/", "example02/assets/pisa3_tower.dae");
+        rep.setModelOffset(new Vector3f(0, -22.0f/scale, 0));
+        rep.setLocalScale(scale);
         tower.addRepresentation(rep);
         
         

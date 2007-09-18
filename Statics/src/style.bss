@@ -20,7 +20,7 @@ label_point {
 
 label_measurement {
     color: #ffffff;
-    font: "Arial" bold 16;
+    font: "Arial" bold 18;
     
     text-effect: shadow;
     effect-color: #000000cc;
@@ -28,7 +28,7 @@ label_measurement {
 
 label_force {
     color: #ff0000;
-    font: "Arial" bold 16;
+    font: "Arial" bold 18;
     background: solid #88888888;
     padding: 2 2 2 2;    
 
