@@ -60,8 +60,7 @@ public class SolveBar extends Toolbar {
         if(!isSolvable()) {
             solveButton.setEnabled(false);
             StaticsApplication.getApp().setAdvice(
-                    "WARNING: You have more than three unknowns in your equation! " +
-                    "You won't be able to solve for them.");
+                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_warning_numberUnknowns"));
         }
         add(backButton);
         add(solveButton);

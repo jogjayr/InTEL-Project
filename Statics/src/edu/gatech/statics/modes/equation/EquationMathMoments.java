@@ -108,8 +108,7 @@ public class EquationMathMoments extends EquationMath {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            "Equilibrium Check: Your equation is not yet correct. " +
-                            "You have added a force that doesn't belong in the equation.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_unnecessary"));
                     return false;
                 } else
                     continue;
@@ -119,8 +118,7 @@ public class EquationMathMoments extends EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        "Equilibrium Check: Your equation is not yet correct. " +
-                        "It must contain all forces about the observation point.");
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_missing"));
                 return false;
             }
         }
@@ -133,8 +131,7 @@ public class EquationMathMoments extends EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        "Equilibrium Check: Your equation is not yet correct. " +
-                        "It must contain couples visible in the system");
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_couples"));
                 return false;
             }
         }
@@ -152,16 +149,14 @@ public class EquationMathMoments extends EquationMath {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: Your equation is not yet correct. " +
-                                "Unknown term error.");
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_unknown"));
                         return false;
                     case badCoefficient:
                         System.out.println("check: bad coefficient");
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: " +
-                                "You should not have a coefficient on a moment.");
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_momentCoefficient"));
                         return false;
                     case parse:
                         System.out.println("check: for "+term.getVector().getLabelText());
@@ -169,8 +164,7 @@ public class EquationMathMoments extends EquationMath {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: " +
-                                "I can't understand your coefficient: \""+term.getCoefficient()+"\"");
+                                "Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
                         return false;
                     case incorrect:
                         System.out.println("check: for "+term.getVector().getLabelText());
@@ -178,9 +172,9 @@ public class EquationMathMoments extends EquationMath {
                         System.out.println("check: should be: "+term.targetValue);
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: " +
-                                "Your coefficient is not correct for "+term.getVector().getLabelText());
+                        StaticsApplication.getApp().setAdvice(String.format(
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_coefficient"), term.getVector().getLabelText()));
+                                //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }
             }
@@ -188,8 +182,7 @@ public class EquationMathMoments extends EquationMath {
         
         System.out.println("check: PASSED!");
         StaticsApplication.getApp().setAdvice(
-                "Equilibrium Check: Contratulations! " +
-                "Your equation is correct! Now you can finish the other equations and solve for the unknowns.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_success"));
         return true;
     }
 }

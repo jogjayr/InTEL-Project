@@ -65,8 +65,8 @@ public class PurseExercise extends Exercise {
         ExerciseWorld world = getWorld();
         
         
-        //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .2f, 1.0f));
+        //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
         
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 55.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
@@ -166,7 +166,7 @@ public class PurseExercise extends Exercise {
                 );
         //imageRep.setScale(repScale * 368f,repScale * 96f);
         imageRep.setScale(repScale * 1738,repScale * 501f);
-        imageRep.setTranslation(-2,0,0);
+        imageRep.setTranslation(-1,1.75f,0);
         forearm.addRepresentation(imageRep);
         
         imageRep = new ImageRepresentation(forearm, 
@@ -176,7 +176,7 @@ public class PurseExercise extends Exercise {
         imageRep.setLayer(bones);
         //imageRep.setScale(repScale * 368f,repScale * 96f);
         imageRep.setScale(repScale * 1617,repScale * 310f);
-        imageRep.setTranslation(-2,-1.0f,.02f);
+        imageRep.setTranslation(-2.25f,-0.5f,.02f);
         forearm.addRepresentation(imageRep);
         
         //repScale = .11f;
@@ -188,7 +188,7 @@ public class PurseExercise extends Exercise {
                 );
         //imageRep.setScale(repScale * 121f,repScale * 347f);
         imageRep.setScale(repScale * 483f,repScale * 1539f);
-        imageRep.setTranslation(-1,-.0f,0);
+        imageRep.setTranslation(-0.75f,1.0f,0);
         upperArm.addRepresentation(imageRep);
         
         imageRep = new ImageRepresentation(upperArm, 
@@ -198,7 +198,7 @@ public class PurseExercise extends Exercise {
         imageRep.setLayer(bones);
         //imageRep.setScale(repScale * 121f,repScale * 347f);
         imageRep.setScale(repScale * 191f,repScale * 1453f);
-        imageRep.setTranslation(-2,0,0);
+        imageRep.setTranslation(-0.5f,1,0);
         upperArm.addRepresentation(imageRep);
         
         //repScale = .04f;
@@ -217,10 +217,10 @@ public class PurseExercise extends Exercise {
                 Texture.MM_LINEAR,Texture.FM_LINEAR)
                 );
         imageRep.setLayer(bones);
-        imageRep.setRotation(-.05f);
+        imageRep.setRotation(-.075f);
         //imageRep.setScale(repScale * 121f,repScale * 347f);
-        imageRep.setScale(repScale * 213f,repScale * 1331f);
-        imageRep.setTranslation(1.5f,1.0f,.05f);
+        imageRep.setScale(.9f*repScale * 213f, .9f*repScale * 1331f);
+        imageRep.setTranslation(0.0f,0.5f,.05f);
         tendon.addRepresentation(imageRep);
     }
     

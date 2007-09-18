@@ -105,7 +105,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         addToAttachedHandlers(dragManipulator);
         
         StaticsApplication.getApp().setAdvice(
-                "Create Force Tool: drag the force to a point on the diagram and click the mouse.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce1"));
     }
     
     protected void enableOrientationManipulator(Point point) {
@@ -116,7 +116,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         addToAttachedHandlers(orientationManipulator);
         
         StaticsApplication.getApp().setAdvice(
-                "Create Force Tool: now position the direction of the force and click the mouse.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
     }
 
     public void onClick(Manipulator m) {

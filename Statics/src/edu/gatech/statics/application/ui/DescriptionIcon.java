@@ -14,8 +14,6 @@ import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.background.BBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.event.MouseEvent;
-import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;

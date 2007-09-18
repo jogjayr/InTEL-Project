@@ -15,7 +15,7 @@ label_point {
     
     text-effect: outline;
     effect-size: 3;
-    effect-color: #000000aa;
+    effect-color: #000000cc;
 }
 
 label_measurement {
@@ -23,7 +23,7 @@ label_measurement {
     font: "Arial" bold 16;
     
     text-effect: shadow;
-    effect-color: #000000aa;
+    effect-color: #000000cc;
 }
 
 label_force {
@@ -33,7 +33,7 @@ label_force {
     padding: 2 2 2 2;    
 
     text-effect: outline;
-    effect-color: #000000aa;
+    effect-color: #000000cc;
 }
 
 root:disabled {
@@ -51,7 +51,8 @@ info_window {
     //border: 2 solid #000000;
     //background: solid #aaaaaa88;
     text-align: left;
-    background: solid #f4eaa2ff;
+    //background: solid #f4eaa2ff;
+    background: solid #f4eaa2cc;
     padding: 1 1 1 1;
 }
 

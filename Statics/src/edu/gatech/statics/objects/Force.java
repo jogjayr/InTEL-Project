@@ -21,6 +21,7 @@ import edu.gatech.statics.objects.representations.LabelRepresentation;
  * @author Calvin Ashmore
  */
 public class Force extends Vector {
+    protected static final float labelDistance = 9.0f;
     
     /** Creates a new instance of Force */
     public Force(Point anchor, Vector3f value) {
@@ -31,7 +32,7 @@ public class Force extends Vector {
     public Vector3f getDisplayCenter() {
         // this is kind of a hack, since we expect forces to have equal sizes
         // workaround how?
-        return getTranslation().add( getValue().normalize().mult(6.0f) );
+        return getTranslation().add( getValue().normalize().mult(labelDistance)  );
     }
     
 

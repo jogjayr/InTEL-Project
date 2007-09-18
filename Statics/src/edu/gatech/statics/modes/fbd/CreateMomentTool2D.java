@@ -88,7 +88,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         addToAttachedHandlers(dragManipulator);
         
         StaticsApplication.getApp().setAdvice(
-                "Create Moment Tool: drag the moment to a point on the diagram and click the mouse.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createMoment"));
     }
 
     public void onClick(Manipulator m) {
