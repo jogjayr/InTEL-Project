@@ -69,8 +69,17 @@ public class Parser {
         
         if(token.trim().equals(")")) {
             
+            // go up until we hit the matching identity node created by a "("
             while( !(currentNode instanceof UnaryNode &&
                     ((UnaryNode)currentNode).getOperation() == UnaryNode.Operation.identity) ) {
+                currentNode = currentNode.getParent();
+            }
+            
+            // pop up if this is a sin(...), so currentNode points to sin and not the parens.
+            if(     currentNode.getParent() != null && 
+                    currentNode.getParent() instanceof UnaryNode &&
+                    ((UnaryNode)currentNode.getParent()).getOperation() != UnaryNode.Operation.identity ) {
+                // this is a unary operation surrounding the parens. Pop to it
                 currentNode = currentNode.getParent();
             }
         }
@@ -148,6 +157,7 @@ public class Parser {
         if(token.equals("atan")) return new UnaryNode(UnaryNode.Operation.atan);
         if(token.equals("sqrt")) return new UnaryNode(UnaryNode.Operation.sqrt);
         
+        // special case of subtraction / negation
         if(token.equals("-")) {
             if(currentNode instanceof UnaryNode && ((UnaryNode)currentNode).getChild() == null)
                 return new UnaryNode(UnaryNode.Operation.negate);

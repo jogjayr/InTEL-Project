@@ -17,12 +17,13 @@ public class Test {
     
     public static void main(String args[]) {
         
-        String expression = "-1+(-1-2 + (.1-1))-3";
+        String expression = "sin(atan(29/5))*50";
+        System.out.println(expression);
         System.out.println(Parser.evaluate(expression));
         System.out.println(new Parser().parse(expression).printout());
-        float test = (float) -1+(-1-2 + (.1f-1))-3;
+        //float test = (float) -1+(-1-2 + (.1f-1))-3;
         
-        System.out.println(test);
+        //System.out.println(test);
     }
     
 }
