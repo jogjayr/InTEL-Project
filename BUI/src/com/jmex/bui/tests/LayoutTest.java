@@ -34,7 +34,7 @@ import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.LoggingSystem;
+//import com.jme.util.LoggingSystem;
 
 import com.jmex.bui.*;
 import com.jmex.bui.event.ActionEvent;
@@ -244,7 +244,7 @@ public class LayoutTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
+        //LoggingSystem.getLogger().setLevel(Level.WARNING);
         LayoutTest test = new LayoutTest();
         test.start();
     }

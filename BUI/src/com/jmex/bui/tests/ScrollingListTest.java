@@ -20,13 +20,9 @@
 
 package com.jmex.bui.tests;
 
-import java.util.logging.Level;
-
-import com.jme.util.LoggingSystem;
 
 import com.jmex.bui.*;
 import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.icon.ImageIcon;
 
 public class ScrollingListTest extends BaseTest
     implements BConstants
@@ -64,7 +60,7 @@ public class ScrollingListTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
+        //LoggingSystem.getLogger().setLevel(Level.WARNING);
         ScrollingListTest test = new ScrollingListTest();
         test.start();
     }

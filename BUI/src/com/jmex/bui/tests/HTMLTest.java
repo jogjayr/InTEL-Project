@@ -29,7 +29,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.html.CSS;
 import javax.swing.text.html.StyleSheet;
 
-import com.jme.util.LoggingSystem;
+//import com.jme.util.LoggingSystem;
 
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BStyleSheet;
@@ -101,7 +101,7 @@ public class HTMLTest extends BaseTest
 
     public static void main (String[] args)
     {
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
+        //LoggingSystem.getLogger().setLevel(Level.WARNING);
         HTMLTest test = new HTMLTest();
         test.start();
     }
