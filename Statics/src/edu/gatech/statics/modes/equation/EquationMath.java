@@ -189,8 +189,7 @@ public class EquationMath {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            "Equilibrium Check: Your equation is not yet correct. " +
-                            "You have added a force that doesn't belong in the equation.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unnecessary"));
                     return false;
                 } else
                     continue;
@@ -200,8 +199,7 @@ public class EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        "Equilibrium Check: Your equation is not yet correct. " +
-                        "It must contain all forces in the direction of observation.");
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_missing_forces"));
                 return false;
             }
         }
@@ -213,8 +211,8 @@ public class EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        "Equilibrium Check: Your equation is not yet correct. " +
-                        "You do not add moments to the force equations.");
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unnecessaryMoments"));
+                return false;
             }
             
             if(!term.check()) {
@@ -229,16 +227,14 @@ public class EquationMath {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: Your equation is not yet correct. " +
-                                "Unknown term error.");
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unknown"));
                         return false;
                     case parse:
                         System.out.println("check: parse error");
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: " +
-                                "I can't understand your coefficient: \""+term.getCoefficient()+"\"");
+                        StaticsApplication.getApp().setAdvice(String.format(
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_parse"), term.getCoefficient()));
                         return false;
                     case incorrect:
                         System.out.println("check: for "+term.getVector().getLabelText());
@@ -246,9 +242,8 @@ public class EquationMath {
                         System.out.println("check: should be: "+term.targetValue);
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                "Equilibrium Check: " +
-                                "Your coefficient is not correct for ("+term.getVector().getLabelText()+")");
+                        StaticsApplication.getApp().setAdvice(String.format(
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_coefficient"), term.getVector().getLabelText()));
                         return false;
                 }
                 
@@ -257,8 +252,7 @@ public class EquationMath {
         
         System.out.println("check: PASSED!");
         StaticsApplication.getApp().setAdvice(
-                "Equilibrium Check: Contratulations! " +
-                "Your equation is correct! Now you can finish the other equations and solve for the unknowns.");
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_success"));
         return true;
     }
 }

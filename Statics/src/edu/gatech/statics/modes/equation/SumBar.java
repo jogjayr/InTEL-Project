@@ -45,6 +45,8 @@ import java.util.Map;
 public class SumBar extends Toolbar {
     
     private BButton backButton;
+    private BButton checkButton;
+    private BButton selectButton;
     
     private EquationMath math;
     private EquationInterface iface;
@@ -176,13 +178,13 @@ public class SumBar extends Toolbar {
         };
         
         backButton = new BButton("Return",listener,"return");
-        BButton checkButton = new BButton("Check",listener,"check");
+        checkButton = new BButton("Check",listener,"check");
         
         add(backButton);
         add(checkButton);
         
         if(math instanceof EquationMathMoments) {
-            BButton selectButton = new BButton("Select Point",listener,"selectPoint");
+            selectButton = new BButton("Select Point",listener,"selectPoint");
             add(selectButton);
         }
         
@@ -276,6 +278,9 @@ public class SumBar extends Toolbar {
         locked = true;
         
         backButton.setText("Next");
+        checkButton.setEnabled(false);
+        if(selectButton != null)
+            selectButton.setEnabled(false);
         
         try {
             ImageIcon icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/check.png")));

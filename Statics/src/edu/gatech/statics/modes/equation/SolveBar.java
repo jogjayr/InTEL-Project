@@ -9,8 +9,6 @@
 
 package edu.gatech.statics.modes.equation;
 
-import com.jme.math.Matrix3f;
-import com.jme.math.Vector3f;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
@@ -19,6 +17,9 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.Toolbar;
+import edu.gatech.statics.modes.equation.solver.EquationSystem;
+import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,9 @@ import java.util.Map;
 public class SolveBar extends Toolbar {
     
     private Map<String, BLabel> unknownMap = new HashMap();
+    private Map<String, Vector> unknownVMap = new HashMap();
     private List<String> unknownList = new ArrayList();
+    private EquationSystem system;
     private EquationWorld world;
     
     /** Creates a new instance of SolveBar */
@@ -54,13 +57,14 @@ public class SolveBar extends Toolbar {
         collectUnknowns(world.sumFx);
         collectUnknowns(world.sumFy);
         collectUnknowns(world.sumMp);
+        processEquations();
         
         BButton backButton = new BButton("Return",listener,"return");
         BButton solveButton = new BButton("Solve!",listener,"solve");
         if(!isSolvable()) {
             solveButton.setEnabled(false);
             StaticsApplication.getApp().setAdvice(
-                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_warning_numberUnknowns"));
+                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_warning_unsolvable"));
         }
         add(backButton);
         add(solveButton);
@@ -98,6 +102,7 @@ public class SolveBar extends Toolbar {
                 if(!unknownMap.containsKey(symbol)) {
                     unknownMap.put(symbol, new BLabel("???"));
                     unknownList.add(symbol);
+                    unknownVMap.put(symbol, vector);
                 }
             }
         }
@@ -130,11 +135,36 @@ public class SolveBar extends Toolbar {
     }
 
     private boolean isSolvable() {
-        return unknownMap.size() == 3;
+        //return unknownMap.size() == 3;
+        return system.isSolvable();
     }
     
     private void solve() {
-        Matrix3f matrix = new Matrix3f();
+        Map<String, Float> solution = system.solve();
+        for(String term : solution.keySet()) {
+            String units = "";
+            if(unknownVMap.get(term) instanceof Moment)
+                units = StaticsApplication.getApp().getUnits().getMoment();
+            else if(unknownVMap.get(term) instanceof Force)
+                units = StaticsApplication.getApp().getUnits().getForce();
+            
+            String text = solution.get(term) + " " + units;
+            
+            unknownMap.get(term).setText(text);
+        }
+    }
+    
+    private void processEquations() {
+        
+        system = new EquationSystem(3);
+        
+        process(system, 0, world.sumFx);
+        process(system, 1, world.sumFy);
+        process(system, 2, world.sumMp);
+        
+        system.process();
+        
+        /*Matrix3f matrix = new Matrix3f();
         Vector3f values = new Vector3f();
         matrix.zero();
         
@@ -147,29 +177,19 @@ public class SolveBar extends Toolbar {
         
         unknownMap.get(unknownList.get(0)).setText(""+solution.x);
         unknownMap.get(unknownList.get(1)).setText(""+solution.y);
-        unknownMap.get(unknownList.get(2)).setText(""+solution.z);
+        unknownMap.get(unknownList.get(2)).setText(""+solution.z);*/
     }
     
-    private float process(Matrix3f matrix, int row, EquationMath math) {
-        
-        float sumConstant = 0;
+    private void process(EquationSystem system, int row, EquationMath math) {
         for(EquationMath.Term term : math.allTerms()) {
             
             Vector vector = term.getVector();
             if(vector.isSymbol()) {
-                String symbol = vector.getName();
-                float value = term.coefficientValue;
-                
-                // hopefully this won't cause trouble
-                int column = unknownList.indexOf(symbol);
-                matrix.set(row, column, value + matrix.get(row, column));
-                
+                system.addTerm(row, term.coefficientValue, vector.getName());
             } else {
-                
-                // just a regular vector, add its magnitude in
-                sumConstant += vector.getMagnitude() * term.coefficientValue;
+                system.addTerm(row, vector.getMagnitude() * term.coefficientValue, null);
             }
         }
-        return sumConstant;
     }
+    
 }

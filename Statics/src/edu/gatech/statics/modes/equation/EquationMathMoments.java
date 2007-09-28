@@ -46,7 +46,8 @@ public class EquationMathMoments extends EquationMath {
                     return false;
                 }
                 error = TermError.none;
-                return coefficient.getValue() == 1.0f;
+                coefficientValue = coefficient.getValue();
+                return coefficientValue == 1.0f || coefficientValue == -1.0f;
             }
             
             // this is a force
@@ -108,7 +109,7 @@ public class EquationMathMoments extends EquationMath {
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_unnecessary"));
+                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unnecessary"));
                     return false;
                 } else
                     continue;
@@ -118,7 +119,7 @@ public class EquationMathMoments extends EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_missing"));
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_missing_moments"));
                 return false;
             }
         }
@@ -131,7 +132,7 @@ public class EquationMathMoments extends EquationMath {
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
-                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_couples"));
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_couples"));
                 return false;
             }
         }
@@ -149,22 +150,23 @@ public class EquationMathMoments extends EquationMath {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_unknown"));
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unknown"));
                         return false;
                     case badCoefficient:
                         System.out.println("check: bad coefficient");
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_momentCoefficient"));
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_momentCoefficient"));
                         return false;
                     case parse:
                         System.out.println("check: for "+term.getVector().getLabelText());
                         System.out.println("check: parse error");
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                "Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
+                        StaticsApplication.getApp().setAdvice(String.format(
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_parse"), term.getCoefficient()));
+                                //"Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
                         return false;
                     case incorrect:
                         System.out.println("check: for "+term.getVector().getLabelText());
@@ -173,7 +175,7 @@ public class EquationMathMoments extends EquationMath {
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(String.format(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_fail_coefficient"), term.getVector().getLabelText()));
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_coefficient"), term.getVector().getLabelText()));
                                 //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }
@@ -182,7 +184,7 @@ public class EquationMathMoments extends EquationMath {
         
         System.out.println("check: PASSED!");
         StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_moments_success"));
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_success"));
         return true;
     }
 }
