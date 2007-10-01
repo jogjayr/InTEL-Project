@@ -26,6 +26,11 @@ public class Connector2ForceMember2d extends Joint {
     public Vector3f getDirection() {return direction;}
     public void setDirection(Vector3f direction) {this.direction = direction.normalize();}
     
+    // we really want negatable to only be true IF our connector is a beam instead of a cable
+    private boolean directionNegatable = false;
+    public boolean isForceDirectionNegatable() {return directionNegatable;}
+    public void setDirectionNegatable(boolean negatable) {directionNegatable = negatable;}
+    
     /** Creates a new instance of Connector2ForceMember */
     public Connector2ForceMember2d(Vector3f position) {
         super(position);

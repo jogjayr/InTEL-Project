@@ -20,15 +20,15 @@ import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.SimulationObject;
 import java.net.URL;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class PointRepresentation extends Representation<Point> {
+public class PointRepresentation extends Representation/*<Point>*/ {
     
     private static Texture pointTexture;
     
@@ -46,7 +46,8 @@ public class PointRepresentation extends Representation<Point> {
     }
     
     /** Creates a new instance of PointRepresentation */
-    public PointRepresentation(Point target) {
+    //public PointRepresentation(Point target) {
+    public PointRepresentation(SimulationObject target) {
         super(target);
         setLayer(RepresentationLayer.points);
         

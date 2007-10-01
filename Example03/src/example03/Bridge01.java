@@ -16,11 +16,12 @@ import edu.gatech.statics.application.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.Units;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
-import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.bodies.PointBody;
+import edu.gatech.statics.objects.joints.Pin2d;
+import edu.gatech.statics.objects.joints.Roller2d;
 
 /**
  *
@@ -62,39 +63,52 @@ public class Bridge01 extends Exercise {
         StaticsApplication.getApp().setDrawScale(2f);
         
         
-        Point A = new Point(new Vector3f(-20,-12,0));
+        Point A = new Pin2d(new Vector3f(-20,-12,0));
         Point B = new Point(new Vector3f(-10,12,0));
         Point C = new Point(new Vector3f(0,-12,0));
         Point D = new Point(new Vector3f(10,12,0));
-        Point E = new Point(new Vector3f(20,-12,0));
+        Point E = new Roller2d(new Vector3f(20,-12,0));
         
-        
-        /*Point A = new Point(new Vector3f(-17,-16+6,0));
-        Connector2ForceMember2d B = new Connector2ForceMember2d(new Vector3f(13,-16+6,0));
-        Pin2d C = new Pin2d(new Vector3f(18,-16+6,0));
-        Connector2ForceMember2d D = new Connector2ForceMember2d(new Vector3f(18,13+6,0));
-        Pin2d E = new Pin2d(new Vector3f(18f,16+6,0));
-        
-        Point G = new Point(new Vector3f(3.0f,-16+6,0));
-        */
+        A.createDefaultSchematicRepresentation();
+        B.createDefaultSchematicRepresentation();
+        C.createDefaultSchematicRepresentation();
+        D.createDefaultSchematicRepresentation();
+        E.createDefaultSchematicRepresentation();
         
         /*DistanceMeasurement distance1 = new DistanceMeasurement(A.getTranslation(), C.getTranslation());
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);*/
         
-        Body AB = new Beam(A,B);
-        Body BC = new Beam(B,C);
-        Body CD = new Beam(C,D);
-        Body DE = new Beam(D,E);
-        Body AC = new Beam(A,C);
-        Body BD = new Beam(B,D);
-        Body CE = new Beam(C,E);
+        Beam AB = new Beam(A,B);
+        Beam BC = new Beam(B,C);
+        Beam CD = new Beam(C,D);
+        Beam DE = new Beam(D,E);
+        Beam AC = new Beam(A,C);
+        Beam BD = new Beam(B,D);
+        Beam CE = new Beam(C,E);
         
-        Body BodyA = new PointBody(A);
-        Body BodyB = new PointBody(B);
-        Body BodyC = new PointBody(C);
-        Body BodyD = new PointBody(D);
-        Body BodyE = new PointBody(E);
+        PointBody BodyA = new PointBody(A);
+        PointBody BodyB = new PointBody(B);
+        PointBody BodyC = new PointBody(C);
+        PointBody BodyD = new PointBody(D);
+        PointBody BodyE = new PointBody(E);
+        
+        BodyA.connectToTwoForceMembers(AB, AC);
+        BodyB.connectToTwoForceMembers(AB, BC, BD);
+        BodyC.connectToTwoForceMembers(BC, CD, AC, CE);
+        BodyD.connectToTwoForceMembers(CD, DE, BD);
+        BodyE.connectToTwoForceMembers(DE, CE);
+        //BodyA.connectToTwoForceMembers();
+        
+        BodyA.createDefaultSchematicRepresentation();
+        BodyB.createDefaultSchematicRepresentation();
+        BodyC.createDefaultSchematicRepresentation();
+        BodyD.createDefaultSchematicRepresentation();
+        BodyE.createDefaultSchematicRepresentation();
+        
+        ((Pin2d)A).attachToWorld(BodyA);
+        ((Roller2d)E).attachToWorld(BodyE);
+        ((Roller2d)E).setDirection(Vector3f.UNIT_Y);
         
         Force loadD = new Force(D,new Vector3f(0, -200, 0));
         loadD.createDefaultSchematicRepresentation();
@@ -105,12 +119,6 @@ public class Bridge01 extends Exercise {
         C.setName("C");
         D.setName("D");
         E.setName("E");
-        
-        A.createDefaultSchematicRepresentation();
-        B.createDefaultSchematicRepresentation();
-        C.createDefaultSchematicRepresentation();
-        D.createDefaultSchematicRepresentation();
-        E.createDefaultSchematicRepresentation();
         
         AB.createDefaultSchematicRepresentation();
         BC.createDefaultSchematicRepresentation();

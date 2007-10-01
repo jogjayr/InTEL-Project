@@ -103,7 +103,7 @@ public class PurseExercise extends Exercise {
 
         Body upperArm = new Beam(E,C);
         Body forearm = new Beam(C,A);
-        Body tendon = new Cable(D,B);
+        Cable tendon = new Cable(D,B);
         forearm.addObject(B);
         forearm.addObject(G);
         upperArm.addObject(D);
@@ -120,10 +120,10 @@ public class PurseExercise extends Exercise {
         //forearm.addObject(weight);
         
         B.attach( forearm, tendon );
-        B.setDirection(D.getTranslation().subtract(B.getTranslation())); // points up tendon
+        B.setDirection(tendon.getDirectionFrom(B)); // points up tendon
         C.attach( forearm, upperArm );
         D.attach( upperArm, tendon );
-        D.setDirection(B.getDirection().negate());
+        D.setDirection(tendon.getDirectionFrom(D));
         E.attach( upperArm, null );
         
         E.setName("E");

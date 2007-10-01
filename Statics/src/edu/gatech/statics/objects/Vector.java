@@ -93,7 +93,11 @@ public class Vector extends SimulationObject {
             return false;
         Vector v = (Vector) obj;
         
-        if(v.anchor != anchor)
+        //if(v.anchor != anchor)
+        //    return false;
+        
+        // operate on vector3f translation equivalence instead of point equality
+        if(!v.anchor.getTranslation().equals(anchor.getTranslation()))
             return false;
         
         // this is the low tech, ghetto way of doing things

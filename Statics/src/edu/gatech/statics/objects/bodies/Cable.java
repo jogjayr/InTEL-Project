@@ -19,22 +19,8 @@ import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class Cable extends Body {
+public class Cable extends TwoForceMember {
     
-    float tensionAmount;
-    // tension amount, determines manitude of tension vectors
-    // can also have negative value, to indicate compression?
-    
-    public void setByEndpoints(Vector3f end1, Vector3f end2) {
-        setTranslation( end1.add(end2).mult(.5f) );
-        
-        Matrix3f mat = new Matrix3f();
-        mat.fromStartEndVectors(Vector3f.UNIT_Y, end2.subtract(end1).normalize());
-        setRotation(mat);
-        
-        setDimensions(0, end1.distance(end2), 0);
-    }
-
     public void createDefaultSchematicRepresentation() {
         CylinderRepresentation rep = new CylinderRepresentation(this);
         rep.setRadius(.1f);
@@ -45,17 +31,15 @@ public class Cable extends Body {
     
     /** Creates a new instance of Cable */
     public Cable() {
-        this(Vector3f.ZERO, Vector3f.UNIT_Y);
+        super();
     }
     
     public Cable(Vector3f end1, Vector3f end2) {
-        setByEndpoints(end1, end2);
+        super(end1, end2);
     }
     
     public Cable(Point end1, Point end2) {
-        setByEndpoints(end1.getTranslation(), end2.getTranslation());
-        addObject(end1);
-        addObject(end2);
+        super(end1, end2);
     }
     
 }
