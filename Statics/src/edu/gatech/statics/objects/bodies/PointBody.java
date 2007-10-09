@@ -37,7 +37,7 @@ public class PointBody extends Body {
      */
     public void connectToTwoForceMembers(TwoForceMember ... members) {
         for (TwoForceMember twoForceMember : members) {
-            Connector2ForceMember2d connector = new Connector2ForceMember2d(myPoint.getTranslation());
+            Connector2ForceMember2d connector = new Connector2ForceMember2d(myPoint);
             connector.attach(this, twoForceMember);
             connector.setDirection(twoForceMember.getDirectionFrom(myPoint));
             

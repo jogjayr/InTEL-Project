@@ -10,7 +10,6 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
-import com.jmex.model.collada.schema.attachmentType;
 import edu.gatech.statics.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,7 +71,14 @@ abstract public class Body extends SimulationObject {
      */
     
     private List<SimulationObject> attachedObjects = new ArrayList();
-    public void addObject(SimulationObject obj) {attachedObjects.add(obj);}
+    public void addObject(SimulationObject obj) {
+        
+        if(!attachedObjects.contains(obj))
+            attachedObjects.add(obj);
+        
+        if(obj instanceof Joint)
+            addObject(((Joint)obj).getPoint());
+    }
     public void removeObject(SimulationObject obj) {attachedObjects.remove(obj);}
     public List<SimulationObject> getAttachedObjects() {return Collections.unmodifiableList(attachedObjects);}
     

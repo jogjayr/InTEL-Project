@@ -10,6 +10,7 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.SimulationObject;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,19 +19,33 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-abstract public class Joint extends Point {
+abstract public class Joint extends SimulationObject {
     
+    private Point myPoint;
     private Body body1, body2;
+
+    public Vector3f getTranslation() {
+        return myPoint.getTranslation();
+    }
+
+    public void createDefaultSchematicRepresentation() {}
+    
+    public Point getPoint() {return myPoint;}
     
     public void attachToWorld(Body body) {
         this.body1 = body;
         this.body2 = null;
+        
+        body.addObject(this);
         // other stuff regarding simulation logic
     }
     
     public void attach(Body body1, Body body2) {
         this.body1 = body1;
         this.body2 = body2;
+        
+        body1.addObject(this);
+        body2.addObject(this);
         // other stuff regarding simulation logic
     }
     public Body getBody1() {return body1;}
@@ -52,8 +67,8 @@ abstract public class Joint extends Point {
     abstract public List<Moment> getReactionMoments();
     
     /** Creates a new instance of Joint */
-    public Joint(Vector3f position) {
-        super(position);
+    public Joint(Point point) {
+        myPoint = point;
     }
     
     public List<Vector> getReactions(Body body) {

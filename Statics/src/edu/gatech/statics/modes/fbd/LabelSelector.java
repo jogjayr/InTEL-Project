@@ -134,6 +134,11 @@ public class LabelSelector extends SelectionTool {
             String[] split = text.split(" ");
             try {
                 float value = Float.parseFloat(split[0]);
+                
+                // we do not want null values.
+                if(value == 0)
+                    return false;
+                
                 obj.setMagnitude(value);
                 obj.setSymbol(false);
             } catch(NumberFormatException e) {

@@ -63,11 +63,14 @@ public class Bridge01 extends Exercise {
         StaticsApplication.getApp().setDrawScale(2f);
         
         
-        Point A = new Pin2d(new Vector3f(-20,-12,0));
+        Point A = new Point(new Vector3f(-20,-12,0));
         Point B = new Point(new Vector3f(-10,12,0));
         Point C = new Point(new Vector3f(0,-12,0));
         Point D = new Point(new Vector3f(10,12,0));
-        Point E = new Roller2d(new Vector3f(20,-12,0));
+        Point E = new Point(new Vector3f(20,-12,0));
+        
+        Pin2d jointA = new Pin2d(A);
+        Roller2d jointE = new Roller2d(E);
         
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
@@ -106,9 +109,9 @@ public class Bridge01 extends Exercise {
         BodyD.createDefaultSchematicRepresentation();
         BodyE.createDefaultSchematicRepresentation();
         
-        ((Pin2d)A).attachToWorld(BodyA);
-        ((Roller2d)E).attachToWorld(BodyE);
-        ((Roller2d)E).setDirection(Vector3f.UNIT_Y);
+        jointA.attachToWorld(BodyA);
+        jointE.attachToWorld(BodyE);
+        jointE.setDirection(Vector3f.UNIT_Y);
         
         Force loadD = new Force(D,new Vector3f(0, -200, 0));
         loadD.createDefaultSchematicRepresentation();

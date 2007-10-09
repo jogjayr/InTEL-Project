@@ -13,6 +13,7 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ public class Hinge extends Joint {
     public void setAxis(Vector3f axis) {this.axis = axis;}
     
     /** Creates a new instance of Hinge */
-    public Hinge(Vector3f position) {
-        super(position);
+    public Hinge(Point point) {
+        super(point);
     }
 
     public List<Force> getReactionForces() {

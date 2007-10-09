@@ -13,6 +13,7 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class Roller2d extends Joint {
     public void setDirection(Vector3f direction) {this.direction = direction.normalize();}
     
     /** Creates a new instance of Roller */
-    public Roller2d(Vector3f position) {
-        super(position);
+    public Roller2d(Point point) {
+        super(point);
     }
 
     public List<Force> getReactionForces() {
-        return Collections.singletonList(new Force(this, direction));
+        return Collections.singletonList(new Force(getPoint(), direction));
     }
 
     public List<Moment> getReactionMoments() {

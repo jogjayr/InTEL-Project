@@ -34,7 +34,7 @@ public class Point extends SimulationObject {
         addRepresentation(rep1);
         addRepresentation(rep2);
     }
-
+    
     public String getDescription() {
         return "Point: "+getName();
     }

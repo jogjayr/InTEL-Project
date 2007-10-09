@@ -10,7 +10,6 @@
 package edu.gatech.statics.modes.fbd;
 
 import com.jme.math.Vector3f;
-import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.util.ClickListener;
@@ -18,6 +17,7 @@ import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.VectorListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +86,8 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         runtimeDeletionManipulator.setEnabled(false);
         force.addManipulator(runtimeDeletionManipulator);
         
+        VectorListener forceListener = new VectorOverlapDetector(world, force);
+        force.addListener(forceListener);
         
         LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
         labelTool.setHintText("");

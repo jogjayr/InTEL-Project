@@ -13,6 +13,8 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.*;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,6 +26,11 @@ public class Vector extends SimulationObject {
     private Point anchor;
     private Vector3f value;
     private float magnitude;
+    
+    private List<VectorListener> listeners = new ArrayList<VectorListener>();
+    
+    public void addListener(VectorListener listener) {listeners.add(listener);}
+    public void removeListener(VectorListener listener) {listeners.remove(listener);}
     
     private boolean symbol = false;
     public boolean isSymbol() {return symbol;}
@@ -60,15 +67,21 @@ public class Vector extends SimulationObject {
         Vector3f v = mat.mult(Vector3f.UNIT_Z);
         v.multLocal(magnitude);
         //if(!v.equals(value))
-        value = v;
+        //value = v;
+        setValue(v);
     }
     
     //public void setAnchor(Vector3f anchor) {this.anchor = anchor;}
     //public Vector3f getAnchor() {return anchor;}
     
     public void setValue(Vector3f value) {
+        
+        Vector3f oldValue = this.value;
         this.value = value;
         magnitude = value.length();
+        
+        for(VectorListener listener : listeners)
+            listener.valueChanged(oldValue);
     }
     public Vector3f getValue() {return value;}
 
@@ -102,11 +115,28 @@ public class Vector extends SimulationObject {
         
         // this is the low tech, ghetto way of doing things
         // but it should suffice for now.
-        return  Math.abs(v.value.x - value.x) <= .001f &&
-                Math.abs(v.value.y - value.y) <= .001f &&
-                Math.abs(v.value.z - value.z) <= .001f;
+        //return  Math.abs(v.value.x - value.x) <= .001f &&
+        //        Math.abs(v.value.y - value.y) <= .001f &&
+        //        Math.abs(v.value.z - value.z) <= .001f;
         
-        //return v.anchor == anchor && v.value.equals(value);
+        return v.anchor == anchor && v.value.equals(value);
+    }
+    
+    public ArrowRepresentation getArrow() {
+        for(Representation rep : getRepresentation(RepresentationLayer.vectors))
+            if(rep instanceof ArrowRepresentation)
+                return (ArrowRepresentation) rep;
+        return null;
+    }
+    
+    public Vector3f getDisplayCenter() {
+        
+        ArrowRepresentation arrow = getArrow();
+        if(arrow == null)
+            return super.getDisplayCenter();
+        
+        float distance = 1+2*(arrow.getLength() + arrow.getAxisOffset());
+        return getTranslation().add( getValue().normalize().mult(distance) );
     }
 
     public String getLabelText() {

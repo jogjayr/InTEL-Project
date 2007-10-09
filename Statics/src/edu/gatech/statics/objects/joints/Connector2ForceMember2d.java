@@ -13,6 +13,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class Connector2ForceMember2d extends Joint {
     public void setDirectionNegatable(boolean negatable) {directionNegatable = negatable;}
     
     /** Creates a new instance of Connector2ForceMember */
-    public Connector2ForceMember2d(Vector3f position) {
-        super(position);
+    public Connector2ForceMember2d(Point point) {
+        super(point);
     }
 
     public List<Force> getReactionForces() {
-        return Collections.singletonList(new Force(this, direction));
+        return Collections.singletonList(new Force(getPoint(), direction));
     }
 
     public List<Moment> getReactionMoments() {

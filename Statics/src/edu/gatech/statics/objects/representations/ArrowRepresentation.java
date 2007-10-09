@@ -31,6 +31,13 @@ public class ArrowRepresentation extends Representation<Vector> {
     protected Cylinder tip;
     protected Cylinder tail;
     
+    protected float axisOffset = 0;
+    public void setAxisOffset(float axisOffset) {this.axisOffset = axisOffset;}
+    public float getAxisOffset() {return axisOffset;}
+    
+    protected float magnitude;
+    public float getLength() {return magnitude;}
+    
     public ArrowRepresentation(Vector target) {
         this(target, true);
     }
@@ -71,6 +78,7 @@ public class ArrowRepresentation extends Representation<Vector> {
 
     protected void setMagnitude(float magnitude) {
         
+        this.magnitude = magnitude;
         //magnitude /= StaticsApplication.getApp().getDrawScale();
         
         if(hasHead) {
@@ -91,19 +99,19 @@ public class ArrowRepresentation extends Representation<Vector> {
                 setCullMode(CULL_NEVER);
             }
 
-            tail.setLocalTranslation(0,0,tailMagnitude/2);
+            tail.setLocalTranslation(0,0,tailMagnitude/2 + axisOffset);
             tail.setLocalScale(new Vector3f( tailWidth, tailWidth, tailMagnitude ));
             //tail.setHeight(tailMagnitude);
             //tail.setDefaultColor(color);
 
-            tip.setLocalTranslation(0,0,tailMagnitude+tipMagnitude/2);
+            tip.setLocalTranslation(0,0,tailMagnitude+tipMagnitude/2 + axisOffset);
             tip.setLocalScale(new Vector3f( tipWidth, tipWidth, tipMagnitude ));
             //tip.setHeight(tipMagnitude);
             //tip.setDefaultColor(color);
             
         } else {
             
-            tail.setLocalTranslation(0,0,magnitude/2);
+            tail.setLocalTranslation(0,0,magnitude/2 + axisOffset);
             tail.setLocalScale(new Vector3f( tailWidth, tailWidth, magnitude ));
             
         }

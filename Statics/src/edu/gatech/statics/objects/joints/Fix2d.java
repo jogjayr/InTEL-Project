@@ -13,6 +13,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,21 +25,21 @@ import java.util.List;
 public class Fix2d extends Joint {
     
     /** Creates a new instance of Fix */
-    public Fix2d(Vector3f position) {
-        super(position);
+    public Fix2d(Point point) {
+        super(point);
     }
     
     public boolean isForceDirectionNegatable() {return true;}
 
     public List<Force> getReactionForces() {
         List<Force> r = new LinkedList();
-        r.add(new Force(this, Vector3f.UNIT_X));
-        r.add(new Force(this, Vector3f.UNIT_Y));
+        r.add(new Force(getPoint(), Vector3f.UNIT_X));
+        r.add(new Force(getPoint(), Vector3f.UNIT_Y));
         return r;
     }
 
     public List<Moment> getReactionMoments() {
-        return Collections.singletonList(new Moment(this, Vector3f.UNIT_Z));
+        return Collections.singletonList(new Moment(getPoint(), Vector3f.UNIT_Z));
     }
     
 }

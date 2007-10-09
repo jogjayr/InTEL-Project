@@ -74,10 +74,15 @@ public class PurseExercise extends Exercise {
         
         
         Point A = new Point(new Vector3f(-17,-16+6,0));
-        Connector2ForceMember2d B = new Connector2ForceMember2d(new Vector3f(13,-16+6,0));
-        Pin2d C = new Pin2d(new Vector3f(18,-16+6,0));
-        Connector2ForceMember2d D = new Connector2ForceMember2d(new Vector3f(18,13+6,0));
-        Pin2d E = new Pin2d(new Vector3f(18f,16+6,0));
+        Point B = new Point(new Vector3f(13,-16+6,0));
+        Point C = new Point(new Vector3f(18,-16+6,0));
+        Point D = new Point(new Vector3f(18,13+6,0));
+        Point E = new Point(new Vector3f(18f,16+6,0));
+        
+        Connector2ForceMember2d jointB = new Connector2ForceMember2d(B);
+        Connector2ForceMember2d jointD = new Connector2ForceMember2d(D);
+        Pin2d jointC = new Pin2d(C);
+        Pin2d jointE = new Pin2d(E);
         
         Point G = new Point(new Vector3f(3.0f,-16+6,0));
         
@@ -104,9 +109,12 @@ public class PurseExercise extends Exercise {
         Body upperArm = new Beam(E,C);
         Body forearm = new Beam(C,A);
         Cable tendon = new Cable(D,B);
-        forearm.addObject(B);
-        forearm.addObject(G);
-        upperArm.addObject(D);
+        //forearm.addObject(jointB);
+        //forearm.addObject(G);
+        //upperArm.addObject(jointD);
+        //upperArm.addObject(jointC);
+        //forearm.addObject(jointC);
+        
         
         Force purse = new Force(A, new Vector3f(0,-19.6f,0));
         forearm.addObject(purse);
@@ -119,12 +127,12 @@ public class PurseExercise extends Exercise {
         //Force weight = new Force(G, new Vector3f(0,-50,0));
         //forearm.addObject(weight);
         
-        B.attach( forearm, tendon );
-        B.setDirection(tendon.getDirectionFrom(B)); // points up tendon
-        C.attach( forearm, upperArm );
-        D.attach( upperArm, tendon );
-        D.setDirection(tendon.getDirectionFrom(D));
-        E.attach( upperArm, null );
+        jointB.attach( forearm, tendon );
+        jointB.setDirection(tendon.getDirectionFrom(B)); // points up tendon
+        jointC.attach( forearm, upperArm );
+        jointD.attach( upperArm, tendon );
+        jointD.setDirection(tendon.getDirectionFrom(D));
+        jointE.attachToWorld( upperArm );
         
         E.setName("E");
         D.setName("D");

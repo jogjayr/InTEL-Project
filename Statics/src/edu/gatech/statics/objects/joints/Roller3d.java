@@ -13,6 +13,7 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ public class Roller3d extends Joint {
     public void setNormal(Vector3f normal) {this.normal = normal;}
     
     /** Creates a new instance of Roller3d */
-    public Roller3d(Vector3f position) {
-        super(position);
+    public Roller3d(Point point) {
+        super(point);
     }
 
     public List<Force> getReactionForces() {
