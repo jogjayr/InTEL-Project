@@ -41,6 +41,10 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         force = new Force(forceAnchor,new Vector3f(1.5f,1f,0).normalize());
         force.setSymbol(true);
         force.createDefaultSchematicRepresentation();
+        
+        VectorListener forceListener = new VectorOverlapDetector(world, force);
+        force.addListener(forceListener);
+        
     }
     
     protected void onActivate() {
@@ -85,9 +89,6 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, force);
         runtimeDeletionManipulator.setEnabled(false);
         force.addManipulator(runtimeDeletionManipulator);
-        
-        VectorListener forceListener = new VectorOverlapDetector(world, force);
-        force.addListener(forceListener);
         
         LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
         labelTool.setHintText("");
