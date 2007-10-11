@@ -9,8 +9,6 @@
 
 package edu.gatech.statics.objects.bodies;
 
-import edu.gatech.statics.objects.Body;
-import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
@@ -28,7 +26,6 @@ public class Cable extends TwoForceMember {
         addRepresentation(rep);
     }
     
-    
     /** Creates a new instance of Cable */
     public Cable() {
         super();
@@ -41,5 +38,7 @@ public class Cable extends TwoForceMember {
     public Cable(Point end1, Point end2) {
         super(end1, end2);
     }
+
+    public boolean canCompress() {return false;}
     
 }

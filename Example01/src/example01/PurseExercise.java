@@ -79,8 +79,12 @@ public class PurseExercise extends Exercise {
         Point D = new Point(new Vector3f(18,13+6,0));
         Point E = new Point(new Vector3f(18f,16+6,0));
         
-        Connector2ForceMember2d jointB = new Connector2ForceMember2d(B);
-        Connector2ForceMember2d jointD = new Connector2ForceMember2d(D);
+        Body upperArm = new Beam(E,C);
+        Body forearm = new Beam(C,A);
+        Cable tendon = new Cable(D,B);
+        
+        Connector2ForceMember2d jointB = new Connector2ForceMember2d(B, tendon);
+        Connector2ForceMember2d jointD = new Connector2ForceMember2d(D, tendon);
         Pin2d jointC = new Pin2d(C);
         Pin2d jointE = new Pin2d(E);
         
@@ -106,9 +110,6 @@ public class PurseExercise extends Exercise {
         distance5.createDefaultSchematicRepresentation(3f);
         world.add(distance5);
 
-        Body upperArm = new Beam(E,C);
-        Body forearm = new Beam(C,A);
-        Cable tendon = new Cable(D,B);
         //forearm.addObject(jointB);
         //forearm.addObject(G);
         //upperArm.addObject(jointD);
@@ -128,10 +129,10 @@ public class PurseExercise extends Exercise {
         //forearm.addObject(weight);
         
         jointB.attach( forearm, tendon );
-        jointB.setDirection(tendon.getDirectionFrom(B)); // points up tendon
+        //jointB.setDirection(tendon.getDirectionFrom(B)); // points up tendon
         jointC.attach( forearm, upperArm );
         jointD.attach( upperArm, tendon );
-        jointD.setDirection(tendon.getDirectionFrom(D));
+        //jointD.setDirection(tendon.getDirectionFrom(D));
         jointE.attachToWorld( upperArm );
         
         E.setName("E");

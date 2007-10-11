@@ -10,8 +10,6 @@
 package edu.gatech.statics.objects.bodies;
 
 import edu.gatech.statics.Representation;
-import edu.gatech.statics.objects.Body;
-import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
@@ -20,7 +18,7 @@ import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class Beam extends TwoForceMember {
+public class Beam extends LongBody {
     
     public void createDefaultSchematicRepresentation() {
         Representation rep = new CylinderRepresentation(this);

@@ -36,16 +36,16 @@ public class PointBody extends Body {
      * The point body connects to others by forming joints between each
      */
     public void connectToTwoForceMembers(TwoForceMember ... members) {
-        for (TwoForceMember twoForceMember : members) {
-            Connector2ForceMember2d connector = new Connector2ForceMember2d(myPoint);
-            connector.attach(this, twoForceMember);
-            connector.setDirection(twoForceMember.getDirectionFrom(myPoint));
+        for (TwoForceMember member : members) {
+            Connector2ForceMember2d connector = new Connector2ForceMember2d(myPoint, member);
+            connector.attach(this, member);
+            //connector.setDirection(member.getDirectionFrom(myPoint));
             
-            twoForceMember.addObject(connector);
+            member.addObject(connector);
             addObject(connector);
             
-            if(twoForceMember instanceof Beam)
-                connector.setDirectionNegatable(true);
+            //if(member instanceof Beam)
+            //    connector.setDirectionNegatable(true);
         }
     }
 

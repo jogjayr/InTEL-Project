@@ -18,7 +18,7 @@ import edu.gatech.statics.application.Units;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
@@ -82,13 +82,13 @@ public class Bridge01 extends Exercise {
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);*/
         
-        Beam AB = new Beam(A,B);
-        Beam BC = new Beam(B,C);
-        Beam CD = new Beam(C,D);
-        Beam DE = new Beam(D,E);
-        Beam AC = new Beam(A,C);
-        Beam BD = new Beam(B,D);
-        Beam CE = new Beam(C,E);
+        Bar AB = new Bar(A,B);
+        Bar BC = new Bar(B,C);
+        Bar CD = new Bar(C,D);
+        Bar DE = new Bar(D,E);
+        Bar AC = new Bar(A,C);
+        Bar BD = new Bar(B,D);
+        Bar CE = new Bar(C,E);
         
         PointBody BodyA = new PointBody(A);
         PointBody BodyB = new PointBody(B);
