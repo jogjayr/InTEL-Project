@@ -32,12 +32,18 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
     public SimType getTarget() {return target;}
     
     protected List<ClickListener> clickListeners = new ArrayList();
-    public void addClickListener(ClickListener listener) {clickListeners.add(listener);}
-    public void removeClickListener(ClickListener listener) {clickListeners.remove(listener);}
+    public void addClickListener(ClickListener listener) {
+        clickListeners.add(listener);
+    }
+    public void removeClickListener(ClickListener listener) {
+        clickListeners.remove(listener);
+    }
     
     
     protected void clickEvent(boolean isClick) {
-        for(ClickListener listener : clickListeners)
+
+        List<ClickListener> clickListeners1 = new ArrayList<ClickListener>(clickListeners);
+        for(ClickListener listener : clickListeners1)
             if(isClick)
                 listener.onClick(this);
             else

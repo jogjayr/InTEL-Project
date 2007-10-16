@@ -21,21 +21,27 @@ import edu.gatech.statics.World;
  */
 public class DeletableManipulator extends Manipulator {
     
+    private World world;
+    
     /** Creates a new instance of DeletableManipulator */
     public DeletableManipulator(final World world, final SimulationObject target) {
         super(target);
+        this.world = world;
         
         InputActionInterface action = new InputActionInterface() {
             public void performAction(InputActionEvent evt) {
-                world.clearSelection();
-                world.remove(target);
-                world.updateNodes();
-                
-                target.destroy();
+                performDelete();
             }
         };
         
         addAction(action, "delete", KeyInput.KEY_DELETE, false);
     }
     
+    public void performDelete() {
+        world.clearSelection();
+        world.remove(getTarget());
+        world.updateNodes();
+
+        getTarget().destroy();
+    }
 }

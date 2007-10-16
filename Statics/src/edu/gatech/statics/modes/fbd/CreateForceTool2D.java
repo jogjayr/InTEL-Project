@@ -53,6 +53,8 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         world.updateNodes();
         
         enableDragManipulator();
+        
+        StaticsApplication.getApp().enableSelection(false);
     }
 
     protected void onCancel() {
@@ -67,6 +69,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
     }
 
     protected void onFinish() {
+        StaticsApplication.getApp().enableSelection(true);
     }
     
     protected void finishForce() {
@@ -76,17 +79,17 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         final Orientation2DSnapManipulator runtimeOrientationManipulator = orientationManipulator;
         
         runtimeOrientationManipulator.removeClickListener(this);
-        runtimeOrientationManipulator.addClickListener(new ClickListener() {
-            public void onClick(Manipulator m) {
-                world.clearSelection();
-            }
-            public void onRelease(Manipulator m) {}
-        });
         runtimeOrientationManipulator.setEnabled(false);
         force.addManipulator(runtimeOrientationManipulator);
         
         // so we can delete the force if we don't like it
-        final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, force);
+        final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, force) {
+            // we override this method so that when the force is deleted, the other forces will snap appropriately.
+            public void performDelete() {
+                super.performDelete();
+                force.setValue(force.getValue());
+            }
+        };
         runtimeDeletionManipulator.setEnabled(false);
         force.addManipulator(runtimeDeletionManipulator);
         

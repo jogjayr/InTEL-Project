@@ -21,7 +21,9 @@ import com.jme.input.MouseInput;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
+import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -156,7 +158,10 @@ public class StaticsApplication {
         timePerFrame = timer.getTimePerFrame();
         
         try {
+            selector.setEnabled(true);
             input.update( timePerFrame );
+            selector.setEnabled(false);
+            
         } catch(NullPointerException e) {
             // jME doesn't know how to tolerate removing input handlers
             // as the result of an input action. This occasionally causes NullPointerExceptions
@@ -206,6 +211,15 @@ public class StaticsApplication {
         r.draw(currentInterface.getBuiNode());
         r.renderQueue();
         r.clearQueue();
+        
+        /*if(selector.toastCondition2) {
+            Quad quad = new Quad("",10,10);
+            if(selector.toastCondition1)
+                quad.setDefaultColor(ColorRGBA.green);
+            else
+                quad.setDefaultColor(ColorRGBA.cyan);
+            r.draw(quad);
+        }*/
     }
 
     public void init() {

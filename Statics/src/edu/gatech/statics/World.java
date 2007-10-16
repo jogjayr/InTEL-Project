@@ -205,6 +205,8 @@ public class World {
             return;
         }
         
+        //System.out.println("Clicked... "+obj+" "+getSelectedObjects().contains(obj));
+        
         if(getSelectableFilter() != null && obj.isSelectable() && getSelectableFilter().canSelect(obj)) {
             
             if(getSelectedObjects().contains(obj)) {
@@ -227,6 +229,8 @@ public class World {
     
     public void select(SimulationObject obj) {
         
+        //System.out.println("Selecting...");
+        
         // notify listeners
         for(SelectionListener listener : getSelectionListeners())
             listener.onSelect(obj);
@@ -240,6 +244,9 @@ public class World {
     }
     
     public void clearSelection() {
+        
+        //System.out.println("Clearing Selection...");
+        
         selectedObjects = new ArrayList();
         for(SimulationObject obj : allObjects) {
             obj.setDisplaySelected(false);

@@ -35,7 +35,6 @@ package edu.gatech.statics.application;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.SimulationObject;
-import com.jme.input.Mouse;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
@@ -50,6 +49,7 @@ import com.jme.scene.Node;
 import edu.gatech.statics.World;
 import java.util.Collections;
 import java.util.List;
+import sun.nio.cs.ext.ISCII91;
 
 /**
  * <code>MousePick</code>
@@ -72,12 +72,27 @@ public class MousePick extends MouseInputAction {
     }
     
     private boolean wasMouseDown;
+    private boolean enabled;
+
+    void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    
+    //boolean toastCondition1, toastCondition2;
+    
     
     public void performAction(InputActionEvent evt) {
         
+        if(!enabled)
+            return;
+        
         boolean isMouseDown = MouseInput.get().isButtonDown(0);
         boolean isClicking = isMouseDown && !wasMouseDown;
+        
         wasMouseDown = isMouseDown;
+        
+        //toastCondition2 = isClicking;
+        //toastCondition1 = false;
         
         Camera camera = app.getCamera();
         World world = app.getCurrentWorld();
@@ -105,9 +120,16 @@ public class MousePick extends MouseInputAction {
                     if(!obj.isSelectable())
                         continue;
                     
+                    if(     StaticsApplication.getApp().getCurrentWorld() != null &&
+                            StaticsApplication.getApp().getCurrentWorld().getSelectableFilter() != null &&
+                            !StaticsApplication.getApp().getCurrentWorld().getSelectableFilter().canSelect(obj))
+                        continue;
+                    
                     hover(obj);
-                    if(isClicking)
+                    if(isClicking) {
                         select(obj);
+                        //toastCondition1 = true;
+                    }
                 }
             }
         } else {

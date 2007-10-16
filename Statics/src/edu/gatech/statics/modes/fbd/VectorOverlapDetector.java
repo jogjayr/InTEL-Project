@@ -34,10 +34,10 @@ class VectorOverlapDetector implements VectorListener {
 
     public void valueChanged(Vector3f oldValue) {
 
-        ArrowRepresentation myArrow = myVector.getArrow();
+        //ArrowRepresentation myArrow = myVector.getArrow();
         
-        if (myArrow == null)
-            return;
+        //if (myArrow == null)
+        //    return;
 
         List<Vector> nearVectors = getVectors();        
         updateVectors(nearVectors, oldValue);

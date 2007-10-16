@@ -180,6 +180,8 @@ public class FBDWorld extends World {
 
     public void select(SimulationObject obj) {
         
+        //System.out.println("FBDWorld select...");
+        
         if(locked)
             return;
         
