@@ -61,8 +61,8 @@ public class FBDWorld extends World {
     public List<Body> getBodies() {return Collections.unmodifiableList(bodies);}
     
     private List<Vector> externalForces = new ArrayList();
-    private List<Vector> externalForcesAdded = new ArrayList();
-    private List<SimulationObject> fbdObjects = new ArrayList();
+    //private List<Vector> externalForcesAdded = new ArrayList();
+    //private List<SimulationObject> fbdObjects = new ArrayList();
     
     public EquationWorld getEquationWorld() {return equation;}
     public void createEquationWorld() {
@@ -79,18 +79,26 @@ public class FBDWorld extends World {
         this.parentWorld = parentWorld;
         this.bodies = bodies;
         
-        for(SimulationObject obj : parentWorld.allObjects())
-            add(obj);
+        for(SimulationObject obj : parentWorld.allObjects()) {
+            if( !(obj instanceof Vector) )
+                add(obj);
+        }
         
         for(Body body : bodies) {
-            fbdObjects.add(body);
-            
             for(SimulationObject obj : body.getAttachedObjects())
-                if(canAddObject(obj))
-                    fbdObjects.add(obj);
-                else if(obj instanceof Force || obj instanceof Moment)
+                if(obj instanceof Force || obj instanceof Moment)
                     externalForces.add((Vector) obj);
         }
+        
+        /*for(Body body : bodies) {
+            fbdObjects.add(body);
+            
+            //for(SimulationObject obj : body.getAttachedObjects())
+            //    if(canAddObject(obj))
+            //        fbdObjects.add(obj);
+                //else if(obj instanceof Force || obj instanceof Moment)
+                //    externalForces.add((Vector) obj);
+        }*/
         
         updateNodes();
         setupIcon();
@@ -153,7 +161,7 @@ public class FBDWorld extends World {
     
     public void activate() {
         
-        for(SimulationObject obj : parentWorld.allObjects()) {
+        /*for(SimulationObject obj : parentWorld.allObjects()) {
             
             // set all non-FBD objects to be grayed.
             // forces and moments remain selectable that they may be added to
@@ -165,10 +173,10 @@ public class FBDWorld extends World {
                 } else
                     obj.setSelectable(false);
                 
-                if(!externalForcesAdded.contains(obj) && !(obj instanceof Measurement))
-                    obj.setDisplayGrayed(true);
+                //if(!externalForcesAdded.contains(obj) && !(obj instanceof Measurement))
+                //    obj.setDisplayGrayed(true);
             }
-        }
+        }*/
         
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
@@ -185,6 +193,9 @@ public class FBDWorld extends World {
         if(locked)
             return;
         
+        super.select(obj);
+        
+        /*
         // notify listeners
         for(SelectionListener listener : getSelectionListeners())
             listener.onSelect(obj);
@@ -214,14 +225,14 @@ public class FBDWorld extends World {
 
             if(enableManipulatorsOnSelect())
                 obj.enableManipulators(true);
-        }
+        }*/
     }
     
     
     // whether we can add an object carried over from a body.
     // this may change depending on special cases.
     // ie- we want to keep measurements, points
-    protected boolean canAddObject(SimulationObject obj) {
+    /*protected boolean canAddObject(SimulationObject obj) {
         
         if(obj instanceof Point)
             return true;
@@ -230,7 +241,7 @@ public class FBDWorld extends World {
             return true;
         
         return false;
-    }
+    }*/
 
     public void setSelectableFilterDefault() {
         setSelectableFilter(new SelectableFilter() {
@@ -268,6 +279,18 @@ public class FBDWorld extends World {
         // step 2: for vectors that we can click on and add, ie, external added forces,
         // make sure that the user has added all of them.
         for(Vector external : externalForces) {
+            boolean success = addedForces.remove(external);
+            if(!success) {
+                System.out.println("check: diagram does not contain external forces");
+                System.out.println("check: FAILED");
+
+                StaticsApplication.getApp().setAdvice(
+                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_external"));
+                return false;
+            }
+        }
+        
+        /*for(Vector external : externalForces) {
             if(!externalForcesAdded.contains(external)) {
                 if(addedForces.contains(external)) {
                     System.out.println("check: removing external force "+external);
@@ -281,7 +304,7 @@ public class FBDWorld extends World {
                     return false;
                 }
             }
-        }
+        }*/
         
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for(Body body : bodies) {
@@ -462,8 +485,8 @@ public class FBDWorld extends World {
     private boolean testReaction(Vector reaction, List<Vector> addedForces) {
         
         // if the reaction is given to the user, leave it be.
-        if(externalForces.contains(reaction))
-            return true;
+        //if(externalForces.contains(reaction))
+        //    return true;
         
         // test and remove reaction in the addedForces
         if(addedForces.contains(reaction)) {
