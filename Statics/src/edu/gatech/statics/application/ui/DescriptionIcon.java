@@ -35,12 +35,11 @@ public class DescriptionIcon extends AppWindow {
     }
 
     void doPopup() {
-        final BPopupWindow window = new BPopupWindow(this, new BorderLayout());
+        final BPopupWindow window = new ModalPopupWindow(this, new BorderLayout());
         window.setModal(true);
         window.setStyleClass("description_window");
-
+        
         HTMLView view = new HTMLView();
-        //view.setStyleSheet("infoWindow");
         view.setContents(StaticsApplication.getApp().getExercise().getDescription());
         
         window.add(view, BorderLayout.CENTER);

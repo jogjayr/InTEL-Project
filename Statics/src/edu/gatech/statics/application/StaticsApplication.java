@@ -72,6 +72,22 @@ public class StaticsApplication {
     public RootInterface getRootInterface() {return rootInterface;}
     public AppInterface getCurrentInterface() {return currentInterface;}
     
+    public void setModal(BRootNode modalNode, boolean modal) {
+        if(modal) {
+            rootInterface.getBuiNode().setEnabled( rootInterface.getBuiNode() == modalNode );
+            currentInterface.getBuiNode().setEnabled( currentInterface.getBuiNode() == modalNode );
+            labelNode.setEnabled( labelNode == modalNode );
+            
+            enableSelection(false);
+        } else {
+            rootInterface.getBuiNode().setEnabled( true );
+            currentInterface.getBuiNode().setEnabled( true );
+            labelNode.setEnabled( true );
+            
+            enableSelection(true);
+        }
+    }
+    
     private boolean selectionEnabled = true;
     private boolean hideGrays;
     private MousePick selector;
@@ -212,14 +228,6 @@ public class StaticsApplication {
         r.renderQueue();
         r.clearQueue();
         
-        /*if(selector.toastCondition2) {
-            Quad quad = new Quad("",10,10);
-            if(selector.toastCondition1)
-                quad.setDefaultColor(ColorRGBA.green);
-            else
-                quad.setDefaultColor(ColorRGBA.cyan);
-            r.draw(quad);
-        }*/
     }
 
     public void init() {
@@ -299,12 +307,13 @@ public class StaticsApplication {
         setCurrentWorld(fbd);
         FBDInterface fbdInterface = new FBDInterface(fbd);
         setCurrentInterface(fbdInterface);
-        
     }
     
     public void loadExercizeWorld() {
         setCurrentWorld(currentExercise.getWorld());
         setCurrentInterface(new ExerciseInterface());
+        
+        rootInterface.showDescription();
     }
 
     public void loadEquation(FBDWorld fbd) {
@@ -340,25 +349,13 @@ public class StaticsApplication {
     public void hover(SimulationObject obj) {
         if(currentWorld != null)
             currentWorld.hover(obj);
-        //if(currentInterface != null)
-        //    currentInterface.hover(obj);
-        //if(rootInterface != null)
-        //    rootInterface.hover(obj);
     }
     
     public void select(SimulationObject obj) {
         if(currentWorld != null)
             currentWorld.click(obj);
-        //if(currentInterface != null)
-        //    currentInterface.select(obj);
-        //if(rootInterface != null)
-        //    rootInterface.select(obj);
     }
     
-    //public void setSelectionNode(Node node) {
-    //    selector.setNode(node);
-    //}
-
     void cleanup() {
         LoggingSystem.getLogger().log( Level.INFO, "Cleaning up resources." );
 

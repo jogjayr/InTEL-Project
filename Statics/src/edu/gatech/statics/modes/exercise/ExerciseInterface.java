@@ -35,20 +35,6 @@ public class ExerciseInterface extends AppInterface {
     /** Creates a new instance of ExercizeInterface */
     public ExerciseInterface() {
         
-        /*
-        descriptionWindow = new BWindow(getApp().getBuiStyle(), new BorderLayout(5,5));
-        descriptionWindow.setStyleClass("info_window");
-        HTMLView view = new HTMLView();
-        view.setStyleSheet(getHtmlStyle());
-        view.setContents(getApp().getExercise().getDescription());
-        descriptionWindow.add(view, BorderLayout.CENTER);
-        getBuiNode().addWindow(descriptionWindow);
-        descriptionWindow.setBounds(0,0,200,200);
-        descriptionWindow.setLocation(
-                getScreenWidth()-200 - RootInterface.borderSize - RootInterface.windowSpacing,
-                getScreenHeight()-200 - RootInterface.borderSize - RootInterface.windowSpacing);
-        */
-        
         fbdBar = new ExercizeFBDBar();
         getBuiNode().addWindow(fbdBar);
         fbdBar.layoutToolbar();
@@ -56,4 +42,7 @@ public class ExerciseInterface extends AppInterface {
         getBuiNode().updateGeometricState(0, true);
     }
     
+    /*public void activateSelector() {
+        fbdBar.activateSelector();
+    }*/
 }

@@ -113,9 +113,6 @@ public class RootInterface extends AppInterface {
         adviceWindow = new AdviceWindow();
         getBuiNode().addWindow(adviceWindow);
         adviceWindow.setBounds(windowSpacing+borderSize,100+windowSpacing+borderSize,sidebarSize,150);
-        
-        // when the root interface is first created, launch the description popup
-        descriptionIcon.doPopup();
     }
     
     public void setAdvice(String advice) {
@@ -136,10 +133,14 @@ public class RootInterface extends AppInterface {
         //titleWindow.center();
         //titleWindow.setLocation(titleWindow.getX(), getScreenHeight() - titleWindow.getHeight() - windowSpacing - borderSize);
     }
+
+    public void showDescription() {
+        // when the root interface is first created, launch the description popup
+        descriptionIcon.doPopup();
+    }
     
     public void update() {
         //objectBox.update();
-        int foo = 1;
     }
     
 }

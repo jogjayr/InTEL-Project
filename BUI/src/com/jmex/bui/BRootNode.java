@@ -51,6 +51,10 @@ public abstract class BRootNode extends Geometry
         // we need to render in the ortho queue
         setRenderQueueMode(Renderer.QUEUE_ORTHO);
     }
+    
+    private boolean enabled = true;
+    public void setEnabled(boolean enabled) {this.enabled = enabled;}
+    public boolean isEnabled() {return enabled;}
 
     /**
      * Returns the current timestamp used to stamp event times.
@@ -435,6 +439,9 @@ public abstract class BRootNode extends Geometry
      */
     protected void dispatchEvent (BComponent target, BEvent event)
     {
+        if(!enabled)
+            return;
+        
         // notify our global listeners if we have any
         for (int ii = 0, ll = _globals.size(); ii < ll; ii++) {
             try {
@@ -548,6 +555,9 @@ public abstract class BRootNode extends Geometry
      */
     protected void updateHoverComponent (int mx, int my)
     {
+        if(!enabled)
+            return;
+        
         // check for a new hover component starting with each of our root
         // components
         BComponent nhcomponent = null;

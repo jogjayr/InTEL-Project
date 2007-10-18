@@ -63,13 +63,15 @@ public class Exercise {
         return fbd;
     }
     
-    public void initExercise() {
-        // this handles things before the interface has been constructed:
-        // should be material such as doing display and problem manipulation.
-    }
+    /**
+     * this handles things before the interface has been constructed:
+     * should be material such as doing display and problem manipulation.
+     */
+    public void initExercise() {}
     
-    public void loadExercise() {
-        // for file based, can involve deserialization
-        // for code based can just create objects as is.
-    }
+    /**
+     * for file based, can involve deserialization
+     * for code based can just create objects as is.
+     */
+    public void loadExercise() {}
 }

@@ -35,17 +35,11 @@ public class FBDBodySelector extends SelectionTool {
     
     public void onSelect(SimulationObject obj) {
         super.onSelect(obj);
-        
-        //if(!getWorld().getSelectedObjects().isEmpty()) {
-            StaticsApplication.getApp().setAdvice(
-                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("exercise_tools_Selection2"));
-            if(StaticsApplication.getApp().getCurrentInterface().getToolbar() instanceof ExercizeFBDBar)
-                ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Continue");
-        //} else {
-        //    StaticsApplication.getApp().setAdvice(
-        //            "Selection Tool: select one or more bodies to make your FBD, and then press ENTER.");
-        //    ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Create FBD");
-        //}
+
+        StaticsApplication.getApp().setAdvice(
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("exercise_tools_Selection2"));
+        if(StaticsApplication.getApp().getCurrentInterface().getToolbar() instanceof ExercizeFBDBar)
+            ((ExercizeFBDBar)StaticsApplication.getApp().getCurrentInterface().getToolbar()).selectButton.setText("Continue");
     }
 
     protected void onCancel() {
