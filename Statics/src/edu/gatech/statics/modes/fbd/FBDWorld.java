@@ -11,7 +11,6 @@ package edu.gatech.statics.modes.fbd;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
 import com.jme.renderer.TextureRenderer;
 import com.jme.scene.Node;
@@ -24,12 +23,9 @@ import edu.gatech.statics.modes.equation.EquationWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
-import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.util.SelectableFilter;
-import edu.gatech.statics.util.SelectionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +44,15 @@ public class FBDWorld extends World {
         locked = true;
         enableManipulatorsOnSelectDefault(false);
         enableSelectMultipleDefault(false);
+        
+        for(SimulationObject obj : allObjects()) {
+            if(!(obj instanceof Vector))
+                continue;
+            
+            LabelManipulator labelManipulator = (LabelManipulator) obj.getManipulator(LabelManipulator.class);
+            labelManipulator.enableLabeling(false);
+            //obj.removeManipulator(labelManipulator);
+        }
         
         String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
         StaticsApplication.getApp().setAdvice(advice);
@@ -89,16 +94,6 @@ public class FBDWorld extends World {
                 if(obj instanceof Force || obj instanceof Moment)
                     externalForces.add((Vector) obj);
         }
-        
-        /*for(Body body : bodies) {
-            fbdObjects.add(body);
-            
-            //for(SimulationObject obj : body.getAttachedObjects())
-            //    if(canAddObject(obj))
-            //        fbdObjects.add(obj);
-                //else if(obj instanceof Force || obj instanceof Moment)
-                //    externalForces.add((Vector) obj);
-        }*/
         
         updateNodes();
         setupIcon();
@@ -161,23 +156,6 @@ public class FBDWorld extends World {
     
     public void activate() {
         
-        /*for(SimulationObject obj : parentWorld.allObjects()) {
-            
-            // set all non-FBD objects to be grayed.
-            // forces and moments remain selectable that they may be added to
-            // the world if the user selects them
-            if(!fbdObjects.contains(obj)) {
-                if(obj instanceof Force || obj instanceof Moment) {
-                    // do nothing
-                    // handle in selection override
-                } else
-                    obj.setSelectable(false);
-                
-                //if(!externalForcesAdded.contains(obj) && !(obj instanceof Measurement))
-                //    obj.setDisplayGrayed(true);
-            }
-        }*/
-        
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
         StaticsApplication.getApp().resetAdvice();
@@ -195,53 +173,8 @@ public class FBDWorld extends World {
         
         super.select(obj);
         
-        /*
-        // notify listeners
-        for(SelectionListener listener : getSelectionListeners())
-            listener.onSelect(obj);
-
-        if(externalForces.contains(obj) && obj.isGiven()) {
-            
-            // this force or moment was added externally.
-            // for now, we toggle its state as grayed.
-            
-            // however, do nothing if we have selection listeners.
-            // this is awkward, however, we do not want selection problems to occur
-            if(getSelectionListeners().isEmpty()) {
-                if(!externalForcesAdded.contains(obj)) {
-                    obj.setDisplayGrayed( false );
-                    externalForcesAdded.add((Vector)obj);
-                } else {
-                    obj.setDisplayGrayed( true );
-                    externalForcesAdded.remove(obj);
-                }
-            }
-            
-        } else {
-            // resume regular default behavior...
-            // add to selection, and update display
-            getSelectedObjects().add(obj);
-            obj.setDisplaySelected(true);
-
-            if(enableManipulatorsOnSelect())
-                obj.enableManipulators(true);
-        }*/
     }
     
-    
-    // whether we can add an object carried over from a body.
-    // this may change depending on special cases.
-    // ie- we want to keep measurements, points
-    /*protected boolean canAddObject(SimulationObject obj) {
-        
-        if(obj instanceof Point)
-            return true;
-        
-        if(obj instanceof Measurement)
-            return true;
-        
-        return false;
-    }*/
 
     public void setSelectableFilterDefault() {
         setSelectableFilter(new SelectableFilter() {
@@ -289,22 +222,6 @@ public class FBDWorld extends World {
                 return false;
             }
         }
-        
-        /*for(Vector external : externalForces) {
-            if(!externalForcesAdded.contains(external)) {
-                if(addedForces.contains(external)) {
-                    System.out.println("check: removing external force "+external);
-                    addedForces.remove(external);
-                } else {
-                    System.out.println("check: diagram does not contain external forces");
-                    System.out.println("check: FAILED");
-
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_external"));
-                    return false;
-                }
-            }
-        }*/
         
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for(Body body : bodies) {

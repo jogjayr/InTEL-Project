@@ -70,6 +70,10 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         runtimeDeletionManipulator.setEnabled(false);
         moment.addManipulator(runtimeDeletionManipulator);
         
+        final Manipulator labelManipulator = new LabelManipulator(moment);
+        labelManipulator.setEnabled(true);
+        moment.addManipulator(labelManipulator);
+        
         LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
         labelTool.setHintText("");
         labelTool.activate();

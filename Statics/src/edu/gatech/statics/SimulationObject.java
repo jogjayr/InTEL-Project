@@ -12,7 +12,6 @@ package edu.gatech.statics;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.manipulators.Manipulator;
-import edu.gatech.statics.util.SelectionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +30,7 @@ abstract public class SimulationObject {
     // Exercise world automatically sets given to true when added, so if a student
     // constructs something in an FBD, given defaults to false.
     private boolean given = false;
+
     public boolean isGiven() {return given;}
     public void setGiven(boolean given) {this.given = given;}
     
@@ -89,8 +89,18 @@ abstract public class SimulationObject {
     }
     
     public void addManipulator(Manipulator m) {manipulators.add(m);}
-    public void removeManipulator(Manipulator m) {manipulators.remove(m);}
+    public void removeManipulator(Manipulator m) {
+        manipulators.remove(m);
+        m.setEnabledGlobally(false);
+    }
     public List<Manipulator> allManipulators() {return Collections.unmodifiableList(manipulators);}
+    
+    public Manipulator getManipulator(Class manipulatorClass) {
+        for(Manipulator m : allManipulators())
+            if(manipulatorClass.isAssignableFrom(m.getClass()))
+                return m;
+        return null;
+    }
     
     /** Creates a new instance of SimulationObject */
     public SimulationObject(/*World world*/) {

@@ -37,6 +37,8 @@ public class LabelRepresentation extends Representation {
         offset = new Vector3f(xOffset, yOffset, 0);
     }
     
+    public BLabel getLabel() {return label;}
+    
     public void addToInterface() {
         StaticsApplication.getApp().getLabelNode().addWindow(bWindow);
         bWindow.pack();
@@ -54,7 +56,6 @@ public class LabelRepresentation extends Representation {
         bWindow = new BWindow(
                 StaticsApplication.getApp().getBuiStyle(),
                 new BorderLayout());
-        //bWindow.setStyleClass("info_window");
         
         label = new BLabel("");
         label.setText(target.getLabelText());
@@ -63,9 +64,9 @@ public class LabelRepresentation extends Representation {
         bWindow.setStyleClass(style);
         label.setStyleClass(style);
         
+        //label.addListener(new LabelClickListener());
+        
         bWindow.add(label, BorderLayout.CENTER);
-        //StaticsApplication.getApp().getLabelNode().addWindow(bWindow);
-        //bWindow.pack();
         
         setUseWorldScale(false);
         
@@ -83,7 +84,6 @@ public class LabelRepresentation extends Representation {
     private Vector3f pos2d;
     
     public void update() {
-        //super.update();
         
         label.setText(getTarget().getLabelText());
         
@@ -96,5 +96,4 @@ public class LabelRepresentation extends Representation {
         bWindow.setLocation((int)pos2d.x, (int)pos2d.y);
         bWindow.pack();
     }
-    
 }

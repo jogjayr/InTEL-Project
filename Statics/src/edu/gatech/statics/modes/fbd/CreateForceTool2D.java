@@ -93,6 +93,10 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         runtimeDeletionManipulator.setEnabled(false);
         force.addManipulator(runtimeDeletionManipulator);
         
+        final Manipulator labelManipulator = new LabelManipulator(force);
+        labelManipulator.setEnabled(true);
+        force.addManipulator(labelManipulator);
+        
         LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
         labelTool.setHintText("");
         labelTool.activate();

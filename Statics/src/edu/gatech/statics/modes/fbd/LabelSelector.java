@@ -23,6 +23,7 @@ import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.application.ui.ModalPopupWindow;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.objects.manipulators.SelectionTool;
@@ -81,7 +82,7 @@ public class LabelSelector extends SelectionTool {
                 ((obj instanceof Moment) ? "moment" : "force") + "."
                 );
         
-        final BPopupWindow popup = new BPopupWindow(popupRoot, new BorderLayout(5,5));
+        final BPopupWindow popup = new ModalPopupWindow(popupRoot, new BorderLayout(5,5));
         popup.setStyleClass("info_window");
         popup.setModal(true);
         
