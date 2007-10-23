@@ -93,9 +93,9 @@ public class FBDPaletteBar extends Toolbar {
             
             BContainer buttonBar1 = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
 
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/label.png")));
+            /*icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/label.png")));
             button = new BButton(icon, toolListener, "label");
-            buttonBar1.add(button);
+            buttonBar1.add(button);*/
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/force.png")));
             button = new BButton(icon, toolListener, "force");
