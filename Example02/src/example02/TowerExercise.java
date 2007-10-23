@@ -69,12 +69,14 @@ public class TowerExercise extends Exercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 24.0f, 100.0f ));
         StaticsApplication.getApp().setDrawScale(3.5f);
         
-        Fix2d A = new Fix2d(new Vector3f(0,0,0));
+        Point A = new Point(new Vector3f(0,0,0));
         Point B = new Point(new Vector3f(2.5f,55,0));
         Point G = new Point(A.getTranslation().add(B.getTranslation()).mult(.5f));
         A.setName("A");
         B.setName("B");
         G.setName("G");
+        
+        Fix2d jointA = new Fix2d(A);
         
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
@@ -86,7 +88,7 @@ public class TowerExercise extends Exercise {
         tower.setWeight(14700f);
         world.add(tower);
         
-        A.attach(tower, null);
+        jointA.attach(tower, null);
         
         float scale = 4f;
         

@@ -160,6 +160,11 @@ public class FBDWorld extends World {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
         StaticsApplication.getApp().resetAdvice();
         
+        // grayout bodies not belonging to this FBD
+        for(Body body : allBodies())
+            if(!bodies.contains(body))
+                body.setDisplayGrayed(true);
+        
         if(locked)
             setLocked();
     }

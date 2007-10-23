@@ -68,7 +68,7 @@ public class PurseExercise extends Exercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .2f, 1.0f));
         //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
         
-        StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 55.0f ));
+        StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 65.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
         
         

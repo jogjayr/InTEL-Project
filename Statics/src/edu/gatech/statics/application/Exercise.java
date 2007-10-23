@@ -74,4 +74,6 @@ public class Exercise {
      * for code based can just create objects as is.
      */
     public void loadExercise() {}
+
+    public void postLoadExercise() {}
 }

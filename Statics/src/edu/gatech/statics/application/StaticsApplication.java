@@ -284,6 +284,10 @@ public class StaticsApplication {
         // load exercise here
         getExercise().loadExercise();
         loadExercizeWorld();
+        
+        rootInterface.showDescription();
+        
+        getExercise().postLoadExercise();
     }
     
 
@@ -312,8 +316,6 @@ public class StaticsApplication {
     public void loadExercizeWorld() {
         setCurrentWorld(currentExercise.getWorld());
         setCurrentInterface(new ExerciseInterface());
-        
-        rootInterface.showDescription();
     }
 
     public void loadEquation(FBDWorld fbd) {
