@@ -14,7 +14,9 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.manipulators.Manipulator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -44,6 +46,7 @@ abstract public class SimulationObject {
     private float selectRadius;
     
     private List<Representation> representations = new ArrayList();
+    private Map<RepresentationLayer, List<Representation>> representationMap = new HashMap<RepresentationLayer, List<Representation>>();
     private List<Manipulator> manipulators = new ArrayList();
     
     public String getName() {return name;}
@@ -75,17 +78,32 @@ abstract public class SimulationObject {
     public void removeSellectionListener(SelectionListener listener) {selectionListeners.remove(listener);}
     public void removeAllSellectionListeners() {selectionListeners.clear();}*/
     
-    public void addRepresentation(Representation r) {representations.add(r);}
-    public void removeRepresentation(Representation r) {representations.remove(r);}
+    public void addRepresentation(Representation r) {
+        representations.add(r);
+        List<Representation> reps = representationMap.get(r.getLayer());
+        if(reps == null)
+            representationMap.put(r.getLayer(), reps = new ArrayList<Representation>());
+        reps.add(r);
+    }
+    public void removeRepresentation(Representation r) {
+        representations.remove(r);
+        List<Representation> reps = representationMap.get(r.getLayer());
+        if(reps != null) // should not fail this...
+            reps.remove(r); 
+    }
     public List<Representation> allRepresentations() {return Collections.unmodifiableList(representations);}
     
     public List<Representation> getRepresentation(RepresentationLayer layer) {
+        List<Representation> reps = representationMap.get(layer);
+        if(reps == null)
+            return Collections.emptyList();
+        return reps;
         // quick and dirty way, would like to use a map, but may be impractical
-        List<Representation> allType = new ArrayList();
+        /*List<Representation> allType = new ArrayList();
         for(Representation r : representations)
             if(r.getLayer() == layer)
                 allType.add(r);
-        return allType;
+        return allType;*/
     }
     
     public void addManipulator(Manipulator m) {manipulators.add(m);}
@@ -111,7 +129,7 @@ abstract public class SimulationObject {
         for(Representation r : allRepresentations()) {
             r.update();
             r.updateGeometricState(0, true);
-            r.updateRenderState();
+            //r.updateRenderState();
             r.updateModelBound();
             r.updateWorldBound();
         }

@@ -54,6 +54,7 @@ public class ArrowRepresentation extends Representation<Vector> {
         setModelBound(new BoundingBox());
         update();
         updateModelBound();
+        updateRenderState();
     }
 
     public void update() {

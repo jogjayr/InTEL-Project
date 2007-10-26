@@ -32,6 +32,14 @@ public class Vector extends SimulationObject {
     public void addListener(VectorListener listener) {listeners.add(listener);}
     public void removeListener(VectorListener listener) {listeners.remove(listener);}
     
+    private boolean fixed;
+    public boolean isFixed() {return fixed;}
+    public void setFixed(boolean fixed) {this.fixed = fixed;}
+    
+    private boolean solved;
+    public boolean isSolved() {return solved;}
+    public void setSolved(boolean solved) {this.solved = solved;}
+    
     private boolean symbol = false;
     public boolean isSymbol() {return symbol;}
     public void setSymbol(boolean symbol) {this.symbol = symbol;}
@@ -50,8 +58,15 @@ public class Vector extends SimulationObject {
         setValue( value.normalize().mult(magnitude) );
     }
     
+    // this should be overridden in general circumstances
     public Vector negate() {
-        return new Vector(anchor, value.negate());
+        Vector r = new Vector(anchor, value.negate());
+        
+        r.fixed = fixed;
+        r.solved = solved;
+        r.symbol = symbol;
+        
+        return r;
     }
     
     public Matrix3f getRotation() {
@@ -110,16 +125,17 @@ public class Vector extends SimulationObject {
         //    return false;
         
         // operate on vector3f translation equivalence instead of point equality
-        if(!v.anchor.getTranslation().equals(anchor.getTranslation()))
-            return false;
+        //if(!v.anchor.getTranslation().equals(anchor.getTranslation()))
+        //    return false;
         
         // this is the low tech, ghetto way of doing things
         // but it should suffice for now.
-        //return  Math.abs(v.value.x - value.x) <= .001f &&
-        //        Math.abs(v.value.y - value.y) <= .001f &&
-        //        Math.abs(v.value.z - value.z) <= .001f;
+        return  v.anchor == anchor &&
+                Math.abs(v.value.x - value.x) <= .0001f &&
+                Math.abs(v.value.y - value.y) <= .0001f &&
+                Math.abs(v.value.z - value.z) <= .0001f;
         
-        return v.anchor == anchor && v.value.equals(value);
+        //return v.anchor == anchor && v.value.equals(value);
     }
     
     public ArrowRepresentation getArrow() {
@@ -140,16 +156,24 @@ public class Vector extends SimulationObject {
     }
 
     public String getLabelText() {
-        if(isSymbol())
+        if(isSymbol() && !isSolved())
             return getName();
         else return ""+getMagnitude();
     }
 
     public String getLabelTextNoUnits() {
-        if(isSymbol())
+        if(isSymbol() && !isSolved())
             return getName();
         else return ""+getMagnitude();
     }
     
-    
+    public String toString() {
+        String r = getClass().getSimpleName()+" @ "+getAnchor().getName()+" : <"+value.x+", "+value.y+", "+value.z+">";
+        if(isSymbol())
+            r += " \""+getName()+"\"";
+        if(isSolved())
+            r += " SOLVED";
+        
+        return r;
+    }
 }

@@ -23,6 +23,7 @@ import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class SolveBar extends Toolbar {
         
         for(EquationMath.Term term : math.allTerms()) {
             Vector vector = term.getVector();
-            if(vector.isSymbol()) {
+            if(vector.isSymbol() && !vector.isSolved()) {
                 String symbol = vector.getName();
                 
                 if(!unknownMap.containsKey(symbol)) {
@@ -152,6 +153,12 @@ public class SolveBar extends Toolbar {
             
             unknownMap.get(term).setText(text);
         }
+        
+        Map<Vector, Float> values = new Hashtable<Vector, Float>();
+        for(String term : solution.keySet())
+            values.put( unknownVMap.get(term), solution.get(term) );
+        
+        world.performSolve(values);
     }
     
     private void processEquations() {
@@ -184,7 +191,7 @@ public class SolveBar extends Toolbar {
         for(EquationMath.Term term : math.allTerms()) {
             
             Vector vector = term.getVector();
-            if(vector.isSymbol()) {
+            if(vector.isSymbol() && !vector.isSolved()) {
                 system.addTerm(row, term.coefficientValue, vector.getName());
             } else {
                 system.addTerm(row, vector.getMagnitude() * term.coefficientValue, null);

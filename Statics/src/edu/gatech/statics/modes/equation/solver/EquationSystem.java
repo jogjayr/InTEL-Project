@@ -55,6 +55,10 @@ public class EquationSystem {
         if(symbols.size() > equations.size())
             return;
         
+        if(symbols.size() < equations.size()) {
+            // need to remove a row of the equation
+        }
+        
         int size = equations.size();
         float[][] matrixValues = new float[size][size];
         constantTerms = new float[size];

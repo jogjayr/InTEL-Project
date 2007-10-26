@@ -78,9 +78,11 @@ public class RepresentationLayer {
     public void setEnabled(boolean enabled) {this.enabled = enabled;}
     
     private List<RenderState> renderStates = new ArrayList();
-    public void addRenderState(RenderState rs) {renderStates.add(rs);} 
-    public void removeRenderState(RenderState rs) {renderStates.remove(rs);} 
-    public List<RenderState> getRenderStates() {return renderStates;}
+    //private boolean renderStatesChanged = false;
+    public void addRenderState(RenderState rs) {renderStates.add(rs); /*renderStatesChanged = true;*/} 
+    public void removeRenderState(RenderState rs) {renderStates.remove(rs); /*renderStatesChanged = true;*/} 
+    //public boolean getRenderStatesChanged() {return renderStatesChanged;}
+    public List<RenderState> getRenderStates() {/*renderStatesChanged = false;*/ return renderStates;}
     
     private ZBufferState bufferState;
     private LightState lightState;

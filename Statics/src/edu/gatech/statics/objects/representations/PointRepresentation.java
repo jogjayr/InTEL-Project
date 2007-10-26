@@ -78,6 +78,7 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         
         update();
         updateModelBound();
+        updateRenderState();
     }
     
     public void update() {

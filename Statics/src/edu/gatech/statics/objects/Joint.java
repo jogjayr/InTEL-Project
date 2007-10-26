@@ -11,6 +11,8 @@ package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.modes.fbd.LabelManipulator;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +25,34 @@ abstract public class Joint extends SimulationObject {
     
     private Point myPoint;
     private Body body1, body2;
-
+    
+    private boolean isSolved = false;
+    private List<Vector> solvedReactions = null;
+    private List<Vector> solvedReactionsNegated = null;
+    
+    public void solveReaction(Body solveBody, List<Vector> reactions) {
+        
+        if(isSolved)
+            return;
+        
+        solvedReactions = reactions;
+        solvedReactionsNegated = new ArrayList<Vector>();
+        for(Vector v : solvedReactions) {
+            Vector v1 = v.negate();
+            
+            // this is kind of hacky, but should work for now.
+            v1.createDefaultSchematicRepresentation();
+            LabelManipulator labelManipulator = new LabelManipulator(v1);
+            labelManipulator.enableLabeling(false);
+            v1.addManipulator(labelManipulator);
+            
+            solvedReactionsNegated.add(v1);
+        }
+        
+        isSolved = true;
+    }
+    public boolean isSolved() {return isSolved;}
+    
     public Vector3f getTranslation() {
         return myPoint.getTranslation();
     }
@@ -75,16 +104,28 @@ abstract public class Joint extends SimulationObject {
         if(body != body1 && body != body2)
             return Collections.EMPTY_LIST;
         
-        List<Vector> reactions = new LinkedList();
-        if(body == body1) {
-            reactions.addAll(getReactionForces());
-            reactions.addAll(getReactionMoments());
+        if(isSolved) {
+            if(body == body1)
+                return solvedReactions;
+            else
+                return solvedReactionsNegated;
+            
         } else {
-            for(Force f : getReactionForces())
-                reactions.add(f.negate());
-            for(Moment m : getReactionMoments())
-                reactions.add(m.negate());
+            List<Vector> reactions = new LinkedList<Vector>();
+            if(body == body1) {
+                reactions.addAll(getReactionForces());
+                reactions.addAll(getReactionMoments());
+            } else {
+                for(Force f : getReactionForces())
+                    reactions.add(f.negate());
+                for(Moment m : getReactionMoments())
+                    reactions.add(m.negate());
+            }
+            return reactions;
         }
-        return reactions;
+    }
+    
+    public String toString() {
+        return getClass().getSimpleName()+" @ "+getPoint().getName();
     }
 }

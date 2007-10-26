@@ -60,6 +60,7 @@ public class CylinderRepresentation extends BodyRepresentation {
         
         update();
         updateModelBound();
+        updateRenderState();
     }
     
     public void update() {

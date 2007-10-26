@@ -25,6 +25,8 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Vector;
+import edu.gatech.statics.objects.manipulators.DeletableManipulator;
+import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
 import edu.gatech.statics.util.SelectableFilter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,8 +51,22 @@ public class FBDWorld extends World {
             if(!(obj instanceof Vector))
                 continue;
             
-            LabelManipulator labelManipulator = (LabelManipulator) obj.getManipulator(LabelManipulator.class);
-            labelManipulator.enableLabeling(false);
+            Vector v = ((Vector)obj);
+            
+            // here we set the vector as fixed, and disable the manipulators that would
+            // otherwise enable it to be moved around
+            v.setFixed(true);
+            DeletableManipulator deleteManipulator = (DeletableManipulator) v.getManipulator(DeletableManipulator.class);
+            if(deleteManipulator != null)
+                obj.removeManipulator(deleteManipulator);
+            
+            Orientation2DSnapManipulator orientationManipulator = (Orientation2DSnapManipulator) v.getManipulator(Orientation2DSnapManipulator.class);
+            if(orientationManipulator != null)
+                obj.removeManipulator(orientationManipulator);
+            
+            LabelManipulator labelManipulator = (LabelManipulator) v.getManipulator(LabelManipulator.class);
+            if(labelManipulator != null)
+                labelManipulator.enableLabeling(false);
             //obj.removeManipulator(labelManipulator);
         }
         
@@ -90,9 +106,25 @@ public class FBDWorld extends World {
         }
         
         for(Body body : bodies) {
-            for(SimulationObject obj : body.getAttachedObjects())
+            for(SimulationObject obj : body.getAttachedObjects()) {
                 if(obj instanceof Force || obj instanceof Moment)
                     externalForces.add((Vector) obj);
+                
+                // test joints and add reaction forces from solved joints
+                if(obj instanceof Joint) {
+                    Joint joint = (Joint)obj;
+                    
+                    // ignore if it's an internal joint
+                    if(bodies.contains(joint.getBody1()) && bodies.contains(joint.getBody2()))
+                        continue;
+                    
+                    if(joint.isSolved()) {
+                        for(Vector v : joint.getReactions(body)) {
+                            add(v);
+                        }
+                    }
+                }
+            }
         }
         
         updateNodes();
@@ -259,18 +291,25 @@ public class FBDWorld extends World {
             
             Joint joint = (Joint) obj;
             
+            Body body = null;
+            if(bodies.contains(joint.getBody1()))
+                body = joint.getBody1();
+            if(bodies.contains(joint.getBody2()))
+                body = joint.getBody2();
+            
+            if(joint.isSolved()) {
+                // this particular joint has been solved for in another FBD, its influence should be here already,
+                // so just pass it by for now.
+                addedForces.removeAll(joint.getReactions(body));
+                continue;
+            }
+            
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
             if(   !(bodies.contains(joint.getBody1()) ^
                     bodies.contains(joint.getBody2())) )
                 continue;
-            
-            Body body = null;
-            if(bodies.contains(joint.getBody1()))
-                body = joint.getBody1();
-            if(bodies.contains(joint.getBody2()))
-                body = joint.getBody2();
             
             //jointsAndBodies.add(new Pair(joint, body));
             List<Vector> reactions = joint.getReactions(body);
@@ -324,6 +363,10 @@ public class FBDWorld extends World {
         
         for(Vector force : addedForces) {
             if(force.isSymbol()) {
+                
+                // ignore solved forces
+                if(force.isSolved())
+                    continue;
                 
                 // should force be a symbol?
                 // the only forces that should not be symbols now are weights.

@@ -68,6 +68,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         setUseWorldScale(false);
         
         update();
+        updateRenderState();
     }
     
     public void update() {

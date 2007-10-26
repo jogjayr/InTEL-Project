@@ -103,11 +103,11 @@ public class PurseExercise extends Exercise {
         world.add(distance3);
         
         DistanceMeasurement distance4 = new DistanceMeasurement(C.getTranslation(), D.getTranslation());
-        distance4.createDefaultSchematicRepresentation(3f);
+        distance4.createDefaultSchematicRepresentation(5f);
         world.add(distance4);
         
         DistanceMeasurement distance5 = new DistanceMeasurement(D.getTranslation(), E.getTranslation());
-        distance5.createDefaultSchematicRepresentation(3f);
+        distance5.createDefaultSchematicRepresentation(5f);
         world.add(distance5);
 
         //forearm.addObject(jointB);

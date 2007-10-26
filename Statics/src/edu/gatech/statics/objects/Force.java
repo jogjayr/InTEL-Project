@@ -53,11 +53,17 @@ public class Force extends Vector {
     }
     
     public Force negate() {
-        return new Force(getAnchor(), getValue().negate());
+        Force r = new Force(getAnchor(), getValue().negate());
+        
+        r.setSolved(isSolved());
+        r.setFixed(isFixed());
+        r.setSymbol(isSymbol());
+        
+        return r;
     }
 
     public String getLabelText() {
-        if(isSymbol())
+        if(isSymbol() && !isSolved())
             return getName();
         else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getForce();
     }

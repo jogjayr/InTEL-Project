@@ -31,6 +31,10 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         this.layer = layer;
     }
     
+    private boolean renderUpdated;
+    boolean renderUpdated() {return renderUpdated;}
+    void setRenderUpdated() {renderUpdated = true;}
+    
     private MaterialState materialState;
     //public MaterialState getMaterialState() {return materialState;}
     

@@ -57,8 +57,16 @@ public class World {
         return bodies;
     }
     
+    // we cache the lists because these are refreshed constantly
+    // if new ones are returned, lots of Object[] instances are left and hog memory
+    private Map<RepresentationLayer, List<Representation>> representationCache = new HashMap<RepresentationLayer, List<Representation>>();
+    
     public List<Representation> getRepresentations(RepresentationLayer layer) {
-        List<Representation> r = new ArrayList();
+        List<Representation> r =  representationCache.get(layer);
+        if(r == null)
+             representationCache.put(layer, r = new ArrayList<Representation>());
+        
+        r.clear();
         for(SimulationObject obj : allObjects)
             r.addAll(obj.getRepresentation(layer));
         return r;
@@ -126,19 +134,31 @@ public class World {
             }
             node.detachAllChildren();
             
-            for(Representation r : getRepresentations(layer))
+            boolean updateRenderState = false;
+            
+            for(Representation r : getRepresentations(layer)) {
                 if(!r.isHidden()) {
                     node.attachChild(r);
                     addLabels(r);
                 }
+                if(!r.renderUpdated()) {
+                    updateRenderState = true;
+                    r.setRenderUpdated();
+                }
+            }
             
-            for(RenderState renderState : layer.getRenderStates())
-                node.setRenderState(renderState);
+            //if(layer.getRenderStatesChanged()) { 
+            if(updateRenderState) {
+                for(RenderState renderState : layer.getRenderStates())
+                    node.setRenderState(renderState);
+                node.updateRenderState();
+            }
+            //}
             
             node.updateGeometricState(0f, true);
             node.updateWorldBound();
             node.updateModelBound();
-            node.updateRenderState();
+            //node.updateRenderState();
         }
     }
     

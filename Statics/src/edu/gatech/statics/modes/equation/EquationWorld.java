@@ -17,7 +17,9 @@ import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.fbd.FBDWorld;
+import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
@@ -25,6 +27,9 @@ import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.util.SelectableFilter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -58,9 +63,65 @@ public class EquationWorld extends World {
         enableSelectMultipleDefault(false);
         enableManipulatorsOnSelectDefault(false);
         
+        /*for(Body body : parentWorld.allBodies())
+            if(!body.isDisplayGrayed()) {
+                add(body);
+                for(SimulationObject obj : body.getAttachedObjects())
+                    add(obj);
+            }
+        
         for(SimulationObject obj : parentWorld.allObjects()) {
-            if(!obj.isDisplayGrayed() || obj instanceof Measurement) {
+            if(obj instanceof Measurement)
                 add(obj);
+        }*/
+        
+        for(SimulationObject obj : parentWorld.allObjects()) {
+            if(    !obj.isDisplayGrayed() ||
+                    obj instanceof Measurement) {
+                add(obj);
+            }
+        }
+    }
+    
+    void performSolve(Map<Vector, Float> values) {
+        
+        // go through the vectors, and make sure everything is in order:
+        // give the vectors the new solved values
+        for(SimulationObject obj : allObjects()) {
+            if(obj instanceof Vector) {
+                Vector v = (Vector)obj;
+                if(v.isSymbol() && !v.isSolved()) {
+                    // v is a symbolic force, but is not yet solved.
+                    v.setSolved(true);
+                    float value = values.get(v);
+                    v.setValue(v.getValue().mult( value ));
+                }
+            }
+        }
+        
+        // go through the joints, and mark the joints as solved,
+        // assigning to them the solved values as having the updated vectors.
+        for(SimulationObject obj : allObjects()) {
+            if(obj instanceof Joint) {
+                Joint joint = (Joint)obj;
+                if(joint.isSolved())
+                    continue;
+                
+                Point point = joint.getPoint();
+                List<Vector> reactions = new ArrayList<Vector>();
+                for(Vector v : values.keySet())
+                    if(v.getAnchor() == point)
+                        reactions.add(v);
+                
+                // hopefully this should be accurate...
+                Body solveBody = null;
+                for(Body body : allBodies())
+                    if(body.getAttachedObjects().contains(point))
+                        solveBody = body;
+                
+                if(reactions.size() > 0) {
+                    joint.solveReaction(solveBody, reactions);
+                }
             }
         }
     }

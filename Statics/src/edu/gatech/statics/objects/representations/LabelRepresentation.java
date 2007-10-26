@@ -83,17 +83,24 @@ public class LabelRepresentation extends Representation {
     
     private Vector3f pos2d;
     
+    private String labelText = null;
     public void update() {
         
-        label.setText(getTarget().getLabelText());
-        
+        String newLabelText = getTarget().getLabelText();
+
+        if(!newLabelText.equals(labelText)) {
+
+            labelText = newLabelText;
+            label.setText(labelText);
+            bWindow.pack();
+        }
+
         StaticsApplication app = StaticsApplication.getApp();
         pos2d = app.getCamera().getScreenCoordinates( getDisplayCenter() );
         pos2d.addLocal( -getWidth()/2, -getHeight()/2, 0 );
         pos2d.addLocal( offset );
         pos2d.z = 0;
-        
+
         bWindow.setLocation((int)pos2d.x, (int)pos2d.y);
-        bWindow.pack();
     }
 }

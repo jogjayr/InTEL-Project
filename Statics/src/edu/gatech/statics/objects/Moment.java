@@ -52,11 +52,17 @@ public class Moment extends Vector {
     }
     
     public Moment negate() {
-        return new Moment(getAnchor(), getValue().negate());
+        Moment r = new Moment(getAnchor(), getValue().negate());
+        
+        r.setSolved(isSolved());
+        r.setFixed(isFixed());
+        r.setSymbol(isSymbol());
+        
+        return r;
     }
 
     public String getLabelText() {
-        if(isSymbol())
+        if(isSymbol() && !isSolved())
             return getName();
         else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getMoment();
     }
