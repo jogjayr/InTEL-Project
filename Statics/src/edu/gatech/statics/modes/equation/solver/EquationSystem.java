@@ -56,7 +56,7 @@ public class EquationSystem {
             return;
         
         if(symbols.size() < equations.size()) {
-            // need to remove a row of the equation
+            cleanSystem();
         }
         
         int size = equations.size();
@@ -76,10 +76,86 @@ public class EquationSystem {
         determinant = matrix.calculateDeterminant();
     }
     
-    public boolean isSolvable() {
-        if(symbols.size() > equations.size())
-            return false;
+    private void cleanSystem() {
+        // This is called when we have too many equations for the symbols.
+        // if a problem is well posed, that means we just have redundant or zero equations
+        // try to clear those out. 
         
+        List<LinearEquation> equationsToRemove = new ArrayList<LinearEquation>();
+        
+        // first, eliminate any zero rows:
+        for(LinearEquation equation : equations) {
+            boolean isZero = true;
+            for (String symbol : symbols) {
+                if(equation.getTerm(symbol) != 0)
+                    isZero = false;
+            }
+            
+            if(isZero)
+                equationsToRemove.add(equation);
+        }
+        equations.removeAll(equationsToRemove);
+        
+        equationsToRemove.clear();
+        
+        List<String> symbolsAndNull = new ArrayList<String>();
+        symbolsAndNull.addAll(symbols);
+        symbolsAndNull.add(null);
+        
+        // next, eliminate equivalent rows
+        for (int i = 0; i < equations.size(); i++) {
+            LinearEquation equation1 = equations.get(i);
+            boolean isMultiple = false;
+            for (int j = i+1; j < equations.size() && !isMultiple; j++) {
+                LinearEquation equation2 = equations.get(j);
+                // want to see if equation1 is a multiple of equation 2.
+                // if so, mark it to be removed and continue.
+                
+                boolean multipleSoFar = true;
+                boolean multipleYet = false;
+                float multiple = 0;
+                
+                for(String symbol : symbolsAndNull) {
+                    float eq1value = equation1.getTerm(symbol);
+                    float eq2value = equation1.getTerm(symbol);
+                    
+                    if(eq1value == 0 && eq2value == 0)
+                        continue; // both terms are zero, we are okay, continue
+                    if(eq1value == 0 || eq2value == 0) {
+                        multipleSoFar = false; // one term is zero while another is not, break
+                        break;
+                    } else {
+                        if(multipleYet) {
+                            // we have a proportion, test it:
+                            if(multiple == eq1value/eq2value)
+                                continue; // proportion is OK, continue
+                            else {
+                                multipleSoFar = false;
+                                break; // proportion is not ok, so break
+                            }
+                        } else {
+                            // both are numeric, find the proportion
+                            multipleSoFar = true;
+                            multiple = eq1value/eq2value;
+                        }
+                    }
+                }
+                
+                if(multipleSoFar)
+                    isMultiple = true;
+            }
+            
+            if(isMultiple)
+                equationsToRemove.add(equation1);
+        }
+        
+        // remove all of our multiples.
+        equations.removeAll(equationsToRemove);
+    }
+    
+    public boolean isSolvable() {
+        //if(symbols.size() > equations.size())
+        //    return false;
         return determinant != 0;
     }
     

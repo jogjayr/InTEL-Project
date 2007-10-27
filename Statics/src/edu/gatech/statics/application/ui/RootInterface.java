@@ -22,7 +22,7 @@ import edu.gatech.statics.application.StaticsApplication;
 public class RootInterface extends AppInterface {
     
     private AdviceWindow adviceWindow;
-    private ModeControlWindow modeControl;
+    //private ModeControlWindow modeControl;
     private DisplayControlWindow displayControl;
     private CoordinateSystemWindow coordinateSystem;
     private TitleWindow titleWindow;

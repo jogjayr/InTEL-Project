@@ -63,18 +63,6 @@ public class EquationWorld extends World {
         enableSelectMultipleDefault(false);
         enableManipulatorsOnSelectDefault(false);
         
-        /*for(Body body : parentWorld.allBodies())
-            if(!body.isDisplayGrayed()) {
-                add(body);
-                for(SimulationObject obj : body.getAttachedObjects())
-                    add(obj);
-            }
-        
-        for(SimulationObject obj : parentWorld.allObjects()) {
-            if(obj instanceof Measurement)
-                add(obj);
-        }*/
-        
         for(SimulationObject obj : parentWorld.allObjects()) {
             if(    !obj.isDisplayGrayed() ||
                     obj instanceof Measurement) {

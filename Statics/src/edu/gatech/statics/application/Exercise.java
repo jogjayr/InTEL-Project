@@ -76,4 +76,10 @@ public class Exercise {
     public void loadExercise() {}
 
     public void postLoadExercise() {}
+    
+    public boolean isExerciseSolved() {return false;}
+    
+    private boolean finished = false;
+    public boolean isExerciseFinished() {return finished;}
+    public void finishExercise() {finished = true;}
 }

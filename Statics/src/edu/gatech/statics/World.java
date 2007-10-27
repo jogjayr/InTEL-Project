@@ -157,7 +157,7 @@ public class World {
             
             node.updateGeometricState(0f, true);
             node.updateWorldBound();
-            node.updateModelBound();
+            //node.updateModelBound();
             //node.updateRenderState();
         }
     }

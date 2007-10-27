@@ -12,24 +12,18 @@ package edu.gatech.statics.application;
 import com.jme.input.InputSystem;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
-import com.jme.input.lwjgl.LWJGLKeyInput;
-import com.jme.renderer.Renderer;
 import com.jme.renderer.lwjgl.LWJGLRenderer;
 import com.jme.system.DisplaySystem;
 import com.jmex.awt.JMECanvas;
 import com.jmex.awt.JMECanvasImplementor;
 import com.jmex.awt.input.AWTKeyInput;
-import com.jmex.awt.input.AWTMouseInput;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
 
 /**
  *
@@ -42,6 +36,9 @@ public class StaticsApplet extends Applet {
     private static final int canvasWidth = 1024;
     private static final int canvasHeight = 768;
     
+    private static StaticsApplet instance;
+    public static StaticsApplet getInstance() {return instance;}
+    
     private Canvas glCanvas;
     private CanvasImplementor impl;
     
@@ -50,6 +47,7 @@ public class StaticsApplet extends Applet {
     
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
+        instance = this;
         application = new StaticsApplication();
     }
     

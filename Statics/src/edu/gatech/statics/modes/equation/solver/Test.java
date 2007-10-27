@@ -17,6 +17,20 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String args[]) {
+        
+        EquationSystem system = new EquationSystem(3);
+        system.addTerm(0, -1, "v");
+        system.addTerm(0, 123f, null);
+        
+        system.addTerm(1, -1*.17f, "v");
+        system.addTerm(1, 123*.17f, null);
+        
+        
+        system.process();
+        System.out.println(system.isSolvable());
+        Map<String, Float> solution = system.solve();
+        System.out.println(solution);
+        
         /*float[][] A = {
             {1, 0, 3, 1},
             {0, -1, 0, 2},
@@ -44,7 +58,7 @@ public class Test {
         System.out.print(M2);
         System.out.println();*/
         
-        EquationSystem system = new EquationSystem(3);
+        /*EquationSystem system = new EquationSystem(3);
         system.addTerm(0, 1, "Cx");
         system.addTerm(0, .12f, "T");
         
@@ -59,6 +73,6 @@ public class Test {
         
         system.process();
         Map<String, Float> solution = system.solve();
-        System.out.println(solution);
+        System.out.println(solution);*/
     }
 }

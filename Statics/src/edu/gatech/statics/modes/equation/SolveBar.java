@@ -39,6 +39,9 @@ public class SolveBar extends Toolbar {
     private EquationSystem system;
     private EquationWorld world;
     
+    private BButton backButton;
+    private BButton solveButton;
+    
     /** Creates a new instance of SolveBar */
     public SolveBar(EquationWorld world, final EquationInterface iface) {
         super(GroupLayout.makeHoriz(GroupLayout.LEFT));
@@ -60,8 +63,8 @@ public class SolveBar extends Toolbar {
         collectUnknowns(world.sumMp);
         processEquations();
         
-        BButton backButton = new BButton("Return",listener,"return");
-        BButton solveButton = new BButton("Solve!",listener,"solve");
+        backButton = new BButton("Return",listener,"return");
+        solveButton = new BButton("Solve!",listener,"solve");
         if(!isSolvable()) {
             solveButton.setEnabled(false);
             StaticsApplication.getApp().setAdvice(
@@ -143,6 +146,8 @@ public class SolveBar extends Toolbar {
     private void solve() {
         Map<String, Float> solution = system.solve();
         for(String term : solution.keySet()) {
+            
+            // update the solutions with units
             String units = "";
             if(unknownVMap.get(term) instanceof Moment)
                 units = StaticsApplication.getApp().getUnits().getMoment();
@@ -159,6 +164,8 @@ public class SolveBar extends Toolbar {
             values.put( unknownVMap.get(term), solution.get(term) );
         
         world.performSolve(values);
+        
+        solveButton.setEnabled(false);
     }
     
     private void processEquations() {

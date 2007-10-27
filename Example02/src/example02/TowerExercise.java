@@ -88,7 +88,7 @@ public class TowerExercise extends Exercise {
         tower.setWeight(14700f);
         world.add(tower);
         
-        jointA.attach(tower, null);
+        jointA.attachToWorld(tower);
         
         float scale = 4f;
         

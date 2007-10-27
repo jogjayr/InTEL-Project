@@ -21,9 +21,7 @@ import com.jme.input.MouseInput;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -186,6 +184,13 @@ public class StaticsApplication {
         
         currentWorld.update();
         updateLabels();
+        
+        // call the finishing command on this exercise
+        // to let the user know that their work is done.
+        if(currentExercise.isExerciseSolved()) {
+            if(!currentExercise.isExerciseFinished())
+                currentExercise.finishExercise();
+        }
         
         if(currentInterface != null)
             currentInterface.getBuiNode().updateGeometricState(0,true);

@@ -47,12 +47,14 @@ window {
 
 // most windows in Statics derive from this class
 info_window {
-    //border: 1 solid #000000;
-    //border: 2 solid #000000;
-    //background: solid #aaaaaa88;
     text-align: left;
-    //background: solid #f4eaa2ff;
     background: solid #f4eaa2cc;
+    padding: 1 1 1 1;
+}
+
+info_window_opaque {
+    text-align: left;
+    background: solid #f4eaa2ff;
     padding: 1 1 1 1;
 }
 

@@ -71,7 +71,9 @@ public class Matrix {
     }
     
     public float calculateDeterminant() {
-        if(getSize() == 2) {
+        if(getSize() == 1) {
+            return A[0][0];
+        } else if(getSize() == 2) {
             return A[0][0]*A[1][1] - A[1][0]*A[0][1];
         } else {
             double r = 0;

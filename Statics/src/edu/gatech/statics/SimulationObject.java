@@ -130,7 +130,7 @@ abstract public class SimulationObject {
             r.update();
             r.updateGeometricState(0, true);
             //r.updateRenderState();
-            r.updateModelBound();
+            //r.updateModelBound();
             r.updateWorldBound();
         }
     }

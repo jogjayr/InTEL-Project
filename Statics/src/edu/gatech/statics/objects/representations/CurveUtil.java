@@ -30,19 +30,18 @@ import java.nio.FloatBuffer;
 public class CurveUtil {
     
     private static Line curveUtil_line;
+    private static FloatBuffer curveUtil_line_points;
+    private static FloatBuffer curveUtil_line_colors;
     private static Curve curveUtil_curve;
     private static Circle curveUtil_circle;
 
     public static void renderLine(Renderer r, ColorRGBA color, Vector3f point1, Vector3f point2) {
-        Vector3f va1[] = new Vector3f[2];
-        va1[0] = point1;
-        va1[1] = point2;
-        
-        ColorRGBA va2[] = new ColorRGBA[2];
-        va2[0] = color;
-        va2[1] = color;
         
         if(curveUtil_line == null) {
+            
+            curveUtil_line_colors = BufferUtils.createFloatBuffer(2*4);
+            curveUtil_line_points = BufferUtils.createFloatBuffer(2*3);
+            
             curveUtil_line = new Line();
 
             AlphaState as = r.createAlphaState();
@@ -57,11 +56,19 @@ public class CurveUtil {
             curveUtil_line.setAntialiased(true);
 
             curveUtil_line.updateRenderState();
+            
+            curveUtil_line.setVertexBuffer(0, curveUtil_line_points);
+            curveUtil_line.setColorBuffer(0, curveUtil_line_colors);
+            curveUtil_line.generateIndices(0);
         }
-//        Line line = new Line("", va1, null, va2, null);
-        curveUtil_line.setVertexBuffer(0, BufferUtils.createFloatBuffer(va1));
-        curveUtil_line.setColorBuffer(0, BufferUtils.createFloatBuffer(va2));
-        curveUtil_line.generateIndices(0);
+        
+        curveUtil_line_colors.rewind();
+        curveUtil_line_colors.put(color.r).put(color.g).put(color.b).put(color.a);
+        curveUtil_line_colors.put(color.r).put(color.g).put(color.b).put(color.a);
+        
+        curveUtil_line_points.rewind();
+        curveUtil_line_points.put(point1.x).put(point1.y).put(point1.z);
+        curveUtil_line_points.put(point2.x).put(point2.y).put(point2.z);
         
         r.draw(curveUtil_line);
     }
@@ -91,6 +98,7 @@ public class CurveUtil {
         //Curve line = new BezierCurve("", points);
         curveUtil_curve.setVertexBuffer(0, BufferUtils.createFloatBuffer(points));
         curveUtil_curve.setSteps(10 * points.length);
+        
         
         FloatBuffer fb = FloatBuffer.allocate(4);
         fb.put(color.r);
