@@ -144,6 +144,7 @@ public class EquationWorld extends World {
     }
     
     public void activate() {
+        super.activate();
         for(SimulationObject obj : allObjects()) {
             obj.setSelectable(true);
         }

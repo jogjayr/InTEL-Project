@@ -12,6 +12,7 @@ package edu.gatech.statics.objects.representations;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
 import com.jme.scene.shape.Cylinder;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -34,12 +35,14 @@ public class MomentRepresentation extends Representation<Moment> {
     public MomentRepresentation(Moment target) {
         super(target);
         setLayer(RepresentationLayer.vectors);
+        
+        Node contents = new Node("");
 
         PartialTorus torus = new PartialTorus("", 16, 6, torusInnerRadius, torusOuterRadius, torusSweep);
         //Matrix3f mat = new Matrix3f();
         //mat.fromStartEndVectors(Vector3f.UNIT_Z, new Vector3f(0, 0, -1));
         //torus.setLocalRotation(mat);
-        attachChild(torus);
+        contents.attachChild(torus);
 
         Cylinder cylinder = new Cylinder("", 6, 12, tipWidth, tipHeight, true);
         cylinder.setRadius1(0);
@@ -48,7 +51,12 @@ public class MomentRepresentation extends Representation<Moment> {
         mat.fromStartEndVectors(Vector3f.UNIT_Z, new Vector3f(0, -1, 0));
         cylinder.setLocalRotation(mat);
 
-        attachChild(cylinder);
+        contents.attachChild(cylinder);
+        mat = new Matrix3f();
+        mat.fromStartEndVectors(Vector3f.UNIT_Z, new Vector3f(0, 0, -1));
+        contents.setLocalRotation(mat);
+        
+        attachChild(contents);
         
         setModelBound(new BoundingBox());
         update();

@@ -40,7 +40,7 @@ public class EquationMathMoments extends EquationMath {
         MomentTerm(Vector vector) {super(vector);}
         
         boolean check() {
-            if(vector.source instanceof Moment) {
+            /*if(vector.source instanceof Moment) {
                 if(!coefficient.parse()) {
                     error = TermError.badCoefficient;
                     return false;
@@ -48,14 +48,23 @@ public class EquationMathMoments extends EquationMath {
                 error = TermError.none;
                 coefficientValue = coefficient.getValue();
                 return coefficientValue == 1.0f || coefficientValue == -1.0f;
+            }*/
+            
+            if(vector.source instanceof Moment) {
+                
+                // this is a moment
+                Vector3f vectorOrient = vector.source.getValue().normalize();
+                targetValue = vectorOrient.dot(getObservationDirection());
+                
+            } else {
+            
+                // this is a force
+                Vector3f vectorOrient = vector.source.getValue().normalize();
+                Vector3f distance = vector.source.getAnchor().getTranslation().subtract(observationPoint);
+
+                targetValue = -vectorOrient.cross(distance).dot(getObservationDirection());
+                targetValue *= StaticsApplication.getApp().getUnits().getWorldDistanceMultiplier();
             }
-            
-            // this is a force
-            Vector3f vectorOrient = vector.source.getValue().normalize();
-            Vector3f distance = vector.source.getAnchor().getTranslation().subtract(observationPoint);
-            
-            targetValue = -vectorOrient.cross(distance).dot(getObservationDirection());
-            targetValue *= StaticsApplication.getApp().getUnits().getWorldDistanceMultiplier();
             
             if(!coefficient.parse()) {
                 error = TermError.parse;

@@ -30,6 +30,7 @@ public class ExerciseWorld extends World {
     }
     
     public void activate() {
+        super.activate();
         for(SimulationObject obj : allObjects()) {
             obj.setDisplayGrayed(false);
             obj.setSelectable(true); // or at least set to default selectability??

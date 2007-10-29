@@ -40,10 +40,15 @@ public class World {
     private List<SimulationObject> allObjects = new ArrayList();
     public List<SimulationObject> allObjects() {return Collections.unmodifiableList(allObjects);}
     public void add(SimulationObject obj) {
-        if(!allObjects.contains(obj))
+        if(!allObjects.contains(obj)) {
             allObjects.add(obj);
+            invalidateNodes();
+        }
     }
-    public void remove(SimulationObject obj) {allObjects.remove(obj);}
+    public void remove(SimulationObject obj) {
+        allObjects.remove(obj);
+        invalidateNodes();
+    }
         
     private Map<RepresentationLayer, Node> representationNodes = new HashMap();
     public Node getNode(RepresentationLayer layer) {return representationNodes.get(layer);}
@@ -119,7 +124,14 @@ public class World {
         setSelectableFilterDefault();
     }
     
+    private boolean nodesUpdated = false;
+    protected void invalidateNodes() {nodesUpdated = false;}
     public void updateNodes() {
+        if(nodesUpdated)
+            return;
+        
+        nodesUpdated = true;
+        
         representationNodes.clear();
         List<RepresentationLayer> allLayers = RepresentationLayer.getLayers();
         
@@ -276,6 +288,7 @@ public class World {
     
     public void activate() {
         setSelectableFilterDefault();
+        invalidateNodes();
     }
 
     public void render(Renderer r) {

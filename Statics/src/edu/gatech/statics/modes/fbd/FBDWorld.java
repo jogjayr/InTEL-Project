@@ -159,7 +159,7 @@ public class FBDWorld extends World {
         }
         image = new BImage(iconTexture, 90, 90, 128, 128);
     }
-    private void renderIcon() {
+    /*private void renderIcon() {
         
         Node targetNode = getNode(RepresentationLayer.modelBodies);
         
@@ -169,7 +169,7 @@ public class FBDWorld extends World {
             cam.setUp(StaticsApplication.getApp().getCamera().getUp());
             cam.setLeft(StaticsApplication.getApp().getCamera().getLeft());
             cam.setLocation(StaticsApplication.getApp().getCamera().getLocation());
-            iconRenderer.setCamera(cam);*/
+            iconRenderer.setCamera(cam);//
             
             iconRenderer.setCamera(StaticsApplication.getApp().getCamera());
             iconRenderer.setupTexture(iconTexture);
@@ -178,15 +178,16 @@ public class FBDWorld extends World {
             
             image = new BImage(iconTexture, 90, 90, 128, 128);
         }
-    }
+    }*/
 
     public void render(Renderer r) {
         super.render(r);
-        renderIcon();
+        //renderIcon();
     }
     
     
     public void activate() {
+        super.activate();
         
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
@@ -249,9 +250,23 @@ public class FBDWorld extends World {
         // step 2: for vectors that we can click on and add, ie, external added forces,
         // make sure that the user has added all of them.
         for(Vector external : externalForces) {
-            boolean success = addedForces.remove(external);
+            
+            boolean success = false;
+            if(external.isSymbol()) {
+                Vector addedExternal = null;
+                for(Vector candidate : addedForces)
+                    if(external.equalsSymbolic(candidate)) {
+                        addedExternal = candidate;
+                        break;
+                    }
+                if(addedExternal != null)
+                    success = addedForces.remove(addedExternal);
+            } else {
+                success = addedForces.remove(external);
+            }
+            
             if(!success) {
-                System.out.println("check: diagram does not contain external forces");
+                System.out.println("check: diagram does not contain external force "+external);
                 System.out.println("check: FAILED");
 
                 StaticsApplication.getApp().setAdvice(

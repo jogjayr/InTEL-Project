@@ -121,12 +121,6 @@ public class Vector extends SimulationObject {
             return false;
         Vector v = (Vector) obj;
         
-        //if(v.anchor != anchor)
-        //    return false;
-        
-        // operate on vector3f translation equivalence instead of point equality
-        //if(!v.anchor.getTranslation().equals(anchor.getTranslation()))
-        //    return false;
         
         // this is the low tech, ghetto way of doing things
         // but it should suffice for now.
@@ -136,6 +130,24 @@ public class Vector extends SimulationObject {
                 Math.abs(v.value.z - value.z) <= .0001f;
         
         //return v.anchor == anchor && v.value.equals(value);
+    }
+    
+    /**
+     * Compare two vectors accounting for them both being symbols
+     * This means that they are equal if they are equal or opposite
+     */
+    public boolean equalsSymbolic(Vector v) {
+        if(v.isSolved() && isSolved())
+            return equals(v);
+        
+        return  v.anchor == anchor && ((
+                Math.abs(v.value.x - value.x) <= .0001f &&
+                Math.abs(v.value.y - value.y) <= .0001f &&
+                Math.abs(v.value.z - value.z) <= .0001f) || (
+                Math.abs(v.value.x + value.x) <= .0001f &&
+                Math.abs(v.value.y + value.y) <= .0001f &&
+                Math.abs(v.value.z + value.z) <= .0001f
+                ));
     }
     
     public ArrowRepresentation getArrow() {

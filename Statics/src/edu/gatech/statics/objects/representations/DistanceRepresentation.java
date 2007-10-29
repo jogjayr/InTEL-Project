@@ -12,8 +12,6 @@ package edu.gatech.statics.objects.representations;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Line;
-import com.jme.scene.state.AlphaState;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -53,6 +51,31 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         super(target);
         setLayer(RepresentationLayer.measurement);
         
+        
+        worldPointDifference = new Vector3f();
+        offsetDirection = new Vector3f();
+        scaledOffsetDirection = new Vector3f();
+        p1 = new Vector3f();
+        p2 = new Vector3f();
+        pCenter = new Vector3f();
+        pDirection = new Vector3f();
+        arrowOffset = new Vector3f();
+        measureExtent = new Vector3f();
+        measureExtentArrowHead = new Vector3f();
+        arrow1 = new Vector3f();
+        arrow2 = new Vector3f();
+        arrowHead1 = new Vector3f();
+        arrowHead2 = new Vector3f();
+        arrowHead1a = new Vector3f();
+        arrowHead2a = new Vector3f();
+        barOffset1 = new Vector3f();
+        barOffset2 = new Vector3f();
+        bar1 = new Vector3f();
+        bar2 = new Vector3f();
+        midVector = new Vector3f();
+        midVector1 = new Vector3f();
+        midVector2 = new Vector3f();
+        
         offset = 1f; // world coordinates for now...
         
         setSynchronizeRotation(false);
@@ -78,18 +101,43 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         label.setDiffuse(color);
     }
 
+
+    // keeping these like this is rather unseemly, but
+    // this class is was a leading cause of busywork for the GC in terms of 
+    // Vector3f objects that were churned through.
+    // We keep these cached here so that they don't churn.
+    Vector3f worldPointDifference, offsetDirection, scaledOffsetDirection;
+    Vector3f p1, p2, pCenter, pDirection;
+    Vector3f arrowOffset, measureExtent, measureExtentArrowHead;
+    Vector3f arrow1, arrow2, arrowHead1, arrowHead2, arrowHead1a, arrowHead2a;
+    Vector3f barOffset1, barOffset2, bar1, bar2;
+    Vector3f midVector, midVector1, midVector2;
+    
     public void draw(Renderer r) {
         super.draw(r);
-        
-        Vector3f offsetDirection = r.getCamera().getDirection().cross(
-                getTarget().getPoint2().subtract(getTarget().getPoint1()));
+    
+        worldPointDifference.set(getTarget().getPoint2());
+        worldPointDifference.subtractLocal(getTarget().getPoint1());
+        offsetDirection.set(r.getCamera().getDirection());
+        offsetDirection.crossLocal(worldPointDifference);
         offsetDirection.normalizeLocal();
         
+        scaledOffsetDirection.set(offsetDirection);
+        scaledOffsetDirection.multLocal(offset);
+        
         // draw main line.
-        Vector3f p1 = getTarget().getPoint1().add( offsetDirection.mult(offset) );
-        Vector3f p2 = getTarget().getPoint2().add( offsetDirection.mult(offset) );
-        Vector3f pCenter = p1.add(p2).mult(.5f);
-        Vector3f pDirection = p1.subtract(p2).normalize();
+        p1.set(getTarget().getPoint1());
+        p1.addLocal( scaledOffsetDirection );
+        p2.set(getTarget().getPoint2());
+        p2.addLocal( scaledOffsetDirection );
+        
+        pCenter.set(p1);
+        pCenter.addLocal(p2);
+        pCenter.multLocal(.5f);
+        
+        pDirection.set(p1);
+        pDirection.subtractLocal(p2);
+        pDirection.normalizeLocal();
         float horizontalRatio = Math.abs(pDirection.dot( r.getCamera().getLeft() ));
         float lineLength = p1.distance(p2);
         // this is a strange way of estimating the size, but it may be effective...
@@ -103,57 +151,82 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         // now that the textWorldLength is calculated, it may be good to do some tests
         // we may wish to display text differently if the text size is greater than the line length, etc.
         
+        arrowOffset.set(offsetDirection);
+        arrowOffset.multLocal(worldRatio*arrowsize);
+        measureExtent.set(pDirection);
+        measureExtent.multLocal(lineLength/2 - worldRatio*margin);
+        measureExtentArrowHead.set(pDirection);
+        measureExtentArrowHead.multLocal(lineLength/2 - worldRatio*(margin+arrowsize));
+        
+        arrow1.set(pCenter);
+        arrow2.set(pCenter);
+        arrow1.addLocal(measureExtent);
+        arrow2.subtractLocal(measureExtent);
+        
+        arrowHead1.set(measureExtentArrowHead);
+        arrowHead2.set(measureExtentArrowHead);
+        arrowHead1.addLocal(arrowOffset);
+        arrowHead2.subtractLocal(arrowOffset);
+
+        barOffset1.set(offsetDirection);
+        barOffset2.set(offsetDirection);
+        barOffset1.multLocal(offset + edgeWidth/2);
+        barOffset2.multLocal(offset - edgeWidth/2);
+        
+        if(drawLeftBar) {
+            bar1.set(getTarget().getPoint1());
+            bar2.set(getTarget().getPoint1());
+            bar1.addLocal( barOffset1 );
+            bar2.addLocal( barOffset2 );
+            CurveUtil.renderLine(r, color, bar1, bar2);
+        }
+        
+        if(drawRightBar) {
+            bar1.set(getTarget().getPoint2());
+            bar2.set(getTarget().getPoint2());
+            bar1.addLocal( barOffset1 );
+            bar2.addLocal( barOffset2 );
+            CurveUtil.renderLine(r, color, bar1, bar2);
+        }
+        
         if(textWorldLength + 8*margin*worldRatio > lineLength) {
             // do not display text along line, display 10px under (?)
             textWorldLength = 0;
-            labelCenter = pCenter.add( offsetDirection.mult(12*worldRatio) );
+            labelCenter.set(pCenter);
+            labelCenter.addLocal( offsetDirection.multLocal(12*worldRatio) );
+            // the multLocal here is cheating, but offsetDirection is not reused, so it should be okay...
         
             // draw line:
-            CurveUtil.renderLine(r, color,
-                    pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                    pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)));
+            CurveUtil.renderLine(r, color, arrow1, arrow2);
             
         } else {
             // display text normally...
             labelCenter = pCenter;
+            midVector.set(pDirection);
+            midVector.multLocal(textWorldLength/2 + worldRatio*margin);
+            midVector1.set(pCenter);
+            midVector2.set(pCenter);
+            midVector1.addLocal(midVector);
+            midVector2.subtractLocal(midVector);
         
             // draw lines:
-            CurveUtil.renderLine(r, color,
-                    pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                    pCenter.add(pDirection.mult(textWorldLength/2 + worldRatio*margin)));
-            CurveUtil.renderLine(r, color,
-                    pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                    pCenter.subtract(pDirection.mult(textWorldLength/2 + worldRatio*margin)));
+            CurveUtil.renderLine(r, color, arrow1, midVector1);
+            CurveUtil.renderLine(r, color, arrow2, midVector2);
         }
+        
+        arrowHead1a.set(arrowHead1).multLocal(-1);
+        arrowHead2a.set(arrowHead2).multLocal(-1);
+        
+        arrowHead1.addLocal(pCenter);
+        arrowHead2.addLocal(pCenter);
+        arrowHead1a.addLocal(pCenter);
+        arrowHead2a.addLocal(pCenter);
         
         // draw arrowheads:
-        CurveUtil.renderLine(r, color,
-                pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                pCenter.add(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).add(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, color,
-                pCenter.add(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                pCenter.add(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).subtract(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, color,
-                pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).add(offsetDirection.mult(worldRatio*arrowsize))));
-        CurveUtil.renderLine(r, color,
-                pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*margin)),
-                pCenter.subtract(pDirection.mult(lineLength/2 - worldRatio*(margin+arrowsize)).subtract(offsetDirection.mult(worldRatio*arrowsize))));
-        
-        //CurveUtil.renderLine(r, ColorRGBA.black, p1, p2);
-        
-        if(drawLeftBar) {
-            Vector3f p1a = getTarget().getPoint1().add( offsetDirection.mult(offset + edgeWidth/2) );
-            Vector3f p1b = getTarget().getPoint1().add( offsetDirection.mult(offset - edgeWidth/2) );
-            CurveUtil.renderLine(r, color, p1a, p1b);
-        }
-        
-        if(drawRightBar) {
-            Vector3f p2a = getTarget().getPoint2().add( offsetDirection.mult(offset + edgeWidth/2) );
-            Vector3f p2b = getTarget().getPoint2().add( offsetDirection.mult(offset - edgeWidth/2) );
-            CurveUtil.renderLine(r, color, p2a, p2b);
-        }
-        
+        CurveUtil.renderLine(r, color, arrow1, arrowHead1);
+        CurveUtil.renderLine(r, color, arrow1, arrowHead2);
+        CurveUtil.renderLine(r, color, arrow2, arrowHead1a);
+        CurveUtil.renderLine(r, color, arrow2, arrowHead2a);
     }
     
 }
