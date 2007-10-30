@@ -191,9 +191,15 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         
         if(textWorldLength + 8*margin*worldRatio > lineLength) {
             // do not display text along line, display 10px under (?)
-            textWorldLength = 0;
+            //textWorldLength = 0;
+            
+            // THIS IS A HACK HACK HACK!!!
+            float yComposition = Math.abs(offsetDirection.y);
+            float otherComposition = 1 - yComposition*yComposition;
+            float totalOffset = (yComposition)*12*worldRatio + 3*otherComposition*textWorldLength;
+            
             labelCenter.set(pCenter);
-            labelCenter.addLocal( offsetDirection.multLocal(12*worldRatio) );
+            labelCenter.addLocal( offsetDirection.multLocal(totalOffset) );
             // the multLocal here is cheating, but offsetDirection is not reused, so it should be okay...
         
             // draw line:

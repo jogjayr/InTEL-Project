@@ -25,12 +25,12 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.ModalPopupWindow;
 import edu.gatech.statics.objects.Joint;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  *
@@ -39,6 +39,32 @@ import java.security.NoSuchAlgorithmException;
 public class PurseExerciseGraded extends PurseExercise {
 
     private String studentName;
+
+    public PurseExerciseGraded() {
+
+        Random rand = new Random();
+        
+        handPoint = -17 + (float)rand.nextInt(20)/10 - 1;
+        tendonAnchorB = 13 + (float)rand.nextInt(20)/10;
+        tendonAnchorD = 13 + (float)rand.nextInt(20)/10 - 1;
+        shoulderHeight = 16 + -(float)rand.nextInt(10)/10;
+        forearmWeight = 9 + (float)rand.nextInt(20)/10 - 1;
+        purseWeight = 19.6f + (float)rand.nextInt(20)/10 - 1;
+        
+    }
+    
+    public void initExercise() {
+        super.initExercise();
+        
+        setDescription(
+                "<html><body>" +
+                "<center><font size=\"6\">"+getName()+"</font></center>"+
+                "Here is a simplified version of the human arm. " +
+                "Please solve for the reactions at each of the points: B, C, D, E." +
+                "The weight of the forearm is "+forearmWeight+" N, and the weight of the purse is "+purseWeight+" N." +
+                "</body></html>"
+                );
+    }
 
     public void postLoadExercise() {
 
@@ -136,11 +162,8 @@ public class PurseExerciseGraded extends PurseExercise {
             return;
         }
         
-        BigInteger nameCode = new BigInteger(md5.digest(studentName.getBytes()));
-        BigInteger exerciseCode = new BigInteger(md5.digest(getName().getBytes()));
-        
-        BigInteger result = nameCode.add(exerciseCode);
-        byte[] resultBytes = result.toByteArray();
+        String finalString = studentName + "@" + getName();
+        byte[] resultBytes = md5.digest(finalString.getBytes());
         
         String finalCode = String.format("%x%x%x", resultBytes[0], resultBytes[1], resultBytes[2]);
         

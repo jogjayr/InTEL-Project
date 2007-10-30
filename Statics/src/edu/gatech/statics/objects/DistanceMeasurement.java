@@ -12,8 +12,8 @@ package edu.gatech.statics.objects;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.application.Units;
 import edu.gatech.statics.objects.representations.DistanceRepresentation;
-import edu.gatech.statics.objects.representations.LabelRepresentation;
 
 /**
  *
@@ -53,8 +53,10 @@ public class DistanceMeasurement extends Measurement {
     }
 
     public String getLabelText() {
-        return (v1.distance(v2) * StaticsApplication.getApp().getUnits().getWorldDistanceMultiplier())+" "+
-                StaticsApplication.getApp().getUnits().getDistance();
+        Units units = StaticsApplication.getApp().getUnits();
+        float distance = v1.distance(v2) * units.getWorldDistanceMultiplier();
+        
+        return String.format("%."+units.getDecimalPrecision()+"f", distance)+" "+units.getDistance();
     }
     
 }

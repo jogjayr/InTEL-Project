@@ -59,6 +59,13 @@ public class PurseExercise extends Exercise {
             }
         });
     }
+
+    protected float handPoint = -17;
+    protected float tendonAnchorB = 13;
+    protected float tendonAnchorD = 13;
+    protected float shoulderHeight = 16;
+    protected float forearmWeight = 9;
+    protected float purseWeight = 19.6f;
     
     public void loadExercise() {
         
@@ -71,13 +78,11 @@ public class PurseExercise extends Exercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 65.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
         
-        
-        
-        Point A = new Point(new Vector3f(-17,-16+6,0));
-        Point B = new Point(new Vector3f(13,-16+6,0));
+        Point A = new Point(new Vector3f(handPoint,-16+6,0));
+        Point B = new Point(new Vector3f(tendonAnchorB,-16+6,0));
         Point C = new Point(new Vector3f(18,-16+6,0));
-        Point D = new Point(new Vector3f(18,13+6,0));
-        Point E = new Point(new Vector3f(18f,16+6,0));
+        Point D = new Point(new Vector3f(18,tendonAnchorD+6,0));
+        Point E = new Point(new Vector3f(18f,shoulderHeight+6,0));
         
         Body upperArm = new Beam(E,C);
         Body forearm = new Beam(C,A);
@@ -117,7 +122,7 @@ public class PurseExercise extends Exercise {
         //forearm.addObject(jointC);
         
         
-        Force purse = new Force(A, new Vector3f(0,-19.6f,0));
+        Force purse = new Force(A, new Vector3f(0,-purseWeight,0));
         forearm.addObject(purse);
         
         Moment shoulder = new Moment(E, new Vector3f(0,0,-1)); // use symbol here
@@ -155,7 +160,7 @@ public class PurseExercise extends Exercise {
         shoulder.createDefaultSchematicRepresentation();
         //weight.createDefaultSchematicRepresentation();
         
-        forearm.setWeight(9); // ???
+        forearm.setWeight(forearmWeight); // ???
         forearm.setCenterOfMassPoint(G);
         
         world.add(upperArm);
