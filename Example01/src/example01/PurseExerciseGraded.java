@@ -60,7 +60,7 @@ public class PurseExerciseGraded extends PurseExercise {
                 "<html><body>" +
                 "<center><font size=\"6\">"+getName()+"</font></center>"+
                 "Here is a simplified version of the human arm. " +
-                "Please solve for the reactions at each of the points: B, C, D, E." +
+                "Please solve for the reactions at each of the points: B, C, and E." +
                 "The weight of the forearm is "+forearmWeight+" N, and the weight of the purse is "+purseWeight+" N." +
                 "</body></html>"
                 );
@@ -113,7 +113,7 @@ public class PurseExerciseGraded extends PurseExercise {
 
     public boolean isExerciseSolved() {
         for (SimulationObject obj : getWorld().allObjects())
-            if (obj instanceof Joint && !((Joint) obj).isSolved())
+            if (obj instanceof Joint && !((Joint) obj).isSolved() && !obj.getName().equals("D"))
                 return false;
         return true;
     }

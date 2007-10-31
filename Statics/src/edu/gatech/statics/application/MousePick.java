@@ -49,7 +49,6 @@ import com.jme.scene.Node;
 import edu.gatech.statics.World;
 import java.util.Collections;
 import java.util.List;
-import sun.nio.cs.ext.ISCII91;
 
 /**
  * <code>MousePick</code>
@@ -58,12 +57,12 @@ import sun.nio.cs.ext.ISCII91;
  */
 public class MousePick extends MouseInputAction {
     
-    private StaticsApplication app;
+    //private StaticsApplication app;
 
     private List<RepresentationLayer> layers;
     
     public MousePick(StaticsApplication app) {
-        this.app = app;
+        //this.app = app;
         
         layers = RepresentationLayer.getLayers();
         Collections.sort(layers, RepresentationLayer.getComparator());
@@ -94,8 +93,11 @@ public class MousePick extends MouseInputAction {
         //toastCondition2 = isClicking;
         //toastCondition1 = false;
         
-        Camera camera = app.getCamera();
-        World world = app.getCurrentWorld();
+        Camera camera = StaticsApplication.getApp().getCamera();
+        World world = StaticsApplication.getApp().getCurrentWorld();
+        
+        //if(world == null)
+        //    return;
         
         Vector3f screenPos = mouse.getLocalTranslation();
         Vector2f screenPos2 = new Vector2f(screenPos.x, screenPos.y);
@@ -107,8 +109,10 @@ public class MousePick extends MouseInputAction {
         PickResults results = new BoundingPickResults();
         results.setCheckDistance(false);
         
-        for(RepresentationLayer layer : layers)
-            world.getNode(layer).findPick(ray, results);
+        for(RepresentationLayer layer : layers) {
+            if(world.getNode(layer) != null)
+                world.getNode(layer).findPick(ray, results);
+        }
         
         if(results.getNumber() > 0) {
             for(int i = 0; i < results.getNumber(); i++) {

@@ -65,7 +65,7 @@ public class StaticsApplication {
     private BStyleSheet buiStyle;
     public BStyleSheet getBuiStyle() {return buiStyle;}
     
-    private List<LabelRepresentation> activeLabels = new ArrayList();
+    private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
     
     public RootInterface getRootInterface() {return rootInterface;}
     public AppInterface getCurrentInterface() {return currentInterface;}
@@ -170,6 +170,10 @@ public class StaticsApplication {
     private static final int garbageCollectFrames = 100;
     
     public void update() {
+
+        if(finished)
+            return;
+
         timer.update();
         timePerFrame = timer.getTimePerFrame();
         
@@ -214,7 +218,7 @@ public class StaticsApplication {
                 label.addToInterface();
             }
         
-        List<LabelRepresentation> removeLabels = new ArrayList(activeLabels);
+        List<LabelRepresentation> removeLabels = new ArrayList<LabelRepresentation>(activeLabels);
         removeLabels.removeAll(currentWorld.getLabels());
         for(LabelRepresentation label : removeLabels) {
             activeLabels.remove(label);
@@ -223,6 +227,9 @@ public class StaticsApplication {
     }
     
     public void render() {
+
+        if(finished)
+            return;
         
         Renderer r = display.getRenderer();
         r.clearStatistics();
@@ -338,7 +345,10 @@ public class StaticsApplication {
     
     public boolean isHidingGrays() {return hideGrays;}
     public void hideGrays(boolean hidden) {
-        this.hideGrays = hidden;
+        if(this.hideGrays != hidden) {
+            getCurrentWorld().invalidateNodes();
+            this.hideGrays = hidden;
+        }
     }
     
     /**
@@ -373,16 +383,25 @@ public class StaticsApplication {
     
     void cleanup() {
         LoggingSystem.getLogger().log( Level.INFO, "Cleaning up resources." );
-
+        
+        input.removeAllActions();
+        input.removeAllFromAttachedHandlers();
+        
         TextureManager.doTextureCleanup();
         KeyInput.destroyIfInitalized();
         MouseInput.destroyIfInitalized();
         JoystickInput.destroyIfInitalized();
+        
+        display.close();
     }
     
-    // necessary?
+    // necessary!
     private boolean finished = false;
-    public void finish() {finished = true;}
+    void finish() {
+        finished = true;
+        cleanup();
+        app = null;
+    }
     boolean isFinished() {
         return finished;
     }

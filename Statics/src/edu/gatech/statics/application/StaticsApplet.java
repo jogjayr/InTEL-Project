@@ -41,6 +41,7 @@ public class StaticsApplet extends Applet {
     
     private Canvas glCanvas;
     private CanvasImplementor impl;
+    private boolean alive;
     
     private StaticsApplication application;
     private DisplaySystem display;
@@ -49,13 +50,37 @@ public class StaticsApplet extends Applet {
     public StaticsApplet() {
         instance = this;
         application = new StaticsApplication();
+        alive = true;
+        System.out.println("Applet: StaticsApplet()");
     }
     
     public StaticsApplication getApplication() {return application;}
+
+    public void destroy() {
+        application.finish();
+        application = null;
+        super.destroy();
+        alive = false;
+        System.out.println("Applet: destroy()");
+    }
+
+    public void start() {
+        super.start();
+        System.out.println("Applet: start()");
+    }
+
+    public void stop() {
+        super.stop();
+        System.out.println("Applet: stop()");
+    }
     
     public void init() {
+        System.out.println("Applet: init()");
         synchronized (INIT_LOCK) {
-                    
+
+            KeyInput.destroyIfInitalized();
+            MouseInput.destroyIfInitalized();
+        
             try {
                 DisplaySystem.getSystemProvider().installLibs();
             } catch (Exception le) {
@@ -82,13 +107,6 @@ public class StaticsApplet extends Applet {
                 AppletMouse.setup(glCanvas, false);
             ((AppletMouse) MouseInput.get()).setEnabled(false);
             
-            //    MouseInput.setProvider(AppletMouse.class);//(InputSystem.INPUT_SYSTEM_AWT);
-            /*((AppletMouse) MouseInput.get()).setEnabled(false);
-            ((AppletMouse) MouseInput.get()).setDragOnly(true);
-            
-            glCanvas.addMouseListener((MouseListener) MouseInput.get());
-            glCanvas.addMouseWheelListener((MouseWheelListener) MouseInput.get());
-            glCanvas.addMouseMotionListener((MouseMotionListener) MouseInput.get());*/
             glCanvas.addMouseMotionListener(new MouseMotionAdapter() {
                 public void mouseMoved(java.awt.event.MouseEvent e) {
                     if (!glCanvas.hasFocus())
@@ -111,21 +129,19 @@ public class StaticsApplet extends Applet {
                 }
             });
             
-
             // We are going to use jme's Input systems, so enable updating.
             ((JMECanvas) glCanvas).setUpdateInput(true);
-            
             new Thread() {
                 {   setName("Applet repaint thread");
                     setDaemon(true);
                 }
 
                 public void run() {
-                    while (true) {
+                    while (alive) {
                         if (isVisible())
                             glCanvas.repaint();
                         try {
-                            Thread.sleep(2);
+                            Thread.sleep(20);
                         } catch (InterruptedException e) { }
                     }
                 }
@@ -146,11 +162,14 @@ public class StaticsApplet extends Applet {
             display.getCurrentContext().setupRecords(renderer);
             DisplaySystem.updateStates(renderer);
             
-            
+            System.out.println("calling StaticsApplication.init()...");
             application.init();
         }
         
         public void doUpdate() {
+            if(!alive)
+                return;
+            
             application.update();
             
             float timePerFrame = application.getTimePerFrame();
@@ -162,6 +181,9 @@ public class StaticsApplet extends Applet {
         }
 
         public void doRender() {
+            if(!alive)
+                return;
+            
             application.render();
             renderer.displayBackBuffer();
         }

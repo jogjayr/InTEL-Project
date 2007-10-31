@@ -35,14 +35,9 @@ public class PointRepresentation extends Representation/*<Point>*/ {
     private Quad pointQuad;
     
     static {
-        
-        
         URL textureLoc = PointRepresentation.class.getClassLoader().getResource("rsrc/point.png");
         pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR,Texture.FM_LINEAR);
         
-        //TextureState ts1 = display.getRenderer().createTextureState();
-        //ts1.setTexture();
-        //gKid1.setRenderState(ts1);
     }
     
     /** Creates a new instance of PointRepresentation */

@@ -125,7 +125,7 @@ public class World {
     }
     
     private boolean nodesUpdated = false;
-    protected void invalidateNodes() {nodesUpdated = false;}
+    public void invalidateNodes() {nodesUpdated = false;}
     public void updateNodes() {
         if(nodesUpdated)
             return;
