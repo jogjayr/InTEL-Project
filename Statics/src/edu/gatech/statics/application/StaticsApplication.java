@@ -399,6 +399,10 @@ public class StaticsApplication {
     private boolean finished = false;
     void finish() {
         finished = true;
+        currentExercise = null;
+        currentWorld = null;
+        currentInterface = null;
+        currentTool = null;
         cleanup();
         app = null;
     }

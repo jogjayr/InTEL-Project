@@ -14,6 +14,7 @@ import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.renderer.lwjgl.LWJGLRenderer;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
 import com.jmex.awt.JMECanvas;
 import com.jmex.awt.JMECanvasImplementor;
 import com.jmex.awt.input.AWTKeyInput;
@@ -24,6 +25,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -56,8 +60,24 @@ public class StaticsApplet extends Applet {
     
     public StaticsApplication getApplication() {return application;}
 
+    private void showTextures() {
+        java.lang.reflect.Field[] fields = TextureManager.class.getDeclaredFields();
+        for(java.lang.reflect.Field field : fields) {
+            try {
+                field.setAccessible(true);
+                System.out.println(field.getName()+": "+field.get(null));
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex);
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex);
+            }
+        }
+    }
+    
     public void destroy() {
+        showTextures();
         application.finish();
+        showTextures();
         application = null;
         super.destroy();
         alive = false;

@@ -9,15 +9,14 @@
 
 package edu.gatech.statics.application;
 
+import com.jme.image.Texture;
+import com.jme.util.TextureManager;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
-import edu.gatech.statics.RepresentationLayer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -82,4 +81,16 @@ public class Exercise {
     private boolean finished = false;
     public boolean isExerciseFinished() {return finished;}
     public void finishExercise() {finished = true;}
+    
+    // some utility functions
+    
+    protected Texture loadTexture(String textureUrl) {
+        return loadTexture(textureUrl, Texture.FM_LINEAR, Texture.FM_LINEAR);
+    }
+    
+    protected Texture loadTexture(String textureUrl, int minFilter, int maxFilter) {
+        Texture texture = TextureManager.loadTexture(getClass().getClassLoader().getResource(textureUrl), minFilter, maxFilter);
+        System.out.println(texture+" "+texture.getTextureId()+" "+texture.getTextureKey());
+        return texture;
+    }
 }

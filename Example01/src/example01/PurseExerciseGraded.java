@@ -113,7 +113,7 @@ public class PurseExerciseGraded extends PurseExercise {
 
     public boolean isExerciseSolved() {
         for (SimulationObject obj : getWorld().allObjects())
-            if (obj instanceof Joint && !((Joint) obj).isSolved() && !obj.getName().equals("D"))
+            if (obj instanceof Joint && !((Joint) obj).isSolved() && !((Joint) obj).getPoint().getName().equals("D"))
                 return false;
         return true;
     }

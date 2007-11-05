@@ -77,8 +77,6 @@ public class MousePick extends MouseInputAction {
         this.enabled = enabled;
     }
     
-    //boolean toastCondition1, toastCondition2;
-    
     
     public void performAction(InputActionEvent evt) {
         
@@ -90,14 +88,9 @@ public class MousePick extends MouseInputAction {
         
         wasMouseDown = isMouseDown;
         
-        //toastCondition2 = isClicking;
-        //toastCondition1 = false;
-        
         Camera camera = StaticsApplication.getApp().getCamera();
         World world = StaticsApplication.getApp().getCurrentWorld();
         
-        //if(world == null)
-        //    return;
         
         Vector3f screenPos = mouse.getLocalTranslation();
         Vector2f screenPos2 = new Vector2f(screenPos.x, screenPos.y);
