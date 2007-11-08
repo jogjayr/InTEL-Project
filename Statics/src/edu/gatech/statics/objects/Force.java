@@ -49,11 +49,11 @@ public class Force extends Vector {
     
     public String getDescription() {
         return "Force: "+getName()+"<br>" +
-                "Magnitude: "+ getValue().length() + " "+getUnits();
+                "Magnitude: "+ getMagnitude() + " "+getUnits();
     }
     
     public Force negate() {
-        Force r = new Force(getAnchor(), getValue().negate());
+        Force r = new Force(getAnchor(), getNormalizedValue().negate());
         
         r.setSolved(isSolved());
         r.setFixed(isFixed());

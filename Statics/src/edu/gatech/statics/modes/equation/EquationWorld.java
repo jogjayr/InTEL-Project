@@ -82,7 +82,8 @@ public class EquationWorld extends World {
                     // v is a symbolic force, but is not yet solved.
                     v.setSolved(true);
                     float value = values.get(v);
-                    v.setValue(v.getValue().mult( value ));
+                    //v.setValue(v.getValueNormalized().mult( value ));
+                    v.setMagnitude(value);
                 }
             }
         }

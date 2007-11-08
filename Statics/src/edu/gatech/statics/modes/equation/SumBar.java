@@ -197,13 +197,11 @@ public class SumBar extends Toolbar {
             // add sum icon
             BContainer startContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
             
-            
             icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/sum.png")));
             startContainer.add(new BLabel(icon));
             startContainer.add(sumOperand = new BLabel(math.getName()));
             icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/equals.png")));
             startContainer.add(new BLabel(icon));
-            
             
             equationContainer.add(startContainer);
 
@@ -265,6 +263,7 @@ public class SumBar extends Toolbar {
         TermBox box = new TermBox(term.getVector(), term.getCoefficient());
         terms.put(term.getVector(), box);
         equationContainer.add(1,box);
+        box.coefficient.requestFocus();
         
         //equationContainer.add(getComponentCount()-2,box);
         

@@ -87,7 +87,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
             // we override this method so that when the force is deleted, the other forces will snap appropriately.
             public void performDelete() {
                 super.performDelete();
-                force.setValue(force.getValue());
+                force.setNormalizedValue(force.getNormalizedValue());
             }
         };
         runtimeDeletionManipulator.setEnabled(false);
@@ -150,7 +150,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         if(orientationManipulator != null) {
             if(orientationManipulator.getCurrentSnap() != null) {
                 
-                force.setValue(orientationManipulator.getCurrentSnap());
+                force.setNormalizedValue(orientationManipulator.getCurrentSnap());
 
                 orientationManipulator.setEnabled(false);
                 removeFromAttachedHandlers(orientationManipulator);

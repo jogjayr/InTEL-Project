@@ -53,13 +53,13 @@ public class EquationMathMoments extends EquationMath {
             if(vector.source instanceof Moment) {
                 
                 // this is a moment
-                Vector3f vectorOrient = vector.source.getValue().normalize();
+                Vector3f vectorOrient = vector.source.getNormalizedValue();
                 targetValue = vectorOrient.dot(getObservationDirection());
                 
             } else {
             
                 // this is a force
-                Vector3f vectorOrient = vector.source.getValue().normalize();
+                Vector3f vectorOrient = vector.source.getNormalizedValue();
                 Vector3f distance = vector.source.getAnchor().getTranslation().subtract(observationPoint);
 
                 targetValue = -vectorOrient.cross(distance).dot(getObservationDirection());
@@ -110,7 +110,8 @@ public class EquationMathMoments extends EquationMath {
             Term term = getTerm(force);
             
             // clear off things that would not add via cross product
-            float contribution = force.getValue().cross( force.getAnchor().getTranslation().subtract(getObservationPoint()) ).length();
+            float contribution = force.getNormalizedValue().cross( force.getAnchor().getTranslation().subtract(getObservationPoint()) ).length();
+            contribution *= force.getMagnitude();
             
             if(contribution == 0)
                 if(term != null) {

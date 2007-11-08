@@ -48,11 +48,11 @@ public class Moment extends Vector {
     
     public String getDescription() {
         return "Moment: "+getName()+"<br>" +
-                "Magnitude: "+ getValue().length() + " "+getUnits();
+                "Magnitude: "+ getMagnitude() + " "+getUnits();
     }
     
     public Moment negate() {
-        Moment r = new Moment(getAnchor(), getValue().negate());
+        Moment r = new Moment(getAnchor(), getNormalizedValue().negate());
         
         r.setSolved(isSolved());
         r.setFixed(isFixed());

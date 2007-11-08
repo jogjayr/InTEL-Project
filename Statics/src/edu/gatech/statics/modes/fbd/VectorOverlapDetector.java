@@ -41,7 +41,7 @@ class VectorOverlapDetector implements VectorListener {
 
         List<Vector> nearVectors = getVectors();        
         updateVectors(nearVectors, oldValue);
-        updateVectors(nearVectors, myVector.getValue());
+        updateVectors(nearVectors, myVector.getNormalizedValue());
     }
 
     private List<Vector> getVectors() {
@@ -90,7 +90,7 @@ class VectorOverlapDetector implements VectorListener {
         float currentOffset = 0;
         
         for(Vector v : nearVectors) {
-            Vector3f vNorm = v.getValue().normalize();
+            Vector3f vNorm = v.getNormalizedValue().normalize();
             
             if(vNorm.equals(direction)) {
                 if(v.getArrow() != null) {

@@ -35,6 +35,7 @@ public class DeletableManipulator extends Manipulator {
         };
         
         addAction(action, "delete", KeyInput.KEY_DELETE, false);
+        addAction(action, "backspace", KeyInput.KEY_BACK, false);
     }
     
     public void performDelete() {

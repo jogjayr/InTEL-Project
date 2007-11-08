@@ -24,10 +24,9 @@ import java.util.List;
  */
 public class Vector extends SimulationObject {
     
-    //private Vector3f anchor;
     private Point anchor;
-    private Vector3f value;
-    private float magnitude;
+    private Vector3f value; // normalized value
+    private float magnitude; // 
     
     private List<VectorListener> listeners = new ArrayList<VectorListener>();
     
@@ -56,11 +55,19 @@ public class Vector extends SimulationObject {
     
     public float getMagnitude() {return magnitude;}
     public void setMagnitude(float magnitude) {
+        
+        if(magnitude < 0) {
+            magnitude *= -1;
+            setNormalizedValue(value.negate());
+        }
+        
         double power = Math.pow(10, StaticsApplication.getApp().getUnits().getDecimalPrecisionForces());
-        magnitude = (float) (Math.floor(magnitude*power)/power);
+        //magnitude = (float) (Math.floor(magnitude*power)/power);
+        magnitude = (float)(Math.round(magnitude*power)/power);
         
         this.magnitude = magnitude;
-        setValue( value.normalize().mult(magnitude) );
+        //setValue( value.normalize().mult(magnitude) );
+        
     }
     
     // this should be overridden in general circumstances
@@ -76,10 +83,10 @@ public class Vector extends SimulationObject {
     
     public Matrix3f getRotation() {
         Matrix3f mat = new Matrix3f();
-        if(value.length() == 0)
-            return mat;
+        //if(value.length() == 0)
+        //    return mat;
         
-        mat.fromStartEndVectors(Vector3f.UNIT_Z, value.normalize());
+        mat.fromStartEndVectors(Vector3f.UNIT_Z, value);
         return mat;
     }
     
@@ -88,22 +95,22 @@ public class Vector extends SimulationObject {
         v.multLocal(magnitude);
         //if(!v.equals(value))
         //value = v;
-        setValue(v);
+        setNormalizedValue(v);
     }
     
     //public void setAnchor(Vector3f anchor) {this.anchor = anchor;}
     //public Vector3f getAnchor() {return anchor;}
     
-    public void setValue(Vector3f value) {
+    public void setNormalizedValue(Vector3f value) {
         
         Vector3f oldValue = this.value;
-        this.value = value;
-        magnitude = value.length();
+        this.value = value.normalize();
+        //magnitude = value.length();
         
         for(VectorListener listener : listeners)
             listener.valueChanged(oldValue);
     }
-    public Vector3f getValue() {return value;}
+    public Vector3f getNormalizedValue() {return value;}
 
     public void createDefaultSchematicRepresentation() {
         Representation rep = new ArrowRepresentation(this);
@@ -113,9 +120,11 @@ public class Vector extends SimulationObject {
     /** Creates a new instance of Vector */
     public Vector(Point anchor, Vector3f value) {
         this.anchor = anchor;
-        this.value = value;
         
-        magnitude = value.length();
+        setMagnitude(value.length());
+        setNormalizedValue(value);
+        //magnitude = value.length();
+        //this.value = value.normalize();
         
         //setPosition()
         //this(new Vector3f(), new Vector3f());
@@ -176,7 +185,7 @@ public class Vector extends SimulationObject {
             return super.getDisplayCenter();
         
         float distance = 1+2*(arrow.getLength() + arrow.getAxisOffset());
-        return getTranslation().add( getValue().normalize().mult(distance) );
+        return getTranslation().add( getNormalizedValue().mult(distance)    );
     }
     
     private String getMagnitudeString() {
@@ -199,7 +208,8 @@ public class Vector extends SimulationObject {
     }
     
     public String toString() {
-        String r = getClass().getSimpleName()+" @ "+getAnchor().getName()+" : <"+value.x+", "+value.y+", "+value.z+">";
+        String r = getClass().getSimpleName()+" @ "+getAnchor().getName()+" : <"+value.x+", "+value.y+", "+value.z+"> ";
+        r += ""+magnitude;
         if(isSymbol())
             r += " \""+getName()+"\"";
         if(isSolved())

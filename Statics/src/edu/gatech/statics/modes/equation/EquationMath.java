@@ -112,7 +112,7 @@ public class EquationMath {
         float targetValue;
         
         boolean check() {
-            Vector3f vectorOrient = vector.source.getValue().normalize();
+            Vector3f vectorOrient = vector.source.getNormalizedValue();
             targetValue = vectorOrient.dot(observationDirection);
             
             if(!coefficient.parse()) {
@@ -183,7 +183,7 @@ public class EquationMath {
         for(Force force : allForces) {
             Term term = terms.get(force);
             
-            if(force.getValue().dot(getObservationDirection()) == 0)
+            if(force.getNormalizedValue().dot(getObservationDirection()) == 0)
                 if(term != null) {
                     System.out.println("check: equation has unnecessary term");
                     System.out.println("check: FAILED");

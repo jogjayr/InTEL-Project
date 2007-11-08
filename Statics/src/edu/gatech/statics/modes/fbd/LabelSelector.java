@@ -95,7 +95,7 @@ public class LabelSelector extends SelectionTool {
         final BTextField textfield = new BTextField();
         
         if(hintText == null)
-            textfield.setText(obj.getLabelText());
+            textfield.setText(obj.getLabelTextNoUnits());
         else textfield.setText(hintText);
         
         centerContainer.add(textfield, BorderLayout.CENTER);
