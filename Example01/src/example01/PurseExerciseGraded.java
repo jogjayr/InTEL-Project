@@ -95,7 +95,7 @@ public class PurseExerciseGraded extends PurseExercise {
         nameField.setPreferredWidth(200);
         nameRow.add(nameField);
 
-        BButton okButton = new BButton("OK", new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 String name = nameField.getText();
                 if(name.trim().equals(""))
@@ -103,9 +103,13 @@ public class PurseExerciseGraded extends PurseExercise {
                 studentName = name;
                 popup.dismiss();
             }
-        }, "ok");
+        };
+        
+        BButton okButton = new BButton("OK", actionListener, "ok");
         content.add(okButton);
-
+        nameField.addListener(actionListener);
+        nameField.requestFocus();
+        
         //Dimension dim = popup.getPreferredSize(0, 0);
         Dimension dim = new Dimension(300, 0);
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
@@ -136,11 +140,13 @@ public class PurseExerciseGraded extends PurseExercise {
                 "Please click the button below to submit your work.");
         popup.add(textLabel, BorderLayout.CENTER);
         
-        BButton submitButton = new BButton("Submit",new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 navigateAway();
             }
-        },"submit");
+        };
+        
+        BButton submitButton = new BButton("Submit",actionListener,"submit");
         popup.add(submitButton, BorderLayout.SOUTH);
         
         Dimension dim = new Dimension(300, 0);

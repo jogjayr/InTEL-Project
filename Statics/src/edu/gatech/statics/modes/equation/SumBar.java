@@ -50,7 +50,7 @@ public class SumBar extends Toolbar {
     
     private EquationMath math;
     private EquationInterface iface;
-    private Map<Vector, TermBox> terms = new HashMap();
+    private Map<Vector, TermBox> terms = new HashMap<Vector, SumBar.TermBox>();
     
     private BContainer equationContainer;
     private BLabel sumOperand;
@@ -82,8 +82,8 @@ public class SumBar extends Toolbar {
             this.source = source;
             
             if(source.isSymbol())
-                vectorLabel = new BLabel("@=b#0000FF("+source.getLabelTextNoUnits()+")");
-            else vectorLabel = new BLabel(source.getLabelTextNoUnits());
+                vectorLabel = new BLabel("(@=b#0000FF("+source.getLabelTextNoUnits()+"))");
+            else vectorLabel = new BLabel("("+source.getLabelTextNoUnits()+")");
             coefficient = new BTextField(coefficientText);
             //coefficient.setPreferredWidth(10);
             

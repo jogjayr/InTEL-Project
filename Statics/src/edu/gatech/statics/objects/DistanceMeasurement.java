@@ -56,7 +56,7 @@ public class DistanceMeasurement extends Measurement {
         Units units = StaticsApplication.getApp().getUnits();
         float distance = v1.distance(v2) * units.getWorldDistanceMultiplier();
         
-        return String.format("%."+units.getDecimalPrecision()+"f", distance)+" "+units.getDistance();
+        return String.format("%."+units.getDecimalPrecisionMeasurements()+"f", distance)+" "+units.getDistance();
     }
     
 }

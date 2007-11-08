@@ -50,6 +50,9 @@ public class FBDBodySelector extends SelectionTool {
     }
     
     
-    protected void onKeyOK() {finish();}
+    protected void onKeyOK() {
+        if(!getWorld().getSelectedObjects().isEmpty())
+            finish();
+    }
 
 }

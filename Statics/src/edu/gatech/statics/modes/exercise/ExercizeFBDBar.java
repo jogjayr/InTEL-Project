@@ -30,7 +30,7 @@ import java.util.Map;
 public class ExercizeFBDBar extends Toolbar {
     
     BButton selectButton;
-    private Map<FBDWorld, FBDIcon> iconMap = new HashMap();
+    private Map<FBDWorld, FBDIcon> iconMap = new HashMap<FBDWorld, FBDIcon>();
     
     /** Creates a new instance of ExercizeFBDBar */
     public ExercizeFBDBar() {
@@ -99,6 +99,8 @@ public class ExercizeFBDBar extends Toolbar {
                         /*StaticsApplication.getApp().setAdvice(
                                 "You have created a Free Body Diagram from the bodies you have selected! " +
                                 "There is an icon for it on the toolbar below.");*/
+                } else {
+                    //activateSelector();
                 }
                 world.clearSelection();
             }

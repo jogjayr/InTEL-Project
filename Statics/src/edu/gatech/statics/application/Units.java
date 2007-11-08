@@ -19,13 +19,15 @@ public class Units {
     protected String force = "N";
     protected String moment = "N*m";
     
-    protected int decimalPrecision = 1;
+    protected int decimalPrecisionMeasurements = 1;
+    protected int decimalPrecisionForces = 2;
     protected float worldDistanceMultiplier = 1f;
     
     public String getDistance() {return distance;}
     public String getForce() {return force;}
     public String getMoment() {return moment;}
     
-    public int getDecimalPrecision() {return decimalPrecision;}
+    public int getDecimalPrecisionMeasurements() {return decimalPrecisionMeasurements;}
+    public int getDecimalPrecisionForces() {return decimalPrecisionForces;}
     public float getWorldDistanceMultiplier() {return worldDistanceMultiplier;}
 }

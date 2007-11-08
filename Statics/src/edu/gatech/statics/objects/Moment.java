@@ -48,7 +48,7 @@ public class Moment extends Vector {
     
     public String getDescription() {
         return "Moment: "+getName()+"<br>" +
-                "Magnitude: "+ getValue().length() + " "+StaticsApplication.getApp().getUnits().getMoment();
+                "Magnitude: "+ getValue().length() + " "+getUnits();
     }
     
     public Moment negate() {
@@ -60,10 +60,14 @@ public class Moment extends Vector {
         
         return r;
     }
+    
+    public String getUnits() {
+        return StaticsApplication.getApp().getUnits().getMoment();
+    }
 
-    public String getLabelText() {
+    /*public String getLabelText() {
         if(isSymbol() && !isSolved())
             return getName();
         else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getMoment();
-    }
+    }*/
 }

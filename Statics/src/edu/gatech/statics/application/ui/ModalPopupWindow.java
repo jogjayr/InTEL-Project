@@ -21,6 +21,7 @@ import edu.gatech.statics.application.StaticsApplication;
 public class ModalPopupWindow extends BPopupWindow {
     public ModalPopupWindow(BWindow parentWindow, BLayoutManager layout) {
         super(parentWindow, layout);
+        setModal(true);
     }
 
     @Override

@@ -43,13 +43,17 @@ abstract public class Tool extends InputHandler {
         addAction(inputInterface, "escape", KeyInput.KEY_ESCAPE, false);
     }
     
+    /** called whenever the user presses RETURN or ENTER */
     protected void onKeyOK() {}
+    
+    /** called whenever the user presses ESC */
     protected void onKeyEscape() {cancel();}
+    
     abstract protected void onActivate();
     abstract protected void onCancel();
     abstract protected void onFinish();
     
-    private List<ToolFinishListener> finishListeners = new ArrayList();
+    private List<ToolFinishListener> finishListeners = new ArrayList<ToolFinishListener>();
     public void addFinishListener(ToolFinishListener listener) {finishListeners.add(listener);}
     public void removeFinishListener(ToolFinishListener listener) {finishListeners.remove(listener);}
     

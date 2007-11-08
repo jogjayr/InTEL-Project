@@ -12,10 +12,12 @@ package edu.gatech.statics.modes.fbd;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BTextField;
 import com.jmex.bui.BWindow;
+import com.jmex.bui.background.BBackground;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
@@ -89,18 +91,23 @@ public class LabelSelector extends SelectionTool {
         BLabel label = new BLabel("Label Force:");
         popup.add(label, BorderLayout.NORTH);
         
+        BContainer centerContainer = new BContainer(new BorderLayout(4,4));
         final BTextField textfield = new BTextField();
         
         if(hintText == null)
             textfield.setText(obj.getLabelText());
         else textfield.setText(hintText);
         
-        popup.add(textfield, BorderLayout.CENTER);
+        centerContainer.add(textfield, BorderLayout.CENTER);
+        BLabel unitsLabel = new BLabel(obj.getUnits());
+        centerContainer.add(unitsLabel, BorderLayout.EAST);
+        popup.add(centerContainer, BorderLayout.CENTER);
+        
         textfield.requestFocus();
         
         ActionListener listener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                System.out.println("selected OK??");
+                //System.out.println("selected OK??");
                 
                 if(updateVector(obj, textfield.getText())) {
                     popup.dismiss();
@@ -119,8 +126,10 @@ public class LabelSelector extends SelectionTool {
         Vector3f screenCoords = StaticsApplication.getApp().getCamera().getScreenCoordinates( obj.getTranslation() );
         
         popup.popup((int)screenCoords.x, (int)screenCoords.y, true);
-        popup.setBackground(popup.getState(), new TintedBackground(new ColorRGBA(.8f,.8f,.8f,1.0f)));
         
+        BBackground background = new TintedBackground(new ColorRGBA(.8f,.8f,.8f,1.0f));
+        for (int state = 0; state < 3; state++)
+            popup.setBackground(state, background);
     }
     
     private boolean updateVector(Vector obj, String text) {

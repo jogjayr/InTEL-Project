@@ -49,7 +49,7 @@ public class Force extends Vector {
     
     public String getDescription() {
         return "Force: "+getName()+"<br>" +
-                "Magnitude: "+ getValue().length() + " "+StaticsApplication.getApp().getUnits().getForce();
+                "Magnitude: "+ getValue().length() + " "+getUnits();
     }
     
     public Force negate() {
@@ -61,11 +61,15 @@ public class Force extends Vector {
         
         return r;
     }
+    
+    public String getUnits() {
+        return StaticsApplication.getApp().getUnits().getForce();
+    }
 
-    public String getLabelText() {
+    /*public String getLabelText() {
         if(isSymbol() && !isSolved())
             return getName();
         else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getForce();
-    }
+    }*/
     
 }
