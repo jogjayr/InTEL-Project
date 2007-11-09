@@ -14,6 +14,7 @@ import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.renderer.lwjgl.LWJGLRenderer;
 import com.jme.system.DisplaySystem;
+import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.awt.JMECanvas;
 import com.jmex.awt.JMECanvasImplementor;
@@ -25,9 +26,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
-import java.lang.reflect.Field;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -52,6 +51,10 @@ public class StaticsApplet extends Applet {
     
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
+        
+        //LoggingSystem.getLogger().setLevel(Level.OFF);
+        LoggingSystem.setLogToFile(null);
+        
         instance = this;
         application = new StaticsApplication();
         alive = true;

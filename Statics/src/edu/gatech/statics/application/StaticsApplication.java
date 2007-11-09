@@ -255,8 +255,6 @@ public class StaticsApplication {
         // initialization of the exercise
         getExercise().initExercise();
         
-        LoggingSystem.getLogger().setLevel(Level.WARNING);
-        
         input = new InputHandler();
         
         timer = Timer.getTimer();

@@ -10,7 +10,7 @@
 package edu.gatech.statics.application;
 
 import com.jme.app.BaseGame;
-import com.jme.system.DisplaySystem;
+import com.jme.util.LoggingSystem;
 
 /**
  *
@@ -35,7 +35,7 @@ public class StaticsGame extends BaseGame {
         timePerFrame = Math.min(timePerFrame, 1 / 60f);
         
         try {
-            Thread.currentThread().sleep( (int)(1000 * timePerFrame));
+            Thread.sleep( (int)(1000 * timePerFrame));
         } catch(InterruptedException e) {}
         
     }
