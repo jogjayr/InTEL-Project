@@ -33,9 +33,9 @@ import java.util.Map;
  */
 public class SolveBar extends Toolbar {
     
-    private Map<String, BLabel> unknownMap = new HashMap();
-    private Map<String, Vector> unknownVMap = new HashMap();
-    private List<String> unknownList = new ArrayList();
+    private Map<String, BLabel> unknownMap = new HashMap<String, BLabel>();
+    private Map<String, Vector> unknownVMap = new HashMap<String, Vector>();
+    private List<String> unknownList = new ArrayList<String>();
     private EquationSystem system;
     private EquationWorld world;
     
@@ -166,6 +166,12 @@ public class SolveBar extends Toolbar {
         world.performSolve(values);
         
         solveButton.setEnabled(false);
+        BButton returnButton = new BButton("Return to Main",new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                StaticsApplication.getApp().loadExercizeWorld();
+            }
+        },"return");
+        add(returnButton);
     }
     
     private void processEquations() {

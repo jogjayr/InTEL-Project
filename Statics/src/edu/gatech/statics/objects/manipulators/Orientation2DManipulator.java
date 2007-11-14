@@ -76,11 +76,11 @@ public class Orientation2DManipulator extends Manipulator {
     
     public class MouseAction extends MouseInputAction {
         
-        boolean buttonWasDown;
+        private boolean buttonWasDown;
         
         public MouseAction() {
             mouse = StaticsApplication.getApp().getMouse();
-            buttonWasDown = MouseInput.get().isButtonDown(0);
+            //buttonWasDown = MouseInput.get().isButtonDown(0);
         }
         
         public void performAction(InputActionEvent evt) {
@@ -92,6 +92,12 @@ public class Orientation2DManipulator extends Manipulator {
             //rotation.fromAngleAxis(angle, rotationAxis);
             //rotation = rotation.mult(starterRotation);
             getTarget().setRotation(rotation);
+            
+            // free the manipulator 
+            if(!MouseInput.get().isButtonDown(0) && buttonWasDown) {
+                Orientation2DManipulator.this.setEnabled(false);
+            }
+            buttonWasDown = MouseInput.get().isButtonDown(0);
             
             //currentWorldPosition = findWorldPoint();
             //getTarget().setPosition(currentWorldPosition);

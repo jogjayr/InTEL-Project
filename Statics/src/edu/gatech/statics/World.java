@@ -37,7 +37,7 @@ public class World {
     public Exercise getExercise() {return exercise;}
     public void setExercise(Exercise exercise) {this.exercise = exercise;}
     
-    private List<SimulationObject> allObjects = new ArrayList();
+    private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {return Collections.unmodifiableList(allObjects);}
     public void add(SimulationObject obj) {
         if(!allObjects.contains(obj)) {
@@ -49,13 +49,17 @@ public class World {
         allObjects.remove(obj);
         invalidateNodes();
     }
+    public void removeAllObjects() {
+        allObjects.clear();
+        invalidateNodes();
+    }
         
-    private Map<RepresentationLayer, Node> representationNodes = new HashMap();
+    private Map<RepresentationLayer, Node> representationNodes = new HashMap<RepresentationLayer, Node>();
     public Node getNode(RepresentationLayer layer) {return representationNodes.get(layer);}
     public Node getNode(String layer) {return representationNodes.get(RepresentationLayer.getLayer(layer));}
     
     public List<Body> allBodies() {
-        List<Body> bodies = new ArrayList();
+        List<Body> bodies = new ArrayList<Body>();
         for(SimulationObject obj : allObjects)
             if(obj instanceof Body)
                 bodies.add((Body)obj);
@@ -84,7 +88,7 @@ public class World {
     // OVERRIDE for modes where selection is enabled by default
     public void setSelectableFilterDefault() {this.filter = null;}
     
-    private List<SimulationObject> selectedObjects = new ArrayList();
+    private List<SimulationObject> selectedObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> getSelectedObjects() {return selectedObjects;}
     
     //private SimulationObject selected = null;
@@ -96,7 +100,7 @@ public class World {
     public CoordinateSystem getCoordinateSystem() {return coordinateSystem;}
     public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = sys;}
     
-    private List<SelectionListener> selectionListeners = new ArrayList();
+    private List<SelectionListener> selectionListeners = new ArrayList<SelectionListener>();
     public void addSelectionListener(SelectionListener listener) {selectionListeners.add(listener);}
     public void removeSelectionListener(SelectionListener listener) {selectionListeners.remove(listener);}
     public void removeAllSelectionListeners() {selectionListeners.clear();}
@@ -116,7 +120,7 @@ public class World {
     public void enableSelectMultipleDefault() {enableSelectMultiple = enableSelectMultipleDefault;}
     protected boolean enableSelectMultiple() {return enableSelectMultiple;}
     
-    private List<LabelRepresentation> labels = new ArrayList();
+    private List<LabelRepresentation> labels = new ArrayList<LabelRepresentation>();
     public List<LabelRepresentation> getLabels() {return labels;}
     
     /** Creates a new instance of World */
@@ -126,7 +130,7 @@ public class World {
     
     private boolean nodesUpdated = false;
     public void invalidateNodes() {nodesUpdated = false;}
-    public void updateNodes() {
+    protected void updateNodes() {
         if(nodesUpdated)
             return;
         
@@ -228,7 +232,7 @@ public class World {
         // notify listeners of click
         // some listeners will remove themselves on the event, so use a new list
         // to prevent comodification
-        List<SelectionListener> selectionListeners1 = new ArrayList(selectionListeners);
+        List<SelectionListener> selectionListeners1 = new ArrayList<SelectionListener>(selectionListeners);
         for(SelectionListener listener : selectionListeners1)
             listener.onClick(obj);
         
@@ -279,7 +283,7 @@ public class World {
         
         //System.out.println("Clearing Selection...");
         
-        selectedObjects = new ArrayList();
+        selectedObjects = new ArrayList<SimulationObject>();
         for(SimulationObject obj : allObjects) {
             obj.setDisplaySelected(false);
             obj.enableManipulators(false);
@@ -314,7 +318,7 @@ public class World {
     }
 
     public List<Vector3f> getSensibleDirections(Point point) {
-        List<Vector3f> directions = new ArrayList();
+        List<Vector3f> directions = new ArrayList<Vector3f>();
         
         directions.add(new Vector3f(1,0,0));
         directions.add(new Vector3f(-1,0,0));

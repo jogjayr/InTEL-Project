@@ -44,11 +44,9 @@ public class PurseExercise extends Exercise {
         StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
         
         setDescription(
-                "<html><body>" +
-                "<center><font size=\"6\">"+getName()+"</font></center>"+
-                "Here is a simplified version of the human arm. Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
-                "The weight of the forearm is 9 N." +
-                "</body></html>"
+                "Here is a simplified version of the human arm. " +
+                "Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
+                "The weight of the forearm is 9 N."
                 );
         setUnits( new Units() { {
                 distance = "mm";
@@ -65,6 +63,10 @@ public class PurseExercise extends Exercise {
     protected float forearmWeight = 9;
     protected float purseWeight = 19.6f;
     
+    Point A, B, C, D, E, G;
+    Connector2ForceMember2d jointB, jointD;
+    Pin2d jointC, jointE;
+    
     public void loadExercise() {
         
         ExerciseWorld world = getWorld();
@@ -76,22 +78,22 @@ public class PurseExercise extends Exercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 65.0f ));
         StaticsApplication.getApp().setDrawScale(2f);
         
-        Point A = new Point(new Vector3f(handPoint,-16+6,0));
-        Point B = new Point(new Vector3f(tendonAnchorB,-16+6,0));
-        Point C = new Point(new Vector3f(18,-16+6,0));
-        Point D = new Point(new Vector3f(18,tendonAnchorD+6,0));
-        Point E = new Point(new Vector3f(18f,shoulderHeight+6,0));
+        A = new Point(new Vector3f(handPoint,-16+6,0));
+        B = new Point(new Vector3f(tendonAnchorB,-16+6,0));
+        C = new Point(new Vector3f(18,-16+6,0));
+        D = new Point(new Vector3f(18,tendonAnchorD+6,0));
+        E = new Point(new Vector3f(18f,shoulderHeight+6,0));
         
         Body upperArm = new Beam(E,C);
         Body forearm = new Beam(C,A);
         Cable tendon = new Cable(D,B);
         
-        Connector2ForceMember2d jointB = new Connector2ForceMember2d(B, tendon);
-        Connector2ForceMember2d jointD = new Connector2ForceMember2d(D, tendon);
-        Pin2d jointC = new Pin2d(C);
-        Pin2d jointE = new Pin2d(E);
+        jointB = new Connector2ForceMember2d(B, tendon);
+        jointD = new Connector2ForceMember2d(D, tendon);
+        jointC = new Pin2d(C);
+        jointE = new Pin2d(E);
         
-        Point G = new Point(new Vector3f(3.0f,-16+6,0));
+        G = new Point(new Vector3f(3.0f,-16+6,0));
         
         DistanceMeasurement distance1 = new DistanceMeasurement(A.getTranslation(), C.getTranslation());
         distance1.createDefaultSchematicRepresentation(6f);

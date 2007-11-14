@@ -14,6 +14,7 @@ import com.jme.util.TextureManager;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
+import edu.gatech.statics.tasks.Task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,16 +32,43 @@ public class Exercise {
     public void setUnits(Units units) {this.units = units;}
     public Units getUnits() {return units;}
     
+    private List<Task> tasks = new ArrayList<Task>();
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+    public List<Task> getTasks() {return tasks;}
+    
     private String name = "Exercise";
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
     
     private String description;
-    public String getDescription() {return description;}
+    public String getFullDescription() {
+        
+        StringBuffer taskString = new StringBuffer();
+        //taskString.append("<ol>");
+        taskString.append("<br>");
+        for(Task task : tasks) {
+            //taskString.append("<li>");
+            taskString.append("->");
+            taskString.append("<b>").append(task.getDescription()).append("</b>");
+            if(task.isSatisfied())
+                taskString.append(": DONE!!");
+            taskString.append("<br/>");
+            //taskString.append("</li>");
+        }
+        //taskString.append("</ol>");
+        
+        return  "<html><body>" +
+                "<center><font size=\"6\">"+getName()+"</font></center>"+
+                description + "<br/>" +
+                taskString +
+                "</body></html>";
+    }
     public void setDescription(String description) {this.description = description;}
     
     private ExerciseWorld world;
-    private List<FBDWorld> diagrams = new ArrayList();
+    private List<FBDWorld> diagrams = new ArrayList<FBDWorld>();
     
     public ExerciseWorld getWorld() {return world;}
     public List<FBDWorld> getDiagrams() {return Collections.unmodifiableList(diagrams);}
@@ -54,7 +82,7 @@ public class Exercise {
     public FBDWorld constructFBD(List<Body> bodies) {
         
         for(FBDWorld fbd : diagrams)
-            if(fbd.getBodies().containsAll(bodies) && bodies.containsAll(fbd.getBodies()))
+            if(fbd.getObservedBodies().containsAll(bodies) && bodies.containsAll(fbd.getObservedBodies()))
                 return fbd;
         
         FBDWorld fbd = world.constructFBD(bodies);
@@ -76,7 +104,13 @@ public class Exercise {
 
     public void postLoadExercise() {}
     
-    public boolean isExerciseSolved() {return false;}
+    public boolean isExerciseSolved() {
+        for(Task task : tasks) {
+            if(!task.isSatisfied())
+                return false;
+        }
+        return true;
+    }
     
     private boolean finished = false;
     public boolean isExerciseFinished() {return finished;}

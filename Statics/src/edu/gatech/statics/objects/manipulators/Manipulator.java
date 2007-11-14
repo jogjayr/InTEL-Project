@@ -45,9 +45,9 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
         List<ClickListener> clickListeners1 = new ArrayList<ClickListener>(clickListeners);
         for(ClickListener listener : clickListeners1)
             if(isClick)
-                listener.onClick(this);
+                listener.onMousePress(this);
             else
-                listener.onRelease(this);
+                listener.onMouseRelease(this);
     }
     
     public void setEnabledGlobally(boolean enabled) {

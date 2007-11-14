@@ -45,14 +45,14 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
     protected void onActivate() {
         
         world.add(moment);
-        world.updateNodes();
+        //world.updateNodes();
         
         enableDragManipulator();
     }
 
     protected void onCancel() {
         world.remove(moment);
-        world.updateNodes();
+        //world.updateNodes();
         
         if(dragManipulator != null)
             dragManipulator.setEnabled(false);
@@ -95,7 +95,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createMoment"));
     }
 
-    public void onClick(Manipulator m) {
+    public void onMousePress(Manipulator m) {
         
         if(dragManipulator != null) {
             if(dragManipulator.getCurrentSnap() != null) {
@@ -115,6 +115,6 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         }
     }
 
-    public void onRelease(Manipulator m) {}
+    public void onMouseRelease(Manipulator m) {}
     
 }

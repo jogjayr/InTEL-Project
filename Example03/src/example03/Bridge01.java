@@ -37,10 +37,7 @@ public class Bridge01 extends Exercise {
         //StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
         
         setDescription(
-                "<html><body>" +
-                "<center><font size=\"6\">"+getName()+"</font></center>"+
-                "Bridge 01" +
-                "</body></html>"
+                "Bridge 01"
                 );
         setUnits( new Units() { {
                 distance = "m";

@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class CreateForceTool2D extends Tool implements ClickListener {
+public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
     
     protected Point forceAnchor;
     protected Force force;
@@ -33,6 +33,8 @@ public class CreateForceTool2D extends Tool implements ClickListener {
     
     protected DragSnapManipulator dragManipulator;
     protected Orientation2DSnapManipulator orientationManipulator;
+    
+    private ClickListener clickListener;
     
     /** Creates a new instance of CreateForceTool */
     public CreateForceTool2D(World world) {
@@ -45,12 +47,13 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         VectorListener forceListener = new VectorOverlapDetector(world, force);
         force.addListener(forceListener);
         
+        clickListener = new CreateClickListener();
     }
     
     protected void onActivate() {
         
         world.add(force);
-        world.updateNodes();
+        //world.updateNodes();
         
         enableDragManipulator();
         
@@ -59,7 +62,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
 
     protected void onCancel() {
         world.remove(force);
-        world.updateNodes();
+        //world.updateNodes();
         
         if(dragManipulator != null)
             dragManipulator.setEnabled(false);
@@ -78,7 +81,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         
         final Orientation2DSnapManipulator runtimeOrientationManipulator = orientationManipulator;
         
-        runtimeOrientationManipulator.removeClickListener(this);
+        runtimeOrientationManipulator.removeClickListener(clickListener);
         runtimeOrientationManipulator.setEnabled(false);
         force.addManipulator(runtimeOrientationManipulator);
         
@@ -111,7 +114,7 @@ public class CreateForceTool2D extends Tool implements ClickListener {
                 pointList.add((Point)obj);
         
         dragManipulator = new DragSnapManipulator(force, pointList);
-        dragManipulator.addClickListener(this);
+        dragManipulator.addClickListener(clickListener);
         addToAttachedHandlers(dragManipulator);
         
         StaticsApplication.getApp().setAdvice(
@@ -122,46 +125,60 @@ public class CreateForceTool2D extends Tool implements ClickListener {
         
         final List<Vector3f> snapDirections = world.getSensibleDirections(point);
         orientationManipulator = new Orientation2DSnapManipulator(force, Vector3f.UNIT_Z, snapDirections);
-        orientationManipulator.addClickListener(this);
+        orientationManipulator.addClickListener(clickListener);
         addToAttachedHandlers(orientationManipulator);
         
         StaticsApplication.getApp().setAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
     }
 
-    public void onClick(Manipulator m) {
-        
-        if(dragManipulator != null) {
-            if(dragManipulator.getCurrentSnap() != null) {
-                
-                // snap at the drag manipulator and terminate,
-                // enable the orientation manipulator
-                Point point = dragManipulator.getCurrentSnap();
-                force.setAnchor(point);
-                
-                dragManipulator.setEnabled(false);
-                removeFromAttachedHandlers(dragManipulator);
-                dragManipulator = null;
-                
-                enableOrientationManipulator(point);
-            }
+    protected void releaseDragManipulator() {
+        if(dragManipulator.getCurrentSnap() != null) {
+
+            // snap at the drag manipulator and terminate,
+            // enable the orientation manipulator
+            Point point = dragManipulator.getCurrentSnap();
+            force.setAnchor(point);
+
+            dragManipulator.setEnabled(false);
+            removeFromAttachedHandlers(dragManipulator);
+            dragManipulator = null;
+
+            enableOrientationManipulator(point);
         }
+    }
+    
+    public void releaseOrientationManipulator() {
+        if(orientationManipulator.getCurrentSnap() != null) {
+
+            force.setNormalizedValue(orientationManipulator.getCurrentSnap());
+
+            orientationManipulator.setEnabled(false);
+            removeFromAttachedHandlers(orientationManipulator);
+            //orientationManipulator = null;
+
+            finish();
+            finishForce();
+        }
+    }
+    
+    protected class CreateClickListener implements ClickListener {
+        public void onMousePress(Manipulator m) {
+            if(dragManipulator != null) {
+                releaseDragManipulator();
+            }
+
+            /*if(orientationManipulator != null) {
+                releaseOrientationManipulator();
+            }*/
+        }
+
+        public void onMouseRelease(Manipulator m) {
         
-        if(orientationManipulator != null) {
-            if(orientationManipulator.getCurrentSnap() != null) {
-                
-                force.setNormalizedValue(orientationManipulator.getCurrentSnap());
-
-                orientationManipulator.setEnabled(false);
-                removeFromAttachedHandlers(orientationManipulator);
-                //orientationManipulator = null;
-
-                finish();
-                finishForce();
+            if(orientationManipulator != null) {
+                releaseOrientationManipulator();
             }
         }
     }
-
-    public void onRelease(Manipulator m) {}
     
 }

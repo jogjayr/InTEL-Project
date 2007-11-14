@@ -35,6 +35,7 @@ import edu.gatech.statics.application.StaticsApplication;
 public class FBDPaletteBar extends Toolbar {
     
     private BButton returnButton;
+    private BButton resetButton;
     private BButton nextButton;
     private FBDWorld fbd;
     private FBDIcon fbdIcon;
@@ -51,6 +52,13 @@ public class FBDPaletteBar extends Toolbar {
             }
         }, "return");
         
+        resetButton = new BButton("Reset", new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                //getApp().loadExercizeWorld();
+                fbd.reset();
+            }
+        }, "reset");
+        
         nextButton = new BButton("next", new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 if(!fbd.isLocked())
@@ -59,15 +67,17 @@ public class FBDPaletteBar extends Toolbar {
             }
         }, "next");
         
-        if(fbd.isLocked())
+        if(fbd.isLocked()) {
             nextButton.setText("Equation");
-        else nextButton.setText("Check");
+            resetButton.setEnabled(false);
+        } else nextButton.setText("Check");
         
         
         // THIS is the container that will have the drop down for other FBDs below it.
         BContainer controlContainer = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
         BContainer actionContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
         actionContainer.add(returnButton);
+        actionContainer.add(resetButton);
         actionContainer.add(nextButton);
         controlContainer.add(actionContainer);
         
@@ -247,6 +257,7 @@ public class FBDPaletteBar extends Toolbar {
             fbd.setLocked();
             
             nextButton.setText("Equation");
+            resetButton.setEnabled(false);
             getApp().loadEquation(fbd);
             
         } else {

@@ -143,7 +143,7 @@ public class StaticsApplication {
     public void setCurrentWorld(World world) {
         this.currentWorld = world;
         currentWorld.activate();
-        currentWorld.updateNodes();
+        //currentWorld.updateNodes();
         rootInterface.update();
     }
     

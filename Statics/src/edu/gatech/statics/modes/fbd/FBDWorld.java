@@ -13,7 +13,6 @@ import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.renderer.TextureRenderer;
-import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.BImage;
 import edu.gatech.statics.*;
@@ -42,6 +41,13 @@ public class FBDWorld extends World {
     
     private boolean locked = false;
     boolean isLocked() {return locked;}
+
+    void reset() {
+        removeAllObjects();
+        externalForces.clear();
+        setupObjects();
+    }
+    
     void setLocked() {
         locked = true;
         enableManipulatorsOnSelectDefault(false);
@@ -78,10 +84,10 @@ public class FBDWorld extends World {
     }
     
     private World parentWorld;
-    private List<Body> bodies;
-    public List<Body> getBodies() {return Collections.unmodifiableList(bodies);}
+    private List<Body> observedBodies;
+    public List<Body> getObservedBodies() {return Collections.unmodifiableList(observedBodies);}
     
-    private List<Vector> externalForces = new ArrayList();
+    private List<Vector> externalForces = new ArrayList<Vector>();
     //private List<Vector> externalForcesAdded = new ArrayList();
     //private List<SimulationObject> fbdObjects = new ArrayList();
     
@@ -98,14 +104,20 @@ public class FBDWorld extends World {
         enableSelectMultiple(false);
         
         this.parentWorld = parentWorld;
-        this.bodies = bodies;
+        this.observedBodies = bodies;
         
+        setupObjects();
+        
+        setupIcon();
+    }
+    
+    private void setupObjects() {
         for(SimulationObject obj : parentWorld.allObjects()) {
             if( !(obj instanceof Vector) )
                 add(obj);
         }
         
-        for(Body body : bodies) {
+        for(Body body : observedBodies) {
             for(SimulationObject obj : body.getAttachedObjects()) {
                 if(obj instanceof Force || obj instanceof Moment)
                     externalForces.add((Vector) obj);
@@ -115,7 +127,7 @@ public class FBDWorld extends World {
                     Joint joint = (Joint)obj;
                     
                     // ignore if it's an internal joint
-                    if(bodies.contains(joint.getBody1()) && bodies.contains(joint.getBody2()))
+                    if(observedBodies.contains(joint.getBody1()) && observedBodies.contains(joint.getBody2()))
                         continue;
                     
                     if(joint.isSolved()) {
@@ -126,11 +138,7 @@ public class FBDWorld extends World {
                 }
             }
         }
-        
-        updateNodes();
-        setupIcon();
-        
-        //icon = new FBDIcon(this);
+        //updateNodes();
     }
     
     //private FBDIcon icon;
@@ -195,7 +203,7 @@ public class FBDWorld extends World {
         
         // grayout bodies not belonging to this FBD
         for(Body body : allBodies())
-            if(!bodies.contains(body))
+            if(!observedBodies.contains(body))
                 body.setDisplayGrayed(true);
         
         if(locked)
@@ -224,7 +232,7 @@ public class FBDWorld extends World {
     }
     
     private List<Vector> getAddedForces() {
-        List<Vector> addedForces = new ArrayList();
+        List<Vector> addedForces = new ArrayList<Vector>();
         for(SimulationObject obj : allObjects()) {
             if(!(obj instanceof Force) && !(obj instanceof Moment))
                 continue;
@@ -245,7 +253,7 @@ public class FBDWorld extends World {
         System.out.println("check: user added forces: "+addedForces);
         
         // make list for weights, as we will need these later.
-        List<Force> weights = new ArrayList();
+        List<Force> weights = new ArrayList<Force>();
         
         // step 2: for vectors that we can click on and add, ie, external added forces,
         // make sure that the user has added all of them.
@@ -276,7 +284,7 @@ public class FBDWorld extends World {
         }
         
         // step 3: Make sure weights exist, and remove them from our addedForces.
-        for(Body body : bodies) {
+        for(Body body : observedBodies) {
             if(body.getWeight() > 0) {
                 Force weight = new Force(body.getCenterOfMassPoint(), new Vector3f(0,-body.getWeight(),0));
                 weights.add(weight);
@@ -307,9 +315,9 @@ public class FBDWorld extends World {
             Joint joint = (Joint) obj;
             
             Body body = null;
-            if(bodies.contains(joint.getBody1()))
+            if(observedBodies.contains(joint.getBody1()))
                 body = joint.getBody1();
-            if(bodies.contains(joint.getBody2()))
+            if(observedBodies.contains(joint.getBody2()))
                 body = joint.getBody2();
             
             if(joint.isSolved()) {
@@ -322,8 +330,8 @@ public class FBDWorld extends World {
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
-            if(   !(bodies.contains(joint.getBody1()) ^
-                    bodies.contains(joint.getBody2())) )
+            if(   !(observedBodies.contains(joint.getBody1()) ^
+                    observedBodies.contains(joint.getBody2())) )
                 continue;
             
             //jointsAndBodies.add(new Pair(joint, body));
@@ -374,7 +382,7 @@ public class FBDWorld extends World {
         // symbols must also not be repeated, unless this is valid somehow? (not yet)
         
         addedForces = getAddedForces();
-        List<String> names = new ArrayList();
+        List<String> names = new ArrayList<String>();
         
         for(Vector force : addedForces) {
             if(force.isSymbol()) {
@@ -418,7 +426,7 @@ public class FBDWorld extends World {
                     
                     // check each body because lazy
                     boolean checked = false;
-                    for(Body body : getBodies()) {
+                    for(Body body : getObservedBodies()) {
                         if(force.getAnchor() == body.getCenterOfMassPoint()) {
                             checked = true;
                             

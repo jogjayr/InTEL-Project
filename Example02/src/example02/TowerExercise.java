@@ -43,11 +43,8 @@ public class TowerExercise extends Exercise {
         setName("Tower of Pisa");
         
         setDescription(
-                "<html><body>" +
-                "<center><font size=\"6\">"+getName()+"</font></center>"+
                 "This is a model of the tower of Pisa, solve for the reaction forces at its base. " +
-                "The tower's weight is 14700 tons." +
-                "</body></html>"
+                "The tower's weight is 14700 tons."
                 );
         setUnits( new Units() { {
                 distance = "m";

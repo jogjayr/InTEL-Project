@@ -19,11 +19,10 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
-import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.ModalPopupWindow;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.tasks.SolveJointTask;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,13 +56,18 @@ public class PurseExerciseGraded extends PurseExercise {
         super.initExercise();
         
         setDescription(
-                "<html><body>" +
-                "<center><font size=\"6\">"+getName()+"</font></center>"+
                 "Here is a simplified version of the human arm. " +
                 "Please solve for the reactions at each of the points: B, C, and E." +
-                "The weight of the forearm is "+forearmWeight+" N, and the weight of the purse is "+purseWeight+" N." +
-                "</body></html>"
+                "The weight of the forearm is "+forearmWeight+" N, and the weight of the purse is "+purseWeight+" N."
                 );
+    }
+    
+    public void loadExercise() {
+        super.loadExercise();
+        
+        addTask(new SolveJointTask(jointB));
+        addTask(new SolveJointTask(jointC));
+        addTask(new SolveJointTask(jointE));
     }
 
     public void postLoadExercise() {
@@ -115,12 +119,12 @@ public class PurseExerciseGraded extends PurseExercise {
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
     }
 
-    public boolean isExerciseSolved() {
+    /*public boolean isExerciseSolved() {
         for (SimulationObject obj : getWorld().allObjects())
             if (obj instanceof Joint && !((Joint) obj).isSolved() && !((Joint) obj).getPoint().getName().equals("D"))
                 return false;
         return true;
-    }
+    }*/
 
     public void finishExercise() {
         super.finishExercise();

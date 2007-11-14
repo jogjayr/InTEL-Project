@@ -41,7 +41,7 @@ public class DeletableManipulator extends Manipulator {
     public void performDelete() {
         world.clearSelection();
         world.remove(getTarget());
-        world.updateNodes();
+        //world.updateNodes();
 
         getTarget().destroy();
     }

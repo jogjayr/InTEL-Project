@@ -98,7 +98,7 @@ public class SumBar extends Toolbar {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
-                boolean destroyOK = true;
+                boolean destroyOK = false;
                 public void keyReleased(KeyEvent event) {
                     if(     coefficient.getText().length() == 0 && (
                             event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
@@ -108,10 +108,12 @@ public class SumBar extends Toolbar {
                             removeBox(TermBox.this);
                         else
                             destroyOK = true;
+                    else
+                        destroyOK = false;
                 }
                 
                 public void keyPressed(KeyEvent event) {
-                    destroyOK = false;
+                    //destroyOK = false;
                 }
             });
             

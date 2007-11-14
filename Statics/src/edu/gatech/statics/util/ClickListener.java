@@ -18,6 +18,6 @@ import edu.gatech.statics.objects.manipulators.Manipulator;
  */
 public interface ClickListener {
     
-    public void onClick(Manipulator m);
-    public void onRelease(Manipulator m);
+    public void onMousePress(Manipulator m);
+    public void onMouseRelease(Manipulator m);
 }

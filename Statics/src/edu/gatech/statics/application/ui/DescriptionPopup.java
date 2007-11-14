@@ -32,7 +32,7 @@ public class DescriptionPopup extends ModalPopupWindow {
         setStyleClass("description_window");
         
         HTMLView view = new HTMLView();
-        view.setContents(StaticsApplication.getApp().getExercise().getDescription());
+        view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         
         add(view, BorderLayout.CENTER);
         
