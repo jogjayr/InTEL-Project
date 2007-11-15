@@ -15,6 +15,7 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.tasks.Task;
+import edu.gatech.statics.tasks.TaskStatusListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,10 +34,15 @@ public class Exercise {
     public Units getUnits() {return units;}
     
     private List<Task> tasks = new ArrayList<Task>();
+    private List<Task> satisfiedTasks = new ArrayList<Task>();
     public void addTask(Task task) {
         tasks.add(task);
     }
     public List<Task> getTasks() {return tasks;}
+    
+    private List<TaskStatusListener> taskListeners = new ArrayList<TaskStatusListener>();
+    public void addTaskListener(TaskStatusListener listener) {taskListeners.add(listener);}
+    public void removeTaskListener(TaskStatusListener listener) {taskListeners.remove(listener);}
     
     private String name = "Exercise";
     public String getName() {return name;}
@@ -104,12 +110,23 @@ public class Exercise {
 
     public void postLoadExercise() {}
     
-    public boolean isExerciseSolved() {
+    /**
+     * This tests if each task is satisfied.
+     * For tasks that are satisfied, the task listeners are triggered
+     * @return true if tasks are satisfied
+     */
+    public boolean testExerciseSolved() {
+        boolean satisfied = true;
         for(Task task : tasks) {
-            if(!task.isSatisfied())
-                return false;
+            if(!task.isSatisfied()) {
+                satisfied = false;
+            } else if(!satisfiedTasks.contains(task)) {
+                satisfiedTasks.add(task);
+                for(TaskStatusListener listener : taskListeners)
+                    listener.taskSatisfied(task);
+            }
         }
-        return true;
+        return satisfied;
     }
     
     private boolean finished = false;

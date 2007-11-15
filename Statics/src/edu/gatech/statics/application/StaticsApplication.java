@@ -199,7 +199,7 @@ public class StaticsApplication {
         
         // call the finishing command on this exercise
         // to let the user know that their work is done.
-        if(currentExercise.isExerciseSolved()) {
+        if(currentExercise.testExerciseSolved()) {
             if(!currentExercise.isExerciseFinished())
                 currentExercise.finishExercise();
         }

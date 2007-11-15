@@ -19,22 +19,27 @@ import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.tasks.Task;
+import edu.gatech.statics.tasks.TaskStatusListener;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class DescriptionPopup extends ModalPopupWindow {
+public class DescriptionPopup extends DraggablePopupWindow implements TaskStatusListener {
 
+    HTMLView view;
+    
     public DescriptionPopup(BWindow parentWindow) {
         super(parentWindow, new BorderLayout());
         
         setStyleClass("description_window");
         
-        HTMLView view = new HTMLView();
+        view = new HTMLView();
         view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         
         add(view, BorderLayout.CENTER);
+        addDragHandle(view);
         
         final ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -56,6 +61,22 @@ public class DescriptionPopup extends ModalPopupWindow {
         BBackground background = StaticsApplication.getApp().getBuiStyle().getBackground(this, "infoWindow");
         for (int state = 0; state < STATE_COUNT; state++)
             setBackground(state, background);
+    }
+
+    @Override
+    public void popup(int x, int y, boolean above) {
+        super.popup(x, y, above);
+        StaticsApplication.getApp().getExercise().addTaskListener(this);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        StaticsApplication.getApp().getExercise().removeTaskListener(this);
+    }
+
+    public void taskSatisfied(Task task) {
+        view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
     }
     
 }
