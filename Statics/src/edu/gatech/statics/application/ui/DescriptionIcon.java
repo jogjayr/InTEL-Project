@@ -9,11 +9,9 @@
 
 package edu.gatech.statics.application.ui;
 
-import com.jmex.bui.BButton;
 import com.jmex.bui.BPopupWindow;
-import com.jmex.bui.event.ActionEvent;
-import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
+import com.jmex.bui.util.Dimension;
 
 /**
  *
@@ -21,22 +19,61 @@ import com.jmex.bui.layout.BorderLayout;
  */
 public class DescriptionIcon extends AppWindow {
 
+    private static final int windowWidth = 250;
+    
+    private PopupButton descriptionButton;
+    private PopupButton knownsButton;
+    
     public DescriptionIcon() {
         super(new BorderLayout());
         
-        BButton button = new BButton("Description",new ActionListener() {
-                public void actionPerformed(ActionEvent event) {doPopup();}
-            },"description");
+        descriptionButton = new DescriptionButton();
+        knownsButton = new KnownsButton();
         
-        add(button, BorderLayout.CENTER);
+        add(descriptionButton, BorderLayout.CENTER);
+        add(knownsButton, BorderLayout.EAST);
     }
 
-    void doPopup() {
-        final BPopupWindow window = new DescriptionPopup(this);
-        
-        window.popup(0,0,true);
-        
-        window.setBounds(0, 0, 300, 200);
-        window.center();
+    void showDescription() {
+        descriptionButton.doPopup();
+        knownsButton.doPopup();
     }
+    
+    private class KnownsButton extends PopupButton {
+        public KnownsButton() {
+            super("Knowns");
+        }
+        
+        @Override
+        BPopupWindow createWindow() {
+            return new KnownSheetPopup(DescriptionIcon.this);
+        }
+
+        @Override
+        void postCreateWindow(BPopupWindow popup) {
+            Dimension preferredSize = popup.getPreferredSize(windowWidth, -1);
+            //popup.setSize(windowWidth, preferredSize.height);
+            popup.pack();
+            popup.setLocation(150+40+windowWidth, AppInterface.getScreenHeight()-preferredSize.height-50);
+        }
+    }
+
+    private class DescriptionButton extends PopupButton {
+        public DescriptionButton() {
+            super("About");
+        }
+        
+        @Override
+        BPopupWindow createWindow() {
+            return new DescriptionPopup(DescriptionIcon.this);
+        }
+
+        @Override
+        void postCreateWindow(BPopupWindow popup) {
+            Dimension preferredSize = popup.getPreferredSize(windowWidth, -1);
+            popup.setSize(windowWidth, preferredSize.height);
+            popup.setLocation(150+20, AppInterface.getScreenHeight()-preferredSize.height-50);
+        }
+    }
+    
 }

@@ -136,7 +136,7 @@ public class RootInterface extends AppInterface {
 
     public void showDescription() {
         // when the root interface is first created, launch the description popup
-        descriptionIcon.doPopup();
+        descriptionIcon.showDescription();
     }
     
     public void update() {

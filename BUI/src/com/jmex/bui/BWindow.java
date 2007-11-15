@@ -17,26 +17,21 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
-import com.jme.renderer.Renderer;
 import com.jme.system.DisplaySystem;
 
-import com.jmex.bui.background.BBackground;
 import com.jmex.bui.layout.BLayoutManager;
 import com.jmex.bui.util.Dimension;
-import com.jmex.bui.util.Insets;
 
 /**
  * A window defines the top-level of a component hierarchy. It must be created with a stylesheet
  * and layout manager.
  */
 public class BWindow extends BContainer
-    implements Comparable<BWindow>
-{
-    public BWindow (BStyleSheet style, BLayoutManager layout)
-    {
+        implements Comparable<BWindow> {
+
+    public BWindow(BStyleSheet style, BLayoutManager layout) {
         _style = style;
         setLayoutManager(layout);
     }
@@ -44,8 +39,7 @@ public class BWindow extends BContainer
     /**
      * Returns the stylesheet in effect for this window.
      */
-    public BStyleSheet getStyleSheet ()
-    {
+    public BStyleSheet getStyleSheet() {
         return _style;
     }
 
@@ -53,8 +47,7 @@ public class BWindow extends BContainer
      * Sizes this window to its preferred size. This method does not change the window's
      * coordinates.
      */
-    public void pack ()
-    {
+    public void pack() {
         pack(-1, -1);
     }
 
@@ -64,8 +57,7 @@ public class BWindow extends BContainer
      * hint for a dimension that should be no larger than a particular size. This method does not
      * change the window's coordinates.
      */
-    public void pack (int whint, int hhint)
-    {
+    public void pack(int whint, int hhint) {
         Dimension ps = getPreferredSize(whint, hhint);
         setBounds(_x, _y, ps.width, ps.height);
     }
@@ -74,11 +66,10 @@ public class BWindow extends BContainer
      * Positions this window in the center of the display. This should be called after configuring
      * the size of the window (using, for example, a call to {@link #pack}).
      */
-    public void center ()
-    {
+    public void center() {
         int width = DisplaySystem.getDisplaySystem().getWidth();
         int height = DisplaySystem.getDisplaySystem().getHeight();
-        setLocation((width-getWidth())/2, (height-getHeight())/2);
+        setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
     /**
@@ -88,8 +79,7 @@ public class BWindow extends BContainer
      * the top-most modal window. Other events destined for other windows (key events and mouse
      * entry and exit events) will not be dispatched.
      */
-    public void setModal (boolean modal)
-    {
+    public void setModal(boolean modal) {
         _modal = modal;
     }
 
@@ -97,16 +87,14 @@ public class BWindow extends BContainer
      * Returns whether or not this window is modal. See {@link #setModal} for more information on
      * modality.
      */
-    public boolean isModal ()
-    {
+    public boolean isModal() {
         return _modal;
     }
 
     /**
      * Returns whether this window should have shading applied beneath it.
      */
-    public boolean shouldShadeBehind ()
-    {
+    public boolean shouldShadeBehind() {
         return _modal;
     }
 
@@ -114,24 +102,21 @@ public class BWindow extends BContainer
      * Returns whether or not this window is an overlay, in which case its children will not
      * receive input focus by default.
      */
-    public boolean isOverlay ()
-    {
+    public boolean isOverlay() {
         return false;
     }
 
     /**
      * Returns the root node that manages this window.
      */
-    public BRootNode getRootNode ()
-    {
+    public BRootNode getRootNode() {
         return _root;
     }
 
     /**
      * Returns the layer occupied by this window. See {@link #setLayer} for more details.
      */
-    public int getLayer ()
-    {
+    public int getLayer() {
         return _layer;
     }
 
@@ -143,8 +128,7 @@ public class BWindow extends BContainer
      * those with a lower layer. Windows in the same layer stack according to the order in which
      * they are added.
      */
-    public void setLayer (int layer)
-    {
+    public void setLayer(int layer) {
         _layer = layer;
         if (_root != null) {
             _root.resortWindows();
@@ -154,8 +138,7 @@ public class BWindow extends BContainer
     /**
      * Detaches this window from the root node and removes it from the display.
      */
-    public void dismiss ()
-    {
+    public void dismiss() {
         if (_root != null) {
             _root.removeWindow(this);
         } else {
@@ -165,21 +148,18 @@ public class BWindow extends BContainer
     }
 
     // documentation inherited from interface Comparable
-    public int compareTo (BWindow other)
-    {
+    public int compareTo(BWindow other) {
         return _layer - other._layer;
     }
 
     @Override // from BComponent
-    public void setParent (BContainer parent)
-    {
+    public void setParent(BContainer parent) {
         throw new RuntimeException(
-            "A window may not be added as a child of any other component. Add it to a BRootNode.");
+                "A window may not be added as a child of any other component. Add it to a BRootNode.");
     }
 
     @Override // from BComponent
-    public void invalidate ()
-    {
+    public void invalidate() {
         super.invalidate();
 
         if (_root != null) {
@@ -190,8 +170,7 @@ public class BWindow extends BContainer
     }
 
     @Override // from BComponent
-    public void setBounds (int x, int y, int width, int height)
-    {
+    public void setBounds(int x, int y, int width, int height) {
         boolean relocated = (x != _x || y != _y);
         super.setBounds(x, y, width, height);
 
@@ -202,8 +181,7 @@ public class BWindow extends BContainer
     }
 
     @Override // from BComponent
-    public boolean isAdded ()
-    {
+    public boolean isAdded() {
         return _root != null;
     }
 
@@ -211,22 +189,19 @@ public class BWindow extends BContainer
      * Set the parent window.  If the parent window is removed from its root node, this window will
      * also be removed.
      */
-    public void setParentWindow (BWindow parentWindow)
-    {
+    public void setParentWindow(BWindow parentWindow) {
         _parentWindow = parentWindow;
     }
 
     /**
      * Returne the parent window.
      */
-    public BWindow getParentWindow ()
-    {
+    public BWindow getParentWindow() {
         return _parentWindow;
     }
 
     @Override // from BComponent
-    protected String getDefaultStyleClass ()
-    {
+    protected String getDefaultStyleClass() {
         return "window";
     }
 
@@ -235,8 +210,7 @@ public class BWindow extends BContainer
      * automatically when a window is added to the root node via a call to {@link
      * BRootNode#addWindow}.
      */
-    protected void setRootNode (BRootNode root)
-    {
+    protected void setRootNode(BRootNode root) {
         if (_root != root) {
             _root = root;
             if (_root == null) {
@@ -255,8 +229,7 @@ public class BWindow extends BContainer
     /**
      * Requests that the specified component be given the input focus.
      */
-    protected void requestFocus (BComponent component)
-    {
+    protected void requestFocus(BComponent component) {
         if (_root == null) {
             _savedFocus = component;
         } else {
@@ -267,29 +240,22 @@ public class BWindow extends BContainer
     /**
      * Called when this window gets the focus after a window on the hierarchy has been removed.
      */
-    protected void gotFocus ()
-    {
+    protected void gotFocus() {
         if (_savedFocus != null) {
             _root.setFocus(_savedFocus);
             _savedFocus = null;
         }
     }
-
     /** The stylesheet used to configure components in this window. */
     protected BStyleSheet _style;
-
     /** The root node that connects us into the JME system. */
     protected BRootNode _root;
-
     /** Whether or not this window steals input from other windows further down the hierarchy. */
     protected boolean _modal;
-
     /** The "layer" in the window stack occupied by this window. */
     protected int _layer;
-
     /** Stores a reference to our focus when this window is no longer the top-most window. */
     protected BComponent _savedFocus;
-
     /** Used to associate this window with a parent window. */
     protected BWindow _parentWindow;
 }

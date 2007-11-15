@@ -10,8 +10,9 @@
 package edu.gatech.statics.application.ui;
 
 import com.jmex.bui.BButton;
+import com.jmex.bui.BContainer;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.BWindow;
-import com.jmex.bui.background.BBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.KeyEvent;
@@ -35,17 +36,24 @@ public class DescriptionPopup extends DraggablePopupWindow implements TaskStatus
         
         setStyleClass("description_window");
         
+        BContainer titleBar = new BContainer(new BorderLayout());
+        titleBar.setStyleClass("title_container");
+        titleBar.add(new BLabel("About"),BorderLayout.CENTER);
+        
+        final ActionListener dismissListener = new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dismiss();
+            }
+        };
+        titleBar.add(new BButton("X", dismissListener, "dismiss"), BorderLayout.EAST);
+        add(titleBar, BorderLayout.NORTH);
+        addDragHandle(titleBar);
+        
         view = new HTMLView();
         view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         
         add(view, BorderLayout.CENTER);
         addDragHandle(view);
-        
-        final ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                dismiss();
-            }
-        };
         
         KeyListener keyListener = new KeyListener() {
             public void keyPressed(KeyEvent event) {
@@ -55,12 +63,12 @@ public class DescriptionPopup extends DraggablePopupWindow implements TaskStatus
         };
         addListener(keyListener);
         
-        BButton button = new BButton("OK",actionListener,"ok");
-        add(button, BorderLayout.SOUTH);
+        //BButton button = new BButton("OK",dismissListener,"ok");
+        //add(button, BorderLayout.SOUTH);
         
-        BBackground background = StaticsApplication.getApp().getBuiStyle().getBackground(this, "infoWindow");
+        /*BBackground background = StaticsApplication.getApp().getBuiStyle().getBackground(this, "infoWindow");
         for (int state = 0; state < STATE_COUNT; state++)
-            setBackground(state, background);
+            setBackground(state, background);*/
     }
 
     @Override

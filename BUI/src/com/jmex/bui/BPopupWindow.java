@@ -17,33 +17,40 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
 import com.jme.system.DisplaySystem;
 
+import com.jmex.bui.event.ComponentListener;
+import com.jmex.bui.event.PopupWindowListener;
 import com.jmex.bui.layout.BLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A window that is popped up to display something like a menu or a
  * tooltip or some other temporary, modal overlaid display.
  */
-public class BPopupWindow extends BWindow
-{
-    public BPopupWindow (BWindow parent, BLayoutManager layout)
-    {
+public class BPopupWindow extends BWindow {
+
+    /*private List<PopupListener> listeners = new ArrayList<PopupListener>();
+    public void addListener(ComponentListener listener) {
+        if(listener instanceof PopupListener)
+            listeners.add((PopupListener)listener);
+    }*/
+    
+    public BPopupWindow(BWindow parent, BLayoutManager layout) {
         super(parent.getStyleSheet(), layout);
         _parentWindow = parent;
         setLayer(parent.getLayer());
 
-        // set up our background and border from the look and feel
+    // set up our background and border from the look and feel
 //         setBackground(_lnf.createPopupBackground());
 //         setBorder(_lnf.createPopupBorder());
     }
 
     @Override // documentation inherited
-    public boolean shouldShadeBehind ()
-    {
+    public boolean shouldShadeBehind() {
         return false;
     }
 
@@ -53,8 +60,7 @@ public class BPopupWindow extends BWindow
      * as specified. The window position may be adjusted if it does not
      * fit on the screen at the specified coordinates.
      */
-    public void popup (int x, int y, boolean above)
-    {
+    public void popup(int x, int y, boolean above) {
         // add ourselves to the interface hierarchy if we're not already
         if (_root == null) {
             _parentWindow.getRootNode().addWindow(this);
@@ -62,28 +68,41 @@ public class BPopupWindow extends BWindow
 
         // size and position ourselves appropriately
         packAndFit(x, y, above);
+        
+        if(_listeners != null)
+            for(ComponentListener listener : _listeners)
+                if(listener instanceof PopupWindowListener)
+                    ((PopupWindowListener)listener).windowPoppedUp(this);
     }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        
+        if(_listeners != null)
+            for(ComponentListener listener : _listeners)
+                if(listener instanceof PopupWindowListener)
+                    ((PopupWindowListener)listener).windowDismissed(this);
+    }
+    
 
     /**
      * Called after we have been added to the display heirarchy to pack and
      * position this popup window.
      */
-    protected void packAndFit (int x, int y, boolean above)
-    {
+    protected void packAndFit(int x, int y, boolean above) {
         pack();
 
         // adjust x and y to ensure that we fit on the screen
         int width = DisplaySystem.getDisplaySystem().getWidth();
         int height = DisplaySystem.getDisplaySystem().getHeight();
         x = Math.min(width - getWidth(), x);
-        y = above ?
-            Math.min(height - getHeight(), y) : Math.max(0, y - getHeight());
+        y = above ? Math.min(height - getHeight(), y) : Math.max(0, y - getHeight());
         setLocation(x, y);
     }
 
     // documentation inherited
-    protected String getDefaultStyleClass ()
-    {
+    protected String getDefaultStyleClass() {
         return "popupwindow";
     }
 }

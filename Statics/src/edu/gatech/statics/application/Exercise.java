@@ -14,6 +14,7 @@ import com.jme.util.TextureManager;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
+import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import java.util.ArrayList;
