@@ -16,6 +16,7 @@ import com.jme.scene.state.LightState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.application.StaticsApplication;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -75,7 +76,9 @@ public class RepresentationLayer {
     
     private boolean enabled = true;
     public boolean isEnabled() {return enabled;}
-    public void setEnabled(boolean enabled) {this.enabled = enabled;}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
     
     private List<RenderState> renderStates = new ArrayList();
     //private boolean renderStatesChanged = false;

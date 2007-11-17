@@ -183,6 +183,10 @@ public class World {
         // search children 
         // this seems cheap, but otherwise seems to be the best way to collect
         // label representations...
+    
+        if(node instanceof Representation &&
+                !((Representation)node).getLayer().isEnabled() )
+            return;
         
         if(node.getChildren() != null)
             for(Spatial child : node.getChildren())

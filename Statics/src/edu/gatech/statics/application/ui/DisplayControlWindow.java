@@ -35,7 +35,6 @@ public class DisplayControlWindow extends AppWindow {
     public DisplayControlWindow() {
         super(new BorderLayout());
         
-        //super(GroupLayout.makeVert(GroupLayout.TOP));
         
         BContainer title = new BContainer(new BorderLayout());
         BLabel titleLabel = new BLabel("Views","title_container");
@@ -46,7 +45,7 @@ public class DisplayControlWindow extends AppWindow {
         GroupLayout contentLayout = GroupLayout.makeVert(GroupLayout.TOP);
         contentLayout.setOffAxisJustification(GroupLayout.LEFT);
         BContainer content = new BContainer(contentLayout);
-        //BContainer content = new BContainer(GroupLayout.makeVert(GroupLayout.EQUALIZE, GroupLayout.LEFT, GroupLayout.CONSTRAIN));
+        
         content.setStyleClass("content_container");
         add(content, BorderLayout.CENTER);
         
@@ -63,72 +62,14 @@ public class DisplayControlWindow extends AppWindow {
             groupChecks.put(check, DisplayGroup.getGroup(groupName));
         }
         
-        /*check1 = new BCheckBox("schematic");
-        check1.addListener(listener);
-        check1.setSelected(true);
-        content.add(check1);
-        
-        check2 = new BCheckBox("bones");
-        check2.addListener(listener);
-        check2.setSelected(true);
-        content.add(check2);
-        
-        check3 = new BCheckBox("real world");
-        check3.addListener(listener);
-        check3.setSelected(true);
-        content.add(check3);*/
-        
         grayCheck = new BCheckBox("Grayouts");
         grayCheck.addListener(listener);
         grayCheck.setSelected(true);
         content.add(grayCheck);
-        
-        //BLabel label1 = new BLabel("Display 1");
-        //add(label1);
-        
-        //BLabel label2 = new BLabel("Display 2");
-        //add(label2);
     }
     
     private class DisplayListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            /*
-            if(event.getSource() == check1) {
-                if(check1.isSelected()) {
-                    RepresentationLayer.labels.setEnabled(true);
-                    RepresentationLayer.points.setEnabled(true);
-                    RepresentationLayer.schematicBodies.setEnabled(true);
-                    RepresentationLayer.vectors.setEnabled(true);
-                } else {
-                    RepresentationLayer.labels.setEnabled(false);
-                    RepresentationLayer.points.setEnabled(false);
-                    RepresentationLayer.schematicBodies.setEnabled(false);
-                    RepresentationLayer.vectors.setEnabled(false);
-                }
-            }
-            
-            if(event.getSource() == check2) {
-                if(check2.isSelected()) {
-                    RepresentationLayer.getLayer("bones").setEnabled(true);
-                } else {
-                    RepresentationLayer.getLayer("bones").setEnabled(false);
-                }
-            }
-            if(event.getSource() == check3) {
-                if(check3.isSelected()) {
-                    RepresentationLayer.modelBodies.setEnabled(true);
-                } else {
-                    RepresentationLayer.modelBodies.setEnabled(false);
-                }
-            }
-            
-            if(event.getSource() == check3) {
-                if(check3.isSelected()) {
-                    RepresentationLayer.modelBodies.setEnabled(true);
-                } else {
-                    RepresentationLayer.modelBodies.setEnabled(false);
-                }
-            }*/
             
             if(event.getSource() == grayCheck) {
                 StaticsApplication.getApp().hideGrays(!grayCheck.isSelected());
@@ -137,6 +78,7 @@ public class DisplayControlWindow extends AppWindow {
                 DisplayGroup group = groupChecks.get(event.getSource());
                 if(group != null) {
                     group.setEnabled( ((BCheckBox)event.getSource()).isSelected() );
+                    StaticsApplication.getApp().getCurrentWorld().invalidateNodes();
                 }
             }
             
