@@ -31,4 +31,5 @@ public class Toolbar extends AppWindow {
     }
 
     public void activate() {}
+    public void deactivate() {}
 }

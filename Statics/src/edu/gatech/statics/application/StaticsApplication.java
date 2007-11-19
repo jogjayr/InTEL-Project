@@ -37,8 +37,12 @@ import edu.gatech.statics.World;
 import edu.gatech.statics.modes.equation.EquationInterface;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -87,7 +91,7 @@ public class StaticsApplication {
     }
     
     private boolean selectionEnabled = true;
-    private boolean hideGrays;
+    private boolean hideGrays = true;
     private MousePick selector;
     
     private Tool currentTool;
@@ -241,6 +245,15 @@ public class StaticsApplication {
         // render the current world
         currentWorld.render(r);
         
+        // do our screenshots if we are taking them.
+        if(!screenshotListeners.isEmpty()) {
+            BufferedImage image = takeScreenshot();
+            for (ScreenshotListener screenshotListener : screenshotListeners) {
+                screenshotListener.onScreenshot(image);
+            }
+            screenshotListeners.clear();
+        }
+        
         // Render UI
         r.draw(labelNode);
         r.draw(rootInterface.getBuiNode());
@@ -248,6 +261,31 @@ public class StaticsApplication {
         r.renderQueue();
         r.clearQueue();
         
+    }
+    
+    private List<ScreenshotListener> screenshotListeners = new ArrayList<ScreenshotListener>();
+    public void addScreenshotListener(ScreenshotListener listener) {
+        screenshotListeners.add(listener);
+    }
+    
+    private BufferedImage takeScreenshot() {
+        // Create a pointer to the image info and create a buffered image to
+        // hold it.
+        int windowWidth = DisplaySystem.getDisplaySystem().getWidth();
+        int windowHeight = DisplaySystem.getDisplaySystem().getHeight();
+        IntBuffer buff = ByteBuffer.allocateDirect(windowWidth * windowHeight * 4).order(
+                ByteOrder.LITTLE_ENDIAN).asIntBuffer(); 
+        DisplaySystem.getDisplaySystem().getRenderer().grabScreenContents(buff, 0, 0, windowWidth, windowHeight);
+        BufferedImage img = new BufferedImage(windowWidth, windowHeight,
+                BufferedImage.TYPE_INT_RGB);
+
+        // Grab each pixel information and set it to the BufferedImage info.
+        for (int x = 0; x < windowWidth; x++) {
+            for (int y = 0; y < windowHeight; y++) {
+                img.setRGB(x, y, buff.get((windowHeight - y - 1) * windowWidth + x));
+            }
+        }
+        return img;
     }
 
     public void init() {

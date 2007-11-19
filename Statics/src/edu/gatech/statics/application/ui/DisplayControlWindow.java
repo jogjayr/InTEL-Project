@@ -51,7 +51,6 @@ public class DisplayControlWindow extends AppWindow {
         
         ActionListener listener = new DisplayListener();
         
-        
         List<String> groupNames = DisplayGroup.getGroupNames();
         for(String groupName : groupNames) {
             BCheckBox check = new BCheckBox(groupName);
@@ -64,7 +63,7 @@ public class DisplayControlWindow extends AppWindow {
         
         grayCheck = new BCheckBox("Grayouts");
         grayCheck.addListener(listener);
-        grayCheck.setSelected(true);
+        grayCheck.setSelected(false);
         content.add(grayCheck);
     }
     

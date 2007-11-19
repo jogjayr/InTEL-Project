@@ -107,6 +107,8 @@ public class AppInterface {
     
     public void dispose() {
         buiNode.removeAllWindows();
+        if(getToolbar() != null)
+            getToolbar().deactivate();
     }
     
     public void activate() {

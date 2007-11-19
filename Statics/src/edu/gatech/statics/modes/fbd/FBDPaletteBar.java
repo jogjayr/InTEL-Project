@@ -193,7 +193,7 @@ public class FBDPaletteBar extends Toolbar {
     }
 
     public void activate() {
-        fbdIcon.update();
+        //fbdIcon.update();
     }
     
     

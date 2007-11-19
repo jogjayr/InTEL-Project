@@ -14,11 +14,13 @@ import edu.gatech.statics.modes.fbd.FBDWorld;
 import com.jmex.bui.BButton;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.World;
 import edu.gatech.statics.util.ToolFinishListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +50,21 @@ public class ExercizeFBDBar extends Toolbar {
     }
     
     public void activate() {
-        for(FBDIcon icon : iconMap.values())
-            icon.update();
+        //for(FBDIcon icon : iconMap.values())
+        //    icon.update();
     }
     
+    public void deactivate() {
+        // remove all click listeners from the icons
+        // this step is necessary because otherwise the listeners are not dismissed,
+        // and return to cause trouble after the user navigates around and changes FBDs.
+        for (FBDClickListener clickListener : clickListeners) {
+            clickListener.icon.removeListener(clickListener);
+        }
+
+    }
+    
+    private List<FBDClickListener> clickListeners = new ArrayList<FBDClickListener>();
     
     private void addFBD(FBDWorld fbd) {
         
@@ -59,8 +72,11 @@ public class ExercizeFBDBar extends Toolbar {
             return;
         
         FBDIcon icon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
-        icon.addListener(new FBDClickListener(fbd));
+        
         add(icon);
+        FBDClickListener clickListener = new FBDClickListener(fbd, icon);
+        icon.addListener(clickListener);
+        clickListeners.add(clickListener);
         iconMap.put(fbd, icon);
     }
     
@@ -109,9 +125,11 @@ public class ExercizeFBDBar extends Toolbar {
     }
     
     private class FBDClickListener implements MouseListener {
-        private FBDWorld fbd;
-        public FBDClickListener(FBDWorld fbd) {
+        FBDWorld fbd;
+        FBDIcon icon;
+        public FBDClickListener(FBDWorld fbd, FBDIcon icon) {
             this.fbd = fbd;
+            this.icon = icon;
         }
         
         public void mousePressed(MouseEvent event) {}

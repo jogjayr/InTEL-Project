@@ -108,7 +108,7 @@ public class FBDWorld extends World {
         
         setupObjects();
         
-        setupIcon();
+        //setupIcon();
     }
     
     private void setupObjects() {
@@ -141,7 +141,14 @@ public class FBDWorld extends World {
         //updateNodes();
     }
     
-    //private FBDIcon icon;
+    private FBDIcon icon;
+    public FBDIcon getIcon() {
+        if(icon != null)
+            return icon;
+        return icon = new FBDIcon();
+    }
+    
+    /*//private FBDIcon icon;
     //public FBDIcon getIcon() {return icon;}
     private TextureRenderer iconRenderer;
     private Texture iconTexture;
@@ -154,11 +161,6 @@ public class FBDWorld extends World {
     
     private void setupIcon() {
         
-        /*iconTexture = TextureManager.loadTexture(
-                getClass().getResource("rsrc/FBD_Interface/cable.png"),
-                Texture.MM_LINEAR, Texture.FM_LINEAR);*/
-        //iconTexture = new Texture();
-        
         iconRenderer = DisplaySystem.getDisplaySystem().createTextureRenderer(128, 128, TextureRenderer.RENDER_TEXTURE_2D);
         iconRenderer.setBackgroundColor(DisplaySystem.getDisplaySystem().getRenderer().getBackgroundColor());
         iconTexture = new Texture();
@@ -166,7 +168,8 @@ public class FBDWorld extends World {
             iconRenderer.setupTexture(iconTexture);
         }
         image = new BImage(iconTexture, 90, 90, 128, 128);
-    }
+    }*/
+    
     /*private void renderIcon() {
         
         Node targetNode = getNode(RepresentationLayer.modelBodies);
