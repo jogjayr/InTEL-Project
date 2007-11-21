@@ -9,9 +9,7 @@
 
 package edu.gatech.statics.application.ui;
 
-import edu.gatech.statics.SimulationObject;
-import edu.gatech.statics.application.StaticsApplication;
-import com.jmex.bui.BWindow;
+import com.jmex.bui.BContainer;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 
@@ -31,11 +29,17 @@ public class AdviceWindow extends AppWindow {
     /** Creates a new instance of InfoWindow */
     public AdviceWindow() {
         super(new BorderLayout());
+        
+        BContainer viewContainer = new BContainer(new BorderLayout());
+        viewContainer.setStyleClass("padded_container");
+        
         view = new HTMLView();
         
         view.setStyleSheet(AppInterface.getHtmlStyle());
         view.setContents("");
-        add(view, BorderLayout.CENTER);
+        viewContainer.add(view, BorderLayout.CENTER);
+        
+        add(viewContainer, BorderLayout.CENTER);
     }
     
 }

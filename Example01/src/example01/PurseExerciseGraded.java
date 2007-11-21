@@ -14,6 +14,7 @@ import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BTextField;
+import com.jmex.bui.BWindow;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
@@ -21,6 +22,7 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.application.ui.AppWindow;
 import edu.gatech.statics.application.ui.ModalPopupWindow;
 import edu.gatech.statics.tasks.SolveJointTask;
 import java.io.UnsupportedEncodingException;
@@ -71,7 +73,26 @@ public class PurseExerciseGraded extends PurseExercise {
     }
 
     public void postLoadExercise() {
-
+        showNamePopup();
+        showSubmitButton();
+    }
+    
+    private void showSubmitButton() {
+        BWindow submitWindow = new AppWindow(new BorderLayout());
+        submitWindow.add(new BButton("Submit", new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                showCompletionPopup();
+            }
+        }, "submit"), BorderLayout.CENTER);
+        StaticsApplication.getApp().getRootInterface().getBuiNode().addWindow(submitWindow);
+        submitWindow.pack();
+        submitWindow.setLocation(
+                DisplaySystem.getDisplaySystem().getWidth()-submitWindow.getWidth(),
+                DisplaySystem.getDisplaySystem().getHeight()-submitWindow.getHeight());
+    }
+    
+    private void showNamePopup() {
+    
         final ModalPopupWindow popup = new ModalPopupWindow(StaticsApplication.getApp().getCurrentInterface().getToolbar(), new BorderLayout());
         popup.setStyleClass("info_window_opaque");
         popup.setModal(true);
@@ -114,9 +135,9 @@ public class PurseExerciseGraded extends PurseExercise {
         nameField.addListener(actionListener);
         nameField.requestFocus();
         
-        //Dimension dim = popup.getPreferredSize(0, 0);
         Dimension dim = new Dimension(300, 0);
-        popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
+        popup.popup(0, 0, true);
+        popup.center();
     }
 
     /*public boolean isExerciseSolved() {
@@ -128,30 +149,58 @@ public class PurseExerciseGraded extends PurseExercise {
 
     public void finishExercise() {
         super.finishExercise();
-
-        ModalPopupWindow popup = new ModalPopupWindow(StaticsApplication.getApp().getCurrentInterface().getToolbar(), new BorderLayout());
+        showCompletionPopup();
+    }
+    
+    private void showCompletionPopup() {
+        
+        final ModalPopupWindow popup = new ModalPopupWindow(
+                StaticsApplication.getApp().getCurrentInterface().getToolbar(),
+                new BorderLayout(5, 5));
         popup.setStyleClass("info_window_opaque");
         popup.setModal(true);
 
         popup.setPreferredSize(300, -1);
 
         BContainer title = new BContainer(new BorderLayout());
-        BLabel titleLabel = new BLabel("Congratulations!", "title_container");
+        BLabel titleLabel = new BLabel("Submit Assignment", "title_container");
         title.add(titleLabel, BorderLayout.CENTER);
         popup.add(title, BorderLayout.NORTH);
         
-        BLabel textLabel = new BLabel("You have solved for all of the unknown joints in this exercise." +
-                "Please click the button below to submit your work.");
-        popup.add(textLabel, BorderLayout.CENTER);
+        BLabel textLabel;
+        
+        if(isExerciseFinished()) {
+            textLabel = new BLabel("CONGRATULATIONS! You have solved for all of the unknown joints in this exercise. " +
+                    "Please click the button below to submit your work.");
+        } else {
+            textLabel = new BLabel("You can submit your exercise for full extra credit now, " +
+                    "But you have not finished the exercise. Are you sure you want to submit?");
+        }
+        
+        BContainer textContainer = new BContainer(new BorderLayout());
+        textContainer.setStyleClass("padded_container");
+        
+        textContainer.add(textLabel, BorderLayout.CENTER);
+        popup.add(textContainer, BorderLayout.CENTER);
         
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                navigateAway();
+                if(event.getAction().equals("submit"))
+                    navigateAway();
+                else
+                    popup.dismiss();
             }
         };
         
+        BContainer buttonContainer = new BContainer(new BorderLayout());
+        
         BButton submitButton = new BButton("Submit",actionListener,"submit");
-        popup.add(submitButton, BorderLayout.SOUTH);
+        buttonContainer.add(submitButton, BorderLayout.CENTER);
+        
+        BButton returnButton = new BButton("Go Back",actionListener,"return");
+        buttonContainer.add(returnButton, BorderLayout.WEST);
+        
+        popup.add(buttonContainer, BorderLayout.SOUTH);
         
         Dimension dim = new Dimension(300, 0);
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
@@ -172,7 +221,10 @@ public class PurseExerciseGraded extends PurseExercise {
             return;
         }
         
-        String finalString = studentName + "@" + getName();
+        String exerciseName = getName();
+        if(isExerciseFinished())
+            exerciseName += " [Solved]";
+        String finalString = studentName + "@" + exerciseName;
         byte[] resultBytes = md5.digest(finalString.getBytes());
         
         String finalCode = String.format("%x%x%x", resultBytes[0], resultBytes[1], resultBytes[2]);
@@ -182,7 +234,7 @@ public class PurseExerciseGraded extends PurseExercise {
             String postPage = "problemPost.php";
 
             String formattedName = URLEncoder.encode(studentName, "UTF-8");
-            String formattedExercise = URLEncoder.encode(getName(), "UTF-8");
+            String formattedExercise = URLEncoder.encode(exerciseName, "UTF-8");
 
             String targetPage = postPage+"?name="+formattedName+"&exercise="+formattedExercise+"&code="+finalCode;
             

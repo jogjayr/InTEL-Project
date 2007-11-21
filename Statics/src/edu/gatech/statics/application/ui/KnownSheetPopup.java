@@ -34,7 +34,8 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
     
     public KnownSheetPopup(BWindow parentWindow) {
         super(parentWindow, new BorderLayout());
-        setStyleClass("description_window");
+        //setStyleClass("description_window");
+        setStyleClass("info_window");
         
         BContainer titleBar = new BContainer(new BorderLayout());
         titleBar.setStyleClass("title_container");
@@ -129,7 +130,7 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
             contents.append("<b>"+force.getName()+"</b>");
         else
             contents.append("<font color=\"#0000ff\"><b>"+force.getName()+"</b></font>");
-        contents.append("at ["+force.getAnchor().getName()+"]: ");
+        contents.append(" at ["+force.getAnchor().getName()+"]: ");
         contents.append("</td><td>");
         contents.append(force.getLabelText());
         contents.append("</td></tr>");

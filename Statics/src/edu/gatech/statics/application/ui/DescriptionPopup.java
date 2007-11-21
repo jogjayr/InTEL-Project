@@ -34,7 +34,8 @@ public class DescriptionPopup extends DraggablePopupWindow implements TaskStatus
     public DescriptionPopup(BWindow parentWindow) {
         super(parentWindow, new BorderLayout());
         
-        setStyleClass("description_window");
+        //setStyleClass("description_window");
+        setStyleClass("info_window");
         
         BContainer titleBar = new BContainer(new BorderLayout());
         titleBar.setStyleClass("title_container");
@@ -49,11 +50,15 @@ public class DescriptionPopup extends DraggablePopupWindow implements TaskStatus
         add(titleBar, BorderLayout.NORTH);
         addDragHandle(titleBar);
         
+        BContainer viewContainer = new BContainer(new BorderLayout());
+        viewContainer.setStyleClass("padded_container");
+        
         view = new HTMLView();
         view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         
-        add(view, BorderLayout.CENTER);
+        viewContainer.add(view, BorderLayout.CENTER);
         addDragHandle(view);
+        add(viewContainer, BorderLayout.CENTER);
         
         KeyListener keyListener = new KeyListener() {
             public void keyPressed(KeyEvent event) {
