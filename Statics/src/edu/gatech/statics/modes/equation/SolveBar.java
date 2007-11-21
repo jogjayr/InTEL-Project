@@ -65,7 +65,7 @@ public class SolveBar extends Toolbar {
         
         backButton = new BButton("Return",listener,"return");
         solveButton = new BButton("Solve!",listener,"solve");
-        if(!isSolvable()) {
+        if(!isSolvable() && unknownMap.size() != 0) {
             solveButton.setEnabled(false);
             StaticsApplication.getApp().setAdvice(
                     java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_warning_unsolvable"));
@@ -93,6 +93,16 @@ public class SolveBar extends Toolbar {
             unknownRow.add(new BLabel("@=b#0000FF("+unknown + ") = "));
             unknownRow.add(unknownMap.get(unknown));
             solveContainer.add(unknownRow);
+        }
+        
+        // add the return button if our system has already been solved.
+        if(unknownMap.size() == 0) {
+            BButton returnButton = new BButton("Return to Main",new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    StaticsApplication.getApp().loadExercizeWorld();
+                }
+            },"return");
+            add(returnButton);
         }
     }
     
@@ -183,21 +193,6 @@ public class SolveBar extends Toolbar {
         process(system, 2, world.sumMp);
         
         system.process();
-        
-        /*Matrix3f matrix = new Matrix3f();
-        Vector3f values = new Vector3f();
-        matrix.zero();
-        
-        values.x = -process(matrix, 0, world.sumFx);
-        values.y = -process(matrix, 1, world.sumFy);
-        values.z = -process(matrix, 2, world.sumMp);
-        
-        Matrix3f inverse = matrix.invert();
-        Vector3f solution = inverse.mult(values);
-        
-        unknownMap.get(unknownList.get(0)).setText(""+solution.x);
-        unknownMap.get(unknownList.get(1)).setText(""+solution.y);
-        unknownMap.get(unknownList.get(2)).setText(""+solution.z);*/
     }
     
     private void process(EquationSystem system, int row, EquationMath math) {

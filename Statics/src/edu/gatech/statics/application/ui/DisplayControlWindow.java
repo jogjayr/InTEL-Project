@@ -80,7 +80,6 @@ public class DisplayControlWindow extends AppWindow {
                     StaticsApplication.getApp().getCurrentWorld().invalidateNodes();
                 }
             }
-            
         }
     }
     

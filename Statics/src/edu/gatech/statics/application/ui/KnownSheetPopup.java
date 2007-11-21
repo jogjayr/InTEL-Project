@@ -13,9 +13,12 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.application.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.tasks.Task;
@@ -55,7 +58,7 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
     private void updateView() {
         StringBuffer contents = new StringBuffer();
         contents.append("<html><head>");
-        contents.append("<table>");
+        contents.append("<table cellspacing=\"2\" cellpadding=\"2\">");
         
         // first go through objects
         Exercise exercise = StaticsApplication.getApp().getExercise();
@@ -65,7 +68,6 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
             if(obj instanceof Joint) {
                 Joint joint = (Joint)obj;
                 if(joint.isSolved()) {
-                    
                     // iterate through reactions at joint
                     for(Vector force : joint.getReactions(joint.getBody1())) {
                     
@@ -74,9 +76,15 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
                 }
             }
             
+            // look at free vectors
             if(obj instanceof Vector) {
                 Vector force = (Vector) obj;
                 writeReaction(force, contents);
+            }
+            
+            if(obj instanceof Body) {
+                Body body = (Body) obj;
+                writeWeightReaction(body, contents);
             }
         }
         
@@ -84,14 +92,44 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
         contents.append("</html></head>");
         
         view.setContents(contents.toString());
+        
+        /*try {
+            System.out.println("View update on KnownSheetPopup:");
+            System.out.println("View preferred size: "+view.getPreferredSize(-1, -1));
+            System.out.println("View actual size: "+view.getWidth()+","+view.getHeight());
+            System.out.println("Window preferred size: "+getPreferredSize(-1, -1));
+            System.out.println("Window actual size: "+getWidth()+","+getHeight());
+        } catch(NullPointerException e) {
+            System.out.println("Null Pointer Exception");
+        }*/
+    }
+    
+    private void writeWeightReaction(Body body, StringBuffer contents) {
+        if(body.getWeight() == 0)
+            return;
+
+        // we will probably want to have some facility for letting
+        // weights be unknown later on...
+        
+        contents.append("<tr><td>");
+        contents.append("Weight of <b>"+body.getName()+"</b> at ["+body.getCenterOfMassPoint().getName()+"]: ");
+        contents.append("</td><td>");
+        contents.append(body.getWeightText());
+        contents.append("</td></tr>");
     }
     
     private void writeReaction(Vector force, StringBuffer contents) {
         if(force.isSymbol() && !force.isSolved())
             return;
         
+        String forceType = force instanceof Force ? "Force" : "Moment";
         contents.append("<tr><td>");
-        contents.append("Reaction at "+force.getAnchor().getName()+": ");
+        contents.append(forceType+" ");
+        if(force.isGiven())
+            contents.append("<b>"+force.getName()+"</b>");
+        else
+            contents.append("<font color=\"#0000ff\"><b>"+force.getName()+"</b></font>");
+        contents.append("at ["+force.getAnchor().getName()+"]: ");
         contents.append("</td><td>");
         contents.append(force.getLabelText());
         contents.append("</td></tr>");
@@ -114,7 +152,10 @@ public class KnownSheetPopup extends DraggablePopupWindow implements TaskStatusL
         updateView();
         
         int height = getHeight();
-        pack();
+        //pack(150,150);
+        
+        Dimension preferredSize = getPreferredSize(150, -1);
+        setSize(preferredSize.width, 2*preferredSize.height/3);
         int newHeight = getHeight();
         
         setLocation(getX(), getY()-(newHeight-height));

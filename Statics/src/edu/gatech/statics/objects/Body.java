@@ -11,6 +11,8 @@ package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.*;
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.application.Units;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +43,17 @@ abstract public class Body extends SimulationObject {
     
     public void setWeight(float weight) {this.weight = weight;}
     public float getWeight() {return weight;}
+    
+    // This method is lifted from Vector
+    private String getMagnitudeString() {
+        Units units = StaticsApplication.getApp().getUnits();
+        return String.format("%."+units.getDecimalPrecisionForces()+"f", getWeight());
+    }
+
+    public String getWeightText() {
+        return ""+getMagnitudeString()+" "+StaticsApplication.getApp().getUnits().getForce();
+    }
+    
     
     //public boolean isMassless() {return massless;}
     //public void setMassless(boolean massless) {this.massless = massless;}

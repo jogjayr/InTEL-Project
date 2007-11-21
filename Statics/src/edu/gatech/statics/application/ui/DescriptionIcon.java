@@ -52,8 +52,9 @@ public class DescriptionIcon extends AppWindow {
         @Override
         void postCreateWindow(BPopupWindow popup) {
             Dimension preferredSize = popup.getPreferredSize(windowWidth, -1);
+            popup.setSize(preferredSize.width, preferredSize.height);
+            //popup.pack();
             //popup.setSize(windowWidth, preferredSize.height);
-            popup.pack();
             popup.setLocation(150+40+windowWidth, AppInterface.getScreenHeight()-preferredSize.height-50);
         }
     }

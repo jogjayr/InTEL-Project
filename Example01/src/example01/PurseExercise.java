@@ -88,6 +88,10 @@ public class PurseExercise extends Exercise {
         Body forearm = new Beam(C,A);
         Cable tendon = new Cable(D,B);
         
+        upperArm.setName("Upper Arm");
+        forearm.setName("Forearm");
+        tendon.setName("Bicep Muscle");
+        
         jointB = new Connector2ForceMember2d(B, tendon);
         jointD = new Connector2ForceMember2d(D, tendon);
         jointC = new Pin2d(C);
@@ -123,10 +127,11 @@ public class PurseExercise extends Exercise {
         
         
         Force purse = new Force(A, new Vector3f(0,-purseWeight,0));
+        purse.setName("Purse");
         forearm.addObject(purse);
         
         Moment shoulder = new Moment(E, new Vector3f(0,0,-1)); // use symbol here
-        shoulder.setName("M shoulder");
+        shoulder.setName("Shoulder");
         upperArm.addObject(shoulder);
         shoulder.setSymbol(true);
         

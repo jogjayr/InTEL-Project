@@ -265,6 +265,23 @@ public class BComponent {
     }
     
     /**
+     * Configures the border for this component for the specified state.  This must only be
+     * called after the component has been added to the interface heirarchy or the value will be
+     * overridden by the stylesheet associated with this component.
+     */
+    public void setBorder(int state, BBorder border) {
+        if (isAdded()) {
+            if (_borders[state] != null) {
+                _borders[state].wasRemoved();
+            }
+            if (border != null) {
+                border.wasAdded();
+            }
+        }
+        _borders[state] = border;
+    }
+    
+    /**
      * Returns a reference to the background used by this component.
      */
     public BBackground getBackground() {

@@ -31,6 +31,7 @@ import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.Toolbar;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.Vector;
@@ -277,6 +278,9 @@ public class SumBar extends Toolbar {
         for(TermBox box : terms.values())
             box.coefficient.setEnabled(false);
         locked = true;
+        
+        // clear the current tool
+        StaticsApplication.getApp().setCurrentTool(null);
         
         backButton.setText("Next");
         checkButton.setEnabled(false);
