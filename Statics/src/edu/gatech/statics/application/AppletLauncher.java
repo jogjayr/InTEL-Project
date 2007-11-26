@@ -22,7 +22,7 @@ public class AppletLauncher extends StaticsApplet {
     public void init() {
         
         try {
-            String exerciseName = getParameter("exercise");
+            String exerciseName = getExercise();
             Class exerciseClass = Class.forName(exerciseName);
             final Exercise exercise = (Exercise) exerciseClass.newInstance();
             

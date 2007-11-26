@@ -26,7 +26,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
-import java.util.logging.Level;
 
 /**
  *
@@ -49,11 +48,24 @@ public class StaticsApplet extends Applet {
     private StaticsApplication application;
     private DisplaySystem display;
     
+    private String exercise;
+    public void setExercise(String exercise) {this.exercise = exercise;}
+    public String getExercise() {
+        if(exercise != null)
+            return exercise;
+        return getParameter("exercise");
+    }
+    
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
         
-        //LoggingSystem.getLogger().setLevel(Level.OFF);
-        LoggingSystem.setLogToFile(null);
+        try {
+            LoggingSystem.setLogToFile(null);
+        } catch(IllegalStateException e) {
+            // do nothing, the illegal state exception is thrown by
+            // LoggingSystem.setLogToFile(null); if the logging system
+            // has already been created, ie, if the applet has been refreshed
+        }
         
         instance = this;
         application = new StaticsApplication();
