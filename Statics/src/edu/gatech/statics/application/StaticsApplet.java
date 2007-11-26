@@ -35,8 +35,8 @@ public class StaticsApplet extends Applet {
     
     private static final String INIT_LOCK = "INIT_LOCK";
     
-    private static final int canvasWidth = 1024;
-    private static final int canvasHeight = 768;
+    private static final int canvasWidth = 900;
+    private static final int canvasHeight = 675;
     
     private static StaticsApplet instance;
     public static StaticsApplet getInstance() {return instance;}

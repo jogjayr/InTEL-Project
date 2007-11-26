@@ -23,7 +23,7 @@ public class AppletTester {
     private static StaticsApplet createApplet() {
         StaticsApplet applet = new AppletLauncher();
         applet.setExercise("example01.PurseExercise");
-        applet.setPreferredSize(new Dimension(1024, 768));
+        applet.setPreferredSize(new Dimension(900, 675));
         return applet;
     }
     
