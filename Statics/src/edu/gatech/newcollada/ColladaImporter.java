@@ -92,13 +92,12 @@ import com.jme.scene.state.StencilState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.ErrorManager;
 import com.jme.util.TextureManager;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.geom.BufferUtils;
 import com.jme.util.geom.GeometryTool;
-import com.jmex.model.collada.schema.COLLADASchemaDoc;
+//import com.jmex.model.collada.schema.COLLADASchemaDoc;
 import com.jmex.model.collada.schema.COLLADAType;
 import com.jmex.model.collada.schema.IDREF_arrayType;
 import com.jmex.model.collada.schema.InstanceWithExtra;
@@ -162,6 +161,8 @@ import com.jmex.model.collada.schema.textureType;
 import com.jmex.model.collada.schema.trianglesType;
 import com.jmex.model.collada.schema.vertex_weightsType;
 import com.jmex.model.collada.schema.visual_sceneType;
+import com.jmex.model.collada.schema.collada_schema_1_4_1Doc;
+import java.util.logging.Logger;
 
 /**
  * <code>ColladaNode</code> provides a mechanism to parse and load a COLLADA
@@ -174,6 +175,10 @@ import com.jmex.model.collada.schema.visual_sceneType;
  * @author Mark Powell
  */
 public class ColladaImporter {
+    
+    private static final Logger logger = Logger.getLogger(ColladaImporter.class
+            .getName());
+    
 	// asset information
 	private String modelAuthor;
 
@@ -268,13 +273,13 @@ public class ColladaImporter {
 		model = new Node(name);
 		resourceLibrary = new HashMap<String, Object>();
 		this.textureDirectory = textureDirectory;
-		COLLADASchemaDoc doc = new COLLADASchemaDoc();
+		collada_schema_1_4_1Doc doc = new collada_schema_1_4_1Doc();
 		try {
 			COLLADAType root = new COLLADAType(doc.load(source));
 			System.err.println("Version: " + root.getversion().getValue());
 			processCollada(root);
 		} catch (Exception ex) {
-			ErrorManager.getInstance().addError(Level.WARNING,
+			logger.log(Level.WARNING,
 					"Unable to load Collada file. " + ex.getMessage());
 			return;
 		}
@@ -390,7 +395,7 @@ public class ColladaImporter {
 	public static void put(String key, Object value) {
 		if(instance.resourceLibrary.containsKey(key)) {
 			if(!squelch) {
-				ErrorManager.getInstance().addError(Level.WARNING, "Key: " + key + 
+				logger.log(Level.WARNING, "Key: " + key + 
 						" already in use. Overriding previous data. This is probably not" +
 						" desired.");
 			}
@@ -517,7 +522,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing asset information - " + e, e);
 				}
 			}
@@ -531,7 +536,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing extra information - " + e, e);
 				}
 			}
@@ -545,7 +550,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing animation information - " + e, e);
 				}
 			}
@@ -553,7 +558,7 @@ public class ColladaImporter {
 
 		if (root.haslibrary_animation_clips()) {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(Level.WARNING,
+				logger.log(Level.WARNING,
 						"Animation Clips not currently supported");
 			}
 		}
@@ -564,7 +569,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing camera information - " + e, e);
 				}
 			}
@@ -572,7 +577,7 @@ public class ColladaImporter {
 
 		if (root.haslibrary_force_fields()) {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(Level.WARNING,
+				logger.log(Level.WARNING,
 						"Forcefields not currently supported");
 			}
 		}
@@ -583,7 +588,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing light information - " + e, e);
 				}
 			}
@@ -591,7 +596,7 @@ public class ColladaImporter {
 
 		if (root.haslibrary_nodes()) {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(Level.WARNING,
+				logger.log(Level.WARNING,
 						"Stand-alone nodes not currently supported");
 			}
 		}
@@ -602,8 +607,7 @@ public class ColladaImporter {
 				processImageLibrary(root.getlibrary_images());
 			} catch (Exception e) {
 				if (!squelch) {
-					ErrorManager.getInstance()
-							.addError(
+					logger.log(
 									Level.WARNING,
 									"Error processing image library information - "
 											+ e, e);
@@ -617,7 +621,7 @@ public class ColladaImporter {
 				processMaterialLibrary(root.getlibrary_materials());
 			} catch (Exception e) {
 				if (!squelch) {
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing material library information - "
 									+ e, e);
@@ -633,7 +637,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing effects library information - "
 									+ e, e);
@@ -649,7 +653,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (!squelch) {
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing geometry library information - "
 									+ e, e);
@@ -668,7 +672,7 @@ public class ColladaImporter {
 				e.printStackTrace();
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing controller library information - "
 									+ e, e);
@@ -684,7 +688,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing visual scene library information - "
 									+ e, e);
@@ -702,7 +706,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing physics scene library information - "
 									+ e, e);
@@ -720,7 +724,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Error processing physics model library information - "
 									+ e, e);
@@ -737,7 +741,7 @@ public class ColladaImporter {
 			} catch (Exception e) {
 				if (!squelch) {
 					e.printStackTrace();
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"Error processing scene information - " + e, e);
 				}
 			}
@@ -748,7 +752,7 @@ public class ColladaImporter {
 		} catch (Exception e) {
 			if (!squelch) {
 				e.printStackTrace();
-				ErrorManager.getInstance().addError(Level.WARNING,
+				logger.log(Level.WARNING,
 						"Error optimizing geometry - " + e, e);
 			}
 		}
@@ -1006,7 +1010,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), xRot);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1021,7 +1025,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), yRot);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1036,7 +1040,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), zRot);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1051,7 +1055,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), xTrans);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1066,7 +1070,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), yTrans);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1081,7 +1085,7 @@ public class ColladaImporter {
 						put(source.getid().toString(), zTrans);
 					} else {
 						if (!squelch) {
-							ErrorManager.getInstance().addError(
+							logger.log(
 									Level.WARNING,
 									p.gettype() + " not yet supported "
 											+ "for animation transforms.");
@@ -1089,7 +1093,7 @@ public class ColladaImporter {
 					}
 				} else {
 					if (!squelch) {
-						ErrorManager.getInstance().addError(
+						logger.log(
 								Level.WARNING,
 								p.getname() + " not yet supported "
 										+ "for animation source.");
@@ -1244,7 +1248,7 @@ public class ColladaImporter {
 								.getsource().toString().substring(1);
 						float[] times = (float[]) resourceLibrary.get(key);
 						if (times == null) {
-							ErrorManager.getInstance().addError(Level.WARNING,
+							logger.log(Level.WARNING,
 									"Animation source invalid: " + key);
 							continue;
 						}
@@ -1257,7 +1261,7 @@ public class ColladaImporter {
 								.getsource().toString().substring(1);
 						Object object = resourceLibrary.get(key);
 						if (object == null) {
-							ErrorManager.getInstance().addError(Level.WARNING,
+							logger.log(Level.WARNING,
 									"Animation source invalid: " + key);
 							continue;
 						}
@@ -1297,7 +1301,7 @@ public class ColladaImporter {
 								transz = (float[]) object;
 							} else {
 								if (!squelch) {
-									ErrorManager.getInstance().addError(
+									logger.log(
 											Level.WARNING,
 											"Not sure what this sampler is.");
 								}
@@ -1309,7 +1313,7 @@ public class ColladaImporter {
 								.getsource().toString().substring(1);
 						int[] interpolation = (int[]) resourceLibrary.get(key);
 						if (interpolation == null) {
-							ErrorManager.getInstance().addError(Level.WARNING,
+							logger.log(Level.WARNING,
 									"Animation source invalid: " + key);
 							continue;
 						}
@@ -1536,7 +1540,7 @@ public class ColladaImporter {
 	private void processImage(imageType image) throws Exception {
 		if (image.hasdata()) {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(Level.WARNING,
+				logger.log(Level.WARNING,
 						"Raw data images not supported.");
 			}
 		}
@@ -2079,18 +2083,18 @@ public class ColladaImporter {
 				} else if("ONE_MINUS_DST_ALPHA".equals(dest)) {
 					as.setDstFunction(AlphaState.DB_ONE_MINUS_DST_ALPHA);
 				} else if("CONSTANT_COLOR".equals(dest)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 				} else if("ONE_MINUS_CONSTANT_COLOR".equals(dest)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 						
 				} else if("CONSTANT_ALPHA".equals(dest)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 							
 				} else if("ONE_MINUS_CONSTANT_ALPHA".equals(dest)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 						
 				} else if("SRC_ALPHA_SATURATE".equals(dest)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "saturate not supported");
+					logger.log(Level.WARNING, "saturate not supported");
 						
 				}
 			}
@@ -2114,15 +2118,15 @@ public class ColladaImporter {
 				} else if("ONE_MINUS_DST_ALPHA".equals(src)) {
 					as.setSrcFunction(AlphaState.SB_ONE_MINUS_DST_ALPHA);
 				} else if("CONSTANT_COLOR".equals(src)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 				} else if("ONE_MINUS_CONSTANT_COLOR".equals(src)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 						
 				} else if("CONSTANT_ALPHA".equals(src)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 							
 				} else if("ONE_MINUS_CONSTANT_ALPHA".equals(src)) {
-					ErrorManager.getInstance().addError(Level.WARNING, "Constant not supported");
+					logger.log(Level.WARNING, "Constant not supported");
 						
 				} else if("SRC_ALPHA_SATURATE".equals(src)) {
 					as.setSrcFunction(AlphaState.SB_SRC_ALPHA_SATURATE);	
@@ -2552,7 +2556,7 @@ public class ColladaImporter {
 				textureURL = new URL(textureDirectory.toString() + filename);
 			} catch (MalformedURLException e) {
 				if (!squelch) {
-					ErrorManager.getInstance().addError(
+					logger.log(
 							Level.WARNING,
 							"Invalid texture location (texture not found): \""
 									+ (textureDirectory.toString() + filename)
@@ -2569,7 +2573,7 @@ public class ColladaImporter {
 			ts.setTexture(t0);
 		} else {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(
+				logger.log(
 						Level.WARNING,
 						"Invalid texture: \""
 								+ (textureDirectory.toString() + filename)
@@ -2606,7 +2610,7 @@ public class ColladaImporter {
 			// splines are not currently supported.
 			if (geom.hasspline()) {
 				if (!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							"splines not yet supported.");
 				}
 			}
@@ -2681,7 +2685,7 @@ public class ColladaImporter {
 			Geometry mesh = (Geometry) resourceLibrary.get(key);
 			if (mesh == null) {
 				if (!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING,
+					logger.log(Level.WARNING,
 							key + " mesh does NOT exist in COLLADA file.");
 				}
 				return;
@@ -2772,7 +2776,7 @@ public class ColladaImporter {
 
 		if (boneIdArray == null || weightArray == null) {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(
+				logger.log(
 						Level.WARNING,
 						"Missing resource values for either bone "
 								+ "weights or bone vertex ids.");
@@ -3095,7 +3099,7 @@ public class ColladaImporter {
 							} catch (Exception e) {
 								if (!squelch) {
 									e.printStackTrace();
-									ErrorManager.getInstance().addError(Level.WARNING,
+									logger.log(Level.WARNING,
 											"Error processing extra information - " + e, e);
 								}
 							}
@@ -3126,7 +3130,7 @@ public class ColladaImporter {
                     }
                 } catch(Exception e) {
                     if(!squelch)
-                        ErrorManager.getInstance().addError(Level.WARNING, "Can not process double sided technique.");
+                        logger.log(Level.WARNING, "Can not process double sided technique.");
                 }
             }
 
@@ -3233,7 +3237,7 @@ public class ColladaImporter {
         }
 
         if (data == null) {
-        	ErrorManager.getInstance().addError(Level.WARNING, "Invalid source: " + key);
+        	logger.log(Level.WARNING, "Invalid source: " + key);
         	return;
         }
 
@@ -3357,7 +3361,7 @@ public class ColladaImporter {
         }
 
         if (data == null) {
-        	ErrorManager.getInstance().addError(Level.WARNING,
+        	logger.log(Level.WARNING,
         			"Invalid source: " + key);
         	return null;
         }
@@ -3412,7 +3416,7 @@ public class ColladaImporter {
         }
 
         if (data == null) {
-        	ErrorManager.getInstance().addError(Level.WARNING,
+        	logger.log(Level.WARNING,
         			"Invalid source: " + key);
         	return null;
         }
@@ -3521,7 +3525,7 @@ public class ColladaImporter {
 					}
 
 					if (data == null) {
-						ErrorManager.getInstance().addError(Level.WARNING,
+						logger.log(Level.WARNING,
 								"Invalid source: " + key);
 						continue;
 					}
@@ -3578,7 +3582,7 @@ public class ColladaImporter {
 					}
 
 					if (data == null) {
-						ErrorManager.getInstance().addError(Level.WARNING,
+						logger.log(Level.WARNING,
 								"Invalid source: " + key);
 						continue;
 					}
@@ -3633,7 +3637,7 @@ public class ColladaImporter {
 					}
 
 					if (data == null) {
-						ErrorManager.getInstance().addError(Level.WARNING,
+						logger.log(Level.WARNING,
 								"Invalid source: " + key);
 						continue;
 					}
@@ -3786,7 +3790,7 @@ public class ColladaImporter {
 	 */
 	private Line processLines(meshType mesh, geometryType geom) {
 		if (!squelch) {
-			ErrorManager.getInstance().addError(Level.WARNING,
+			logger.log(Level.WARNING,
 					"Line are not supported.");
 		}
 		return null;
@@ -3868,7 +3872,7 @@ public class ColladaImporter {
 				child = new Bone(key);
 				put(key, child);
 				if (!squelch) {
-					ErrorManager.getInstance().addError(
+					logger.log(
                             Level.WARNING,
                             "Bone " + key + " is not attached to any vertices.");
 				}
@@ -3892,7 +3896,7 @@ public class ColladaImporter {
 				} catch (Exception e) {
 					if (!squelch) {
 						e.printStackTrace();
-						ErrorManager.getInstance().addError(Level.WARNING,
+						logger.log(Level.WARNING,
 								"Error processing extra information - " + e, e);
 					}
 				}
@@ -4081,7 +4085,7 @@ public class ColladaImporter {
 			node.attachChild(sNode);
 		} else {
 			if (!squelch) {
-				ErrorManager.getInstance().addError(
+				logger.log(
 						Level.WARNING,
 						"Instance "
 								+ controller.geturl().toString().substring(1)
@@ -4092,7 +4096,7 @@ public class ColladaImporter {
 		if (controller.hasskeleton()) {
 			if(controller.getskeletonCount() > 1) {
 				if(!squelch) {
-					ErrorManager.getInstance().addError(Level.WARNING, 
+					logger.log(Level.WARNING, 
 							"Controller has more than one skeleton.");
 				}
 			}

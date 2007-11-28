@@ -30,15 +30,15 @@ import java.net.URL;
  */
 public class PointRepresentation extends Representation/*<Point>*/ {
     
-    private static Texture pointTexture;
+    //private static Texture pointTexture;
     
     private Quad pointQuad;
     
-    static {
+    /*static {
         URL textureLoc = PointRepresentation.class.getClassLoader().getResource("rsrc/point.png");
         pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR,Texture.FM_LINEAR);
         
-    }
+    }*/
     
     /** Creates a new instance of PointRepresentation */
     //public PointRepresentation(Point target) {
@@ -57,6 +57,10 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         alphaState.setTestEnabled( true );
         alphaState.setTestFunction( AlphaState.TF_ALWAYS );
         setRenderState(alphaState);
+        
+        
+        URL textureLoc = PointRepresentation.class.getClassLoader().getResource("rsrc/point.png");
+        Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR,Texture.FM_LINEAR);
         
         pointQuad = new Quad("",.5f,.5f);
         TextureState textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();

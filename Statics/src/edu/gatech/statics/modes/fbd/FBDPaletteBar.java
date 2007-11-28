@@ -9,24 +9,17 @@
 
 package edu.gatech.statics.modes.fbd;
 
-import com.jme.renderer.ColorRGBA;
-import com.jmex.bui.Spacer;
 import edu.gatech.statics.application.ui.*;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BComboBox;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
-import com.jmex.bui.BPopupWindow;
-import com.jmex.bui.background.TintedBackground;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.event.MouseEvent;
-import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.icon.BIcon;
 import com.jmex.bui.icon.ImageIcon;
-import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
 /**
  *
@@ -91,9 +84,11 @@ public class FBDPaletteBar extends Toolbar {
         add(controlContainer);
         
         fbdIcon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
-        add(fbdIcon);
+        //add(fbdIcon);
+        //add(new BLabel(fbdIcon.getIcon()));
+        add(fbdIcon.makeLabel());
         
-        ActionListener warningListener = new WarningListener();
+        //ActionListener warningListener = new WarningListener();
         ActionListener toolListener = new ToolListener();
         
         try {
@@ -126,7 +121,7 @@ public class FBDPaletteBar extends Toolbar {
             
             add(buttonBar1);
             
-            
+            /*
             add(new Spacer(20,1));
             
             GroupLayout bar2Layout = GroupLayout.makeHoriz(GroupLayout.LEFT);
@@ -187,7 +182,7 @@ public class FBDPaletteBar extends Toolbar {
             
             buttonBar2.add(vertGroup);
             
-            add(buttonBar2);
+            add(buttonBar2);*/
         
         } catch(Exception e) {}
     }
@@ -220,6 +215,7 @@ public class FBDPaletteBar extends Toolbar {
         }
     }
     
+    /*
     private class WarningListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             final BPopupWindow popup = new BPopupWindow(FBDPaletteBar.this, new BorderLayout(5,5));
@@ -245,7 +241,7 @@ public class FBDPaletteBar extends Toolbar {
                 public void mouseExited(MouseEvent event) {}
             });
         }
-    }
+    }*/
     
     protected void performCheck() {
         System.out.println("performing FBD check...");

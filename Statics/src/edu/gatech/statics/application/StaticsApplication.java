@@ -25,7 +25,6 @@ import com.jme.renderer.Renderer;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
-import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jmex.bui.BRootNode;
@@ -46,6 +45,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -418,12 +418,13 @@ public class StaticsApplication {
     }
     
     void cleanup() {
-        LoggingSystem.getLogger().log( Level.INFO, "Cleaning up resources." );
+        //Logger.getLogger().log( Level.INFO, "Cleaning up resources." );
         
         input.removeAllActions();
         input.removeAllFromAttachedHandlers();
         
         TextureManager.doTextureCleanup();
+        TextureManager.clearCache();
         KeyInput.destroyIfInitalized();
         MouseInput.destroyIfInitalized();
         JoystickInput.destroyIfInitalized();

@@ -8,7 +8,7 @@
     <!-- <import file="nbproject/profiler-build-impl.xml"/> -->
 
     <target name="-post-jar">
-        <signjar jar="dist/Example01.jar" alias="mykey" storepass="monkeys" keystore="../Statics/.keystore"/>
+        <signjar jar="dist/Example01.jar" alias="mykey" storepass="monkeys" keystore="../applet/.keystore"/>
         <copyfile src="dist/Example01.jar" dest="../applet/Example01.jar" />
     </target>
     <!--

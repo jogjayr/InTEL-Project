@@ -9,9 +9,6 @@
 
 package edu.gatech.statics.application;
 
-import com.jme.util.LoggingSystem;
-import java.util.logging.Level;
-
 /**
  *
  * @author Calvin Ashmore
@@ -21,7 +18,7 @@ public class Launcher {
     public static void main(String args[]) {
         
         //LoggingSystem.getLogger().setLevel(Level.OFF);
-        LoggingSystem.setLogToFile(null);
+        //LoggingSystem.setLogToFile(null);
         
         System.out.println("Georgia Tech Statics");
         

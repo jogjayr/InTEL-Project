@@ -10,7 +10,6 @@
 package edu.gatech.statics.application;
 
 import com.jme.app.BaseGame;
-import com.jme.util.LoggingSystem;
 
 /**
  *

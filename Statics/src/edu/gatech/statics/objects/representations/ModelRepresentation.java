@@ -13,9 +13,9 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.util.TextureKey;
 import com.jme.util.export.binary.BinaryImporter;
-import com.jmex.model.XMLparser.Converters.AseToJme;
-import com.jmex.model.XMLparser.Converters.MaxToJme;
-import com.jmex.model.XMLparser.Converters.MilkToJme;
+import com.jmex.model.converters.AseToJme;
+import com.jmex.model.converters.MaxToJme;
+import com.jmex.model.converters.MilkToJme;
 import edu.gatech.newcollada.ColladaImporter;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -60,21 +60,21 @@ public class ModelRepresentation extends Representation {
                 MilkToJme converter = new MilkToJme();
                 ByteArrayOutputStream BO = new ByteArrayOutputStream();
                 converter.convert(fileUrl.openStream(), BO);
-                TextureKey.setOverridingLocation(textureUrl);
+                //TextureKey.setOverridingLocation(textureUrl);
                 modelNode = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 
             } else if (extension.equals("max")) {
                 MaxToJme converter = new MaxToJme();
                 ByteArrayOutputStream BO = new ByteArrayOutputStream();
                 converter.convert(new BufferedInputStream(fileUrl.openStream()), BO);
-                TextureKey.setOverridingLocation(textureUrl);
+                //TextureKey.setOverridingLocation(textureUrl);
                 modelNode = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 
             } else if (extension.equals("ase")) {
                 AseToJme converter = new AseToJme();
                 ByteArrayOutputStream BO = new ByteArrayOutputStream();
                 converter.convert(new BufferedInputStream(fileUrl.openStream()), BO);
-                TextureKey.setOverridingLocation(textureUrl);
+                //TextureKey.setOverridingLocation(textureUrl);
                 modelNode = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 
             } else {

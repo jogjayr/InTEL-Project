@@ -7,7 +7,7 @@
     <import file="nbproject/build-impl.xml"/>
     
     <target name="-post-jar">
-        <signjar jar="dist/Statics.jar" alias="mykey" storepass="monkeys" keystore=".keystore"/>
+        <signjar jar="dist/Statics.jar" alias="mykey" storepass="monkeys" keystore="../applet/.keystore"/>
         <copyfile src="dist/Statics.jar" dest="../applet/Statics.jar" />
         <copyfile src="properties.cfg" dest="dist/properties.cfg" />
         <unjar src="windows_natives.jar" dest="dist/"/>

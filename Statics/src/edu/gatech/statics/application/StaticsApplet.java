@@ -14,7 +14,6 @@ import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.renderer.lwjgl.LWJGLRenderer;
 import com.jme.system.DisplaySystem;
-import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.awt.JMECanvas;
 import com.jmex.awt.JMECanvasImplementor;
@@ -59,13 +58,13 @@ public class StaticsApplet extends Applet {
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
         
-        try {
-            LoggingSystem.setLogToFile(null);
-        } catch(IllegalStateException e) {
+        //try {
+            //LoggingSystem.setLogToFile(null);
+        //} catch(IllegalStateException e) {
             // do nothing, the illegal state exception is thrown by
             // LoggingSystem.setLogToFile(null); if the logging system
             // has already been created, ie, if the applet has been refreshed
-        }
+        //}
         
         instance = this;
         application = new StaticsApplication();
@@ -76,6 +75,7 @@ public class StaticsApplet extends Applet {
     public StaticsApplication getApplication() {return application;}
 
     private void showTextures() {
+        System.out.println("Textures...");
         java.lang.reflect.Field[] fields = TextureManager.class.getDeclaredFields();
         for(java.lang.reflect.Field field : fields) {
             try {
@@ -92,7 +92,6 @@ public class StaticsApplet extends Applet {
     public void destroy() {
         showTextures();
         application.finish();
-        showTextures();
         application = null;
         super.destroy();
         alive = false;
@@ -110,6 +109,7 @@ public class StaticsApplet extends Applet {
     }
     
     public void init() {
+        showTextures();
         System.out.println("Applet: init()");
         synchronized (INIT_LOCK) {
 
@@ -138,6 +138,10 @@ public class StaticsApplet extends Applet {
 
             glCanvas.addKeyListener(kl);
 
+            //if(!MouseInput.isInited())
+            //    AWTMouseInput.setup(glCanvas, false);
+            //((AWTMouseInput) MouseInput.get()).setEnabled(false);
+            
             if(!MouseInput.isInited())
                 AppletMouse.setup(glCanvas, false);
             ((AppletMouse) MouseInput.get()).setEnabled(false);
@@ -156,11 +160,13 @@ public class StaticsApplet extends Applet {
                 public void focusGained(FocusEvent arg0) {
                     ((AWTKeyInput) KeyInput.get()).setEnabled(true);
                     ((AppletMouse) MouseInput.get()).setEnabled(true);
+                    //((AWTMouseInput) MouseInput.get()).setEnabled(true);
                 }
 
                 public void focusLost(FocusEvent arg0) {
                     ((AWTKeyInput) KeyInput.get()).setEnabled(false);
                     ((AppletMouse) MouseInput.get()).setEnabled(false);
+                    //((AWTMouseInput) MouseInput.get()).setEnabled(false);
                 }
             });
             

@@ -9,9 +9,9 @@
 
 package edu.gatech.statics.objects.bodies.representations;
 
+import com.jme.bounding.OrientedBoundingBox;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Body;
-import com.jme.bounding.OrientedBoundingBox;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Cylinder;
@@ -56,6 +56,7 @@ public class CylinderRepresentation extends BodyRepresentation {
         cylinder.setLocalRotation(rotation);
         
         setModelBound(new OrientedBoundingBox());
+        //setModelBound(new BoundingBox());
         setUseWorldScale(false);
         
         update();

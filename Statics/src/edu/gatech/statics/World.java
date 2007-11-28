@@ -137,9 +137,9 @@ public class World {
         nodesUpdated = true;
         
         representationNodes.clear();
-        List<RepresentationLayer> allLayers = RepresentationLayer.getLayers();
-        
         labels.clear();
+        
+        List<RepresentationLayer> allLayers = RepresentationLayer.getLayers();
         
         for(RepresentationLayer layer : allLayers) {
             

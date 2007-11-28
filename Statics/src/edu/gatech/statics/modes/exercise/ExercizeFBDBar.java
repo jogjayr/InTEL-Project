@@ -58,25 +58,33 @@ public class ExercizeFBDBar extends Toolbar {
         // remove all click listeners from the icons
         // this step is necessary because otherwise the listeners are not dismissed,
         // and return to cause trouble after the user navigates around and changes FBDs.
-        for (FBDClickListener clickListener : clickListeners) {
-            clickListener.icon.removeListener(clickListener);
-        }
+        //for (FBDClickListener clickListener : clickListeners) {
+        //    clickListener.icon.removeListener(clickListener);
+        //}
 
     }
     
-    private List<FBDClickListener> clickListeners = new ArrayList<FBDClickListener>();
+    //private List<FBDClickListener> clickListeners = new ArrayList<FBDClickListener>();
     
-    private void addFBD(FBDWorld fbd) {
+    private void addFBD(final FBDWorld fbd) {
         
         if(iconMap.containsKey(fbd))
             return;
         
         FBDIcon icon = fbd.getIcon(); //new FBDIcon(getApp(), fbd);
         
-        add(icon);
-        FBDClickListener clickListener = new FBDClickListener(fbd, icon);
-        icon.addListener(clickListener);
-        clickListeners.add(clickListener);
+        BButton button = new BButton(icon.getIcon(),new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                System.out.println("loading fbd view");
+                getApp().loadFBD(fbd);
+            }
+        }, "");
+        
+        add(button);
+        //add(icon);
+        //FBDClickListener clickListener = new FBDClickListener(fbd, icon);
+        //icon.addListener(clickListener);
+        //clickListeners.add(clickListener);
         iconMap.put(fbd, icon);
     }
     
@@ -124,6 +132,7 @@ public class ExercizeFBDBar extends Toolbar {
         selector.activate();
     }
     
+    /*
     private class FBDClickListener implements MouseListener {
         FBDWorld fbd;
         FBDIcon icon;
@@ -144,5 +153,5 @@ public class ExercizeFBDBar extends Toolbar {
         public void mouseEntered(MouseEvent event) {}
         public void mouseExited(MouseEvent event) {}
         
-    }
+    }*/
 }

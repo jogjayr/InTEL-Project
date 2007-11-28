@@ -92,8 +92,13 @@ public class MousePick extends MouseInputAction {
         World world = StaticsApplication.getApp().getCurrentWorld();
         
         
+        //Vector2f screenPos2 = new Vector2f(
+        //        MouseInput.get().getXAbsolute(),
+        //        MouseInput.get().getYAbsolute());
+        
         Vector3f screenPos = mouse.getLocalTranslation();
         Vector2f screenPos2 = new Vector2f(screenPos.x, screenPos.y);
+        
         Vector3f direction = camera.getWorldCoordinates(screenPos2, 0.1f);
         direction.subtractLocal(camera.getLocation());
         direction.normalizeLocal();

@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.application;
 
+import com.jme.image.Image;
 import com.jme.system.DisplaySystem;
 import java.awt.Canvas;
 import java.awt.Component;
@@ -308,6 +309,13 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     public void mouseExited(MouseEvent arg0) {
         ; // ignore for now
     }
+    
+    // SPECIAL FOR MOUSE RE-ACTIVATION
+    @Override
+    public void addListener( MouseInputListener listener ) {
+        if(listeners == null || !listeners.contains(listener))
+            super.addListener(listener);
+    }
 
 
     // **********************************
@@ -374,5 +382,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
         glCanvas.addMouseListener(awtMouseInput);
         glCanvas.addMouseWheelListener(awtMouseInput);
         glCanvas.addMouseMotionListener(awtMouseInput);
+    }
+
+    @Override
+    public void setHardwareCursor(URL file, Image[] images, int[] delays, int xHotspot, int yHotspot) {
+        ; // ignore!
     }
 }

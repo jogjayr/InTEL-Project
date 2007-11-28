@@ -136,13 +136,20 @@ public class Exercise {
     
     // some utility functions
     
+    /*private List<Texture> exerciseTextures;
+    
+    void shutdownExercise() {
+        for(Texture texture : exerciseTextures)
+            TextureManager.clearCache();
+    }*/
+    
     protected Texture loadTexture(String textureUrl) {
         return loadTexture(textureUrl, Texture.FM_LINEAR, Texture.FM_LINEAR);
     }
     
     protected Texture loadTexture(String textureUrl, int minFilter, int maxFilter) {
         Texture texture = TextureManager.loadTexture(getClass().getClassLoader().getResource(textureUrl), minFilter, maxFilter);
-        System.out.println(texture+" "+texture.getTextureId()+" "+texture.getTextureKey());
+        //System.out.println(texture+" "+texture.getTextureId()+" "+texture.getTextureKey());
         return texture;
     }
 }
