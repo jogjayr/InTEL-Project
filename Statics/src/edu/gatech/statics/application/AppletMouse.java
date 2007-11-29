@@ -10,7 +10,6 @@
 package edu.gatech.statics.application;
 
 import com.jme.image.Image;
-import com.jme.system.DisplaySystem;
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Point;
@@ -108,7 +107,7 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
 			if (!enabled) {
 				return 0;
 			}
-            int rVal = (deltaRelative.getHeight() / 2) - absPoint.y;
+            int rVal = (deltaRelative.getHeight() / 2) - (glCanvas.getHeight() - absPoint.y);
             return (int)(rVal * 0.05f);
         } 
             
@@ -120,7 +119,7 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     }
 
     public int getYAbsolute() {
-        return absPoint.y;
+        return glCanvas.getHeight() - absPoint.y;
     }
 
     /**

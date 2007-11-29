@@ -13,6 +13,7 @@ import com.jme.system.DisplaySystem;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.BTextArea;
 import com.jmex.bui.BTextField;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.event.ActionEvent;
@@ -58,7 +59,7 @@ public class PurseExerciseGraded extends PurseExercise {
         super.initExercise();
         
         setDescription(
-                "Here is a simplified version of the human arm. " +
+                "Here is a simplified model of the human arm. " +
                 "Please solve for the reactions at each of the points: B, C, and E." +
                 "The weight of the forearm is "+forearmWeight+" N, and the weight of the purse is "+purseWeight+" N."
                 );
@@ -111,7 +112,7 @@ public class PurseExerciseGraded extends PurseExercise {
         content.setStyleClass("content_container");
         popup.add(content, BorderLayout.CENTER);
 
-        content.add(new BLabel("Please give your name so you can be given credit for this exercise."));
+        content.add(new BLabel("Please give your full name so you can be given credit for this exercise."));
 
         BContainer nameRow = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
         content.add(nameRow);
@@ -181,14 +182,16 @@ public class PurseExerciseGraded extends PurseExercise {
         textContainer.setStyleClass("padded_container");
         
         textContainer.add(textLabel, BorderLayout.CENTER);
+        
         popup.add(textContainer, BorderLayout.CENTER);
         
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                if(event.getAction().equals("submit"))
+                if(event.getAction().equals("submit")) {
                     navigateAway();
-                else
+                } else {
                     popup.dismiss();
+                }
             }
         };
         
@@ -227,7 +230,7 @@ public class PurseExerciseGraded extends PurseExercise {
         String finalString = studentName + "@" + exerciseName;
         byte[] resultBytes = md5.digest(finalString.getBytes());
         
-        String finalCode = String.format("%x%x%x", resultBytes[0], resultBytes[1], resultBytes[2]);
+        String finalCode = String.format("%02x%02x%02x", resultBytes[0], resultBytes[1], resultBytes[2]);
         
         try {
             // format resulting URL:
