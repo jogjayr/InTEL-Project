@@ -80,7 +80,7 @@ public class LabelSelector extends SelectionTool {
 
     private void createPopup(final Vector obj) {
         
-        StaticsApplication.getApp().setAdvice("Please input a numerical value or a symbol for the "+
+        StaticsApplication.getApp().setAdvice("Please input a numerical value or symbolic name or a symbol for the "+
                 ((obj instanceof Moment) ? "moment" : "force") + "."
                 );
         

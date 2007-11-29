@@ -16,6 +16,7 @@ import edu.gatech.statics.application.Exercise;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.util.SelectionListener;
@@ -297,6 +298,7 @@ public class World {
     public void activate() {
         setSelectableFilterDefault();
         invalidateNodes();
+        StaticsApplication.getApp().setCurrentTool(null);
     }
 
     public void render(Renderer r) {

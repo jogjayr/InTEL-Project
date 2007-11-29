@@ -14,7 +14,6 @@ import com.jmex.bui.BButton;
 import com.jmex.bui.BComboBox;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
-import com.jmex.bui.BLabel;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.icon.BIcon;
@@ -104,6 +103,7 @@ public class FBDPaletteBar extends Toolbar {
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/force.png")));
             button = new BButton(icon, toolListener, "force");
+            button.setTooltipText(java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tooltip_force"));
             buttonBar1.add(button);
             /*
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/weight.png")));
@@ -117,6 +117,7 @@ public class FBDPaletteBar extends Toolbar {
 
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/moment.png")));
             button = new BButton(icon, toolListener, "moment");
+            button.setTooltipText(java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tooltip_moment"));
             buttonBar1.add(button);
             
             add(buttonBar1);
