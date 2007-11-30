@@ -102,6 +102,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
         
         LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
         labelTool.setHintText("");
+        labelTool.setIsCreating(true);
         labelTool.activate();
         labelTool.onClick(force);
     }

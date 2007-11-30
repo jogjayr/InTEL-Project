@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.modes.fbd;
 
+import com.jme.input.KeyInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
@@ -21,6 +22,8 @@ import com.jmex.bui.background.BBackground;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.KeyEvent;
+import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
@@ -38,6 +41,7 @@ public class LabelSelector extends SelectionTool {
     
     private BWindow popupRoot;
     private String hintText = null;
+    private boolean isCreating;
     
     /** Creates a new instance of LabelSelector */
     public LabelSelector(World world, BWindow popupRoot) {
@@ -77,6 +81,10 @@ public class LabelSelector extends SelectionTool {
     void setHintText(String text) {
         hintText = text;
     }
+    
+    void setIsCreating(boolean isCreating) {
+        isCreating = isCreating;
+    }
 
     private void createPopup(final Vector obj) {
         
@@ -88,7 +96,7 @@ public class LabelSelector extends SelectionTool {
         popup.setStyleClass("info_window");
         popup.setModal(true);
         
-        BLabel label = new BLabel("Label Force:");
+        BLabel label = new BLabel("Label Force:\n(give a name or a number)");
         popup.add(label, BorderLayout.NORTH);
         
         BContainer centerContainer = new BContainer(new BorderLayout(4,4));
@@ -119,6 +127,30 @@ public class LabelSelector extends SelectionTool {
             }
         };
         textfield.addListener(listener);
+        
+        /*KeyListener keyListener = new KeyListener() {
+
+            public void keyPressed(KeyEvent event) {
+                
+                if(event.getKeyCode() != KeyInput.KEY_ESCAPE)
+                    return;
+                
+                if(isCreating) {
+                    // destroy force
+                    StaticsApplication.getApp().getCurrentWorld().clearSelection();
+                    StaticsApplication.getApp().getCurrentWorld().remove(obj);
+                    obj.destroy();                    
+                }
+
+                // dispose popup and tool
+                popup.dismiss();
+                finish();
+            }
+
+            public void keyReleased(KeyEvent event) {}
+        };
+        textfield.addListener(keyListener);
+        popup.addListener(keyListener);*/
         
         BButton button = new BButton("OK", listener, "ok");
         popup.add(button, BorderLayout.SOUTH);
