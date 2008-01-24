@@ -68,7 +68,7 @@ public class LabelRepresentation extends Representation {
         
         bWindow.add(label, BorderLayout.CENTER);
         
-        setUseWorldScale(false);
+        //setUseWorldScale(false);
         
         setSynchronizeRotation(false);
         setSynchronizeTranslation(false);
@@ -84,6 +84,7 @@ public class LabelRepresentation extends Representation {
     private Vector3f pos2d;
     
     private String labelText = null;
+    @Override
     public void update() {
         
         String newLabelText = getTarget().getLabelText();

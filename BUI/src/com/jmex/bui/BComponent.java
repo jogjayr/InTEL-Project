@@ -307,6 +307,14 @@ public class BComponent {
     }
     
     /**
+     * A shorthhand for setting all of the backgrounds on this component.
+     */
+    public void setBackground(BBackground background) {
+        for(int state=0; state<getStateCount(); state++)
+            setBackground(state, background);
+    }
+    
+    /**
      * Returns a reference to the cursor used by this component.
      */
     public BCursor getCursor() {

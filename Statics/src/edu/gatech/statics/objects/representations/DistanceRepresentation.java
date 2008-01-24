@@ -82,18 +82,20 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         setSynchronizeTranslation(false);
         
         label = new LabelRepresentation(target, "label_measurement") {
+            @Override
             protected Vector3f getDisplayCenter() {
                 return labelCenter;
             }
         };
         attachChild(label);
         
-        setUseWorldScale(false);
+        //setUseWorldScale(false);
         
         update();
         updateRenderState();
     }
     
+    @Override
     public void update() {
         super.update();
         label.update();
@@ -113,6 +115,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     Vector3f barOffset1, barOffset2, bar1, bar2;
     Vector3f midVector, midVector1, midVector2;
     
+    @Override
     public void draw(Renderer r) {
         super.draw(r);
     

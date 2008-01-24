@@ -12,7 +12,7 @@ package example03;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.application.Exercise;
+import edu.gatech.statics.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.Units;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;

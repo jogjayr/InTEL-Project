@@ -43,7 +43,7 @@ public class ModelRepresentation extends Representation {
         super(target);
         setLayer(RepresentationLayer.modelBodies);
         
-        setUseWorldScale(false);
+        //setUseWorldScale(false);
         
         URL fileUrl = getClass().getClassLoader().getResource(filename);
         URL textureUrl = getClass().getClassLoader().getResource(textureDirectory);

@@ -16,6 +16,7 @@ import com.jme.renderer.Renderer;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -23,7 +24,8 @@ import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.Vector;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.util.SelectableFilter;
@@ -71,19 +73,20 @@ public class EquationWorld extends World {
         }
     }
     
-    void performSolve(Map<Vector, Float> values) {
+    void performSolve(Map<VectorObject, Float> values) {
         
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
         for(SimulationObject obj : allObjects()) {
-            if(obj instanceof Vector) {
-                Vector v = (Vector)obj;
-                if(v.isSymbol() && !v.isSolved()) {
+            if(obj instanceof VectorObject) {
+                VectorObject vObj = (VectorObject)obj;
+                Vector v = vObj.getVector();
+                if(v.isSymbol() && !v.isKnown()) {
                     // v is a symbolic force, but is not yet solved.
-                    v.setSolved(true);
-                    float value = values.get(v);
+                    float value = values.get(vObj);
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    v.setMagnitude(value);
+                    v.setValue(value);
+                    v.setKnown(true);
                 }
             }
         }
@@ -98,9 +101,9 @@ public class EquationWorld extends World {
                 
                 Point point = joint.getPoint();
                 List<Vector> reactions = new ArrayList<Vector>();
-                for(Vector v : values.keySet())
+                for(VectorObject v : values.keySet())
                     if(v.getAnchor() == point)
-                        reactions.add(v);
+                        reactions.add(v.getVector());
                 
                 // hopefully this should be accurate...
                 Body solveBody = null;
@@ -120,6 +123,7 @@ public class EquationWorld extends World {
         sumBar.setMomentCenter(point);
     }
 
+    @Override
     public void click(SimulationObject obj) {
         super.click(obj);
         
@@ -127,23 +131,25 @@ public class EquationWorld extends World {
                 StaticsApplication.getApp().getCurrentTool().isActive())
             return; // do not select points if we have a tool active
         
-        if(obj != null && obj instanceof Vector) {
+        if(obj != null && obj instanceof VectorObject) {
             if(sumBar == null)
                 return;
             
-            Vector target = (Vector) obj;
+            VectorObject target = (VectorObject) obj;
             sumBar.addTerm(target);
         }
     }    
 
+    @Override
     public void hover(SimulationObject obj) {
         super.hover(obj);
         
-        if(sumBar != null && (obj instanceof Vector || obj == null))
-            highlightVector((Vector)obj);
+        if(sumBar != null && (obj instanceof VectorObject || obj == null))
+            highlightVector((VectorObject)obj);
         // draw line from vector to target?
     }
     
+    @Override
     public void activate() {
         super.activate();
         for(SimulationObject obj : allObjects()) {
@@ -155,6 +161,7 @@ public class EquationWorld extends World {
         StaticsApplication.getApp().resetAdvice();
     }
 
+    @Override
     public void setSelectableFilterDefault() {
         setSelectableFilter(new SelectableFilter() {
             public boolean canSelect(SimulationObject obj) {
@@ -164,6 +171,7 @@ public class EquationWorld extends World {
         });
     }
 
+    @Override
     public void render(Renderer r) {
         super.render(r);
         
@@ -178,7 +186,7 @@ public class EquationWorld extends World {
         }
     }
     
-    void highlightVector(Vector obj) {
+    void highlightVector(final VectorObject obj) {
         sumBar.highlightVector(obj);
         
         if(sumBar.getMath() instanceof EquationMathMoments) {
@@ -189,9 +197,9 @@ public class EquationWorld extends World {
         showCurve(obj, sumBar.getLineAnchor(obj));
     }
 
-    private Vector momentArm;
-    private Vector momentArmTarget;
-    private void showMomentArm(Vector target) {
+    private VectorObject momentArm;
+    private VectorObject momentArmTarget;
+    private void showMomentArm(VectorObject target) {
         
         if(target instanceof Moment)
             target = null;
@@ -216,8 +224,9 @@ public class EquationWorld extends World {
         Point targetPoint = target.getAnchor();
         
         // have a direction vector pointing from the observation point to the target point
-        Vector3f armDirection = targetPoint.getTranslation().subtract(observationPoint).mult(-1/StaticsApplication.getApp().getDrawScale());
-        momentArm = new Vector(targetPoint, armDirection);
+        Vector3f armDirection = targetPoint.getTranslation().subtract(observationPoint).mult(-1);
+        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPoint).mult(-1/StaticsApplication.getApp().getWorldScale());
+        momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection));
         momentArmTarget = target;
         
         ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);
@@ -230,7 +239,7 @@ public class EquationWorld extends World {
 
     private boolean showingCurve = false;
     private Vector3f curvePoints[] = new Vector3f[3];
-    private void showCurve(Vector obj, Vector2f pos) {
+    private void showCurve(VectorObject obj, Vector2f pos) {
         if(obj == null || pos == null) {
             showingCurve = false;
             return;

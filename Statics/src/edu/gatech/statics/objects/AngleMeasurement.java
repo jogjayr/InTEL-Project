@@ -10,6 +10,7 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.math.Unit;
 
 /**
  *
@@ -30,6 +31,11 @@ public class AngleMeasurement extends Measurement {
     }
 
     public void createDefaultSchematicRepresentation() {
+    }
+
+
+    public Unit getUnit() {
+        return Unit.angle;
     }
     
 }

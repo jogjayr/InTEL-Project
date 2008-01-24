@@ -6,16 +6,16 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package example01;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.application.Exercise;
+import edu.gatech.statics.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.application.Units;
+import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -33,88 +33,95 @@ import edu.gatech.statics.objects.representations.ImageRepresentation;
  * @author Calvin Ashmore
  */
 public class PurseExercise extends Exercise {
-    
+
     /** Creates a new instance of PurseExercise */
     public PurseExercise() {
         super(new ExerciseWorld());
     }
 
+    @Override
     public void initExercise() {
         setName("Holding a Purse");
         StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
-        
+
         setDescription(
                 "Here is a simplified version of the human arm. " +
                 "Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
-                "The weight of the forearm is 9 N."
-                );
-        setUnits( new Units() { {
-                distance = "mm";
-                moment = "N*mm";
-                worldDistanceMultiplier = 10f;
+                "The weight of the forearm is 9 N.");
+        Unit.setUtils(new UnitUtils() {
+
+            @Override
+            public String getSuffix(Unit unit) {
+                switch (unit) {
+                    case angle:     return "°";
+                    case distance:  return " mm";
+                    case force:     return " N";
+                    case moment:    return " N*mm";
+                    case none:      return "";
+                    default: throw new IllegalArgumentException("Unrecognized unit: " + unit);
+                }
             }
         });
     }
-
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
     protected float tendonAnchorD = 13;
     protected float shoulderHeight = 16;
     protected float forearmWeight = 9;
     protected float purseWeight = 19.6f;
-    
     Point A, B, C, D, E, G;
     Connector2ForceMember2d jointB, jointD;
     Pin2d jointC, jointE;
-    
+
+    @Override
     public void loadExercise() {
-        
+
         ExerciseWorld world = getWorld();
-        
-        
+
+
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .2f, 1.0f));
         //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-        
-        StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 0.0f, 65.0f ));
-        StaticsApplication.getApp().setDrawScale(2f);
-        
-        A = new Point(new Vector3f(handPoint,-16+6,0));
-        B = new Point(new Vector3f(tendonAnchorB,-16+6,0));
-        C = new Point(new Vector3f(18,-16+6,0));
-        D = new Point(new Vector3f(18,tendonAnchorD+6,0));
-        E = new Point(new Vector3f(18f,shoulderHeight+6,0));
-        
-        Body upperArm = new Beam(E,C);
-        Body forearm = new Beam(C,A);
-        Cable tendon = new Cable(D,B);
-        
+
+        StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
+        //StaticsApplication.getApp().setWorldScale(2f);
+
+        A = new Point(new Vector3f(handPoint, -16 + 6, 0));
+        B = new Point(new Vector3f(tendonAnchorB, -16 + 6, 0));
+        C = new Point(new Vector3f(18, -16 + 6, 0));
+        D = new Point(new Vector3f(18, tendonAnchorD + 6, 0));
+        E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));
+
+        Body upperArm = new Beam(E, C);
+        Body forearm = new Beam(C, A);
+        Cable tendon = new Cable(D, B);
+
         upperArm.setName("Upper Arm");
         forearm.setName("Forearm");
         tendon.setName("Bicep Muscle");
-        
+
         jointB = new Connector2ForceMember2d(B, tendon);
         jointD = new Connector2ForceMember2d(D, tendon);
         jointC = new Pin2d(C);
         jointE = new Pin2d(E);
-        
-        G = new Point(new Vector3f(3.0f,-16+6,0));
-        
+
+        G = new Point(new Vector3f(3.0f, -16 + 6, 0));
+
         DistanceMeasurement distance1 = new DistanceMeasurement(A.getTranslation(), C.getTranslation());
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);
-        
+
         DistanceMeasurement distance2 = new DistanceMeasurement(G.getTranslation(), B.getTranslation());
         distance2.createDefaultSchematicRepresentation(3f);
         world.add(distance2);
-        
+
         DistanceMeasurement distance3 = new DistanceMeasurement(B.getTranslation(), C.getTranslation());
         distance3.createDefaultSchematicRepresentation(3f);
         world.add(distance3);
-        
+
         DistanceMeasurement distance4 = new DistanceMeasurement(C.getTranslation(), D.getTranslation());
         distance4.createDefaultSchematicRepresentation(5f);
         world.add(distance4);
-        
+
         DistanceMeasurement distance5 = new DistanceMeasurement(D.getTranslation(), E.getTranslation());
         distance5.createDefaultSchematicRepresentation(5f);
         world.add(distance5);
@@ -124,34 +131,33 @@ public class PurseExercise extends Exercise {
         //upperArm.addObject(jointD);
         //upperArm.addObject(jointC);
         //forearm.addObject(jointC);
-        
-        
-        Force purse = new Force(A, new Vector3f(0,-purseWeight,0));
+
+        Force purse = new Force(A, new Vector3f(0, -purseWeight, 0));
         purse.setName("Purse");
         forearm.addObject(purse);
-        
-        Moment shoulder = new Moment(E, new Vector3f(0,0,-1)); // use symbol here
-        shoulder.setName("Shoulder");
+
+        Moment shoulder = new Moment(E, new Vector3f(0, 0, -1),"M shoulder"); // use symbol here
+        shoulder.setSymbol("Shoulder");
         upperArm.addObject(shoulder);
-        shoulder.setSymbol(true);
-        
+        //shoulder.setSymbol(true);
+
         //Force weight = new Force(G, new Vector3f(0,-50,0));
         //forearm.addObject(weight);
-        
-        jointB.attach( forearm, tendon );
+
+        jointB.attach(forearm, tendon);
         //jointB.setDirection(tendon.getDirectionFrom(B)); // points up tendon
-        jointC.attach( forearm, upperArm );
-        jointD.attach( upperArm, tendon );
+        jointC.attach(forearm, upperArm);
+        jointD.attach(upperArm, tendon);
         //jointD.setDirection(tendon.getDirectionFrom(D));
-        jointE.attachToWorld( upperArm );
-        
+        jointE.attachToWorld(upperArm);
+
         E.setName("E");
         D.setName("D");
         C.setName("C");
         B.setName("B");
         A.setName("A");
         G.setName("G");
-        
+
         E.createDefaultSchematicRepresentation();
         D.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
@@ -164,56 +170,55 @@ public class PurseExercise extends Exercise {
         purse.createDefaultSchematicRepresentation();
         shoulder.createDefaultSchematicRepresentation();
         //weight.createDefaultSchematicRepresentation();
-        
-        forearm.setWeight(forearmWeight); // ???
+
+        forearm.getWeight().setValue(forearmWeight); // ???
         forearm.setCenterOfMassPoint(G);
-        
+
         world.add(upperArm);
         world.add(forearm);
         world.add(tendon);
-        
-        RepresentationLayer bones = new RepresentationLayer("bones", RepresentationLayer.modelBodies.getPriority()-1);
+
+        RepresentationLayer bones = new RepresentationLayer("bones", RepresentationLayer.modelBodies.getPriority() - 1);
         RepresentationLayer.addLayer(bones);
-        
+
         ImageRepresentation imageRep;
         float repScale = .025f;
-        
+
         imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm.png"));
-        imageRep.setScale(repScale * 1738,repScale * 501f);
-        imageRep.setTranslation(-1,1.75f,0);
+        imageRep.setScale(repScale * 1738, repScale * 501f);
+        imageRep.setTranslation(-1, 1.75f, 0);
         forearm.addRepresentation(imageRep);
-        
+
         imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm_bone.png"));
         imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 1617,repScale * 310f);
-        imageRep.setTranslation(-2.25f,-0.5f,.02f);
+        imageRep.setScale(repScale * 1617, repScale * 310f);
+        imageRep.setTranslation(-2.25f, -0.5f, .02f);
         forearm.addRepresentation(imageRep);
-        
-        
+
+
         imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm.png"));
-        imageRep.setScale(repScale * 483f,repScale * 1539f);
-        imageRep.setTranslation(-0.75f,1.0f,0);
+        imageRep.setScale(repScale * 483f, repScale * 1539f);
+        imageRep.setTranslation(-0.75f, 1.0f, 0);
         upperArm.addRepresentation(imageRep);
-        
+
         imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm_bone.png"));
         imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 191f,repScale * 1453f);
-        imageRep.setTranslation(-0.5f,1,0);
+        imageRep.setScale(repScale * 191f, repScale * 1453f);
+        imageRep.setTranslation(-0.5f, 1, 0);
         upperArm.addRepresentation(imageRep);
-        
-        
+
+
         imageRep = new ImageRepresentation(A, loadTexture("example01/assets/purse.png"));
-        imageRep.setScale(repScale * 538f,repScale * 835f);
-        imageRep.setTranslation(0,-11.0f,.02f);
+        imageRep.setScale(repScale * 538f, repScale * 835f);
+        imageRep.setTranslation(0, -11.0f, .02f);
         A.addRepresentation(imageRep);
-        
+
         imageRep = new ImageRepresentation(tendon, loadTexture("example01/assets/muscle.png"));
         imageRep.setLayer(bones);
         imageRep.setRotation(-.075f);
         //imageRep.setScale(repScale * 121f,repScale * 347f);
-        imageRep.setScale(.9f*repScale * 213f, .9f*repScale * 1331f);
-        imageRep.setTranslation(0.0f,0.5f,.05f);
+        imageRep.setScale(.9f * repScale * 213f, .9f * repScale * 1331f);
+        imageRep.setTranslation(0.0f, 0.5f, .05f);
         tendon.addRepresentation(imageRep);
     }
-    
 }

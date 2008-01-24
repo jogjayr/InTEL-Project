@@ -16,7 +16,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import edu.gatech.newcollada.ColladaImporter;
-import edu.gatech.statics.application.Exercise;
+import edu.gatech.statics.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.Units;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;

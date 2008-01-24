@@ -31,13 +31,13 @@ abstract public class SimulationObject {
     // in other words, they are not constructed by the student.
     // Exercise world automatically sets given to true when added, so if a student
     // constructs something in an FBD, given defaults to false.
-    private boolean given = false;
+    //private boolean given = false;
 
-    public boolean isGiven() {return given;}
-    public void setGiven(boolean given) {this.given = given;}
+    //public boolean isGiven() {return given;}
+    //public void setGiven(boolean given) {this.given = given;}
     
     private String name = "";
-    private String notes = null;
+    //private String notes = null;
     
     private Vector3f translation = new Vector3f();
     private Matrix3f rotation = new Matrix3f();
@@ -47,13 +47,13 @@ abstract public class SimulationObject {
     
     private List<Representation> representations = new ArrayList();
     private Map<RepresentationLayer, List<Representation>> representationMap = new HashMap<RepresentationLayer, List<Representation>>();
-    private List<Manipulator> manipulators = new ArrayList();
+    //private List<Manipulator> manipulators = new ArrayList();
     
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
     
-    public String getNotes() {return notes;}
-    public void setNotes(String notes) {this.notes = notes;}
+    //public String getNotes() {return notes;}
+    //public void setNotes(String notes) {this.notes = notes;}
     
     // sometimes we want to get the logical center of the object, rather than the origin of its coordinate system
     // epecially in the case of vectors. Override for these cases
@@ -106,7 +106,7 @@ abstract public class SimulationObject {
         return allType;*/
     }
     
-    public void addManipulator(Manipulator m) {manipulators.add(m);}
+    /*public void addManipulator(Manipulator m) {manipulators.add(m);}
     public void removeManipulator(Manipulator m) {
         manipulators.remove(m);
         m.setEnabledGlobally(false);
@@ -118,7 +118,7 @@ abstract public class SimulationObject {
             if(manipulatorClass.isAssignableFrom(m.getClass()))
                 return m;
         return null;
-    }
+    }*/
     
     /** Creates a new instance of SimulationObject */
     public SimulationObject(/*World world*/) {
@@ -156,12 +156,12 @@ abstract public class SimulationObject {
         this.selected = selected;
     }*/
     
-    public void enableManipulators(boolean enabled) {
+    /*public void enableManipulators(boolean enabled) {
         for(Manipulator m : manipulators) {
             m.setEnabled(enabled);
             m.setEnabledGlobally(enabled);
         }
-    }
+    }*/
     
     public boolean isDisplayGrayed() {return grayed;}
     
@@ -195,9 +195,9 @@ abstract public class SimulationObject {
     
     public void destroy() {
         // destroys and detaches all parts of this object.
-        enableManipulators(false);
+        //enableManipulators(false);
         representations.clear();
-        manipulators.clear();
+        //manipulators.clear();
     }
 
     public String getDescription() {

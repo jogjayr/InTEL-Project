@@ -7,14 +7,13 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.application;
+package edu.gatech.statics;
 
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.exercise.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
-import edu.gatech.statics.objects.Vector;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import java.util.ArrayList;
@@ -25,14 +24,16 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class Exercise {
+public abstract class Exercise {
 
     // informational collection of world and diagram objects
     // meant to control functional aspect of exercize, not graphical or engine related
     
-    private Units units = new Units();
-    public void setUnits(Units units) {this.units = units;}
-    public Units getUnits() {return units;}
+    //private UnitUtils units = new UnitUtils();
+    //public void setUnits(UnitUtils units) {this.units = units;}
+    //public UnitUtils getUnits() {return units;}
+    
+    abstract public Mode getFirstMode();
     
     private List<Task> tasks = new ArrayList<Task>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();

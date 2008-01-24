@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.objects.representations;
 
-import edu.gatech.statics.objects.Vector;
+import edu.gatech.statics.objects.VectorObject;
 
 /**
  *
@@ -17,17 +17,18 @@ import edu.gatech.statics.objects.Vector;
  */
 public class ArrowRepresentationFixedLength extends ArrowRepresentation {
     
-    private float length = 4.0f;
-    public void setLength(float length) {this.length = length;}
+    private float fixedLength = 4.0f;
+    public void setFixedLength(float length) {this.fixedLength = length;}
     
     /** Creates a new instance of ArrowRepresentationFixedLength */
-    public ArrowRepresentationFixedLength(Vector target) {
+    public ArrowRepresentationFixedLength(VectorObject target) {
         super(target);
         
         update();
     }
     
+    @Override
     protected void setMagnitude(float magnitude) {
-        super.setMagnitude(length);
+        super.setMagnitude(fixedLength);
     }
 }

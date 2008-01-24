@@ -37,8 +37,8 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
     public CreateMomentTool2D(World world) {
         this.world = world;
         forceAnchor = new Point(new Vector3f());
-        moment = new Moment(forceAnchor,new Vector3f(0,0,1));
-        moment.setSymbol(true);
+        moment = new Moment(forceAnchor,new Vector3f(0,0,1),"M");
+        //moment.setSymbol(true);
         moment.createDefaultSchematicRepresentation();
     }
     

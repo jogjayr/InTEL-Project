@@ -21,18 +21,18 @@ import edu.gatech.statics.application.StaticsApplication;
  */
 abstract public class Representation<SimType extends SimulationObject> extends Node {
     
-    private SimType target;
+    private final SimType target;
     public SimType getTarget() {return target;}
     
     private RepresentationLayer layer;
     public RepresentationLayer getLayer() {return layer;}
-    public void setLayer(RepresentationLayer layer) {
+    public void setLayer(final RepresentationLayer layer) {
         //assert this.layer == null : "Cannot re-assign representation layer!";
         this.layer = layer;
     }
     
     private boolean renderUpdated;
-    boolean renderUpdated() {return renderUpdated;}
+    boolean getRenderUpdated() {return renderUpdated;}
     void setRenderUpdated() {renderUpdated = true;}
     
     private MaterialState materialState;
@@ -65,33 +65,33 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     public ColorRGBA getGrayColor() {return grayColor;}
     public ColorRGBA getGrayEmissive() {return grayEmissive;}
     
-    private boolean useWorldScale = true;
+    //private boolean useWorldScale = true;
     private boolean synchronizeTranslation = true;
     private boolean synchronizeRotation = true;
-    protected boolean useWorldScale() {return useWorldScale;}
-    public void setSynchronizeTranslation(boolean synch) {synchronizeTranslation = synch;}
-    public void setSynchronizeRotation(boolean synch) {synchronizeRotation = synch;}
-    public void setUseWorldScale(boolean useScale) {useWorldScale = useScale;}
+    //protected boolean useWorldScale() {return useWorldScale;}
+    public void setSynchronizeTranslation(final boolean synch) {synchronizeTranslation = synch;}
+    public void setSynchronizeRotation(final boolean synch) {synchronizeRotation = synch;}
+    //public void setUseWorldScale(boolean useScale) {useWorldScale = useScale;}
     
-    public void setMaterial(ColorRGBA ambient, ColorRGBA diffuse, ColorRGBA specular) {
+    public void setMaterial(final ColorRGBA ambient, final ColorRGBA diffuse, final ColorRGBA specular) {
         this.ambient = ambient;
         this.diffuse = diffuse;
         this.specular = specular;
         updateMaterial();
     }
-    public void setAmbient(ColorRGBA ambient) {this.ambient = ambient;}
-    public void setDiffuse(ColorRGBA diffuse) {this.diffuse = diffuse;}
-    public void setSpecular(ColorRGBA specular) {this.specular = specular;}
-    public void setEmissive(ColorRGBA emissive) {this.emissive = emissive;}
+    public void setAmbient(final ColorRGBA ambient) {this.ambient = ambient;}
+    public void setDiffuse(final ColorRGBA diffuse) {this.diffuse = diffuse;}
+    public void setSpecular(final ColorRGBA specular) {this.specular = specular;}
+    public void setEmissive(final ColorRGBA emissive) {this.emissive = emissive;}
     
-    public void setSelectEmissive(ColorRGBA selectEmissive) {this.selectEmissive = selectEmissive;}
-    public void setHoverEmissive(ColorRGBA hoverEmissive) {this.hoverEmissive = hoverEmissive;}
+    public void setSelectEmissive(final ColorRGBA selectEmissive) {this.selectEmissive = selectEmissive;}
+    public void setHoverEmissive(final ColorRGBA hoverEmissive) {this.hoverEmissive = hoverEmissive;}
     
-    public void setGrayColor(ColorRGBA grayColor) {this.grayColor = grayColor;}
-    public void setGrayEmissive(ColorRGBA grayEmissive) {this.grayEmissive = grayEmissive;}
+    public void setGrayColor(final ColorRGBA grayColor) {this.grayColor = grayColor;}
+    public void setGrayEmissive(final ColorRGBA grayEmissive) {this.grayEmissive = grayEmissive;}
     
     /** Creates a new instance of Representation */
-    public Representation(SimType target) {
+    public Representation(final SimType target) {
         this.target = target;
         
         materialState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
@@ -104,30 +104,30 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         specular = new ColorRGBA(materialState.getSpecular());
     }
     
-    public void setDisplayGrayed(boolean grayed) {
+    public void setDisplayGrayed(final boolean grayed) {
         this.grayed = grayed;
         updateMaterial();
     }
     
-    public void setHidden(boolean hidden) {
+    public void setHidden(final boolean hidden) {
         this.hidden = hidden;
         updateMaterial();
     }
     
-    public void setDisplaySelected(boolean selected) {
+    public void setDisplaySelected(final boolean selected) {
         this.selected = selected;
         updateMaterial();
     }
     
-    public void setDisplayHighlight(boolean hover) {
+    public void setDisplayHighlight(final boolean hover) {
         this.hover = hover;
         updateMaterial();
     }
     
     public void update() {
         
-        if(useWorldScale)
-            setLocalScale(StaticsApplication.getApp().getDrawScale());        
+        //if(useWorldScale)
+        //    setLocalScale(StaticsApplication.getApp().getWorldScale());        
         if(synchronizeTranslation)
             setLocalTranslation(target.getTranslation());
         if(synchronizeRotation)
@@ -140,6 +140,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         //updateWorldVectors();
     }
 
+    @Override
     public void setCullMode(int mode) {
         super.setCullMode(mode);
     }

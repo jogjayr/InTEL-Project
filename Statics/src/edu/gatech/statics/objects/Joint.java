@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.objects;
 
+import edu.gatech.statics.math.Vector;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.modes.fbd.LabelManipulator;
@@ -41,10 +42,10 @@ abstract public class Joint extends SimulationObject {
             Vector v1 = v.negate();
             
             // this is kind of hacky, but should work for now.
-            v1.createDefaultSchematicRepresentation();
-            LabelManipulator labelManipulator = new LabelManipulator(v1);
-            labelManipulator.enableLabeling(false);
-            v1.addManipulator(labelManipulator);
+            //v1.createDefaultSchematicRepresentation();
+            //LabelManipulator labelManipulator = new LabelManipulator(v1);
+            //labelManipulator.enableLabeling(false);
+            //v1.addManipulator(labelManipulator);
             
             solvedReactionsNegated.add(v1);
         }
@@ -53,6 +54,7 @@ abstract public class Joint extends SimulationObject {
     }
     public boolean isSolved() {return isSolved;}
     
+    @Override
     public Vector3f getTranslation() {
         return myPoint.getTranslation();
     }
@@ -92,8 +94,9 @@ abstract public class Joint extends SimulationObject {
      * so if we are observing from body2, the force will be reversed.
      */
     
-    abstract public List<Force> getReactionForces();
-    abstract public List<Moment> getReactionMoments();
+    //abstract public List<Vector> getReactionForces();
+    //abstract public List<Vector> getReactionMoments();
+    abstract public List<Vector> getReactions();
     
     /** Creates a new instance of Joint */
     public Joint(Point point) {
@@ -111,15 +114,18 @@ abstract public class Joint extends SimulationObject {
                 return solvedReactionsNegated;
             
         } else {
-            List<Vector> reactions = new LinkedList<Vector>();
+            List<Vector> reactions = new ArrayList<Vector>();
             if(body == body1) {
-                reactions.addAll(getReactionForces());
-                reactions.addAll(getReactionMoments());
+                reactions.addAll(getReactions());
+                //reactions.addAll(getReactionForces());
+                //reactions.addAll(getReactionMoments());
             } else {
-                for(Force f : getReactionForces())
-                    reactions.add(f.negate());
-                for(Moment m : getReactionMoments())
-                    reactions.add(m.negate());
+                for(Vector v : getReactions())
+                    reactions.add(v.negate());
+                //for(Force f : getReactionForces())
+                //    reactions.add(f.negate());
+                //for(Moment m : getReactionMoments())
+                //    reactions.add(m.negate());
             }
             return reactions;
         }

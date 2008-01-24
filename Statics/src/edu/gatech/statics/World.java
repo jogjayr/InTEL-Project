@@ -12,7 +12,7 @@ package edu.gatech.statics;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import edu.gatech.statics.application.Exercise;
+import edu.gatech.statics.Exercise;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
@@ -101,6 +101,7 @@ public class World {
     public CoordinateSystem getCoordinateSystem() {return coordinateSystem;}
     public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = sys;}
     
+    /*
     private List<SelectionListener> selectionListeners = new ArrayList<SelectionListener>();
     public void addSelectionListener(SelectionListener listener) {selectionListeners.add(listener);}
     public void removeSelectionListener(SelectionListener listener) {selectionListeners.remove(listener);}
@@ -120,7 +121,7 @@ public class World {
     protected void enableSelectMultipleDefault(boolean enabled) {enableSelectMultipleDefault = enabled; enableSelectMultiple = enabled;}
     public void enableSelectMultipleDefault() {enableSelectMultiple = enableSelectMultipleDefault;}
     protected boolean enableSelectMultiple() {return enableSelectMultiple;}
-    
+    */
     private List<LabelRepresentation> labels = new ArrayList<LabelRepresentation>();
     public List<LabelRepresentation> getLabels() {return labels;}
     
@@ -158,7 +159,7 @@ public class World {
                     node.attachChild(r);
                     addLabels(r);
                 }
-                if(!r.renderUpdated()) {
+                if(!r.getRenderUpdated()) {
                     updateRenderState = true;
                     r.setRenderUpdated();
                 }

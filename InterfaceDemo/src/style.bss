@@ -1,0 +1,249 @@
+//
+// $Id$
+//
+// Default BUI style sheet
+
+root {
+  color: #000000;
+  font: "Arial" plain 16;
+  text-align: left;
+}
+
+label_point {
+    color: #ffff00;
+    font: "Arial" bold 24;
+    
+    text-effect: outline;
+    effect-size: 3;
+    effect-color: #000000cc;
+}
+
+label_measurement {
+    color: #ffffff;
+    font: "Arial" bold 18;
+    
+    text-effect: shadow;
+    effect-color: #000000cc;
+}
+
+label_force {
+    color: #ff0000;
+    font: "Arial" bold 18;
+    background: solid #88888888;
+    padding: 2 2 2 2;    
+
+    text-effect: outline;
+    effect-color: #000000cc;
+}
+
+root:disabled {
+  color: #888888;
+}
+
+window {
+  //border: 1 solid #000000;
+  //padding: 5;
+}
+
+// most windows in Statics derive from this class
+info_window {
+    text-align: left;
+    background: solid #f4eaa2cc;
+    padding: 1 1 1 1;
+}
+
+padded_container {
+    padding: 5 5 5 5;
+}
+
+info_window_opaque {
+    text-align: left;
+    background: solid #f4eaa2ff;
+    padding: 1 1 1 1;
+}
+
+description_window {
+    border: 2 solid #773802ff;
+    background: solid #f4eaa2ff;
+    padding: 5 5 5 5;
+}
+
+border {
+    background: solid #ffffffff;
+}
+
+
+// this is the title for windows
+// it does not extend window, but rather BContainer
+title_container {
+    background: solid #773802ff;
+    color: #ff7b00;
+    font: "Dialog" plain 16;
+    padding: 5 5 5 5;
+}
+
+main_title {
+    background: solid #292a67;
+    color: #ffffff;
+    font: "Dialog" bold 20;
+    padding: 5 5 5 5;
+}
+
+menu_title_base {
+    background: solid #3d449b;
+    color: #ffffff;
+    font: "Dialog" bold 16;
+    padding: 2 2 2 2;
+}
+
+menu_item_base {
+    background: solid #5e65ad;
+    color: #ffffff;
+    font: "Dialog" plain 16;
+    padding: 2 2 2 2;
+}
+
+content_container {
+    padding: 5 5 5 5;
+    text-align: left;
+}
+
+decoratedwindow {
+  border: 1 solid #FFFFFF;
+}
+
+popupmenu {
+  background: solid #5e65ad;
+  //background: solid #00000088;
+  //padding: 5;
+  border: 1 solid #FFFFFF;
+  //font: "Dialog" bold 18;
+}
+
+component {
+}
+
+component:disabled {
+}
+
+tooltip_window {
+  background: solid #FFFFFF;
+  border: 2 solid #000000;
+  padding: 5;
+}
+
+tooltip_label {
+  color: #000000;
+}
+
+label {
+//  border: 1 solid #FFFFFF;
+}
+
+button {
+  background: image "rsrc/textures/button_up.png" framexy;
+  padding: 3 5;
+  font: "Dialog" bold 17;
+  text-align: center;
+  //text-effect: outline;
+  //effect-color: #442288;
+}
+
+menuitem {
+  padding: 0 2;
+}
+
+menuitem:hover {
+  color: #000000;
+  background: solid #FFFFFF88;
+}
+
+button:hover {
+  color: #FF00FF;
+}
+
+button:disabled {
+  background: image "rsrc/textures/button_disabled.png" framexy;
+}
+
+button:down {
+  background: image "rsrc/textures/button_down.png" framexy;
+  color: #FF00FF;
+  padding: 4 6 2 4;
+}
+
+button:selected {
+  background: image "rsrc/textures/button_down.png" framexy;
+  padding: 4 6 2 4;
+}
+
+combobox {
+  background: image "rsrc/textures/button_up.png" framexy;
+  padding: 3 5;
+}
+
+textfield {
+  background: solid #ffffffff;
+  padding: 5;
+}
+
+textarea {
+  background: solid #ffffffff;
+  padding: 5;
+}
+
+checkbox {
+  icon: blank 7 7;
+}
+
+checkbox:selected {
+  icon: image "rsrc/interfaceTextures/checkbox.png" centery;
+}
+
+checkbox:disselected {
+  icon: image "rsrc/interfaceTextures/checkbox.png" centery;
+}
+
+scrollbar_hthumb {
+  background: solid #FFFFFF;
+}
+
+scrollbar_vthumb {
+  background: solid #FFFFFF;
+}
+
+scrollbar_hwell {
+  background: image "rsrc/interfaceTextures/button_up.png" framexy;
+  padding: 3;
+}
+
+scrollbar_vwell {
+  background: image "rsrc/interfaceTextures/button_up.png" framexy;
+  padding: 3;
+}
+
+scrollbar_hless {
+  icon: image "rsrc/interfaceTextures/scroll_left.png";
+}
+
+scrollbar_vless {
+  icon: image "rsrc/interfaceTextures/scroll_up.png";
+}
+
+scrollbar_hmore {
+  icon: image "rsrc/interfaceTextures/scroll_right.png";
+}
+
+scrollbar_vmore {
+  icon: image "rsrc/interfaceTextures/scroll_down.png";
+}
+
+hslider {
+  icon: image "rsrc/interfaceTextures/button_up.png";
+  border: 1 solid #000000;
+}
+
+vslider {
+  icon: image "rsrc/interfaceTextures/button_up.png";
+  border: 1 solid #000000;
+}

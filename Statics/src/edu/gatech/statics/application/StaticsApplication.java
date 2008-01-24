@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.application;
 
+import edu.gatech.statics.Exercise;
 import com.jmex.bui.PolledRootNode;
 import edu.gatech.statics.application.ui.AppInterface;
 import edu.gatech.statics.modes.exercise.ExerciseInterface;
@@ -100,19 +101,19 @@ public class StaticsApplication {
     }
     public Tool getCurrentTool() {return currentTool;}
     
-    private float drawScale = 1.0f;
-    public float getDrawScale() {return drawScale;}
-    public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
+    //private float worldScale = 1.0f;
+    //public float getWorldScale() {return worldScale;}
+    //public void setWorldScale(float drawScale) {this.worldScale = drawScale;}
     
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
     public void setAdvice(String advice) {rootInterface.setAdvice(advice);}
     public void resetAdvice() {rootInterface.setAdvice(defaultAdvice);}
     public void setDefaultAdvice(String advice) {defaultAdvice = advice;}
     
-    public Units getUnits() {
-        if(currentExercise == null) return new Units();
-        return currentExercise.getUnits();
-    }
+    //public UnitUtils getUnits() {
+    //    if(currentExercise == null) return new UnitUtils();
+    //    return currentExercise.getUnits();
+    //}
     
     private AbsoluteMouse mouse;
     public AbsoluteMouse getMouse() {return mouse;}

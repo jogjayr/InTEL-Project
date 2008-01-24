@@ -13,7 +13,7 @@ import com.jmex.bui.event.MouseListener;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.objects.Vector;
+import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.manipulators.Manipulator;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 
@@ -21,17 +21,17 @@ import edu.gatech.statics.objects.representations.LabelRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class LabelManipulator extends Manipulator<Vector> {
+public class LabelManipulator extends Manipulator<VectorObject> {
 
     private LabelRepresentation labelRepresentation;
     private LabelClickListener clickListener;
 
     private boolean labelingEnabled = true;
     
-    public LabelManipulator(Vector v) {
-        super(v);
+    public LabelManipulator(VectorObject vectorObject) {
+        super(vectorObject);
         
-        for(Representation rep : v.getRepresentation(RepresentationLayer.labels))
+        for(Representation rep : vectorObject.getRepresentation(RepresentationLayer.labels))
             if(rep instanceof LabelRepresentation)
                 labelRepresentation = (LabelRepresentation)rep;
         
