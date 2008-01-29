@@ -17,10 +17,8 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import java.util.ArrayList;
@@ -51,18 +49,17 @@ import com.jmex.bui.util.Rectangle;
  * derivations make up a user interface.
  */
 public class BComponent {
+
     /** The default component state. This is used to select the component's style pseudoclass among
      * other things. */
     public static final int DEFAULT = 0;
-    
     /** A component state indicating that the mouse is hovering over the component. This is used to
      * select the component's style pseudoclass among other things. */
     public static final int HOVER = 1;
-    
     /** A component state indicating that the component is disabled. This is used to select the
      * component's style pseudoclass among other things. */
     public static final int DISABLED = 2;
-    
+
     public static void applyDefaultStates() {
         RenderContext ctx = DisplaySystem.getDisplaySystem().getCurrentContext();
         for (int ii = 0; ii < Renderer.defaultStateList.length; ii++) {
@@ -73,7 +70,7 @@ public class BComponent {
         }
         ctx.clearCurrentStates();
     }
-    
+
     /**
      * Configures this component with a custom stylesheet class. By default a component's class is
      * defined by its component type (label, button, checkbox, etc.) but one can provide custom
@@ -88,14 +85,14 @@ public class BComponent {
         }
         _styleClass = styleClass;
     }
-    
+
     /**
      * Returns the Style class to be used for this component.
      */
     public String getStyleClass() {
         return (_styleClass == null) ? getDefaultStyleClass() : _styleClass;
     }
-    
+
     /**
      * Informs this component of its parent in the interface heirarchy.
      */
@@ -111,14 +108,14 @@ public class BComponent {
         }
         _parent = parent;
     }
-    
+
     /**
      * Returns the parent of this component in the interface hierarchy.
      */
     public BContainer getParent() {
         return _parent;
     }
-    
+
     /**
      * Returns the preferred size of this component, supplying a width and or height hint to the
      * component to inform it of restrictions in one of the two dimensions. Not all components will
@@ -130,7 +127,7 @@ public class BComponent {
         // if we have a fully specified preferred size, just use it
         if (_preferredSize != null && _preferredSize.width != -1 && _preferredSize.height != -1) {
             ps = new Dimension(_preferredSize);
-            
+
         } else {
             // override hints with preferred size
             if (_preferredSize != null) {
@@ -141,7 +138,7 @@ public class BComponent {
                     hhint = _preferredSize.height;
                 }
             }
-            
+
             // extract space from the hints for our insets
             Insets insets = getInsets();
             if (whint > 0) {
@@ -150,14 +147,14 @@ public class BComponent {
             if (hhint > 0) {
                 hhint -= insets.getVertical();
             }
-            
+
             // compute our "natural" preferred size
             ps = computePreferredSize(whint, hhint);
-            
+
             // now add our insets back in
             ps.width += insets.getHorizontal();
             ps.height += insets.getVertical();
-            
+
             // then override it with user supplied values
             if (_preferredSize != null) {
                 if (_preferredSize.width != -1) {
@@ -168,7 +165,7 @@ public class BComponent {
                 }
             }
         }
-        
+
         // now make sure we're not smaller in either dimension than our
         // background will allow
         BBackground background = getBackground();
@@ -176,10 +173,10 @@ public class BComponent {
             ps.width = Math.max(ps.width, background.getMinimumWidth());
             ps.height = Math.max(ps.height, background.getMinimumHeight());
         }
-        
+
         return ps;
     }
-    
+
     /**
      * Configures the preferred size of this component. This will override any information provided
      * by derived classes that have opinions about their preferred size. Either the width or the
@@ -189,49 +186,49 @@ public class BComponent {
     public void setPreferredSize(Dimension preferredSize) {
         _preferredSize = preferredSize;
     }
-    
+
     /**
      * Configures the preferred size of this component. See {@link #setPreferredSize(Dimension)}.
      */
     public void setPreferredSize(int width, int height) {
         setPreferredSize(new Dimension(width, height));
     }
-    
+
     /** Returns the x coordinate of this component. */
     public int getX() {
         return _x;
     }
-    
+
     /** Returns the y coordinate of this component. */
     public int getY() {
         return _y;
     }
-    
+
     /** Returns the width of this component. */
     public int getWidth() {
         return _width;
     }
-    
+
     /** Returns the height of this component. */
     public int getHeight() {
         return _height;
     }
-    
+
     /** Returns the x position of this component in absolute screen coordinates. */
     public int getAbsoluteX() {
         return _x + ((_parent == null) ? 0 : _parent.getAbsoluteX());
     }
-    
+
     /** Returns the y position of this component in absolute screen coordinates. */
     public int getAbsoluteY() {
         return _y + ((_parent == null) ? 0 : _parent.getAbsoluteY());
     }
-    
+
     /** Returns the bounds of this component in a new rectangle. */
     public Rectangle getBounds() {
         return new Rectangle(_x, _y, _width, _height);
     }
-    
+
     /**
      * Returns the insets configured on this component. <code>null</code> will never be returned,
      * an {@link Insets} instance with all fields set to zero will be returned instead.
@@ -240,7 +237,7 @@ public class BComponent {
         Insets insets = _insets[getState()];
         return (insets == null) ? Insets.ZERO_INSETS : insets;
     }
-    
+
     /**
      * Returns the (foreground) color configured for this component.
      */
@@ -248,14 +245,29 @@ public class BComponent {
         ColorRGBA color = _colors[getState()];
         return (color != null) ? color : _colors[DEFAULT];
     }
-    
+
+    /**
+     * Sets the foreground color of the component for the specified state
+     * @param state
+     * @param color
+     */
+    public void setColor(int state, ColorRGBA color) {
+        _colors[state] = color;
+    }
+
+    public void setColor(ColorRGBA color) {
+        for (int state = 0; state < getStateCount(); state++) {
+            setColor(state, color);
+        }
+    }
+
     /**
      * Returns our bounds as a nicely formatted string.
      */
     public String boundsToString() {
         return _width + "x" + _height + "+" + _x + "+" + _y;
     }
-    
+
     /**
      * Returns the currently active border for this component.
      */
@@ -263,7 +275,7 @@ public class BComponent {
         BBorder border = _borders[getState()];
         return (border != null) ? border : _borders[DEFAULT];
     }
-    
+
     /**
      * Configures the border for this component for the specified state.  This must only be
      * called after the component has been added to the interface heirarchy or the value will be
@@ -280,7 +292,7 @@ public class BComponent {
         }
         _borders[state] = border;
     }
-    
+
     /**
      * Returns a reference to the background used by this component.
      */
@@ -288,7 +300,7 @@ public class BComponent {
         BBackground background = _backgrounds[getState()];
         return (background != null) ? background : _backgrounds[DEFAULT];
     }
-    
+
     /**
      * Configures the background for this component for the specified state.  This must only be
      * called after the component has been added to the interface heirarchy or the value will be
@@ -305,22 +317,23 @@ public class BComponent {
         }
         _backgrounds[state] = background;
     }
-    
+
     /**
      * A shorthhand for setting all of the backgrounds on this component.
      */
     public void setBackground(BBackground background) {
-        for(int state=0; state<getStateCount(); state++)
+        for (int state = 0; state < getStateCount(); state++) {
             setBackground(state, background);
+        }
     }
-    
+
     /**
      * Returns a reference to the cursor used by this component.
      */
     public BCursor getCursor() {
         return _cursor;
     }
-    
+
     /**
      * Configures the cursor for this component.  This must only be called after the component has
      * been added to the interface hierarchy or the value will be overridden by the stylesheet
@@ -329,21 +342,21 @@ public class BComponent {
     public void setCursor(BCursor cursor) {
         _cursor = cursor;
     }
-    
+
     /**
      * Sets the alpha level for this component.
      */
     public void setAlpha(float alpha) {
         _alpha = alpha;
     }
-    
+
     /**
      * Returns the alpha transparency of this component.
      */
     public float getAlpha() {
         return _alpha;
     }
-    
+
     /**
      * Sets this components enabled state. A component that is not enabled should not respond to
      * user interaction and should render itself in such a way as not to afford user interaction.
@@ -354,14 +367,14 @@ public class BComponent {
             stateDidChange();
         }
     }
-    
+
     /**
      * Returns true if this component is enabled and responding to user interaction, false if not.
      */
     public boolean isEnabled() {
         return _enabled;
     }
-    
+
     /**
      * Sets this component's visibility state.  A component that is invisible is not rendered and
      * does not contribute to the layout.
@@ -372,14 +385,14 @@ public class BComponent {
             invalidate();
         }
     }
-    
+
     /**
      * Returns true if this component is visible, false if it is not.
      */
     public boolean isVisible() {
         return _visible;
     }
-    
+
     /**
      * Returns true if this component is both added to the interface hierarchy and visible, false
      * if not.
@@ -387,14 +400,14 @@ public class BComponent {
     public boolean isShowing() {
         return isAdded() && isVisible();
     }
-    
+
     /**
      * Returns the state of this component, either {@link #DEFAULT} or {@link #DISABLED}.
      */
     public int getState() {
         return _enabled ? (_hover ? HOVER : DEFAULT) : DISABLED;
     }
-    
+
     /**
      * Sets a user defined property on this component. User defined properties allow the
      * association of arbitrary additional data with a component for application specific purposes.
@@ -405,28 +418,28 @@ public class BComponent {
         }
         _properties.put(key, value);
     }
-    
+
     /**
      * Returns the user defined property mapped to the specified key, or null.
      */
     public Object getProperty(String key) {
         return (_properties == null) ? null : _properties.get(key);
     }
-    
+
     /**
      * Returns whether or not this component accepts the keyboard focus.
      */
     public boolean acceptsFocus() {
         return false;
     }
-    
+
     /**
      * Returns true if this component has the focus.
      */
     public boolean hasFocus() {
         return isAdded() ? getWindow().getRootNode().getFocus() == this : false;
     }
-    
+
     /**
      * Returns the component that should receive focus if this component is clicked. If this
      * component does not accept focus, its parent will be checked and so on.
@@ -440,7 +453,7 @@ public class BComponent {
             return null;
         }
     }
-    
+
     /**
      * Requests that this component be given the input focus.
      */
@@ -451,7 +464,7 @@ public class BComponent {
             Thread.dumpStack();
             return;
         }
-        
+
         BWindow window = getWindow();
         if (window == null) {
             Log.log.warning("Focus requested for un-added component: " + this);
@@ -460,21 +473,21 @@ public class BComponent {
             window.requestFocus(this);
         }
     }
-    
+
     /**
      * Sets the upper left position of this component in absolute screen coordinates.
      */
     public void setLocation(int x, int y) {
         setBounds(x, y, _width, _height);
     }
-    
+
     /**
      * Sets the width and height of this component in screen coordinates.
      */
     public void setSize(int width, int height) {
         setBounds(_x, _y, width, height);
     }
-    
+
     /**
      * Sets the bounds of this component in screen coordinates.
      *
@@ -492,7 +505,7 @@ public class BComponent {
             invalidate();
         }
     }
-    
+
     /**
      * Adds a listener to this component. The listener will be notified when events of the
      * appropriate type are dispatched on this component.
@@ -503,7 +516,7 @@ public class BComponent {
         }
         _listeners.add(listener);
     }
-    
+
     /**
      * Removes a listener from this component. Returns true if the listener was in fact in the
      * listener list for this component, false if not.
@@ -515,7 +528,7 @@ public class BComponent {
             return false;
         }
     }
-    
+
     /**
      * Configures the tooltip text for this component. If the text starts with &lt;html&gt; then
      * the tooltip will be displayed with an @{link HTMLView} otherwise it will be displayed with a
@@ -524,14 +537,14 @@ public class BComponent {
     public void setTooltipText(String text) {
         _tiptext = text;
     }
-    
+
     /**
      * Returns the tooltip text configured for this component.
      */
     public String getTooltipText() {
         return _tiptext;
     }
-    
+
     /**
      * Sets where to position the tooltip window.
      *
@@ -541,14 +554,14 @@ public class BComponent {
     public void setTooltipRelativeToMouse(boolean mouse) {
         _tipmouse = mouse;
     }
-    
+
     /**
      * Returns true if the tooltip window should be position relative to the mouse.
      */
     public boolean isTooltipRelativeToMouse() {
         return _tipmouse;
     }
-    
+
     /**
      * Returns true if this component is added to a hierarchy of components that culminates in a
      * top-level window.
@@ -557,14 +570,14 @@ public class BComponent {
         BWindow win = getWindow();
         return (win != null && win.isAdded());
     }
-    
+
     /**
      * Returns true if this component has been validated and laid out.
      */
     public boolean isValid() {
         return _valid;
     }
-    
+
     /**
      * Instructs this component to lay itself out and then mark itself as valid.
      */
@@ -576,7 +589,7 @@ public class BComponent {
             _valid = true;
         }
     }
-    
+
     /**
      * Marks this component as invalid and needing a relayout. If the component is valid, its
      * parent will also be marked as invalid.
@@ -589,7 +602,7 @@ public class BComponent {
             }
         }
     }
-    
+
     /**
      * Translates into the component's coordinate space, renders the background and border and then
      * calls {@link #renderComponent} to allow the component to render itself.
@@ -598,24 +611,24 @@ public class BComponent {
         if (!_visible) {
             return;
         }
-        
+
         GL11.glTranslatef(_x, _y, 0);
-        
+
         try {
             // render our background
             renderBackground(renderer);
-            
+
             // render any custom component bits
             renderComponent(renderer);
-            
+
             // render our border
             renderBorder(renderer);
-            
+
         } finally {
             GL11.glTranslatef(-_x, -_y, 0);
         }
     }
-    
+
     /**
      * Returns the component "hit" by the specified mouse coordinates which might be this component
      * or any of its children. This method should return null if the supplied mouse coordinates are
@@ -628,7 +641,7 @@ public class BComponent {
         }
         return null;
     }
-    
+
     /**
      * Instructs this component to process the supplied event. If the event is not processed, it
      * will be passed up to its parent component for processing. Derived classes should thus only
@@ -640,10 +653,10 @@ public class BComponent {
         // events that should not be propagated up the hierarchy are marked as processed
         // immediately to avoid sending them to our parent or to other windows
         boolean processed = !event.propagateUpHierarchy();
-        
+
         // handle focus traversal
         if (event instanceof KeyEvent) {
-            KeyEvent kev = (KeyEvent)event;
+            KeyEvent kev = (KeyEvent) event;
             if (kev.getType() == KeyEvent.KEY_PRESSED) {
                 int modifiers = kev.getModifiers(), keyCode = kev.getKeyCode();
                 if (keyCode == KeyInput.KEY_TAB) {
@@ -657,11 +670,11 @@ public class BComponent {
                 }
             }
         }
-        
+
         // handle mouse hover detection
         if (_enabled && event instanceof MouseEvent) {
             int ostate = getState();
-            MouseEvent mev = (MouseEvent)event;
+            MouseEvent mev = (MouseEvent) event;
             switch (mev.getType()) {
                 case MouseEvent.MOUSE_ENTERED:
                     _hover = true;
@@ -672,7 +685,7 @@ public class BComponent {
                     processed = true;
                     break;
             }
-            
+
             // update our component state if necessary
             if (getState() != ostate) {
                 stateDidChange();
@@ -681,30 +694,30 @@ public class BComponent {
                 updateCursor(_cursor);
             }
         }
-        
+
         // dispatch this event to our listeners
         if (_listeners != null) {
-            for (int ii = 0, ll = _listeners.size(); ii < ll; ii++) {
+            for (int ii = 0,  ll = _listeners.size(); ii < ll; ii++) {
                 event.dispatch(_listeners.get(ii));
             }
         }
-        
+
         // if we didn't process the event, pass it up to our parent
         if (!processed && _parent != null) {
             return getParent().dispatchEvent(event);
         }
-        
+
         return processed;
     }
-    
+
     /**
      * Instructs this component to lay itself out. This is called as a result of the component
      * changing size.
      */
     protected void layout() {
-        // we have nothing to do by default
+    // we have nothing to do by default
     }
-    
+
     /**
      * Computes and returns a preferred size for this component. This method is called if no
      * overriding preferred size has been supplied.
@@ -715,14 +728,14 @@ public class BComponent {
     protected Dimension computePreferredSize(int whint, int hhint) {
         return new Dimension(0, 0);
     }
-    
+
     /**
      * This method is called when we are added to a hierarchy that is connected to a top-level
      * window (at which point we can rely on having a look and feel and can set ourselves up).
      */
     protected void wasAdded() {
         configureStyle(getWindow().getStyleSheet());
-        
+
         // let our backgrounds and borders know we're added
         for (int ii = 0; ii < _backgrounds.length; ii++) {
             if (_backgrounds[ii] != null) {
@@ -735,7 +748,7 @@ public class BComponent {
             }
         }
     }
-    
+
     /**
      * Instructs this component to fetch its style configuration from the supplied style
      * sheet. This method is called when a component is added to the interface hierarchy.
@@ -744,7 +757,7 @@ public class BComponent {
         if (_preferredSize == null) {
             _preferredSize = style.getSize(this, null);
         }
-        
+
         _cursor = style.getCursor(this, null);
         for (int ii = 0; ii < getStateCount(); ii++) {
             _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
@@ -757,7 +770,7 @@ public class BComponent {
                     style.getBackground(this, getStatePseudoClass(ii));
         }
     }
-    
+
     /**
      * This method is called when we are removed from a hierarchy that is connected to a top-level
      * window. If we wish to clean up after things done in {@link #wasAdded}, this is a fine place
@@ -767,7 +780,7 @@ public class BComponent {
         // mark ourselves as invalid so that if this component is again added to an interface
         // heirarchy it will revalidate at that time
         _valid = false;
-        
+
         // let our backgrounds and borders know we're removed
         for (int ii = 0; ii < _backgrounds.length; ii++) {
             if (_backgrounds[ii] != null) {
@@ -780,7 +793,7 @@ public class BComponent {
             }
         }
     }
-    
+
     /**
      * Creates the component that will be used to display our tooltip. This method will only be
      * called if {@link #getTooltipText} returns non-null text.
@@ -792,7 +805,7 @@ public class BComponent {
             return new BLabel(tiptext, "tooltip_label");
         }
     }
-    
+
     /**
      * Renders the background for this component.
      */
@@ -802,7 +815,7 @@ public class BComponent {
             background.render(renderer, 0, 0, _width, _height, _alpha);
         }
     }
-    
+
     /**
      * Renders the border for this component.
      */
@@ -812,14 +825,14 @@ public class BComponent {
             border.render(renderer, 0, 0, _width, _height, _alpha);
         }
     }
-    
+
     /**
      * Renders any custom bits for this component. This is called with the graphics context
      * translated to (0, 0) relative to this component.
      */
     protected void renderComponent(Renderer renderer) {
     }
-    
+
     /**
      * Returns the default stylesheet class to be used for all instances of this component. Derived
      * classes will likely want to override this method and set up a default class for their type
@@ -828,7 +841,7 @@ public class BComponent {
     protected String getDefaultStyleClass() {
         return "component";
     }
-    
+
     /**
      * Returns the number of different states that this component can take.  These states
      * correspond to stylesheet pseudoclasses that allow components to customize their
@@ -838,7 +851,7 @@ public class BComponent {
     protected int getStateCount() {
         return STATE_COUNT;
     }
-    
+
     /**
      * Returns the pseudoclass identifier for the specified component state.  This string will be
      * the way that the state is identified in the associated stylesheet. For example, the {@link
@@ -853,21 +866,21 @@ public class BComponent {
     protected String getStatePseudoClass(int state) {
         return STATE_PCLASSES[state];
     }
-    
+
     /**
      * Called when the component's state has changed.
      */
     protected void stateDidChange() {
         invalidate();
     }
-    
+
     /**
      * Returns true if the component should update the mouse cursor.
      */
     protected boolean changeCursor() {
         return _enabled && _visible && _hover;
     }
-    
+
     /**
      * Updates the mouse cursor with the supplied cursor.
      */
@@ -876,20 +889,20 @@ public class BComponent {
             cursor.show();
         }
     }
-    
+
     /**
      * Returns the window that defines the root of our component hierarchy.
      */
     protected BWindow getWindow() {
         if (this instanceof BWindow) {
-            return (BWindow)this;
+            return (BWindow) this;
         } else if (_parent != null) {
             return _parent.getWindow();
         } else {
             return null;
         }
     }
-    
+
     /**
      * Searches for the next component that should receive the keyboard focus. If such a component
      * can be found, it will be returned. If no other focusable component can be found and this
@@ -897,14 +910,14 @@ public class BComponent {
      */
     protected BComponent getNextFocus() {
         if (_parent instanceof BContainer) {
-            return ((BContainer)_parent).getNextFocus(this);
+            return ((BContainer) _parent).getNextFocus(this);
         } else if (acceptsFocus()) {
             return this;
         } else {
             return null;
         }
     }
-    
+
     /**
      * Searches for the previous component that should receive the keyboard focus. If such a
      * component can be found, it will be returned. If no other focusable component can be found
@@ -913,14 +926,14 @@ public class BComponent {
      */
     protected BComponent getPreviousFocus() {
         if (_parent instanceof BContainer) {
-            return ((BContainer)_parent).getPreviousFocus(this);
+            return ((BContainer) _parent).getPreviousFocus(this);
         } else if (acceptsFocus()) {
             return this;
         } else {
             return null;
         }
     }
-    
+
     /**
      * Dispatches an event emitted by this component. The event is given to the root node for
      * processing though in general it will result in an immediate call to {@link #dispatchEvent}
@@ -939,7 +952,7 @@ public class BComponent {
         node.dispatchEvent(this, event);
         return true;
     }
-    
+
     /**
      * Activates scissoring and sets the scissor region to the intersection of the current region
      * (if any) and the specified rectangle.  After rendering the scissored region, call
@@ -964,7 +977,7 @@ public class BComponent {
         }
         return enabled;
     }
-    
+
     /**
      * Restores the previous scissor state after a call to {@link #intersectScissorBox}.
      *
@@ -979,28 +992,23 @@ public class BComponent {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
     }
-    
     protected BContainer _parent;
     protected String _styleClass;
     protected Dimension _preferredSize;
-    protected int _x, _y, _width, _height;
+    protected int _x,  _y,  _width,  _height;
     protected ArrayList<ComponentListener> _listeners;
     protected HashMap<String, Object> _properties;
     protected String _tiptext;
     protected boolean _tipmouse;
-    
-    protected boolean _valid, _enabled = true, _visible = true, _hover;
+    protected boolean _valid,  _enabled = true,  _visible = true,  _hover;
     protected float _alpha = 1f;
-    
     protected ColorRGBA[] _colors = new ColorRGBA[getStateCount()];
     protected Insets[] _insets = new Insets[getStateCount()];
     protected BBorder[] _borders = new BBorder[getStateCount()];
     protected BBackground[] _backgrounds = new BBackground[getStateCount()];
     protected BCursor _cursor;
-    
     /** Temporary storage for scissor box queries. */
     protected static IntBuffer _bbuf = BufferUtils.createIntBuffer(16);
-    
     protected static final int STATE_COUNT = 3;
-    protected static final String[] STATE_PCLASSES = { null, "hover", "disabled" };
+    protected static final String[] STATE_PCLASSES = {null, "hover", "disabled"};
 }

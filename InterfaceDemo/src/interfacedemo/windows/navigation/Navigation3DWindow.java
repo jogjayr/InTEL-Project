@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package interfacedemo;
+package interfacedemo.windows.navigation;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class AppPopupWindow {
+public class Navigation3DWindow extends NavigationWindow {
 
 }

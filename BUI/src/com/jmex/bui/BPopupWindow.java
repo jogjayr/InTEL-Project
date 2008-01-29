@@ -77,7 +77,8 @@ public class BPopupWindow extends BWindow {
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        if(_root != null)
+            super.dismiss();
         
         if(_listeners != null)
             for(ComponentListener listener : _listeners)

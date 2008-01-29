@@ -3,30 +3,26 @@
  * and open the template in the editor.
  */
 
-package interfacedemo;
+package interfacedemo.menu;
 
-import com.jme.renderer.ColorRGBA;
+import interfacedemo.*;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
-import com.jmex.bui.BPopupMenu;
-import com.jmex.bui.event.MouseAdapter;
-import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import java.util.List;
 
 /**
- *
+ * The menu bar manages the menu at the top of the screen: this handles
+ * exercise interaction, view controls, and the popup windows.
  * @author Calvin Ashmore
  */
-public class MenuBar extends AppWindow {
+public class TopMenuBar extends AppWindow {
     
     private BLabel title;
     public void setTitleText(String text) {title.setText(text);}
-    
     private BContainer menu;
     
-    public MenuBar() {
+    public TopMenuBar() {
         //super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         super(new BorderLayout());
         
@@ -39,20 +35,19 @@ public class MenuBar extends AppWindow {
         menuLayout.setOffAxisJustification(GroupLayout.LEFT);
         add(menu, BorderLayout.CENTER);
         
-        //menu.add(new TopMenu("Exercise"));
-        menu.add(new InfoMenu());
+        menu.add(new ExerciseMenu());
         menu.add(new ViewMenu());
-        menu.add(new FBDMenu());
         menu.add(new WindowMenu());
     }
     
-    private class InfoMenu extends TopMenuItem {
-        public InfoMenu() {
-            super("Info", MenuBar.this);
-            addMenuItem("about");
-            addMenuItem("knowns");
+    private class ExerciseMenu extends TopMenuItem {
+        public ExerciseMenu() {
+            super("Exercise", TopMenuBar.this);
+            addMenuItem("submit");
+            addMenuItem("load");
+            addMenuItem("save");
         }
-
+        
         @Override
         protected void onAction(String action) {
             System.out.println(action);
@@ -62,28 +57,11 @@ public class MenuBar extends AppWindow {
     private class ViewMenu extends TopMenuItem {
 
         public ViewMenu() {
-            super("View", MenuBar.this);
+            super("View", TopMenuBar.this);
             addMenuItem("measurements");
             addMenuItem("bones");
             addMenuItem("real world");
             addMenuItem("schematic");
-            //addMenuItem("grayouts");
-        }
-        
-        @Override
-        protected void onAction(String action) {
-            System.out.println(action);
-        }
-    }
-    
-    private class FBDMenu extends TopMenuItem {
-
-        public FBDMenu() {
-            super("FBD", MenuBar.this);
-            addMenuItem("new");
-            addMenuItem("open");
-            addMenuItem("check");
-            addMenuItem("save");
         }
         
         @Override
@@ -95,14 +73,17 @@ public class MenuBar extends AppWindow {
     private class WindowMenu extends TopMenuItem {
 
         public WindowMenu() {
-            super("Window", MenuBar.this);
+            super("Window", TopMenuBar.this);
+            addMenuItem("description");
+            addMenuItem("known forces");
+            addMenuItem("point coordinates");
             addMenuItem("diagrams");
-            addMenuItem("tools");
         }
         
         @Override
         protected void onAction(String action) {
-            System.out.println(action);
+            //System.out.println(action);
+            InterfaceRoot.getInstance().togglePopup(action);
         }
     }
 }

@@ -16,10 +16,10 @@ import com.jmex.bui.layout.BLayoutManager;
 abstract public class AppWindow extends BWindow{
 
     public AppWindow(BLayoutManager layout) {
-        super(DemoGame.getInstance().getStyle(), layout);
+        super(InterfaceRoot.getInstance().getStyle(), layout);
     }
     
     protected DisplaySystem getDisplay() {
-        return DemoGame.getInstance().getDisplaySystem();
+        return DisplaySystem.getDisplaySystem();
     }
 }

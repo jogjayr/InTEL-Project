@@ -46,40 +46,74 @@ window {
 }
 
 // most windows in Statics derive from this class
-info_window {
-    text-align: left;
-    background: solid #f4eaa2cc;
-    padding: 1 1 1 1;
-}
+//info_window {
+//    text-align: left;
+//    background: solid #f4eaa2cc;
+//    padding: 1 1 1 1;
+//}
 
-padded_container {
-    padding: 5 5 5 5;
-}
+//padded_container {
+//    padding: 5 5 5 5;
+//}
 
-info_window_opaque {
-    text-align: left;
-    background: solid #f4eaa2ff;
-    padding: 1 1 1 1;
-}
+//info_window_opaque {
+//    text-align: left;
+//    background: solid #f4eaa2ff;
+//    padding: 1 1 1 1;
+//}
 
-description_window {
-    border: 2 solid #773802ff;
-    background: solid #f4eaa2ff;
-    padding: 5 5 5 5;
-}
+//description_window {
+//    border: 2 solid #773802ff;
+//    background: solid #f4eaa2ff;
+//    padding: 5 5 5 5;
+//}
 
-border {
-    background: solid #ffffffff;
-}
+//border {
+//    background: solid #ffffffff;
+//}
 
 
-// this is the title for windows
+// this is the title for information windows
 // it does not extend window, but rather BContainer
-title_container {
-    background: solid #773802ff;
-    color: #ff7b00;
-    font: "Dialog" plain 16;
-    padding: 5 5 5 5;
+//title_container {
+//    background: solid #773802ff;
+//    color: #ff7b00;
+//    font: "Dialog" plain 16;
+//    padding: 5 5 5 5;
+//}
+
+application_bar {
+    background: solid #000000;
+    color: #ffffff;
+    padding: 5;
+}
+
+application_tab {
+    // background and text color are just defaults here, they are replaced in code
+    background: solid #e9e9f4;
+    color: #000000;
+    padding: 3;
+    font: "Dialog" bold 16;
+}
+
+application_popup {
+    background: solid #ffffff;
+    color: #000000;
+    border: 2 solid #000000;
+    padding: 5;
+}
+
+application_popup_title {
+    background: solid #3d449b;
+    color: #ffffff;
+    
+}
+
+advice_box {
+    background: solid #f0f0f0;
+    color: #000000;
+    padding: 5;
+    //border: 4 solid #000000;
 }
 
 main_title {
@@ -103,6 +137,13 @@ menu_item_base {
     padding: 2 2 2 2;
 }
 
+draggable_title {
+    background: solid #3d449b;
+    color: #ffffff;
+    font: "Dialog" bold 16;
+    padding: 2 2 2 2;
+}
+
 content_container {
     padding: 5 5 5 5;
     text-align: left;
@@ -116,7 +157,7 @@ popupmenu {
   background: solid #5e65ad;
   //background: solid #00000088;
   //padding: 5;
-  border: 1 solid #FFFFFF;
+  //border: 1 solid #FFFFFF;
   //font: "Dialog" bold 18;
 }
 

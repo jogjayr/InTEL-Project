@@ -67,12 +67,26 @@ public class LineBorder extends BBorder
         ((LineRecord)ctx.getLineRecord()).applyLineWidth(_width);
         float offset = _width / 2f;
         GL11.glColor4f(_color.r, _color.g, _color.b, _color.a * alpha);
-        GL11.glBegin(GL11.GL_LINE_STRIP);
+        /*GL11.glBegin(GL11.GL_LINE_STRIP);
         GL11.glVertex2f(x + offset, y + offset);
         GL11.glVertex2f(x + width - offset, y + offset);
         GL11.glVertex2f(x + width - offset, y + height - offset);
         GL11.glVertex2f(x + offset, y + height - offset);
         GL11.glVertex2f(x + offset, y + offset);
+        GL11.glEnd();*/
+        
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex2f(x, y + offset);
+        GL11.glVertex2f(x + width, y + offset);
+        
+        GL11.glVertex2f(x + width - offset, y);
+        GL11.glVertex2f(x + width - offset, y + height);
+        
+        GL11.glVertex2f(x + width, y + height - offset);
+        GL11.glVertex2f(x, y + height - offset);
+        
+        GL11.glVertex2f(x + offset, y + height);
+        GL11.glVertex2f(x + offset, y);
         GL11.glEnd();
     }
 

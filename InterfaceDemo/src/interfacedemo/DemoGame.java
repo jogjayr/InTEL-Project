@@ -12,10 +12,6 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Sphere;
 import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
-import com.jmex.bui.BStyleSheet;
-import com.jmex.bui.PolledRootNode;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  *
@@ -23,50 +19,19 @@ import java.io.InputStreamReader;
  */
 public class DemoGame extends SimpleGame {
 
-    private static DemoGame instance;
-    private PolledRootNode buiNode;
-    private BStyleSheet style;
-    
-    private MenuBar menuBar;
-
-    public PolledRootNode getBuiNode() {
-        return buiNode;
-    }
-
-    public static DemoGame getInstance() {
-        return instance;
-    }
-
-    public BStyleSheet getStyle() {
-        return style;
-    }
-
-    public DemoGame() {
-        instance = this;
-    }
+    InterfaceRoot iRoot;
 
     @Override
     protected void simpleInitGame() {
 
-        buiNode = new PolledRootNode(timer, input);
-        rootNode.attachChild(buiNode);
 
         // we don't hide the cursor
         MouseInput.get().setCursorVisible(true);
 
-        // load up the default BUI stylesheet
-        try {
-            InputStream stin = getClass().getClassLoader().
-                    getResourceAsStream("style.bss");
-            style = new BStyleSheet(new InputStreamReader(stin),
-                    new BStyleSheet.DefaultResourceProvider());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            System.exit(-1);
-        }
+        iRoot = new InterfaceRoot(timer, input);
+        
+        rootNode.attachChild(iRoot.getBuiNode());
 
-        //createWindows(buiNode, style);
-        createWindows();
 
         // these just get in the way
         KeyBindingManager.getKeyBindingManager().remove("toggle_pause");
@@ -88,11 +53,12 @@ public class DemoGame extends SimpleGame {
         return display;
     }
 
-    private void createWindows() {
-        menuBar = new MenuBar();
-        buiNode.addWindow(menuBar);
-        menuBar.pack();
-        menuBar.setLocation(0, display.getHeight()-menuBar.getHeight());
+
+    @Override
+    protected void simpleUpdate() {
+        super.simpleUpdate();
+        
+        iRoot.update();
     }
     
     @Override
