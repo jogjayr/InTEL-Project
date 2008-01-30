@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package interfacedemo;
+package interfacedemo.modes.fbd.ui;
 
 import interfacedemo.applicationbar.ApplicationModePanel;
 import interfacedemo.applicationbar.ApplicationTab;
@@ -13,15 +13,15 @@ import com.jmex.bui.layout.BorderLayout;
  *
  * @author Calvin Ashmore
  */
-public class PanelSelectMode extends ApplicationModePanel {
+public class FBDModePanel extends ApplicationModePanel {
 
-    public PanelSelectMode() {
+    public FBDModePanel() {
         super(new BorderLayout());
     }
 
     @Override
     protected ApplicationTab createTab() {
-        return new ApplicationTab("Select");
+        return new ApplicationTab("Add Forces");
     }
     
 }

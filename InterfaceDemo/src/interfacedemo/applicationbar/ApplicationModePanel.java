@@ -6,7 +6,7 @@
 package interfacedemo.applicationbar;
 
 import com.jmex.bui.BContainer;
-import com.jmex.bui.layout.BLayoutManager;
+import com.jmex.bui.layout.BorderLayout;
 
 /**
  *
@@ -15,10 +15,16 @@ import com.jmex.bui.layout.BLayoutManager;
 public abstract class ApplicationModePanel extends BContainer {
 
     private ApplicationTab tab;
+    private BLabel titleLabel;
+
+    public BLabel getTitleLabel() {
+        return titleLabel;
+    }
     
-    public ApplicationModePanel(BLayoutManager layout) {
-        super(layout);
+    public ApplicationModePanel() {
+        super(new BorderLayout());
         tab = createTab();
+        titleLabel.
     }
     
     public ApplicationTab getTab() {return tab;}

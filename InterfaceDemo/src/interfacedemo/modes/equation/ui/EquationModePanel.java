@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package interfacedemo;
+package interfacedemo.modes.equation.ui;
 
 import interfacedemo.applicationbar.ApplicationModePanel;
 import interfacedemo.applicationbar.ApplicationTab;
@@ -13,9 +13,9 @@ import com.jmex.bui.layout.BorderLayout;
  *
  * @author Calvin Ashmore
  */
-public class PanelEquationMode extends ApplicationModePanel {
+public class EquationModePanel extends ApplicationModePanel {
 
-    public PanelEquationMode() {
+    public EquationModePanel() {
         super(new BorderLayout());
     }
 

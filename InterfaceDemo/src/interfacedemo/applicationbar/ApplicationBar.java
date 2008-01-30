@@ -27,19 +27,28 @@ public class ApplicationBar extends BWindow {
     private List<ApplicationTab> tabs = new ArrayList<ApplicationTab>();
     private BContainer tabBar;
     private BContainer mainBar;
+    private BContainer diagramBox;
     private HTMLView adviceBox;
     private ApplicationModePanel modePanel;
     
     private SelectFBDItem currentItem;
+    
+    // ***
+    // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???
+    // MAYBE MOVE THESE INTO ApplicationModePanel
 
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }
 
     public void setModePanel(ApplicationModePanel modePanel) {
-        if(this.modePanel != null)
+        if(this.modePanel != null) {
             this.modePanel.getTab().setActive(false);
+            mainBar.remove(this.modePanel);
+        }
         this.modePanel = modePanel;
+        mainBar.add(modePanel, BorderLayout.CENTER);
+        
         modePanel.getTab().setActive(true);
     }
     
@@ -56,6 +65,8 @@ public class ApplicationBar extends BWindow {
         adviceBox = createAdviceBox();
         mainBar.add(adviceBox, BorderLayout.EAST);
 
+        diagramBox = new BContainer(new BorderLayout());
+        mainBar.add(diagramBox, BorderLayout.WEST);
         // do not yet add the modePanel.
         
         //mainBar.setBackground(new TintedBackground(ColorRGBA.green));
@@ -80,8 +91,7 @@ public class ApplicationBar extends BWindow {
         //spacer.setPreferredSize(ADVICE_BOX_SIZE, -1);
         //tabBar.add(spacer);
         
-        for (ApplicationModePanel panel : InterfaceRoot.getInstance().getModePanels()) {
-            
+        for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
             
             BContainer spacer = new BContainer();
             spacer.setPreferredSize(20, -1);

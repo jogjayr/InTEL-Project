@@ -29,6 +29,7 @@ public class DemoGame extends SimpleGame {
         MouseInput.get().setCursorVisible(true);
 
         iRoot = new InterfaceRoot(timer, input);
+        iRoot.setModePanel("select");
         
         rootNode.attachChild(iRoot.getBuiNode());
 

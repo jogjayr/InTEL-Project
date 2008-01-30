@@ -5,6 +5,9 @@
 
 package interfacedemo;
 
+import interfacedemo.modes.equation.ui.EquationModePanel;
+import interfacedemo.modes.fbd.ui.FBDModePanel;
+import interfacedemo.modes.select.ui.SelectModePanel;
 import interfacedemo.components.BrowsePopupMenu;
 import interfacedemo.applicationbar.ApplicationBar;
 import interfacedemo.applicationbar.ApplicationModePanel;
@@ -43,12 +46,12 @@ public class InterfaceRoot {
     private TopMenuBar menuBar;
     private ApplicationBar applicationBar;
     
-    private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
-    
+    //private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
+    private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private Map<String, BPopupWindow> popupWindows = new HashMap<String, BPopupWindow>();
 
-    public List<ApplicationModePanel> getModePanels() {
-        return modePanels;
+    public List<ApplicationModePanel> getAllModePanels() {
+        return new ArrayList<ApplicationModePanel>(modePanels.values());
     }
 
     public PolledRootNode getBuiNode() {
@@ -71,7 +74,9 @@ public class InterfaceRoot {
         return menuBar;
     }
     
-    
+    public void setModePanel(String panelName) {
+        applicationBar.setModePanel(modePanels.get(panelName));
+    }
 
     public InterfaceRoot(Timer timer, InputHandler input) {
         instance = this;
@@ -106,9 +111,9 @@ public class InterfaceRoot {
     
     // CHANGE THIS TO TAKE MODES FROM EXERCISE???
     protected void createModes() {
-        modePanels.add(new PanelSelectMode());
-        modePanels.add(new PanelFBDMode());
-        modePanels.add(new PanelEquationMode());
+        modePanels.put("select", new SelectModePanel());
+        modePanels.put("fbd", new FBDModePanel());
+        modePanels.put("equation", new EquationModePanel());
     }
     
     protected void createWindows() {
@@ -125,7 +130,7 @@ public class InterfaceRoot {
         applicationBar.pack();
         applicationBar.setLocation(0, 0);
         
-        applicationBar.setModePanel(modePanels.get(0));
+        //applicationBar.setModePanel(modePanels.get(0));
         
         // CREATE POPUP WINDOWS
         DescriptionWindow descriptionWindow = new DescriptionWindow();
