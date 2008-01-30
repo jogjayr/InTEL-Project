@@ -49,6 +49,7 @@ public class ApplicationBar extends BWindow {
         this.modePanel = modePanel;
         mainBar.add(modePanel, BorderLayout.CENTER);
         
+        modePanel.activate();
         modePanel.getTab().setActive(true);
     }
     
@@ -65,7 +66,7 @@ public class ApplicationBar extends BWindow {
         adviceBox = createAdviceBox();
         mainBar.add(adviceBox, BorderLayout.EAST);
 
-        diagramBox = new BContainer(new BorderLayout());
+        diagramBox = createDiagramBox();
         mainBar.add(diagramBox, BorderLayout.WEST);
         // do not yet add the modePanel.
         
@@ -75,6 +76,13 @@ public class ApplicationBar extends BWindow {
         setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);
     }
 
+    private BContainer createDiagramBox() {
+        diagramBox = new BContainer(new BorderLayout());
+        diagramBox.setStyleClass("advice_box"); // this will change.
+        diagramBox.setPreferredSize(100,100);
+        return diagramBox;
+    }
+    
     private HTMLView createAdviceBox() {
         adviceBox = new HTMLView();
         adviceBox.setContents("Help is described here");
@@ -86,10 +94,6 @@ public class ApplicationBar extends BWindow {
     private BContainer createTabBar() {
         
         tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-        
-        //BContainer spacer = new BContainer();
-        //spacer.setPreferredSize(ADVICE_BOX_SIZE, -1);
-        //tabBar.add(spacer);
         
         for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
             

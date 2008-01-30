@@ -18,26 +18,34 @@ import com.jmex.bui.layout.BorderLayout;
  */
 public class SelectModePanel extends ApplicationModePanel {
 
-    BLabel selectionLabel;
     BContainer selectionListBox;
     BButton nextButton;
     
     public SelectModePanel() {
-        super(new BorderLayout());
+        super();
         
-        selectionLabel = new BLabel("Nothing selected");
+        //setStyleClass("advice_box");
+        
+        //selectionLabel = new BLabel("Nothing selected");
         selectionListBox = new BContainer(new BorderLayout());
         nextButton = new BButton("Done");
         
-        add(selectionLabel, BorderLayout.NORTH);
+        //add(selectionLabel, BorderLayout.NORTH);
         add(selectionListBox, BorderLayout.CENTER);
         add(nextButton, BorderLayout.EAST);
+        
     }
 
     @Override
     protected ApplicationTab createTab() {
         return new ApplicationTab("Select");
         // Add listeners for select tab here.
+    }
+
+    @Override
+    public void activate() {
+        
+        getTitleLabel().setText("Nothing Selected");
     }
     
     

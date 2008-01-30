@@ -16,12 +16,18 @@ import com.jmex.bui.layout.BorderLayout;
 public class FBDModePanel extends ApplicationModePanel {
 
     public FBDModePanel() {
-        super(new BorderLayout());
+        super();
     }
 
     @Override
     protected ApplicationTab createTab() {
         return new ApplicationTab("Add Forces");
+    }
+
+    @Override
+    public void activate() {
+        // need to have list of bodies here...
+        getTitleLabel().setText("My Diagram: ");
     }
     
 }

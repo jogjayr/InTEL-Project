@@ -106,7 +106,12 @@ application_popup {
 application_popup_title {
     background: solid #3d449b;
     color: #ffffff;
-    
+}
+
+mode_title {
+    background: solid #aaaaaa;
+    color: #000000;
+    padding: 2;
 }
 
 advice_box {

@@ -18,14 +18,18 @@ import com.jme.util.Timer;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
 import com.jmex.bui.PolledRootNode;
+import com.jmex.bui.util.Dimension;
 import interfacedemo.menu.TopMenuBar;
 import interfacedemo.windows.description.DescriptionWindow;
 import interfacedemo.windows.knownforces.KnownForcesWindow;
 import interfacedemo.windows.knownpoints.KnownPointsWindow;
+import interfacedemo.windows.navigation.Navigation2DWindow;
+import interfacedemo.windows.navigation.NavigationWindow;
 import interfacedemo.windows.selectdiagram.SelectFBDWindow;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,13 +49,16 @@ public class InterfaceRoot {
     
     private TopMenuBar menuBar;
     private ApplicationBar applicationBar;
+    private NavigationWindow navWindow;
+
     
     //private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
+    private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, BPopupWindow> popupWindows = new HashMap<String, BPopupWindow>();
 
     public List<ApplicationModePanel> getAllModePanels() {
-        return new ArrayList<ApplicationModePanel>(modePanels.values());
+        return Collections.unmodifiableList(allModePanels);
     }
 
     public PolledRootNode getBuiNode() {
@@ -100,20 +107,19 @@ public class InterfaceRoot {
 
     public void togglePopup(String action) {
         BPopupWindow popup = popupWindows.get(action);
-        /*if(popup.isVisible()) {
-            //popup.dismiss();
-            popup.setVisible(visible);
-        } else {
-            popup.popup(x, y, above);
-        }*/
         popup.setVisible(!popup.isVisible());
     }
     
     // CHANGE THIS TO TAKE MODES FROM EXERCISE???
     protected void createModes() {
-        modePanels.put("select", new SelectModePanel());
-        modePanels.put("fbd", new FBDModePanel());
-        modePanels.put("equation", new EquationModePanel());
+        addModePanel("select", new SelectModePanel());
+        addModePanel("fbd", new FBDModePanel());
+        addModePanel("equation", new EquationModePanel());
+    }
+    
+    protected void addModePanel(String name, ApplicationModePanel modePanel) {
+        modePanels.put(name, modePanel);
+        allModePanels.add(modePanel);
     }
     
     protected void createWindows() {
@@ -130,24 +136,45 @@ public class InterfaceRoot {
         applicationBar.pack();
         applicationBar.setLocation(0, 0);
         
-        //applicationBar.setModePanel(modePanels.get(0));
+        // CREATE NAVIGATION WINDOW
+        // *** SHOULD DEPEND ON EXERCISE!!!!
+        //navWindow = new Navigation2DWindow();
+        //buiNode.addWindow(navWindow);
+        //navWindow.pack();
+        //navWindow.setLocation(5, applicationBar.getHeight()+5);
+        
+        
+        int displayWidth = DisplaySystem.getDisplaySystem().getWidth();
+        int displayHeight = DisplaySystem.getDisplaySystem().getHeight();
+        Dimension dim;
         
         // CREATE POPUP WINDOWS
         DescriptionWindow descriptionWindow = new DescriptionWindow();
+        descriptionWindow.popup(0, 0, true);
+        dim = descriptionWindow.getPreferredSize(-1, -1);
         popupWindows.put("description", descriptionWindow);
-        descriptionWindow.popup(100, 100, true);
+        descriptionWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-20);
         
         KnownForcesWindow knownForcesWindow = new KnownForcesWindow();
+        knownForcesWindow.popup(0, 0, true);
+        dim = knownForcesWindow.getPreferredSize(-1, -1);
         popupWindows.put("known forces", knownForcesWindow);
-        knownForcesWindow.popup(200, 200, true);
+        knownForcesWindow.setLocation(displayWidth-dim.width-30, displayHeight-dim.height-30);
+        knownForcesWindow.setVisible(false);
         
         KnownPointsWindow knownPointsWindow = new KnownPointsWindow();
+        knownPointsWindow.popup(0, 0, true);
+        dim = knownPointsWindow.getPreferredSize(-1, -1);
         popupWindows.put("point coordinates", knownPointsWindow);
-        knownPointsWindow.popup(300, 300, true);
+        knownPointsWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-200);
+        knownPointsWindow.setVisible(false);
         
         SelectFBDWindow selectFBDWindow = new SelectFBDWindow();
+        selectFBDWindow.popup(0, 0, true);
+        dim = selectFBDWindow.getPreferredSize(-1, -1);
         popupWindows.put("diagrams", selectFBDWindow);
-        selectFBDWindow.popup(400, 400, true);
+        selectFBDWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-300);
+        selectFBDWindow.setVisible(false);
     }
     
     public void setPopupMenu(BrowsePopupMenu popup) {

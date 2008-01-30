@@ -16,12 +16,17 @@ import com.jmex.bui.layout.BorderLayout;
 public class EquationModePanel extends ApplicationModePanel {
 
     public EquationModePanel() {
-        super(new BorderLayout());
+        super();
     }
 
     @Override
     protected ApplicationTab createTab() {
         return new ApplicationTab("Solve");
+    }
+
+    @Override
+    public void activate() {
+        
     }
     
 }
