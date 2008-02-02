@@ -43,6 +43,8 @@ import com.jmex.bui.text.HTMLView;
 import com.jmex.bui.util.Dimension;
 import com.jmex.bui.util.Insets;
 import com.jmex.bui.util.Rectangle;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The basic entity in the BUI user interface system. A hierarchy of components and component
@@ -992,6 +994,11 @@ public class BComponent {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
     }
+    
+    protected List<ComponentListener> getListeners() {
+        return Collections.unmodifiableList(_listeners);
+    }
+    
     protected BContainer _parent;
     protected String _styleClass;
     protected Dimension _preferredSize;

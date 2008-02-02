@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.ui;
 
 import com.jme.input.InputHandler;
@@ -23,6 +22,7 @@ import edu.gatech.statics.ui.menu.TopMenuBar;
 import edu.gatech.statics.ui.windows.description.DescriptionWindow;
 import edu.gatech.statics.ui.windows.knownforces.KnownForcesWindow;
 import edu.gatech.statics.ui.windows.knownpoints.KnownPointsWindow;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
 import java.io.InputStream;
@@ -33,29 +33,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  *
  * @author Calvin Ashmore
  */
 public class InterfaceRoot {
-    
-    private static InterfaceRoot instance;
 
+    private static InterfaceRoot instance;
     private PolledRootNode buiNode;
     private BStyleSheet style;
-    
     private BrowsePopupMenu browsePopupMenu;
-    
     private TopMenuBar menuBar;
     private ApplicationBar applicationBar;
     private NavigationWindow navWindow;
-
-    
-    //private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
+    private Timer timer;
+    private InputHandler input;
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, BPopupWindow> popupWindows = new HashMap<String, BPopupWindow>();
+
+    public InputHandler getInput() {
+        return input;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
 
     public List<ApplicationModePanel> getAllModePanels() {
         return Collections.unmodifiableList(allModePanels);
@@ -80,16 +83,19 @@ public class InterfaceRoot {
     public TopMenuBar getMenuBar() {
         return menuBar;
     }
-    
+
     public void setModePanel(String panelName) {
         applicationBar.setModePanel(modePanels.get(panelName));
     }
 
     public InterfaceRoot(Timer timer, InputHandler input) {
         instance = this;
-        
+
+        this.timer = timer;
+        this.input = input;
+
         buiNode = new PolledRootNode(timer, input);
-        
+
         // load up the default BUI stylesheet
         try {
             InputStream stin = getClass().getClassLoader().
@@ -100,7 +106,7 @@ public class InterfaceRoot {
             e.printStackTrace(System.err);
             System.exit(-1);
         }
-        
+
         createModes();
         createWindows();
     }
@@ -109,99 +115,98 @@ public class InterfaceRoot {
         BPopupWindow popup = popupWindows.get(action);
         popup.setVisible(!popup.isVisible());
     }
-    
+
     // CHANGE THIS TO TAKE MODES FROM EXERCISE???
     protected void createModes() {
         addModePanel("select", new SelectModePanel());
         addModePanel("fbd", new FBDModePanel());
         addModePanel("equation", new EquationModePanel());
     }
-    
+
     protected void addModePanel(String name, ApplicationModePanel modePanel) {
         modePanels.put(name, modePanel);
         allModePanels.add(modePanel);
     }
-    
+
     protected void createWindows() {
-        
         // CREATE MENU BAR
         menuBar = new TopMenuBar();
         buiNode.addWindow(menuBar);
         menuBar.pack();
-        menuBar.setLocation(0, DisplaySystem.getDisplaySystem().getHeight()-menuBar.getHeight());
-        
+        menuBar.setLocation(0, DisplaySystem.getDisplaySystem().getHeight() - menuBar.getHeight());
+
         // CREATE APPLICATION BAR
         applicationBar = new ApplicationBar();
         buiNode.addWindow(applicationBar);
         applicationBar.pack();
         applicationBar.setLocation(0, 0);
-        
+
         // CREATE NAVIGATION WINDOW
         // *** SHOULD DEPEND ON EXERCISE!!!!
-        //navWindow = new Navigation2DWindow();
-        //buiNode.addWindow(navWindow);
-        //navWindow.pack();
-        //navWindow.setLocation(5, applicationBar.getHeight()+5);
-        
-        
+        navWindow = new Navigation3DWindow();
+        buiNode.addWindow(navWindow);
+        navWindow.pack();
+        navWindow.setLocation(5, applicationBar.getHeight() + 5);
+
         int displayWidth = DisplaySystem.getDisplaySystem().getWidth();
         int displayHeight = DisplaySystem.getDisplaySystem().getHeight();
         Dimension dim;
-        
+
         // CREATE POPUP WINDOWS
         DescriptionWindow descriptionWindow = new DescriptionWindow();
         descriptionWindow.popup(0, 0, true);
         dim = descriptionWindow.getPreferredSize(-1, -1);
         popupWindows.put("description", descriptionWindow);
-        descriptionWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-20);
-        
+        descriptionWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 20);
+
         KnownForcesWindow knownForcesWindow = new KnownForcesWindow();
         knownForcesWindow.popup(0, 0, true);
         dim = knownForcesWindow.getPreferredSize(-1, -1);
         popupWindows.put("known forces", knownForcesWindow);
-        knownForcesWindow.setLocation(displayWidth-dim.width-30, displayHeight-dim.height-30);
+        knownForcesWindow.setLocation(displayWidth - dim.width - 30, displayHeight - dim.height - 30);
         knownForcesWindow.setVisible(false);
-        
+
         KnownPointsWindow knownPointsWindow = new KnownPointsWindow();
         knownPointsWindow.popup(0, 0, true);
         dim = knownPointsWindow.getPreferredSize(-1, -1);
         popupWindows.put("point coordinates", knownPointsWindow);
-        knownPointsWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-200);
+        knownPointsWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 200);
         knownPointsWindow.setVisible(false);
-        
+
         SelectFBDWindow selectFBDWindow = new SelectFBDWindow();
         selectFBDWindow.popup(0, 0, true);
         dim = selectFBDWindow.getPreferredSize(-1, -1);
         popupWindows.put("diagrams", selectFBDWindow);
-        selectFBDWindow.setLocation(displayWidth-dim.width-20, displayHeight-dim.height-300);
+        selectFBDWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 300);
         selectFBDWindow.setVisible(false);
     }
-    
+
     public void setPopupMenu(BrowsePopupMenu popup) {
-        if(this.browsePopupMenu != null)
+        if (this.browsePopupMenu != null) {
             clearPopupMenu();
+        }
         this.browsePopupMenu = popup;
     }
-    
+
     public void clearPopupMenu() {
         browsePopupMenu.dismiss();
         browsePopupMenu = null;
     }
-    
+
     protected void checkPopupMenu() {
-        if(browsePopupMenu != null) {
+        if (browsePopupMenu != null) {
             int x = MouseInput.get().getXAbsolute();
             int y = MouseInput.get().getYAbsolute();
-            
-            if(     browsePopupMenu.getHitComponent(x, y) == null &&
+
+            if (browsePopupMenu.getHitComponent(x, y) == null &&
                     //popupMenu.getParentComponent().getHitComponent(x, y) == null)
-                    browsePopupMenu.getParentComponent() != browsePopupMenu.getParentWindow().getHitComponent(x, y))
+                    browsePopupMenu.getParentComponent() != browsePopupMenu.getParentWindow().getHitComponent(x, y)) {
                 clearPopupMenu();
+            }
         }
     }
-    
+
     protected void update() {
         checkPopupMenu();
     }
-    
 }
