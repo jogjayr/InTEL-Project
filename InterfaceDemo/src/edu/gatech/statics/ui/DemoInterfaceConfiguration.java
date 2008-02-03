@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.ui;
 
+import com.jme.math.Vector3f;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
@@ -16,8 +17,10 @@ import edu.gatech.statics.ui.windows.coordinates.SimpleCoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.description.DescriptionWindow;
 import edu.gatech.statics.ui.windows.knownforces.KnownLoadsWindow;
 import edu.gatech.statics.ui.windows.knownpoints.KnownPointsWindow;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,5 +100,23 @@ public class DemoInterfaceConfiguration implements InterfaceConfiguration {
             "real world",
             "schematic"
         });
+    }
+
+    public ViewConstraints createViewConstraints() {
+        ViewConstraints constraints = new ViewConstraints();
+        
+        constraints.setPositionConstraints(-2, 2, -2, 2);
+        constraints.setZoomConstraints(.5f, 2);
+        constraints.setRotationConstraints(-2f, 2f);
+        
+        return constraints;
+    }
+
+    public void setupCameraControl(CameraControl cameraControl) {
+        //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
+        //cameraControl.setRotationCenter(rotationCenter);
+        cameraControl.setCameraFrame(
+                new Vector3f(0,0,-10),
+                new Vector3f(0,0,0));
     }
 }

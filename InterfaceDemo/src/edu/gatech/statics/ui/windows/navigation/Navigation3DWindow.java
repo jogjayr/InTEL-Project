@@ -7,6 +7,8 @@ package edu.gatech.statics.ui.windows.navigation;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.ui.components.RepeatingButton;
 
@@ -27,8 +29,10 @@ public class Navigation3DWindow extends Navigation2DWindow {
         add(main3DContainer,BorderLayout.CENTER);
         main3DContainer.add(getMainContainer(), BorderLayout.CENTER);
         
-        rotateLeft = new RepeatingButton("<","rotateLeft");
-        rotateRight = new RepeatingButton(">","rotateRight");
+        NavigationListener3D navListener = new NavigationListener3D();
+        
+        rotateLeft = new RepeatingButton("<", navListener,"rotateLeft");
+        rotateRight = new RepeatingButton(">", navListener,"rotateRight");
         
         rotateLeft.setPreferredSize(getButtonSize(), 5*getButtonSize()/2);
         rotateRight.setPreferredSize(getButtonSize(), 5*getButtonSize()/2);
@@ -41,5 +45,14 @@ public class Navigation3DWindow extends Navigation2DWindow {
         setPreferredSize(width, height);
     }
 
-    
+    private class NavigationListener3D implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            String action = event.getAction();
+            if(action.equals("rotateLeft"))
+                getCameraControl().rotateCamera(-1, 0);
+            else if(action.equals("rotateRight"))
+                getCameraControl().rotateCamera(1, 0);
+        }
+        
+    }
 }

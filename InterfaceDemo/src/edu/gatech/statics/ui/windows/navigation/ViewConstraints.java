@@ -15,8 +15,8 @@ public class ViewConstraints {
     private float xposMin, yposMin;
     private float yawMax, pitchMax;
     private float yawMin, pitchMin;
-    private float zoomMax;
-    private float zoomMin;
+    private float zoomMax = 1;
+    private float zoomMin = 1;
     
     public void setPositionConstraints(
             float xposMin, float xposMax,

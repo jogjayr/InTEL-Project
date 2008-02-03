@@ -16,24 +16,36 @@ public class CameraControl {
     private Camera camera;
     private ViewConstraints viewConstraints;
 
-    private Vector3f rotationCenter;
-    private float movementSpeed = 1;
+    private float panSpeed = .12f;
+    private float rotateSpeed = .05f;
+    private float zoomSpeed = .02f;
     
     private float xpos, ypos;
     private float yaw, pitch; // yaw corresponds to horizontal rotation, pitch to vertical
-    private float zoom;
+    private float zoom = 1;
     
-    private Vector3f cameraCenter;
-    private Vector3f cameraLookAtCenter;
-    private Vector3f cameraSlideX;
-    private Vector3f cameraSlideY;
+    private Vector3f cameraCenter = Vector3f.UNIT_Z;
+    private Vector3f cameraLookAtCenter = Vector3f.ZERO;
+    private Vector3f cameraSlideX = Vector3f.UNIT_X;
+    private Vector3f cameraSlideY = Vector3f.UNIT_Y;
     
-    public void setRotationCenter(Vector3f rotationCenter) {
-        this.rotationCenter = rotationCenter;
+    public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter) {
+        this.cameraCenter = cameraCenter;
+        this.cameraLookAtCenter = cameraLookAtCenter;
+    }
+    
+    public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter,
+            Vector3f cameraSlideX, Vector3f cameraSlideY) {
+        this.cameraCenter = cameraCenter;
+        this.cameraLookAtCenter = cameraLookAtCenter;
+        this.cameraSlideX = cameraSlideX;
+        this.cameraSlideY = cameraSlideY;
     }
 
-    public void setMovementSpeed(float movementSpeed) {
-        this.movementSpeed = movementSpeed;
+    public void setMovementSpeed(float panSpeed, float zoomSpeed, float rotateSpeed) {
+        this.panSpeed = panSpeed;
+        this.zoomSpeed = zoomSpeed;
+        this.rotateSpeed = rotateSpeed;
     }
     
     public void setInitialState(float xpos, float ypos, float yaw, float pitch, float zoom) {
@@ -50,8 +62,8 @@ public class CameraControl {
     }
     
     public void panCamera(float dx, float dy) {
-        this.xpos += dx * movementSpeed;
-        this.ypos += dy * movementSpeed;
+        this.xpos += dx * panSpeed;
+        this.ypos += dy * panSpeed;
         
         // constrain
         if(xpos < viewConstraints.getXposMin())
@@ -67,8 +79,8 @@ public class CameraControl {
     }
     
     public void rotateCamera(float horizontal, float vertical) {
-        this.yaw += horizontal * movementSpeed;
-        this.pitch += vertical * movementSpeed;
+        this.yaw += horizontal * rotateSpeed;
+        this.pitch += vertical * rotateSpeed;
         
         // perform wrapping
         if(yaw < -Math.PI)
@@ -90,7 +102,7 @@ public class CameraControl {
     }
     
     public void zoomCamera(float amount) {
-        this.zoom += amount * movementSpeed;
+        this.zoom += amount * zoomSpeed;
         
         if(zoom < viewConstraints.getZoomMin())
             zoom = viewConstraints.getZoomMin();
@@ -100,13 +112,13 @@ public class CameraControl {
         updateCamera();
     }
     
-    protected void updateCamera() {
+    public void updateCamera() {
         
         Vector3f cameraDefaultPosVector = cameraCenter.subtract(cameraLookAtCenter);
         float distance = cameraDefaultPosVector.length();
         cameraDefaultPosVector.normalizeLocal();
         Vector3f up = new Vector3f(Vector3f.UNIT_Y);
-        Vector3f cameraDefaultRightVector = cameraDefaultPosVector.cross(up);
+        Vector3f cameraDefaultRightVector = up.cross(cameraDefaultPosVector);
         cameraDefaultRightVector.normalizeLocal();
         
         // newPos = cos(yaw)*cos(pitch)*defaultPos + sin(yaw)*cos(pitch)*right+ sin(pitch)*up + lookAt
@@ -114,7 +126,7 @@ public class CameraControl {
         cameraDefaultRightVector.multLocal((float)(Math.sin(yaw)*Math.cos(pitch)));
         up.multLocal((float)Math.sin(pitch));
         Vector3f newDirection = cameraDefaultPosVector.add(cameraDefaultPosVector).add(cameraDefaultRightVector).add(up);
-        Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom));
+        Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom*distance));
         newDirection.multLocal(-1);
         newDirection.normalize();
         

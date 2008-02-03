@@ -6,6 +6,7 @@ package edu.gatech.statics.ui;
 
 import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
+import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
 import com.jmex.bui.BPopupWindow;
@@ -18,6 +19,7 @@ import edu.gatech.statics.ui.components.DraggablePopupWindow;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.ui.menu.TopMenuBar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,12 +46,16 @@ public class InterfaceRoot {
     private Timer timer;
     private InputHandler input;
     
+    private CameraControl cameraControl;
+    
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, TitledDraggablePopupWindow> popupWindows = new HashMap<String, TitledDraggablePopupWindow>();
     private List<TitledDraggablePopupWindow> allPopupWindows = new ArrayList<TitledDraggablePopupWindow>();
 
     private InterfaceConfiguration configuration;
+    
+    private Camera camera;
     
     public InputHandler getInput() {
         return input;
@@ -97,11 +103,12 @@ public class InterfaceRoot {
      * @param timer
      * @param input
      */
-    public InterfaceRoot(Timer timer, InputHandler input) {
+    public InterfaceRoot(Timer timer, InputHandler input, Camera camera) {
         instance = this;
 
         this.timer = timer;
         this.input = input;
+        this.camera = camera;
 
         buiNode = new PolledRootNode(timer, input);
 
@@ -152,6 +159,11 @@ public class InterfaceRoot {
         navWindow.pack();
         navWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + 5);
 
+        cameraControl = new CameraControl(camera, configuration.createViewConstraints());
+        configuration.setupCameraControl(cameraControl);
+        navWindow.setCameraControl(cameraControl);
+        cameraControl.updateCamera();
+        
         // LOAD COORDINATES WINDOW
         coordinatesWindow = configuration.createCoordinateSystemWindow();
         buiNode.addWindow(coordinatesWindow);
@@ -182,6 +194,8 @@ public class InterfaceRoot {
         // CLEAR NAVIGATION AND COORDINATES
         buiNode.removeWindow(navWindow);
         buiNode.removeWindow(coordinatesWindow);
+        
+        cameraControl = null;
         
         this.configuration = null;
     }

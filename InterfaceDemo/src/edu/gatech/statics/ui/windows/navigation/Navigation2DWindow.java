@@ -74,7 +74,20 @@ public class Navigation2DWindow extends NavigationWindow {
     private class NavigationListener2D implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-
+            String action = event.getAction();
+            
+            if(action.equals("up"))
+                getCameraControl().panCamera(0, 1);
+            else if(action.equals("down"))
+                getCameraControl().panCamera(0, -1);
+            if(action.equals("left"))
+                getCameraControl().panCamera(1, 0);
+            if(action.equals("right"))
+                getCameraControl().panCamera(-1, 0);
+            if(action.equals("zoomIn"))
+                getCameraControl().zoomCamera(-1);
+            if(action.equals("zoomOut"))
+                getCameraControl().zoomCamera(1);
         }
     }
 }

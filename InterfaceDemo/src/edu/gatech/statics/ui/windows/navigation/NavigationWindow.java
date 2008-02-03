@@ -15,6 +15,17 @@ import edu.gatech.statics.ui.InterfaceRoot;
  */
 public class NavigationWindow extends BWindow {
 
+    private CameraControl cameraControl;
+
+    protected CameraControl getCameraControl() {
+        return cameraControl;
+    }
+
+    public void setCameraControl(CameraControl cameraControl) {
+        this.cameraControl = cameraControl;
+    }
+    
+    
     public NavigationWindow() {
         super(InterfaceRoot.getInstance().getStyle(), new BorderLayout());
     }

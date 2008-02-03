@@ -28,7 +28,7 @@ public class DemoGame extends SimpleGame {
         // we don't hide the cursor
         MouseInput.get().setCursorVisible(true);
 
-        iRoot = new InterfaceRoot(timer, input);
+        iRoot = new InterfaceRoot(timer, input, cam);
         iRoot.loadConfiguration(new DemoInterfaceConfiguration());
         //iRoot.setModePanel("select");
         
