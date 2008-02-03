@@ -20,15 +20,15 @@ import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class DemoInterfaceConfiguration extends InterfaceConfiguration {
+public class DemoInterfaceConfiguration implements InterfaceConfiguration {
 
-    @Override
     public List<TitledDraggablePopupWindow> createPopupWindows() {
         List<TitledDraggablePopupWindow> popups = new ArrayList<TitledDraggablePopupWindow>();
 
@@ -70,7 +70,6 @@ public class DemoInterfaceConfiguration extends InterfaceConfiguration {
         return popups;
     }
 
-    @Override
     public List<ApplicationModePanel> createModePanels() {
         List<ApplicationModePanel> r = new ArrayList<ApplicationModePanel>();
         r.add(new SelectModePanel());
@@ -83,13 +82,20 @@ public class DemoInterfaceConfiguration extends InterfaceConfiguration {
         return SelectModePanel.panelName;
     }
 
-    @Override
     public NavigationWindow createNavigationWindow() {
         return new Navigation3DWindow();
     }
 
-    @Override
     public CoordinateSystemWindow createCoordinateSystemWindow() {
         return new SimpleCoordinateSystemWindow();
+    }
+
+    public List<String> getDisplayNames() {
+        return Arrays.asList(new String[] {
+            "measurements",
+            "bones",
+            "real world",
+            "schematic"
+        });
     }
 }

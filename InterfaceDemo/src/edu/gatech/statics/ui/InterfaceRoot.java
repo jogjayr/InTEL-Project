@@ -91,6 +91,12 @@ public class InterfaceRoot {
         applicationBar.setModePanel(modePanels.get(panelName));
     }
 
+    /**
+     * Constructs a new InterfaceRoot, also initializes the buiNode, and adds some windows.
+     * After construction, the buiNode must be added to the rootNode heirarchy.
+     * @param timer
+     * @param input
+     */
     public InterfaceRoot(Timer timer, InputHandler input) {
         instance = this;
 
@@ -110,7 +116,7 @@ public class InterfaceRoot {
             System.exit(-1);
         }
 
-        //createModes();
+        // create base windows that will stick around.
         createWindows();
     }
     
@@ -127,7 +133,10 @@ public class InterfaceRoot {
             popupWindows.put(popup.getName(), popup);
             windowNames.add(popup.getName());
         }
+        
+        // LOAD MENU
         menuBar.setWindowList(windowNames);
+        menuBar.setDisplayList(configuration.getDisplayNames());
         
         // LOAD APPLICATION BAR
         allModePanels.addAll(configuration.createModePanels());
@@ -153,18 +162,24 @@ public class InterfaceRoot {
     
     public void unloadConfiguration() {
         
+        // CLEAR POPUPS
         for (DraggablePopupWindow popup : allPopupWindows) {
             popup.dismiss();
         }
-        menuBar.removeWindows();
         popupWindows.clear();
         allPopupWindows.clear();
         
+        // CLEAR MENU
+        menuBar.removeWindows();
+        menuBar.removeDisplays();
+        
+        // CLEAR APPLICATION BAR
         applicationBar.setModePanel(null);
         applicationBar.removeTabs();
         modePanels.clear();
         allModePanels.clear();
         
+        // CLEAR NAVIGATION AND COORDINATES
         buiNode.removeWindow(navWindow);
         buiNode.removeWindow(coordinatesWindow);
         

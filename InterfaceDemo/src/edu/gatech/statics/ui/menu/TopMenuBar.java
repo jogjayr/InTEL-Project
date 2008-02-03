@@ -25,6 +25,7 @@ public class TopMenuBar extends AppWindow {
     private BContainer menu;
     
     private WindowMenu windowMenu;
+    private DisplayMenu displayMenu;
     
     public void setWindowList(List<String> windows) {
         windowMenu.setWindowList(windows);
@@ -32,6 +33,14 @@ public class TopMenuBar extends AppWindow {
     
     public void removeWindows() {
         windowMenu.removeWindows();
+    }
+    
+    public void setDisplayList(List<String> displays) {
+        displayMenu.setDisplayList(displays);
+    }
+    
+    public void removeDisplays() {
+        displayMenu.removeDisplays();
     }
     
     public TopMenuBar() {
@@ -48,7 +57,7 @@ public class TopMenuBar extends AppWindow {
         add(menu, BorderLayout.CENTER);
         
         menu.add(new ExerciseMenu());
-        menu.add(new ViewMenu());
+        menu.add(displayMenu = new DisplayMenu());
         menu.add(windowMenu = new WindowMenu());
     }
     
@@ -66,19 +75,28 @@ public class TopMenuBar extends AppWindow {
         }
     }
     
-    private class ViewMenu extends TopMenuItem {
+    private class DisplayMenu extends TopMenuItem {
 
-        public ViewMenu() {
-            super("View", TopMenuBar.this);
-            addMenuItem("measurements");
-            addMenuItem("bones");
-            addMenuItem("real world");
-            addMenuItem("schematic");
+        public DisplayMenu() {
+            super("Display", TopMenuBar.this);
+            //addMenuItem("measurements");
+            //addMenuItem("bones");
+            //addMenuItem("real world");
+            //addMenuItem("schematic");
         }
         
         @Override
         protected void onAction(String action) {
             System.out.println(action);
+        }
+        
+        private void removeDisplays() {
+            removeMenuItems();
+        }
+
+        private void setDisplayList(List<String> displays) {
+            for(String displayName : displays)
+                addMenuItem(displayName);
         }
     }
     

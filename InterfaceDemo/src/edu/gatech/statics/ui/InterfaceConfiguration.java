@@ -15,14 +15,14 @@ import java.util.List;
  * from exercise to exercise. 
  * @author Calvin Ashmore
  */
-public abstract class InterfaceConfiguration {
+public abstract interface InterfaceConfiguration {
 
     abstract public List<TitledDraggablePopupWindow> createPopupWindows();
     abstract public List<ApplicationModePanel> createModePanels();
     abstract public NavigationWindow createNavigationWindow();
     abstract public CoordinateSystemWindow createCoordinateSystemWindow();
     
-    // ALSO SHOULD DETERMINE DISPLAY TABS!!!!
+    abstract public List<String> getDisplayNames();
     
     abstract public String getDefaultModePanelName();
 }
