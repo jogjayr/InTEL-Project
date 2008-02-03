@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.ui.windows.knownpoints;
+package edu.gatech.statics.ui.windows.knownforces;
 
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
@@ -12,17 +12,16 @@ import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
  *
  * @author Calvin Ashmore
  */
-public class KnownPointsWindow extends TitledDraggablePopupWindow {
+public class KnownLoadsWindow extends TitledDraggablePopupWindow {
 
-    public static final String windowName = "known points";
+    public static final String windowName = "known loads";
     @Override
     public String getName() {
         return windowName;
     }
     
-    public KnownPointsWindow() {
-        super(new BorderLayout(), "Point Coordinates");
-        
+    public KnownLoadsWindow() {
+        super(new BorderLayout(), "Known Forces");
     }
     
 }

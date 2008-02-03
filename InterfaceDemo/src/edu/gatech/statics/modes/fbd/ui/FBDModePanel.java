@@ -14,6 +14,12 @@ import edu.gatech.statics.ui.applicationbar.ApplicationTab;
  */
 public class FBDModePanel extends ApplicationModePanel {
 
+    public static final String panelName = "addLoads";
+    @Override
+    public String getPanelName() {
+        return panelName;
+    }
+    
     public FBDModePanel() {
         super();
     }

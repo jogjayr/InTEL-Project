@@ -17,7 +17,9 @@ public abstract class ApplicationModePanel extends BContainer {
 
     private ApplicationTab tab;
     private BLabel titleLabel;
-
+    
+    public abstract String getPanelName();
+    
     protected BLabel getTitleLabel() {
         return titleLabel;
     }

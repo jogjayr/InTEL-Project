@@ -11,20 +11,14 @@ import com.jme.util.Timer;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
 import com.jmex.bui.PolledRootNode;
-import com.jmex.bui.util.Dimension;
-import edu.gatech.statics.modes.equation.ui.EquationModePanel;
-import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
-import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.components.BrowsePopupMenu;
+import edu.gatech.statics.ui.menu.BrowsePopupMenu;
+import edu.gatech.statics.ui.components.DraggablePopupWindow;
+import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.ui.menu.TopMenuBar;
-import edu.gatech.statics.ui.windows.description.DescriptionWindow;
-import edu.gatech.statics.ui.windows.knownforces.KnownForcesWindow;
-import edu.gatech.statics.ui.windows.knownpoints.KnownPointsWindow;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
-import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -46,18 +40,27 @@ public class InterfaceRoot {
     private TopMenuBar menuBar;
     private ApplicationBar applicationBar;
     private NavigationWindow navWindow;
+    private CoordinateSystemWindow coordinatesWindow;
     private Timer timer;
     private InputHandler input;
+    
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
-    private Map<String, BPopupWindow> popupWindows = new HashMap<String, BPopupWindow>();
+    private Map<String, TitledDraggablePopupWindow> popupWindows = new HashMap<String, TitledDraggablePopupWindow>();
+    private List<TitledDraggablePopupWindow> allPopupWindows = new ArrayList<TitledDraggablePopupWindow>();
 
+    private InterfaceConfiguration configuration;
+    
     public InputHandler getInput() {
         return input;
     }
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public List<TitledDraggablePopupWindow> getAllPopupWindows() {
+        return allPopupWindows;
     }
 
     public List<ApplicationModePanel> getAllModePanels() {
@@ -107,26 +110,72 @@ public class InterfaceRoot {
             System.exit(-1);
         }
 
-        createModes();
+        //createModes();
         createWindows();
     }
+    
+    
+    public void loadConfiguration(InterfaceConfiguration configuration) {
+        if(this.configuration != null)
+            throw new IllegalStateException("Attempting to load a configuration while existing configuration is loaded");
+        this.configuration = configuration;
 
-    public void togglePopup(String action) {
-        BPopupWindow popup = popupWindows.get(action);
+        // LOAD POPUP WINDOWS
+        List<String> windowNames = new ArrayList<String>();
+        allPopupWindows.addAll(configuration.createPopupWindows());
+        for (TitledDraggablePopupWindow popup : allPopupWindows) {
+            popupWindows.put(popup.getName(), popup);
+            windowNames.add(popup.getName());
+        }
+        menuBar.setWindowList(windowNames);
+        
+        // LOAD APPLICATION BAR
+        allModePanels.addAll(configuration.createModePanels());
+        for(ApplicationModePanel panel : allModePanels) {
+            modePanels.put(panel.getPanelName(), panel);
+        }
+        applicationBar.setTabs(allModePanels);
+        applicationBar.setModePanel(modePanels.get(configuration.getDefaultModePanelName()));
+
+        // LOAD NAVIGATION WINDOW
+        navWindow = configuration.createNavigationWindow();
+        buiNode.addWindow(navWindow);
+        navWindow.pack();
+        navWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + 5);
+
+        // LOAD COORDINATES WINDOW
+        coordinatesWindow = configuration.createCoordinateSystemWindow();
+        buiNode.addWindow(coordinatesWindow);
+        coordinatesWindow.pack();
+        coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT
+                + navWindow.getPreferredSize(-1, -1).height + 10);
+    }
+    
+    public void unloadConfiguration() {
+        
+        for (DraggablePopupWindow popup : allPopupWindows) {
+            popup.dismiss();
+        }
+        menuBar.removeWindows();
+        popupWindows.clear();
+        allPopupWindows.clear();
+        
+        applicationBar.setModePanel(null);
+        applicationBar.removeTabs();
+        modePanels.clear();
+        allModePanels.clear();
+        
+        buiNode.removeWindow(navWindow);
+        buiNode.removeWindow(coordinatesWindow);
+        
+        this.configuration = null;
+    }
+
+    public void togglePopupVisibility(String windowName) {
+        BPopupWindow popup = popupWindows.get(windowName);
         popup.setVisible(!popup.isVisible());
     }
 
-    // CHANGE THIS TO TAKE MODES FROM EXERCISE???
-    protected void createModes() {
-        addModePanel("select", new SelectModePanel());
-        addModePanel("fbd", new FBDModePanel());
-        addModePanel("equation", new EquationModePanel());
-    }
-
-    protected void addModePanel(String name, ApplicationModePanel modePanel) {
-        modePanels.put(name, modePanel);
-        allModePanels.add(modePanel);
-    }
 
     protected void createWindows() {
         // CREATE MENU BAR
@@ -140,60 +189,21 @@ public class InterfaceRoot {
         buiNode.addWindow(applicationBar);
         applicationBar.pack();
         applicationBar.setLocation(0, 0);
-
-        // CREATE NAVIGATION WINDOW
-        // *** SHOULD DEPEND ON EXERCISE!!!!
-        navWindow = new Navigation3DWindow();
-        buiNode.addWindow(navWindow);
-        navWindow.pack();
-        navWindow.setLocation(5, applicationBar.getHeight() + 5);
-
-        int displayWidth = DisplaySystem.getDisplaySystem().getWidth();
-        int displayHeight = DisplaySystem.getDisplaySystem().getHeight();
-        Dimension dim;
-
-        // CREATE POPUP WINDOWS
-        DescriptionWindow descriptionWindow = new DescriptionWindow();
-        descriptionWindow.popup(0, 0, true);
-        dim = descriptionWindow.getPreferredSize(-1, -1);
-        popupWindows.put("description", descriptionWindow);
-        descriptionWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 20);
-
-        KnownForcesWindow knownForcesWindow = new KnownForcesWindow();
-        knownForcesWindow.popup(0, 0, true);
-        dim = knownForcesWindow.getPreferredSize(-1, -1);
-        popupWindows.put("known forces", knownForcesWindow);
-        knownForcesWindow.setLocation(displayWidth - dim.width - 30, displayHeight - dim.height - 30);
-        knownForcesWindow.setVisible(false);
-
-        KnownPointsWindow knownPointsWindow = new KnownPointsWindow();
-        knownPointsWindow.popup(0, 0, true);
-        dim = knownPointsWindow.getPreferredSize(-1, -1);
-        popupWindows.put("point coordinates", knownPointsWindow);
-        knownPointsWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 200);
-        knownPointsWindow.setVisible(false);
-
-        SelectFBDWindow selectFBDWindow = new SelectFBDWindow();
-        selectFBDWindow.popup(0, 0, true);
-        dim = selectFBDWindow.getPreferredSize(-1, -1);
-        popupWindows.put("diagrams", selectFBDWindow);
-        selectFBDWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 300);
-        selectFBDWindow.setVisible(false);
     }
 
-    public void setPopupMenu(BrowsePopupMenu popup) {
+    public void setBrowsePopupMenu(BrowsePopupMenu popup) {
         if (this.browsePopupMenu != null) {
-            clearPopupMenu();
+            clearBrowsePopupMenu();
         }
         this.browsePopupMenu = popup;
     }
 
-    public void clearPopupMenu() {
+    public void clearBrowsePopupMenu() {
         browsePopupMenu.dismiss();
         browsePopupMenu = null;
     }
 
-    protected void checkPopupMenu() {
+    protected void checkBrowsePopupMenu() {
         if (browsePopupMenu != null) {
             int x = MouseInput.get().getXAbsolute();
             int y = MouseInput.get().getYAbsolute();
@@ -201,12 +211,12 @@ public class InterfaceRoot {
             if (browsePopupMenu.getHitComponent(x, y) == null &&
                     //popupMenu.getParentComponent().getHitComponent(x, y) == null)
                     browsePopupMenu.getParentComponent() != browsePopupMenu.getParentWindow().getHitComponent(x, y)) {
-                clearPopupMenu();
+                clearBrowsePopupMenu();
             }
         }
     }
 
     protected void update() {
-        checkPopupMenu();
+        checkBrowsePopupMenu();
     }
 }

@@ -1,4 +1,4 @@
-package edu.gatech.statics.ui.components;
+package edu.gatech.statics.ui.menu;
 
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BMenuItem;

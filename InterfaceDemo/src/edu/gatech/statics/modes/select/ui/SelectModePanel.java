@@ -17,6 +17,12 @@ import edu.gatech.statics.ui.applicationbar.ApplicationTab;
  */
 public class SelectModePanel extends ApplicationModePanel {
 
+    public static final String panelName = "select";
+    @Override
+    public String getPanelName() {
+        return panelName;
+    }
+    
     BContainer selectionListBox;
     BButton nextButton;
     
@@ -46,6 +52,4 @@ public class SelectModePanel extends ApplicationModePanel {
         
         getTitleLabel().setText("Nothing Selected");
     }
-    
-    
 }

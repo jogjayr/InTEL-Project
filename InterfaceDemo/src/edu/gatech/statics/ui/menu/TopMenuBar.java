@@ -11,6 +11,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.ui.AppWindow;
 import edu.gatech.statics.ui.InterfaceRoot;
+import java.util.List;
 
 /**
  * The menu bar manages the menu at the top of the screen: this handles
@@ -22,6 +23,16 @@ public class TopMenuBar extends AppWindow {
     private BLabel title;
     public void setTitleText(String text) {title.setText(text);}
     private BContainer menu;
+    
+    private WindowMenu windowMenu;
+    
+    public void setWindowList(List<String> windows) {
+        windowMenu.setWindowList(windows);
+    }
+    
+    public void removeWindows() {
+        windowMenu.removeWindows();
+    }
     
     public TopMenuBar() {
         //super(GroupLayout.makeHoriz(GroupLayout.CENTER));
@@ -38,7 +49,7 @@ public class TopMenuBar extends AppWindow {
         
         menu.add(new ExerciseMenu());
         menu.add(new ViewMenu());
-        menu.add(new WindowMenu());
+        menu.add(windowMenu = new WindowMenu());
     }
     
     private class ExerciseMenu extends TopMenuItem {
@@ -75,16 +86,25 @@ public class TopMenuBar extends AppWindow {
 
         public WindowMenu() {
             super("Window", TopMenuBar.this);
-            addMenuItem("description");
-            addMenuItem("known forces");
-            addMenuItem("point coordinates");
-            addMenuItem("diagrams");
+            //addMenuItem("description");
+            //addMenuItem("known loads");
+            //addMenuItem("point coordinates");
+            //addMenuItem("diagrams");
         }
         
         @Override
         protected void onAction(String action) {
             //System.out.println(action);
-            InterfaceRoot.getInstance().togglePopup(action);
+            InterfaceRoot.getInstance().togglePopupVisibility(action);
+        }
+
+        private void removeWindows() {
+            removeMenuItems();
+        }
+
+        private void setWindowList(List<String> windows) {
+            for(String windowName : windows)
+                addMenuItem(windowName);
         }
     }
 }

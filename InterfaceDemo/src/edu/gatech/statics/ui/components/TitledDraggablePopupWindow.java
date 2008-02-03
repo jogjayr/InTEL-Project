@@ -21,12 +21,14 @@ import java.io.IOException;
  *
  * @author Calvin Ashmore
  */
-public class TitledDraggablePopupMenu extends DraggablePopupWindow {
+abstract public class TitledDraggablePopupWindow extends DraggablePopupWindow {
 
     private BContainer titleContainer;
     private BContainer contentContainer;
     private BLabel titleLabel;
 
+    abstract public String getName();
+    
     public BLabel getTitleLabel() {
         return titleLabel;
     }
@@ -35,11 +37,11 @@ public class TitledDraggablePopupMenu extends DraggablePopupWindow {
         return contentContainer;
     }
 
-    public TitledDraggablePopupMenu(BLayoutManager layout, String title) {
+    public TitledDraggablePopupWindow(BLayoutManager layout, String title) {
         this(layout, title, true);
     }
 
-    public TitledDraggablePopupMenu(BLayoutManager layout, String title, boolean closable) {
+    public TitledDraggablePopupWindow(BLayoutManager layout, String title, boolean closable) {
         super(InterfaceRoot.getInstance().getMenuBar(), new BorderLayout());
 
         titleContainer = new BContainer(new BorderLayout());
@@ -77,7 +79,7 @@ public class TitledDraggablePopupMenu extends DraggablePopupWindow {
             BButton closeButton = new BButton(closeIcon, new ActionListener() {
             //BButton closeButton = new BButton("X", new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
-                    TitledDraggablePopupMenu.this.setVisible(false);
+                    TitledDraggablePopupWindow.this.setVisible(false);
                 }
             },"");
             titleContainer.add(closeButton, BorderLayout.EAST);

@@ -7,14 +7,20 @@ package edu.gatech.statics.ui.windows.description;
 
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
-import edu.gatech.statics.ui.components.TitledDraggablePopupMenu;
+import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class DescriptionWindow extends TitledDraggablePopupMenu {
+public class DescriptionWindow extends TitledDraggablePopupWindow {
 
+    public static final String windowName = "description";
+    @Override
+    public String getName() {
+        return windowName;
+    }
+    
     private HTMLView description;
     
     public DescriptionWindow() {

@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.ui;
 
-import com.jmex.bui.BWindow;
-import com.jmex.bui.PolledRootNode;
+import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
+import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
+import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
+import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import java.util.List;
 
 /**
@@ -14,15 +15,14 @@ import java.util.List;
  * from exercise to exercise. 
  * @author Calvin Ashmore
  */
-public class InterfaceConfiguration {
+public abstract class InterfaceConfiguration {
+
+    abstract public List<TitledDraggablePopupWindow> createPopupWindows();
+    abstract public List<ApplicationModePanel> createModePanels();
+    abstract public NavigationWindow createNavigationWindow();
+    abstract public CoordinateSystemWindow createCoordinateSystemWindow();
     
-    public List<BWindow> createInterfaceComponents(PolledRootNode buiNode) {
-        
-    }
+    // ALSO SHOULD DETERMINE DISPLAY TABS!!!!
     
-    public List<BWindow> createPopupWindows(PolledRootNode buiNode) {
-        
-    }
-    
-    //also create menus?
+    abstract public String getDefaultModePanelName();
 }

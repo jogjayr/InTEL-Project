@@ -5,15 +5,12 @@
 
 package edu.gatech.statics.ui.windows.selectdiagram;
 
-import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
-import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BScrollPane;
-import com.jmex.bui.BWindow;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import edu.gatech.statics.ui.components.TitledDraggablePopupMenu;
+import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +18,15 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class SelectFBDWindow extends TitledDraggablePopupMenu {
+public class SelectFBDWindow extends TitledDraggablePopupWindow {
 
+    public static final String windowName = "diagrams";
+    @Override
+    public String getName() {
+        return windowName;
+    }
+
+    
     private List<SelectFBDItem> items = new ArrayList<SelectFBDItem>();
     private BContainer mainContainer;
     

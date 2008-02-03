@@ -14,6 +14,12 @@ import edu.gatech.statics.ui.applicationbar.ApplicationTab;
  */
 public class EquationModePanel extends ApplicationModePanel {
 
+    public static final String panelName = "equation";
+    @Override
+    public String getPanelName() {
+        return panelName;
+    }
+    
     public EquationModePanel() {
         super();
     }

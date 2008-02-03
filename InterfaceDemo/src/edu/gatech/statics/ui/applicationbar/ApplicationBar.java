@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ApplicationBar extends BWindow {
     private static final int ADVICE_BOX_SIZE = 200;
-    private static final int APPLICATION_BAR_HEIGHT = 200;
+    public static final int APPLICATION_BAR_HEIGHT = 200;
     
     private List<ApplicationTab> tabs = new ArrayList<ApplicationTab>();
     private BContainer tabBar;
@@ -47,17 +47,20 @@ public class ApplicationBar extends BWindow {
             mainBar.remove(this.modePanel);
         }
         this.modePanel = modePanel;
-        mainBar.add(modePanel, BorderLayout.CENTER);
-        
-        modePanel.activate();
-        modePanel.getTab().setActive(true);
+        if(modePanel != null) {
+            mainBar.add(modePanel, BorderLayout.CENTER);
+
+            modePanel.activate();
+            modePanel.getTab().setActive(true);
+        }
     }
     
     
     public ApplicationBar() {
         super(InterfaceRoot.getInstance().getStyle(), new BorderLayout());
         
-        tabBar = createTabBar();
+        //tabBar = createTabBar();
+        tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
         add(tabBar, BorderLayout.NORTH);
         
         mainBar = new BContainer(new BorderLayout(5, 0));
@@ -90,8 +93,25 @@ public class ApplicationBar extends BWindow {
         adviceBox.setStyleClass("advice_box");
         return adviceBox;
     }
+    
+    public void setTabs(List<ApplicationModePanel> panels) {
+        for (ApplicationModePanel panel : panels) {
+            
+            BContainer spacer = new BContainer();
+            spacer.setPreferredSize(20, -1);
+            tabBar.add(spacer);
+            
+            ApplicationTab tab = panel.getTab();
+            tabBar.add(tab);
+            tabs.add(tab);
+        }
+    }
+    
+    public void removeTabs() {
+        tabBar.removeAll();
+    }
 
-    private BContainer createTabBar() {
+    /*private BContainer createTabBar() {
         
         tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
         
@@ -107,6 +127,6 @@ public class ApplicationBar extends BWindow {
         }
         
         return tabBar;
-    }
+    }*/
     
 }

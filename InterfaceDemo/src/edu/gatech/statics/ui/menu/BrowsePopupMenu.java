@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.ui.components;
+package edu.gatech.statics.ui.menu;
 
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BComponent;

@@ -1,7 +1,7 @@
 package edu.gatech.statics.ui.menu;
 
-import edu.gatech.statics.ui.components.BrowseMenuItem;
-import edu.gatech.statics.ui.components.BrowsePopupMenu;
+import edu.gatech.statics.ui.menu.BrowseMenuItem;
+import edu.gatech.statics.ui.menu.BrowsePopupMenu;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BWindow;
@@ -41,6 +41,10 @@ abstract class TopMenuItem extends BLabel {
     protected void addMenuItem(String text, String action) {
         menuItems.add(new BrowseMenuItem(text, action));
     }
+    
+    protected void removeMenuItems() {
+        menuItems.clear();
+    }
 
     protected void showPopupMenu() {
         final BrowsePopupMenu popup = new BrowsePopupMenu(parent, this, menuItems);
@@ -59,19 +63,7 @@ abstract class TopMenuItem extends BLabel {
             }
         });
         
-        InterfaceRoot.getInstance().setPopupMenu(popup);
-        /*popup.addListener(new MouseAdapter() {
-
-            @Override
-            public void mouseExited(MouseEvent event) {
-                //System.out.println(popup.getHitComponent(event.getX(), event.getY()));
-                if(popup.getHitComponent(event.getX(), event.getY()) == null)
-                    popup.dismiss();
-                    //popup.dismiss();
-                    //Syst
-            }
-        });*/
-        
+        InterfaceRoot.getInstance().setBrowsePopupMenu(popup);
     }
     
     abstract protected void onAction(String action);
