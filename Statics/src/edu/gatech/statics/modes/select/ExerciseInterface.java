@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.exercise;
+package edu.gatech.statics.modes.select;
 
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BWindow;

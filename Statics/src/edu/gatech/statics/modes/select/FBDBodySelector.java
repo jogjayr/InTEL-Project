@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.exercise;
+package edu.gatech.statics.modes.select;
 
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;

@@ -7,12 +7,13 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics;
+package edu.gatech.statics.exercise;
 
+import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.modes.exercise.ExerciseWorld;
+import edu.gatech.statics.modes.select.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;

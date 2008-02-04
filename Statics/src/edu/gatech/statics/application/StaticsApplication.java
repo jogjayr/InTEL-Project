@@ -9,10 +9,10 @@
 
 package edu.gatech.statics.application;
 
-import edu.gatech.statics.Exercise;
+import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
 import edu.gatech.statics.application.ui.AppInterface;
-import edu.gatech.statics.modes.exercise.ExerciseInterface;
+import edu.gatech.statics.modes.select.ExerciseInterface;
 import edu.gatech.statics.modes.fbd.FBDInterface;
 import edu.gatech.statics.application.ui.RootInterface;
 import com.jme.input.AbsoluteMouse;

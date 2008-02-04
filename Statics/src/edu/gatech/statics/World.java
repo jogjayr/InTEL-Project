@@ -12,7 +12,7 @@ package edu.gatech.statics;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import edu.gatech.statics.Exercise;
+import edu.gatech.statics.exercise.Exercise;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;

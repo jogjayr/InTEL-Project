@@ -14,7 +14,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.SimulationObject;
-import edu.gatech.statics.Exercise;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;

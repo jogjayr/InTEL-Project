@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.application;
 
-import edu.gatech.statics.Exercise;
+import edu.gatech.statics.exercise.Exercise;
 
 /**
  *
