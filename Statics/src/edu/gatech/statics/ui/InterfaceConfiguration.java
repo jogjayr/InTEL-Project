@@ -26,7 +26,7 @@ public abstract interface InterfaceConfiguration {
     
     abstract public List<String> getDisplayNames();
     
-    abstract public String getDefaultModePanelName();
+    //abstract public String getDefaultModePanelName();
     
     abstract public ViewConstraints createViewConstraints();
 

@@ -15,6 +15,6 @@ import edu.gatech.statics.*;
  *
  * @author Calvin Ashmore
  */
-public interface SelectableFilter {
+public interface SelectionFilter {
     public boolean canSelect(SimulationObject obj);
 }

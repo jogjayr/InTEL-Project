@@ -81,9 +81,9 @@ public class DemoInterfaceConfiguration implements InterfaceConfiguration {
         return r;
     }
 
-    public String getDefaultModePanelName() {
-        return SelectModePanel.panelName;
-    }
+    //public String getDefaultModePanelName() {
+    //    return SelectModePanel.panelName;
+    //}
 
     public NavigationWindow createNavigationWindow() {
         return new Navigation3DWindow();

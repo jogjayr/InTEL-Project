@@ -11,6 +11,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
 import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
+import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
@@ -93,10 +94,22 @@ public class InterfaceRoot {
         return menuBar;
     }
 
+    /**
+     * Sets the mode interface and controls. Use the string that defines the panel name.
+     * @param panelName
+     */
     public void setModePanel(String panelName) {
         applicationBar.setModePanel(modePanels.get(panelName));
     }
 
+    /**
+     * Sets the text that shows up in the advice window
+     * @param advice
+     */
+    public void setAdvice(String advice) {
+        applicationBar.setAdvice(advice);
+    }
+    
     /**
      * Constructs a new InterfaceRoot, also initializes the buiNode, and adds some windows.
      * After construction, the buiNode must be added to the rootNode heirarchy.
@@ -243,6 +256,15 @@ public class InterfaceRoot {
                 clearBrowsePopupMenu();
             }
         }
+    }
+    
+    public boolean hasMouse() {
+        int x = MouseInput.get().getXAbsolute();
+        int y = MouseInput.get().getYAbsolute();
+        for(BWindow window : buiNode.getWindows())
+            if(window.getHitComponent(x, y) != null || window.isModal())
+                return true;
+        return false;
     }
 
     protected void update() {

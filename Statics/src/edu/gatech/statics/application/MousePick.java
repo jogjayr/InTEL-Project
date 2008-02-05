@@ -47,6 +47,7 @@ import com.jme.renderer.Camera;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import edu.gatech.statics.World;
+import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,14 +123,13 @@ public class MousePick extends MouseInputAction {
                     if(!obj.isSelectable())
                         continue;
                     
-                    if(     StaticsApplication.getApp().getCurrentWorld() != null &&
-                            StaticsApplication.getApp().getCurrentWorld().getSelectableFilter() != null &&
-                            !StaticsApplication.getApp().getCurrentWorld().getSelectableFilter().canSelect(obj))
+                    if(     StaticsApplication.getApp().getSelectionFilter() != null &&
+                            !StaticsApplication.getApp().getSelectionFilter().canSelect(obj))
                         continue;
                     
                     hover(obj);
                     if(isClicking) {
-                        select(obj);
+                        click(obj);
                         //toastCondition1 = true;
                     }
                 }
@@ -137,7 +137,7 @@ public class MousePick extends MouseInputAction {
         } else {
             hover(null);
             if(isClicking)
-                select(null);
+                click(null);
         }
     }
     
@@ -152,6 +152,15 @@ public class MousePick extends MouseInputAction {
         return null;
     }
     
-    public void hover(SimulationObject obj) {}
-    public void select(SimulationObject obj) {}
+    public void hover(SimulationObject obj) {
+        // check to see that the mouse is free first
+        if(!InterfaceRoot.getInstance().hasMouse())
+            StaticsApplication.getApp().getSelectionListener().onHover(obj);
+    }
+    
+    public void click(SimulationObject obj) {
+        // check to see that the mouse is free first
+        if(!InterfaceRoot.getInstance().hasMouse())
+            StaticsApplication.getApp().getSelectionListener().onClick(obj);
+    }
 }

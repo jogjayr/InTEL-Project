@@ -37,6 +37,10 @@ public class ApplicationBar extends BWindow {
     // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???
     // MAYBE MOVE THESE INTO ApplicationModePanel
 
+    public void setAdvice(String advice) {
+        adviceBox.setContents(advice);
+    }
+    
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }

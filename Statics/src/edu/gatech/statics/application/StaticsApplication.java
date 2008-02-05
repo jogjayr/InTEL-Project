@@ -11,10 +11,7 @@ package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
-import edu.gatech.statics.application.ui.AppInterface;
-import edu.gatech.statics.modes.select.ExerciseInterface;
 import edu.gatech.statics.modes.fbd.FBDInterface;
-import edu.gatech.statics.application.ui.RootInterface;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
@@ -29,17 +26,15 @@ import com.jme.util.GameTaskQueueManager;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jmex.bui.BRootNode;
-import com.jmex.bui.BStyleSheet;
 import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.modes.fbd.FBDWorld;
-import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
-import edu.gatech.statics.modes.equation.EquationInterface;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.util.SelectionFilter;
+import edu.gatech.statics.util.SelectionListener;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -63,17 +58,18 @@ public class StaticsApplication {
     private World currentWorld;
     
     private PolledRootNode labelNode;
-    private RootInterface rootInterface;
-    private AppInterface currentInterface;
-    private BStyleSheet buiStyle;
-    public BStyleSheet getBuiStyle() {return buiStyle;}
+    private InterfaceRoot iRoot;
+    //private RootInterface rootInterface;
+    //private AppInterface currentInterface;
+    //private BStyleSheet buiStyle;
+    //public BStyleSheet getBuiStyle() {return buiStyle;}
     
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
     
-    public RootInterface getRootInterface() {return rootInterface;}
-    public AppInterface getCurrentInterface() {return currentInterface;}
+    //public RootInterface getRootInterface() {return rootInterface;}
+    //public AppInterface getCurrentInterface() {return currentInterface;}
     
-    public void setModal(BRootNode modalNode, boolean modal) {
+    /*public void setModal(BRootNode modalNode, boolean modal) {
         if(modal) {
             rootInterface.getBuiNode().setEnabled( rootInterface.getBuiNode() == modalNode );
             currentInterface.getBuiNode().setEnabled( currentInterface.getBuiNode() == modalNode );
@@ -87,9 +83,14 @@ public class StaticsApplication {
             
             enableSelection(true);
         }
-    }
+    }*/
     
-    private boolean selectionEnabled = true;
+    private SelectionFilter selectionFilter;
+    SelectionFilter getSelectionFilter() {return selectionFilter;}
+    private SelectionListener selectionListener;
+    SelectionListener getSelectionListener() {return selectionListener;}
+    
+    //private boolean selectionEnabled = true;
     private boolean hideGrays = true;
     private MousePick selector;
     
@@ -106,8 +107,8 @@ public class StaticsApplication {
     //public void setWorldScale(float drawScale) {this.worldScale = drawScale;}
     
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
-    public void setAdvice(String advice) {rootInterface.setAdvice(advice);}
-    public void resetAdvice() {rootInterface.setAdvice(defaultAdvice);}
+    public void setAdvice(String advice) {iRoot.setAdvice(advice);}
+    public void resetAdvice() {iRoot.setAdvice(defaultAdvice);}
     public void setDefaultAdvice(String advice) {defaultAdvice = advice;}
     
     //public UnitUtils getUnits() {
@@ -119,7 +120,7 @@ public class StaticsApplication {
     public AbsoluteMouse getMouse() {return mouse;}
     
     private InputHandler input;
-    public InputHandler getInput() {return input;}
+    //public InputHandler getInput() {return input;}
     
     private Timer timer;
     public Timer getTimer() {return timer;}
@@ -147,7 +148,7 @@ public class StaticsApplication {
         this.currentWorld = world;
         currentWorld.activate();
         //currentWorld.updateNodes();
-        rootInterface.update();
+        //rootInterface.update();
     }
     
     public World getCurrentWorld() {return currentWorld;}
@@ -207,10 +208,12 @@ public class StaticsApplication {
                 currentExercise.finishExercise();
         }
         
-        if(currentInterface != null)
-            currentInterface.getBuiNode().updateGeometricState(0,true);
-        if(rootInterface != null)
-            rootInterface.getBuiNode().updateGeometricState(0, true);
+        if(iRoot != null)
+            iRoot.getBuiNode().updateGeometricState(0, true);
+        //if(currentInterface != null)
+        //    currentInterface.getBuiNode().updateGeometricState(0,true);
+        //if(rootInterface != null)
+        //    rootInterface.getBuiNode().updateGeometricState(0, true);
         labelNode.updateGeometricState(0, true);
     }
     
@@ -255,8 +258,9 @@ public class StaticsApplication {
         
         // Render UI
         r.draw(labelNode);
-        r.draw(rootInterface.getBuiNode());
-        r.draw(currentInterface.getBuiNode());
+        r.draw(iRoot.getBuiNode());
+        //r.draw(rootInterface.getBuiNode());
+        //r.draw(currentInterface.getBuiNode());
         r.renderQueue();
         r.clearQueue();
         
@@ -296,18 +300,19 @@ public class StaticsApplication {
         
         timer = Timer.getTimer();
         
-        try {
+        /*try {
             InputStream stin = getClass().getClassLoader().getResourceAsStream("style.bss");
             buiStyle = new BStyleSheet(new InputStreamReader(stin), new BStyleSheet.DefaultResourceProvider());
         } catch (Exception e) {
             e.printStackTrace(System.err);
-        }
+        }*/
         
         mouse = new AbsoluteMouse("Mouse Input", display.getWidth(), display.getHeight());
         mouse.registerWithInputHandler(input);
         MouseInput.get().setCursorVisible(true);
         
-        rootInterface = new RootInterface();
+        iRoot = new InterfaceRoot(timer, input, camera);
+        //rootInterface = new RootInterface();
         labelNode = new PolledRootNode(timer, input);
         
         camera = display.getRenderer().createCamera( display.getWidth(), display.getHeight() );
@@ -324,7 +329,7 @@ public class StaticsApplication {
         display.getRenderer().setCamera(camera);
         //display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         
-        selector = new MousePick(this) {
+        selector = new MousePick(this);/* {
             public void hover(SimulationObject obj) {
                 if(isSelectionOkay())
                     StaticsApplication.this.hover(obj);
@@ -333,14 +338,14 @@ public class StaticsApplication {
                 if(isSelectionOkay())
                     StaticsApplication.this.select(obj);
             }
-        };
+        };*/
         input.addAction(selector);
         
         // load exercise here
         getExercise().loadExercise();
         loadExercizeWorld();
         
-        rootInterface.showDescription();
+        //rootInterface.showDescription();
         
         getExercise().postLoadExercise();
     }
@@ -350,32 +355,32 @@ public class StaticsApplication {
         return labelNode;
     }
     
-    private void setCurrentInterface(AppInterface newInterface) {
+    /*private void setCurrentInterface(AppInterface newInterface) {
         
         if(currentInterface != null)
             currentInterface.dispose();
         
         currentInterface = newInterface;
         currentInterface.activate();
-    }
+    }*/
     
     public void loadFBD(FBDWorld fbd) {
-        select(null);
-        hover(null);
+        //select(null);
+       // hover(null);
         
         setCurrentWorld(fbd);
         FBDInterface fbdInterface = new FBDInterface(fbd);
-        setCurrentInterface(fbdInterface);
+        //setCurrentInterface(fbdInterface);
     }
     
     public void loadExercizeWorld() {
         setCurrentWorld(currentExercise.getWorld());
-        setCurrentInterface(new ExerciseInterface());
+        //setCurrentInterface(new ExerciseInterface());
     }
 
     public void loadEquation(FBDWorld fbd) {
         setCurrentWorld(fbd.getEquationWorld());
-        setCurrentInterface(new EquationInterface(fbd.getEquationWorld()));
+        //setCurrentInterface(new EquationInterface(fbd.getEquationWorld()));
     }
     
     public boolean isHidingGrays() {return hideGrays;}
@@ -386,27 +391,16 @@ public class StaticsApplication {
         }
     }
     
-    /**
-     * selection is okay if the mouse is not over one of the interface windows.
-     * Check both interface layers and return.
-     */
-    private boolean isSelectionOkay() {
-        return selectionEnabled &&
-                !(
-                (currentInterface == null ? false : currentInterface.hasMouse()) ||
-                (rootInterface == null ? false : rootInterface.hasMouse())
-                );
-    }
-    
+    /*
     public void enableSelection(boolean enabled) {
         selectionEnabled = enabled;
         if(!selectionEnabled) {
             hover(null);
             select(null);
         }
-    }
+    }*/
     
-    public void hover(SimulationObject obj) {
+    /*public void hover(SimulationObject obj) {
         if(currentWorld != null)
             currentWorld.hover(obj);
     }
@@ -414,7 +408,7 @@ public class StaticsApplication {
     public void select(SimulationObject obj) {
         if(currentWorld != null)
             currentWorld.click(obj);
-    }
+    }*/
     
     void cleanup() {
         //Logger.getLogger().log( Level.INFO, "Cleaning up resources." );
@@ -437,7 +431,7 @@ public class StaticsApplication {
         finished = true;
         currentExercise = null;
         currentWorld = null;
-        currentInterface = null;
+        //currentInterface = null;
         currentTool = null;
         cleanup();
         app = null;

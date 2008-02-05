@@ -18,8 +18,6 @@ import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
-import edu.gatech.statics.util.SelectableFilter;
-import edu.gatech.statics.util.SelectionListener;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
@@ -82,15 +80,15 @@ public class World {
         return r;
     }
     
-    private SelectableFilter filter;
-    public void setSelectableFilter(SelectableFilter filter) {this.filter = filter;}
-    public SelectableFilter getSelectableFilter() {return filter;}
+    //private SelectableFilter filter;
+    //public void setSelectableFilter(SelectableFilter filter) {this.filter = filter;}
+    //public SelectableFilter getSelectableFilter() {return filter;}
     
     // OVERRIDE for modes where selection is enabled by default
-    public void setSelectableFilterDefault() {this.filter = null;}
+    //public void setSelectableFilterDefault() {this.filter = null;}
     
-    private List<SimulationObject> selectedObjects = new ArrayList<SimulationObject>();
-    public List<SimulationObject> getSelectedObjects() {return selectedObjects;}
+    //private List<SimulationObject> selectedObjects = new ArrayList<SimulationObject>();
+    //public List<SimulationObject> getSelectedObjects() {return selectedObjects;}
     
     //private SimulationObject selected = null;
     //public SimulationObject getSelected() {return selected;}
@@ -127,7 +125,7 @@ public class World {
     
     /** Creates a new instance of World */
     public World() {
-        setSelectableFilterDefault();
+        //setSelectableFilterDefault();
     }
     
     private boolean nodesUpdated = false;
@@ -213,7 +211,7 @@ public class World {
     
     public void hover(SimulationObject obj) {
         
-        for(SelectionListener listener : selectionListeners)
+        /*for(SelectionListener listener : selectionListeners)
             listener.onHover(obj);
         
         // first, clear all highlights
@@ -227,11 +225,11 @@ public class World {
                 obj.isSelectable() &&
                 filter.canSelect(obj)) {
             obj.setDisplayHighlight(true);
-        }
+        }*/
     }
     
     public void click(SimulationObject obj) {
-        
+        /*
         // special things may happen depending on mode?
         // certain objects may be defined as selectable, etc.
         
@@ -267,9 +265,10 @@ public class World {
                 }
             }
         }
+         * */
     }
     
-    public void select(SimulationObject obj) {
+    /*public void select(SimulationObject obj) {
         
         //System.out.println("Selecting...");
         
@@ -294,10 +293,10 @@ public class World {
             obj.setDisplaySelected(false);
             obj.enableManipulators(false);
         }
-    }
+    }*/
     
     public void activate() {
-        setSelectableFilterDefault();
+        //setSelectableFilterDefault();
         invalidateNodes();
         StaticsApplication.getApp().setCurrentTool(null);
     }

@@ -12,6 +12,7 @@ package edu.gatech.statics.exercise;
 import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
+import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.select.ExerciseWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
@@ -30,11 +31,9 @@ public abstract class Exercise {
     // informational collection of world and diagram objects
     // meant to control functional aspect of exercize, not graphical or engine related
     
-    //private UnitUtils units = new UnitUtils();
-    //public void setUnits(UnitUtils units) {this.units = units;}
-    //public UnitUtils getUnits() {return units;}
+    abstract public Mode getStartingMode();
     
-    abstract public Mode getFirstMode();
+    abstract public UnitUtils getUnitUtils();
     
     private List<Task> tasks = new ArrayList<Task>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();

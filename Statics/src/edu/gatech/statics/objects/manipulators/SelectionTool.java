@@ -11,7 +11,7 @@ package edu.gatech.statics.objects.manipulators;
 
 import edu.gatech.statics.SimulationObject;
 import edu.gatech.statics.World;
-import edu.gatech.statics.util.SelectableFilter;
+import edu.gatech.statics.util.SelectionFilter;
 import edu.gatech.statics.util.SelectionListener;
 
 /**
@@ -31,7 +31,7 @@ public class SelectionTool extends Tool implements SelectionListener {
     }
     
     protected void onActivate() {
-        world.setSelectableFilter(new SelectableFilter() {
+        world.setSelectableFilter(new SelectionFilter() {
             public boolean canSelect(SimulationObject obj) {
                 return selectionClass.isAssignableFrom( obj.getClass() );
             }
@@ -54,7 +54,6 @@ public class SelectionTool extends Tool implements SelectionListener {
 
     // do nothing for now, but overriding classes may find these useful
     public void onClick(SimulationObject obj) {}
-    public void onSelect(SimulationObject obj) {}
     public void onHover(SimulationObject obj) {}
     
 }

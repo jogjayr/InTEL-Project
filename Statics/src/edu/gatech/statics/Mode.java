@@ -9,7 +9,9 @@ package edu.gatech.statics;
  *
  * @author Calvin Ashmore
  */
-public class Mode {
+public abstract class Mode {
     
+    public void postLoad() {}
     
+    abstract public String getModePanelName();
 }

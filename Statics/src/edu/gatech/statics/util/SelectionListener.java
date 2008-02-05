@@ -17,6 +17,6 @@ import edu.gatech.statics.SimulationObject;
  */
 public interface SelectionListener {
     public void onClick(SimulationObject obj);
-    public void onSelect(SimulationObject obj);
+    //public void onSelect(SimulationObject obj);
     public void onHover(SimulationObject obj);
 }
