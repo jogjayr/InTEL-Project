@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.modes.select;
 
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.fbd.FBDWorld;
@@ -19,10 +20,10 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class ExerciseWorld extends World {
+public class SelectionWorld extends World {
     
     /** Creates a new instance of ExercizeWorld */
-    public ExerciseWorld() {
+    public SelectionWorld() {
     }
 
     public FBDWorld constructFBD(List<Body> bodies) {
@@ -42,7 +43,7 @@ public class ExerciseWorld extends World {
     }
 
     public void add(SimulationObject obj) {
-        obj.setGiven(true);
+        //obj.setGiven(true);
         super.add(obj);
         
         if(obj instanceof Body) {

@@ -21,7 +21,7 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.application.ui.ModalPopupWindow;

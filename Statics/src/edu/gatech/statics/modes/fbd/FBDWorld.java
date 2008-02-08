@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.modes.fbd;
 
+import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.*;

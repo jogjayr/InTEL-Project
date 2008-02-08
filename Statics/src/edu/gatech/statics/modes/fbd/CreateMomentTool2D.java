@@ -13,7 +13,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.util.ClickListener;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;

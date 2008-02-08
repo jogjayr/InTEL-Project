@@ -9,6 +9,7 @@
 
 package edu.gatech.statics;
 
+import edu.gatech.statics.objects.SimulationObject;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.MaterialState;

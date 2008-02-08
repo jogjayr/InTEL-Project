@@ -13,7 +13,7 @@ import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.util.ClickListener;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
     private SimType target;
     public SimType getTarget() {return target;}
     
-    protected List<ClickListener> clickListeners = new ArrayList();
+    /*protected List<ClickListener> clickListeners = new ArrayList();
     public void addClickListener(ClickListener listener) {
         clickListeners.add(listener);
     }
@@ -48,7 +48,7 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
                 listener.onMousePress(this);
             else
                 listener.onMouseRelease(this);
-    }
+    }*/
     
     public void setEnabledGlobally(boolean enabled) {
         if(enabled)
@@ -77,10 +77,10 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
     public Manipulator(SimType target) {
         this.target = target;
         
-        addAction(new ClickAction());
+        //addAction(new ClickAction());
     }
     
-    private class ClickAction extends MouseInputAction {
+    /*private class ClickAction extends MouseInputAction {
         
         boolean buttonWasDown;
         
@@ -98,5 +98,5 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
             
             buttonWasDown = buttonIsDown;
         }
-    }
+    }*/
 }

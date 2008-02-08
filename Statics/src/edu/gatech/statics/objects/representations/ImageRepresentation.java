@@ -19,7 +19,7 @@ import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 
 /**
  *

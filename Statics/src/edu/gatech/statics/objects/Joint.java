@@ -11,7 +11,7 @@ package edu.gatech.statics.objects;
 
 import edu.gatech.statics.math.Vector;
 import com.jme.math.Vector3f;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.modes.fbd.LabelManipulator;
 import java.util.ArrayList;
 import java.util.Collections;

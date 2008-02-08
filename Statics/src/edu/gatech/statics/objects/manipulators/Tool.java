@@ -43,6 +43,9 @@ abstract public class Tool extends InputHandler {
         addAction(inputInterface, "escape", KeyInput.KEY_ESCAPE, false);
     }
     
+    protected void onHover() {}
+    protected void onClick() {}
+    
     /** called whenever the user presses RETURN or ENTER */
     protected void onKeyOK() {}
     
@@ -60,7 +63,7 @@ abstract public class Tool extends InputHandler {
     public final void activate() {
         active = true;
         StaticsApplication.getApp().setCurrentTool(this);
-        StaticsApplication.getApp().getInput().addToAttachedHandlers(this);
+        //StaticsApplication.getApp().getInput().addToAttachedHandlers(this);
         onActivate();
         setEnabled(true);
     }
@@ -72,14 +75,15 @@ abstract public class Tool extends InputHandler {
     
     public final void finish() {
         setEnabled(false);
+        active = false;
+        StaticsApplication.getApp().setCurrentTool(null);
         StaticsApplication.getApp().resetAdvice();
         
-        StaticsApplication.getApp().getInput().removeFromAttachedHandlers(this);
+        //StaticsApplication.getApp().getInput().removeFromAttachedHandlers(this);
         onFinish();
         for(ToolFinishListener listener : finishListeners)
             listener.finished();
         
-        active = false;
     }
     
 }

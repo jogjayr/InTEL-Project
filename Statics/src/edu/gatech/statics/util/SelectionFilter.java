@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.util;
 
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.*;
 
 /**

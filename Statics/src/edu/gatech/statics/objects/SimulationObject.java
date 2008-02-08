@@ -7,11 +7,11 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics;
+package edu.gatech.statics.objects;
 
+import edu.gatech.statics.*;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
-import edu.gatech.statics.objects.manipulators.Manipulator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

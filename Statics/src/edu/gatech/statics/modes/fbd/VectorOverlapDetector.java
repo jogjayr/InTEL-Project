@@ -9,7 +9,7 @@
 package edu.gatech.statics.modes.fbd;
 
 import com.jme.math.Vector3f;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.objects.VectorListener;
 import edu.gatech.statics.objects.VectorObject;

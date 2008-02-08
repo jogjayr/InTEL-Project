@@ -9,6 +9,7 @@
 
 package edu.gatech.statics;
 
+import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;

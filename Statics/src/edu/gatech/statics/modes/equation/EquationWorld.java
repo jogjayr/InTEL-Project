@@ -13,7 +13,7 @@ import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;

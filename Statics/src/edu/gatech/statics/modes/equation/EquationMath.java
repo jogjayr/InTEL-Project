@@ -9,7 +9,7 @@
 package edu.gatech.statics.modes.equation;
 
 import com.jme.math.Vector3f;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.parser.Parser;

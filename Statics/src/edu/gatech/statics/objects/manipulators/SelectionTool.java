@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.objects.manipulators;
 
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.World;
 import edu.gatech.statics.util.SelectionFilter;
 import edu.gatech.statics.util.SelectionListener;

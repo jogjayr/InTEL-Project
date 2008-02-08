@@ -14,7 +14,7 @@ import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.modes.select.ExerciseWorld;
+import edu.gatech.statics.modes.select.SelectionWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
@@ -75,14 +75,14 @@ public abstract class Exercise {
     }
     public void setDescription(String description) {this.description = description;}
     
-    private ExerciseWorld world;
+    private SelectionWorld world;
     private List<FBDWorld> diagrams = new ArrayList<FBDWorld>();
     
-    public ExerciseWorld getWorld() {return world;}
+    public SelectionWorld getWorld() {return world;}
     public List<FBDWorld> getDiagrams() {return Collections.unmodifiableList(diagrams);}
     
     /** Creates a new instance of Exercize */
-    public Exercise(ExerciseWorld world) {
+    public Exercise(SelectionWorld world) {
         this.world = world;
         world.setExercise(this);
     }
@@ -114,7 +114,8 @@ public abstract class Exercise {
     
     /**
      * This tests if each task is satisfied.
-     * For tasks that are satisfied, the task listeners are triggered
+     * For tasks that are satisfied, the task listeners are triggered.
+     * Also calls finishExercise() if the exercise is solved but not finished yet.
      * @return true if tasks are satisfied
      */
     public boolean testExerciseSolved() {
@@ -128,12 +129,15 @@ public abstract class Exercise {
                     listener.taskSatisfied(task);
             }
         }
+        if(satisfied && !isExerciseFinished())
+            finishExercise();
+        
         return satisfied;
     }
     
     private boolean finished = false;
     public boolean isExerciseFinished() {return finished;}
-    public void finishExercise() {finished = true;}
+    protected void finishExercise() {finished = true;}
     
     // some utility functions
     

@@ -10,7 +10,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import java.util.ArrayList;

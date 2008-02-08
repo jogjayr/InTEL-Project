@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.modes.equation;
 
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.SelectionTool;

@@ -10,7 +10,7 @@
 package edu.gatech.statics.objects.manipulators;
 
 import com.jme.math.Vector3f;
-import edu.gatech.statics.SimulationObject;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SnapListener;
 import java.util.ArrayList;
 import java.util.List;
