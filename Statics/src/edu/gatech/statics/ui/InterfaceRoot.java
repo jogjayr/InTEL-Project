@@ -164,7 +164,8 @@ public class InterfaceRoot {
             modePanels.put(panel.getPanelName(), panel);
         }
         applicationBar.setTabs(allModePanels);
-        applicationBar.setModePanel(modePanels.get(configuration.getDefaultModePanelName()));
+        // ** REMEMBER TO DO THIS LATER
+        //applicationBar.setModePanel(modePanels.get(configuration.getDefaultModePanelName()));
 
         // LOAD NAVIGATION WINDOW
         navWindow = configuration.createNavigationWindow();

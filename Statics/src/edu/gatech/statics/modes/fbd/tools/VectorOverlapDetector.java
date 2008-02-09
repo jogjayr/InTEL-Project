@@ -6,11 +6,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.fbd;
+package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.VectorListener;
 import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import java.util.List;
 class VectorOverlapDetector implements VectorListener {
 
     private VectorObject myVector;
-    private World world;
+    private Diagram world;
 
-    public VectorOverlapDetector(World world, VectorObject vector) {
+    public VectorOverlapDetector(Diagram world, VectorObject vector) {
         this.myVector = vector;
         this.world = world;
     }

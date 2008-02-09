@@ -8,12 +8,15 @@
  */
 package edu.gatech.statics.modes.fbd;
 
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.application.ui.FBDIcon;
+//import edu.gatech.statics.application.ui.FBDIcon;
+import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.modes.equation.EquationWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -21,9 +24,8 @@ import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.VectorObject;
-import edu.gatech.statics.objects.manipulators.DeletableManipulator;
-import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
-import edu.gatech.statics.util.SelectableFilter;
+//import edu.gatech.statics.objects.manipulators.DeletableManipulator;
+//import edu.gatech.statics.util.SelectableFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,25 +36,25 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class FBDWorld extends World {
+public class FBDWorld extends SubDiagram {
 
-    private EquationWorld equation;
-    private boolean locked = false;
+    //private EquationWorld equation;
+    private boolean solved = false;
 
-    boolean isLocked() {
-        return locked;
+    public boolean isSolved() {
+        return solved;
     }
 
     void reset() {
-        removeAllObjects();
+        //removeAllObjects();
         externalForces.clear();
-        setupObjects();
+        //setupObjects();
     }
 
-    void setLocked() {
-        locked = true;
-        enableManipulatorsOnSelectDefault(false);
-        enableSelectMultipleDefault(false);
+    void setSolved() {
+        solved = true;
+        //enableManipulatorsOnSelectDefault(false);
+        //enableSelectMultipleDefault(false);
 
         for (SimulationObject obj : allObjects()) {
             if (!(obj instanceof VectorObject)) {
@@ -65,7 +67,7 @@ public class FBDWorld extends World {
             // otherwise enable it to be moved around
             //v.setFixed(true);
 
-            DeletableManipulator deleteManipulator = (DeletableManipulator) v.getManipulator(DeletableManipulator.class);
+            /*DeletableManipulator deleteManipulator = (DeletableManipulator) v.getManipulator(DeletableManipulator.class);
             if (deleteManipulator != null) {
                 obj.removeManipulator(deleteManipulator);
             }
@@ -78,7 +80,7 @@ public class FBDWorld extends World {
             LabelManipulator labelManipulator = (LabelManipulator) v.getManipulator(LabelManipulator.class);
             if (labelManipulator != null) {
                 labelManipulator.enableLabeling(false);
-            }
+            }*/
         //obj.removeManipulator(labelManipulator);
         }
 
@@ -88,39 +90,38 @@ public class FBDWorld extends World {
 
         StaticsApplication.getApp().resetAdvice();
     }
-    private World parentWorld;
-    private List<Body> observedBodies;
+    //private Diagram parentWorld;
+    //private List<Body> observedBodies;
 
-    public List<Body> getObservedBodies() {
-        return Collections.unmodifiableList(observedBodies);
-    }
+    //public List<Body> getObservedBodies() {
+    //    return Collections.unmodifiableList(observedBodies);
+    //}
     private List<Vector> externalForces = new ArrayList<Vector>();
     //private List<Vector> externalForcesAdded = new ArrayList();
     //private List<SimulationObject> fbdObjects = new ArrayList();
-    public EquationWorld getEquationWorld() {
-        return equation;
-    }
+    //public EquationWorld getEquationWorld() {
+    //    return equation;
+    //}
 
-    public void createEquationWorld() {
-        equation = new EquationWorld(this);
-    }
+    //public void createEquationWorld() {
+    //    equation = new EquationWorld(this);
+    //}
 
     /** Creates a new instance of FBDWorld */
-    public FBDWorld(World parentWorld, List<Body> bodies) {
-        assert bodies != null : "Bodies cannot be null in constructing FBD!";
-        assert !bodies.isEmpty() : "Bodies cannot be empty in constructing FBD!";
+    public FBDWorld(Diagram parentWorld, BodySubset bodies) {
+        super(parentWorld, bodies);
 
-        enableSelectMultiple(false);
+        //enableSelectMultiple(false);
 
-        this.parentWorld = parentWorld;
-        this.observedBodies = bodies;
+        //this.parentWorld = parentWorld;
+        //this.observedBodies = bodies;
 
-        setupObjects();
+        //setupObjects();
 
     //setupIcon();
     }
 
-    private void setupObjects() {
+    /*private void setupObjects() {
         for (SimulationObject obj : parentWorld.allObjects()) {
             if (!(obj instanceof VectorObject)) {
                 add(obj);
@@ -152,15 +153,17 @@ public class FBDWorld extends World {
             }
         }
     //updateNodes();
-    }
-    private FBDIcon icon;
+    }*/
+    
+    
+    /*private FBDIcon icon;
 
     public FBDIcon getIcon() {
         if (icon != null) {
             return icon;
         }
         return icon = new FBDIcon();
-    }
+    }*/
 
     /*//private FBDIcon icon;
     //public FBDIcon getIcon() {return icon;}
@@ -212,18 +215,18 @@ public class FBDWorld extends World {
         StaticsApplication.getApp().resetAdvice();
 
         // grayout bodies not belonging to this FBD
-        for (Body body : allBodies()) {
-            if (!observedBodies.contains(body)) {
-                body.setDisplayGrayed(true);
-            }
-        }
+        //for (Body body : allBodies()) {
+        //    if (!observedBodies.contains(body)) {
+        //        body.setDisplayGrayed(true);
+        //    }
+        //}
 
-        if (locked) {
-            setLocked();
+        if (solved) {
+            setSolved();
         }
     }
 
-    @Override
+    /*@Override
     public void select(SimulationObject obj) {
 
         //System.out.println("FBDWorld select...");
@@ -245,7 +248,7 @@ public class FBDWorld extends World {
                         obj instanceof Moment;
             }
         });
-    }
+    }*/
 
     private List<Vector> getAddedForces() {
         List<Vector> addedForces = new ArrayList<Vector>();
@@ -253,9 +256,9 @@ public class FBDWorld extends World {
             if (!(obj instanceof Force) && !(obj instanceof Moment)) {
                 continue;
             }
-            if (obj.isGiven()) {
-                continue;
-            }
+            //if (obj.isGiven()) {
+            //    continue;
+            //}
 
             // this force has been added, and is not a given that could have been selected.
             addedForces.add(((VectorObject) obj).getVector());
@@ -304,7 +307,7 @@ public class FBDWorld extends World {
         }
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
-        for (Body body : observedBodies) {
+        for (Body body : getBodySubset().getBodies()) {
             if (body.getWeight().getValue() != 0) {
                 Vector weight = new Vector(body.getWeight().getUnit(), new Vector3f(0, -body.getWeight().getValue(), 0));
                 //Force weight = new Force(body.getCenterOfMassPoint(), new Vector3f(0,-body.getWeight(),0));
@@ -337,10 +340,10 @@ public class FBDWorld extends World {
             Joint joint = (Joint) obj;
 
             Body body = null;
-            if (observedBodies.contains(joint.getBody1())) {
+            if (getBodySubset().getBodies().contains(joint.getBody1())) {
                 body = joint.getBody1();
             }
-            if (observedBodies.contains(joint.getBody2())) {
+            if (getBodySubset().getBodies().contains(joint.getBody2())) {
                 body = joint.getBody2();
             }
 
@@ -354,8 +357,8 @@ public class FBDWorld extends World {
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
-            if (!(observedBodies.contains(joint.getBody1()) ^
-                    observedBodies.contains(joint.getBody2()))) {
+            if (!(getBodySubset().getBodies().contains(joint.getBody1()) ^
+                    getBodySubset().getBodies().contains(joint.getBody2()))) {
                 continue;
             }
 

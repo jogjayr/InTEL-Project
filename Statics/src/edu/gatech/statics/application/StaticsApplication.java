@@ -11,7 +11,6 @@ package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
-import edu.gatech.statics.modes.fbd.FBDInterface;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
@@ -27,8 +26,7 @@ import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jmex.bui.BRootNode;
 import edu.gatech.statics.DisplayGroup;
-import edu.gatech.statics.modes.fbd.FBDWorld;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -55,7 +53,7 @@ public class StaticsApplication {
     // controls rendering, connection to jME.
     
     private Exercise currentExercise;
-    private World currentWorld;
+    private Diagram currentWorld;
     
     private PolledRootNode labelNode;
     private InterfaceRoot iRoot;
@@ -144,14 +142,14 @@ public class StaticsApplication {
     }
     public Exercise getExercise() {return currentExercise;}
     
-    public void setCurrentWorld(World world) {
+    public void setCurrentWorld(Diagram world) {
         this.currentWorld = world;
         currentWorld.activate();
         //currentWorld.updateNodes();
         //rootInterface.update();
     }
     
-    public World getCurrentWorld() {return currentWorld;}
+    public Diagram getCurrentWorld() {return currentWorld;}
     
     /** Creates a new instance of StaticsApplication */
     public StaticsApplication() {
@@ -343,7 +341,7 @@ public class StaticsApplication {
         
         // load exercise here
         getExercise().loadExercise();
-        loadExercizeWorld();
+        //loadExercizeWorld();
         
         //rootInterface.showDescription();
         
@@ -364,7 +362,7 @@ public class StaticsApplication {
         currentInterface.activate();
     }*/
     
-    public void loadFBD(FBDWorld fbd) {
+    /*public void loadFBD(FBDWorld fbd) {
         //select(null);
        // hover(null);
         
@@ -374,14 +372,14 @@ public class StaticsApplication {
     }
     
     public void loadExercizeWorld() {
-        setCurrentWorld(currentExercise.getWorld());
+        setCurrentWorld(currentExercise.getSchematic());
         //setCurrentInterface(new ExerciseInterface());
     }
 
     public void loadEquation(FBDWorld fbd) {
         setCurrentWorld(fbd.getEquationWorld());
         //setCurrentInterface(new EquationInterface(fbd.getEquationWorld()));
-    }
+    }*/
     
     public boolean isHidingGrays() {return hideGrays;}
     public void hideGrays(boolean hidden) {

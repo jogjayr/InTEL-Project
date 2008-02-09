@@ -6,7 +6,7 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.fbd;
+package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -22,9 +22,8 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.application.ui.ModalPopupWindow;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.manipulators.SelectionTool;
@@ -40,7 +39,7 @@ public class LabelSelector extends SelectionTool {
     private boolean isCreating;
 
     /** Creates a new instance of LabelSelector */
-    public LabelSelector(World world, BWindow popupRoot) {
+    public LabelSelector(Diagram world, BWindow popupRoot) {
         super(world, VectorObject.class);
         this.popupRoot = popupRoot;
     }
@@ -49,8 +48,8 @@ public class LabelSelector extends SelectionTool {
     protected void onActivate() {
         super.onActivate();
 
-        getWorld().enableManipulatorsOnSelect(false);
-        getWorld().enableSelectMultiple(false);
+        //getWorld().enableManipulatorsOnSelect(false);
+        //getWorld().enableSelectMultiple(false);
 
         StaticsApplication.getApp().setAdvice("Select a force or moment to apply a label.");
     }
@@ -62,16 +61,16 @@ public class LabelSelector extends SelectionTool {
             return;
         }
 
-        if (obj.isGiven()) {
+        /*if (obj.isGiven()) {
             System.out.println("can't select given object for labelling");
             return;
-        }
+        }*/
 
         System.out.println("Selected... " + obj);
 
         createPopup((VectorObject) obj);
         // clear selection
-        getWorld().clearSelection();
+        //getWorld().clearSelection();
     }
 
     void setHintText(String text) {
@@ -83,7 +82,7 @@ public class LabelSelector extends SelectionTool {
     }
 
     private void createPopup(final VectorObject obj) {
-
+/*
         StaticsApplication.getApp().setAdvice("Please input a numerical value or symbolic name or a symbol for the " +
                 ((obj instanceof Moment) ? "moment" : "force") + ".");
 
@@ -130,24 +129,6 @@ public class LabelSelector extends SelectionTool {
         };
         textfield.addListener(listener);
 
-        /*KeyListener keyListener = new KeyListener() {
-        public void keyPressed(KeyEvent event) {
-        if(event.getKeyCode() != KeyInput.KEY_ESCAPE)
-        return;
-        if(isCreating) {
-        // destroy force
-        StaticsApplication.getApp().getCurrentWorld().clearSelection();
-        StaticsApplication.getApp().getCurrentWorld().remove(obj);
-        obj.destroy();                    
-        }
-        // dispose popup and tool
-        popup.dismiss();
-        finish();
-        }
-        public void keyReleased(KeyEvent event) {}
-        };
-        textfield.addListener(keyListener);
-        popup.addListener(keyListener);*/
 
         BButton button = new BButton("OK", listener, "ok");
         popup.add(button, BorderLayout.SOUTH);
@@ -159,7 +140,7 @@ public class LabelSelector extends SelectionTool {
         BBackground background = new TintedBackground(new ColorRGBA(.8f, .8f, .8f, 1.0f));
         for (int state = 0; state < 3; state++) {
             popup.setBackground(state, background);
-        }
+        }*/
     }
 
     private boolean updateVector(VectorObject obj, String text) {

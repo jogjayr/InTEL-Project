@@ -13,14 +13,16 @@ import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.math.UnitUtils;
+import edu.gatech.statics.modes.equation.EquationWorld;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.modes.select.SelectionWorld;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
+import edu.gatech.statics.ui.InterfaceConfiguration;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -34,6 +36,8 @@ public abstract class Exercise {
     abstract public Mode getStartingMode();
     
     abstract public UnitUtils getUnitUtils();
+    
+    abstract public InterfaceConfiguration createInterfaceConfiguration();
     
     private List<Task> tasks = new ArrayList<Task>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();
@@ -75,27 +79,44 @@ public abstract class Exercise {
     }
     public void setDescription(String description) {this.description = description;}
     
-    private SelectionWorld world;
-    private List<FBDWorld> diagrams = new ArrayList<FBDWorld>();
+    private Schematic schematic;
+    //private List<FBDWorld> diagrams = new ArrayList<FBDWorld>();
+    private Map<BodySubset, FBDWorld> freeBodyDiagrams = new HashMap();
+    private Map<BodySubset, EquationWorld> equationDiagrams = new HashMap();
     
-    public SelectionWorld getWorld() {return world;}
-    public List<FBDWorld> getDiagrams() {return Collections.unmodifiableList(diagrams);}
+    public Schematic getSchematic() {return schematic;}
+    public List<FBDWorld> getFreeBodyDiagrams() {return new ArrayList<FBDWorld>(freeBodyDiagrams.values());}
+    public List<EquationWorld> getEquationDiagrams() {return new ArrayList<EquationWorld>(equationDiagrams.values());}
     
     /** Creates a new instance of Exercize */
-    public Exercise(SelectionWorld world) {
-        this.world = world;
+    public Exercise(Schematic world) {
+        this.schematic = world;
         world.setExercise(this);
     }
     
-    public FBDWorld constructFBD(List<Body> bodies) {
+    public FBDWorld constructFreeBodyDiagram(List<Body> bodies) {
         
-        for(FBDWorld fbd : diagrams)
-            if(fbd.getObservedBodies().containsAll(bodies) && bodies.containsAll(fbd.getObservedBodies()))
-                return fbd;
+        BodySubset bodySubset = new BodySubset(bodies);
+        FBDWorld fbd = freeBodyDiagrams.get(bodySubset);
         
-        FBDWorld fbd = world.constructFBD(bodies);
-        diagrams.add(fbd);
+        if(fbd == null) {
+            fbd = new FBDWorld(schematic, bodySubset);
+            freeBodyDiagrams.put(bodySubset, fbd);
+        }
         return fbd;
+    }
+    
+    public EquationWorld constructEquationDiagram(FBDWorld fbd) {
+        if(!fbd.isSolved())
+            throw new IllegalStateException("Free Body Diagram "+fbd+" is not solved!");
+        BodySubset bodySubset = fbd.getBodySubset();
+        EquationWorld eq = equationDiagrams.get(bodySubset);
+        
+        if(eq == null) {
+            eq = new EquationWorld(fbd);
+            equationDiagrams.put(bodySubset, eq);
+        }
+        return eq;
     }
     
     /**
@@ -139,14 +160,6 @@ public abstract class Exercise {
     public boolean isExerciseFinished() {return finished;}
     protected void finishExercise() {finished = true;}
     
-    // some utility functions
-    
-    /*private List<Texture> exerciseTextures;
-    
-    void shutdownExercise() {
-        for(Texture texture : exerciseTextures)
-            TextureManager.clearCache();
-    }*/
     
     protected Texture loadTexture(String textureUrl) {
         return loadTexture(textureUrl, Texture.FM_LINEAR, Texture.FM_LINEAR);

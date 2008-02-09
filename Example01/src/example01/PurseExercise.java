@@ -11,12 +11,13 @@ package example01;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.UnitUtils;
-import edu.gatech.statics.modes.select.ExerciseWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -27,16 +28,23 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.representations.ImageRepresentation;
+import edu.gatech.statics.ui.DemoInterfaceConfiguration;
+import edu.gatech.statics.ui.InterfaceConfiguration;
+
 
 /**
  *
  * @author Calvin Ashmore
  */
 public class PurseExercise extends Exercise {
-
+    
+    public InterfaceConfiguration createInterfaceConfiguration() {
+        return new DemoInterfaceConfiguration();
+    }
+    
     /** Creates a new instance of PurseExercise */
     public PurseExercise() {
-        super(new ExerciseWorld());
+        super(new Schematic());
     }
 
     @Override
@@ -76,7 +84,7 @@ public class PurseExercise extends Exercise {
     @Override
     public void loadExercise() {
 
-        ExerciseWorld world = getWorld();
+        Schematic world = getSchematic();
 
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .2f, 1.0f));
@@ -221,4 +229,15 @@ public class PurseExercise extends Exercise {
         imageRep.setTranslation(0.0f, 0.5f, .05f);
         tendon.addRepresentation(imageRep);
     }
+
+    @Override
+    public Mode getStartingMode() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public UnitUtils getUnitUtils() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

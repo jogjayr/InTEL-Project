@@ -50,14 +50,14 @@ public abstract class Manipulator<SimType extends SimulationObject> extends Inpu
                 listener.onMouseRelease(this);
     }*/
     
-    public void setEnabledGlobally(boolean enabled) {
+    /*public void setEnabledGlobally(boolean enabled) {
         if(enabled)
             //StaticsApplication.getApp().getInput().addToAttachedHandlers(this);
             setParent(StaticsApplication.getApp().getInput());
         else
             setParent(null);
             //StaticsApplication.getApp().getInput().removeFromAttachedHandlers(this);
-    }
+    }*/
     
     //private boolean enabled;
     //public boolean isEnabled() {return enabled;}

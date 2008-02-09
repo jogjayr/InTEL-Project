@@ -10,7 +10,7 @@
 package edu.gatech.statics.objects.manipulators;
 
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.util.SelectionFilter;
 import edu.gatech.statics.util.SelectionListener;
 
@@ -21,35 +21,35 @@ import edu.gatech.statics.util.SelectionListener;
 public class SelectionTool extends Tool implements SelectionListener {
     
     private Class<? extends SimulationObject> selectionClass;
-    private World world;
-    protected World getWorld() {return world;}
+    private Diagram world;
+    protected Diagram getWorld() {return world;}
     
     /** Creates a new instance of SelectionTool */
-    public SelectionTool(World world, Class<? extends SimulationObject> selectionClass) {
+    public SelectionTool(Diagram world, Class<? extends SimulationObject> selectionClass) {
         this.world = world;
         this.selectionClass = selectionClass;
     }
     
     protected void onActivate() {
-        world.setSelectableFilter(new SelectionFilter() {
+        /*world.setSelectableFilter(new SelectionFilter() {
             public boolean canSelect(SimulationObject obj) {
                 return selectionClass.isAssignableFrom( obj.getClass() );
             }
         });
         
-        world.addSelectionListener(this);
+        world.addSelectionListener(this);*/
     }
     
     protected void onCancel() {
-        world.clearSelection();
+        //world.clearSelection();
     }
 
     protected void onFinish() {
-        world.removeSelectionListener(this);
+        /*world.removeSelectionListener(this);
         
         world.setSelectableFilterDefault();
         world.enableManipulatorsOnSelectDefault();
-        world.enableSelectMultipleDefault();
+        world.enableSelectMultipleDefault();*/
     }
 
     // do nothing for now, but overriding classes may find these useful

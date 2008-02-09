@@ -9,22 +9,7 @@
 
 package example01;
 
-import com.jme.system.DisplaySystem;
-import com.jmex.bui.BButton;
-import com.jmex.bui.BContainer;
-import com.jmex.bui.BLabel;
-import com.jmex.bui.BTextArea;
-import com.jmex.bui.BTextField;
-import com.jmex.bui.BWindow;
-import com.jmex.bui.event.ActionEvent;
-import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.layout.BorderLayout;
-import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
-import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.application.ui.AppWindow;
-import edu.gatech.statics.application.ui.ModalPopupWindow;
 import edu.gatech.statics.tasks.SolveJointTask;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -73,7 +58,7 @@ public class PurseExerciseGraded extends PurseExercise {
         addTask(new SolveJointTask(jointE));
     }
 
-    public void postLoadExercise() {
+    /*public void postLoadExercise() {
         showNamePopup();
         showSubmitButton();
     }
@@ -90,9 +75,9 @@ public class PurseExerciseGraded extends PurseExercise {
         submitWindow.setLocation(
                 DisplaySystem.getDisplaySystem().getWidth()-submitWindow.getWidth(),
                 DisplaySystem.getDisplaySystem().getHeight()-submitWindow.getHeight());
-    }
+    }*/
     
-    private void showNamePopup() {
+    /*private void showNamePopup() {
     
         final ModalPopupWindow popup = new ModalPopupWindow(StaticsApplication.getApp().getCurrentInterface().getToolbar(), new BorderLayout());
         popup.setStyleClass("info_window_opaque");
@@ -139,21 +124,15 @@ public class PurseExerciseGraded extends PurseExercise {
         Dimension dim = new Dimension(300, 0);
         popup.popup(0, 0, true);
         popup.center();
-    }
-
-    /*public boolean isExerciseSolved() {
-        for (SimulationObject obj : getWorld().allObjects())
-            if (obj instanceof Joint && !((Joint) obj).isSolved() && !((Joint) obj).getPoint().getName().equals("D"))
-                return false;
-        return true;
     }*/
 
-    public void finishExercise() {
+
+    /*public void finishExercise() {
         super.finishExercise();
         showCompletionPopup();
-    }
+    }*/
     
-    private void showCompletionPopup() {
+    /*private void showCompletionPopup() {
         
         final ModalPopupWindow popup = new ModalPopupWindow(
                 StaticsApplication.getApp().getCurrentInterface().getToolbar(),
@@ -207,7 +186,7 @@ public class PurseExerciseGraded extends PurseExercise {
         
         Dimension dim = new Dimension(300, 0);
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
-    }
+    }*/
     
     private void navigateAway() {
         

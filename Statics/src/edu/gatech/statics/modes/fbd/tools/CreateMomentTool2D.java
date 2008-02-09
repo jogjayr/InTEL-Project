@@ -7,14 +7,14 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.fbd;
+package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.util.ClickListener;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
     
     protected Point forceAnchor;
     protected Moment moment;
-    protected World world;
+    protected Diagram world;
     
     protected DragSnapManipulator dragManipulator;
     //protected Orientation2DSnapManipulator orientationManipulator;
     
     /** Creates a new instance of CreateForceTool */
-    public CreateMomentTool2D(World world) {
+    public CreateMomentTool2D(Diagram world) {
         this.world = world;
         forceAnchor = new Point(new Vector3f());
         moment = new Moment(forceAnchor,new Vector3f(0,0,1),"M");
@@ -66,7 +66,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         // add things to force that will be relevant...
         
         // so we can delete the force if we don't like it
-        final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, moment);
+        /*final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, moment);
         runtimeDeletionManipulator.setEnabled(false);
         moment.addManipulator(runtimeDeletionManipulator);
         
@@ -78,7 +78,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
         labelTool.activate();
-        labelTool.onClick(moment);
+        labelTool.onClick(moment);*/
     }
     
     protected void enableDragManipulator() {
@@ -89,7 +89,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
                 pointList.add((Point)obj);
         
         dragManipulator = new DragSnapManipulator(moment, pointList);
-        dragManipulator.addClickListener(this);
+        //dragManipulator.addClickListener(this);
         addToAttachedHandlers(dragManipulator);
         
         StaticsApplication.getApp().setAdvice(

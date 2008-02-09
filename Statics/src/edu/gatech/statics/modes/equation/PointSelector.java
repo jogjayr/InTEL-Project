@@ -41,7 +41,7 @@ public class PointSelector extends SelectionTool {
             
             // store the point, finish.
             ((EquationWorld) getWorld()).setMomentPoint((Point) obj);
-            getWorld().clearSelection();
+            //getWorld().clearSelection();
             finish();
         }
     }

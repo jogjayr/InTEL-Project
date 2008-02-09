@@ -33,8 +33,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
     
     private boolean renderUpdated;
-    boolean getRenderUpdated() {return renderUpdated;}
-    void setRenderUpdated() {renderUpdated = true;}
+    public boolean getRenderUpdated() {return renderUpdated;}
+    public void setRenderUpdated() {renderUpdated = true;}
     
     private MaterialState materialState;
     //public MaterialState getMaterialState() {return materialState;}

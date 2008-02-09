@@ -17,6 +17,7 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -54,12 +55,14 @@ public class LabelRepresentation extends Representation {
         setLayer(RepresentationLayer.labels);
         
         bWindow = new BWindow(
-                StaticsApplication.getApp().getBuiStyle(),
+                InterfaceRoot.getInstance().getStyle(),
+                //StaticsApplication.getApp().getBuiStyle(),
                 new BorderLayout());
         
         label = new BLabel("");
         label.setText(target.getLabelText());
-        label.configureStyle(StaticsApplication.getApp().getBuiStyle());
+        //label.configureStyle(StaticsApplication.getApp().getBuiStyle());
+        label.configureStyle(InterfaceRoot.getInstance().getStyle());
         
         bWindow.setStyleClass(style);
         label.setStyleClass(style);

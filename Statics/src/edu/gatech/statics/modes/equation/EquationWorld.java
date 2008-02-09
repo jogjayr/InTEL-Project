@@ -14,21 +14,20 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
-import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
-import edu.gatech.statics.util.SelectableFilter;
+//import edu.gatech.statics.util.SelectableFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,21 +36,22 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class EquationWorld extends World {
+public class EquationWorld extends SubDiagram {
     
     // 2d logic for time being
     EquationMath sumFx;
     EquationMath sumFy;
     EquationMathMoments sumMp;
     
-    private SumBar sumBar;
-    void setSumBar(SumBar sumBar) {this.sumBar = sumBar;}
+    //private SumBar sumBar;
+    //void setSumBar(SumBar sumBar) {this.sumBar = sumBar;}
     
-    private World parentWorld;
-    public World getParentWorld() {return parentWorld;}
+    private Diagram parentWorld;
+    public Diagram getParentWorld() {return parentWorld;}
     
     /** Creates a new instance of EquationWorld */
     public EquationWorld(FBDWorld world) {
+        super(world);
         this.parentWorld = world;
         
         sumFx = new EquationMath(this);
@@ -62,15 +62,15 @@ public class EquationWorld extends World {
         sumFy.setObservationDirection(Vector3f.UNIT_Y);
         sumMp.setObservationDirection(Vector3f.UNIT_Z);
         
-        enableSelectMultipleDefault(false);
-        enableManipulatorsOnSelectDefault(false);
+        //enableSelectMultipleDefault(false);
+        //enableManipulatorsOnSelectDefault(false);
         
-        for(SimulationObject obj : parentWorld.allObjects()) {
+        /*for(SimulationObject obj : parentWorld.allObjects()) {
             if(    !obj.isDisplayGrayed() ||
                     obj instanceof Measurement) {
                 add(obj);
             }
-        }
+        }*/
     }
     
     void performSolve(Map<VectorObject, Float> values) {
@@ -120,7 +120,7 @@ public class EquationWorld extends World {
 
     void setMomentPoint(Point point) {
         sumMp.setObservationPoint(point.getTranslation());
-        sumBar.setMomentCenter(point);
+        //sumBar.setMomentCenter(point);
     }
 
     @Override
@@ -131,21 +131,21 @@ public class EquationWorld extends World {
                 StaticsApplication.getApp().getCurrentTool().isActive())
             return; // do not select points if we have a tool active
         
-        if(obj != null && obj instanceof VectorObject) {
+        /*if(obj != null && obj instanceof VectorObject) {
             if(sumBar == null)
                 return;
             
             VectorObject target = (VectorObject) obj;
             sumBar.addTerm(target);
-        }
+        }*/
     }    
 
     @Override
     public void hover(SimulationObject obj) {
         super.hover(obj);
         
-        if(sumBar != null && (obj instanceof VectorObject || obj == null))
-            highlightVector((VectorObject)obj);
+        //if(sumBar != null && (obj instanceof VectorObject || obj == null))
+        //    highlightVector((VectorObject)obj);
         // draw line from vector to target?
     }
     
@@ -161,6 +161,7 @@ public class EquationWorld extends World {
         StaticsApplication.getApp().resetAdvice();
     }
 
+    /*
     @Override
     public void setSelectableFilterDefault() {
         setSelectableFilter(new SelectableFilter() {
@@ -169,7 +170,7 @@ public class EquationWorld extends World {
                         obj instanceof Moment;
             }
         });
-    }
+    }*/
 
     @Override
     public void render(Renderer r) {
@@ -179,28 +180,29 @@ public class EquationWorld extends World {
             CurveUtil.renderCurve(r, ColorRGBA.blue, curvePoints);
         }
         
-        if(     sumBar != null &&
+        /*if(     sumBar != null &&
                 sumBar.getMath() == sumMp &&
                 sumMp.getObservationPointSet()) {
             CurveUtil.renderCircle(r, ColorRGBA.blue, sumMp.getObservationPoint(), 2, r.getCamera().getDirection());
-        }
+        }*/
     }
     
     void highlightVector(final VectorObject obj) {
-        sumBar.highlightVector(obj);
+        /*sumBar.highlightVector(obj);
         
         if(sumBar.getMath() instanceof EquationMathMoments) {
             if(sumBar.getMath().getTerm(obj) != null || obj == null)
                 showMomentArm(obj);
         }
         
-        showCurve(obj, sumBar.getLineAnchor(obj));
+        showCurve(obj, sumBar.getLineAnchor(obj));*/
     }
 
     private VectorObject momentArm;
     private VectorObject momentArmTarget;
     private void showMomentArm(VectorObject target) {
         
+        /*
         if(target instanceof Moment)
             target = null;
         
@@ -234,7 +236,7 @@ public class EquationWorld extends World {
         rep.setDiffuse(ColorRGBA.yellow);
         momentArm.addRepresentation(rep);
         momentArm.setSelectable(false);
-        add(momentArm);
+        add(momentArm);*/
     }
 
     private boolean showingCurve = false;

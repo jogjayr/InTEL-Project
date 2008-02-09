@@ -46,7 +46,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.Collections;
 import java.util.List;
@@ -90,7 +90,7 @@ public class MousePick extends MouseInputAction {
         wasMouseDown = isMouseDown;
         
         Camera camera = StaticsApplication.getApp().getCamera();
-        World world = StaticsApplication.getApp().getCurrentWorld();
+        Diagram world = StaticsApplication.getApp().getCurrentWorld();
         
         
         //Vector2f screenPos2 = new Vector2f(

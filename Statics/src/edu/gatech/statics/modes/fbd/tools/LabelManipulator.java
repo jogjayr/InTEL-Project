@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.fbd;
+package edu.gatech.statics.modes.fbd.tools;
 
 import com.jmex.bui.event.MouseListener;
 import edu.gatech.statics.Representation;
@@ -40,7 +40,7 @@ public class LabelManipulator extends Manipulator<VectorObject> {
     }
     
     protected void performSingleClick() {
-        StaticsApplication.getApp().select(getTarget());
+        //StaticsApplication.getApp().select(getTarget());
     }
     
     protected void performDoubleClick() {
@@ -48,11 +48,11 @@ public class LabelManipulator extends Manipulator<VectorObject> {
         if(!labelingEnabled)
             return;
         
-        LabelSelector tool = new LabelSelector(
-                StaticsApplication.getApp().getCurrentWorld(),
-                StaticsApplication.getApp().getCurrentInterface().getToolbar());
-        tool.activate();
-        tool.onClick(getTarget());
+        //LabelSelector tool = new LabelSelector(
+        //        StaticsApplication.getApp().getCurrentWorld(),
+        //        StaticsApplication.getApp().getCurrentInterface().getToolbar());
+        //tool.activate();
+        //tool.onClick(getTarget());
     }
 
     public void enableLabeling(boolean enabled) {

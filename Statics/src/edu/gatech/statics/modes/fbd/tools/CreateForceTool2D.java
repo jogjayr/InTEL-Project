@@ -6,14 +6,14 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.fbd;
+package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.util.ClickListener;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.World;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorListener;
@@ -28,13 +28,13 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
 
     protected Point forceAnchor;
     protected Force force;
-    protected World world;
+    protected Diagram world;
     protected DragSnapManipulator dragManipulator;
     protected Orientation2DSnapManipulator orientationManipulator;
     private ClickListener clickListener;
 
     /** Creates a new instance of CreateForceTool */
-    public CreateForceTool2D(World world) {
+    public CreateForceTool2D(Diagram world) {
         this.world = world;
         forceAnchor = new Point(new Vector3f());
         force = new Force(forceAnchor, new Vector3f(1.5f, 1f, 0).normalize(),"F");
@@ -54,7 +54,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
 
         enableDragManipulator();
 
-        StaticsApplication.getApp().enableSelection(false);
+        //StaticsApplication.getApp().enableSelection(false);
     }
 
     protected void onCancel() {
@@ -71,14 +71,14 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
     }
 
     protected void onFinish() {
-        StaticsApplication.getApp().enableSelection(true);
+        //StaticsApplication.getApp().enableSelection(true);
     }
 
     protected void finishForce() {
 
         // add things to force that will be relevant...
 
-        final Orientation2DSnapManipulator runtimeOrientationManipulator = orientationManipulator;
+        /*final Orientation2DSnapManipulator runtimeOrientationManipulator = orientationManipulator;
 
         runtimeOrientationManipulator.removeClickListener(clickListener);
         runtimeOrientationManipulator.setEnabled(false);
@@ -104,7 +104,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
         labelTool.activate();
-        labelTool.onClick(force);
+        labelTool.onClick(force);*/
     }
 
     protected void enableDragManipulator() {
@@ -117,7 +117,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
         }
 
         dragManipulator = new DragSnapManipulator(force, pointList);
-        dragManipulator.addClickListener(clickListener);
+        //dragManipulator.addClickListener(clickListener);
         addToAttachedHandlers(dragManipulator);
 
         StaticsApplication.getApp().setAdvice(
@@ -128,7 +128,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
 
         final List<Vector3f> snapDirections = world.getSensibleDirections(point);
         orientationManipulator = new Orientation2DSnapManipulator(force, Vector3f.UNIT_Z, snapDirections);
-        orientationManipulator.addClickListener(clickListener);
+        //orientationManipulator.addClickListener(clickListener);
         addToAttachedHandlers(orientationManipulator);
 
         StaticsApplication.getApp().setAdvice(

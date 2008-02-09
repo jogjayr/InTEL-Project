@@ -12,7 +12,7 @@ package edu.gatech.statics.objects;
 import edu.gatech.statics.math.Vector;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.modes.fbd.LabelManipulator;
+import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;

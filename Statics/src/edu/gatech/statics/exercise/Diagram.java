@@ -7,16 +7,18 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics;
+package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import edu.gatech.statics.exercise.Exercise;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import edu.gatech.statics.CoordinateSystem;
+import edu.gatech.statics.Representation;
+import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
@@ -31,7 +33,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class World {
+public class Diagram {
     
     private Exercise exercise;
     public Exercise getExercise() {return exercise;}
@@ -49,10 +51,10 @@ public class World {
         allObjects.remove(obj);
         invalidateNodes();
     }
-    public void removeAllObjects() {
-        allObjects.clear();
-        invalidateNodes();
-    }
+    //public void removeAllObjects() {
+    //    allObjects.clear();
+    //    invalidateNodes();
+    //}
         
     private Map<RepresentationLayer, Node> representationNodes = new HashMap<RepresentationLayer, Node>();
     public Node getNode(RepresentationLayer layer) {return representationNodes.get(layer);}
@@ -76,7 +78,7 @@ public class World {
              representationCache.put(layer, r = new ArrayList<Representation>());
         
         r.clear();
-        for(SimulationObject obj : allObjects)
+        for(SimulationObject obj : allObjects())
             r.addAll(obj.getRepresentation(layer));
         return r;
     }
@@ -125,7 +127,7 @@ public class World {
     public List<LabelRepresentation> getLabels() {return labels;}
     
     /** Creates a new instance of World */
-    public World() {
+    public Diagram() {
         //setSelectableFilterDefault();
     }
     
