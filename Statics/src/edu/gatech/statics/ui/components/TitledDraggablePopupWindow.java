@@ -53,7 +53,7 @@ abstract public class TitledDraggablePopupWindow extends DraggablePopupWindow {
             
             BIcon closeIcon = null;
             try {
-                closeIcon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("close.png")));
+                closeIcon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/close.png")));
             } catch(IOException ex) {
                 // do nothing?
             }

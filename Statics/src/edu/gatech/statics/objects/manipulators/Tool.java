@@ -14,6 +14,7 @@ import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.ToolFinishListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,14 @@ abstract public class Tool extends InputHandler {
         addAction(inputInterface, "return", KeyInput.KEY_RETURN, false);
         addAction(inputInterface, "escape", KeyInput.KEY_ESCAPE, false);
     }
-    
-    protected void onHover() {}
-    protected void onClick() {}
+
+    public void onClick(SimulationObject obj) {
+        
+    }
+
+    public void onHover(SimulationObject obj) {
+        
+    }
     
     /** called whenever the user presses RETURN or ENTER */
     protected void onKeyOK() {}

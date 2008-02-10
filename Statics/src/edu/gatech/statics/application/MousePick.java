@@ -154,13 +154,21 @@ public class MousePick extends MouseInputAction {
     
     public void hover(SimulationObject obj) {
         // check to see that the mouse is free first
-        if(!InterfaceRoot.getInstance().hasMouse())
-            StaticsApplication.getApp().getSelectionListener().onHover(obj);
+        if(!InterfaceRoot.getInstance().hasMouse()) {
+            if(StaticsApplication.getApp().getCurrentTool() != null)
+                StaticsApplication.getApp().getCurrentTool().onHover(obj);
+            else StaticsApplication.getApp().getCurrentWorld().onHover(obj);
+        }
+        //    StaticsApplication.getApp().getSelectionListener().onHover(obj);
     }
     
     public void click(SimulationObject obj) {
         // check to see that the mouse is free first
-        if(!InterfaceRoot.getInstance().hasMouse())
-            StaticsApplication.getApp().getSelectionListener().onClick(obj);
+        if(!InterfaceRoot.getInstance().hasMouse()) {
+            if(StaticsApplication.getApp().getCurrentTool() != null)
+                StaticsApplication.getApp().getCurrentTool().onClick(obj);
+            else StaticsApplication.getApp().getCurrentWorld().onClick(obj);
+        }
+        //    StaticsApplication.getApp().getSelectionListener().onClick(obj);
     }
 }

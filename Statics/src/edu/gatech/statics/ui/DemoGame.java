@@ -29,7 +29,7 @@ public class DemoGame extends SimpleGame {
         MouseInput.get().setCursorVisible(true);
 
         iRoot = new InterfaceRoot(timer, input, cam);
-        iRoot.loadConfiguration(new DemoInterfaceConfiguration());
+        iRoot.loadConfiguration(new DefaultInterfaceConfiguration());
         //iRoot.setModePanel("select");
         
         rootNode.attachChild(iRoot.getBuiNode());

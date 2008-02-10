@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class DemoInterfaceConfiguration implements InterfaceConfiguration {
+public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
 
     public List<TitledDraggablePopupWindow> createPopupWindows() {
         List<TitledDraggablePopupWindow> popups = new ArrayList<TitledDraggablePopupWindow>();
@@ -116,7 +116,7 @@ public class DemoInterfaceConfiguration implements InterfaceConfiguration {
         //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
         //cameraControl.setRotationCenter(rotationCenter);
         cameraControl.setCameraFrame(
-                new Vector3f(0,0,-10),
+                new Vector3f(0,0,50),
                 new Vector3f(0,0,0));
     }
 }

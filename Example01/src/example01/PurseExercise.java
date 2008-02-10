@@ -11,10 +11,9 @@ package example01;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.Mode;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.UnitUtils;
@@ -28,20 +27,19 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.representations.ImageRepresentation;
-import edu.gatech.statics.ui.DemoInterfaceConfiguration;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
-
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class PurseExercise extends Exercise {
-    
+public class PurseExercise extends FBDExercise {
+
     public InterfaceConfiguration createInterfaceConfiguration() {
-        return new DemoInterfaceConfiguration();
+        return new DefaultInterfaceConfiguration();
     }
-    
+
     /** Creates a new instance of PurseExercise */
     public PurseExercise() {
         super(new Schematic());
@@ -61,12 +59,18 @@ public class PurseExercise extends Exercise {
             @Override
             public String getSuffix(Unit unit) {
                 switch (unit) {
-                    case angle:     return "°";
-                    case distance:  return " mm";
-                    case force:     return " N";
-                    case moment:    return " N*mm";
-                    case none:      return "";
-                    default: throw new IllegalArgumentException("Unrecognized unit: " + unit);
+                    case angle:
+                        return "°";
+                    case distance:
+                        return " mm";
+                    case force:
+                        return " N";
+                    case moment:
+                        return " N*mm";
+                    case none:
+                        return "";
+                    default:
+                        throw new IllegalArgumentException("Unrecognized unit: " + unit);
                 }
             }
         });
@@ -144,7 +148,7 @@ public class PurseExercise extends Exercise {
         purse.setName("Purse");
         forearm.addObject(purse);
 
-        Moment shoulder = new Moment(E, new Vector3f(0, 0, -1),"M shoulder"); // use symbol here
+        Moment shoulder = new Moment(E, new Vector3f(0, 0, -1), "M shoulder"); // use symbol here
         shoulder.setSymbol("Shoulder");
         upperArm.addObject(shoulder);
         //shoulder.setSymbol(true);
@@ -231,13 +235,7 @@ public class PurseExercise extends Exercise {
     }
 
     @Override
-    public Mode getStartingMode() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public UnitUtils getUnitUtils() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

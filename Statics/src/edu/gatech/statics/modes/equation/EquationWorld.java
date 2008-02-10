@@ -124,8 +124,8 @@ public class EquationWorld extends SubDiagram {
     }
 
     @Override
-    public void click(SimulationObject obj) {
-        super.click(obj);
+    public void onClick(SimulationObject obj) {
+        super.onClick(obj);
         
         if(     StaticsApplication.getApp().getCurrentTool() != null &&
                 StaticsApplication.getApp().getCurrentTool().isActive())
@@ -141,8 +141,8 @@ public class EquationWorld extends SubDiagram {
     }    
 
     @Override
-    public void hover(SimulationObject obj) {
-        super.hover(obj);
+    public void onHover(SimulationObject obj) {
+        super.onHover(obj);
         
         //if(sumBar != null && (obj instanceof VectorObject || obj == null))
         //    highlightVector((VectorObject)obj);

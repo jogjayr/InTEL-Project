@@ -212,7 +212,7 @@ public class Diagram {
     // but World has set of objects that may be selected, or a boolean test for it canSelect(...)
     // also, World has list of selected objects, which can be built upon
     
-    public void hover(SimulationObject obj) {
+    public void onHover(SimulationObject obj) {
         
         /*for(SelectionListener listener : selectionListeners)
             listener.onHover(obj);
@@ -231,7 +231,7 @@ public class Diagram {
         }*/
     }
     
-    public void click(SimulationObject obj) {
+    public void onClick(SimulationObject obj) {
         /*
         // special things may happen depending on mode?
         // certain objects may be defined as selectable, etc.

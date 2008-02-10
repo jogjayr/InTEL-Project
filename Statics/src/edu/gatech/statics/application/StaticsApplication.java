@@ -53,7 +53,7 @@ public class StaticsApplication {
     // controls rendering, connection to jME.
     
     private Exercise currentExercise;
-    private Diagram currentWorld;
+    private Diagram currentDiagram;
     
     private PolledRootNode labelNode;
     private InterfaceRoot iRoot;
@@ -85,8 +85,8 @@ public class StaticsApplication {
     
     private SelectionFilter selectionFilter;
     SelectionFilter getSelectionFilter() {return selectionFilter;}
-    private SelectionListener selectionListener;
-    SelectionListener getSelectionListener() {return selectionListener;}
+    //private SelectionListener selectionListener;
+    //SelectionListener getSelectionListener() {return selectionListener;}
     
     //private boolean selectionEnabled = true;
     private boolean hideGrays = true;
@@ -142,14 +142,14 @@ public class StaticsApplication {
     }
     public Exercise getExercise() {return currentExercise;}
     
-    public void setCurrentWorld(Diagram world) {
-        this.currentWorld = world;
-        currentWorld.activate();
+    public void setCurrentDiagram(Diagram diagram) {
+        this.currentDiagram = diagram;
+        currentDiagram.activate();
         //currentWorld.updateNodes();
         //rootInterface.update();
     }
     
-    public Diagram getCurrentWorld() {return currentWorld;}
+    public Diagram getCurrentWorld() {return currentDiagram;}
     
     /** Creates a new instance of StaticsApplication */
     public StaticsApplication() {
@@ -196,7 +196,7 @@ public class StaticsApplication {
             System.out.println("NullPointerException");
         }
         
-        currentWorld.update();
+        currentDiagram.update();
         updateLabels();
         
         // call the finishing command on this exercise
@@ -206,8 +206,10 @@ public class StaticsApplication {
         //        currentExercise.finishExercise();
         //}
         
-        if(iRoot != null)
+        if(iRoot != null) {
+            iRoot.update();
             iRoot.getBuiNode().updateGeometricState(0, true);
+        }
         //if(currentInterface != null)
         //    currentInterface.getBuiNode().updateGeometricState(0,true);
         //if(rootInterface != null)
@@ -216,14 +218,14 @@ public class StaticsApplication {
     }
     
     private void updateLabels() {
-        for(LabelRepresentation label : currentWorld.getLabels())
+        for(LabelRepresentation label : currentDiagram.getLabels())
             if(!activeLabels.contains(label)) {
                 activeLabels.add(label);
                 label.addToInterface();
             }
         
         List<LabelRepresentation> removeLabels = new ArrayList<LabelRepresentation>(activeLabels);
-        removeLabels.removeAll(currentWorld.getLabels());
+        removeLabels.removeAll(currentDiagram.getLabels());
         for(LabelRepresentation label : removeLabels) {
             activeLabels.remove(label);
             label.removeFromInterface();
@@ -243,7 +245,7 @@ public class StaticsApplication {
         GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER).execute();
         
         // render the current world
-        currentWorld.render(r);
+        currentDiagram.render(r);
         
         // do our screenshots if we are taking them.
         if(!screenshotListeners.isEmpty()) {
@@ -309,7 +311,6 @@ public class StaticsApplication {
         mouse.registerWithInputHandler(input);
         MouseInput.get().setCursorVisible(true);
         
-        iRoot = new InterfaceRoot(timer, input, camera);
         //rootInterface = new RootInterface();
         labelNode = new PolledRootNode(timer, input);
         
@@ -327,20 +328,16 @@ public class StaticsApplication {
         display.getRenderer().setCamera(camera);
         //display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         
-        selector = new MousePick(this);/* {
-            public void hover(SimulationObject obj) {
-                if(isSelectionOkay())
-                    StaticsApplication.this.hover(obj);
-            }
-            public void select(SimulationObject obj) {
-                if(isSelectionOkay())
-                    StaticsApplication.this.select(obj);
-            }
-        };*/
+        selector = new MousePick(this);
         input.addAction(selector);
+        
+        iRoot = new InterfaceRoot(timer, input, camera);
         
         // load exercise here
         getExercise().loadExercise();
+        
+        iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
+        getExercise().loadStartingMode();
         //loadExercizeWorld();
         
         //rootInterface.showDescription();
@@ -428,7 +425,7 @@ public class StaticsApplication {
     void finish() {
         finished = true;
         currentExercise = null;
-        currentWorld = null;
+        currentDiagram = null;
         //currentInterface = null;
         currentTool = null;
         cleanup();

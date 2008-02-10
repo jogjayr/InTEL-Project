@@ -41,9 +41,9 @@ public class SelectFBDWindow extends TitledDraggablePopupWindow {
         
         // TEST TEST
         addItem(new CreateNewFBDItem());
-        addItem(new SelectFBDItem(1));
-        addItem(new SelectFBDItem(2));
-        addItem(new SelectFBDItem(3));
+        //addItem(new SelectFBDItem(1));
+        //addItem(new SelectFBDItem(2));
+        //addItem(new SelectFBDItem(3));
     }
     
     public void addItem(SelectFBDItem item) {

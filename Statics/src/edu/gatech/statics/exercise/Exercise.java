@@ -14,7 +14,6 @@ import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.modes.equation.EquationWorld;
-import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
@@ -33,7 +32,7 @@ public abstract class Exercise {
     // informational collection of world and diagram objects
     // meant to control functional aspect of exercize, not graphical or engine related
     
-    abstract public Mode getStartingMode();
+    abstract public Mode loadStartingMode();
     
     abstract public UnitUtils getUnitUtils();
     
@@ -94,9 +93,9 @@ public abstract class Exercise {
         world.setExercise(this);
     }
     
-    public FBDWorld constructFreeBodyDiagram(List<Body> bodies) {
+    public FBDWorld getFreeBodyDiagram(BodySubset bodySubset) {
         
-        BodySubset bodySubset = new BodySubset(bodies);
+        //BodySubset bodySubset = new BodySubset(bodies);
         FBDWorld fbd = freeBodyDiagrams.get(bodySubset);
         
         if(fbd == null) {
@@ -106,10 +105,11 @@ public abstract class Exercise {
         return fbd;
     }
     
-    public EquationWorld constructEquationDiagram(FBDWorld fbd) {
+    public EquationWorld getEquationDiagram(BodySubset bodySubset) {
+        FBDWorld fbd = getFreeBodyDiagram(bodySubset);
         if(!fbd.isSolved())
             throw new IllegalStateException("Free Body Diagram "+fbd+" is not solved!");
-        BodySubset bodySubset = fbd.getBodySubset();
+        //BodySubset bodySubset = fbd.getBodySubset();
         EquationWorld eq = equationDiagrams.get(bodySubset);
         
         if(eq == null) {

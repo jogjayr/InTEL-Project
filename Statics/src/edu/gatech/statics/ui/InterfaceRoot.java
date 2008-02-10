@@ -268,7 +268,7 @@ public class InterfaceRoot {
         return false;
     }
 
-    protected void update() {
+    public void update() {
         checkBrowsePopupMenu();
     }
 }

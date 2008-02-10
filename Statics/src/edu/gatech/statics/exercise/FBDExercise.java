@@ -19,8 +19,9 @@ abstract public class FBDExercise extends Exercise {
 
     
     @Override
-    public Mode getStartingMode() {
-        return new SelectMode();
+    public Mode loadStartingMode() {
+        SelectMode.instance.load();
+        return SelectMode.instance;
     }
     
 }
