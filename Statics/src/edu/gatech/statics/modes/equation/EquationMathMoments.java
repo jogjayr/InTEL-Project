@@ -92,7 +92,7 @@ public class EquationMathMoments extends EquationMath {
     }
     
     /** Creates a new instance of EquationMoments */
-    public EquationMathMoments(EquationWorld world) {
+    public EquationMathMoments(EquationDiagram world) {
         super(world);
     }
     

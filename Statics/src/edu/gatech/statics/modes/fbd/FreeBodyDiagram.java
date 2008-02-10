@@ -8,7 +8,6 @@
  */
 package edu.gatech.statics.modes.fbd;
 
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
@@ -17,7 +16,6 @@ import edu.gatech.statics.application.StaticsApplication;
 //import edu.gatech.statics.application.ui.FBDIcon;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
-import edu.gatech.statics.modes.equation.EquationWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
@@ -27,7 +25,6 @@ import edu.gatech.statics.objects.VectorObject;
 //import edu.gatech.statics.objects.manipulators.DeletableManipulator;
 //import edu.gatech.statics.util.SelectableFilter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +33,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class FBDWorld extends SubDiagram {
+public class FreeBodyDiagram extends SubDiagram {
 
     //private EquationWorld equation;
     private boolean solved = false;
@@ -108,8 +105,8 @@ public class FBDWorld extends SubDiagram {
     //}
 
     /** Creates a new instance of FBDWorld */
-    public FBDWorld(Diagram parentWorld, BodySubset bodies) {
-        super(parentWorld, bodies);
+    public FreeBodyDiagram(BodySubset bodies) {
+        super(bodies);
 
         //enableSelectMultiple(false);
 

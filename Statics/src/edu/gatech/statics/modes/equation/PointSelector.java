@@ -21,7 +21,7 @@ import edu.gatech.statics.objects.manipulators.SelectionTool;
 public class PointSelector extends SelectionTool {
     
     /** Creates a new instance of PointSelector */
-    public PointSelector(EquationWorld world) {
+    public PointSelector(EquationDiagram world) {
         super(world, Point.class);
     }
     
@@ -40,7 +40,7 @@ public class PointSelector extends SelectionTool {
         if(obj != null) {
             
             // store the point, finish.
-            ((EquationWorld) getWorld()).setMomentPoint((Point) obj);
+            ((EquationDiagram) getWorld()).setMomentPoint((Point) obj);
             //getWorld().clearSelection();
             finish();
         }

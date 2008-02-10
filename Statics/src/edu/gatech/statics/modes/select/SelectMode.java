@@ -6,7 +6,6 @@
 package edu.gatech.statics.modes.select;
 
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
@@ -26,7 +25,7 @@ public class SelectMode extends Mode {
 
     @Override
     protected Diagram getDiagram(BodySubset bodies) {
-        return StaticsApplication.getApp().getExercise().getSchematic();
+        return getExercise().getSelectDiagram();
     }
 
 }

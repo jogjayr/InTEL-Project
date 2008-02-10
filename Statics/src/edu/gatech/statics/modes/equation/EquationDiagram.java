@@ -14,18 +14,14 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
-import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.modes.fbd.FBDWorld;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Joint;
-import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.VectorObject;
-import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 //import edu.gatech.statics.util.SelectableFilter;
 import java.util.ArrayList;
@@ -36,7 +32,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class EquationWorld extends SubDiagram {
+public class EquationDiagram extends SubDiagram {
     
     // 2d logic for time being
     EquationMath sumFx;
@@ -46,13 +42,9 @@ public class EquationWorld extends SubDiagram {
     //private SumBar sumBar;
     //void setSumBar(SumBar sumBar) {this.sumBar = sumBar;}
     
-    private Diagram parentWorld;
-    public Diagram getParentWorld() {return parentWorld;}
-    
     /** Creates a new instance of EquationWorld */
-    public EquationWorld(FBDWorld world) {
-        super(world);
-        this.parentWorld = world;
+    public EquationDiagram(BodySubset bodies) {
+        super(bodies);
         
         sumFx = new EquationMath(this);
         sumFy = new EquationMath(this);

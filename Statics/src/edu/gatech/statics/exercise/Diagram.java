@@ -16,7 +16,6 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
-import edu.gatech.statics.CoordinateSystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
@@ -35,9 +34,13 @@ import java.util.Map;
  */
 public class Diagram {
     
-    private Exercise exercise;
-    public Exercise getExercise() {return exercise;}
-    public void setExercise(Exercise exercise) {this.exercise = exercise;}
+    public static Schematic getSchematic() {
+        return StaticsApplication.getApp().getExercise().getSchematic();
+    }
+    
+    //private Exercise exercise;
+    //public Exercise getExercise() {return exercise;}
+    //public void setExercise(Exercise exercise) {this.exercise = exercise;}
     
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {return Collections.unmodifiableList(allObjects);}
@@ -51,11 +54,7 @@ public class Diagram {
         allObjects.remove(obj);
         invalidateNodes();
     }
-    //public void removeAllObjects() {
-    //    allObjects.clear();
-    //    invalidateNodes();
-    //}
-        
+    
     private Map<RepresentationLayer, Node> representationNodes = new HashMap<RepresentationLayer, Node>();
     public Node getNode(RepresentationLayer layer) {return representationNodes.get(layer);}
     public Node getNode(String layer) {return representationNodes.get(RepresentationLayer.getLayer(layer));}
@@ -83,46 +82,6 @@ public class Diagram {
         return r;
     }
     
-    //private SelectableFilter filter;
-    //public void setSelectableFilter(SelectableFilter filter) {this.filter = filter;}
-    //public SelectableFilter getSelectableFilter() {return filter;}
-    
-    // OVERRIDE for modes where selection is enabled by default
-    //public void setSelectableFilterDefault() {this.filter = null;}
-    
-    //private List<SimulationObject> selectedObjects = new ArrayList<SimulationObject>();
-    //public List<SimulationObject> getSelectedObjects() {return selectedObjects;}
-    
-    //private SimulationObject selected = null;
-    //public SimulationObject getSelected() {return selected;}
-    //private SimulationObject hover = null;
-    //public SimulationObject getHover() {return hover;}
-    
-    private CoordinateSystem coordinateSystem = new CoordinateSystem();
-    public CoordinateSystem getCoordinateSystem() {return coordinateSystem;}
-    public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = sys;}
-    
-    /*
-    private List<SelectionListener> selectionListeners = new ArrayList<SelectionListener>();
-    public void addSelectionListener(SelectionListener listener) {selectionListeners.add(listener);}
-    public void removeSelectionListener(SelectionListener listener) {selectionListeners.remove(listener);}
-    public void removeAllSelectionListeners() {selectionListeners.clear();}
-    protected List<SelectionListener> getSelectionListeners() {return selectionListeners;}
-    
-    private boolean enableManipulatorsOnSelect = true;
-    private boolean enableManipulatorsOnSelectDefault = true;
-    public void enableManipulatorsOnSelect(boolean enabled) {enableManipulatorsOnSelect = enabled;}
-    protected void enableManipulatorsOnSelectDefault(boolean enabled) {enableManipulatorsOnSelectDefault = enabled; enableManipulatorsOnSelect = enabled;}
-    public void enableManipulatorsOnSelectDefault() {enableManipulatorsOnSelect = enableManipulatorsOnSelectDefault;}
-    protected boolean enableManipulatorsOnSelect() {return enableManipulatorsOnSelect;}
-    
-    private boolean enableSelectMultiple = true;
-    private boolean enableSelectMultipleDefault = true;
-    public void enableSelectMultiple(boolean enabled) {enableSelectMultiple = enabled;}
-    protected void enableSelectMultipleDefault(boolean enabled) {enableSelectMultipleDefault = enabled; enableSelectMultiple = enabled;}
-    public void enableSelectMultipleDefault() {enableSelectMultiple = enableSelectMultipleDefault;}
-    protected boolean enableSelectMultiple() {return enableSelectMultiple;}
-    */
     private List<LabelRepresentation> labels = new ArrayList<LabelRepresentation>();
     public List<LabelRepresentation> getLabels() {return labels;}
     

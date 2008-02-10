@@ -13,8 +13,10 @@ import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.math.UnitUtils;
-import edu.gatech.statics.modes.equation.EquationWorld;
-import edu.gatech.statics.modes.fbd.FBDWorld;
+import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
@@ -79,41 +81,52 @@ public abstract class Exercise {
     public void setDescription(String description) {this.description = description;}
     
     private Schematic schematic;
-    //private List<FBDWorld> diagrams = new ArrayList<FBDWorld>();
-    private Map<BodySubset, FBDWorld> freeBodyDiagrams = new HashMap();
-    private Map<BodySubset, EquationWorld> equationDiagrams = new HashMap();
+    private SelectDiagram selectDiagram;
+    
+    private Map<BodySubset, FreeBodyDiagram> freeBodyDiagrams = new HashMap();
+    private Map<BodySubset, EquationDiagram> equationDiagrams = new HashMap();
     
     public Schematic getSchematic() {return schematic;}
-    public List<FBDWorld> getFreeBodyDiagrams() {return new ArrayList<FBDWorld>(freeBodyDiagrams.values());}
-    public List<EquationWorld> getEquationDiagrams() {return new ArrayList<EquationWorld>(equationDiagrams.values());}
+    public List<FreeBodyDiagram> getFreeBodyDiagrams() {return new ArrayList<FreeBodyDiagram>(freeBodyDiagrams.values());}
+    public List<EquationDiagram> getEquationDiagrams() {return new ArrayList<EquationDiagram>(equationDiagrams.values());}
     
+    
+    private CoordinateSystem coordinateSystem = new CoordinateSystem();
+    public CoordinateSystem getCoordinateSystem() {return coordinateSystem;}
+    public void setCoordinateSystem(CoordinateSystem sys) {this.coordinateSystem = sys;}
+    
+    
+    public SelectDiagram getSelectDiagram() {
+        return selectDiagram;
+    }
+
     /** Creates a new instance of Exercize */
     public Exercise(Schematic world) {
         this.schematic = world;
-        world.setExercise(this);
+        selectDiagram = new SelectDiagram();
     }
     
-    public FBDWorld getFreeBodyDiagram(BodySubset bodySubset) {
+    public FreeBodyDiagram getFreeBodyDiagram(BodySubset bodySubset) {
         
         //BodySubset bodySubset = new BodySubset(bodies);
-        FBDWorld fbd = freeBodyDiagrams.get(bodySubset);
+        FreeBodyDiagram fbd = freeBodyDiagrams.get(bodySubset);
         
         if(fbd == null) {
-            fbd = new FBDWorld(schematic, bodySubset);
+            fbd = new FreeBodyDiagram(bodySubset);
             freeBodyDiagrams.put(bodySubset, fbd);
         }
         return fbd;
     }
     
-    public EquationWorld getEquationDiagram(BodySubset bodySubset) {
-        FBDWorld fbd = getFreeBodyDiagram(bodySubset);
+    public EquationDiagram getEquationDiagram(BodySubset bodySubset) {
+        FreeBodyDiagram fbd = getFreeBodyDiagram(bodySubset);
         if(!fbd.isSolved())
             throw new IllegalStateException("Free Body Diagram "+fbd+" is not solved!");
         //BodySubset bodySubset = fbd.getBodySubset();
-        EquationWorld eq = equationDiagrams.get(bodySubset);
+        EquationDiagram eq = equationDiagrams.get(bodySubset);
         
         if(eq == null) {
-            eq = new EquationWorld(fbd);
+            eq = new EquationDiagram(bodySubset);
             equationDiagrams.put(bodySubset, eq);
         }
         return eq;
@@ -131,6 +144,9 @@ public abstract class Exercise {
      */
     public void loadExercise() {}
 
+    /**
+     * Called after the exercise is loaded.
+     */
     public void postLoadExercise() {}
     
     /**

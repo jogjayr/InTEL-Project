@@ -9,40 +9,36 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Body;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- *
+ * The schematic is designed to store and keep track of all of the objects in an exercise.
+ * It is not designed to have state or be changed after its initial creation. 
  * @author Calvin Ashmore
  */
-public class Schematic extends Diagram {
+public class Schematic {
 
     /** Creates a new instance of ExercizeWorld */
     public Schematic() {
     }
+    private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
 
-    //public FBDWorld constructFBD(List<Body> bodies) {
-    //    return new FBDWorld(this, bodies);
-    //}
-
-    @Override
-    public void activate() {
-        super.activate();
-        for (SimulationObject obj : allObjects()) {
-            obj.setDisplayGrayed(false);
-            obj.setSelectable(true); // or at least set to default selectability??
-        }
-
-        StaticsApplication.getApp().setDefaultAdvice(
-                "This is the selection mode. Select 'Create FBD' to make a Free Body Diagram.");
-        StaticsApplication.getApp().resetAdvice();
+    public List<SimulationObject> allObjects() {
+        return Collections.unmodifiableList(allObjects);
     }
 
-    @Override
+    public void remove(SimulationObject obj) {
+        allObjects.remove(obj);
+    }
+
     public void add(SimulationObject obj) {
         //obj.setGiven(true);
-        super.add(obj);
+        if (!allObjects.contains(obj)) {
+            allObjects.add(obj);
+        }
 
         if (obj instanceof Body) {
             Body body = (Body) obj;

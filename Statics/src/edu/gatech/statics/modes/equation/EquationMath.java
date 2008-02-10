@@ -36,9 +36,9 @@ public class EquationMath {
     boolean isLocked() {
         return locked;
     }
-    private EquationWorld world;
+    private EquationDiagram world;
 
-    protected EquationWorld getWorld() {
+    protected EquationDiagram getWorld() {
         return world;
     }
     private Vector3f observationDirection;
@@ -227,7 +227,7 @@ public class EquationMath {
     }
 
     /** Creates a new instance of Equation */
-    public EquationMath(EquationWorld world) {
+    public EquationMath(EquationDiagram world) {
         this.world = world;
     }
 

@@ -8,6 +8,7 @@ package edu.gatech.statics;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
@@ -29,5 +30,9 @@ public abstract class Mode {
         InterfaceRoot.getInstance().setModePanel(getModePanelName());
         StaticsApplication.getApp().setCurrentDiagram(getDiagram(bodies));
         postLoad();
+    }
+    
+    protected static final Exercise getExercise() {
+        return StaticsApplication.getApp().getExercise();
     }
 }
