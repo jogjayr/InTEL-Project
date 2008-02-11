@@ -32,7 +32,12 @@ public abstract class Mode {
         postLoad();
     }
     
+    /**
+     * This is a shortcut method for subclasses of Mode. It returns
+     * Exercise.getExercise()
+     * @return
+     */
     protected static final Exercise getExercise() {
-        return StaticsApplication.getApp().getExercise();
+        return Exercise.getExercise();
     }
 }

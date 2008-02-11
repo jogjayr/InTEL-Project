@@ -30,6 +30,9 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 public abstract class Exercise {
+    
+    private static Exercise currentExercise;
+    public static Exercise getExercise() {return currentExercise;}
 
     // informational collection of world and diagram objects
     // meant to control functional aspect of exercize, not graphical or engine related
@@ -97,13 +100,15 @@ public abstract class Exercise {
     
     
     public SelectDiagram getSelectDiagram() {
+        if(selectDiagram == null)
+            selectDiagram = new SelectDiagram();
         return selectDiagram;
     }
 
     /** Creates a new instance of Exercize */
     public Exercise(Schematic world) {
         this.schematic = world;
-        selectDiagram = new SelectDiagram();
+        currentExercise = this;
     }
     
     public FreeBodyDiagram getFreeBodyDiagram(BodySubset bodySubset) {

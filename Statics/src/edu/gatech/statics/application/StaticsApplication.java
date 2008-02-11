@@ -31,7 +31,6 @@ import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
-import edu.gatech.statics.util.SelectionListener;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -83,8 +82,15 @@ public class StaticsApplication {
         }
     }*/
     
-    private SelectionFilter selectionFilter;
-    SelectionFilter getSelectionFilter() {return selectionFilter;}
+    //private SelectionFilter selectionFilter;
+    SelectionFilter getSelectionFilter() {
+        if(currentTool != null) {
+            SelectionFilter filter = currentTool.getSelectionFilter();
+            if(filter != null)
+                return filter;
+        }
+        return currentDiagram.getSelectionFilter();
+    }
     //private SelectionListener selectionListener;
     //SelectionListener getSelectionListener() {return selectionListener;}
     
@@ -193,7 +199,8 @@ public class StaticsApplication {
         } catch(NullPointerException e) {
             // jME doesn't know how to tolerate removing input handlers
             // as the result of an input action. This occasionally causes NullPointerExceptions
-            System.out.println("NullPointerException");
+            //System.out.println("NullPointerException");
+            e.printStackTrace();
         }
         
         currentDiagram.update();

@@ -15,6 +15,7 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.InputActionInterface;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.util.SelectionFilter;
 import edu.gatech.statics.util.ToolFinishListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,11 @@ import java.util.List;
 abstract public class Tool extends InputHandler {
     
     private boolean active;
+
+    public SelectionFilter getSelectionFilter() {
+        return null;
+    }
+    
     public boolean isActive() {return active;}
     
     /** Creates a new instance of Tool */

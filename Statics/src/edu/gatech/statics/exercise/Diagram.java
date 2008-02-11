@@ -22,6 +22,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,10 +39,6 @@ public class Diagram {
         return StaticsApplication.getApp().getExercise().getSchematic();
     }
     
-    //private Exercise exercise;
-    //public Exercise getExercise() {return exercise;}
-    //public void setExercise(Exercise exercise) {this.exercise = exercise;}
-    
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {return Collections.unmodifiableList(allObjects);}
     public void add(SimulationObject obj) {
@@ -50,6 +47,16 @@ public class Diagram {
             invalidateNodes();
         }
     }
+
+    private static final SelectionFilter defaultFilter = new SelectionFilter() {
+        public boolean canSelect(SimulationObject obj) {
+            return false;
+        }
+    };
+    public SelectionFilter getSelectionFilter() {
+        return defaultFilter;
+    }
+    
     public void remove(SimulationObject obj) {
         allObjects.remove(obj);
         invalidateNodes();
@@ -125,18 +132,14 @@ public class Diagram {
                 }
             }
             
-            //if(layer.getRenderStatesChanged()) { 
             if(updateRenderState) {
                 for(RenderState renderState : layer.getRenderStates())
                     node.setRenderState(renderState);
                 node.updateRenderState();
             }
-            //}
             
             node.updateGeometricState(0f, true);
             node.updateWorldBound();
-            //node.updateModelBound();
-            //node.updateRenderState();
         }
     }
     
@@ -166,96 +169,10 @@ public class Diagram {
             obj.update();
     }
     
-    // change this--
-    // hover arguments, call manner is fine
-    // but World has set of objects that may be selected, or a boolean test for it canSelect(...)
-    // also, World has list of selected objects, which can be built upon
+    public void onHover(SimulationObject obj) {}
     
-    public void onHover(SimulationObject obj) {
-        
-        /*for(SelectionListener listener : selectionListeners)
-            listener.onHover(obj);
-        
-        // first, clear all highlights
-        for(SimulationObject obj1 : allObjects)
-            if(obj1 != obj)
-                obj1.setDisplayHighlight(false);
-        
-        // actually highlight if we can
-        if(     filter != null &&
-                obj != null &&
-                obj.isSelectable() &&
-                filter.canSelect(obj)) {
-            obj.setDisplayHighlight(true);
-        }*/
-    }
+    public void onClick(SimulationObject obj) {}
     
-    public void onClick(SimulationObject obj) {
-        /*
-        // special things may happen depending on mode?
-        // certain objects may be defined as selectable, etc.
-        
-        // notify listeners of click
-        // some listeners will remove themselves on the event, so use a new list
-        // to prevent comodification
-        List<SelectionListener> selectionListeners1 = new ArrayList<SelectionListener>(selectionListeners);
-        for(SelectionListener listener : selectionListeners1)
-            listener.onClick(obj);
-        
-        if(obj == null) {
-            clearSelection();
-            return;
-        }
-        
-        //System.out.println("Clicked... "+obj+" "+getSelectedObjects().contains(obj));
-        
-        if(getSelectableFilter() != null && obj.isSelectable() && getSelectableFilter().canSelect(obj)) {
-            
-            if(getSelectedObjects().contains(obj)) {
-                // deselect if already selected
-                getSelectedObjects().remove(obj);
-                obj.setDisplaySelected(false);
-                obj.enableManipulators(false);
-                
-            } else {
-                if(!enableSelectMultiple())
-                    clearSelection();
-                
-                // select actual object now
-                if(obj.isSelectable()) {
-                    select(obj);
-                }
-            }
-        }
-         * */
-    }
-    
-    /*public void select(SimulationObject obj) {
-        
-        //System.out.println("Selecting...");
-        
-        // notify listeners
-        for(SelectionListener listener : getSelectionListeners())
-            listener.onSelect(obj);
-
-        // add to selection, and update display
-        getSelectedObjects().add(obj);
-        obj.setDisplaySelected(true);
-
-        if(enableManipulatorsOnSelect())
-            obj.enableManipulators(true);
-    }
-    
-    public void clearSelection() {
-        
-        //System.out.println("Clearing Selection...");
-        
-        selectedObjects = new ArrayList<SimulationObject>();
-        for(SimulationObject obj : allObjects) {
-            obj.setDisplaySelected(false);
-            obj.enableManipulators(false);
-        }
-    }*/
     
     public void activate() {
         //setSelectableFilterDefault();

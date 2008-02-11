@@ -105,7 +105,7 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
     public ViewConstraints createViewConstraints() {
         ViewConstraints constraints = new ViewConstraints();
         
-        constraints.setPositionConstraints(-2, 2, -2, 2);
+        constraints.setPositionConstraints(-20, 20, -20, 20);
         constraints.setZoomConstraints(.5f, 2);
         constraints.setRotationConstraints(-2f, 2f);
         
@@ -116,7 +116,7 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
         //cameraControl.setRotationCenter(rotationCenter);
         cameraControl.setCameraFrame(
-                new Vector3f(0,0,50),
+                new Vector3f(0,0,30),
                 new Vector3f(0,0,0));
     }
 }

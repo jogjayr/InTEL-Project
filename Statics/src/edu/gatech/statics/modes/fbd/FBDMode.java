@@ -6,9 +6,9 @@
 package edu.gatech.statics.modes.fbd;
 
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 
 /**
@@ -26,7 +26,7 @@ public class FBDMode extends Mode {
 
     @Override
     protected Diagram getDiagram(BodySubset bodies) {
-        return StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
+        return Exercise.getExercise().getFreeBodyDiagram(bodies);
     }
 
 }

@@ -39,6 +39,7 @@ public class Launcher {
             System.out.println("Exercise loaded!");
             
             StaticsGame game = new StaticsGame() {
+                @Override
                 public void initGame() {
                     getApplication().setExercise(exercise);
                     super.initGame();

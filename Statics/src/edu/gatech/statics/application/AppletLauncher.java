@@ -21,6 +21,7 @@ public class AppletLauncher extends StaticsApplet {
     public AppletLauncher() {
     }
     
+    @Override
     public void init() {
         
         try {

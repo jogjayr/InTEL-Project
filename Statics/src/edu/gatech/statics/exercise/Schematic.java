@@ -25,9 +25,14 @@ public class Schematic {
     public Schematic() {
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
+    private List<Body> allBodies = new ArrayList<Body>();
 
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
+    }
+    
+    public List<Body> allBodies() {
+        return Collections.unmodifiableList(allBodies);
     }
 
     public void remove(SimulationObject obj) {
@@ -42,6 +47,7 @@ public class Schematic {
 
         if (obj instanceof Body) {
             Body body = (Body) obj;
+            allBodies.add(body);
 
             // is this okay?
             for (SimulationObject obj1 : body.getAttachedObjects()) {
