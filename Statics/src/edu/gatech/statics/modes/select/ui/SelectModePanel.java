@@ -17,6 +17,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
+import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class SelectModePanel extends ApplicationModePanel {
     }
 
     public void updateSelection() {
-        List<Body> selection = Exercise.getExercise().getSelectDiagram().getCurrentlySelected();
+        List<Body> selection = ((SelectDiagram) getDiagram()).getCurrentlySelected();
 
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
@@ -86,7 +87,7 @@ public class SelectModePanel extends ApplicationModePanel {
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            List<Body> selection = Exercise.getExercise().getSelectDiagram().getCurrentlySelected();
+            List<Body> selection = ((SelectDiagram) getDiagram()).getCurrentlySelected();
             if(selection.isEmpty())
                 return;
 

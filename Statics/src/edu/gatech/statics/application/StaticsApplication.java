@@ -27,6 +27,7 @@ import com.jme.util.Timer;
 import com.jmex.bui.BRootNode;
 import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -56,31 +57,9 @@ public class StaticsApplication {
     
     private PolledRootNode labelNode;
     private InterfaceRoot iRoot;
-    //private RootInterface rootInterface;
-    //private AppInterface currentInterface;
-    //private BStyleSheet buiStyle;
-    //public BStyleSheet getBuiStyle() {return buiStyle;}
     
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
     
-    //public RootInterface getRootInterface() {return rootInterface;}
-    //public AppInterface getCurrentInterface() {return currentInterface;}
-    
-    /*public void setModal(BRootNode modalNode, boolean modal) {
-        if(modal) {
-            rootInterface.getBuiNode().setEnabled( rootInterface.getBuiNode() == modalNode );
-            currentInterface.getBuiNode().setEnabled( currentInterface.getBuiNode() == modalNode );
-            labelNode.setEnabled( labelNode == modalNode );
-            
-            enableSelection(false);
-        } else {
-            rootInterface.getBuiNode().setEnabled( true );
-            currentInterface.getBuiNode().setEnabled( true );
-            labelNode.setEnabled( true );
-            
-            enableSelection(true);
-        }
-    }*/
     
     //private SelectionFilter selectionFilter;
     SelectionFilter getSelectionFilter() {
@@ -91,10 +70,7 @@ public class StaticsApplication {
         }
         return currentDiagram.getSelectionFilter();
     }
-    //private SelectionListener selectionListener;
-    //SelectionListener getSelectionListener() {return selectionListener;}
     
-    //private boolean selectionEnabled = true;
     private boolean hideGrays = true;
     private MousePick selector;
     
@@ -106,19 +82,10 @@ public class StaticsApplication {
     }
     public Tool getCurrentTool() {return currentTool;}
     
-    //private float worldScale = 1.0f;
-    //public float getWorldScale() {return worldScale;}
-    //public void setWorldScale(float drawScale) {this.worldScale = drawScale;}
-    
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
     public void setAdvice(String advice) {iRoot.setAdvice(advice);}
     public void resetAdvice() {iRoot.setAdvice(defaultAdvice);}
     public void setDefaultAdvice(String advice) {defaultAdvice = advice;}
-    
-    //public UnitUtils getUnits() {
-    //    if(currentExercise == null) return new UnitUtils();
-    //    return currentExercise.getUnits();
-    //}
     
     private AbsoluteMouse mouse;
     public AbsoluteMouse getMouse() {return mouse;}
@@ -149,13 +116,12 @@ public class StaticsApplication {
     public Exercise getExercise() {return currentExercise;}
     
     public void setCurrentDiagram(Diagram diagram) {
+        clearHighlights();
         this.currentDiagram = diagram;
         currentDiagram.activate();
-        //currentWorld.updateNodes();
-        //rootInterface.update();
     }
     
-    public Diagram getCurrentWorld() {return currentDiagram;}
+    public Diagram getCurrentDiagram() {return currentDiagram;}
     
     /** Creates a new instance of StaticsApplication */
     public StaticsApplication() {
@@ -206,22 +172,23 @@ public class StaticsApplication {
         currentDiagram.update();
         updateLabels();
         
-        // call the finishing command on this exercise
-        // to let the user know that their work is done.
-        //if(currentExercise.testExerciseSolved()) {
-        //    if(!currentExercise.isExerciseFinished())
-        //        currentExercise.finishExercise();
-        //}
         
         if(iRoot != null) {
             iRoot.update();
             iRoot.getBuiNode().updateGeometricState(0, true);
         }
-        //if(currentInterface != null)
-        //    currentInterface.getBuiNode().updateGeometricState(0,true);
-        //if(rootInterface != null)
-        //    rootInterface.getBuiNode().updateGeometricState(0, true);
+        
         labelNode.updateGeometricState(0, true);
+    }
+
+    private void clearHighlights() {
+        if(currentDiagram == null)
+            return;
+        for(SimulationObject obj : currentDiagram.allObjects()) {
+            obj.setDisplayHighlight(false);
+            obj.setDisplaySelected(false);
+            obj.setDisplayGrayed(false);
+        }
     }
     
     private void updateLabels() {
@@ -307,18 +274,10 @@ public class StaticsApplication {
         
         timer = Timer.getTimer();
         
-        /*try {
-            InputStream stin = getClass().getClassLoader().getResourceAsStream("style.bss");
-            buiStyle = new BStyleSheet(new InputStreamReader(stin), new BStyleSheet.DefaultResourceProvider());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }*/
-        
         mouse = new AbsoluteMouse("Mouse Input", display.getWidth(), display.getHeight());
         mouse.registerWithInputHandler(input);
         MouseInput.get().setCursorVisible(true);
         
-        //rootInterface = new RootInterface();
         labelNode = new PolledRootNode(timer, input);
         
         camera = display.getRenderer().createCamera( display.getWidth(), display.getHeight() );
@@ -345,9 +304,6 @@ public class StaticsApplication {
         
         iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
         getExercise().loadStartingMode();
-        //loadExercizeWorld();
-        
-        //rootInterface.showDescription();
         
         getExercise().postLoadExercise();
     }
@@ -357,60 +313,13 @@ public class StaticsApplication {
         return labelNode;
     }
     
-    /*private void setCurrentInterface(AppInterface newInterface) {
-        
-        if(currentInterface != null)
-            currentInterface.dispose();
-        
-        currentInterface = newInterface;
-        currentInterface.activate();
-    }*/
-    
-    /*public void loadFBD(FBDWorld fbd) {
-        //select(null);
-       // hover(null);
-        
-        setCurrentWorld(fbd);
-        FBDInterface fbdInterface = new FBDInterface(fbd);
-        //setCurrentInterface(fbdInterface);
-    }
-    
-    public void loadExercizeWorld() {
-        setCurrentWorld(currentExercise.getSchematic());
-        //setCurrentInterface(new ExerciseInterface());
-    }
-
-    public void loadEquation(FBDWorld fbd) {
-        setCurrentWorld(fbd.getEquationWorld());
-        //setCurrentInterface(new EquationInterface(fbd.getEquationWorld()));
-    }*/
-    
     public boolean isHidingGrays() {return hideGrays;}
     public void hideGrays(boolean hidden) {
         if(this.hideGrays != hidden) {
-            getCurrentWorld().invalidateNodes();
+            getCurrentDiagram().invalidateNodes();
             this.hideGrays = hidden;
         }
     }
-    
-    /*
-    public void enableSelection(boolean enabled) {
-        selectionEnabled = enabled;
-        if(!selectionEnabled) {
-            hover(null);
-            select(null);
-        }
-    }*/
-    
-    /*public void hover(SimulationObject obj) {
-        if(currentWorld != null)
-            currentWorld.hover(obj);
-    }
-    
-    public void select(SimulationObject obj) {
-        if(currentWorld != null)
-            currentWorld.click(obj);
-    }*/
     
     void cleanup() {
         //Logger.getLogger().log( Level.INFO, "Cleaning up resources." );

@@ -18,13 +18,13 @@ import edu.gatech.statics.math.Unit;
  */
 public class AngleMeasurement extends Measurement {
     
-    private Vector3f anchor, v1, v2;
-    public Vector3f getAnchor() {return anchor;}
-    public Vector3f getPoint1() {return v1;}
-    public Vector3f getPoint2() {return v2;}
+    private Point anchor, v1, v2;
+    public Point getAnchor() {return anchor;}
+    public Point getPoint1() {return v1;}
+    public Point getPoint2() {return v2;}
     
     /** Creates a new instance of AngleMeasurement */
-    public AngleMeasurement(Vector3f anchor, Vector3f v1, Vector3f v2) {
+    public AngleMeasurement(Point anchor, Point v1, Point v2) {
         this.anchor = anchor;
         this.v1 = v1;
         this.v2 = v2;

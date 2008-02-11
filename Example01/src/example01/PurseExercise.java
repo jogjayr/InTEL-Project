@@ -118,31 +118,25 @@ public class PurseExercise extends FBDExercise {
 
         G = new Point(new Vector3f(3.0f, -16 + 6, 0));
 
-        DistanceMeasurement distance1 = new DistanceMeasurement(A.getTranslation(), C.getTranslation());
+        DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);
 
-        DistanceMeasurement distance2 = new DistanceMeasurement(G.getTranslation(), B.getTranslation());
+        DistanceMeasurement distance2 = new DistanceMeasurement(G, B);
         distance2.createDefaultSchematicRepresentation(3f);
         world.add(distance2);
 
-        DistanceMeasurement distance3 = new DistanceMeasurement(B.getTranslation(), C.getTranslation());
+        DistanceMeasurement distance3 = new DistanceMeasurement(B, C);
         distance3.createDefaultSchematicRepresentation(3f);
         world.add(distance3);
 
-        DistanceMeasurement distance4 = new DistanceMeasurement(C.getTranslation(), D.getTranslation());
+        DistanceMeasurement distance4 = new DistanceMeasurement(C, D);
         distance4.createDefaultSchematicRepresentation(5f);
         world.add(distance4);
 
-        DistanceMeasurement distance5 = new DistanceMeasurement(D.getTranslation(), E.getTranslation());
+        DistanceMeasurement distance5 = new DistanceMeasurement(D, E);
         distance5.createDefaultSchematicRepresentation(5f);
         world.add(distance5);
-
-        //forearm.addObject(jointB);
-        //forearm.addObject(G);
-        //upperArm.addObject(jointD);
-        //upperArm.addObject(jointC);
-        //forearm.addObject(jointC);
 
         Force purse = new Force(A, new Vector3f(0, -purseWeight, 0));
         purse.setName("Purse");
@@ -151,16 +145,10 @@ public class PurseExercise extends FBDExercise {
         Moment shoulder = new Moment(E, new Vector3f(0, 0, -1), "M shoulder"); // use symbol here
         shoulder.setSymbol("Shoulder");
         upperArm.addObject(shoulder);
-        //shoulder.setSymbol(true);
-
-        //Force weight = new Force(G, new Vector3f(0,-50,0));
-        //forearm.addObject(weight);
 
         jointB.attach(forearm, tendon);
-        //jointB.setDirection(tendon.getDirectionFrom(B)); // points up tendon
         jointC.attach(forearm, upperArm);
         jointD.attach(upperArm, tendon);
-        //jointD.setDirection(tendon.getDirectionFrom(D));
         jointE.attachToWorld(upperArm);
 
         E.setName("E");

@@ -119,8 +119,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     public void draw(Renderer r) {
         super.draw(r);
     
-        worldPointDifference.set(getTarget().getPoint2());
-        worldPointDifference.subtractLocal(getTarget().getPoint1());
+        worldPointDifference.set(getTarget().getPoint2().getTranslation());
+        worldPointDifference.subtractLocal(getTarget().getPoint1().getTranslation());
         offsetDirection.set(r.getCamera().getDirection());
         offsetDirection.crossLocal(worldPointDifference);
         offsetDirection.normalizeLocal();
@@ -129,9 +129,9 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         scaledOffsetDirection.multLocal(offset);
         
         // draw main line.
-        p1.set(getTarget().getPoint1());
+        p1.set(getTarget().getPoint1().getTranslation());
         p1.addLocal( scaledOffsetDirection );
-        p2.set(getTarget().getPoint2());
+        p2.set(getTarget().getPoint2().getTranslation());
         p2.addLocal( scaledOffsetDirection );
         
         pCenter.set(p1);
@@ -177,16 +177,16 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         barOffset2.multLocal(offset - edgeWidth/2);
         
         if(drawLeftBar) {
-            bar1.set(getTarget().getPoint1());
-            bar2.set(getTarget().getPoint1());
+            bar1.set(getTarget().getPoint1().getTranslation());
+            bar2.set(getTarget().getPoint1().getTranslation());
             bar1.addLocal( barOffset1 );
             bar2.addLocal( barOffset2 );
             CurveUtil.renderLine(r, color, bar1, bar2);
         }
         
         if(drawRightBar) {
-            bar1.set(getTarget().getPoint2());
-            bar2.set(getTarget().getPoint2());
+            bar1.set(getTarget().getPoint2().getTranslation());
+            bar2.set(getTarget().getPoint2().getTranslation());
             bar1.addLocal( barOffset1 );
             bar2.addLocal( barOffset2 );
             CurveUtil.renderLine(r, color, bar1, bar2);

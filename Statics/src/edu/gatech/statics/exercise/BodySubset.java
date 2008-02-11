@@ -48,5 +48,10 @@ public class BodySubset {
         hash = 17 * hash + (this.bodies != null ? this.bodies.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return bodies.toString();
+    }
     
 }

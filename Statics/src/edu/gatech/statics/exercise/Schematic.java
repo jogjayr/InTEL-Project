@@ -10,9 +10,13 @@ package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Measurement;
+import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The schematic is designed to store and keep track of all of the objects in an exercise.
@@ -54,6 +58,59 @@ public class Schematic {
                 add(obj1);
             }
 
+        }
+    }
+    
+    /**
+     * This method fetches all the measurements that apply to the specified bodies
+     * This is done by checking to see that at least two of the points of the measurement
+     * are contained by bodies in the set.
+     * @param bodies
+     * @return
+     */
+    public List<Measurement> getMeasurements(BodySubset bodies) {
+        List<Measurement> r = new ArrayList<Measurement>();
+        
+        Set<Point> bodyPoints = new HashSet<Point>();
+        for(Body body : bodies.getBodies()) {
+            for(SimulationObject obj : body.getAttachedObjects())
+                if(obj instanceof Point)
+                    bodyPoints.add((Point)obj);
+        }
+        
+        for(SimulationObject obj : allObjects) {
+            if(!(obj instanceof Measurement))
+                continue;
+            
+            Measurement measurement = (Measurement) obj;
+            
+            // we count the measurement to be added if
+            // two of the points described by the measurement are covered by
+            // the bodies
+            if(containsTwo(bodyPoints, measurement.getPoints()))
+                r.add(measurement);
+        }
+        
+        return r;
+    }
+    
+    /**
+     * This helper method returns true if two of toCheck are contained in
+     * sourcePoints.
+     * @param sourcePoints
+     * @param toCheck
+     * @return
+     */
+    private boolean containsTwo(Set<Point> sourcePoints, List<Point> toCheck) {
+        if(toCheck.size() <= 1) return false;
+        if(toCheck.size() == 2)
+            return sourcePoints.containsAll(toCheck);
+        else {
+            int found = 0;
+            for(Point check : toCheck)
+                if(sourcePoints.contains(check))
+                    found++;
+            return found >= 2;
         }
     }
 }

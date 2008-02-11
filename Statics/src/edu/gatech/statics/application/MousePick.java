@@ -90,7 +90,7 @@ public class MousePick extends MouseInputAction {
         wasMouseDown = isMouseDown;
         
         Camera camera = StaticsApplication.getApp().getCamera();
-        Diagram world = StaticsApplication.getApp().getCurrentWorld();
+        Diagram world = StaticsApplication.getApp().getCurrentDiagram();
         
         
         //Vector2f screenPos2 = new Vector2f(
@@ -157,7 +157,7 @@ public class MousePick extends MouseInputAction {
         if(!InterfaceRoot.getInstance().hasMouse()) {
             if(StaticsApplication.getApp().getCurrentTool() != null)
                 StaticsApplication.getApp().getCurrentTool().onHover(obj);
-            else StaticsApplication.getApp().getCurrentWorld().onHover(obj);
+            else StaticsApplication.getApp().getCurrentDiagram().onHover(obj);
         }
         //    StaticsApplication.getApp().getSelectionListener().onHover(obj);
     }
@@ -167,7 +167,7 @@ public class MousePick extends MouseInputAction {
         if(!InterfaceRoot.getInstance().hasMouse()) {
             if(StaticsApplication.getApp().getCurrentTool() != null)
                 StaticsApplication.getApp().getCurrentTool().onClick(obj);
-            else StaticsApplication.getApp().getCurrentWorld().onClick(obj);
+            else StaticsApplication.getApp().getCurrentDiagram().onClick(obj);
         }
         //    StaticsApplication.getApp().getSelectionListener().onClick(obj);
     }

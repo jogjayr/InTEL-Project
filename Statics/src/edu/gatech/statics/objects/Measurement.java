@@ -8,9 +8,11 @@
  */
 package edu.gatech.statics.objects;
 
-import edu.gatech.statics.*;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -18,6 +20,11 @@ import edu.gatech.statics.math.Quantity;
  */
 abstract public class Measurement extends SimulationObject implements Quantified {
 
+    private List<Point> points;
+    public List<Point> getPoints() {
+        return Collections.unmodifiableList(points);
+    }
+    
     private Quantity quantity;
     //public Quantity getQuantity() {return quantity.getUnmodifiableQuantity();}
     public float getValue() {
@@ -72,7 +79,8 @@ abstract public class Measurement extends SimulationObject implements Quantified
     //public void setKnown(boolean known) {this.known = known;}
     //public boolean isKnown() {return known;}
     /** Creates a new instance of Measurement */
-    public Measurement() {
+    public Measurement(Point ... points) {
+        this.points = Arrays.asList(points);
         quantity = new Quantity(getUnit(), 0);
     }
 }

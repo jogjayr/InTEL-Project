@@ -27,8 +27,12 @@ public abstract class Mode {
     }
     
     public final void load(BodySubset bodies) {
-        InterfaceRoot.getInstance().setModePanel(getModePanelName());
+        // load the diagram
         StaticsApplication.getApp().setCurrentDiagram(getDiagram(bodies));
+        
+        // loading the ModePanel occurs after the diagram.
+        // the ModePanel may depend on the diagram for labeling, etc
+        InterfaceRoot.getInstance().setModePanel(getModePanelName());
         postLoad();
     }
     

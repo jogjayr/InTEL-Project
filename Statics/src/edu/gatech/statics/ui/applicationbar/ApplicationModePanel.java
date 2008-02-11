@@ -8,6 +8,8 @@ package edu.gatech.statics.ui.applicationbar;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.BorderLayout;
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Diagram;
 
 /**
  *
@@ -36,4 +38,13 @@ public abstract class ApplicationModePanel extends BContainer {
     public ApplicationTab getTab() {return tab;}
 
     abstract protected ApplicationTab createTab();
+    
+    /**
+     * This is a utiliy method for subclasses of ApplicationModePanel to access 
+     * the current diagram.
+     * @return
+     */
+    public final Diagram getDiagram() {
+        return StaticsApplication.getApp().getCurrentDiagram();
+    }
 }
