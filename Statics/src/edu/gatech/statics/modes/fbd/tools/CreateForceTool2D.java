@@ -11,54 +11,60 @@ package edu.gatech.statics.modes.fbd.tools;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
-import edu.gatech.statics.util.ClickListener;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.VectorListener;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
+public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener*/ {
 
-    protected Point forceAnchor;
+    //protected Point forceAnchor;
     protected Force force;
-    protected Diagram world;
-    protected DragSnapManipulator dragManipulator;
+    protected Diagram diagram;
+    //protected DragSnapManipulator dragManipulator;
     protected Orientation2DSnapManipulator orientationManipulator;
-    private ClickListener clickListener;
+    //private ClickListener clickListener;
 
     /** Creates a new instance of CreateForceTool */
-    public CreateForceTool2D(Diagram world) {
-        this.world = world;
-        forceAnchor = new Point(new Vector3f());
+    public CreateForceTool2D(Diagram diagram) {
+        super(diagram);
+        this.diagram = diagram;
+        /*forceAnchor = new Point(new Vector3f());
         force = new Force(forceAnchor, new Vector3f(1.5f, 1f, 0).normalize(),"F");
         //force.setSymbol(true);
         force.createDefaultSchematicRepresentation();
 
-        VectorListener forceListener = new VectorOverlapDetector(world, force);
-        force.addListener(forceListener);
+        VectorListener forceListener = new VectorOverlapDetector(diagram, force);
+        force.addListener(forceListener);*/
 
-        clickListener = new CreateClickListener();
+        //clickListener = new CreateClickListener();
+    }
+    
+    
+    protected List<Load> createLoad(Point anchor) {
+        force = new Force(anchor, new Vector3f(1.5f, 1f, 0).normalize(),"F");
+        force.createDefaultSchematicRepresentation();
+        return Collections.singletonList((Load)force);
     }
 
-    protected void onActivate() {
+    //protected void onActivate() {
 
-        world.add(force);
+        //diagram.add(force);
         //world.updateNodes();
 
-        enableDragManipulator();
+        //enableDragManipulator();
 
         //StaticsApplication.getApp().enableSelection(false);
-    }
+    //}
 
-    protected void onCancel() {
-        world.remove(force);
+    //protected void onCancel() {
+        /*diagram.remove(force);
         //world.updateNodes();
 
         if (dragManipulator != null) {
@@ -67,12 +73,12 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
 
         if (orientationManipulator != null) {
             orientationManipulator.setEnabled(false);
-        }
-    }
+        }*/
+    //}
 
-    protected void onFinish() {
+    //protected void onFinish() {
         //StaticsApplication.getApp().enableSelection(true);
-    }
+    //}
 
     protected void finishForce() {
 
@@ -107,26 +113,10 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
         labelTool.onClick(force);*/
     }
 
-    protected void enableDragManipulator() {
-
-        List<Point> pointList = new ArrayList();
-        for (SimulationObject obj : world.allObjects()) {
-            if (obj instanceof Point) {
-                pointList.add((Point) obj);
-            }
-        }
-
-        dragManipulator = new DragSnapManipulator(force, pointList);
-        //dragManipulator.addClickListener(clickListener);
-        addToAttachedHandlers(dragManipulator);
-
-        StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce1"));
-    }
 
     protected void enableOrientationManipulator(Point point) {
 
-        final List<Vector3f> snapDirections = world.getSensibleDirections(point);
+        final List<Vector3f> snapDirections = diagram.getSensibleDirections(point);
         orientationManipulator = new Orientation2DSnapManipulator(force, Vector3f.UNIT_Z, snapDirections);
         //orientationManipulator.addClickListener(clickListener);
         addToAttachedHandlers(orientationManipulator);
@@ -135,7 +125,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
     }
 
-    protected void releaseDragManipulator() {
+    /*protected void releaseDragManipulator() {
         if (dragManipulator.getCurrentSnap() != null) {
 
             // snap at the drag manipulator and terminate,
@@ -149,7 +139,7 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
 
             enableOrientationManipulator(point);
         }
-    }
+    }*/
 
     public void releaseOrientationManipulator() {
         if (orientationManipulator.getCurrentSnap() != null) {
@@ -164,17 +154,15 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
             finishForce();
         }
     }
+    
 
-    protected class CreateClickListener implements ClickListener {
+    /*protected class CreateClickListener implements ClickListener {
 
         public void onMousePress(Manipulator m) {
             if (dragManipulator != null) {
                 releaseDragManipulator();
             }
 
-        /*if(orientationManipulator != null) {
-        releaseOrientationManipulator();
-        }*/
         }
 
         public void onMouseRelease(Manipulator m) {
@@ -183,5 +171,5 @@ public class CreateForceTool2D extends Tool /*implements ClickListener*/ {
                 releaseOrientationManipulator();
             }
         }
-    }
+    }*/
 }

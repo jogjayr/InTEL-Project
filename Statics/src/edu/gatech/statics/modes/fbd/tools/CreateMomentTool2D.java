@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class CreateMomentTool2D extends Tool implements ClickListener {
+public class CreateMomentTool2D extends Tool { //implements ClickListener {
     
     protected Point forceAnchor;
     protected Moment moment;
@@ -47,7 +47,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         world.add(moment);
         //world.updateNodes();
         
-        enableDragManipulator();
+        //enableDragManipulator();
     }
 
     protected void onCancel() {
@@ -81,6 +81,7 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         labelTool.onClick(moment);*/
     }
     
+    /*
     protected void enableDragManipulator() {
         
         List<Point> pointList = new ArrayList();
@@ -116,6 +117,6 @@ public class CreateMomentTool2D extends Tool implements ClickListener {
         }
     }
 
-    public void onMouseRelease(Manipulator m) {}
+    public void onMouseRelease(Manipulator m) {}*/
     
 }

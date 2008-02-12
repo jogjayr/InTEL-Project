@@ -15,6 +15,7 @@ import com.jmex.bui.layout.GroupLayout;
 public abstract class FBDTools extends BContainer {
 
     private FBDModePanel modePanel;
+    protected FBDModePanel getModePanel() {return modePanel;}
     
     FBDTools(FBDModePanel modePanel) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));

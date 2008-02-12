@@ -76,9 +76,14 @@ public class StaticsApplication {
     
     private Tool currentTool;
     public void setCurrentTool(Tool tool) {
-        if(currentTool != null && currentTool.isActive())
+        if(currentTool != null && currentTool.isActive()) {
             currentTool.cancel();
+            input.removeFromAttachedHandlers(currentTool);
+        }
+        
         currentTool = tool;
+        if(currentTool != null)
+            input.addToAttachedHandlers(currentTool);
     }
     public Tool getCurrentTool() {return currentTool;}
     

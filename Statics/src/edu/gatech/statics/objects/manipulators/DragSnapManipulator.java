@@ -9,9 +9,8 @@
 
 package edu.gatech.statics.objects.manipulators;
 
+import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.util.SnapListener;
 import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +26,27 @@ public class DragSnapManipulator extends DragManipulator {
     
     private List<Point> snapPoints;
     private Point currentSnap;
-    public Point getCurrentSnap() {return currentSnap;}
+    //public Point getCurrentSnap() {return currentSnap;}
     
-    protected List<SnapListener> snapListeners = new ArrayList();
+    private List<DragSnapListener> snapListeners = new ArrayList();
     
-    public void addSnapListener(SnapListener listener) {snapListeners.add(listener);}
-    public void removeSnapListener(SnapListener listener) {snapListeners.remove(listener);}
+    public void removeAllSnapListeners() {snapListeners.clear();}
+    public void addSnapListener(DragSnapListener listener) {snapListeners.add(listener);}
+    public void removeSnapListener(DragSnapListener listener) {snapListeners.remove(listener);}
     
     /** Creates a new instance of DragSnapManipulator */
-    public DragSnapManipulator(SimulationObject target, List<Point> snapPoints) {
-        super(target);
+    public DragSnapManipulator(Vector3f startPosition, List<Point> snapPoints) {
+        super(startPosition);
         this.snapPoints = snapPoints;
     }
     
-    protected void snapEvent() {
-        for(SnapListener listener : snapListeners)
-            listener.onSnap(this);
+    protected void snapEvent(Point currentPoint) {
+        for(DragSnapListener listener : snapListeners)
+            listener.onSnap(currentPoint);
     }
 
-    protected Vector3f findWorldPoint() {
+    @Override
+    protected Vector3f findWorldPoint(Vector2f screenTranslation) {
         
         Vector3f mouseScreenTranslation = mouse.getLocalTranslation();
         
@@ -72,7 +73,7 @@ public class DragSnapManipulator extends DragManipulator {
             
             currentSnap = bestPoint;
             if(doEvent)
-                snapEvent();
+                snapEvent(currentSnap);
             return bestPoint.getTranslation();
             
         } else {
@@ -86,8 +87,8 @@ public class DragSnapManipulator extends DragManipulator {
             currentSnap = null;
             
             if(doEvent)
-                snapEvent();
-            return super.findWorldPoint();
+                snapEvent(currentSnap);
+            return super.findWorldPoint(screenTranslation);
         }
         
     }

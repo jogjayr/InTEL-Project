@@ -24,6 +24,7 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,11 @@ public class Diagram {
             allObjects.add(obj);
             invalidateNodes();
         }
+    }
+    
+    public void addAll(Collection<SimulationObject> objs) {
+        for(SimulationObject obj : objs)
+            add(obj);
     }
 
     private static final SelectionFilter defaultFilter = new SelectionFilter() {

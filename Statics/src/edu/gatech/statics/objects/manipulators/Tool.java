@@ -51,11 +51,9 @@ abstract public class Tool extends InputHandler {
     }
 
     public void onClick(SimulationObject obj) {
-        
     }
 
     public void onHover(SimulationObject obj) {
-        
     }
     
     /** called whenever the user presses RETURN or ENTER */

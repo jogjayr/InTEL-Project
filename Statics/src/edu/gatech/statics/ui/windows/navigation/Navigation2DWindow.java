@@ -81,9 +81,9 @@ public class Navigation2DWindow extends NavigationWindow {
             else if(action.equals("down"))
                 getCameraControl().panCamera(0, -1);
             if(action.equals("left"))
-                getCameraControl().panCamera(1, 0);
-            if(action.equals("right"))
                 getCameraControl().panCamera(-1, 0);
+            if(action.equals("right"))
+                getCameraControl().panCamera(1, 0);
             if(action.equals("zoomIn"))
                 getCameraControl().zoomCamera(-1);
             if(action.equals("zoomOut"))

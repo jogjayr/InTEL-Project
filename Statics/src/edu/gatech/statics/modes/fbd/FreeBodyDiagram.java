@@ -58,8 +58,7 @@ public class FreeBodyDiagram extends SubDiagram {
         
         for(Body body : bodies.getBodies()) {
             add(body);
-            for(SimulationObject obj : body.getAttachedObjects())
-                add(obj);
+            addAll(body.getAttachedObjects());
         }
         
         for(Measurement measurement : getSchematic().getMeasurements(bodies))

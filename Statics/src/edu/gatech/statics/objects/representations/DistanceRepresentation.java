@@ -41,7 +41,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         drawRightBar = right;
     }
     
-    private ColorRGBA color = ColorRGBA.white;
+    private ColorRGBA color = ColorRGBA.black;
     public void setColor(ColorRGBA color) {this.color = color;}
     
     //public void drawLabel(boolean drawLabel) {this.drawLabel = drawLabel;}

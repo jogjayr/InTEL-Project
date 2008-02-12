@@ -29,8 +29,7 @@ public class SelectDiagram extends Diagram {
     
     
     public SelectDiagram() {
-        for(SimulationObject obj : getSchematic().allObjects())
-            add(obj);
+        addAll(getSchematic().allObjects());
     }
 
     private static final SelectionFilter filter = new SelectionFilter() {

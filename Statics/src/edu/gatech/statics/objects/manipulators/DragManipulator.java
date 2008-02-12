@@ -9,14 +9,12 @@
 
 package edu.gatech.statics.objects.manipulators;
 
-import com.jme.input.MouseInput;
+import com.jme.input.InputHandler;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import edu.gatech.statics.objects.manipulators.Manipulator;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +23,33 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class DragManipulator extends Manipulator {
+public class DragManipulator extends InputHandler {
     
-    protected Vector3f currentWorldPosition;
+    //protected Vector3f currentWorldPosition;
     protected Vector3f startPosition;
     protected Camera camera;
     
-    public Vector3f getCurrentWorldPosition() {return currentWorldPosition;}
+    private List<DragListener> listeners = new ArrayList<DragListener>();
+
+    public void removeAllListeners() {
+        listeners.clear();
+    }
+
+    public void removeListener(DragListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void addListener(DragListener listener) {
+        listeners.add(listener);
+    }
+    
+    
+    //public Vector3f getCurrentWorldPosition() {return currentWorldPosition;}
     
     /** Creates a new instance of SnapManipulator */
-    public DragManipulator(SimulationObject target) {
-        super(target);
-        startPosition = target.getTranslation();
+    public DragManipulator(Vector3f startPosition) {
+        //super(target);
+        this.startPosition = startPosition; //target.getTranslation();
         
         camera = StaticsApplication.getApp().getCamera();
         mouse = StaticsApplication.getApp().getMouse();
@@ -44,9 +57,9 @@ public class DragManipulator extends Manipulator {
         addAction(new MouseAction());
     }
     
-    protected Vector3f findWorldPoint() {
-        Vector3f mouseTranslation = mouse.getLocalTranslation();
-        Vector2f screenTranslation = new Vector2f(mouseTranslation.x, mouseTranslation.y);
+    protected Vector3f findWorldPoint(Vector2f screenTranslation) {
+        //Vector3f mouseTranslation = mouse.getLocalTranslation();
+        //Vector2f screenTranslation = new Vector2f(mouseTranslation.x, mouseTranslation.y);
         Vector3f camNormal = camera.getWorldCoordinates(screenTranslation,.1f);
 
         Vector3f camPosition = camera.getLocation();
@@ -71,8 +84,14 @@ public class DragManipulator extends Manipulator {
         }
         
         public void performAction(InputActionEvent evt) {
-            currentWorldPosition = findWorldPoint();
-            getTarget().setTranslation(currentWorldPosition);
+            //getTarget().setTranslation(currentWorldPosition);
+            
+            Vector3f mouseTranslation = mouse.getLocalTranslation();
+            Vector2f screenTranslation = new Vector2f(mouseTranslation.x, mouseTranslation.y);
+            Vector3f currentWorldPosition = findWorldPoint(screenTranslation);
+            
+            for(DragListener listener : listeners)
+                listener.onDrag(screenTranslation, currentWorldPosition);
         }
     }
 }
