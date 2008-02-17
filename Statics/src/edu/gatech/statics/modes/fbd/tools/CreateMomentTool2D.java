@@ -12,6 +12,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
@@ -30,6 +31,16 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
     public CreateMomentTool2D(Diagram world) {
         super(world);
         this.world = world;
+    }
+    
+    @Override
+    protected void showLabelSelector() {
+        LabelSelector labelTool = new LabelSelector(new LoadLabelListener(moment), moment.getAnchor().getTranslation());
+        labelTool.setAdvice("Please give a name or a value for your moment");
+        labelTool.setUnits(Unit.moment.getSuffix());
+        labelTool.setHintText("");
+        labelTool.setIsCreating(true);
+        labelTool.createPopup();
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.jmex.bui.BButton;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import edu.gatech.statics.modes.fbd.tools.CreateForceTool2D;
+import edu.gatech.statics.modes.fbd.tools.CreateMomentTool2D;
 
 /**
  *
@@ -36,6 +37,9 @@ public class FBDTools2D extends FBDTools {
             if(event.getAction().equals("force")) {
                 CreateForceTool2D createForce = new CreateForceTool2D(getModePanel().getDiagram());
                 createForce.activate();
+            } else if(event.getAction().equals("moment")) {
+                CreateMomentTool2D createMoment = new CreateMomentTool2D(getModePanel().getDiagram());
+                createMoment.activate();
             }
         }
     

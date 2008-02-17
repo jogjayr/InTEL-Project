@@ -121,9 +121,17 @@ public class StaticsApplication {
     public Exercise getExercise() {return currentExercise;}
     
     public void setCurrentDiagram(Diagram diagram) {
+        if(currentDiagram != null) {
+            if(currentDiagram.getInputHandler() != null)
+                input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
+            currentDiagram.deactivate();
+        }
+        
         clearHighlights();
         this.currentDiagram = diagram;
         currentDiagram.activate();
+        if(currentDiagram.getInputHandler() != null)
+            input.addToAttachedHandlers(currentDiagram.getInputHandler());
     }
     
     public Diagram getCurrentDiagram() {return currentDiagram;}

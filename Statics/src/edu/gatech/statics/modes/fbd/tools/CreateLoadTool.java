@@ -40,6 +40,8 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         return dragManipulator;
     }
     
+    protected void showLabelSelector() {}
+    
     public CreateLoadTool(Diagram diagram) {
         this.diagram = diagram;
         loadAnchor = new Point(new Vector3f());
@@ -67,6 +69,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
             releaseDragManipulator();
         }
 
+        showLabelSelector();
         finish();
     }
 

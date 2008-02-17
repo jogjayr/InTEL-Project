@@ -57,7 +57,8 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
     }
 
-    protected void finishForce() {
+    @Override
+    protected void showLabelSelector() {
         LabelSelector labelTool = new LabelSelector(new LoadLabelListener(force), force.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your force");
         labelTool.setUnits(Unit.force.getSuffix());
@@ -119,7 +120,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
             orientationManipulator = null;
 
             finish();
-            finishForce();
+            showLabelSelector();
         }
     }
 }

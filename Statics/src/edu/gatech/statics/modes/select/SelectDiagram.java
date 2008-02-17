@@ -56,8 +56,8 @@ public class SelectDiagram extends Diagram {
             return;
         }
 
-        if (currentHighlight != null) // we are changing our hover, so clear the current
-        {
+        // we are changing our hover, so clear the current
+        if (currentHighlight != null) {
             currentHighlight.setDisplayHighlight(false);
         }
 

@@ -13,23 +13,25 @@ import com.jmex.bui.event.MouseListener;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.objects.VectorObject;
-import edu.gatech.statics.objects.manipulators.Manipulator;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class LabelManipulator extends Manipulator<VectorObject> {
+public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
 
     private LabelRepresentation labelRepresentation;
     private LabelClickListener clickListener;
 
-    private boolean labelingEnabled = true;
+    //private boolean labelingEnabled = true;
+    private Load myLoad;
     
-    public LabelManipulator(VectorObject vectorObject) {
-        super(vectorObject);
+    public LabelManipulator(Load vectorObject) {
+        myLoad = vectorObject;
         
         for(Representation rep : vectorObject.getRepresentation(RepresentationLayer.labels))
             if(rep instanceof LabelRepresentation)
@@ -41,12 +43,17 @@ public class LabelManipulator extends Manipulator<VectorObject> {
     
     protected void performSingleClick() {
         //StaticsApplication.getApp().select(getTarget());
+        StaticsApplication.getApp().getCurrentDiagram().onClick(myLoad);
     }
     
     protected void performDoubleClick() {
         
-        if(!labelingEnabled)
-            return;
+        Diagram diagram = StaticsApplication.getApp().getCurrentDiagram();
+        if(diagram instanceof FreeBodyDiagram)
+            ((FreeBodyDiagram)diagram).onLabel(myLoad);
+        
+        //if(!labelingEnabled)
+        //    return;
         
         //LabelSelector tool = new LabelSelector(
         //        StaticsApplication.getApp().getCurrentWorld(),
@@ -55,9 +62,9 @@ public class LabelManipulator extends Manipulator<VectorObject> {
         //tool.onClick(getTarget());
     }
 
-    public void enableLabeling(boolean enabled) {
-        labelingEnabled = enabled;
-    }
+    //public void enableLabeling(boolean enabled) {
+    //    labelingEnabled = enabled;
+    //}
     
     protected class LabelClickListener implements MouseListener {
         
