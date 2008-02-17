@@ -86,6 +86,11 @@ public class PurseExercise extends FBDExercise {
     Pin2d jointC, jointE;
 
     @Override
+    public float getDrawScale() {
+        return 1.5f;
+    }
+    
+    @Override
     public void loadExercise() {
 
         Schematic world = getSchematic();

@@ -18,6 +18,13 @@ public class ModalPopupWindow extends BPopupWindow {
     public ModalPopupWindow(BLayoutManager layout) {
         super(InterfaceRoot.getInstance().getMenuBar(), layout);
         setModal(true);
+        InterfaceRoot.getInstance().setModalWindow(this);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        InterfaceRoot.getInstance().setModalWindow(null);
     }
     
 }

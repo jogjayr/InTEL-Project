@@ -17,6 +17,7 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
+import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -42,29 +43,21 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
     }
     
     protected void performSingleClick() {
-        //StaticsApplication.getApp().select(getTarget());
+        if(InterfaceRoot.getInstance().hasMouse())
+            return;
+        
         StaticsApplication.getApp().getCurrentDiagram().onClick(myLoad);
     }
     
     protected void performDoubleClick() {
+        if(InterfaceRoot.getInstance().hasMouse())
+            return;
         
         Diagram diagram = StaticsApplication.getApp().getCurrentDiagram();
         if(diagram instanceof FreeBodyDiagram)
             ((FreeBodyDiagram)diagram).onLabel(myLoad);
         
-        //if(!labelingEnabled)
-        //    return;
-        
-        //LabelSelector tool = new LabelSelector(
-        //        StaticsApplication.getApp().getCurrentWorld(),
-        //        StaticsApplication.getApp().getCurrentInterface().getToolbar());
-        //tool.activate();
-        //tool.onClick(getTarget());
     }
-
-    //public void enableLabeling(boolean enabled) {
-    //    labelingEnabled = enabled;
-    //}
     
     protected class LabelClickListener implements MouseListener {
         

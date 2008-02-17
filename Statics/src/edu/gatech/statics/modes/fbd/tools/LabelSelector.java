@@ -110,31 +110,4 @@ public class LabelSelector /*extends SelectionTool*/ {
             popup.setBackground(state, background);
         }
     }
-
-    /*private boolean updateVector(VectorObject obj, String text) {
-    if (text.length() == 0) {
-    return false;
-    }
-    if (Character.isDigit(text.charAt(0)) ||
-    text.charAt(0) == '.' ||
-    text.charAt(0) == '-') {
-    // numerical, try to lop off tail end
-    String[] split = text.split(" ");
-    try {
-    float value = Float.parseFloat(split[0]);
-    // we do not want null values.
-    if (value == 0) {
-    return false;
-    }
-    obj.setValue(value);
-    obj.setSymbol(null);
-    } catch (NumberFormatException e) {
-    return false;
-    }
-    } else {
-    //obj.setName(text);
-    obj.setSymbol(text);
-    }
-    return true;
-    }*/
 }

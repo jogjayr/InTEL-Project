@@ -15,6 +15,7 @@ import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
+import edu.gatech.statics.ui.components.ModalPopupWindow;
 import edu.gatech.statics.ui.menu.BrowsePopupMenu;
 import edu.gatech.statics.ui.components.DraggablePopupWindow;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
@@ -46,6 +47,8 @@ public class InterfaceRoot {
     private CoordinateSystemWindow coordinatesWindow;
     private Timer timer;
     private InputHandler input;
+    
+    private ModalPopupWindow modalWindow;
     
     private CameraControl cameraControl;
     
@@ -92,6 +95,14 @@ public class InterfaceRoot {
 
     public TopMenuBar getMenuBar() {
         return menuBar;
+    }
+
+    public void setModalWindow(ModalPopupWindow window) {
+        this.modalWindow = window;
+    }
+    
+    public ModalPopupWindow getModalWindow() {
+        return modalWindow;
     }
 
     /**
@@ -260,6 +271,9 @@ public class InterfaceRoot {
     }
     
     public boolean hasMouse() {
+        if(modalWindow != null)
+            return true;
+        
         int x = MouseInput.get().getXAbsolute();
         int y = MouseInput.get().getYAbsolute();
         for(BWindow window : buiNode.getWindows())

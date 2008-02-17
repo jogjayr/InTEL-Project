@@ -249,7 +249,7 @@ public class Diagram {
         directions.add(new Vector3f(0, 1, 0));
         directions.add(new Vector3f(0, -1, 0));
 
-        for (Body body : allBodies()) {
+        for (Body body : getSchematic().allBodies()) {
             if (!body.getAttachedObjects().contains(point)) {
                 continue;
             }

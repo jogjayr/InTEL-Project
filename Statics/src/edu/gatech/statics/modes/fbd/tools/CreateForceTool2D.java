@@ -17,6 +17,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.VectorListener;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,8 +54,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     protected void onFinish() {
         super.onFinish();
-        System.out.println("finished");
-
+        
+        VectorListener forceListener = new VectorOverlapDetector(diagram, force);
+        force.addListener(forceListener);
     }
 
     @Override

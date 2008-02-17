@@ -61,6 +61,11 @@ public class StaticsApplication {
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
     
     
+    //private float drawScale = 1.0f;
+    public float getDrawScale() {return currentExercise.getDrawScale();}
+    //public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
+    
+    
     //private SelectionFilter selectionFilter;
     SelectionFilter getSelectionFilter() {
         if(currentTool != null) {
@@ -71,7 +76,7 @@ public class StaticsApplication {
         return currentDiagram.getSelectionFilter();
     }
     
-    private boolean hideGrays = true;
+    //private boolean hideGrays = true;
     private MousePick selector;
     
     private Tool currentTool;
@@ -317,13 +322,13 @@ public class StaticsApplication {
         return labelNode;
     }
     
-    public boolean isHidingGrays() {return hideGrays;}
+    /*public boolean isHidingGrays() {return hideGrays;}
     public void hideGrays(boolean hidden) {
         if(this.hideGrays != hidden) {
             getCurrentDiagram().invalidateNodes();
             this.hideGrays = hidden;
         }
-    }
+    }*/
     
     void cleanup() {
         //Logger.getLogger().log( Level.INFO, "Cleaning up resources." );

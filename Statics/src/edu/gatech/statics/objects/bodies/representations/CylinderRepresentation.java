@@ -57,13 +57,14 @@ public class CylinderRepresentation extends BodyRepresentation {
         
         setModelBound(new OrientedBoundingBox());
         //setModelBound(new BoundingBox());
-        //setUseWorldScale(false);
+        setUseWorldScale(false);
         
         update();
         updateModelBound();
         updateRenderState();
     }
     
+    @Override
     public void update() {
         super.update();
         
@@ -75,7 +76,7 @@ public class CylinderRepresentation extends BodyRepresentation {
         
         float effectiveRadius = radius;
         //if(useWorldScale())
-            //effectiveRadius *= StaticsApplication.getApp().getWorldScale();
+            effectiveRadius *= StaticsApplication.getApp().getDrawScale();
         
         cylinder.setLocalScale(new Vector3f(effectiveRadius, effectiveRadius, height));
     }

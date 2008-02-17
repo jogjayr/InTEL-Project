@@ -68,7 +68,7 @@ public class ImageRepresentation extends Representation {
         setAmbient(ColorRGBA.white);
         
         setSynchronizeRotation(false);
-        //setUseWorldScale(false);
+        setUseWorldScale(false);
         
         //quad.setLightCombineMode(LightState.OFF);
         //setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);

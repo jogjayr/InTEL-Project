@@ -16,7 +16,6 @@ import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
-import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
@@ -33,6 +32,10 @@ public abstract class Exercise {
     
     private static Exercise currentExercise;
     public static Exercise getExercise() {return currentExercise;}
+
+    public float getDrawScale() {
+        return 1;
+    }
 
     // informational collection of world and diagram objects
     // meant to control functional aspect of exercize, not graphical or engine related

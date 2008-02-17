@@ -45,7 +45,13 @@ public class FreeBodyDiagram extends SubDiagram {
     }
 
     public void reset() {
+        for (Load load : addedForces) {
+            remove(load);
+        }
         addedForces.clear();
+
+        currentHighlight = null;
+        currentSelection = null;
     }
 
     public void setSolved() {
@@ -81,11 +87,12 @@ public class FreeBodyDiagram extends SubDiagram {
     @Override
     public void add(SimulationObject obj) {
         super.add(obj);
-        if(obj instanceof Load) {
+        if (obj instanceof Load) {
+            addedForces.add((Load) obj);
             new LabelManipulator((Load) obj);
         }
     }
-    
+
     @Override
     public InputHandler getInputHandler() {
         return fbdInput;
@@ -101,7 +108,6 @@ public class FreeBodyDiagram extends SubDiagram {
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
-    
     private Load currentHighlight;
     private Load currentSelection;
 
@@ -144,19 +150,21 @@ public class FreeBodyDiagram extends SubDiagram {
             currentSelection.setDisplaySelected(false);
             currentSelection = null;
         } else {
-            if(currentSelection != null)
+            if (currentSelection != null) {
                 currentSelection.setDisplaySelected(false);
+            }
             currentSelection = (Load) obj;
             currentSelection.setDisplaySelected(true);
-            
+
             fbdInput.onSelect(currentSelection);
         }
     }
-    
+
     public void onLabel(Load load) {
-        if(solved)
+        if (solved) {
             return;
-        
+        }
+
         LabelSelector labelTool = new LabelSelector(new LoadLabelListener(load), load.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your load");
         labelTool.setUnits(load.getUnit().getSuffix());

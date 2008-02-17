@@ -89,7 +89,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         };
         attachChild(label);
         
-        //setUseWorldScale(false);
+        setUseWorldScale(false);
         
         update();
         updateRenderState();

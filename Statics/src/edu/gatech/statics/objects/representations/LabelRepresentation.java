@@ -71,7 +71,7 @@ public class LabelRepresentation extends Representation {
         
         bWindow.add(label, BorderLayout.CENTER);
         
-        //setUseWorldScale(false);
+        setUseWorldScale(false);
         
         setSynchronizeRotation(false);
         setSynchronizeTranslation(false);

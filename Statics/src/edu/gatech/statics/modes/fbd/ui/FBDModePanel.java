@@ -74,7 +74,13 @@ public class FBDModePanel extends ApplicationModePanel {
     private class CheckListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            System.out.println(event.getAction());
+            if(event.getAction().equals("reset")) {
+                ResetPopup popup = new ResetPopup((FreeBodyDiagram) getDiagram());
+                popup.popup(0, 0, true);
+                popup.center();
+            }
+            
+            //System.out.println(event.getAction());
         }
     }
 }

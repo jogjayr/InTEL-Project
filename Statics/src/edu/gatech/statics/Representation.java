@@ -66,13 +66,13 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     public ColorRGBA getGrayColor() {return grayColor;}
     public ColorRGBA getGrayEmissive() {return grayEmissive;}
     
-    //private boolean useWorldScale = true;
+    private boolean useWorldScale = true;
     private boolean synchronizeTranslation = true;
     private boolean synchronizeRotation = true;
-    //protected boolean useWorldScale() {return useWorldScale;}
+    protected boolean useWorldScale() {return useWorldScale;}
     public void setSynchronizeTranslation(final boolean synch) {synchronizeTranslation = synch;}
     public void setSynchronizeRotation(final boolean synch) {synchronizeRotation = synch;}
-    //public void setUseWorldScale(boolean useScale) {useWorldScale = useScale;}
+    public void setUseWorldScale(boolean useScale) {useWorldScale = useScale;}
     
     public void setMaterial(final ColorRGBA ambient, final ColorRGBA diffuse, final ColorRGBA specular) {
         this.ambient = ambient;
@@ -127,8 +127,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     
     public void update() {
         
-        //if(useWorldScale)
-        //    setLocalScale(StaticsApplication.getApp().getWorldScale());        
+        if(useWorldScale)
+            setLocalScale(StaticsApplication.getApp().getDrawScale());        
         if(synchronizeTranslation)
             setLocalTranslation(target.getTranslation());
         if(synchronizeRotation)
@@ -147,7 +147,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
     
     public boolean isHidden() {
-        return hidden || (grayed && StaticsApplication.getApp().isHidingGrays());
+        return hidden;// || (grayed && StaticsApplication.getApp().isHidingGrays());
     }
     
     private void updateMaterial() {
