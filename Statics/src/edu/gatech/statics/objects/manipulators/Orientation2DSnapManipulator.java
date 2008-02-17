@@ -10,8 +10,7 @@
 package edu.gatech.statics.objects.manipulators;
 
 import com.jme.math.Vector3f;
-import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.util.SnapListener;
+import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +25,24 @@ public class Orientation2DSnapManipulator extends Orientation2DManipulator {
     private Vector3f currentSnap;
     public Vector3f getCurrentSnap() {return currentSnap;}
     
-    protected List<SnapListener> snapListeners = new ArrayList();
+    //protected List<OrientationSnapListener> snapListeners = new ArrayList();
     
-    public void addSnapListener(SnapListener listener) {snapListeners.add(listener);}
-    public void removeSnapListener(SnapListener listener) {snapListeners.remove(listener);}
+    //public void addSnapListener(OrientationSnapListener listener) {snapListeners.add(listener);}
+    //public void removeSnapListener(OrientationSnapListener listener) {snapListeners.remove(listener);}
+    //public void removeAllSnapListeners() {snapListeners.clear();}
     
     /** Creates a new instance of Orientation2DSnapManipulator */
-    public Orientation2DSnapManipulator(SimulationObject target, Vector3f rotationAxis, List<Vector3f> snapDirections) {
-        super(target, rotationAxis);
+    public Orientation2DSnapManipulator(Point anchor, Vector3f rotationAxis, List<Vector3f> snapDirections) {
+        super(anchor, rotationAxis);
         this.snapDirections = snapDirections;
     }
     
-    protected void snapEvent() {
-        for(SnapListener listener : snapListeners)
-            listener.onSnap(this);
-    }
+    //protected void snapEvent() {
+    //    for(SnapListener listener : snapListeners)
+    //        listener.onSnap(this);
+    //}
 
+    @Override
     protected Vector3f findAngle() {
         
         Vector3f direction = super.findAngle();
@@ -58,7 +59,7 @@ public class Orientation2DSnapManipulator extends Orientation2DManipulator {
         }
         
         if(bestSnap != currentSnap) {
-            snapEvent();
+            //snapEvent();
             currentSnap = bestSnap;
         }
         

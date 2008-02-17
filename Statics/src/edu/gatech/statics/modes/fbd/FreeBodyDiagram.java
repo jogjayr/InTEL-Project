@@ -8,7 +8,6 @@
  */
 package edu.gatech.statics.modes.fbd;
 
-import edu.gatech.statics.objects.SimulationObject;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
@@ -17,6 +16,8 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
+import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ public class FreeBodyDiagram extends SubDiagram {
     public List<Load> getAddedForces() {
         return Collections.unmodifiableList(addedForces);
     }
-    
+
     public boolean isSolved() {
         return solved;
     }
@@ -51,18 +52,55 @@ public class FreeBodyDiagram extends SubDiagram {
 
         StaticsApplication.getApp().resetAdvice();
     }
-    
+
     /** Creates a new instance of FBDWorld */
     public FreeBodyDiagram(BodySubset bodies) {
         super(bodies);
-        
-        for(Body body : bodies.getBodies()) {
+
+        for (Body body : bodies.getBodies()) {
             add(body);
-            addAll(body.getAttachedObjects());
+            for (SimulationObject obj : body.getAttachedObjects()) {
+                if (!(obj instanceof Load)) {
+                    add(obj);
+                }
+            }
         }
-        
-        for(Measurement measurement : getSchematic().getMeasurements(bodies))
+
+        for (Measurement measurement : getSchematic().getMeasurements(bodies)) {
             add(measurement);
+        }
+    }
+    private static final SelectionFilter filter = new SelectionFilter() {
+        public boolean canSelect(SimulationObject obj) {
+            return obj instanceof Load;
+        }
+    };
+
+    @Override
+    public SelectionFilter getSelectionFilter() {
+        return filter;
+    }
+    private Load currentHighlight;
+
+    @Override
+    public void onHover(SimulationObject obj) {
+
+        if (currentHighlight == obj) {
+            return;
+        }
+
+        if (currentHighlight != null) // we are changing our hover, so clear the current
+        {
+            currentHighlight.setDisplayHighlight(false);
+        }
+
+        if (obj == null) {
+            currentHighlight = null;
+            return;
+        }
+
+        currentHighlight = (Load) obj;
+        currentHighlight.setDisplayHighlight(true);
     }
 
     @Override

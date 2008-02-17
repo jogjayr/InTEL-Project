@@ -8,10 +8,12 @@
  */
 package edu.gatech.statics.modes.fbd.tools;
 
+import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
@@ -24,122 +26,88 @@ import java.util.List;
  */
 public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener*/ {
 
-    //protected Point forceAnchor;
     protected Force force;
     protected Diagram diagram;
-    //protected DragSnapManipulator dragManipulator;
     protected Orientation2DSnapManipulator orientationManipulator;
-    //private ClickListener clickListener;
 
     /** Creates a new instance of CreateForceTool */
     public CreateForceTool2D(Diagram diagram) {
         super(diagram);
         this.diagram = diagram;
-        /*forceAnchor = new Point(new Vector3f());
-        force = new Force(forceAnchor, new Vector3f(1.5f, 1f, 0).normalize(),"F");
-        //force.setSymbol(true);
-        force.createDefaultSchematicRepresentation();
-
-        VectorListener forceListener = new VectorOverlapDetector(diagram, force);
-        force.addListener(forceListener);*/
-
-        //clickListener = new CreateClickListener();
     }
-    
-    
+
     protected List<Load> createLoad(Point anchor) {
-        force = new Force(anchor, new Vector3f(1.5f, 1f, 0).normalize(),"F");
+        force = new Force(anchor, new Vector3f(1.5f, 1f, 0).normalize(), "F");
         force.createDefaultSchematicRepresentation();
-        return Collections.singletonList((Load)force);
+        return Collections.singletonList((Load) force);
     }
 
-    //protected void onActivate() {
+    @Override
+    protected void onActivate() {
+        super.onActivate();
 
-        //diagram.add(force);
-        //world.updateNodes();
+        StaticsApplication.getApp().setAdvice(
+                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce1"));
+    }
 
-        //enableDragManipulator();
+    @Override
+    protected void onFinish() {
+        super.onFinish();
+        System.out.println("finished");
 
-        //StaticsApplication.getApp().enableSelection(false);
-    //}
-
-    //protected void onCancel() {
-        /*diagram.remove(force);
-        //world.updateNodes();
-
-        if (dragManipulator != null) {
-            dragManipulator.setEnabled(false);
-        }
-
-        if (orientationManipulator != null) {
-            orientationManipulator.setEnabled(false);
-        }*/
-    //}
-
-    //protected void onFinish() {
-        //StaticsApplication.getApp().enableSelection(true);
-    //}
+    }
 
     protected void finishForce() {
-
-        // add things to force that will be relevant...
-
-        /*final Orientation2DSnapManipulator runtimeOrientationManipulator = orientationManipulator;
-
-        runtimeOrientationManipulator.removeClickListener(clickListener);
-        runtimeOrientationManipulator.setEnabled(false);
-        force.addManipulator(runtimeOrientationManipulator);
-
-        // so we can delete the force if we don't like it
-        final Manipulator runtimeDeletionManipulator = new DeletableManipulator(world, force) {
-            // we override this method so that when the force is deleted, the other forces will snap appropriately.
-            @Override
-            public void performDelete() {
-                super.performDelete();
-                force.setVectorValue(force.getVectorValue());
-            }
-        };
-        runtimeDeletionManipulator.setEnabled(false);
-        force.addManipulator(runtimeDeletionManipulator);
-
-        final Manipulator labelManipulator = new LabelManipulator(force);
-        labelManipulator.setEnabled(true);
-        force.addManipulator(labelManipulator);
-
-        LabelSelector labelTool = new LabelSelector(world, StaticsApplication.getApp().getCurrentInterface().getToolbar());
+        LabelSelector labelTool = new LabelSelector(new LoadLabelListener(force), force.getAnchor().getTranslation());
+        labelTool.setAdvice("Please give a name or a value for your force");
+        labelTool.setUnits(Unit.force.getSuffix());
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
-        labelTool.activate();
-        labelTool.onClick(force);*/
+        labelTool.createPopup();
     }
 
+    protected void enableOrientationManipulator() {
 
-    protected void enableOrientationManipulator(Point point) {
-
-        final List<Vector3f> snapDirections = diagram.getSensibleDirections(point);
-        orientationManipulator = new Orientation2DSnapManipulator(force, Vector3f.UNIT_Z, snapDirections);
-        //orientationManipulator.addClickListener(clickListener);
+        final List<Vector3f> snapDirections = diagram.getSensibleDirections(getSnapPoint());
+        orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
+        orientationManipulator.addListener(new MyOrientationListener());
         addToAttachedHandlers(orientationManipulator);
 
         StaticsApplication.getApp().setAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
     }
 
-    /*protected void releaseDragManipulator() {
-        if (dragManipulator.getCurrentSnap() != null) {
+    private class MyOrientationListener implements OrientationListener {
 
-            // snap at the drag manipulator and terminate,
-            // enable the orientation manipulator
-            Point point = dragManipulator.getCurrentSnap();
-            force.setAnchor(point);
-
-            dragManipulator.setEnabled(false);
-            removeFromAttachedHandlers(dragManipulator);
-            dragManipulator = null;
-
-            enableOrientationManipulator(point);
+        public void onRotate(Matrix3f rotation) {
+            force.setRotation(rotation);
         }
-    }*/
+    }
+
+    // NOTE: 
+    // TODO: this is not a good means for handling releasing the orientation 
+    // manipulator. We need something that is slightly more responsive.
+    @Override
+    public void update(float time) {
+        super.update(time);
+
+        if (orientationManipulator != null) {
+            if (orientationManipulator.mouseReleased()) {
+                releaseOrientationManipulator();
+            }
+        }
+    }
+
+    @Override
+    public void onMouseDown() {
+        //super.onMouseDown();
+
+        if (getDragManipulator() != null) {
+            if (releaseDragManipulator()) {
+                enableOrientationManipulator();
+            }
+        }
+    }
 
     public void releaseOrientationManipulator() {
         if (orientationManipulator.getCurrentSnap() != null) {
@@ -148,28 +116,10 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
             orientationManipulator.setEnabled(false);
             removeFromAttachedHandlers(orientationManipulator);
-            //orientationManipulator = null;
+            orientationManipulator = null;
 
             finish();
             finishForce();
         }
     }
-    
-
-    /*protected class CreateClickListener implements ClickListener {
-
-        public void onMousePress(Manipulator m) {
-            if (dragManipulator != null) {
-                releaseDragManipulator();
-            }
-
-        }
-
-        public void onMouseRelease(Manipulator m) {
-
-            if (orientationManipulator != null) {
-                releaseOrientationManipulator();
-            }
-        }
-    }*/
 }

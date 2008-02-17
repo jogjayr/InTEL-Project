@@ -32,6 +32,14 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     private Point snapPoint;
     private MousePressInputAction pressAction;
 
+    protected Point getSnapPoint() {
+        return snapPoint;
+    }
+    
+    protected DragSnapManipulator getDragManipulator() {
+        return dragManipulator;
+    }
+    
     public CreateLoadTool(Diagram diagram) {
         this.diagram = diagram;
         loadAnchor = new Point(new Vector3f());
@@ -40,21 +48,29 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         for (Load aLoad : load) {
             diagram.add(aLoad);
         }
-        
+
         pressAction = new MousePressInputAction();
         pressAction.addListener(this);
         addAction(pressAction);
     }
 
+    /**
+     * Subclasses should override this to indicate what load is being created
+     * and placed by this tool.
+     * @param anchor
+     * @return
+     */
     abstract protected List<Load> createLoad(Point anchor);
 
     public void onMouseDown() {
-        if(dragManipulator != null)
+        if (dragManipulator != null) {
             releaseDragManipulator();
+        }
+
+        finish();
     }
 
     public void onMouseUp() {
-
     }
 
     @Override
@@ -64,16 +80,13 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     @Override
     protected void onCancel() {
-
+        for (Load aLoad : load) {
+            diagram.remove(aLoad);
+        }
     }
 
     @Override
     protected void onFinish() {
-
-        //diagram.add(force);
-        //world.updateNodes();
-
-        enableDragManipulator();
     }
 
     protected void enableDragManipulator() {
@@ -86,16 +99,11 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         }
 
         dragManipulator = new DragSnapManipulator(loadAnchor.getTranslation(), pointList);
-        //dragManipulator.addClickListener(clickListener);
         addToAttachedHandlers(dragManipulator);
 
         DragListenerImpl listener = new DragListenerImpl();
         dragManipulator.addListener(listener);
         dragManipulator.addSnapListener(listener);
-
-    // *********** THIS SHOULD GET MOVED TO SUBCLASSES
-    //StaticsApplication.getApp().setAdvice(
-    //        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce1"));
     }
 
     /**
@@ -111,13 +119,14 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
         // snap at the drag manipulator and terminate,
         // enable the orientation manipulator
-        for(Load aLoad : load)
+        for (Load aLoad : load) {
             aLoad.setAnchor(snapPoint);
+        }
 
         dragManipulator.setEnabled(false);
         removeFromAttachedHandlers(dragManipulator);
         dragManipulator = null;
-        
+
         return true;
     }
 

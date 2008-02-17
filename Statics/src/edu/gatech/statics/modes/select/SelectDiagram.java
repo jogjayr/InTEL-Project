@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.modes.select;
 
 import edu.gatech.statics.exercise.Diagram;
@@ -26,17 +25,21 @@ public class SelectDiagram extends Diagram {
     public List<Body> getCurrentlySelected() {
         return Collections.unmodifiableList(currentlySelected);
     }
-    
-    
+
     public SelectDiagram() {
         addAll(getSchematic().allObjects());
     }
-
     private static final SelectionFilter filter = new SelectionFilter() {
+
         public boolean canSelect(SimulationObject obj) {
             return obj instanceof Body;
         }
     };
+
+    @Override
+    public SelectionFilter getSelectionFilter() {
+        return filter;
+    }
 
     @Override
     public void activate() {
@@ -44,30 +47,26 @@ public class SelectDiagram extends Diagram {
         currentlySelected.clear();
         currentHighlight = null;
     }
-    
-    @Override
-    public SelectionFilter getSelectionFilter() {
-        return filter;
-    }
-    
     private Body currentHighlight;
-    
+
     @Override
     public void onHover(SimulationObject obj) {
-        
-        if(currentHighlight == obj)
+
+        if (currentHighlight == obj) {
             return;
-        
-        if(currentHighlight != null)
-            // we are changing our hover, so clear the current
+        }
+
+        if (currentHighlight != null) // we are changing our hover, so clear the current
+        {
             currentHighlight.setDisplayHighlight(false);
-        
-        if(obj == null) {
+        }
+
+        if (obj == null) {
             currentHighlight = null;
             return;
         }
-        
-        if(!currentlySelected.contains(obj)) {
+
+        if (!currentlySelected.contains(obj)) {
             currentHighlight = (Body) obj;
             currentHighlight.setDisplayHighlight(true);
         }
@@ -75,21 +74,23 @@ public class SelectDiagram extends Diagram {
 
     @Override
     public void onClick(SimulationObject obj) {
-        
-        if(obj == null) {
-            if(currentlySelected.isEmpty())
+
+        if (obj == null) {
+            if (currentlySelected.isEmpty()) {
                 return;
-            
-            for(Body selected : currentlySelected)
+            }
+
+            for (Body selected : currentlySelected) {
                 selected.setDisplaySelected(false);
-            
+            }
+
             currentlySelected.clear();
         }
-        
-        if(currentlySelected.contains(obj)) {
+
+        if (currentlySelected.contains(obj)) {
             currentlySelected.remove(obj);
             obj.setDisplaySelected(false);
-        } else if(obj != null) {
+        } else if (obj != null) {
             currentlySelected.add((Body) obj);
             obj.setDisplaySelected(true);
         }
@@ -97,6 +98,4 @@ public class SelectDiagram extends Diagram {
         SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         modePanel.updateSelection();
     }
-    
-    
 }

@@ -145,9 +145,6 @@ public class StaticsApplication {
         return display;
     }
     
-    //private int frame = 0;
-    //private static final int garbageCollectFrames = 100;
-    
     public void update() {
 
         if(finished)
@@ -155,12 +152,6 @@ public class StaticsApplication {
 
         timer.update();
         timePerFrame = timer.getTimePerFrame();
-        
-        /*frame++;
-        if(frame > garbageCollectFrames) {
-            System.gc();
-            frame = 0;
-        }*/
         
         try {
             selector.setEnabled(true);
