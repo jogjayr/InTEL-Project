@@ -13,6 +13,7 @@ import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
@@ -22,7 +23,9 @@ import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.ui.menu.TopMenuBar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
+import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewDiagramState;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -95,6 +98,14 @@ public class InterfaceRoot {
 
     public TopMenuBar getMenuBar() {
         return menuBar;
+    }
+
+    public void setDiagram(Diagram diagram) {
+        
+        DiagramDisplayCalculator calculator = configuration.getDisplayCalculator();
+        ViewDiagramState viewFrame = calculator.calculate(diagram);
+        if(viewFrame != null)
+            cameraControl.interpolate(viewFrame);
     }
 
     public void setModalWindow(ModalPopupWindow window) {

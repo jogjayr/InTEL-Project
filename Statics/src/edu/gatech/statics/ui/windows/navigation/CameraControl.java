@@ -2,44 +2,42 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.ui.windows.navigation;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Calvin Ashmore
  */
 public class CameraControl {
+
     private Camera camera;
     private ViewConstraints viewConstraints;
-
     private float panSpeed = .12f;
     private float rotateSpeed = .05f;
     private float zoomSpeed = .02f;
-    
-    private float xpos, ypos;
-    private float yaw, pitch; // yaw corresponds to horizontal rotation, pitch to vertical
-    private float zoom = 1;
-    
-    private Vector3f cameraCenter = Vector3f.UNIT_Z;
-    private Vector3f cameraLookAtCenter = Vector3f.ZERO;
-    private Vector3f cameraSlideX = Vector3f.UNIT_X;
-    private Vector3f cameraSlideY = Vector3f.UNIT_Y;
-    
-    public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter) {
-        this.cameraCenter = cameraCenter;
-        this.cameraLookAtCenter = cameraLookAtCenter;
+    private ViewDiagramState viewDiagramState;
+    private ViewUserState viewUserState;
+    private CameraInterpolator myInterpolator;
+
+    public ViewDiagramState getViewDiagramState() {
+        return viewDiagramState;
     }
-    
-    public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter,
-            Vector3f cameraSlideX, Vector3f cameraSlideY) {
-        this.cameraCenter = cameraCenter;
-        this.cameraLookAtCenter = cameraLookAtCenter;
-        this.cameraSlideX = cameraSlideX;
-        this.cameraSlideY = cameraSlideY;
+
+    public void setViewDiagramState(ViewDiagramState viewDiagramState) {
+        this.viewDiagramState = viewDiagramState;
+    }
+
+    public ViewUserState getViewUserState() {
+        return viewUserState;
+    }
+
+    public void setViewUserState(ViewUserState viewUserState) {
+        this.viewUserState = viewUserState;
     }
 
     public void setMovementSpeed(float panSpeed, float zoomSpeed, float rotateSpeed) {
@@ -47,97 +45,172 @@ public class CameraControl {
         this.zoomSpeed = zoomSpeed;
         this.rotateSpeed = rotateSpeed;
     }
-    
-    public void setInitialState(float xpos, float ypos, float yaw, float pitch, float zoom) {
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.zoom = zoom;
-    }
-    
+
     public CameraControl(Camera camera, ViewConstraints viewConstraints) {
         this.camera = camera;
         this.viewConstraints = viewConstraints;
+
+        viewDiagramState = new ViewDiagramState();
+        viewUserState = new ViewUserState();
     }
-    
+
     public void panCamera(float dx, float dy) {
-        this.xpos += dx * panSpeed;
-        this.ypos += dy * panSpeed;
-        
+        viewUserState.incrementXPos(dx * panSpeed);
+        viewUserState.incrementYPos(dy * panSpeed);
+
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+
         // constrain
-        if(xpos < viewConstraints.getXposMin())
-            xpos = viewConstraints.getXposMin();
-        if(xpos > viewConstraints.getXposMax())
-            xpos = viewConstraints.getXposMax();
-        if(ypos < viewConstraints.getYposMin())
-            ypos = viewConstraints.getYposMin();
-        if(ypos > viewConstraints.getYposMax())
-            ypos = viewConstraints.getYposMax();
-        
+        viewConstraints.constrain(viewUserState);
+
         updateCamera();
     }
-    
+
     public void rotateCamera(float horizontal, float vertical) {
-        this.yaw += horizontal * rotateSpeed;
-        this.pitch += vertical * rotateSpeed;
-        
+        viewUserState.incrementYaw(horizontal * rotateSpeed);
+        viewUserState.incrementPitch(vertical * rotateSpeed);
+
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+
         // perform wrapping
-        if(yaw < -Math.PI)
-            yaw += 2*(float)Math.PI;
-        if(this.yaw > Math.PI)
-            yaw -= 2*(float)Math.PI;
-        
+        if (viewUserState.getYaw() < -Math.PI) {
+            viewUserState.incrementYaw(2 * (float) Math.PI);
+        }
+        if (viewUserState.getYaw() > -Math.PI) {
+            viewUserState.incrementYaw(-2 * (float) Math.PI);
+        }
+
         // constrain
-        if(yaw < viewConstraints.getYawMin())
-            yaw = viewConstraints.getYawMin();
-        if(yaw > viewConstraints.getYawMax())
-            yaw = viewConstraints.getYawMax();
-        if(pitch < viewConstraints.getPitchMin())
-            pitch = viewConstraints.getPitchMin();
-        if(pitch > viewConstraints.getPitchMax())
-            pitch = viewConstraints.getPitchMax();
-        
+        viewConstraints.constrain(viewUserState);
         updateCamera();
     }
-    
+
     public void zoomCamera(float amount) {
-        this.zoom += amount * zoomSpeed;
-        
-        if(zoom < viewConstraints.getZoomMin())
-            zoom = viewConstraints.getZoomMin();
-        if(zoom > viewConstraints.getZoomMax())
-            zoom = viewConstraints.getZoomMax();
-        
+        viewUserState.incrementZoom(zoomSpeed * amount);
+
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+
+        viewConstraints.constrain(viewUserState);
         updateCamera();
     }
-    
+
     public void updateCamera() {
-        
+        Vector3f cameraCenter = viewDiagramState.getCameraCenter();
+        Vector3f cameraLookAtCenter = viewDiagramState.getCameraLookAtCenter();
+        Vector3f cameraSlideX = viewDiagramState.getCameraSlideX();
+        Vector3f cameraSlideY = viewDiagramState.getCameraSlideY();
+        float xpos = viewUserState.getXPos();
+        float ypos = viewUserState.getYPos();
+        float pitch = viewUserState.getPitch();
+        float yaw = viewUserState.getYaw();
+        float zoom = viewUserState.getZoom();
+
+
         Vector3f cameraDefaultPosVector = cameraCenter.subtract(cameraLookAtCenter);
         float distance = cameraDefaultPosVector.length();
         cameraDefaultPosVector.normalizeLocal();
         Vector3f up = new Vector3f(Vector3f.UNIT_Y);
         Vector3f cameraDefaultRightVector = up.cross(cameraDefaultPosVector);
         cameraDefaultRightVector.normalizeLocal();
-        
+
         // newPos = cos(yaw)*cos(pitch)*defaultPos + sin(yaw)*cos(pitch)*right+ sin(pitch)*up + lookAt
-        cameraDefaultPosVector.multLocal((float)(Math.cos(yaw)*Math.cos(pitch)));
-        cameraDefaultRightVector.multLocal((float)(Math.sin(yaw)*Math.cos(pitch)));
-        up.multLocal((float)Math.sin(pitch));
+        cameraDefaultPosVector.multLocal((float) (Math.cos(yaw) * Math.cos(pitch)));
+        cameraDefaultRightVector.multLocal((float) (Math.sin(yaw) * Math.cos(pitch)));
+        up.multLocal((float) Math.sin(pitch));
         Vector3f newDirection = cameraDefaultPosVector.add(cameraDefaultPosVector).add(cameraDefaultRightVector).add(up);
-        Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom*distance));
+        Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom * distance));
         newDirection.multLocal(-1);
         newDirection.normalize();
-        
+
         newPosition.addLocal(cameraSlideX.mult(xpos));
         newPosition.addLocal(cameraSlideY.mult(ypos));
-        
+
         camera.setLocation(newPosition);
         camera.setDirection(newDirection);
     }
-    
-    //public void moveCamera(Vector3f direction) {
-    //    
-    //}
+
+    public void interpolate(ViewDiagramState diagramState) {
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+        myInterpolator = new CameraInterpolator(diagramState);
+        new Thread(myInterpolator).start();
+    }
+
+    public void interpolate(ViewUserState userState) {
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+        myInterpolator = new CameraInterpolator(userState);
+        new Thread(myInterpolator).start();
+    }
+
+    public void interpolate(ViewDiagramState diagramState, ViewUserState userState) {
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+        myInterpolator = new CameraInterpolator(diagramState, userState);
+        new Thread(myInterpolator).start();
+    }
+
+    private class CameraInterpolator implements Runnable {
+
+        //private static final float dt = .01f;
+        private static final float transitionInSeconds = 1.5f;
+        private boolean terminated;
+        private ViewDiagramState diagramState0,  diagramState1;
+        private ViewUserState userState0,  userState1;
+
+        public CameraInterpolator(ViewDiagramState diagramState1) {
+            this.diagramState0 = new ViewDiagramState(viewDiagramState);
+            this.diagramState1 = diagramState1;
+            this.userState0 = new ViewUserState(viewUserState);
+            this.userState1 = new ViewUserState();
+        }
+
+        public CameraInterpolator(ViewDiagramState diagramState1, ViewUserState userState1) {
+            this.diagramState0 = new ViewDiagramState(viewDiagramState);
+            this.diagramState1 = diagramState1;
+            this.userState0 = new ViewUserState(viewUserState);
+            this.userState1 = userState1;
+        }
+
+        public CameraInterpolator(ViewUserState userState1) {
+            this.userState0 = new ViewUserState(viewUserState);
+            this.userState1 = userState1;
+        }
+
+        void terminate() {
+            terminated = true;
+        }
+
+        public void run() {
+
+            //float t = 0;
+            long startTime = System.currentTimeMillis();
+            long endTime = startTime + (long) (1000 * transitionInSeconds);
+
+            while (System.currentTimeMillis() < endTime && !terminated) {
+                //t += dt;
+                float t = (float) (System.currentTimeMillis() - startTime) / (1000 * transitionInSeconds);
+
+                viewDiagramState.interpolate(diagramState0, diagramState1, t);
+                viewUserState.interpolate(userState0, userState1, t);
+                updateCamera();
+
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException ex) {
+                //Logger.getLogger(CameraControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            myInterpolator = null;
+        }
+    }
 }

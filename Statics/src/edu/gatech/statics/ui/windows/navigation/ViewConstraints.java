@@ -50,7 +50,35 @@ public class ViewConstraints {
         this.zoomMin = zoomMin;
     }
 
-    public float getPitchMax() {
+    public void constrain(ViewUserState state) {
+        if(state.getPitch() < pitchMin)
+            state.setPitch(pitchMin);
+        if(state.getPitch() > pitchMax)
+            state.setPitch(pitchMax);
+        
+        if(state.getYaw() < pitchMin)
+            state.setYaw(pitchMin);
+        if(state.getYaw() > yawMax)
+            state.setYaw(yawMax);
+        
+        if(state.getZoom() < zoomMin)
+            state.setZoom(zoomMin);
+        if(state.getZoom() > zoomMax)
+            state.setZoom(zoomMax);
+        
+        if(state.getXPos() < xposMin)
+            state.setXPos(xposMin);
+        if(state.getXPos() > xposMax)
+            state.setXPos(xposMax);
+        
+        if(state.getYPos() < yposMin)
+            state.setYPos(yposMin);
+        if(state.getYPos() > yposMax)
+            state.setYPos(yposMax);
+        
+    }
+    
+    /*public float getPitchMax() {
         return pitchMax;
     }
 
@@ -88,7 +116,7 @@ public class ViewConstraints {
 
     public float getZoomMin() {
         return zoomMin;
-    }
+    }*/
     
     
 }

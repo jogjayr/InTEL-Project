@@ -31,6 +31,8 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
+import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.util.SelectionFilter;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
@@ -137,6 +139,9 @@ public class StaticsApplication {
         currentDiagram.activate();
         if(currentDiagram.getInputHandler() != null)
             input.addToAttachedHandlers(currentDiagram.getInputHandler());
+        
+        diagram.update();
+        iRoot.setDiagram(diagram);
     }
     
     public Diagram getCurrentDiagram() {return currentDiagram;}

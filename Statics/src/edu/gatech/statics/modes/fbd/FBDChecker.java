@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.modes.fbd;
 
 import com.jme.math.Vector3f;
@@ -11,6 +10,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.VectorObject;
@@ -30,8 +30,7 @@ public class FBDChecker {
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
     }
-    
-    
+
     private List<Vector> getAddedForces() {
         List<Vector> addedForces = new ArrayList<Vector>();
         for (SimulationObject obj : diagram.allObjects()) {
@@ -48,8 +47,21 @@ public class FBDChecker {
         return addedForces;
     }
 
-    boolean checkDiagram() {
+    private List<Vector> getExternalForces() {
+        List<Vector> externalForces = new ArrayList<Vector>();
+        for (Body body : FreeBodyDiagram.getSchematic().allBodies()) {
+            if (diagram.getBodySubset().getBodies().contains(body)) {
+                for (SimulationObject obj : body.getAttachedObjects()) {
+                    if (obj instanceof Load) {
+                        externalForces.add(((Load) obj).getVector());
+                    }
+                }
+            }
+        }
+        return externalForces;
+    }
 
+    public boolean checkDiagram() {
 
         // step 1: assemble a list of all the forces the user has added.
         List<Vector> addedForces = getAddedForces();
@@ -58,9 +70,11 @@ public class FBDChecker {
         // make list for weights, as we will need these later.
         Map<Vector, Body> weights = new HashMap<Vector, Body>();
 
+        List<Vector> externalForces = getExternalForces();
+
         // step 2: for vectors that we can click on and add, ie, external added forces,
         // make sure that the user has added all of them.
-        /*for (Vector external : externalForces) {
+        for (Vector external : externalForces) {
 
             boolean success = false;
             if (external.isSymbol()) {
@@ -86,7 +100,7 @@ public class FBDChecker {
                         java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_external"));
                 return false;
             }
-        }*/
+        }
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
@@ -266,7 +280,7 @@ public class FBDChecker {
                 return false;
                 }*/
 
-                //} else if (externalForces.contains(force)) {
+                } else if (externalForces.contains(force)) {
                 // OK, do nothing
 
                 } else {

@@ -11,6 +11,8 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -74,13 +76,21 @@ public class FBDModePanel extends ApplicationModePanel {
     private class CheckListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
+            FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
+            
             if(event.getAction().equals("reset")) {
-                ResetPopup popup = new ResetPopup((FreeBodyDiagram) getDiagram());
+                ResetPopup popup = new ResetPopup(diagram);
                 popup.popup(0, 0, true);
                 popup.center();
+            } else if(event.getAction().equals("check")) {
+                FBDChecker checker = new FBDChecker(diagram);
+                if(checker.checkDiagram()) {
+                    diagram.setSolved();
+                    System.out.println("woo!");
+                    
+                    EquationMode.instance.load(diagram.getBodySubset());
+                }
             }
-            
-            //System.out.println(event.getAction());
         }
     }
 }

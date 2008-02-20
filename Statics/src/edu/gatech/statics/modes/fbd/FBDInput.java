@@ -51,6 +51,9 @@ public class FBDInput extends InputHandler {
     }
 
     void onSelect(Load selection) {
+        if(diagram.isSolved())
+            return;
+        
         if (selection instanceof Force) {
             if(MouseInput.get().isButtonDown(0))
                 enableOrientationManipulator((Force) selection);

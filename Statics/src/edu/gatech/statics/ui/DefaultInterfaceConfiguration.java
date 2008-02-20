@@ -18,6 +18,7 @@ import edu.gatech.statics.ui.windows.description.DescriptionWindow;
 import edu.gatech.statics.ui.windows.knownforces.KnownLoadsWindow;
 import edu.gatech.statics.ui.windows.knownpoints.KnownPointsWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
+import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -115,8 +116,13 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
     public void setupCameraControl(CameraControl cameraControl) {
         //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
         //cameraControl.setRotationCenter(rotationCenter);
-        cameraControl.setCameraFrame(
+        cameraControl.getViewDiagramState().setCameraFrame(
                 new Vector3f(0,0,30),
                 new Vector3f(0,0,0));
     }
+
+    public DiagramDisplayCalculator getDisplayCalculator() {
+        return new DiagramDisplayCalculator();
+    }
+    
 }

@@ -131,6 +131,7 @@ public class Diagram {
         if (nodesUpdated) {
             return;
         }
+        System.out.println("*** updating nodes");
 
         nodesUpdated = true;
 
