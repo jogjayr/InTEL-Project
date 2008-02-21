@@ -169,7 +169,9 @@ public class Diagram {
                 node.updateRenderState();
             }
 
+            node.updateWorldVectors();
             node.updateGeometricState(0f, true);
+            node.updateModelBound();
             node.updateWorldBound();
         }
     }
