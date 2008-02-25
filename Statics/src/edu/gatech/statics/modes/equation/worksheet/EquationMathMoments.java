@@ -7,16 +7,18 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.equation;
+package edu.gatech.statics.modes.equation.worksheet;
 
+import edu.gatech.statics.modes.equation.*;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.modes.equation.EquationMath.TermError;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.modes.equation.worksheet.EquationMath.TermError;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
-import edu.gatech.statics.objects.VectorObject;
+import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,18 @@ public class EquationMathMoments extends EquationMath {
     public boolean getObservationPointSet() {return observationPointSet;}
     
     @Override
-    String getName() {
+    public String getName() {
         return "M[P]";
     }
     
     protected class MomentTerm extends Term {
         
-        MomentTerm(VectorObject vector) {super(vector);}
+        private Point anchor;
+        
+        MomentTerm(Vector vector) {
+            super(vector);
+            anchor = getWorld().getLoad(vector).getAnchor();
+        }
         
         @Override
         boolean check() {
@@ -53,7 +60,7 @@ public class EquationMathMoments extends EquationMath {
                 return coefficientValue == 1.0f || coefficientValue == -1.0f;
             }*/
             
-            if(getSource().getVector().getUnit() == Unit.moment) {
+            if(getSource().getUnit() == Unit.moment) {
                 
                 // this is a moment
                 Vector3f vectorOrient = getSource().getVectorValue();
@@ -63,7 +70,7 @@ public class EquationMathMoments extends EquationMath {
             
                 // this is a force
                 Vector3f vectorOrient = getSource().getVectorValue();
-                Vector3f distance = getSource().getAnchor().getTranslation().subtract(observationPoint);
+                Vector3f distance = anchor.getTranslation().subtract(observationPoint);
 
                 targetValue = -vectorOrient.cross(distance).dot(getObservationDirection());
                 //targetValue *= StaticsApplication.getApp().getWorldScale();
@@ -87,7 +94,7 @@ public class EquationMathMoments extends EquationMath {
     }
     
     @Override
-    Term createTerm(VectorObject source) {
+    public Term createTerm(Vector source) {
         return new MomentTerm(source);
     }
     
@@ -112,7 +119,7 @@ public class EquationMathMoments extends EquationMath {
         }
         
         for(Force force : allForces) {
-            Term term = getTerm(force);
+            Term term = getTerm(force.getVector());
             
             // clear off things that would not add via cross product
             float contribution = force.getVectorValue().cross( force.getAnchor().getTranslation().subtract(getObservationPoint()) ).length();
@@ -141,7 +148,7 @@ public class EquationMathMoments extends EquationMath {
         
         for(Moment moment : allMoments) {
             
-            Term term = getTerm(moment);
+            Term term = getTerm(moment.getVector());
             if(term == null) {
                 System.out.println("check: equation has not added all terms");
                 System.out.println("check: FAILED");
@@ -175,7 +182,7 @@ public class EquationMathMoments extends EquationMath {
                                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_momentCoefficient"));
                         return false;
                     case parse:
-                        System.out.println("check: for "+term.getSource().getLabelText());
+                        System.out.println("check: for "+term.getSource());//.getLabelText());
                         System.out.println("check: parse error");
                         System.out.println("check: FAILED");
 
@@ -184,13 +191,13 @@ public class EquationMathMoments extends EquationMath {
                                 //"Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
                         return false;
                     case incorrect:
-                        System.out.println("check: for "+term.getSource().getLabelText());
+                        System.out.println("check: for "+term.getSource());//.getLabelText());
                         System.out.println("check: incorrect value: "+term.coefficientValue);
                         System.out.println("check: should be: "+term.targetValue);
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdvice(String.format(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_coefficient"), term.getSource().getLabelText()));
+                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_coefficient"), term.getSource()));//.getLabelText()));
                                 //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }

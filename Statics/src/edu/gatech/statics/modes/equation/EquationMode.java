@@ -26,7 +26,7 @@ public class EquationMode extends Mode {
 
     @Override
     protected Diagram getDiagram(BodySubset bodies) {
-        return StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
+        return StaticsApplication.getApp().getExercise().getEquationDiagram(bodies);
     }
 
 }

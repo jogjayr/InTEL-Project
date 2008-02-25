@@ -42,6 +42,7 @@ public class ApplicationTab extends BLabel {
             setBackground(new TintedBackground(BACKGROUND_ENABLED));
             setColor(FOREGROUND_ENABLED);
         }
+        invalidate();
     }
     
 }

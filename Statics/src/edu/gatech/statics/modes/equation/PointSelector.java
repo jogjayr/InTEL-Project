@@ -25,11 +25,13 @@ public class PointSelector extends SelectionTool {
         super(world, Point.class);
     }
     
+    @Override
     protected void onActivate() {
         super.onActivate();
         StaticsApplication.getApp().setAdvice(java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_momentPointSelect"));
     }
     
+    @Override
     public void onClick(SimulationObject obj) {
         
         if(obj == null || !(obj instanceof Point))

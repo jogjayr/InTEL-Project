@@ -6,15 +6,17 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation;
+package edu.gatech.statics.modes.equation.worksheet;
 
+import edu.gatech.statics.modes.equation.*;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.parser.Parser;
 import edu.gatech.statics.objects.Force;
-import edu.gatech.statics.objects.VectorObject;
+import edu.gatech.statics.objects.Load;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,16 +31,16 @@ public class EquationMath {
     protected static final float accuracy = .01f;
     private boolean locked = false;
 
-    void setLocked(boolean locked) {
+    public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
-    boolean isLocked() {
+    public boolean isLocked() {
         return locked;
     }
     private EquationDiagram world;
 
-    protected EquationDiagram getWorld() {
+    public EquationDiagram getWorld() {
         return world;
     }
     private Vector3f observationDirection;
@@ -50,13 +52,13 @@ public class EquationMath {
     public void setObservationDirection(Vector3f direction) {
         this.observationDirection = direction;
     }
-    private Map<VectorObject, Term> terms = new HashMap();
+    private Map<Vector, Term> terms = new HashMap();
 
-    List<Term> allTerms() {
+    public List<Term> allTerms() {
         return new ArrayList(terms.values());
     }
 
-    String getName() {
+    public String getName() {
         if (observationDirection.dot(Vector3f.UNIT_X) != 0) {
             return "F[X]";
         } else {
@@ -73,17 +75,17 @@ public class EquationMath {
 
     protected class VectorElement extends Element {
 
-        VectorElement(VectorObject source) {
+        VectorElement(Vector source) {
             this.source = source;
         }
-        final VectorObject source;
+        final Vector source;
 
         String getText() {
-            return source.getLabelText();
+            return source.toString();//.getLabelText();
         }
 
         boolean isKnown() {
-            return source.getVector().isKnown();
+            return source.isKnown();
         }
         //{return !source.isSymbol();}
     }
@@ -132,51 +134,27 @@ public class EquationMath {
         none, parse, incorrect, badCoefficient
     }
 
-    
-    
+    public class Term {
 
-       
-
-         ; 
-               
-               
-        
-
-           
-            
-        
-        protected   
-          
-         
-         
-         
-
-          
-               class Term
-              
-             { 
-                Term  
-                 (VectorObject source) {
+        Term(Vector source) {
             vectorElement = new VectorElement(source);
             coefficient = new CoefficientElement();
         }
-        
-        void setCoefficientText(String s) {
+
+        public void setCoefficientText(String s) {
             coefficient.setText(s);
         }
-        
         final VectorElement vectorElement;
         final CoefficientElement coefficient;
-        
         TermError error;
         float coefficientValue;
         float targetValue;
-        
+
         boolean check() {
             Vector3f vectorOrient = vectorElement.source.getVectorValue();
             targetValue = vectorOrient.dot(observationDirection);
-            
-            if(!coefficient.parse()) {
+
+            if (!coefficient.parse()) {
                 error = TermError.parse;
                 return false;
             }
@@ -192,28 +170,28 @@ public class EquationMath {
             }
         }
 
-        VectorObject getSource() {
+        public Vector getSource() {
             return vectorElement.source;
         }
 
-        String getCoefficient() {
+        public String getCoefficient() {
             return coefficient.expression;
         }
     }
 
-    void setCoefficient(VectorObject target, String coefficientExpression) {
+    public void setCoefficient(Vector target, String coefficientExpression) {
         getTerm(target).coefficient.setText(coefficientExpression);
     }
 
-    Term createTerm(VectorObject source) {
+    public Term createTerm(Vector source) {
         return new Term(source);
     }
 
-    Term getTerm(VectorObject target) {
+    public Term getTerm(Vector target) {
         return terms.get(target);
     }
 
-    Term addTerm(VectorObject source) {
+    public Term addTerm(Vector source) {
         if (terms.get(source) != null) {
             return getTerm(source);
         }
@@ -222,8 +200,8 @@ public class EquationMath {
         return getTerm(source);
     }
 
-    void removeTerm(VectorObject target) {
-        terms.remove(target);
+    public void removeTerm(Vector target) {
+        terms.remove(world.getLoad(target));
     }
 
     /** Creates a new instance of Equation */
@@ -280,7 +258,7 @@ public class EquationMath {
         for (Term term : allTerms()) {
 
             //if(term.getVector() instanceof Moment) {
-            if (term.getSource().getVector().getUnit() == Unit.moment) {
+            if (term.getSource().getUnit() == Unit.moment) {
                 System.out.println("check: equation has unnecessary moment term");
                 System.out.println("check: FAILED");
 

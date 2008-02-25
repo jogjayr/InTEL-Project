@@ -116,6 +116,7 @@ public class FBDChecker {
                 } else {
                     // weight does not exist in system.
                     System.out.println("check: diagram does not contain weight for " + body);
+                    System.out.println("check: weight is: "+weight);
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
