@@ -16,6 +16,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.util.HashMap;
@@ -33,6 +34,19 @@ public class EquationModePanel extends ApplicationModePanel {
     private BContainer equationButtonContainer;
     private BContainer solutionContainer;
     private EquationBar activeEquation;
+
+    public void onClick(Load load) {
+        if(activeEquation == null || load == null)
+            return;
+        activeEquation.addTerm(load.getVector());
+        activeEquation.highlightVector(load.getVector());
+    }
+
+    public void onHover(Load load) {
+        if(activeEquation == null)
+            return;
+        activeEquation.highlightVector(load == null ? null : load.getVector());
+    }
 
     private void setActiveEquation(EquationBar bar) {
         if (activeEquation != null) {
@@ -108,4 +122,5 @@ public class EquationModePanel extends ApplicationModePanel {
             addEquationRow(math);
         }
     }
+    
 }

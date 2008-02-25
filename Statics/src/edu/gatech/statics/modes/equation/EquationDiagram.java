@@ -22,6 +22,7 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
@@ -30,6 +31,7 @@ import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 //import edu.gatech.statics.util.SelectableFilter;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,10 +129,6 @@ public class EquationDiagram extends SubDiagram {
         }
     }
 
-    //void setMomentPoint(Point point) {
-    //    sumMp.setObservationPoint(point.getTranslation());
-    //sumBar.setMomentCenter(point);
-    //}
     @Override
     public void onClick(SimulationObject obj) {
         super.onClick(obj);
@@ -138,23 +136,18 @@ public class EquationDiagram extends SubDiagram {
         if (StaticsApplication.getApp().getCurrentTool() != null &&
                 StaticsApplication.getApp().getCurrentTool().isActive()) {
             return;
-        } // do not select points if we have a tool active
+        } // do not select vectors if we have a tool active
 
-    /*if(obj != null && obj instanceof Load) {
-    if(sumBar == null)
-    return;
-    Load target = (Load) obj;
-    sumBar.addTerm(target);
-    }*/
+        EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        eqPanel.onClick( (Load) obj);
     }
 
     @Override
     public void onHover(SimulationObject obj) {
         super.onHover(obj);
-
-    //if(sumBar != null && (obj instanceof Load || obj == null))
-    //    highlightVector((Load)obj);
-    // draw line from vector to target?
+        
+        EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        eqPanel.onHover( (Load) obj);
     }
 
     @Override

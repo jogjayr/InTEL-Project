@@ -17,6 +17,8 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 public class Worksheet2D extends Worksheet {
 
     public Worksheet2D(EquationDiagram diagram) {
+        super(3);
+        
         EquationMath sumFx = new EquationMath(diagram);
         EquationMath sumFy = new EquationMath(diagram);
         EquationMath sumMp = new EquationMathMoments(diagram);
