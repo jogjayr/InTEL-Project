@@ -53,6 +53,7 @@ public class TopMenuBar extends AppWindow {
         
         final GroupLayout menuLayout = GroupLayout.makeHoriz(GroupLayout.LEFT);
         menu = new BContainer(menuLayout);
+        menu.setStyleClass("menu_background");
         menuLayout.setOffAxisJustification(GroupLayout.LEFT);
         add(menu, BorderLayout.CENTER);
         

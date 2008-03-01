@@ -6,12 +6,15 @@ package edu.gatech.statics.ui.windows.navigation;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
+import com.jmex.bui.BImage;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.AbsoluteLayout;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.util.Point;
 import edu.gatech.statics.ui.components.RepeatingButton;
+import java.io.IOException;
 
 /**
  *
@@ -34,19 +37,43 @@ public class Navigation2DWindow extends NavigationWindow {
 
     public Navigation2DWindow() {
 
-        setStyleClass("application_popup");
+        setStyleClass("application_popup_navigator");
 
         mainContainer = new BContainer(new AbsoluteLayout());
         add(mainContainer, BorderLayout.CENTER);
 
         NavigationListener2D navListener = new NavigationListener2D();
 
-        up = new RepeatingButton("u", navListener, "up");
-        down = new RepeatingButton("d", navListener, "down");
-        left = new RepeatingButton("l", navListener, "left");
-        right = new RepeatingButton("r", navListener, "right");
-        zoomIn = new RepeatingButton("+", navListener, "zoomIn");
-        zoomOut = new RepeatingButton("-", navListener, "zoomOut");
+        try {
+            ImageIcon icon;
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/arrowUp.png")));
+            up = new RepeatingButton(icon, navListener, "up");
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/arrowDown.png")));
+            down = new RepeatingButton(icon, navListener, "down");
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/arrowLeft.png")));
+            left = new RepeatingButton(icon, navListener, "left");
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/arrowRight.png")));
+            right = new RepeatingButton(icon, navListener, "right");
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/zoomIn.png")));
+            zoomIn = new RepeatingButton(icon, navListener, "zoomIn");
+
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/zoomOut.png")));
+            zoomOut = new RepeatingButton(icon, navListener, "zoomOut");
+
+        } catch (IOException e) {
+            
+        }
+        
+        up.setStyleClass("imageButton");
+        down.setStyleClass("imageButton");
+        left.setStyleClass("imageButton");
+        right.setStyleClass("imageButton");
+        zoomIn.setStyleClass("imageButton");
+        zoomOut.setStyleClass("imageButton");
 
         buttonSize = 30;
         up.setPreferredSize(buttonSize, buttonSize);
@@ -75,19 +102,24 @@ public class Navigation2DWindow extends NavigationWindow {
 
         public void actionPerformed(ActionEvent event) {
             String action = event.getAction();
-            
-            if(action.equals("up"))
+
+            if (action.equals("up")) {
                 getCameraControl().panCamera(0, 1);
-            else if(action.equals("down"))
+            } else if (action.equals("down")) {
                 getCameraControl().panCamera(0, -1);
-            if(action.equals("left"))
+            }
+            if (action.equals("left")) {
                 getCameraControl().panCamera(-1, 0);
-            if(action.equals("right"))
+            }
+            if (action.equals("right")) {
                 getCameraControl().panCamera(1, 0);
-            if(action.equals("zoomIn"))
+            }
+            if (action.equals("zoomIn")) {
                 getCameraControl().zoomCamera(-1);
-            if(action.equals("zoomOut"))
+            }
+            if (action.equals("zoomOut")) {
                 getCameraControl().zoomCamera(1);
+            }
         }
     }
 }
