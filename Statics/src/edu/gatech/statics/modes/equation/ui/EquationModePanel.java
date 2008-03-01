@@ -7,11 +7,12 @@ package edu.gatech.statics.modes.equation.ui;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
-import com.jmex.bui.BLabel;
+import com.jmex.bui.BImage;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
+import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
@@ -19,6 +20,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,18 +35,21 @@ public class EquationModePanel extends ApplicationModePanel {
     private BContainer equationBarContainer;
     private BContainer equationButtonContainer;
     private BContainer solutionContainer;
+    private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
 
     public void onClick(Load load) {
-        if(activeEquation == null || load == null)
+        if (activeEquation == null || load == null) {
             return;
+        }
         activeEquation.addTerm(load.getVector());
         activeEquation.highlightVector(load.getVector());
     }
 
     public void onHover(Load load) {
-        if(activeEquation == null)
+        if (activeEquation == null) {
             return;
+        }
         activeEquation.highlightVector(load == null ? null : load.getVector());
     }
 
@@ -67,8 +72,14 @@ public class EquationModePanel extends ApplicationModePanel {
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         add(fullEquationContainer, BorderLayout.CENTER);
 
-        equationBarContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
-        fullEquationContainer.add(new BScrollPane(equationBarContainer), BorderLayout.CENTER);
+        GroupLayout equationLayout = GroupLayout.makeVert(GroupLayout.CENTER);
+        equationLayout.setOffAxisJustification(GroupLayout.LEFT);
+        equationBarContainer = new BContainer(equationLayout);
+
+        equationScrollPane = new BScrollPane(equationBarContainer, false, true);
+        equationScrollPane.setShowScrollbarAlways(false);
+        fullEquationContainer.add(equationScrollPane, BorderLayout.CENTER);
+
 
         equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
         fullEquationContainer.add(equationButtonContainer, BorderLayout.EAST);
@@ -77,14 +88,25 @@ public class EquationModePanel extends ApplicationModePanel {
         // will contain the solution to the equations.
         solutionContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
         add(solutionContainer, BorderLayout.EAST);
+    }
 
+    void refreshRows() {
+        //equationScrollPane.invalidate();
+        equationScrollPane.layout();
     }
 
     private void addEquationRow(EquationMath math) {
 
         final EquationUIData data = new EquationUIData();
-        data.equationBar = new EquationBar(math);
-        data.checkButton = new BButton("check");
+        data.equationBar = new EquationBar(math, this);
+        //data.checkButton = new BButton("check");
+        ImageIcon icon = null;
+        try {
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/circle_white.png")));
+        } catch (IOException e) {
+        }
+        data.checkButton = new BButton(icon, "check");
+        data.checkButton.setStyleClass("imageButton");
 
         data.equationBar.addListener(new MouseAdapter() {
 
@@ -98,6 +120,10 @@ public class EquationModePanel extends ApplicationModePanel {
         equationButtonContainer.add(data.checkButton);
 
         uiMap.put(math, data);
+
+        if (uiMap.size() == 1) {
+            setActiveEquation(data.equationBar);
+        }
 
     //data.solutionLabel = new BLabel(_tiptext)
     }
@@ -122,5 +148,4 @@ public class EquationModePanel extends ApplicationModePanel {
             addEquationRow(math);
         }
     }
-    
 }

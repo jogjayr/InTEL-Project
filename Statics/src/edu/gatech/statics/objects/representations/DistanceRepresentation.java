@@ -108,12 +108,12 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     // this class is was a leading cause of busywork for the GC in terms of 
     // Vector3f objects that were churned through.
     // We keep these cached here so that they don't churn.
-    Vector3f worldPointDifference, offsetDirection, scaledOffsetDirection;
-    Vector3f p1, p2, pCenter, pDirection;
-    Vector3f arrowOffset, measureExtent, measureExtentArrowHead;
-    Vector3f arrow1, arrow2, arrowHead1, arrowHead2, arrowHead1a, arrowHead2a;
-    Vector3f barOffset1, barOffset2, bar1, bar2;
-    Vector3f midVector, midVector1, midVector2;
+    private static Vector3f worldPointDifference, offsetDirection, scaledOffsetDirection;
+    private static Vector3f p1, p2, pCenter, pDirection;
+    private static Vector3f arrowOffset, measureExtent, measureExtentArrowHead;
+    private static Vector3f arrow1, arrow2, arrowHead1, arrowHead2, arrowHead1a, arrowHead2a;
+    private static Vector3f barOffset1, barOffset2, bar1, bar2;
+    private static Vector3f midVector, midVector1, midVector2;
     
     @Override
     public void draw(Renderer r) {
@@ -210,7 +210,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
             
         } else {
             // display text normally...
-            labelCenter = pCenter;
+            //labelCenter = pCenter;
+            labelCenter.set(pCenter);
             midVector.set(pDirection);
             midVector.multLocal(textWorldLength/2 + worldRatio*margin);
             midVector1.set(pCenter);

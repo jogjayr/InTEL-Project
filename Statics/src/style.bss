@@ -112,7 +112,8 @@ application_popup {
 }
 
 application_popup_navigator {
-    background: solid #cbd1f0;
+    //background: solid #cbd1f0;
+    background: solid #99a2e588;
     border: 2 solid #000000;
     padding: 3;
 }
@@ -235,6 +236,7 @@ menuitem:hover {
 }
 
 button:hover {
+  background: image "rsrc/textures/button_hover.png" framexy;
   color: #ffffff;
 }
 
@@ -267,6 +269,7 @@ textfield_appbar {
   //background: solid #666666ff;
   background: solid #ffffffff;
   color: #000000ff;
+  font: "Arial" bold 16;
   padding: 5;
 }
 

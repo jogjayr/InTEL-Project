@@ -115,6 +115,7 @@ public class CurveUtil {
         Circle() {super("");}
 
         private Vector3f center, xunit, yunit;
+        private float arcBegin, arcEnd;
         private float radius;
         public void setCoords(Vector3f center, Vector3f xunit, Vector3f yunit, float radius) {
             this.center = center;
@@ -122,9 +123,14 @@ public class CurveUtil {
             this.yunit = yunit;
             this.radius = radius;
         }
+        
+        public void setArc(float begin, float end) {
+            this.arcBegin = begin;
+            this.arcEnd = end;
+        }
 
         public Vector3f getPoint(float time) {
-            float theta = (float)(2*Math.PI)*time;
+            float theta = arcBegin + (float)(arcEnd)*time;
             return center.
                 add( xunit.mult(radius*(float)Math.cos(theta)) ).
                 add( yunit.mult(radius*(float)Math.sin(theta)) );
@@ -183,6 +189,7 @@ public class CurveUtil {
         yunit.normalizeLocal();
 
         curveUtil_circle.setCoords(center, xunit, yunit, radius);
+        curveUtil_circle.setArc(0, 2*(float)Math.PI);
         curveUtil_circle.setSteps(40);
         
         FloatBuffer fb = FloatBuffer.allocate(4);
@@ -195,5 +202,51 @@ public class CurveUtil {
         r.draw(curveUtil_circle);
     }
     
+    public static void renderArc(Renderer r, ColorRGBA color,
+            final Vector3f center, final float radius, Vector3f perp,
+            final float begin, final float end) {
+
+        if(curveUtil_circle == null) {
+            curveUtil_circle = new Circle();
+
+            AlphaState as = r.createAlphaState();
+            as.setEnabled(true);
+            as.setBlendEnabled( true );
+            as.setSrcFunction( AlphaState.SB_SRC_ALPHA );
+            as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+            as.setTestEnabled( true );
+            as.setTestFunction( AlphaState.TF_ALWAYS );
+            curveUtil_circle.setRenderState(as);
+
+            WireframeState ws = r.createWireframeState();
+            ws.setEnabled(true);
+            ws.setAntialiased(true);
+            curveUtil_circle.setRenderState(ws);
+
+            curveUtil_circle.updateRenderState();
+        }
+
+        final Vector3f xunit;
+        if(Vector3f.UNIT_Y.cross(perp).equals(Vector3f.ZERO))
+            xunit = Vector3f.UNIT_X.cross(perp);
+        else xunit = Vector3f.UNIT_Y.cross(perp);
+        xunit.normalizeLocal();
+        
+        final Vector3f yunit = xunit.cross(perp);
+        yunit.normalizeLocal();
+
+        curveUtil_circle.setCoords(center, xunit, yunit, radius);
+        curveUtil_circle.setArc(begin, end);
+        curveUtil_circle.setSteps(40);
+        
+        FloatBuffer fb = FloatBuffer.allocate(4);
+        fb.put(color.r);
+        fb.put(color.g);
+        fb.put(color.b);
+        fb.put(color.a);
+        curveUtil_circle.setColorBuffer(0,fb);
+        
+        r.draw(curveUtil_circle);
+    }
     
 }

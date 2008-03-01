@@ -9,8 +9,9 @@
 
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
+import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.objects.representations.AngleRepresentation;
 
 /**
  *
@@ -31,6 +32,8 @@ public class AngleMeasurement extends Measurement {
     }
 
     public void createDefaultSchematicRepresentation() {
+        Representation rep = new AngleRepresentation(this);
+        addRepresentation(rep);
     }
 
 

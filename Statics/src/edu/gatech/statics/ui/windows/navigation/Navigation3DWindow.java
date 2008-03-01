@@ -43,8 +43,8 @@ public class Navigation3DWindow extends Navigation2DWindow {
         } catch (IOException e) {
         }
         
-        rotateLeft.setStyleClass("imageButton");
-        rotateRight.setStyleClass("imageButton");
+        //rotateLeft.setStyleClass("imageButton");
+        //rotateRight.setStyleClass("imageButton");
 
         rotateLeft.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
         rotateRight.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);

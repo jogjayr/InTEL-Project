@@ -68,12 +68,12 @@ public class Navigation2DWindow extends NavigationWindow {
             
         }
         
-        up.setStyleClass("imageButton");
-        down.setStyleClass("imageButton");
-        left.setStyleClass("imageButton");
-        right.setStyleClass("imageButton");
-        zoomIn.setStyleClass("imageButton");
-        zoomOut.setStyleClass("imageButton");
+        //up.setStyleClass("imageButton");
+        //down.setStyleClass("imageButton");
+        //left.setStyleClass("imageButton");
+        //right.setStyleClass("imageButton");
+        //zoomIn.setStyleClass("imageButton");
+        //zoomOut.setStyleClass("imageButton");
 
         buttonSize = 30;
         up.setPreferredSize(buttonSize, buttonSize);

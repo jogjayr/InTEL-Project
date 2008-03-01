@@ -37,20 +37,25 @@ import java.util.Map;
  */
 public class EquationBar extends BContainer {
 
+    private EquationModePanel parent;
     private EquationMath math;
     private Map<Vector, TermBox> terms = new HashMap<Vector, EquationBar.TermBox>();
     private BLabel sumOperand;
     private boolean locked = false;
-    private static BBorder regularBorder = new LineBorder(new ColorRGBA(0, 0, 0, .02f));
-    private static BBorder highlightBorder = new LineBorder(new ColorRGBA(0, 0, 1, 1f));
+    private static final BBorder regularBorder = new LineBorder(new ColorRGBA(0, 0, 0, .02f));
+    private static final BBorder highlightBorder = new LineBorder(new ColorRGBA(0, 0, 1, 1f));
 
+    private static final String symbolColor = "ff0000";
+    
     EquationMath getMath() {
         return math;
     }
 
-    public EquationBar(EquationMath math) {
+    public EquationBar(EquationMath math, EquationModePanel parent) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         this.math = math;
+        this.parent = parent;
+        setStyleClass("equation_bar");
 
         ImageIcon icon;
 
@@ -108,11 +113,12 @@ public class EquationBar extends BContainer {
             this.source = source;
 
             if (source.isSymbol()) {
-                vectorLabel = new BLabel("(@=b#0000FF(" + source.getQuantity().getSymbolName() + "))");
+                vectorLabel = new BLabel("(@=b#"+symbolColor+"(" + source.getQuantity().getSymbolName() + "))");
             } else {
-                vectorLabel = new BLabel("(" + source.getQuantity().toStringDecimal() + ")");
+                vectorLabel = new BLabel("(@=b(" + source.getQuantity().toStringDecimal() + "))");
             }
             coefficient = new BTextField(coefficientText);
+            coefficient.setStyleClass("textfield_appbar");
             //coefficient.setPreferredWidth(10);
 
             coefficient.addListener(new TextListener() {
@@ -120,6 +126,11 @@ public class EquationBar extends BContainer {
                 public void textChanged(TextEvent event) {
                     Dimension dim = coefficient.getPreferredSize(0, 0);
                     coefficient.setSize(dim.width, dim.height);
+
+                    EquationBar.this.invalidate();
+                    //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
+                    //EquationBar.this.setSize(preferredSize.);
+                    parent.refreshRows();
                 }
             });
 
@@ -130,7 +141,8 @@ public class EquationBar extends BContainer {
                 boolean destroyOK = false;
 
                 public void keyReleased(KeyEvent event) {
-                    if (coefficient.getText().length() == 0 && (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                    if (coefficient.getText().length() == 0 &&
+                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
                     {
                         if (destroyOK) {
@@ -213,6 +225,7 @@ public class EquationBar extends BContainer {
         terms.put(term.getSource(), box);
         add(1, box);
         box.coefficient.requestFocus();
+        parent.refreshRows();
 
     //equationContainer.add(getComponentCount()-2,box);
 
@@ -229,18 +242,18 @@ public class EquationBar extends BContainer {
         // clear the current tool
         StaticsApplication.getApp().setCurrentTool(null);
 
-        //backButton.setText("Next");
-        //checkButton.setEnabled(false);
-        //if (selectButton != null) {
-        //    selectButton.setEnabled(false);
-        //}
+    //backButton.setText("Next");
+    //checkButton.setEnabled(false);
+    //if (selectButton != null) {
+    //    selectButton.setEnabled(false);
+    //}
 
-        /*try {
-            ImageIcon icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/check.png")));
-            add(new BLabel(icon));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
+    /*try {
+    ImageIcon icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/check.png")));
+    add(new BLabel(icon));
+    } catch (IOException ex) {
+    ex.printStackTrace();
+    }*/
     }
 
     private void removeBox(TermBox box) {
@@ -268,6 +281,7 @@ public class EquationBar extends BContainer {
                 return;
             }
         }
+        parent.refreshRows();
     }
 
     public void addTerm(Vector source) {

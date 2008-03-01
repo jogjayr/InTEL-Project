@@ -17,6 +17,7 @@ import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.UnitUtils;
+import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -143,6 +144,10 @@ public class PurseExercise extends FBDExercise {
         distance5.createDefaultSchematicRepresentation(5f);
         world.add(distance5);
 
+        AngleMeasurement angle1 = new AngleMeasurement(B, D, C);
+        angle1.createDefaultSchematicRepresentation();
+        world.add(angle1);
+        
         Force purse = new Force(A, new Vector3f(0, -purseWeight, 0));
         purse.setName("Purse");
         forearm.addObject(purse);
