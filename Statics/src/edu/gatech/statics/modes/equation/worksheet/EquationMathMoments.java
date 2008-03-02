@@ -105,7 +105,7 @@ public class EquationMathMoments extends EquationMath {
     
 
     @Override
-    boolean check() {
+    public boolean check() {
         
         // first, make sure all of the necessary terms are added to the equation.
         List<Force> allForces = new ArrayList();

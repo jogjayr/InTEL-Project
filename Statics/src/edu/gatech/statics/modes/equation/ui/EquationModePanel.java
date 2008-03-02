@@ -10,6 +10,8 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.background.TintedBackground;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
@@ -18,6 +20,7 @@ import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.io.IOException;
@@ -88,6 +91,7 @@ public class EquationModePanel extends ApplicationModePanel {
         // will contain the solution to the equations.
         solutionContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
         add(solutionContainer, BorderLayout.EAST);
+        solutionContainer.setPreferredSize(200, -1);
     }
 
     void refreshRows() {
@@ -100,13 +104,18 @@ public class EquationModePanel extends ApplicationModePanel {
         final EquationUIData data = new EquationUIData();
         data.equationBar = new EquationBar(math, this);
         //data.checkButton = new BButton("check");
-        ImageIcon icon = null;
-        try {
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/circle_white.png")));
-        } catch (IOException e) {
-        }
-        data.checkButton = new BButton(icon, "check");
-        data.checkButton.setStyleClass("imageButton");
+        //ImageIcon icon = null;
+        //try {
+        //    icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/circle_white.png")));
+        //} catch (IOException e) {
+        //}
+        data.checkButton = new BButton("check", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                check(data.equationBar);
+            }
+        }, "check");
+        data.checkButton.setStyleClass("smallcircle_button");
 
         data.equationBar.addListener(new MouseAdapter() {
 
@@ -126,6 +135,25 @@ public class EquationModePanel extends ApplicationModePanel {
         }
 
     //data.solutionLabel = new BLabel(_tiptext)
+    }
+
+    private void check(EquationBar bar) {
+        boolean success = bar.getMath().check();
+        if (success) {
+            bar.setLocked();
+            EquationUIData data = uiMap.get(bar.getMath());
+            data.checkButton.setEnabled(false);
+
+            ImageIcon icon = null;
+            try {
+                icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/checkmark.png")));
+            } catch (IOException e) {
+            }
+
+            data.checkButton.setIcon(icon);
+            data.checkButton.setText("");
+            InterfaceRoot.getInstance().setAdvice("yay, it worked!");
+        }
     }
 
     private class EquationUIData {

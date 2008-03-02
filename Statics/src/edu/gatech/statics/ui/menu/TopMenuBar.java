@@ -64,7 +64,8 @@ public class TopMenuBar extends AppWindow {
     
     private class ExerciseMenu extends TopMenuItem {
         public ExerciseMenu() {
-            super("Exercise", TopMenuBar.this);
+            super("EXERCISE", TopMenuBar.this);
+            //super("Exercise", TopMenuBar.this);
             addMenuItem("submit");
             addMenuItem("load");
             addMenuItem("save");
@@ -79,11 +80,8 @@ public class TopMenuBar extends AppWindow {
     private class DisplayMenu extends TopMenuItem {
 
         public DisplayMenu() {
-            super("Display", TopMenuBar.this);
-            //addMenuItem("measurements");
-            //addMenuItem("bones");
-            //addMenuItem("real world");
-            //addMenuItem("schematic");
+            super("DISPLAY", TopMenuBar.this);
+            //super("Display", TopMenuBar.this);
         }
         
         @Override
@@ -104,11 +102,7 @@ public class TopMenuBar extends AppWindow {
     private class WindowMenu extends TopMenuItem {
 
         public WindowMenu() {
-            super("Window", TopMenuBar.this);
-            //addMenuItem("description");
-            //addMenuItem("known loads");
-            //addMenuItem("point coordinates");
-            //addMenuItem("diagrams");
+            super("WINDOW", TopMenuBar.this);
         }
         
         @Override

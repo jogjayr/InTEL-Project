@@ -44,46 +44,8 @@ root:disabled {
 }
 
 window {
-  //border: 1 solid #000000;
-  //padding: 5;
 }
 
-// most windows in Statics derive from this class
-//info_window {
-//    text-align: left;
-//    background: solid #f4eaa2cc;
-//    padding: 1 1 1 1;
-//}
-
-//padded_container {
-//    padding: 5 5 5 5;
-//}
-
-//info_window_opaque {
-//    text-align: left;
-//    background: solid #f4eaa2ff;
-//    padding: 1 1 1 1;
-//}
-
-//description_window {
-//    border: 2 solid #773802ff;
-//    background: solid #f4eaa2ff;
-//    padding: 5 5 5 5;
-//}
-
-//border {
-//    background: solid #ffffffff;
-//}
-
-
-// this is the title for information windows
-// it does not extend window, but rather BContainer
-//title_container {
-//    background: solid #773802ff;
-//    color: #ff7b00;
-//    font: "Dialog" plain 16;
-//    padding: 5 5 5 5;
-//}
 
 application_bar {
     background: solid #000000;
@@ -100,8 +62,9 @@ application_tab {
     // background and text color are just defaults here, they are replaced in code
     background: solid #e9e9f4;
     color: #000000;
-    padding: 3;
+    padding: 2;
     font: "Dialog" bold 16;
+    border: 2 solid #000000;
 }
 
 application_popup {
@@ -211,7 +174,7 @@ label {
 }
 
 button {
-  background: image "rsrc/textures/button_up.png" framexy;
+  background: image "rsrc/interfaceTextures/button_up.png" framexy;
   padding: 3 5;
   font: "Dialog" bold 17;
   color: #dddddd;
@@ -222,6 +185,7 @@ button {
 
 imageButton {
     background: solid #ffffff00;
+    border: 1 solid #000000;
     //padding: 3 5;
     text-align: center;
 }
@@ -236,27 +200,73 @@ menuitem:hover {
 }
 
 button:hover {
-  background: image "rsrc/textures/button_hover.png" framexy;
+  background: image "rsrc/interfaceTextures/button_hover.png" framexy;
   color: #ffffff;
 }
 
 button:disabled {
-  background: image "rsrc/textures/button_disabled.png" framexy;
+  background: image "rsrc/interfaceTextures/button_disabled.png" framexy;
 }
 
 button:down {
-  background: image "rsrc/textures/button_down.png" framexy;
+  background: image "rsrc/interfaceTextures/button_down.png" framexy;
   color: #FF00FF;
-  padding: 4 6 2 4;
+  padding: 4 4 2 6;
 }
 
 button:selected {
-  background: image "rsrc/textures/button_down.png" framexy;
-  padding: 4 6 2 4;
+  background: image "rsrc/interfaceTextures/button_down.png" framexy;
+  padding: 4 4 2 6;
+}
+
+circle_button {
+  background: image "rsrc/interfaceTextures/circleButton/circle_up.png" centerxy;
+  padding: 5 5;
+  font: "Dialog" bold 17;
+  color: #000000;
+  text-align: center;
+}
+
+circle_button:hover {
+  background: image "rsrc/interfaceTextures/circleButton/circle_hover.png" centerxy;
+  color: #000000;
+}
+
+circle_button:selected {
+  background: image "rsrc/interfaceTextures/circleButton/circle_down.png" centerxy;
+  color: #000000;
+}
+
+circle_button:down {
+  background: image "rsrc/interfaceTextures/circleButton/circle_down.png" centerxy;
+  color: #000000;
+}
+
+smallcircle_button {
+  background: image "rsrc/interfaceTextures/circleButton/circleSmall_up.png" centerxy;
+  padding: 5 5;
+  font: "Dialog" plain 14;
+  color: #000000;
+  text-align: center;
+}
+
+smallcircle_button:hover {
+  background: image "rsrc/interfaceTextures/circleButton/circleSmall_hover.png" centerxy;
+  color: #000000;
+}
+
+smallcircle_button:selected {
+  background: image "rsrc/interfaceTextures/circleButton/circleSmall_down.png" centerxy;
+  color: #000000;
+}
+
+smallcircle_button:down {
+  background: image "rsrc/interfaceTextures/circleButton/circleSmall_down.png" centerxy;
+  color: #000000;
 }
 
 combobox {
-  background: image "rsrc/textures/button_up.png" framexy;
+  background: image "rsrc/interfaceTextures/button_up.png" framexy;
   padding: 3 5;
 }
 

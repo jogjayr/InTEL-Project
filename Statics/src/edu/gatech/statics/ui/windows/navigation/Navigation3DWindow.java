@@ -33,19 +33,25 @@ public class Navigation3DWindow extends Navigation2DWindow {
 
         NavigationListener3D navListener = new NavigationListener3D();
 
-        try {
+        /*try {
             ImageIcon icon;
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCW.png")));
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCW_up.png")));
             rotateLeft = new RepeatingButton(icon, navListener, "rotateLeft");
             
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCCW.png")));
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCCW_up.png")));
             rotateRight = new RepeatingButton(icon, navListener, "rotateRight");
         } catch (IOException e) {
-        }
+        }*/
         
-        //rotateLeft.setStyleClass("imageButton");
-        //rotateRight.setStyleClass("imageButton");
+        rotateLeft = new RepeatingButton("", navListener, "rotateLeft");
+        rotateRight = new RepeatingButton("", navListener, "rotateRight");
+        
+        rotateLeft.setStyleClass("imageButton");
+        rotateRight.setStyleClass("imageButton");
 
+        setImageBackground(rotateLeft, "rsrc/interfaceTextures/navigation/rotateCW");
+        setImageBackground(rotateRight, "rsrc/interfaceTextures/navigation/rotateCCW");
+        
         rotateLeft.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
         rotateRight.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
 

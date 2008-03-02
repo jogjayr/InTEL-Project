@@ -8,14 +8,11 @@ import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -45,6 +42,7 @@ public class SelectModePanel extends ApplicationModePanel {
         //selectionLabel = new BLabel("Nothing selected");
         selectionListBox = new BContainer(new BorderLayout());
         nextButton = new BButton("Done", new ButtonListener(), "done");
+        nextButton.setStyleClass("circle_button");
 
         //add(selectionLabel, BorderLayout.NORTH);
         add(selectionListBox, BorderLayout.CENTER);

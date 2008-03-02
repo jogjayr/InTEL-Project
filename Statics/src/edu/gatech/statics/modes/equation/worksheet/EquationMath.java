@@ -218,7 +218,7 @@ public class EquationMath {
         return null;
     }
 
-    boolean check() {
+    public boolean check() {
 
         // first, make sure all of the necessary terms are added to the equation.
         List<Force> allForces = new ArrayList();
@@ -228,9 +228,11 @@ public class EquationMath {
                 allForces.add((Force) obj);
             }
         }
+        
+        System.out.println(allForces);
 
         for (Force force : allForces) {
-            Term term = terms.get(force);
+            Term term = terms.get(force.getVector());
 
             if (force.getVectorValue().dot(getObservationDirection()) == 0) {
                 if (term != null) {

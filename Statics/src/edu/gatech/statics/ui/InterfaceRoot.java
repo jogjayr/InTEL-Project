@@ -193,7 +193,9 @@ public class InterfaceRoot {
         navWindow = configuration.createNavigationWindow();
         buiNode.addWindow(navWindow);
         navWindow.pack();
-        navWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + 5);
+        navWindow.setLocation(
+                DisplaySystem.getDisplaySystem().getWidth()-navWindow.getPreferredSize(-1, -1).width - 5,
+                ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
 
         cameraControl = new CameraControl(camera, configuration.createViewConstraints());
         configuration.setupCameraControl(cameraControl);

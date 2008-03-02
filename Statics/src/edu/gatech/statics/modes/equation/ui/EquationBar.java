@@ -131,6 +131,7 @@ public class EquationBar extends BContainer {
                     //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
                     //EquationBar.this.setSize(preferredSize.);
                     parent.refreshRows();
+                    update();
                 }
             });
 

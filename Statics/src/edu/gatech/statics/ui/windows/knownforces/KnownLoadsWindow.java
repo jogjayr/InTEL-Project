@@ -119,7 +119,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Task
         //if(Diagram.getSchematic().allObjects())
         //    contents.append("<b>"+force.getName()+"</b>");
         //else
-        contents.append("<font color=\"#0000ff\"><b>" + force.getSymbolName() + "</b></font>");
+        contents.append("<font color=\"#ff0000\"><b>" + force.getSymbolName() + "</b></font>");
         if (applicationPoint != null) {
             contents.append(" at [" + applicationPoint.getName() + "]: ");
         }

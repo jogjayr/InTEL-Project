@@ -45,6 +45,8 @@ public class FBDModePanel extends ApplicationModePanel {
         
         checkButton = new BButton("Check", listener, "check");
         resetButton = new BButton("Reset", listener, "reset");
+        checkButton.setStyleClass("circle_button");
+        resetButton.setStyleClass("circle_button");
         checkContainer.add(checkButton);
         checkContainer.add(resetButton);
         

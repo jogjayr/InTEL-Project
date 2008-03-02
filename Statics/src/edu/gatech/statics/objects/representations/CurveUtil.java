@@ -34,6 +34,7 @@ public class CurveUtil {
     private static FloatBuffer curveUtil_line_colors;
     private static Curve curveUtil_curve;
     private static Circle curveUtil_circle;
+    private static Arc curveUtil_arc;
 
     public static void renderLine(Renderer r, ColorRGBA color, Vector3f point1, Vector3f point2) {
         
@@ -115,7 +116,6 @@ public class CurveUtil {
         Circle() {super("");}
 
         private Vector3f center, xunit, yunit;
-        private float arcBegin, arcEnd;
         private float radius;
         public void setCoords(Vector3f center, Vector3f xunit, Vector3f yunit, float radius) {
             this.center = center;
@@ -124,13 +124,8 @@ public class CurveUtil {
             this.radius = radius;
         }
         
-        public void setArc(float begin, float end) {
-            this.arcBegin = begin;
-            this.arcEnd = end;
-        }
-
         public Vector3f getPoint(float time) {
-            float theta = arcBegin + (float)(arcEnd)*time;
+            float theta = (float)(2*Math.PI)*time;
             return center.
                 add( xunit.mult(radius*(float)Math.cos(theta)) ).
                 add( yunit.mult(radius*(float)Math.sin(theta)) );
@@ -179,17 +174,11 @@ public class CurveUtil {
             curveUtil_circle.updateRenderState();
         }
 
-        final Vector3f xunit;
-        if(Vector3f.UNIT_Y.cross(perp).equals(Vector3f.ZERO))
-            xunit = Vector3f.UNIT_X.cross(perp);
-        else xunit = Vector3f.UNIT_Y.cross(perp);
-        xunit.normalizeLocal();
-        
+        final Vector3f xunit = getXUnit(perp);
         final Vector3f yunit = xunit.cross(perp);
         yunit.normalizeLocal();
 
         curveUtil_circle.setCoords(center, xunit, yunit, radius);
-        curveUtil_circle.setArc(0, 2*(float)Math.PI);
         curveUtil_circle.setSteps(40);
         
         FloatBuffer fb = FloatBuffer.allocate(4);
@@ -202,12 +191,73 @@ public class CurveUtil {
         r.draw(curveUtil_circle);
     }
     
-    public static void renderArc(Renderer r, ColorRGBA color,
-            final Vector3f center, final float radius, Vector3f perp,
-            final float begin, final float end) {
+    private static Vector3f getXUnit(Vector3f perp) {
+        final Vector3f xunit;
+        if(Vector3f.UNIT_Y.cross(perp).equals(Vector3f.ZERO))
+            xunit = Vector3f.UNIT_X.cross(perp);
+        else xunit = Vector3f.UNIT_Y.cross(perp);
+        xunit.normalizeLocal();
+        return xunit;
+    } 
 
-        if(curveUtil_circle == null) {
-            curveUtil_circle = new Circle();
+    private static class Arc extends Curve {
+
+        Arc() {super("");}
+
+        private Vector3f center, axis1, axis2;
+        private float radius;
+        public void setCoords(Vector3f center, Vector3f axis1, Vector3f axis2, float radius) {
+            this.center = new Vector3f(center);
+            this.radius = 1.5f*radius; // this fixed number is a hack. We'll need to fix it later.
+            
+            this.axis1 = axis1;
+            this.axis2 = axis2;
+        }
+        
+        public Vector3f getPoint(float time) {
+            //float theta = (float)(Math.PI/2)*time;
+            
+            Vector3f r = new Vector3f();
+            r.addLocal(axis1.mult(1-time));
+            r.addLocal(axis2.mult(time));
+            r.normalizeLocal();
+            r.multLocal(radius);
+            r.addLocal(center);
+            
+            //r.addLocal((center.add(axis1)).mult((float)Math.pow(1-time,3)));
+            //r.addLocal((center.add(axis1).add(perp1)).mult(3*time*(float)Math.pow(1-time,2)));
+            //r.addLocal((center.add(axis2).add(perp2)).mult(3*time*time*(1-time)));
+            //r.addLocal((center.add(axis2)).mult((float)Math.pow(time,3)));
+            return r;
+            
+        }
+
+        public Vector3f getPoint(float time, Vector3f store) {
+            return store.set(getPoint(time));
+        }
+
+        public Matrix3f getOrientation(float time, float precision) {
+            return new Matrix3f();
+        }
+
+        public Matrix3f getOrientation(float time, float precision, Vector3f up) {
+            return new Matrix3f();
+        }
+
+        public void findCollisions(Spatial scene, CollisionResults results) {
+            return;
+        }
+
+        public boolean hasCollision(Spatial scene, boolean checkTriangles) {
+            return false;
+        }
+    }
+    
+    public static void renderArc(Renderer r, ColorRGBA color,
+            final Vector3f center, final float radius, Vector3f axis1, Vector3f axis2) {
+
+        if(curveUtil_arc == null) {
+            curveUtil_arc = new Arc();
 
             AlphaState as = r.createAlphaState();
             as.setEnabled(true);
@@ -216,37 +266,27 @@ public class CurveUtil {
             as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
             as.setTestEnabled( true );
             as.setTestFunction( AlphaState.TF_ALWAYS );
-            curveUtil_circle.setRenderState(as);
+            curveUtil_arc.setRenderState(as);
 
             WireframeState ws = r.createWireframeState();
             ws.setEnabled(true);
             ws.setAntialiased(true);
-            curveUtil_circle.setRenderState(ws);
+            curveUtil_arc.setRenderState(ws);
 
-            curveUtil_circle.updateRenderState();
+            curveUtil_arc.updateRenderState();
         }
 
-        final Vector3f xunit;
-        if(Vector3f.UNIT_Y.cross(perp).equals(Vector3f.ZERO))
-            xunit = Vector3f.UNIT_X.cross(perp);
-        else xunit = Vector3f.UNIT_Y.cross(perp);
-        xunit.normalizeLocal();
-        
-        final Vector3f yunit = xunit.cross(perp);
-        yunit.normalizeLocal();
-
-        curveUtil_circle.setCoords(center, xunit, yunit, radius);
-        curveUtil_circle.setArc(begin, end);
-        curveUtil_circle.setSteps(40);
+        curveUtil_arc.setCoords(center, axis1, axis2, radius);
+        curveUtil_arc.setSteps(40);
         
         FloatBuffer fb = FloatBuffer.allocate(4);
         fb.put(color.r);
         fb.put(color.g);
         fb.put(color.b);
         fb.put(color.a);
-        curveUtil_circle.setColorBuffer(0,fb);
+        curveUtil_arc.setColorBuffer(0,fb);
         
-        r.draw(curveUtil_circle);
+        r.draw(curveUtil_arc);
     }
     
 }

@@ -145,8 +145,16 @@ public class PurseExercise extends FBDExercise {
         world.add(distance5);
 
         AngleMeasurement angle1 = new AngleMeasurement(B, D, C);
-        angle1.createDefaultSchematicRepresentation();
+        angle1.createDefaultSchematicRepresentation(2f);
         world.add(angle1);
+        
+        //AngleMeasurement angle2 = new AngleMeasurement(A, B, E);
+        //angle2.createDefaultSchematicRepresentation(2f);
+        //world.add(angle2);
+        
+        AngleMeasurement angle3 = new AngleMeasurement(D, B, C);
+        angle3.createDefaultSchematicRepresentation(2f);
+        world.add(angle3);
         
         Force purse = new Force(A, new Vector3f(0, -purseWeight, 0));
         purse.setName("Purse");

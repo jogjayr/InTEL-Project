@@ -51,31 +51,6 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         super(target);
         setLayer(RepresentationLayer.measurement);
         
-        
-        worldPointDifference = new Vector3f();
-        offsetDirection = new Vector3f();
-        scaledOffsetDirection = new Vector3f();
-        p1 = new Vector3f();
-        p2 = new Vector3f();
-        pCenter = new Vector3f();
-        pDirection = new Vector3f();
-        arrowOffset = new Vector3f();
-        measureExtent = new Vector3f();
-        measureExtentArrowHead = new Vector3f();
-        arrow1 = new Vector3f();
-        arrow2 = new Vector3f();
-        arrowHead1 = new Vector3f();
-        arrowHead2 = new Vector3f();
-        arrowHead1a = new Vector3f();
-        arrowHead2a = new Vector3f();
-        barOffset1 = new Vector3f();
-        barOffset2 = new Vector3f();
-        bar1 = new Vector3f();
-        bar2 = new Vector3f();
-        midVector = new Vector3f();
-        midVector1 = new Vector3f();
-        midVector2 = new Vector3f();
-        
         offset = 1f; // world coordinates for now...
         
         setSynchronizeRotation(false);
@@ -114,6 +89,32 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     private static Vector3f arrow1, arrow2, arrowHead1, arrowHead2, arrowHead1a, arrowHead2a;
     private static Vector3f barOffset1, barOffset2, bar1, bar2;
     private static Vector3f midVector, midVector1, midVector2;
+    
+    static {
+        worldPointDifference = new Vector3f();
+        offsetDirection = new Vector3f();
+        scaledOffsetDirection = new Vector3f();
+        p1 = new Vector3f();
+        p2 = new Vector3f();
+        pCenter = new Vector3f();
+        pDirection = new Vector3f();
+        arrowOffset = new Vector3f();
+        measureExtent = new Vector3f();
+        measureExtentArrowHead = new Vector3f();
+        arrow1 = new Vector3f();
+        arrow2 = new Vector3f();
+        arrowHead1 = new Vector3f();
+        arrowHead2 = new Vector3f();
+        arrowHead1a = new Vector3f();
+        arrowHead2a = new Vector3f();
+        barOffset1 = new Vector3f();
+        barOffset2 = new Vector3f();
+        bar1 = new Vector3f();
+        bar2 = new Vector3f();
+        midVector = new Vector3f();
+        midVector1 = new Vector3f();
+        midVector2 = new Vector3f();
+    }
     
     @Override
     public void draw(Renderer r) {

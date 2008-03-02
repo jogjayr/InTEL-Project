@@ -760,16 +760,27 @@ public class BComponent {
             _preferredSize = style.getSize(this, null);
         }
 
-        _cursor = style.getCursor(this, null);
+        if (_cursor == null) {
+            _cursor = style.getCursor(this, null);
+        }
         for (int ii = 0; ii < getStateCount(); ii++) {
-            _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
-            _insets[ii] = style.getInsets(this, getStatePseudoClass(ii));
-            _borders[ii] = style.getBorder(this, getStatePseudoClass(ii));
+            //if (_colors[ii] == null) {
+                _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
+            //}
+            if (_insets[ii] == null) {
+                _insets[ii] = style.getInsets(this, getStatePseudoClass(ii));
+            }
+
+            if (_borders[ii] == null) {
+                _borders[ii] = style.getBorder(this, getStatePseudoClass(ii));
+            }
             if (_borders[ii] != null) {
                 _insets[ii] = _borders[ii].adjustInsets(_insets[ii]);
             }
-            _backgrounds[ii] =
-                    style.getBackground(this, getStatePseudoClass(ii));
+            if (_backgrounds[ii] == null) {
+                _backgrounds[ii] =
+                        style.getBackground(this, getStatePseudoClass(ii));
+            }
         }
     }
 
@@ -994,11 +1005,10 @@ public class BComponent {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
     }
-    
+
     protected List<ComponentListener> getListeners() {
         return Collections.unmodifiableList(_listeners);
     }
-    
     protected BContainer _parent;
     protected String _styleClass;
     protected Dimension _preferredSize;
