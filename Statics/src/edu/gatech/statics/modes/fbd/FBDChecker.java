@@ -169,6 +169,7 @@ public class FBDChecker {
                     if (!testReaction(reaction, addedForces) &&
                             !testReaction(reaction.negate(), addedForces)) {
                         System.out.println("check: diagram missing reaction force: " + reaction);
+                        System.out.println("check:               or negated force: " + reaction.negate());
                         System.out.println("check: note: reaction is negatable");
                         System.out.println("check: FAILED");
 

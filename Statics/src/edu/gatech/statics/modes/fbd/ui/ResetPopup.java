@@ -27,12 +27,14 @@ public class ResetPopup extends ModalPopupWindow{
     public ResetPopup(FreeBodyDiagram diagram) {
         super(new BorderLayout());
         this.diagram = diagram;
-        setStyleClass("info_window");
+        //setStyleClass("info_window");
+        setStyleClass("application_popup");
         
         BLabel title = new BLabel("Reset Diagram");
         add(title, BorderLayout.NORTH);
         HTMLView text = new HTMLView();
         text.setContents("Are you sure you want to reset the diagram and clear your forces?");
+        text.setPreferredSize(300,100);
         
         add(text, BorderLayout.CENTER);
         

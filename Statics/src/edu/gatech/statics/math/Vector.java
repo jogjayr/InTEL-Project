@@ -80,6 +80,7 @@ final public class Vector implements Quantified {
      */
     public void setVectorValue(Vector3f value) {
         this.value = value.normalize();
+        positivizeZeroes();
     }
 
     public Vector3f getVectorValue() {
@@ -99,6 +100,7 @@ final public class Vector implements Quantified {
         magnitude = new Quantity(unit, symbolName);
         //setValue(value.length());
         setVectorValue(value);
+        positivizeZeroes();
     }
 
     public Vector(Vector vector) {
@@ -195,6 +197,12 @@ final public class Vector implements Quantified {
             r += " SOLVED";
         }
         return r;
+    }
+    
+    private void positivizeZeroes() {
+        if(value.x == -0f) value.x = 0f;
+        if(value.y == -0f) value.y = 0f;
+        if(value.z == -0f) value.z = 0f;
     }
 
     /*private String getMagnitudeString() {
