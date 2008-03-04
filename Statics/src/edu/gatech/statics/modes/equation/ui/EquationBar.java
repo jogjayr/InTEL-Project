@@ -47,7 +47,7 @@ public class EquationBar extends BContainer {
 
     private static final String symbolColor = "ff0000";
     
-    EquationMath getMath() {
+    public EquationMath getMath() {
         return math;
     }
 
@@ -79,6 +79,11 @@ public class EquationBar extends BContainer {
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
             //equationContainer.add(new BLabel(" = 0"));
             add(new BLabel(icon));
+            
+            // lock this if the math is solved
+            if(math.isLocked())
+                setLocked();
+            
         } catch (IOException e) {
             // ??
             e.printStackTrace();
@@ -165,16 +170,21 @@ public class EquationBar extends BContainer {
 
                 public void mouseEntered(MouseEvent event) {
                     math.getWorld().highlightVector(source);
+                    highlightVector(source);
+                    //math.getWorld().onHover(source);
                 }
 
                 public void mouseExited(MouseEvent event) {
                     if (getHitComponent(event.getX(), event.getY()) == null) {
                         math.getWorld().highlightVector(null);
+                        highlightVector(null);
+                        //math.getWorld().onHover(null);
                     }
                 }
 
                 public void mousePressed(MouseEvent event) {
-                    coefficient.requestFocus();
+                    if(!locked)
+                        coefficient.requestFocus();
                 }
 
                 public void mouseReleased(MouseEvent event) {
@@ -217,21 +227,14 @@ public class EquationBar extends BContainer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-        //equationContainer.add(1, new BLabel(" + "));
-        //equationContainer.add(getComponentCount()-2, new BLabel(" + "));
         }
 
         TermBox box = new TermBox(term.getSource(), term.getCoefficient());
         terms.put(term.getSource(), box);
         add(1, box);
         box.coefficient.requestFocus();
+        invalidate();
         parent.refreshRows();
-
-    //equationContainer.add(getComponentCount()-2,box);
-
-    //System.out.println(box.getPreferredSize(0,0));
-    //setBounds(0,0,AppInterface.getScreenWidth(),100);
     }
 
     public void setLocked() {
@@ -242,19 +245,6 @@ public class EquationBar extends BContainer {
 
         // clear the current tool
         StaticsApplication.getApp().setCurrentTool(null);
-
-    //backButton.setText("Next");
-    //checkButton.setEnabled(false);
-    //if (selectButton != null) {
-    //    selectButton.setEnabled(false);
-    //}
-
-    /*try {
-    ImageIcon icon = new ImageIcon(new BImage(SumBar.class.getClassLoader().getResource("rsrc/FBD_Interface/check.png")));
-    add(new BLabel(icon));
-    } catch (IOException ex) {
-    ex.printStackTrace();
-    }*/
     }
 
     private void removeBox(TermBox box) {
@@ -282,6 +272,7 @@ public class EquationBar extends BContainer {
                 return;
             }
         }
+        invalidate();
         parent.refreshRows();
     }
 
@@ -320,7 +311,7 @@ public class EquationBar extends BContainer {
         }
     }
 
-    Vector2f getLineAnchor(Vector obj) {
+    public Vector2f getLineAnchor(Vector obj) {
 
         TermBox box = terms.get(obj);
         if (box != null) {

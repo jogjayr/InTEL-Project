@@ -272,6 +272,7 @@ combobox {
 
 textfield {
   background: solid #ffffffff;
+  font: "Arial" bold 16;
   padding: 5;
 }
 
@@ -309,13 +310,13 @@ scrollbar_vthumb {
 }
 
 scrollbar_hwell {
-  background: image "rsrc/interfaceTextures/button_up.png" framexy;
-  padding: 3;
+  background: image "rsrc/interfaceTextures/scrollbar.png" framexy;
+  padding: 2;
 }
 
 scrollbar_vwell {
-  background: image "rsrc/interfaceTextures/button_up.png" framexy;
-  padding: 3;
+  background: image "rsrc/interfaceTextures/scrollbar.png" framexy;
+  padding: 2;
 }
 
 scrollbar_hless {

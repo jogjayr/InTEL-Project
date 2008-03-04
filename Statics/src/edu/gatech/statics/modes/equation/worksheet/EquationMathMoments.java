@@ -127,7 +127,7 @@ public class EquationMathMoments extends EquationMath {
             
             if(contribution == 0)
                 if(term != null) {
-                    System.out.println("check: equation has unnecessary term");
+                    System.out.println("check: equation has unnecessary term: "+term.getSource());
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
@@ -137,7 +137,7 @@ public class EquationMathMoments extends EquationMath {
                     continue;
             
             if(term == null) {
-                System.out.println("check: equation has not added all terms");
+                System.out.println("check: equation has not added all terms: "+force.getVector());
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
@@ -150,7 +150,7 @@ public class EquationMathMoments extends EquationMath {
             
             Term term = getTerm(moment.getVector());
             if(term == null) {
-                System.out.println("check: equation has not added all terms");
+                System.out.println("check: equation has not added all terms: "+moment.getVector());
                 System.out.println("check: FAILED");
                 
                 StaticsApplication.getApp().setAdvice(
@@ -163,7 +163,7 @@ public class EquationMathMoments extends EquationMath {
         for(Term term : allTerms()) {
             if(!term.check()) {
                 
-                System.out.println("check: term does not evaluate correctly");
+                System.out.println("check: term does not evaluate correctly: "+term.getCoefficient());
                 
                 switch(term.error) {
                     case none:
@@ -203,6 +203,8 @@ public class EquationMathMoments extends EquationMath {
                 }
             }
         }
+        
+        setLocked(true);
         
         System.out.println("check: PASSED!");
         StaticsApplication.getApp().setAdvice(

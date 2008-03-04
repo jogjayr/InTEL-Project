@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.modes.equation;
 
+import edu.gatech.statics.modes.equation.ui.EquationBar;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -23,6 +24,7 @@ import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
@@ -45,21 +47,40 @@ import java.util.Map;
 public class EquationDiagram extends SubDiagram {
 
     private Worksheet worksheet;
-    public Worksheet getWorksheet() {return worksheet;}
-    
+
+    public Worksheet getWorksheet() {
+        return worksheet;
+    }
     private Point momentPoint;
 
     public void setMomentPoint(Point momentPoint) {
         this.momentPoint = momentPoint;
+        EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        eqPanel.setMomentPoint(momentPoint);
     }
 
     public Point getMomentPoint() {
         return momentPoint;
     }
-    private Map<Vector, Load> vectorMap = new HashMap<Vector, Load>();
+    //private Map<Vector, Load> vectorMap = new HashMap<Vector, Load>();
 
     public Load getLoad(Vector vector) {
-        return vectorMap.get(vector);
+        //return vectorMap.get(vector);
+        if(vector == null)
+            return null;
+        for(SimulationObject obj : allObjects())
+            if (obj instanceof Load) {
+                Load load = (Load) obj;
+                if(vector.equals(load.getVector()))
+                    return load;
+                
+                if(     vector.isSymbol() && load.isSymbol() &&
+                        vector.equalsSymbolic(load.getVector()) && 
+                        vector.getSymbolName().equals(load.getSymbolName()))
+                    return load;
+                //vectorMap.put(load.getVector(), load);
+            }
+        return null;
     }
 
     /** Creates a new instance of EquationWorld */
@@ -67,20 +88,33 @@ public class EquationDiagram extends SubDiagram {
         super(bodies);
 
         FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
-        for (SimulationObject obj : fbd.allObjects()) {
+        addAll(fbd.allObjects());
+        //buildLoadMap();
+        /*for (SimulationObject obj : fbd.allObjects()) {
             add(obj);
             if (obj instanceof Load) {
                 Load load = (Load) obj;
                 vectorMap.put(load.getVector(), load);
             }
-        }
-        
+        }*/
+
         // FIXME: This diagram automatically loads a 2D worksheet
         worksheet = new Worksheet2D(this);
     }
+    
+    /*private void buildLoadMap() {
+        vectorMap.clear();
+        for(SimulationObject obj : allObjects())
+            if (obj instanceof Load) {
+                Load load = (Load) obj;
+                vectorMap.put(load.getVector(), load);
+            }
+    }*/
 
-    void performSolve(Map<Load, Float> values) {
+    public void performSolve(Map<Vector, Float> values) {
 
+        //buildLoadMap();
+        
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
         for (SimulationObject obj : allObjects()) {
@@ -89,10 +123,10 @@ public class EquationDiagram extends SubDiagram {
                 Vector v = vObj.getVector();
                 if (v.isSymbol() && !v.isKnown()) {
                     // v is a symbolic force, but is not yet solved.
-                    float value = values.get(vObj);
+                    float value = values.get(v);
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    v.setValue(value);
-                    v.setKnown(true);
+                    vObj.setValue(value);
+                    vObj.setKnown(true);
                 }
             }
         }
@@ -108,9 +142,22 @@ public class EquationDiagram extends SubDiagram {
 
                 Point point = joint.getPoint();
                 List<Vector> reactions = new ArrayList<Vector>();
-                for (Load v : values.keySet()) {
-                    if (v.getAnchor() == point) {
-                        reactions.add(v.getVector());
+                // IMPORTANT NOTE HERE
+                // if the vector is symbolic and has been reversed,
+                // then it will no longer be *equal* to the value stored as a key
+                // in vectorMap. So, we need to use another approach to pull out the vector.
+                for (Vector v : values.keySet()) {
+                    /*Load load = null;
+                    for (Map.Entry<Vector, Load> mapEntry : vectorMap.entrySet()) {
+                        if(v.equals(mapEntry.getKey()))
+                            load = mapEntry.getValue();
+                    }
+                    
+                    if(load.getAnchor() == point)
+                        reactions.add(v);*/
+
+                    if (getLoad(v).getAnchor() == point) {
+                        reactions.add(v);
                     }
                 }
 
@@ -122,6 +169,8 @@ public class EquationDiagram extends SubDiagram {
                     }
                 }
 
+                // we want to say that we have solved this joint from the perspective
+                // of the current body in question. 
                 if (reactions.size() > 0) {
                     joint.solveReaction(solveBody, reactions);
                 }
@@ -139,7 +188,7 @@ public class EquationDiagram extends SubDiagram {
         } // do not select vectors if we have a tool active
 
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        eqPanel.onClick( (Load) obj);
+        eqPanel.onClick((Load) obj);
     }
 
     @Override
@@ -147,7 +196,12 @@ public class EquationDiagram extends SubDiagram {
         super.onHover(obj);
         
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        eqPanel.onHover( (Load) obj);
+        eqPanel.onHover((Load) obj);
+
+        if(obj == null)
+            highlightVector(null);
+        else
+            highlightVector(((Load) obj).getVector());
     }
 
     @Override
@@ -161,7 +215,6 @@ public class EquationDiagram extends SubDiagram {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
         StaticsApplication.getApp().resetAdvice();
     }
-    
     private SelectionFilter selector = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -182,20 +235,33 @@ public class EquationDiagram extends SubDiagram {
             CurveUtil.renderCurve(r, ColorRGBA.blue, curvePoints);
         }
 
-    /*if(     sumBar != null &&
-    sumBar.getMath() == sumMp &&
-    sumMp.getObservationPointSet()) {
-    CurveUtil.renderCircle(r, ColorRGBA.blue, sumMp.getObservationPoint(), 2, r.getCamera().getDirection());
-    }*/
+        if (momentPoint != null) {
+            CurveUtil.renderCircle(r, ColorRGBA.blue, momentPoint.getTranslation(), 2, r.getCamera().getDirection());
+        }
     }
+    
+    private SimulationObject currentHover;
 
     public void highlightVector(final Vector v) {
-    /*sumBar.highlightVector(obj);
-    if(sumBar.getMath() instanceof EquationMathMoments) {
-    if(sumBar.getMath().getTerm(obj) != null || obj == null)
-    showMomentArm(obj);
-    }
-    showCurve(obj, sumBar.getLineAnchor(obj));*/
+        
+        // handle visual highlighting
+        if(currentHover != null)
+            currentHover.setDisplayHighlight(false);
+        
+        Load load = getLoad(v);
+        if(load != null)
+            load.setDisplayHighlight(true);
+        currentHover = load;
+        
+        //sumBar.highlightVector(obj);
+        EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        EquationBar activeEquation = eqPanel.getActiveEquation();
+        if (activeEquation.getMath() instanceof EquationMathMoments) {
+            if (activeEquation.getMath().getTerm(v) != null || v == null) {
+                showMomentArm(load);
+            }
+        }
+        //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
     }
     private VectorObject momentArm;
     private Load momentArmTarget;
@@ -231,8 +297,8 @@ public class EquationDiagram extends SubDiagram {
         Point targetPoint = target.getAnchor();
 
         // have a direction vector pointing from the observation point to the target point
-        Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
-        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPoint).mult(-1/StaticsApplication.getApp().getWorldScale());
+        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
+        Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
         momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection));
         momentArmTarget = target;
 

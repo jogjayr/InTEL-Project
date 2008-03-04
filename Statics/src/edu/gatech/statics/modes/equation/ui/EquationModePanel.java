@@ -8,6 +8,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
@@ -17,9 +18,12 @@ import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -41,19 +45,43 @@ public class EquationModePanel extends ApplicationModePanel {
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
 
+    private BButton momentSelectButton;
+    
     public void onClick(Load load) {
         if (activeEquation == null || load == null) {
             return;
         }
         activeEquation.addTerm(load.getVector());
-        activeEquation.highlightVector(load.getVector());
+        //activeEquation.highlightVector(load.getVector());
+        for(EquationUIData data : uiMap.values())
+            data.equationBar.highlightVector(load == null ? null : load.getVector());
     }
 
     public void onHover(Load load) {
-        if (activeEquation == null) {
-            return;
+        //if (activeEquation == null) {
+        //    return;
+        //}
+        //activeEquation.highlightVector(load == null ? null : load.getVector());
+        for(EquationUIData data : uiMap.values())
+            data.equationBar.highlightVector(load == null ? null : load.getVector());
+    }
+
+    /**
+     * This lets the equation bars know that the moment point is changed or set.
+     * Right now it is called only by EquationDiagram when the diagram's moment point is set.
+     * @param momentPoint
+     */
+    public void setMomentPoint(Point momentPoint) {
+        for(EquationUIData data : uiMap.values()) {
+            if(data.equationBar.getMath() instanceof EquationMathMoments) {
+                ((EquationMathMoments) data.equationBar.getMath() ).setObservationPoint(momentPoint.getTranslation());
+                data.equationBar.setMomentCenter(momentPoint);
+            }
         }
-        activeEquation.highlightVector(load == null ? null : load.getVector());
+    }
+    
+    public EquationBar getActiveEquation() {
+        return activeEquation;
     }
 
     private void setActiveEquation(EquationBar bar) {
@@ -62,6 +90,16 @@ public class EquationModePanel extends ApplicationModePanel {
         }
         this.activeEquation = bar;
         activeEquation.setBackground(new TintedBackground(ColorRGBA.darkGray));
+        
+        // show the select moment warning popup
+        if(bar.getMath() instanceof EquationMathMoments) {
+            EquationDiagram diagram = (EquationDiagram) getDiagram();
+            if(diagram.getMomentPoint() == null) {
+                ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
+                popup.popup(0, 0, true);
+                popup.center();
+            }
+        }
     }
 
     @Override
@@ -72,6 +110,13 @@ public class EquationModePanel extends ApplicationModePanel {
     public EquationModePanel() {
         super();
 
+        momentSelectButton = new BButton("choose\nmoment\npoint",new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                selectMomentPoint();
+            }
+        }, "momentSelect");
+        add(momentSelectButton, BorderLayout.WEST);
+        
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         add(fullEquationContainer, BorderLayout.CENTER);
 
@@ -97,6 +142,7 @@ public class EquationModePanel extends ApplicationModePanel {
     void refreshRows() {
         //equationScrollPane.invalidate();
         equationScrollPane.layout();
+        //equationScrollPane.invalidate();
     }
 
     private void addEquationRow(EquationMath math) {
@@ -133,8 +179,6 @@ public class EquationModePanel extends ApplicationModePanel {
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
-
-    //data.solutionLabel = new BLabel(_tiptext)
     }
 
     private void check(EquationBar bar) {
@@ -152,8 +196,45 @@ public class EquationModePanel extends ApplicationModePanel {
 
             data.checkButton.setIcon(icon);
             data.checkButton.setText("");
-            InterfaceRoot.getInstance().setAdvice("yay, it worked!");
+            //InterfaceRoot.getInstance().setAdvice("yay, it worked!");
+            
+            boolean allSolved = true;
+            for(EquationMath math : uiMap.keySet())
+                if(!math.isLocked())
+                    allSolved = false;
+            if(allSolved)
+                performSolve();
         }
+    }
+    
+    private void performSolve() {
+        EquationDiagram diagram = (EquationDiagram) getDiagram();
+        boolean firstTime = !diagram.getWorksheet().isSolved();
+        Map<Vector, Float> solution = diagram.getWorksheet().solve();
+        if(solution != null) {
+            
+            for(Map.Entry<Vector, Float> entry : solution.entrySet()) {
+                BLabel entryLabel = new BLabel(
+                        "@=b(@=#ff0000("+entry.getKey().getSymbolName()+")" +
+                        " = "+entry.getValue()+" "+entry.getKey().getUnit().getSuffix()+")");
+                solutionContainer.add(entryLabel);
+            }
+            
+            if(firstTime) {
+                // this is our first time solving the system.
+                
+                diagram.performSolve(solution);
+            }
+            
+        } else {
+            InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
+        }
+    }
+    
+    private void selectMomentPoint() {
+
+        PointSelector selector = new PointSelector((EquationDiagram) getDiagram());
+        selector.activate();
     }
 
     private class EquationUIData {
@@ -175,5 +256,8 @@ public class EquationModePanel extends ApplicationModePanel {
         for (EquationMath math : diagram.getWorksheet().getEquations()) {
             addEquationRow(math);
         }
+        
+        if(diagram.getWorksheet().isSolved())
+            performSolve();
     }
 }

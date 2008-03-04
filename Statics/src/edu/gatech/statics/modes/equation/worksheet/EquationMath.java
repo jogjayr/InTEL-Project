@@ -236,7 +236,7 @@ public class EquationMath {
 
             if (force.getVectorValue().dot(getObservationDirection()) == 0) {
                 if (term != null) {
-                    System.out.println("check: equation has unnecessary term");
+                    System.out.println("check: equation has unnecessary term: "+term.getSource());
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
@@ -248,7 +248,7 @@ public class EquationMath {
             }
 
             if (term == null) {
-                System.out.println("check: equation has not added all terms");
+                System.out.println("check: equation has not added all terms: "+force.getVector());
                 System.out.println("check: FAILED");
 
                 StaticsApplication.getApp().setAdvice(
@@ -261,7 +261,7 @@ public class EquationMath {
 
             //if(term.getVector() instanceof Moment) {
             if (term.getSource().getUnit() == Unit.moment) {
-                System.out.println("check: equation has unnecessary moment term");
+                System.out.println("check: equation has unnecessary moment term: "+term.getSource());
                 System.out.println("check: FAILED");
 
                 StaticsApplication.getApp().setAdvice(
@@ -303,6 +303,8 @@ public class EquationMath {
 
             }
         }
+        
+        setLocked(true);
 
         System.out.println("check: PASSED!");
         StaticsApplication.getApp().setAdvice(
