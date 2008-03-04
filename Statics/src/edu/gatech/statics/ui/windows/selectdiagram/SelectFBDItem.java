@@ -6,12 +6,8 @@
 package edu.gatech.statics.ui.windows.selectdiagram;
 
 import com.jmex.bui.BContainer;
-import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
-import com.jmex.bui.icon.ImageIcon;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.gatech.statics.exercise.BodySubset;
 
 /**
  *
@@ -19,29 +15,21 @@ import java.util.logging.Logger;
  */
 public class SelectFBDItem extends BContainer {
     
-    BImage image;
+    //BImage image;
     // FBDWorld fbd; ???
+    BodySubset bodySubset;
     
-    public SelectFBDItem(int index) {
-        this.index = index;
+    public SelectFBDItem() {
         
-        add(setupLabel());
     }
     
-    protected BLabel setupLabel() {
+    //protected BLabel setupLabel() {
         
-        image = getImage();
-        return new BLabel(new ImageIcon(image));
-    }
+        //image = getImage();
+        //return new BLabel(new ImageIcon(image));
+    //}
     
-    private int index = 0;
-    protected BImage getImage() {
-        try {
-            return new BImage(getClass().getClassLoader().getResource("fbd" + index + ".png"));
-        } catch (IOException ex) {
-            Logger.getLogger(SelectFBDItem.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
+    //protected BImage getImage() {
+    //}
     
 }

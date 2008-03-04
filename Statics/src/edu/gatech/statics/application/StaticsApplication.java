@@ -60,6 +60,7 @@ public class StaticsApplication {
     public float getDrawScale() {
         return currentExercise.getDrawScale();
     }
+    
     //public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
     //private SelectionFilter selectionFilter;
     SelectionFilter getSelectionFilter() {

@@ -66,13 +66,13 @@ public class SelectFBDWindow extends TitledDraggablePopupWindow {
     
     private class CreateNewFBDItem extends SelectFBDItem {
         public CreateNewFBDItem() {
-            super(-1);
+            //super(-1);
         }
 
-        @Override
-        protected BLabel setupLabel() {
-            return new BLabel("Create New FBD!");
-        }
+        //@Override
+        //protected BLabel setupLabel() {
+        //    return new BLabel("Create New FBD!");
+        //}
         
     }
 }

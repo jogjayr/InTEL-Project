@@ -55,6 +55,8 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         knownLoadsWindow.setVisible(false);
         popups.add(knownLoadsWindow);
 
+        // leave this out for now.
+        /*
         KnownPointsWindow knownPointsWindow = new KnownPointsWindow();
         knownPointsWindow.popup(0, 0, true);
         dim = knownPointsWindow.getPreferredSize(-1, -1);
@@ -62,6 +64,7 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         knownPointsWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 200);
         knownPointsWindow.setVisible(false);
         popups.add(knownPointsWindow);
+         */
 
         SelectFBDWindow selectFBDWindow = new SelectFBDWindow();
         selectFBDWindow.popup(0, 0, true);

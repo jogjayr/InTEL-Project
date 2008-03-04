@@ -8,8 +8,10 @@
  */
 package edu.gatech.statics.objects;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
+import edu.gatech.statics.math.Unit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +30,8 @@ abstract public class Measurement extends SimulationObject implements Quantified
     private Quantity quantity;
     //public Quantity getQuantity() {return quantity.getUnmodifiableQuantity();}
     public float getValue() {
+        //if(getUnit() == Unit.distance)
+        //    return quantity.getValue() * StaticsApplication.getApp().getDistanceScale();
         return quantity.getValue();
     }
 

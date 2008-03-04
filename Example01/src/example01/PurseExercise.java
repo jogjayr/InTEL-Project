@@ -63,11 +63,11 @@ public class PurseExercise extends FBDExercise {
                     case angle:
                         return "°";
                     case distance:
-                        return " mm";
+                        return " cm";
                     case force:
                         return " N";
                     case moment:
-                        return " N*mm";
+                        return " N*cm";
                     case none:
                         return "";
                     default:
