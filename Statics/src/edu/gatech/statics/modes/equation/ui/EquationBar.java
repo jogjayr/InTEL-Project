@@ -272,7 +272,8 @@ public class EquationBar extends BContainer {
         }
         locked = true;
         
-        momentButton.setEnabled(false);
+        if(momentButton != null)
+            momentButton.setEnabled(false);
 
         // clear the current tool
         StaticsApplication.getApp().setCurrentTool(null);

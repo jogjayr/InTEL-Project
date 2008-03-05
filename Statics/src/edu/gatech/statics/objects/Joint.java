@@ -42,11 +42,11 @@ abstract public class Joint extends SimulationObject {
             solvedReactionsNegated.add(v1);
         }
 
+        isSolved = true;
+
         for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
             listener.onJointSolved(this);
         }
-
-        isSolved = true;
     }
 
     public boolean isSolved() {

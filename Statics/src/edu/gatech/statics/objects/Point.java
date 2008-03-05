@@ -35,7 +35,9 @@ public class Point extends SimulationObject {
         addRepresentation(rep2);
     }
     
+    @Override
     public String getDescription() {
         return "Point: "+getName();
     }
+    
 }

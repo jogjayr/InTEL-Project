@@ -6,7 +6,6 @@ package edu.gatech.statics.ui.windows.knownforces;
 
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
-import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector;
@@ -16,7 +15,6 @@ import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.VectorObject;
-import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.util.SolveListener;
 
@@ -130,30 +128,18 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td></tr>");
     }
 
-    /*@Override
-    public void popup(int x, int y, boolean above) {
-        super.popup(x, y, above);
-        StaticsApplication.getApp().getExercise().addTaskListener(this);
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-        StaticsApplication.getApp().getExercise().removeTaskListener(this);
-    }*/
-
     public void onSolve() {
         //view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         updateView();
 
-        int height = getHeight();
-        //pack(150,150);
+        //int height = getHeight();
+        pack(150,-1);
 
-        Dimension preferredSize = getPreferredSize(150, -1);
-        setSize(preferredSize.width, 2 * preferredSize.height / 3);
-        int newHeight = getHeight();
+        //Dimension preferredSize = getPreferredSize(150, -1);
+        //setSize(preferredSize.width, 2 * preferredSize.height / 3);
+        //int newHeight = getHeight();
 
-        setLocation(getX(), getY() - (newHeight - height));
+        //setLocation(getX(), getY() - (newHeight - height));
     }
 
     public void onLoadSolved(Load load) {

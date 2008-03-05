@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.fbd;
 
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -13,7 +14,6 @@ import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +31,10 @@ public class FBDChecker {
         this.diagram = diagram;
     }
 
-    private List<Vector> getAddedForces() {
-        List<Vector> addedForces = new ArrayList<Vector>();
+    private List<Load> getAddedForces() {
+        List<Load> addedForces = new ArrayList<Load>();
         for (SimulationObject obj : diagram.allObjects()) {
-            if (!(obj instanceof Force) && !(obj instanceof Moment)) {
+            if (!(obj instanceof Load)) {
                 continue;
             }
             //if (obj.isGiven()) {
@@ -42,18 +42,18 @@ public class FBDChecker {
             //}
 
             // this force has been added, and is not a given that could have been selected.
-            addedForces.add(((VectorObject) obj).getVector());
+            addedForces.add((Load) obj);
         }
         return addedForces;
     }
 
-    private List<Vector> getExternalForces() {
-        List<Vector> externalForces = new ArrayList<Vector>();
+    private List<Load> getExternalForces() {
+        List<Load> externalForces = new ArrayList<Load>();
         for (Body body : FreeBodyDiagram.getSchematic().allBodies()) {
             if (diagram.getBodySubset().getBodies().contains(body)) {
                 for (SimulationObject obj : body.getAttachedObjects()) {
                     if (obj instanceof Load) {
-                        externalForces.add(((Load) obj).getVector());
+                        externalForces.add((Load) obj);
                     }
                 }
             }
@@ -64,22 +64,22 @@ public class FBDChecker {
     public boolean checkDiagram() {
 
         // step 1: assemble a list of all the forces the user has added.
-        List<Vector> addedForces = getAddedForces();
+        List<Load> addedForces = getAddedForces();
         System.out.println("check: user added forces: " + addedForces);
 
         // make list for weights, as we will need these later.
-        Map<Vector, Body> weights = new HashMap<Vector, Body>();
+        Map<Load, Body> weights = new HashMap<Load, Body>();
 
-        List<Vector> externalForces = getExternalForces();
+        List<Load> externalForces = getExternalForces();
 
         // step 2: for vectors that we can click on and add, ie, external added forces,
         // make sure that the user has added all of them.
-        for (Vector external : externalForces) {
+        for (Load external : externalForces) {
 
             boolean success = false;
             if (external.isSymbol()) {
-                Vector addedExternal = null;
-                for (Vector candidate : addedForces) {
+                Load addedExternal = null;
+                for (Load candidate : addedForces) {
                     if (external.equalsSymbolic(candidate)) {
                         addedExternal = candidate;
                         break;
@@ -105,8 +105,7 @@ public class FBDChecker {
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
             if (body.getWeight().getValue() != 0) {
-                Vector weight = new Vector(body.getWeight().getUnit(), new Vector3f(0, -body.getWeight().getValue(), 0));
-                //Force weight = new Force(body.getCenterOfMassPoint(), new Vector3f(0,-body.getWeight(),0));
+                Load weight = new Force(body.getCenterOfMassPoint(), new Vector3f(0, -body.getWeight().getValue(), 0));
                 weights.put(weight, body);
                 if (addedForces.contains(weight)) {
                     // still using units here....
@@ -116,7 +115,7 @@ public class FBDChecker {
                 } else {
                     // weight does not exist in system.
                     System.out.println("check: diagram does not contain weight for " + body);
-                    System.out.println("check: weight is: "+weight);
+                    System.out.println("check: weight is: " + weight);
                     System.out.println("check: FAILED");
 
                     StaticsApplication.getApp().setAdvice(
@@ -144,13 +143,6 @@ public class FBDChecker {
                 body = joint.getBody2();
             }
 
-            if (joint.isSolved()) {
-                // this particular joint has been solved for in another FBD, its influence should be here already,
-                // so just pass it by for now.
-                addedForces.removeAll(joint.getReactions(body));
-                continue;
-            }
-
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
@@ -159,17 +151,25 @@ public class FBDChecker {
                 continue;
             }
 
+            // actually, this is not done in the current implementation, so don't remove them otherwise chaos ensues.
+            //if (joint.isSolved()) {
+            // this particular joint has been solved for in another FBD, its influence should be here already,
+            // so just pass it by for now.
+            //    addedForces.removeAll(joint.getReactions(body));
+            //    continue;
+            //}
+
             //jointsAndBodies.add(new Pair(joint, body));
-            List<Vector> reactions = joint.getReactions(body);
+            List<Load> reactions = getReactions(joint, joint.getReactions(body));
 
             System.out.println("check: testing joint: " + joint);
-            for (Vector reaction : reactions) {
+            for (Load reaction : reactions) {
 
                 if (joint.isForceDirectionNegatable()) {
                     if (!testReaction(reaction, addedForces) &&
-                            !testReaction(reaction.negate(), addedForces)) {
+                            !testReaction(negate(reaction), addedForces)) {
                         System.out.println("check: diagram missing reaction force: " + reaction);
-                        System.out.println("check:               or negated force: " + reaction.negate());
+                        System.out.println("check:               or negated force: " + negate(reaction));
                         System.out.println("check: note: reaction is negatable");
                         System.out.println("check: FAILED");
 
@@ -211,7 +211,7 @@ public class FBDChecker {
         List<String> names = new ArrayList<String>();
 
         // go through each force that the user has added
-        for (Vector force : addedForces) {
+        for (Load force : addedForces) {
             if (force.isSymbol()) {
 
                 // ignore solved forces
@@ -261,7 +261,7 @@ public class FBDChecker {
                     //if(force.getAnchor() == body.getCenterOfMassPoint()) {
                     //    checked = true;
 
-                    // will this ever happen, given that the weight vector has a magnitude now?
+                    // will this ever happen, given that the weight Load has a magnitude now?
                     float weight = body.getWeight().getValue();
                     if (force.getValue() != weight) {
                         System.out.println("check: weight value incorrect: " + force.getValue() + " != " + weight);
@@ -301,7 +301,23 @@ public class FBDChecker {
         return true;
     }
 
-    private boolean testReaction(Vector reaction, List<Vector> addedForces) {
+    private List<Load> getReactions(Joint joint, List<Vector> reactions) {
+        List<Load> loads = new ArrayList<Load>();
+        for (Vector vector : reactions) {
+            if (vector.getUnit() == Unit.force) {
+                loads.add(new Force(joint.getPoint(), vector));
+            } else if (vector.getUnit() == Unit.moment) {
+                loads.add(new Moment(joint.getPoint(), vector));
+            }
+        }
+        return loads;
+    }
+
+    private Load negate(Load reaction) {
+        return new Load(reaction.getAnchor(), reaction.getVector().negate());
+    }
+
+    private boolean testReaction(Load reaction, List<Load> addedForces) {
 
         // if the reaction is given to the user, leave it be.
         //if(externalForces.contains(reaction))

@@ -10,11 +10,8 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This denotes the object representation of a vector. It contains listeners as 
@@ -172,4 +169,36 @@ public class VectorObject extends SimulationObject implements Quantified {
     public String toStringDecimal() {
         return vector.getQuantity().toStringDecimal();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VectorObject other = (VectorObject) obj;
+        if (this.anchor != other.anchor && (this.anchor == null || !this.anchor.equals(other.anchor))) {
+            return false;
+        }
+        if (this.vector != other.vector && (this.vector == null || !this.vector.equals(other.vector))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.anchor != null ? this.anchor.hashCode() : 0);
+        hash = 41 * hash + (this.vector != null ? this.vector.hashCode() : 0);
+        return hash;
+    }
+
+    public boolean equalsSymbolic(Load v) {
+        return vector.equalsSymbolic(v.getVector()) && anchor.equals(v.getAnchor());
+    }
+    
+    
 }
