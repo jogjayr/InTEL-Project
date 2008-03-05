@@ -294,6 +294,16 @@ public class BComponent {
         }
         _borders[state] = border;
     }
+    
+
+    /**
+     * A shorthhand for setting all of the borders on this component.
+     */
+    public void setBorder(BBorder border) {
+        for (int state = 0; state < getStateCount(); state++) {
+            setBorder(state, border);
+        }
+    }
 
     /**
      * Returns a reference to the background used by this component.

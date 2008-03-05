@@ -53,8 +53,14 @@ public class Parser {
     
     private float evaluateInternal(String expression) {
         try {
+            
+            // automatically handle a single minus sign as a negation
             if(expression.trim().equals("-"))
                 return -1;
+            
+            // shave off a * multiplier if the user has added one
+            if(expression.endsWith("*"))
+                expression = expression.substring(0, expression.length()-1);
             
             return parse(expression).evaluate();
         } catch(NullPointerException e) {

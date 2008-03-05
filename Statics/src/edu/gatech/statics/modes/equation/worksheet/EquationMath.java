@@ -201,7 +201,8 @@ public class EquationMath {
     }
 
     public void removeTerm(Vector target) {
-        terms.remove(world.getLoad(target));
+        //terms.remove(world.getLoad(target));
+        terms.remove(target);
     }
 
     /** Creates a new instance of Equation */
@@ -213,10 +214,9 @@ public class EquationMath {
      * Returns a map of String symbol names to floats according to their values.
      * Will return null if the set of equations is not deemed solvable.
      */
-    static Map<String, Float> solve(EquationMath... equations) {
-
-        return null;
-    }
+    //static Map<String, Float> solve(EquationMath... equations) {
+    //    return null;
+    //}
 
     public boolean check() {
 

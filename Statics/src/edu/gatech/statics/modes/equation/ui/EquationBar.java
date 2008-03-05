@@ -6,12 +6,14 @@ package edu.gatech.statics.modes.equation.ui;
 
 import com.jme.math.Vector2f;
 import com.jme.renderer.ColorRGBA;
+import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BTextField;
-import com.jmex.bui.border.BBorder;
 import com.jmex.bui.border.LineBorder;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.KeyEvent;
 import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseEvent;
@@ -24,7 +26,9 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Point;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,13 +43,13 @@ public class EquationBar extends BContainer {
     private EquationModePanel parent;
     private EquationMath math;
     private Map<Vector, TermBox> terms = new HashMap<Vector, EquationBar.TermBox>();
-    private BLabel sumOperand;
+    //private BLabel sumOperand;
+    private BButton momentButton; // present only for moment math, pressing this sets the moment point
     private boolean locked = false;
-    private static final BBorder regularBorder = new LineBorder(new ColorRGBA(0, 0, 0, .02f));
-    private static final BBorder highlightBorder = new LineBorder(new ColorRGBA(0, 0, 1, 1f));
-
+    private static final ColorRGBA regularBorderColor = new ColorRGBA(0, 0, 0, 0f);
+    private static final ColorRGBA highlightBorderColor = new ColorRGBA(.5f, .5f, 1, 1f);
     private static final String symbolColor = "ff0000";
-    
+
     public EquationMath getMath() {
         return math;
     }
@@ -60,14 +64,7 @@ public class EquationBar extends BContainer {
 
         try {
             // add sum icon
-            BContainer startContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/sum.png")));
-            startContainer.add(new BLabel(icon));
-            startContainer.add(sumOperand = new BLabel(math.getName()));
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equals.png")));
-            startContainer.add(new BLabel(icon));
-
+            BContainer startContainer = makeStartContainer();
             add(startContainer);
 
             for (EquationMath.Term term : math.allTerms()) {
@@ -78,16 +75,44 @@ public class EquationBar extends BContainer {
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
             //equationContainer.add(new BLabel(" = 0"));
             add(new BLabel(icon));
-            
-            // lock this if the math is solved
-            // this is handled outside
-            //if(math.isLocked())
-            //    setLocked();
-            
+
+        // lock this if the math is solved
+        // this is handled outside
+        //if(math.isLocked())
+        //    setLocked();
+
         } catch (IOException e) {
             // ??
             e.printStackTrace();
         }
+    }
+
+    private BContainer makeStartContainer() throws IOException {
+        BContainer startContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
+
+        ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/sum.png")));
+        startContainer.add(new BLabel(icon));
+
+        if (math instanceof EquationMathMoments) {
+            // we do special handling for moment math
+            startContainer.add(new BLabel("M["));
+            momentButton = new BButton("?", new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) {
+                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram());
+                    selector.activate();
+                }
+            }, "momentpoint");
+            startContainer.add(momentButton);
+            startContainer.add(new BLabel("]"));
+        } else {
+            startContainer.add(new BLabel(math.getName()));
+        }
+
+        icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equals.png")));
+        startContainer.add(new BLabel(icon));
+
+        return startContainer;
     }
 
     private class TermBox extends BContainer {
@@ -102,9 +127,11 @@ public class EquationBar extends BContainer {
 
         void setHighlight(boolean highlight) {
             if (highlight) {
-                _borders[getState()] = highlightBorder;
+                //_borders[getState()] = highlightBorder;
+                setBorder(new LineBorder(highlightBorderColor));
             } else {
-                _borders[getState()] = regularBorder;
+                //_borders[getState()] = regularBorder;
+                setBorder(new LineBorder(regularBorderColor));
             }
             invalidate();
         }
@@ -118,7 +145,7 @@ public class EquationBar extends BContainer {
             this.source = source;
 
             if (source.isSymbol()) {
-                vectorLabel = new BLabel("(@=b#"+symbolColor+"(" + source.getQuantity().getSymbolName() + "))");
+                vectorLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getQuantity().getSymbolName() + "))");
             } else {
                 vectorLabel = new BLabel("(@=b(" + source.getQuantity().toStringDecimal() + "))");
             }
@@ -171,20 +198,21 @@ public class EquationBar extends BContainer {
                 public void mouseEntered(MouseEvent event) {
                     math.getWorld().highlightVector(source);
                     highlightVector(source);
-                    //math.getWorld().onHover(source);
+                //math.getWorld().onHover(source);
                 }
 
                 public void mouseExited(MouseEvent event) {
                     if (getHitComponent(event.getX(), event.getY()) == null) {
                         math.getWorld().highlightVector(null);
                         highlightVector(null);
-                        //math.getWorld().onHover(null);
+                    //math.getWorld().onHover(null);
                     }
                 }
 
                 public void mousePressed(MouseEvent event) {
-                    if(!locked)
+                    if (!locked) {
                         coefficient.requestFocus();
+                    }
                 }
 
                 public void mouseReleased(MouseEvent event) {
@@ -202,7 +230,8 @@ public class EquationBar extends BContainer {
     }
 
     public void setMomentCenter(Point point) {
-        sumOperand.setText("M[" + point.getLabelText() + "]");
+        momentButton.setText(point.getLabelText());
+    //sumOperand.setText("M[" + point.getLabelText() + "]");
     }
 
     private void update() {
@@ -242,6 +271,8 @@ public class EquationBar extends BContainer {
             box.coefficient.setEnabled(false);
         }
         locked = true;
+        
+        momentButton.setEnabled(false);
 
         // clear the current tool
         StaticsApplication.getApp().setCurrentTool(null);

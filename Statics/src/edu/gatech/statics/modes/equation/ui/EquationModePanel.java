@@ -11,6 +11,7 @@ import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.background.TintedBackground;
+import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.MouseAdapter;
@@ -44,7 +45,12 @@ public class EquationModePanel extends ApplicationModePanel {
     private BContainer solutionContainer;
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
-    private BButton momentSelectButton;
+    //private BButton momentSelectButton;
+    
+    private static final ColorRGBA regularBackgroundColor = ColorRGBA.black;
+    private static final ColorRGBA regularBorderColor = ColorRGBA.black;
+    private static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
+    private static final ColorRGBA activeBorderColor = ColorRGBA.white;
 
     public void onClick(Load load) {
         if (activeEquation == null || load == null) {
@@ -87,20 +93,22 @@ public class EquationModePanel extends ApplicationModePanel {
 
     private void setActiveEquation(EquationBar bar) {
         if (activeEquation != null) {
-            activeEquation.setBackground(new TintedBackground(ColorRGBA.black));
+            activeEquation.setBackground(new TintedBackground(regularBackgroundColor));
+            activeEquation.setBorder(new LineBorder(regularBorderColor));
         }
         this.activeEquation = bar;
-        activeEquation.setBackground(new TintedBackground(ColorRGBA.darkGray));
+        activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
+        activeEquation.setBorder(new LineBorder(activeBorderColor));
 
         // show the select moment warning popup
-        if (bar.getMath() instanceof EquationMathMoments) {
+        /*if (bar.getMath() instanceof EquationMathMoments) {
             EquationDiagram diagram = (EquationDiagram) getDiagram();
             if (diagram.getMomentPoint() == null) {
                 ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
                 popup.popup(0, 0, true);
                 popup.center();
             }
-        }
+        }*/
     }
 
     @Override
@@ -111,13 +119,13 @@ public class EquationModePanel extends ApplicationModePanel {
     public EquationModePanel() {
         super();
 
-        momentSelectButton = new BButton("choose\nmoment\npoint", new ActionListener() {
+        /*momentSelectButton = new BButton("choose\nmoment\npoint", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
                 selectMomentPoint();
             }
         }, "momentSelect");
-        add(momentSelectButton, BorderLayout.WEST);
+        add(momentSelectButton, BorderLayout.WEST);*/
 
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         add(fullEquationContainer, BorderLayout.CENTER);
@@ -136,7 +144,10 @@ public class EquationModePanel extends ApplicationModePanel {
 
         // the solution container is to the right of the mode panel, and 
         // will contain the solution to the equations.
-        solutionContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+        GroupLayout solutionLayout = GroupLayout.makeVert(GroupLayout.CENTER);
+        solutionLayout.setOffAxisJustification(GroupLayout.LEFT);
+        solutionContainer = new BContainer(solutionLayout);
+        
         add(solutionContainer, BorderLayout.EAST);
         solutionContainer.setPreferredSize(200, -1);
     }
@@ -169,12 +180,12 @@ public class EquationModePanel extends ApplicationModePanel {
         equationBarContainer.add(data.equationBar);
         equationButtonContainer.add(data.checkButton);
 
+        uiMap.put(math, data);
+
         if (math.isLocked()) {
             data.equationBar.setLocked();
             setCheckIcon(data.equationBar);
         }
-
-        uiMap.put(math, data);
 
         // check our bar
         //check(data.equationBar);
@@ -244,10 +255,10 @@ public class EquationModePanel extends ApplicationModePanel {
         }
     }
 
-    private void selectMomentPoint() {
+    /*private void selectMomentPoint() {
         PointSelector selector = new PointSelector((EquationDiagram) getDiagram());
         selector.activate();
-    }
+    }*/
 
     private class EquationUIData {
 
@@ -280,7 +291,10 @@ public class EquationModePanel extends ApplicationModePanel {
             addEquationRow(math);
         }
 
-    //if(diagram.getWorksheet().isSolved())
-    //    performSolve();
+        if (diagram.getWorksheet().isSolved()) {
+            performSolve();
+        }
+        
+        refreshRows();
     }
 }
