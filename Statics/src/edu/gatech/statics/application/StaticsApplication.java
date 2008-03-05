@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.application;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
 import com.jme.input.AbsoluteMouse;
@@ -24,17 +25,21 @@ import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jmex.bui.BRootNode;
 import edu.gatech.statics.DisplayGroup;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.util.DiagramListener;
 import edu.gatech.statics.util.SelectionFilter;
+import edu.gatech.statics.util.SolveListener;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -55,12 +60,46 @@ public class StaticsApplication {
     private PolledRootNode labelNode;
     private InterfaceRoot iRoot;
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
+    private List<SolveListener> solveListeners = new ArrayList<SolveListener>();
+    private List<DiagramListener> diagramListeners = new ArrayList<DiagramListener>();
+
+    public void addSolveListener(SolveListener listener) {
+        solveListeners.add(listener);
+    }
+
+    public void addDiagramListener(DiagramListener listener) {
+        diagramListeners.add(listener);
+    }
+
+    public List<DiagramListener> getDiagramListeners() {
+        return Collections.unmodifiableList(diagramListeners);
+    }
+
+    public List<SolveListener> getSolveListeners() {
+        return Collections.unmodifiableList(solveListeners);
+    }
 
     //private float drawScale = 1.0f;
     public float getDrawScale() {
         return currentExercise.getDrawScale();
     }
-    
+
+    /**
+     * This method loads the most finished diagram with the specified bodies.
+     * @param bodies
+     */
+    public void selectBodies(BodySubset bodies) {
+        Diagram diagram = currentExercise.getRecentDiagram(bodies);
+        if (diagram == null) {
+            // this is an exceptional condition?
+            System.out.println("bodies do not have a diagram? " + bodies);
+        } else {
+            setCurrentDiagram(diagram);
+            Mode newMode = diagram.getMode();
+            newMode.load(bodies);
+        }
+    }
+
     //public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
     //private SelectionFilter selectionFilter;
     SelectionFilter getSelectionFilter() {
@@ -326,11 +365,6 @@ public class StaticsApplication {
         labelNode = new PolledRootNode(timer, input);
 
         camera = display.getRenderer().createCamera(display.getWidth(), display.getHeight());
-        //Vector3f loc = new Vector3f(0.0f, 0.0f, 25.0f);
-        //Vector3f left = new Vector3f(-1.0f, 0.0f, 0.0f);
-        //Vector3f up = new Vector3f(0.0f, 1.0f, 0.0f);
-        //Vector3f dir = new Vector3f(0.0f, 0f, -1.0f);
-        //camera.setFrame(loc, left, up, dir);
         camera.setFrustumPerspective(45.0f, (float) display.getWidth() / (float) display.getHeight(), 1, 1000);
         camera.setParallelProjection(false);
         camera.update();

@@ -4,7 +4,6 @@
  */
 package edu.gatech.statics.ui.applicationbar;
 
-import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDItem;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BWindow;
@@ -29,7 +28,7 @@ public class ApplicationBar extends BWindow {
     private BContainer diagramBox;
     private HTMLView adviceBox;
     private ApplicationModePanel modePanel;
-    private SelectFBDItem currentItem;
+    //private SelectFBDItem currentItem;
 
     // ***
     // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???

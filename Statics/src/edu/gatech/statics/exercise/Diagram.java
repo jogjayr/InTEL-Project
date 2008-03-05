@@ -16,6 +16,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
@@ -34,7 +35,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class Diagram {
+public abstract class Diagram {
 
     public static Schematic getSchematic() {
         return StaticsApplication.getApp().getExercise().getSchematic();
@@ -44,6 +45,8 @@ public class Diagram {
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
+    
+    abstract public Mode getMode();
 
     public void add(SimulationObject obj) {
         if (!allObjects.contains(obj)) {

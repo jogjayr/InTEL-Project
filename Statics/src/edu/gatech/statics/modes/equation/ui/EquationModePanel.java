@@ -44,17 +44,17 @@ public class EquationModePanel extends ApplicationModePanel {
     private BContainer solutionContainer;
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
-
     private BButton momentSelectButton;
-    
+
     public void onClick(Load load) {
         if (activeEquation == null || load == null) {
             return;
         }
         activeEquation.addTerm(load.getVector());
         //activeEquation.highlightVector(load.getVector());
-        for(EquationUIData data : uiMap.values())
+        for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getVector());
+        }
     }
 
     public void onHover(Load load) {
@@ -62,8 +62,9 @@ public class EquationModePanel extends ApplicationModePanel {
         //    return;
         //}
         //activeEquation.highlightVector(load == null ? null : load.getVector());
-        for(EquationUIData data : uiMap.values())
+        for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getVector());
+        }
     }
 
     /**
@@ -72,14 +73,14 @@ public class EquationModePanel extends ApplicationModePanel {
      * @param momentPoint
      */
     public void setMomentPoint(Point momentPoint) {
-        for(EquationUIData data : uiMap.values()) {
-            if(data.equationBar.getMath() instanceof EquationMathMoments) {
-                ((EquationMathMoments) data.equationBar.getMath() ).setObservationPoint(momentPoint.getTranslation());
+        for (EquationUIData data : uiMap.values()) {
+            if (data.equationBar.getMath() instanceof EquationMathMoments) {
+                ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint.getTranslation());
                 data.equationBar.setMomentCenter(momentPoint);
             }
         }
     }
-    
+
     public EquationBar getActiveEquation() {
         return activeEquation;
     }
@@ -90,11 +91,11 @@ public class EquationModePanel extends ApplicationModePanel {
         }
         this.activeEquation = bar;
         activeEquation.setBackground(new TintedBackground(ColorRGBA.darkGray));
-        
+
         // show the select moment warning popup
-        if(bar.getMath() instanceof EquationMathMoments) {
+        if (bar.getMath() instanceof EquationMathMoments) {
             EquationDiagram diagram = (EquationDiagram) getDiagram();
-            if(diagram.getMomentPoint() == null) {
+            if (diagram.getMomentPoint() == null) {
                 ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
                 popup.popup(0, 0, true);
                 popup.center();
@@ -110,13 +111,14 @@ public class EquationModePanel extends ApplicationModePanel {
     public EquationModePanel() {
         super();
 
-        momentSelectButton = new BButton("choose\nmoment\npoint",new ActionListener() {
+        momentSelectButton = new BButton("choose\nmoment\npoint", new ActionListener() {
+
             public void actionPerformed(ActionEvent event) {
                 selectMomentPoint();
             }
         }, "momentSelect");
         add(momentSelectButton, BorderLayout.WEST);
-        
+
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         add(fullEquationContainer, BorderLayout.CENTER);
 
@@ -130,7 +132,7 @@ public class EquationModePanel extends ApplicationModePanel {
 
 
         equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
-        fullEquationContainer.add(equationButtonContainer, BorderLayout.EAST);
+        fullEquationContainer.add(equationButtonContainer, BorderLayout.WEST);
 
         // the solution container is to the right of the mode panel, and 
         // will contain the solution to the equations.
@@ -140,21 +142,14 @@ public class EquationModePanel extends ApplicationModePanel {
     }
 
     void refreshRows() {
-        //equationScrollPane.invalidate();
         equationScrollPane.layout();
-        //equationScrollPane.invalidate();
     }
 
     private void addEquationRow(EquationMath math) {
 
         final EquationUIData data = new EquationUIData();
         data.equationBar = new EquationBar(math, this);
-        //data.checkButton = new BButton("check");
-        //ImageIcon icon = null;
-        //try {
-        //    icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/circle_white.png")));
-        //} catch (IOException e) {
-        //}
+
         data.checkButton = new BButton("check", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
@@ -174,65 +169,82 @@ public class EquationModePanel extends ApplicationModePanel {
         equationBarContainer.add(data.equationBar);
         equationButtonContainer.add(data.checkButton);
 
+        if (math.isLocked()) {
+            data.equationBar.setLocked();
+            setCheckIcon(data.equationBar);
+        }
+
         uiMap.put(math, data);
+
+        // check our bar
+        //check(data.equationBar);
 
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
     }
 
+    private void setCheckIcon(EquationBar bar) {
+
+        EquationUIData data = uiMap.get(bar.getMath());
+        data.checkButton.setEnabled(false);
+
+        ImageIcon icon = null;
+        try {
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/checkmark.png")));
+        } catch (IOException e) {
+        }
+
+        data.checkButton.setIcon(icon);
+        data.checkButton.setText("");
+    }
+
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
             bar.setLocked();
-            EquationUIData data = uiMap.get(bar.getMath());
-            data.checkButton.setEnabled(false);
 
-            ImageIcon icon = null;
-            try {
-                icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/checkmark.png")));
-            } catch (IOException e) {
+            setCheckIcon(bar);
+            //InterfaceRoot.getInstance().setAdvice("yay, it worked!");
+
+            boolean allSolved = true;
+            for (EquationMath math : uiMap.keySet()) {
+                if (!math.isLocked()) {
+                    allSolved = false;
+                }
             }
 
-            data.checkButton.setIcon(icon);
-            data.checkButton.setText("");
-            //InterfaceRoot.getInstance().setAdvice("yay, it worked!");
-            
-            boolean allSolved = true;
-            for(EquationMath math : uiMap.keySet())
-                if(!math.isLocked())
-                    allSolved = false;
-            if(allSolved)
+            if (allSolved) {
                 performSolve();
+            }
         }
     }
-    
+
     private void performSolve() {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         boolean firstTime = !diagram.getWorksheet().isSolved();
         Map<Vector, Float> solution = diagram.getWorksheet().solve();
-        if(solution != null) {
-            
-            for(Map.Entry<Vector, Float> entry : solution.entrySet()) {
+        if (solution != null) {
+
+            for (Map.Entry<Vector, Float> entry : solution.entrySet()) {
                 BLabel entryLabel = new BLabel(
-                        "@=b(@=#ff0000("+entry.getKey().getSymbolName()+")" +
-                        " = "+entry.getValue()+" "+entry.getKey().getUnit().getSuffix()+")");
+                        "@=b(@=#ff0000(" + entry.getKey().getSymbolName() + ")" +
+                        " = " + entry.getValue() + " " + entry.getKey().getUnit().getSuffix() + ")");
                 solutionContainer.add(entryLabel);
             }
-            
-            if(firstTime) {
+
+            if (firstTime) {
                 // this is our first time solving the system.
-                
+
                 diagram.performSolve(solution);
             }
-            
+
         } else {
             InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
         }
     }
-    
-    private void selectMomentPoint() {
 
+    private void selectMomentPoint() {
         PointSelector selector = new PointSelector((EquationDiagram) getDiagram());
         selector.activate();
     }
@@ -248,16 +260,27 @@ public class EquationModePanel extends ApplicationModePanel {
         return new ApplicationTab("Solve");
     }
 
+    private void clear() {
+        equationBarContainer.removeAll();
+        equationButtonContainer.removeAll();
+        solutionContainer.removeAll();
+        uiMap.clear();
+    }
+
     @Override
     public void activate() {
+        if (!uiMap.isEmpty()) {
+            clear();
+        }
+
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
 
         for (EquationMath math : diagram.getWorksheet().getEquations()) {
             addEquationRow(math);
         }
-        
-        if(diagram.getWorksheet().isSolved())
-            performSolve();
+
+    //if(diagram.getWorksheet().isSolved())
+    //    performSolve();
     }
 }

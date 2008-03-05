@@ -204,20 +204,4 @@ final public class Vector implements Quantified {
         if(value.y == -0f) value.y = 0f;
         if(value.z == -0f) value.z = 0f;
     }
-
-    /*private String getMagnitudeString() {
-    UnitUtils units = StaticsApplication.getApp().getUnits();
-    return String.format("%."+units.getDecimalPrecisionForces()+"f", getMagnitude());
-    }
-    public String getLabelText() {
-    if(isSymbol() && !isSolved())
-    return getName();
-    else return ""+getMagnitudeString()+" "+getUnits();
-    }
-    public String getUnits() {return "";}
-    public String getLabelTextNoUnits() {
-    if(isSymbol() && !isSolved())
-    return getName();
-    else return ""+getMagnitudeString();
-    }*/
 }

@@ -16,10 +16,9 @@ import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.coordinates.SimpleCoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.description.DescriptionWindow;
 import edu.gatech.statics.ui.windows.knownforces.KnownLoadsWindow;
-import edu.gatech.statics.ui.windows.knownpoints.KnownPointsWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.Navigation2DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
@@ -90,7 +89,7 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
     //}
 
     public NavigationWindow createNavigationWindow() {
-        return new Navigation3DWindow();
+        return new Navigation2DWindow();
     }
 
     public CoordinateSystemWindow createCoordinateSystemWindow() {

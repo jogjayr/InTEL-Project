@@ -6,8 +6,6 @@ package edu.gatech.statics.ui.windows.navigation;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -17,12 +15,13 @@ public class CameraControl {
 
     private Camera camera;
     private ViewConstraints viewConstraints;
-    private float panSpeed = .12f;
+    private float panSpeed = .7f;
     private float rotateSpeed = .05f;
     private float zoomSpeed = .02f;
     private ViewDiagramState viewDiagramState;
     private ViewUserState viewUserState;
     private CameraInterpolator myInterpolator;
+    private static final float transitionInSeconds = 0.8f;
 
     public ViewDiagramState getViewDiagramState() {
         return viewDiagramState;
@@ -162,7 +161,6 @@ public class CameraControl {
     private class CameraInterpolator implements Runnable {
 
         //private static final float dt = .01f;
-        private static final float transitionInSeconds = 1.5f;
         private boolean terminated;
         private ViewDiagramState diagramState0,  diagramState1;
         private ViewUserState userState0,  userState1;

@@ -55,24 +55,4 @@ public class Moment extends Load {
         label.setOffset(0, 40);
         addRepresentation(label);
     }
-    /*public String getDescription() {
-    return "Moment: "+getName()+"<br>" +
-    "Magnitude: "+ getMagnitude() + " "+getUnits();
-    }
-    public Moment negate() {
-    Moment r = new Moment(getAnchor(), getVectorValue().negate());
-    r.setSolved(isSolved());
-    //r.setFixed(isFixed());
-    r.setSymbol(isSymbol());
-    return r;
-    }*/
-    //public String getUnits() {
-    //    return StaticsApplication.getApp().getUnits().getMoment();
-    //}
-
-    /*public String getLabelText() {
-    if(isSymbol() && !isSolved())
-    return getName();
-    else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getMoment();
-    }*/
 }

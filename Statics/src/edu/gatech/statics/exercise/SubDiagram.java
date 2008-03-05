@@ -4,11 +4,14 @@
  */
 package edu.gatech.statics.exercise;
 
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.util.DiagramListener;
+
 /**
  *
  * @author Calvin Ashmore
  */
-public class SubDiagram extends Diagram {
+abstract public class SubDiagram extends Diagram {
 
     private BodySubset bodies;
 
@@ -21,6 +24,9 @@ public class SubDiagram extends Diagram {
         
         assert bodies != null : "Bodies cannot be null in constructing FBD!";
         assert !bodies.getBodies().isEmpty() : "Bodies cannot be empty in constructing FBD!";
+        
+        for(DiagramListener listener : StaticsApplication.getApp().getDiagramListeners())
+            listener.onDiagramCreated(this);
     }
     
 }

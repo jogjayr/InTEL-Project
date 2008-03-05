@@ -62,22 +62,4 @@ public class Force extends Load {
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
         addRepresentation(label);
     }
-    //public String getDescription() {
-    //    return "Force: "+getName()+"<br>" +
-    //            "Magnitude: "+ getValue() + " "+getUnits();
-    //}
-    //public Force negate() {
-    //    Force r = new Force(this);
-    //    r.setValue(-getValue());
-        /*Force r = new Force(getAnchor(), getVectorValue().negate());
-    r.setSolved(isSolved());
-    //r.setFixed(isFixed());
-    r.setSymbol(isSymbol());
-    return r;*/
-    //}
-    /*public String getLabelText() {
-    if(isSymbol() && !isSolved())
-    return getName();
-    else return getMagnitude() + " "+StaticsApplication.getApp().getUnits().getForce();
-    }*/
 }

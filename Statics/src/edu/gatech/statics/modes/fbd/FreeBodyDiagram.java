@@ -195,4 +195,9 @@ public class FreeBodyDiagram extends SubDiagram {
     Load getSelection() {
         return currentSelection;
     }
+
+    @Override
+    public Mode getMode() {
+        return FBDMode.instance;
+    }
 }

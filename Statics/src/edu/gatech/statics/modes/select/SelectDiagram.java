@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.select;
 
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
@@ -97,5 +98,10 @@ public class SelectDiagram extends Diagram {
 
         SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         modePanel.updateSelection();
+    }
+
+    @Override
+    public Mode getMode() {
+        return SelectMode.instance;
     }
 }

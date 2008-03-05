@@ -25,7 +25,6 @@ import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import java.io.IOException;
 import java.util.HashMap;
@@ -81,8 +80,9 @@ public class EquationBar extends BContainer {
             add(new BLabel(icon));
             
             // lock this if the math is solved
-            if(math.isLocked())
-                setLocked();
+            // this is handled outside
+            //if(math.isLocked())
+            //    setLocked();
             
         } catch (IOException e) {
             // ??

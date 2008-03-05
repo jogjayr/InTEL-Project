@@ -12,18 +12,19 @@ import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.tasks.Task;
-import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
+import edu.gatech.statics.util.SolveListener;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class KnownLoadsWindow extends TitledDraggablePopupWindow implements TaskStatusListener {
+public class KnownLoadsWindow extends TitledDraggablePopupWindow implements SolveListener {
 
     public static final String windowName = "known loads";
 
@@ -40,6 +41,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Task
         view = new HTMLView();
         add(view, BorderLayout.CENTER);
 
+        StaticsApplication.getApp().addSolveListener(this);
         updateView();
     }
 
@@ -128,7 +130,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Task
         contents.append("</td></tr>");
     }
 
-    @Override
+    /*@Override
     public void popup(int x, int y, boolean above) {
         super.popup(x, y, above);
         StaticsApplication.getApp().getExercise().addTaskListener(this);
@@ -138,9 +140,9 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Task
     public void dismiss() {
         super.dismiss();
         StaticsApplication.getApp().getExercise().removeTaskListener(this);
-    }
+    }*/
 
-    public void taskSatisfied(Task task) {
+    public void onSolve() {
         //view.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         updateView();
 
@@ -152,5 +154,13 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Task
         int newHeight = getHeight();
 
         setLocation(getX(), getY() - (newHeight - height));
+    }
+
+    public void onLoadSolved(Load load) {
+        onSolve();
+    }
+
+    public void onJointSolved(Joint joint) {
+        onSolve();
     }
 }

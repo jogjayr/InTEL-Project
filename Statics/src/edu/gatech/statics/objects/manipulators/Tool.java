@@ -16,9 +16,6 @@ import com.jme.input.action.InputActionInterface;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
-import edu.gatech.statics.util.ToolFinishListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -66,9 +63,9 @@ abstract public class Tool extends InputHandler {
     abstract protected void onCancel();
     abstract protected void onFinish();
     
-    private List<ToolFinishListener> finishListeners = new ArrayList<ToolFinishListener>();
-    public void addFinishListener(ToolFinishListener listener) {finishListeners.add(listener);}
-    public void removeFinishListener(ToolFinishListener listener) {finishListeners.remove(listener);}
+    //private List<ToolFinishListener> finishListeners = new ArrayList<ToolFinishListener>();
+    //public void addFinishListener(ToolFinishListener listener) {finishListeners.add(listener);}
+    //public void removeFinishListener(ToolFinishListener listener) {finishListeners.remove(listener);}
     
     public final void activate() {
         active = true;
@@ -91,9 +88,8 @@ abstract public class Tool extends InputHandler {
         
         //StaticsApplication.getApp().getInput().removeFromAttachedHandlers(this);
         onFinish();
-        for(ToolFinishListener listener : finishListeners)
-            listener.finished();
-        
+        //for(ToolFinishListener listener : finishListeners)
+        //    listener.finished();
     }
     
 }

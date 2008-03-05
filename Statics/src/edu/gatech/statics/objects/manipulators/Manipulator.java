@@ -10,14 +10,7 @@
 package edu.gatech.statics.objects.manipulators;
 
 import com.jme.input.InputHandler;
-import com.jme.input.MouseInput;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.MouseInputAction;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.util.ClickListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

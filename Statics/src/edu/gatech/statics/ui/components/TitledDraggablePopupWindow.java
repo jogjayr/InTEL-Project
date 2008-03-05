@@ -58,26 +58,7 @@ abstract public class TitledDraggablePopupWindow extends DraggablePopupWindow {
                 // do nothing?
             }
             
-            //BLabel closeLabel = new BLabel(closeIcon);
-            /*closeLabel.addListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    TitledDraggablePopupMenu.this.setVisible(false);
-                }
-            });*/
-            /*closeLabel.addListener(new MouseListener() {
-
-                public void mousePressed(MouseEvent event) {
-                    TitledDraggablePopupMenu.this.setVisible(false);
-                }
-
-                public void mouseReleased(MouseEvent event) {}
-                public void mouseEntered(MouseEvent event) {}
-                public void mouseExited(MouseEvent event) {}
-            });*/
-            //titleContainer.add(closeLabel, BorderLayout.EAST);
-            
             BButton closeButton = new BButton(closeIcon, new ActionListener() {
-            //BButton closeButton = new BButton("X", new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     TitledDraggablePopupWindow.this.setVisible(false);
                 }
@@ -94,4 +75,12 @@ abstract public class TitledDraggablePopupWindow extends DraggablePopupWindow {
         add(titleContainer, BorderLayout.NORTH);
         add(contentContainer, BorderLayout.CENTER);
     }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        pack();
+    }
+    
+    
 }

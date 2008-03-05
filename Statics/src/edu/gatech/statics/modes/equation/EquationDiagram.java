@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.modes.equation;
 
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.modes.equation.ui.EquationBar;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet;
 import com.jme.math.Vector2f;
@@ -36,7 +37,6 @@ import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +62,12 @@ public class EquationDiagram extends SubDiagram {
     public Point getMomentPoint() {
         return momentPoint;
     }
-    //private Map<Vector, Load> vectorMap = new HashMap<Vector, Load>();
-
+    
+    // IMPORTANT NOTE HERE
+    // if the vector is symbolic and has been reversed,
+    // then it will no longer be *equal* to the value stored as a key
+    // in vectorMap. So, we need to use another approach to pull out the vector.
+    // This is why we do not use a hashmap
     public Load getLoad(Vector vector) {
         //return vectorMap.get(vector);
         if(vector == null)
@@ -89,31 +93,12 @@ public class EquationDiagram extends SubDiagram {
 
         FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
         addAll(fbd.allObjects());
-        //buildLoadMap();
-        /*for (SimulationObject obj : fbd.allObjects()) {
-            add(obj);
-            if (obj instanceof Load) {
-                Load load = (Load) obj;
-                vectorMap.put(load.getVector(), load);
-            }
-        }*/
-
+        
         // FIXME: This diagram automatically loads a 2D worksheet
         worksheet = new Worksheet2D(this);
     }
     
-    /*private void buildLoadMap() {
-        vectorMap.clear();
-        for(SimulationObject obj : allObjects())
-            if (obj instanceof Load) {
-                Load load = (Load) obj;
-                vectorMap.put(load.getVector(), load);
-            }
-    }*/
-
     public void performSolve(Map<Vector, Float> values) {
-
-        //buildLoadMap();
         
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
@@ -142,20 +127,7 @@ public class EquationDiagram extends SubDiagram {
 
                 Point point = joint.getPoint();
                 List<Vector> reactions = new ArrayList<Vector>();
-                // IMPORTANT NOTE HERE
-                // if the vector is symbolic and has been reversed,
-                // then it will no longer be *equal* to the value stored as a key
-                // in vectorMap. So, we need to use another approach to pull out the vector.
                 for (Vector v : values.keySet()) {
-                    /*Load load = null;
-                    for (Map.Entry<Vector, Load> mapEntry : vectorMap.entrySet()) {
-                        if(v.equals(mapEntry.getKey()))
-                            load = mapEntry.getValue();
-                    }
-                    
-                    if(load.getAnchor() == point)
-                        reactions.add(v);*/
-
                     if (getLoad(v).getAnchor() == point) {
                         reactions.add(v);
                     }
@@ -324,5 +296,10 @@ public class EquationDiagram extends SubDiagram {
         curvePoints[1] = new Vector3f(curvePoints[2]);
         curvePoints[1].y += .5f;
         showingCurve = true;
+    }
+
+    @Override
+    public Mode getMode() {
+        return EquationMode.instance;
     }
 }
