@@ -50,7 +50,7 @@ public class SelectModePanel extends ApplicationModePanel {
 
         selectionList = new HTMLView();
         //selectionList.setStyleClass("application_bar_contents");
-        selectionListBox.setStyleClass("advice_box");
+        //selectionListBox.setStyleClass("advice_box");
         selectionListBox.add(selectionList, BorderLayout.CENTER);
     }
 
@@ -74,10 +74,11 @@ public class SelectModePanel extends ApplicationModePanel {
         } else {
             getTitleLabel().setText("Currently Selected:");
 
-            String contents = "";
+            String contents = "<font size=\"5\" color=\"white\">";
             for (Body body : selection) {
                 contents += body.getName() + ",<br>";
             }
+            contents += "</font>";
             selectionList.setContents(contents);
         }
     }

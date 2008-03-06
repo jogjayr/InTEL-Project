@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui;
 
 import com.jme.renderer.Renderer;
@@ -41,22 +40,20 @@ import com.jmex.bui.util.Insets;
  * needs.
  */
 public class BScrollBar extends BContainer
-    implements BConstants
-{
+        implements BConstants {
+
     /**
      * Creates a vertical scroll bar with the default range, value and
      * extent.
      */
-    public BScrollBar ()
-    {
+    public BScrollBar() {
         this(VERTICAL);
     }
 
     /**
      * Creates a scroll bar with the default range, value and extent.
      */
-    public BScrollBar (int orientation)
-    {
+    public BScrollBar(int orientation) {
         this(orientation, 0, 100, 0, 10);
     }
 
@@ -64,8 +61,7 @@ public class BScrollBar extends BContainer
      * Creates a scroll bar with the specified orientation, range, value
      * and extent.
      */
-    public BScrollBar (int orientation, int min, int value, int extent, int max)
-    {
+    public BScrollBar(int orientation, int min, int value, int extent, int max) {
         this(orientation, new BoundedRangeModel(min, value, extent, max));
     }
 
@@ -73,8 +69,7 @@ public class BScrollBar extends BContainer
      * Creates a scroll bar with the specified orientation which will
      * interact with the supplied model.
      */
-    public BScrollBar (int orientation, BoundedRangeModel model)
-    {
+    public BScrollBar(int orientation, BoundedRangeModel model) {
         super(new BorderLayout());
         _orient = orientation;
         _model = model;
@@ -84,14 +79,12 @@ public class BScrollBar extends BContainer
     /**
      * Returns a reference to the scrollbar's range model.
      */
-    public BoundedRangeModel getModel ()
-    {
+    public BoundedRangeModel getModel() {
         return _model;
     }
-    
+
     // documentation inherited
-    public void wasAdded ()
-    {
+    public void wasAdded() {
         super.wasAdded();
 
         // listen for mouse wheel events
@@ -111,22 +104,19 @@ public class BScrollBar extends BContainer
 
         _less = new BButton("");
         _less.setStyleClass(oprefix + "less");
-        add(_less, _orient == HORIZONTAL ?
-            BorderLayout.WEST : BorderLayout.NORTH);
+        add(_less, _orient == HORIZONTAL ? BorderLayout.WEST : BorderLayout.NORTH);
         _less.addListener(_buttoner);
         _less.setAction("less");
 
         _more = new BButton("");
         _more.setStyleClass(oprefix + "more");
-        add(_more, _orient == HORIZONTAL ?
-            BorderLayout.EAST : BorderLayout.SOUTH);
+        add(_more, _orient == HORIZONTAL ? BorderLayout.EAST : BorderLayout.SOUTH);
         _more.addListener(_buttoner);
         _more.setAction("more");
     }
 
     // documentation inherited
-    public void wasRemoved ()
-    {
+    public void wasRemoved() {
         super.wasRemoved();
 
         if (_wheelListener != null) {
@@ -152,8 +142,7 @@ public class BScrollBar extends BContainer
     }
 
     // documentation inherited
-    public BComponent getHitComponent (int mx, int my)
-    {
+    public BComponent getHitComponent(int mx, int my) {
         // we do special processing for the thumb
         if (_thumb.getHitComponent(mx - _x, my - _y) != null) {
             return _thumb;
@@ -165,8 +154,7 @@ public class BScrollBar extends BContainer
      * Recomputes and repositions the scroll bar thumb to reflect the
      * current configuration of the model.
      */
-    protected void update ()
-    {
+    protected void update() {
         if (!isAdded()) {
             return;
         }
@@ -182,40 +170,43 @@ public class BScrollBar extends BContainer
             twidth = extent * wellSize / range;
         } else {
             int wellSize = theight;
-            ty = (range-extent-_model.getValue()) * wellSize / range;
+            ty = (range - extent - _model.getValue()) * wellSize / range;
             theight = extent * wellSize / range;
         }
         _thumb.setBounds(_well.getX() + winsets.left + tx,
-                         _well.getY() + winsets.bottom + ty, twidth, theight);
+                _well.getY() + winsets.bottom + ty, twidth, theight);
     }
 
     // documentation inherited
-    protected String getDefaultStyleClass ()
-    {
+    protected String getDefaultStyleClass() {
         return "scrollbar";
     }
 
     // documentation inherited
-    protected void layout ()
-    {
+    protected void layout() {
         super.layout();
 
         // reposition our thumb
         update();
     }
-
     protected ChangeListener _updater = new ChangeListener() {
-        public void stateChanged (ChangeEvent event) {
+
+        public void stateChanged(ChangeEvent event) {
             update();
         }
     };
-
     protected MouseListener _wellListener = new MouseAdapter() {
-        public void mousePressed (MouseEvent event) {
+
+        public void mousePressed(MouseEvent event) {
+            if(_model == null) {
+                getParent().invalidate();
+                return;
+            }
+            
             // if we're above the thumb, scroll up by a page, if we're
             // below, scroll down a page
             int mx = event.getX() - getAbsoluteX(),
-                my = event.getY() - getAbsoluteY(), dv = 0;
+                    my = event.getY() - getAbsoluteY(), dv = 0;
             if (_orient == HORIZONTAL) {
                 if (mx < _thumb.getX()) {
                     dv = -1;
@@ -235,36 +226,46 @@ public class BScrollBar extends BContainer
             }
         }
     };
-
     protected MouseAdapter _thumbListener = new MouseAdapter() {
-        public void mousePressed (MouseEvent event) {
+
+        public void mousePressed(MouseEvent event) {
+            if (_model == null) {
+                getParent().invalidate();
+                return;
+            }
+            
             _sv = _model.getValue();
             _sx = event.getX() - getAbsoluteX();
             _sy = event.getY() - getAbsoluteY();
         }
 
-        public void mouseDragged (MouseEvent event) {
+        public void mouseDragged(MouseEvent event) {
+            if (_model == null || _well == null) {
+                if(getParent() != null)
+                    getParent().invalidate();
+                return;
+            }
+
             int dv = 0;
             if (_orient == HORIZONTAL) {
                 int mx = event.getX() - getAbsoluteX();
                 dv = (mx - _sx) * _model.getRange() /
-                    (_well.getWidth() - _well.getInsets().getHorizontal());
+                        (_well.getWidth() - _well.getInsets().getHorizontal());
             } else {
                 int my = event.getY() - getAbsoluteY();
                 dv = (_sy - my) * _model.getRange() /
-                    (_well.getHeight() - _well.getInsets().getVertical());
+                        (_well.getHeight() - _well.getInsets().getVertical());
             }
 
             if (dv != 0) {
                 _model.setValue(_sv + dv);
             }
         }
-
-        protected int _sx, _sy, _sv;
+        protected int _sx,  _sy,  _sv;
     };
-
     protected ActionListener _buttoner = new ActionListener() {
-        public void actionPerformed (ActionEvent event) {
+
+        public void actionPerformed(ActionEvent event) {
             int delta = _model.getScrollIncrement();
             if (event.getAction().equals("less")) {
                 _model.setValue(_model.getValue() - delta);
@@ -273,12 +274,9 @@ public class BScrollBar extends BContainer
             }
         }
     };
-
     protected BoundedRangeModel _model;
     protected int _orient;
-
-    protected BButton _less, _more;
-    protected BComponent _well, _thumb;
-
+    protected BButton _less,  _more;
+    protected BComponent _well,  _thumb;
     protected MouseWheelListener _wheelListener;
 }

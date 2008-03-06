@@ -69,10 +69,8 @@ public class ApplicationBar extends BWindow {
         mainBar.add(adviceBox, BorderLayout.EAST);
 
         diagramBox = createDiagramBox();
-        mainBar.add(diagramBox, BorderLayout.WEST);
-        // do not yet add the modePanel.
+        //mainBar.add(diagramBox, BorderLayout.WEST);
 
-        //mainBar.setBackground(new TintedBackground(ColorRGBA.green));
         mainBar.setStyleClass("application_bar");
 
         setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);

@@ -6,6 +6,7 @@ package edu.gatech.statics.ui.windows.knownforces;
 
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector;
@@ -36,7 +37,14 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         super(new BorderLayout(), "Known Loads");
 
 
-        view = new HTMLView();
+        view = new HTMLView() {
+            @Override
+            public Dimension getPreferredSize(int whint, int hhint) {
+                Dimension dim = super.getPreferredSize(whint, hhint);
+                dim.height /= 2;
+                return dim;
+            }
+        };
         add(view, BorderLayout.CENTER);
 
         StaticsApplication.getApp().addSolveListener(this);
@@ -45,7 +53,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
     private void updateView() {
         StringBuffer contents = new StringBuffer();
-        contents.append("<html><head>");
+        //contents.append("<html><body>");
         contents.append("<table cellspacing=\"2\" cellpadding=\"2\">");
 
         // first go through objects
@@ -77,19 +85,9 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         }
 
         contents.append("</table>");
-        contents.append("</html></head>");
+        //contents.append("</body></html>");
 
         view.setContents(contents.toString());
-
-    /*try {
-    System.out.println("View update on KnownSheetPopup:");
-    System.out.println("View preferred size: "+view.getPreferredSize(-1, -1));
-    System.out.println("View actual size: "+view.getWidth()+","+view.getHeight());
-    System.out.println("Window preferred size: "+getPreferredSize(-1, -1));
-    System.out.println("Window actual size: "+getWidth()+","+getHeight());
-    } catch(NullPointerException e) {
-    System.out.println("Null Pointer Exception");
-    }*/
     }
 
     private void writeWeightReaction(Body body, StringBuffer contents) {
@@ -124,7 +122,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
             contents.append(" at [" + applicationPoint.getName() + "]: ");
         }
         contents.append("</td><td>");
-        contents.append(force.getQuantity().toStringDecimal());
+        contents.append(force.getQuantity().toStringDecimal()+force.getUnit().getSuffix());
         contents.append("</td></tr>");
     }
 

@@ -296,5 +296,6 @@ public class EquationModePanel extends ApplicationModePanel {
         }
         
         refreshRows();
+        invalidate();
     }
 }
