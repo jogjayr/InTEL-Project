@@ -11,7 +11,6 @@ package edu.gatech.statics.exercise;
 import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
-import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
@@ -43,7 +42,7 @@ public abstract class Exercise {
     // meant to control functional aspect of exercize, not graphical or engine related
     abstract public Mode loadStartingMode();
 
-    abstract public UnitUtils getUnitUtils();
+    //abstract public UnitUtils getUnitUtils();
 
     abstract public InterfaceConfiguration createInterfaceConfiguration();
     private List<Task> tasks = new ArrayList<Task>();

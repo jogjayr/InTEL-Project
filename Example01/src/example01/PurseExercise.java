@@ -240,8 +240,4 @@ public class PurseExercise extends FBDExercise {
         tendon.addRepresentation(imageRep);
     }
 
-    @Override
-    public UnitUtils getUnitUtils() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }
