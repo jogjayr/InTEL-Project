@@ -35,13 +35,14 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     protected Point getSnapPoint() {
         return snapPoint;
     }
-    
+
     protected DragSnapManipulator getDragManipulator() {
         return dragManipulator;
     }
-    
-    protected void showLabelSelector() {}
-    
+
+    protected void showLabelSelector() {
+    }
+
     public CreateLoadTool(Diagram diagram) {
         this.diagram = diagram;
         loadAnchor = new Point(new Vector3f());
@@ -65,12 +66,12 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     abstract protected List<Load> createLoad(Point anchor);
 
     public void onMouseDown() {
-        if (dragManipulator != null) {
-            releaseDragManipulator();
+        if (getDragManipulator() != null) {
+            if (releaseDragManipulator()) {
+                showLabelSelector();
+                finish();
+            }
         }
-
-        showLabelSelector();
-        finish();
     }
 
     public void onMouseUp() {

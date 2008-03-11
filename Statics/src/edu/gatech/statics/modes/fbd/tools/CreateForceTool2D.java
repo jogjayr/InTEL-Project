@@ -103,8 +103,6 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
     @Override
     public void onMouseDown() {
-        //super.onMouseDown();
-
         if (getDragManipulator() != null) {
             if (releaseDragManipulator()) {
                 enableOrientationManipulator();
