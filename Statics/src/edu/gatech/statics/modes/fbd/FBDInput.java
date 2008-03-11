@@ -64,7 +64,14 @@ public class FBDInput extends InputHandler {
 
     private long orientationPress;
     protected void enableOrientationManipulator(Force force) {
+        //System.out.println("enabling orientation manipulator: "+force);
 
+        if(orientationManipulator != null) {
+            orientationManipulator.setEnabled(false);
+            removeFromAttachedHandlers(orientationManipulator);
+            orientationManipulator = null;
+        }
+        
         final List<Vector3f> snapDirections = diagram.getSensibleDirections(force.getAnchor());
         orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
         orientationManipulator.addListener(new MyOrientationListener());
@@ -104,7 +111,9 @@ public class FBDInput extends InputHandler {
     }
 
     public void releaseOrientationManipulator() {
+        //System.out.println("attempting to release manipulator");
         if (orientationManipulator.getCurrentSnap() != null) {
+            //System.out.println("releasing manipulator");
 
             orientationForce.setVectorValue(orientationManipulator.getCurrentSnap());
 
