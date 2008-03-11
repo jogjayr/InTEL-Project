@@ -34,8 +34,10 @@ public class StaticsApplet extends Applet {
     
     private static final String INIT_LOCK = "INIT_LOCK";
     
-    private static final int canvasWidth = 1100;//900;
-    private static final int canvasHeight = 768;//675;
+    private int canvasWidth;// = 1100;//900;
+    private int canvasHeight;// = 768;//675;
+    private static final int defaultWidth = 1100;
+    private static final int defaultHeight = 768;
     
     private static StaticsApplet instance;
     public static StaticsApplet getInstance() {return instance;}
@@ -57,7 +59,6 @@ public class StaticsApplet extends Applet {
     
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
-        
         //try {
             //LoggingSystem.setLogToFile(null);
         //} catch(IllegalStateException e) {
@@ -89,6 +90,7 @@ public class StaticsApplet extends Applet {
         }
     }
     
+    @Override
     public void destroy() {
         showTextures();
         application.finish();
@@ -98,17 +100,34 @@ public class StaticsApplet extends Applet {
         System.out.println("Applet: destroy()");
     }
 
+    @Override
     public void start() {
         super.start();
         System.out.println("Applet: start()");
     }
 
+    @Override
     public void stop() {
         super.stop();
         System.out.println("Applet: stop()");
     }
     
+    @Override
     public void init() {
+        
+        
+        String width = getParameter("width");
+        String height = getParameter("height");
+        
+        if(width != null)
+            canvasWidth = Integer.valueOf(width);
+        else
+            canvasWidth = defaultWidth;
+        if(height != null)
+            canvasHeight = Integer.valueOf(height);
+        else
+            canvasHeight = defaultHeight;
+        
         showTextures();
         System.out.println("Applet: init()");
         synchronized (INIT_LOCK) {
@@ -147,6 +166,7 @@ public class StaticsApplet extends Applet {
             ((AppletMouse) MouseInput.get()).setEnabled(false);
             
             glCanvas.addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
                 public void mouseMoved(java.awt.event.MouseEvent e) {
                     if (!glCanvas.hasFocus())
                         glCanvas.requestFocus();
@@ -177,6 +197,7 @@ public class StaticsApplet extends Applet {
                     setDaemon(true);
                 }
 
+                @Override
                 public void run() {
                     while (alive) {
                         if (isVisible())
@@ -193,6 +214,7 @@ public class StaticsApplet extends Applet {
     
     private class CanvasImplementor extends JMECanvasImplementor {
 
+        @Override
         public void doSetup() {
             super.doSetup();
             //display.createHeadlessWindow(canvasWidth, canvasHeight, 16);
@@ -217,7 +239,7 @@ public class StaticsApplet extends Applet {
             timePerFrame = Math.min(timePerFrame, 1 / 60f);
 
             try {
-                Thread.currentThread().sleep( (int)(1000 * timePerFrame));
+                Thread.sleep( (int)(1000 * timePerFrame));
             } catch(InterruptedException e) {}
         }
 

@@ -230,7 +230,7 @@ public class EquationDiagram extends SubDiagram {
         EquationBar activeEquation = eqPanel.getActiveEquation();
         if (activeEquation.getMath() instanceof EquationMathMoments) {
             if (activeEquation.getMath().getTerm(v) != null || v == null) {
-                showMomentArm(load);
+                //showMomentArm(load);
             }
         }
         //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
