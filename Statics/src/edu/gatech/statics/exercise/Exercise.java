@@ -135,6 +135,10 @@ public abstract class Exercise {
         return selectDiagram;
     }
 
+    public Exercise() {
+        this(new Schematic());
+    }
+    
     /** Creates a new instance of Exercize */
     public Exercise(Schematic world) {
         this.schematic = world;
