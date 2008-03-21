@@ -32,7 +32,11 @@ public class PointRepresentation extends Representation/*<Point>*/ {
     
     //private static Texture pointTexture;
     
+    //private String imagePath = "rsrc/point.png";
+    
     private Quad pointQuad;
+    
+    public Quad getQuad() {return pointQuad;}
     
     /*static {
         URL textureLoc = PointRepresentation.class.getClassLoader().getResource("rsrc/point.png");
@@ -40,9 +44,13 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         
     }*/
     
+    public PointRepresentation(SimulationObject target) {
+        this(target, "rsrc/point.png");
+    }
+    
     /** Creates a new instance of PointRepresentation */
     //public PointRepresentation(Point target) {
-    public PointRepresentation(SimulationObject target) {
+    public PointRepresentation(SimulationObject target, String imagePath) {
         super(target);
         setLayer(RepresentationLayer.points);
         
@@ -59,7 +67,7 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         setRenderState(alphaState);
         
         
-        URL textureLoc = PointRepresentation.class.getClassLoader().getResource("rsrc/point.png");
+        URL textureLoc = PointRepresentation.class.getClassLoader().getResource(imagePath);
         Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR,Texture.FM_LINEAR);
         
         pointQuad = new Quad("",.5f,.5f);

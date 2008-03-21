@@ -13,6 +13,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 
@@ -38,12 +39,13 @@ public class ManipulatableModePanel extends ApplicationModePanel {
         BContainer choiceContainer = new BContainer(new BorderLayout());
         choiceContainer.add(new BLabel("Select joint:"), BorderLayout.NORTH);
         selectionCombo = new BComboBox();
-        selectionCombo.setItems(new String[]{"pin", "fix", "roller"});
+        selectionCombo.setItems(new String[]{"none","pin", "fix", "roller"});
+        selectionCombo.selectItem(0);
         choiceContainer.add(selectionCombo, BorderLayout.CENTER);
 
         ActionListener listener = new MyActionListener();
 
-        choiceContainer.addListener(listener);
+        selectionCombo.addListener(listener);
 
         contents.add(choiceContainer);
         contents.add(new BButton("Play", listener, "play"));
@@ -54,7 +56,6 @@ public class ManipulatableModePanel extends ApplicationModePanel {
 
     @Override
     public void activate() {
-
     }
 
     @Override
@@ -71,7 +72,7 @@ public class ManipulatableModePanel extends ApplicationModePanel {
             } else if (event.getAction().equals("stop")) {
                 diagram.stopDynamics();
             } else if (event.getSource() == selectionCombo) {
-
+                ((ManipulatableExercise)Exercise.getExercise()).setJoint((String)selectionCombo.getSelectedItem());
             }
         }
     }

@@ -26,4 +26,14 @@ public class ManipulatableExercise extends Exercise {
         return new ManipulatableIC();
     }
 
+
+    /**
+     * THIS IS A DEMO HACK!
+     * Replace this with something more generalizable later.
+     * @param selectedValue
+     * @deprecated
+     */
+    @Deprecated
+    public void setJoint(String selectedValue) {
+    }
 }

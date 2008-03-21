@@ -7,6 +7,7 @@ package edu.gatech.statics.manipulatable;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
+import com.jme.scene.Spatial;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.Joint;
 import com.jmex.physics.PhysicsDebugger;
@@ -15,14 +16,16 @@ import com.jmex.physics.RotationalJointAxis;
 import com.jmex.physics.TranslationalJointAxis;
 import com.jmex.physics.geometry.PhysicsCylinder;
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.Representation;
-import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,7 @@ public class ManipulatableDiagram extends Diagram {
     private boolean dynamicsSetup;
     private PhysicsSpace dynamics;
 
+    //private Node dynamicsRootNode;
     public ManipulatableDiagram() {
         addAll(getSchematic().allObjects());
 
@@ -63,15 +67,16 @@ public class ManipulatableDiagram extends Diagram {
         if (dynamicsSetup) {
             return;
         }
-        
+
         // add initial conditions
         for (Body body : getSchematic().allBodies()) {
             initialConditions.put(body, new BodyInitialCondition(body));
         }
 
         dynamicsSetup = true;
+        //dynamicsRootNode = new Node("Dynamics Root");
         dynamics = PhysicsSpace.create();
-        dynamics.setDirectionalGravity(new Vector3f(0,-1,0));
+        dynamics.setDirectionalGravity(new Vector3f(0, 0, 0));
 
         for (SimulationObject obj : allObjects()) {
 
@@ -80,35 +85,58 @@ public class ManipulatableDiagram extends Diagram {
             // here we just cheat.
 
             if (obj instanceof Body) {
-                DynamicPhysicsNode node = dynamics.createDynamicNode();
+                
+                List<Load> loads = new ArrayList<Load>();
+                for(SimulationObject attached : ((Body)obj).getAttachedObjects()) {
+                    if(attached instanceof Load) {
+                        loads.add((Load)attached);
+                    }
+                }
+                
                 if (obj instanceof Beam) {
-                    //Beam beam = (Beam) obj;
+                    DynamicPhysicsNode node = dynamics.createDynamicNode();
+                    Beam beam = (Beam) obj;
                     PhysicsCylinder pCylinder = node.createCylinder(null);
-                    Representation beamRep = getDefaultRepresentation(obj);
-                    pCylinder.setLocalScale(beamRep.getLocalScale());
-                    pCylinder.setLocalRotation(obj.getRotation());
-                    pCylinder.setLocalTranslation(obj.getTranslation());
 
-                    dynamicsMap.put((Body) obj, node);
+                    pCylinder.setLocalRotation(beam.getRotation());
+                    pCylinder.setLocalTranslation(beam.getTranslation());
+                    pCylinder.setLocalScale(new Vector3f(.3f, .3f, beam.getHeight()));
+
+                    dynamicsMap.put(beam, node);
+                    
+                    for(Load load : loads) {
+                        Vector3f value = new Vector3f(load.getVectorValue());
+                        value.multLocal(100f);
+                        Vector3f at = load.getAnchor().getTranslation();
+                        
+                        if(load instanceof Force) {
+                            node.addForce(value, at);
+                        } else if(load instanceof Moment) {
+                            //node.addTo
+                        }
+                    }
                 }
             }
+        }
+        
+        for (SimulationObject obj : allObjects()) {
 
             if (obj instanceof edu.gatech.statics.objects.Joint) {
                 edu.gatech.statics.objects.Joint staticsJoint = (edu.gatech.statics.objects.Joint) obj;
                 Joint dynamicsJoint = dynamics.createJoint();
-                dynamicsJoint.createRotationalAxis();
-                
+                dynamicsJoint.setAnchor(staticsJoint.getTranslation());
+
                 // Hack this for now
-                
-                if(staticsJoint instanceof Pin2d) {
+
+                if (staticsJoint instanceof Pin2d) {
                     RotationalJointAxis axis = dynamicsJoint.createRotationalAxis();
                     axis.setDirection(Vector3f.UNIT_Z);
-                } else if(staticsJoint instanceof Roller2d) {
+                } else if (staticsJoint instanceof Roller2d) {
                     TranslationalJointAxis axis = dynamicsJoint.createTranslationalAxis();
                     axis.setDirection(Vector3f.UNIT_X);
                 }
                 // otherwise it should be a fix, in which case, we leave alone.
-                
+
                 Body body1 = staticsJoint.getBody1();
                 Body body2 = staticsJoint.getBody2();
                 if (body1 == null) {
@@ -132,28 +160,29 @@ public class ManipulatableDiagram extends Diagram {
         super.update();
         updateDynamics();
     }
-    
-    private Representation getDefaultRepresentation(SimulationObject obj) {
-        List<Representation> reps = obj.getRepresentation(RepresentationLayer.schematicBodies);
-        if (reps.isEmpty()) {
-            return null;
-        } else {
-            return reps.get(0);
-        }
-    }
 
+    /*private Representation getDefaultRepresentation(SimulationObject obj) {
+    List<Representation> reps = obj.getRepresentation(RepresentationLayer.schematicBodies);
+    if (reps.isEmpty()) {
+    return null;
+    } else {
+    return reps.get(0);
+    }
+    }*/
     private void updateDynamics() {
         if (!dynamicsSetup) {
             return;
         }
-        
+
         dynamics.update(.03f);
-        
+
         for (Map.Entry<Body, DynamicPhysicsNode> entry : dynamicsMap.entrySet()) {
             Body body = entry.getKey();
-            DynamicPhysicsNode dynamicBody = entry.getValue();
-            body.setTranslation(dynamicBody.getLocalTranslation());
-            body.setRotation(dynamicBody.getLocalRotation().toRotationMatrix());
+            DynamicPhysicsNode node = entry.getValue();
+            Spatial dynamicBody = node.getChild(0);
+
+            body.setTranslation(dynamicBody.getWorldTranslation());
+            body.setRotation(dynamicBody.getWorldRotation().toRotationMatrix());
         }
 
     }
@@ -161,12 +190,12 @@ public class ManipulatableDiagram extends Diagram {
     @Override
     public void render(Renderer r) {
         super.render(r);
-        
-        if(dynamicsSetup) {
-            PhysicsDebugger.drawPhysics( dynamics, r );
+
+        if (dynamicsSetup) {
+            PhysicsDebugger.drawPhysics(dynamics, r);
         }
     }
-    
+
     void stopDynamics() {
         if (!dynamicsSetup) {
             return;
@@ -175,12 +204,13 @@ public class ManipulatableDiagram extends Diagram {
         dynamicsSetup = false;
         dynamics.delete();
         dynamics = null;
+        //dynamicsRootNode = null;
 
         // apply the initial conditions
         for (Body body : allBodies()) {
             initialConditions.get(body).apply(body);
         }
-        
+
         dynamicsMap.clear();
         initialConditions.clear();
     }

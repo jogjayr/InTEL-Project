@@ -23,6 +23,9 @@ abstract public class LongBody extends Body {
     private Vector3f end1;
     private Vector3f end2;
     
+    public Vector3f getEndpoint1() {return end1;}
+    public Vector3f getEndpoint2() {return end2;}
+    
     public LongBody() {
         this(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
@@ -45,6 +48,11 @@ abstract public class LongBody extends Body {
         
         Matrix3f mat = new Matrix3f();
         mat.fromStartEndVectors(Vector3f.UNIT_Y, end2.subtract(end1).normalize());
+        
+        Matrix3f rotation = new Matrix3f();
+        rotation.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_Y);
+        mat.multLocal(rotation);
+        
         setRotation(mat);
         
         setDimensions(0, end1.distance(end2), 0);

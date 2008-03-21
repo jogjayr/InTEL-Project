@@ -13,6 +13,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.representations.PointRepresentation;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,4 +42,14 @@ public class Roller2d extends Joint {
         return Arrays.asList(
                 new Vector(Unit.force, direction));
     }
+
+    @Override
+    public void createDefaultSchematicRepresentation() {
+        
+        PointRepresentation rep = new PointRepresentation(this, "rsrc/roller.png");
+        rep.getQuad().setLocalScale(2);
+        rep.getQuad().setLocalTranslation(0,-.5f,0);
+        addRepresentation(rep);
+    }
+    
 }

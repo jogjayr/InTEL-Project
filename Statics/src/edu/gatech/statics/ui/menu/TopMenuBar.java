@@ -9,6 +9,7 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.ui.AppWindow;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.List;
@@ -47,7 +48,8 @@ public class TopMenuBar extends AppWindow {
         //super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         super(new BorderLayout());
         
-        title = new BLabel("Holding a Purse","main_title");
+        String titleString = Exercise.getExercise().getName();
+        title = new BLabel(titleString,"main_title");
         title.setPreferredSize(getDisplay().getWidth(),-1);
         add(title, BorderLayout.NORTH);
         

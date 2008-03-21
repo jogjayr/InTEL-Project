@@ -28,6 +28,7 @@ import edu.gatech.statics.objects.SimulationObject;
 public class ImageRepresentation extends Representation {
     
     private Quad quad;
+    public Quad getQuad() {return quad;}
     
     public void setTranslation(float x, float y, float z) {
         quad.setLocalTranslation(x,y,z);
