@@ -94,7 +94,7 @@ public class Lesson4 extends SimplePhysicsGame {
          */
         public void performAction( InputActionEvent evt ) {
             // the only really important line: apply a force to the moved node
-            dynamicNode.addForce( new Vector3f( 50, 0, 0 ) );
+            dynamicNode.addForce( new Vector3f( 50, 0, 0 ) , new Vector3f(0, -.5f, 0));
             // note: forces are applied every physics step and accumulate until then
             //       to apply a constant force we would have to do it for each physics step! (see next lesson)
         }

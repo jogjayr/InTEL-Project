@@ -28,7 +28,7 @@ import edu.gatech.statics.objects.representations.ImageRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class Manipulate01 extends ManipulatableExercise {
+public class Manipulate02 extends ManipulatableExercise {
 
     @Override
     public void initExercise() {
@@ -57,8 +57,8 @@ public class Manipulate01 extends ManipulatableExercise {
             }
         });
     }
-    private Point A,  B,  C, G;
-    private Body tree;
+    private Point A,  B,  C;
+    private Body beam1,  beam2;
     private Joint joint;
 
     @Override
@@ -68,7 +68,7 @@ public class Manipulate01 extends ManipulatableExercise {
 
         if (joint != null) {
             diagram.remove(joint);
-            tree.removeObject(joint);
+            beam1.removeObject(joint);
             joint = null;
         }
 
@@ -82,7 +82,7 @@ public class Manipulate01 extends ManipulatableExercise {
 
         if (joint != null) {
             joint.createDefaultSchematicRepresentation();
-            joint.attachToWorld(tree);
+            joint.attachToWorld(beam1);
             diagram.add(joint);
         }
 
@@ -92,7 +92,7 @@ public class Manipulate01 extends ManipulatableExercise {
     @Override
     public float getDrawScale() {
         //return super.getDrawScale();
-        return 1f/10;
+        return .5f;
     }
 
     @Override
@@ -101,62 +101,44 @@ public class Manipulate01 extends ManipulatableExercise {
         Schematic schematic = getSchematic();
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.5f, 0.5f, 0.5f, 1));
 
-        Vector3f base = new Vector3f(0, -0, 0);
-        float length = 1;
-        float angle = (float)Math.PI/3;
-        float forceApplication = .8f;
         float mass = 1;
-        Vector3f forceVector = new Vector3f(10f, 0, 0);
-        //Vector3f forceVector = new Vector3f(0, 9.8f, 0);
-        
-        Vector3f rodDirection = new Vector3f((float)Math.cos(angle), (float)Math.sin(angle), 0);
-        
-        A = new Point(base);
-        B = new Point(base.add(rodDirection.mult(forceApplication)));
-        G = new Point(base.add(rodDirection.mult(length/2)));
-        C = new Point(base.add(rodDirection.mult(length)));
+        A = new Point(new Vector3f(-5, 0, 0));
+        B = new Point(new Vector3f(0, 7, 0));
+        C = new Point(new Vector3f(5, 0, 0));
+
         A.setName("A");
-        G.setName("G");
+        B.setName("B");
+        C.setName("C");
 
-        tree = new Beam(A, C);
-        tree.setName("tree");
-        tree.getWeight().setValue(mass);
-        tree.setCenterOfMassPoint(G);
-        // I am aware of the contradiction in units here.
-        // this needs to be fixed.
-        
-        tree.getWeight().setValue(1);
-        //tree.setCenterOfMassPoint(new Point(new Vector3f()));
-        
-        ImageRepresentation imageRep = new ImageRepresentation(tree, loadTexture("manipulatableexercises/tree.png"));
-        imageRep.setScale(1.4f, 1.4f);
-        imageRep.setTranslation(-.025f, .05f, 0);
-        
-        Matrix3f quadRotation = new Matrix3f();
-        quadRotation.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Z);
-        
-        //Matrix3f tilt = new Matrix3f();
-        //tilt.fromAngleAxis((float)Math.PI/30, Vector3f.UNIT_Z);
-        
-        //quadRotation.multLocal(tilt);
-        
-        imageRep.getQuad().setLocalRotation(quadRotation);
-        imageRep.setSynchronizeRotation(true);
-        tree.addRepresentation(imageRep);
+        beam1 = new Beam(A, B);
+        beam1.setName("beam 1");
+        beam1.getWeight().setValue(mass);
+        beam1.getWeight().setValue(1);
 
-        tree.addObject(B);
-        tree.createDefaultSchematicRepresentation();
+        beam2 = new Beam(B, C);
+        beam2.setName("beam 2");
+        beam2.getWeight().setValue(mass);
+        beam2.getWeight().setValue(1);
+
+        beam1.createDefaultSchematicRepresentation();
+        beam2.createDefaultSchematicRepresentation();
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
-        G.createDefaultSchematicRepresentation();
 
-        Force f = new Force(B, forceVector);
-        f.createDefaultSchematicRepresentation();
-        tree.addObject(f);
+        Joint jointB = new Pin2d(B);
+        jointB.createDefaultSchematicRepresentation();
+        jointB.attach(beam1, beam2);
+        schematic.add(jointB);
+        
+        Joint jointC = new Pin2d(C);
+        jointC.createDefaultSchematicRepresentation();
+        jointC.attachToWorld(beam2);
+        schematic.add(jointC);
 
-        schematic.add(tree);
+        schematic.add(beam1);
+        schematic.add(beam2);
 
     }
 }

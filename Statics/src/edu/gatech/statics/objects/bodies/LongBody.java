@@ -44,6 +44,10 @@ abstract public class LongBody extends Body {
         this.end1 = end1;
         this.end2 = end2;
         
+        // add a default center of mass point.
+        // this may be changed later.
+        setCenterOfMassPoint(new Point(end1.add(end2).mult(.5f)));
+        
         setTranslation( end1.add(end2).mult(.5f) );
         
         Matrix3f mat = new Matrix3f();

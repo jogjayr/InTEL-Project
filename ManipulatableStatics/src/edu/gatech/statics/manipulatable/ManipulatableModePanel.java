@@ -39,8 +39,10 @@ public class ManipulatableModePanel extends ApplicationModePanel {
         BContainer choiceContainer = new BContainer(new BorderLayout());
         choiceContainer.add(new BLabel("Select joint:"), BorderLayout.NORTH);
         selectionCombo = new BComboBox();
-        selectionCombo.setItems(new String[]{"none","pin", "fix", "roller"});
+        //selectionCombo.setItems(new String[]{"none","pin", "fix", "roller"});
+        selectionCombo.setItems(new String[]{"pin", "fix", "roller"});
         selectionCombo.selectItem(0);
+        
         choiceContainer.add(selectionCombo, BorderLayout.CENTER);
 
         ActionListener listener = new MyActionListener();
@@ -56,6 +58,7 @@ public class ManipulatableModePanel extends ApplicationModePanel {
 
     @Override
     public void activate() {
+        ((ManipulatableExercise)Exercise.getExercise()).setJoint((String)selectionCombo.getSelectedItem());
     }
 
     @Override
