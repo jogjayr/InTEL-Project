@@ -168,8 +168,12 @@ public class FreeBodyDiagram extends SubDiagram {
         LabelSelector labelTool = new LabelSelector(new LoadLabelListener(load), load.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your load");
         labelTool.setUnits(load.getUnit().getSuffix());
-        labelTool.setHintText("");
-        labelTool.setIsCreating(true);
+        //labelTool.setHintText("");
+        if(load.isSymbol())
+            labelTool.setHintText(load.getSymbolName());
+        else
+            labelTool.setHintText(load.toStringDecimal());
+        labelTool.setIsCreating(false);
         labelTool.createPopup();
     }
 

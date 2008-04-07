@@ -9,9 +9,9 @@
 
 package edu.gatech.statics.objects.representations;
 
+import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.util.TextureKey;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jmex.model.converters.AseToJme;
 import com.jmex.model.converters.MaxToJme;
@@ -36,6 +36,10 @@ public class ModelRepresentation extends Representation {
     
     public void setModelOffset(Vector3f offset) {
         modelNode.setLocalTranslation(offset);
+    }
+    
+    public void setModelRotation(Matrix3f rotation) {
+        modelNode.setLocalRotation(rotation);
     }
     
     /** Creates a new instance of ModelRepresentation */

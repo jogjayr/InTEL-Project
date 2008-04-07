@@ -298,7 +298,7 @@ public class ManipulatableDiagram extends Diagram {
         super.render(r);
 
         if (dynamicsSetup) {
-            PhysicsDebugger.drawPhysics(dynamics, r);
+            //PhysicsDebugger.drawPhysics(dynamics, r);
         }
     }
 

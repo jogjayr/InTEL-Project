@@ -11,6 +11,7 @@ package example02;
 
 import com.jme.light.Light;
 import com.jme.light.LightNode;
+import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.state.LightState;
@@ -22,6 +23,7 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Fix2d;
@@ -101,6 +103,12 @@ public class TowerExercise extends FBDExercise {
         B.setName("B");
         G.setName("G");
         
+        Point underG = new Point(new Vector3f(G.getTranslation().x,0,0));
+        
+        DistanceMeasurement horizontalDistance = new DistanceMeasurement(A, underG);
+        horizontalDistance.createDefaultSchematicRepresentation();
+        world.add(horizontalDistance);
+        
         Fix2d jointA = new Fix2d(A);
         
         A.createDefaultSchematicRepresentation();
@@ -123,7 +131,10 @@ public class TowerExercise extends FBDExercise {
         A.addRepresentation(rep);
         
         rep = new ModelRepresentation(tower, "example02/assets/", "example02/assets/pisa3_tower.dae");
-        rep.setModelOffset(new Vector3f(0, -22.0f/scale, 0));
+        rep.setModelOffset(new Vector3f(0, 0, -22.0f/scale));
+        Matrix3f rotation = new Matrix3f();
+        rotation.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Z);
+        rep.setModelRotation(rotation);
         //rep.setLocalScale(scale*1.5f);
         tower.addRepresentation(rep);
         

@@ -254,6 +254,8 @@ public abstract class Diagram {
         directions.add(new Vector3f(-1, 0, 0));
         directions.add(new Vector3f(0, 1, 0));
         directions.add(new Vector3f(0, -1, 0));
+        directions.add(new Vector3f(0, 0, 1));
+        directions.add(new Vector3f(0, 0, -1));
 
         for (Body body : getSchematic().allBodies()) {
             if (!body.getAttachedObjects().contains(point)) {
@@ -267,6 +269,8 @@ public abstract class Diagram {
             directions.add(orientation.mult(new Vector3f(-1, 0, 0)));
             directions.add(orientation.mult(new Vector3f(0, 1, 0)));
             directions.add(orientation.mult(new Vector3f(0, -1, 0)));
+            directions.add(orientation.mult(new Vector3f(0, 0, 1)));
+            directions.add(orientation.mult(new Vector3f(0, 0, -1)));
         }
 
         return directions;
