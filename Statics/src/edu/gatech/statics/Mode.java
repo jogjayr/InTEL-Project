@@ -19,7 +19,7 @@ public abstract class Mode {
     
     public void postLoad() {}
     
-    abstract protected String getModePanelName();
+    abstract public String getModePanelName();
     abstract protected Diagram getDiagram(BodySubset bodies);
     
     public final void load() {
@@ -32,7 +32,7 @@ public abstract class Mode {
         
         // loading the ModePanel occurs after the diagram.
         // the ModePanel may depend on the diagram for labeling, etc
-        InterfaceRoot.getInstance().setModePanel(getModePanelName());
+        InterfaceRoot.getInstance().activateModePanel(getModePanelName());
         postLoad();
     }
     

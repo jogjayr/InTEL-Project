@@ -11,6 +11,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -73,6 +74,7 @@ public class FBDModePanel extends ApplicationModePanel {
         // need to have list of bodies here...
         FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: "+diagram.getBodySubset());
+        Exercise.getExercise().enableTabs(diagram.getBodySubset());
     }
     
     private class CheckListener implements ActionListener {

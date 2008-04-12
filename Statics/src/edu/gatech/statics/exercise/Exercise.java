@@ -12,11 +12,16 @@ import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +48,6 @@ public abstract class Exercise {
     abstract public Mode loadStartingMode();
 
     //abstract public UnitUtils getUnitUtils();
-
     abstract public InterfaceConfiguration createInterfaceConfiguration();
     private List<Task> tasks = new ArrayList<Task>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();
@@ -138,7 +142,7 @@ public abstract class Exercise {
     public Exercise() {
         this(new Schematic());
     }
-    
+
     /** Creates a new instance of Exercize */
     public Exercise(Schematic world) {
         this.schematic = world;
@@ -183,6 +187,24 @@ public abstract class Exercise {
             return freeBodyDiagrams.get(bodies);
         }
         throw new IllegalStateException("Cannot select recent diagram for: " + bodies);
+    }
+
+    /**
+     * I am not sure if this is the best place to put this method.
+     * It goes through the active diagrams and activates panels accordingly.
+     * This place is also the most open to extension if new modes are added.
+     * @param bodies
+     */
+    public void enableTabs(BodySubset bodies) {
+        ApplicationBar applicationBar = InterfaceRoot.getInstance().getApplicationBar();
+        applicationBar.disableAllTabs();
+        applicationBar.enableTab(SelectMode.instance, true);
+        if (equationDiagrams.get(bodies) != null) {
+            applicationBar.enableTab(EquationMode.instance, true);
+        }
+        if (freeBodyDiagrams.get(bodies) != null) {
+            applicationBar.enableTab(FBDMode.instance, true);
+        }
     }
 
     /**

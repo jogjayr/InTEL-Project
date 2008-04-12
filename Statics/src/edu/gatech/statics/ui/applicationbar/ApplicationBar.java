@@ -10,6 +10,7 @@ import com.jmex.bui.BWindow;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,20 @@ public class ApplicationBar extends BWindow {
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }
+    
+    
 
+    public void disableAllTabs() {
+        for(ApplicationTab tab : tabs)
+            tab.setTabEnabled(false);
+    }
+    public void enableTab(ApplicationTab tab, boolean enabled) {
+        tab.setTabEnabled(enabled);
+    }
+    public void enableTab(Mode mode, boolean enabled) {
+        ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModePanelName());
+        panel.getTab().setTabEnabled(enabled);
+    }
     public void setModePanel(ApplicationModePanel modePanel) {
         if (this.modePanel != null) {
             this.modePanel.getTab().setActive(false);

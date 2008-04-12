@@ -133,9 +133,9 @@ public class SelectDiagram extends Diagram {
                     ColorRGBA diffuseTransparent2 = new ColorRGBA(diffuse);
                     diffuseTransparent2.a = .75f;
                     
+                    rep.setDiffuse(diffuseTransparent1);
                     rep.setHoverDiffuse(diffuseTransparent2);
                     rep.setSelectDiffuse(diffuse);
-                    rep.setDiffuse(diffuseTransparent1);
                 } else {
                     // set the diffuse color to the the regular diffuse
                     // that was stored in selectDiffuse

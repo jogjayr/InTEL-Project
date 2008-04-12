@@ -23,8 +23,9 @@ public class ApplicationTab extends BLabel {
     private static final ColorRGBA FOREGROUND_ENABLED = ColorRGBA.black;
     private static final ColorRGBA FOREGROUND_ACTIVE = ColorRGBA.white;
     
-    
     private static final int TAB_SIZE = 100;
+    
+    private boolean enabled, active;
     
     public ApplicationTab(String text) {
         super(text);
@@ -34,7 +35,8 @@ public class ApplicationTab extends BLabel {
         //setBackground(new TintedBackground(BACKGROUND_DISABLED));
     }
 
-    public void setActive(boolean active) {
+    void setActive(boolean active) {
+        this.active = active;
         if(active) {
             setBackground(new TintedBackground(BACKGROUND_ACTIVE));
             setColor(FOREGROUND_ACTIVE);
@@ -45,4 +47,16 @@ public class ApplicationTab extends BLabel {
         invalidate();
     }
     
+    void setTabEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if(enabled) {
+            setActive(active);
+            //setBackground(new TintedBackground(BACKGROUND_ENABLED));
+            //setColor(FOREGROUND_ENABLED);
+        } else {
+            setBackground(new TintedBackground(BACKGROUND_DISABLED));
+            setColor(FOREGROUND_DISABLED);
+        }
+        invalidate();
+    }
 }

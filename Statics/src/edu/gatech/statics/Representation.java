@@ -134,6 +134,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
 
     public void setDiffuse(final ColorRGBA diffuse) {
         this.diffuse = diffuse;
+        this.selectDiffuse = diffuse;
+        this.hoverDiffuse = diffuse;
     }
 
     public void setSpecular(final ColorRGBA specular) {

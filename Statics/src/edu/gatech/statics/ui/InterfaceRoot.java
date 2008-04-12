@@ -120,8 +120,17 @@ public class InterfaceRoot {
      * Sets the mode interface and controls. Use the string that defines the panel name.
      * @param panelName
      */
-    public void setModePanel(String panelName) {
+    public void activateModePanel(String panelName) {
         applicationBar.setModePanel(modePanels.get(panelName));
+    }
+    
+    /**
+     * Returns the mode panel corresponding to the name given.
+     * @param panelName
+     * @return
+     */
+    public ApplicationModePanel getModePanel(String panelName) {
+        return modePanels.get(panelName);
     }
 
     /**

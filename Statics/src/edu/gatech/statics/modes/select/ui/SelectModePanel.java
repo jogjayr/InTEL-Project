@@ -16,6 +16,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.util.List;
 
@@ -66,6 +67,11 @@ public class SelectModePanel extends ApplicationModePanel {
     public void activate() {
         getTitleLabel().setText("Nothing Selected");
         StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
+
+        // disable all tabs when the mode is selected
+        // then enable this tab
+        InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
+        InterfaceRoot.getInstance().getApplicationBar().enableTab(getTab(), true);
     }
 
     public void updateSelection() {
@@ -74,9 +80,12 @@ public class SelectModePanel extends ApplicationModePanel {
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
-            
+
             nextButton.setEnabled(false);
             StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
+
+            InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
+
         } else {
             getTitleLabel().setText("Currently Selected:");
 
@@ -86,9 +95,11 @@ public class SelectModePanel extends ApplicationModePanel {
             }
             contents += "</font>";
             selectionList.setContents(contents);
-            
+
             nextButton.setEnabled(true);
             StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection2");
+
+            InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
         }
     }
 
@@ -96,14 +107,15 @@ public class SelectModePanel extends ApplicationModePanel {
 
         public void actionPerformed(ActionEvent event) {
             List<Body> selection = ((SelectDiagram) getDiagram()).getCurrentlySelected();
-            if(selection.isEmpty())
+            if (selection.isEmpty()) {
                 return;
+            }
 
             BodySubset bodies = new BodySubset(selection);
             //FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
             //StaticsApplication.getApp().
             FBDMode.instance.load(bodies);
-            
+
         }
     }
 }

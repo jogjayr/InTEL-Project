@@ -19,6 +19,7 @@ import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
@@ -294,6 +295,8 @@ public class EquationModePanel extends ApplicationModePanel {
         if (diagram.getWorksheet().isSolved()) {
             performSolve();
         }
+        
+        Exercise.getExercise().enableTabs(diagram.getBodySubset());
         
         refreshRows();
         invalidate();
