@@ -238,6 +238,11 @@ public class BTextField extends BTextComponent
                 default:
                     // insert printable and shifted printable characters
                     char c = kev.getKeyChar();
+                    
+                    // release alt modifier to not explode on alt-tab switching
+                    if((modifiers & KeyEvent.ALT_DOWN_MASK) > 0)
+                        modifiers ^= KeyEvent.ALT_DOWN_MASK;
+                    
                     if ((modifiers & ~KeyEvent.SHIFT_DOWN_MASK) == 0 &&
                         (!Character.isISOControl(c) && Character.getType(c) != Character.UNASSIGNED ) ) {
                         String text = String.valueOf(kev.getKeyChar());
