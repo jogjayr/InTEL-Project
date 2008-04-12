@@ -239,8 +239,7 @@ public class EquationMath {
                     System.out.println("check: equation has unnecessary term: "+term.getSource());
                     System.out.println("check: FAILED");
 
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unnecessary"));
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary");
                     return false;
                 } else {
                     continue;
@@ -251,8 +250,7 @@ public class EquationMath {
                 System.out.println("check: equation has not added all terms: "+force.getVector());
                 System.out.println("check: FAILED");
 
-                StaticsApplication.getApp().setAdvice(
-                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_missing_forces"));
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces");
                 return false;
             }
         }
@@ -264,8 +262,7 @@ public class EquationMath {
                 System.out.println("check: equation has unnecessary moment term: "+term.getSource());
                 System.out.println("check: FAILED");
 
-                StaticsApplication.getApp().setAdvice(
-                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unnecessaryMoments"));
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoments");
                 return false;
             }
 
@@ -280,15 +277,13 @@ public class EquationMath {
                         System.out.println("check: unknown error?");
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_unknown"));
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
                         return false;
                     case parse:
                         System.out.println("check: parse error");
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(String.format(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_parse"), term.getCoefficient()));
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient());
                         return false;
                     case incorrect:
                         System.out.println("check: for " + term.getSource().toString());
@@ -296,8 +291,7 @@ public class EquationMath {
                         System.out.println("check: should be: " + term.targetValue);
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(String.format(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_fail_coefficient"), term.getSource().toString()));
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getSource().toString());
                         return false;
                 }
 
@@ -307,8 +301,7 @@ public class EquationMath {
         setLocked(true);
 
         System.out.println("check: PASSED!");
-        StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_check_success"));
+        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_success");
         return true;
     }
 }

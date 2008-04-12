@@ -80,8 +80,7 @@ public class FBDInput extends InputHandler {
         orientationForce = force;
         orientationPress = System.currentTimeMillis();
 
-        StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
+        StaticsApplication.getApp().setAdviceKey("fbd_tools_createForce2");
     }
 
     private class MyOrientationListener implements OrientationListener {

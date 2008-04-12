@@ -43,7 +43,7 @@ public class PointSelector extends Tool {
 
     @Override
     protected void onActivate() {
-        StaticsApplication.getApp().setAdvice(java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_feedback_momentPointSelect"));
+        StaticsApplication.getApp().setAdviceKey("equation_feedback_momentPointSelect");
     }
 
     @Override

@@ -96,8 +96,7 @@ public class FBDChecker {
                 System.out.println("check: diagram does not contain external force " + external);
                 System.out.println("check: FAILED");
 
-                StaticsApplication.getApp().setAdvice(
-                        java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_external"));
+                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external");
                 return false;
             }
         }
@@ -118,8 +117,7 @@ public class FBDChecker {
                     System.out.println("check: weight is: " + weight);
                     System.out.println("check: FAILED");
 
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_weight"));
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight");
                     return false;
                 }
             }
@@ -173,8 +171,7 @@ public class FBDChecker {
                         System.out.println("check: note: reaction is negatable");
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_reaction"));
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
                         return false;
                     }
                 } else {
@@ -182,8 +179,7 @@ public class FBDChecker {
                         System.out.println("check: diagram missing reaction force: " + reaction);
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_reaction"));
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
                         return false;
                     }
                 }
@@ -196,8 +192,7 @@ public class FBDChecker {
             System.out.println("check: user added more forces than necessary: " + addedForces);
             System.out.println("check: FAILED");
 
-            StaticsApplication.getApp().setAdvice(
-                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_additional"));
+            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_additional");
             return false;
         }
 
@@ -227,8 +222,7 @@ public class FBDChecker {
                     System.out.println("check: force should not be symbol: " + force);
                     System.out.println("check: FAILED");
 
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_symbol"));
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_symbol");
                     return false;
                 }
 
@@ -238,8 +232,7 @@ public class FBDChecker {
                     System.out.println("check: user duplicated name for force: " + name);
                     System.out.println("check: FAILED");
 
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_duplicate"));
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate");
                     return false;
                 }
                 names.add(name);
@@ -267,8 +260,7 @@ public class FBDChecker {
                         System.out.println("check: weight value incorrect: " + force.getValue() + " != " + weight);
                         System.out.println("check: FAILED");
 
-                        StaticsApplication.getApp().setAdvice(
-                                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_wrongWeight"));
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_wrongWeight");
                         return false;
                     }
                 //}
@@ -289,8 +281,7 @@ public class FBDChecker {
                     System.out.println("check: force should not be numeric: " + force);
                     System.out.println("check: FAILED");
 
-                    StaticsApplication.getApp().setAdvice(
-                            java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_numeric"));
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_numeric");
                     return false;
                 }
             }

@@ -88,6 +88,7 @@ public class LabelSelector /*extends SelectionTool*/ {
 
                 if (labelListener.onLabel(textfield.getText())) {
                     popup.dismiss();
+                    StaticsApplication.getApp().resetAdvice();
                 //finish();
                 } else {
                 //StaticsApplication.getApp().setAdvice("I did not seem to recognize that input. Try again?");

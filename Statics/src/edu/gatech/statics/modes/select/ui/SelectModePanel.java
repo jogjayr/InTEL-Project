@@ -12,6 +12,7 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectDiagram;
@@ -43,6 +44,7 @@ public class SelectModePanel extends ApplicationModePanel {
         selectionListBox = new BContainer(new BorderLayout());
         nextButton = new BButton("Done", new ButtonListener(), "done");
         nextButton.setStyleClass("circle_button");
+        nextButton.setEnabled(false);
 
         //add(selectionLabel, BorderLayout.NORTH);
         add(selectionListBox, BorderLayout.CENTER);
@@ -63,6 +65,7 @@ public class SelectModePanel extends ApplicationModePanel {
     @Override
     public void activate() {
         getTitleLabel().setText("Nothing Selected");
+        StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
     }
 
     public void updateSelection() {
@@ -71,6 +74,9 @@ public class SelectModePanel extends ApplicationModePanel {
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
+            
+            nextButton.setEnabled(false);
+            StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
         } else {
             getTitleLabel().setText("Currently Selected:");
 
@@ -80,6 +86,9 @@ public class SelectModePanel extends ApplicationModePanel {
             }
             contents += "</font>";
             selectionList.setContents(contents);
+            
+            nextButton.setEnabled(true);
+            StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection2");
         }
     }
 

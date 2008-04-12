@@ -9,6 +9,7 @@
 package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
@@ -43,6 +44,12 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
         labelTool.createPopup();
     }
 
+    @Override
+    protected void onActivate() {
+        super.onActivate();
+        StaticsApplication.getApp().setAdviceKey("fbd_tools_createMoment");
+    }
+    
     @Override
     protected List<Load> createLoad(Point anchor) {
 

@@ -47,8 +47,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     protected void onActivate() {
         super.onActivate();
 
-        StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce1"));
+        StaticsApplication.getApp().setAdviceKey("fbd_tools_createForce1");
     }
 
     @Override
@@ -76,8 +75,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         orientationManipulator.addListener(new MyOrientationListener());
         addToAttachedHandlers(orientationManipulator);
 
-        StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_tools_createForce2"));
+        StaticsApplication.getApp().setAdviceKey("fbd_tools_createForce2");
     }
 
     private class MyOrientationListener implements OrientationListener {

@@ -242,6 +242,11 @@ circle_button:down {
   color: #000000;
 }
 
+circle_button:disabled {
+  background: image "rsrc/interfaceTextures/circleButton/circle_up.png" centerxy;
+  color: #aaaaaa;
+}
+
 smallcircle_button {
   background: image "rsrc/interfaceTextures/circleButton/circleSmall_up.png" centerxy;
   padding: 5 5;

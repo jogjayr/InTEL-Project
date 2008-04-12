@@ -54,7 +54,8 @@ public class PurseExercise extends FBDExercise {
         setDescription(
                 "Here is a simplified version of the human arm. " +
                 "Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
-                "The weight of the forearm is 9 N.");
+                "The weight of the forearm is 9 N and its center of mass is at G. " +
+                "The weight of the purse is 19.6 N.");
         Unit.setUtils(new UnitUtils() {
 
             @Override

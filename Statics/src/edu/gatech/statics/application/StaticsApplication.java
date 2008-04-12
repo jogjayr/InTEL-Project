@@ -132,6 +132,15 @@ public class StaticsApplication {
     }
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
+    public void setAdviceKey(String key, Object ... formatTerms) {
+        if(formatTerms == null || formatTerms.length == 0)
+            iRoot.setAdvice(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key));
+        else {
+            String advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
+            iRoot.setAdvice(advice);
+        }
+    }
+
     public void setAdvice(String advice) {
         iRoot.setAdvice(advice);
     }
