@@ -229,6 +229,10 @@ public class StaticsApplication {
         return display;
     }
 
+    /**
+     * This is the per frame update. It updates the UI and then the diagram,
+     * and flags the display to update the jME geometry.
+     */
     public void update() {
 
         if (finished) {
@@ -289,6 +293,13 @@ public class StaticsApplication {
         }
     }
 
+    /**
+     * This is the main render. Our application renders very differently than
+     * standard jME games. Namely, display is separated into several layers, which are
+     * rendered independently. That is handled in the render() method for the 
+     * current diagram. This also renders the UI and any special drawing that needs to be done,
+     * such as curves.
+     */
     public void render() {
 
         if (finished) {
@@ -358,6 +369,10 @@ public class StaticsApplication {
         return screenshotImage;
     }
 
+    /**
+     * Initializes the Statics application. This builds the exercise and loads 
+     * all of the crucial and important application information.
+     */
     public void init() {
 
         // initialization of the exercise
@@ -382,8 +397,11 @@ public class StaticsApplication {
         //display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
 
         selector = new MousePick(this);
+        MouseDragAndZoom drag = new MouseDragAndZoom(this);
+        
         input.addAction(selector);
-
+        input.addAction(drag);
+        
         iRoot = new InterfaceRoot(timer, input, camera);
 
         // load exercise here

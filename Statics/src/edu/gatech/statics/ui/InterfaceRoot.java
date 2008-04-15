@@ -115,6 +115,10 @@ public class InterfaceRoot {
     public ModalPopupWindow getModalWindow() {
         return modalWindow;
     }
+    
+    public CameraControl getCameraControl() {
+        return cameraControl;
+    }
 
     /**
      * Sets the mode interface and controls. Use the string that defines the panel name.

@@ -107,6 +107,7 @@ public class EquationBar extends BContainer {
                     selector.activate();
                 }
             }, "momentpoint");
+            
             startContainer.add(momentButton);
             startContainer.add(new BLabel("]"));
         } else {
