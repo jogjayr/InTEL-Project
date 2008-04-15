@@ -21,7 +21,7 @@ public class Cable extends TwoForceMember {
     
     public void createDefaultSchematicRepresentation() {
         CylinderRepresentation rep = new CylinderRepresentation(this);
-        rep.setRadius(.1f);
+        rep.setRadius(.15f);
         rep.update();
         addRepresentation(rep);
     }

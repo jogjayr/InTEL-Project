@@ -81,6 +81,15 @@ abstract public class TitledDraggablePopupWindow extends DraggablePopupWindow {
         super.setVisible(visible);
         pack();
     }
-    
+
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        
+        x += _width - width;
+        y += _height - height;
+        //setBounds(xnew, ynew, width, height);
+        
+        super.setBounds(x, y, width, height);
+    }
     
 }

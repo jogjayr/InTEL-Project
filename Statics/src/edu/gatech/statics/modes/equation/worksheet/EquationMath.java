@@ -16,7 +16,6 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.parser.Parser;
 import edu.gatech.statics.objects.Force;
-import edu.gatech.statics.objects.Load;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -262,7 +261,7 @@ public class EquationMath {
                 System.out.println("check: equation has unnecessary moment term: "+term.getSource());
                 System.out.println("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoments");
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment");
                 return false;
             }
 

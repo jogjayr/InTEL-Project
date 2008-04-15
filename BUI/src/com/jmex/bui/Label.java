@@ -386,7 +386,7 @@ public class Label
         if (twidth < 0) {
             Log.log.warning("Requested to layout with negative target width [text=" + _value +
                             ", twidth=" + twidth + "].");
-            Thread.dumpStack();
+            //Thread.dumpStack();
             return config;
         }
 

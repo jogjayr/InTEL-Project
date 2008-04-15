@@ -39,7 +39,11 @@ abstract class TopMenuItem extends BLabel {
     }
     
     protected void addMenuItem(String text, String action) {
-        menuItems.add(new BrowseMenuItem(text, action));
+        addMenuItem(new BrowseMenuItem(text, action));
+    }
+    
+    protected void addMenuItem(BrowseMenuItem item) {
+        menuItems.add(item);
     }
     
     protected void removeMenuItems() {

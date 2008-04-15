@@ -89,7 +89,7 @@ public class PurseExercise extends FBDExercise {
 
     @Override
     public float getDrawScale() {
-        return 1.5f;
+        return 2.0f;
     }
     
     @Override

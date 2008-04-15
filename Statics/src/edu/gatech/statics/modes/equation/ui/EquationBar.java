@@ -96,7 +96,11 @@ public class EquationBar extends BContainer {
         if (math instanceof EquationMathMoments) {
             // we do special handling for moment math
             startContainer.add(new BLabel("M["));
-            momentButton = new BButton("?", new ActionListener() {
+            
+            Point momentPoint = math.getWorld().getMomentPoint();
+            String pointName = momentPoint == null ? "?" : momentPoint.getName();
+
+            momentButton = new BButton(pointName, new ActionListener() {
 
                 public void actionPerformed(ActionEvent event) {
                     PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram());

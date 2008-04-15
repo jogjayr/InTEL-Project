@@ -43,15 +43,15 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         descriptionWindow.popup(0, 0, true);
         dim = descriptionWindow.getPreferredSize(-1, -1);
         //popupWindows.put(descriptionWindow.getName(), descriptionWindow);
-        descriptionWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 20);
+        descriptionWindow.setLocation(displayWidth - dim.width - 10, displayHeight - dim.height - 70);
         popups.add(descriptionWindow);
 
         KnownLoadsWindow knownLoadsWindow = new KnownLoadsWindow();
         knownLoadsWindow.popup(0, 0, true);
         dim = knownLoadsWindow.getPreferredSize(-1, -1);
         //popupWindows.put(knownForcesWindow.getName(), knownForcesWindow);
-        knownLoadsWindow.setLocation(displayWidth - dim.width - 30, displayHeight - dim.height - 30);
-        knownLoadsWindow.setVisible(false);
+        knownLoadsWindow.setLocation(180, displayHeight - dim.height - 70);
+        knownLoadsWindow.setVisible(true);
         popups.add(knownLoadsWindow);
 
         // leave this out for now.
@@ -69,8 +69,8 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         selectFBDWindow.popup(0, 0, true);
         dim = selectFBDWindow.getPreferredSize(-1, -1);
         //popupWindows.put(selectFBDWindow.getName(), selectFBDWindow);
-        selectFBDWindow.setLocation(displayWidth - dim.width - 20, displayHeight - dim.height - 300);
-        selectFBDWindow.setVisible(false);
+        selectFBDWindow.setLocation(10, displayHeight - dim.height - 70);
+        selectFBDWindow.setVisible(true);
         popups.add(selectFBDWindow);
 
         return popups;

@@ -57,6 +57,11 @@ public class StaticsApplet extends Applet {
         return getParameter("exercise");
     }
     
+    public void setResolution(int width, int height) {
+        canvasWidth = width;
+        canvasHeight = height;
+    }
+    
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
         //try {
@@ -115,18 +120,19 @@ public class StaticsApplet extends Applet {
     @Override
     public void init() {
         
-        
-        String width = getParameter("width");
-        String height = getParameter("height");
-        
-        if(width != null)
-            canvasWidth = Integer.valueOf(width);
-        else
-            canvasWidth = defaultWidth;
-        if(height != null)
-            canvasHeight = Integer.valueOf(height);
-        else
-            canvasHeight = defaultHeight;
+        if(canvasHeight == 0 || canvasWidth == 0) {
+            String width = getParameter("width");
+            String height = getParameter("height");
+
+            if(width != null)
+                canvasWidth = Integer.valueOf(width);
+            else
+                canvasWidth = defaultWidth;
+            if(height != null)
+                canvasHeight = Integer.valueOf(height);
+            else
+                canvasHeight = defaultHeight;
+        }
         
         showTextures();
         System.out.println("Applet: init()");
@@ -219,10 +225,12 @@ public class StaticsApplet extends Applet {
             super.doSetup();
             //display.createHeadlessWindow(canvasWidth, canvasHeight, 16);
             //renderer = display.getRenderer();
+            System.out.println("creating renderer...");
             renderer = new LWJGLRenderer(canvasWidth, canvasHeight);
             renderer.setHeadless(true);
             display.setRenderer(renderer);
             display.getCurrentContext().setupRecords(renderer);
+            System.out.println("updating display...");
             DisplaySystem.updateStates(renderer);
             
             System.out.println("calling StaticsApplication.init()...");

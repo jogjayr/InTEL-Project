@@ -33,7 +33,7 @@ public class DisplayGroup {
         
         addGroup(schematic = new DisplayGroup(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("interface_DisplayGroup_Schematic"),
-                RepresentationLayer.labels.getName(),
+                //RepresentationLayer.labels.getName(),
                 RepresentationLayer.points.getName(),
                 RepresentationLayer.vectors.getName(),
                 RepresentationLayer.schematicBodies.getName()));
@@ -46,11 +46,11 @@ public class DisplayGroup {
     private String name;
     private String layerNames[];
     
-    static public void addGroup(DisplayGroup group) {allGroups.put(group.getName(), group);}
+    static public void addGroup(DisplayGroup group) {allGroups.put(group.getName().toLowerCase(), group);}
     static public List<String> getGroupNames() {
         return new ArrayList(allGroups.keySet());
     }
-    static public DisplayGroup getGroup(String name) {return allGroups.get(name);}
+    static public DisplayGroup getGroup(String name) {return allGroups.get(name.toLowerCase());}
     
     /** Creates a new instance of DisplayGroup */
     public DisplayGroup(String name, String ... layerNames) {
