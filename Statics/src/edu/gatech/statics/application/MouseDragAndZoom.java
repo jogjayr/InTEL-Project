@@ -27,6 +27,8 @@ public class MouseDragAndZoom extends MouseInputAction {
     }
     private static final float mouseSpeed = .1f;
     private static final float zoomSpeed = .03f;
+    
+    private int lastX, lastY;
 
     public void performAction(InputActionEvent evt) {
         if (!enabled || 
@@ -38,12 +40,15 @@ public class MouseDragAndZoom extends MouseInputAction {
         if(!mouseWasDown && InterfaceRoot.getInstance().hasMouse()) {
             return;
         }
+        
+        int currentX = MouseInput.get().getXAbsolute();
+        int currentY = MouseInput.get().getYAbsolute();
 
         boolean mouseIsDown = MouseInput.get().isButtonDown(0);
 
         if (mouseWasDown && mouseIsDown) {
-            float deltaX = -mouseSpeed * MouseInput.get().getXDelta();//(currentX - lastX);
-            float deltaY = -mouseSpeed * MouseInput.get().getYDelta();//(currentY - lastY);
+            float deltaX = -mouseSpeed * (currentX - lastX);
+            float deltaY = -mouseSpeed * (currentY - lastY);
 
             InterfaceRoot.getInstance().getCameraControl().panCamera(deltaX, deltaY);
         }
@@ -51,5 +56,8 @@ public class MouseDragAndZoom extends MouseInputAction {
         if(deltaZoom != 0)
             InterfaceRoot.getInstance().getCameraControl().zoomCamera(-deltaZoom);
         mouseWasDown = mouseIsDown;
+        
+        lastX = currentX;
+        lastY = currentY;
     }
 }
