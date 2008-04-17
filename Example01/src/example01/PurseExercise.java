@@ -84,6 +84,7 @@ public class PurseExercise extends FBDExercise {
     protected float shoulderHeight = 16;
     protected float forearmWeight = 9;
     protected float purseWeight = 19.6f;
+    protected float centerGravityOffset = 0;
     Point A, B, C, D, E, G;
     Connector2ForceMember2d jointB, jointD;
     Pin2d jointC, jointE;
@@ -129,7 +130,7 @@ public class PurseExercise extends FBDExercise {
         jointC = new Pin2d(C);
         jointE = new Pin2d(E);
 
-        G = new Point("3", "-10", "0");
+        G = new Point(""+(centerGravityOffset+3), "-10", "0");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.createDefaultSchematicRepresentation(6f);

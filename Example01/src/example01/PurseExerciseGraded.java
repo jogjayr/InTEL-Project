@@ -46,7 +46,7 @@ public class PurseExerciseGraded extends PurseExercise {
         shoulderHeight = 16 + -(float)rand.nextInt(10)/10;
         forearmWeight = 9 + (float)rand.nextInt(20)/10 - 1;
         purseWeight = 19.6f + (float)rand.nextInt(20)/10 - 1;
-        
+        centerGravityOffset = (float)rand.nextInt(10)/10 - .5f;
     }
     
     public void initExercise() {
