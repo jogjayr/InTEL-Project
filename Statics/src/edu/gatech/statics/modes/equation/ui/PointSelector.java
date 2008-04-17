@@ -14,6 +14,7 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.util.SelectionFilter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,7 +54,7 @@ public class PointSelector extends Tool {
             return;
         }
 
-        System.out.println("Selected... " + obj);
+        Logger.getLogger("Statics").info("Selected... " + obj);
 
         if (obj != null) {
 

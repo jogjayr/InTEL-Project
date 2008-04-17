@@ -10,6 +10,8 @@
 package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,26 +31,21 @@ public class AppletLauncher extends StaticsApplet {
             Class exerciseClass = Class.forName(exerciseName);
             final Exercise exercise = (Exercise) exerciseClass.newInstance();
             
-            System.out.println("Exercise loaded!");
+            Logger.getLogger("Statics").info("Exercise loaded!");
             
             super.init();
             getApplication().setExercise(exercise);
             
         } catch(NullPointerException ex) {
-            System.out.println("Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch(ClassNotFoundException ex) {
-            System.out.println("Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch(ClassCastException ex) {
-            System.out.println("Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch(IllegalAccessException ex) {
-            System.out.println("Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch(InstantiationException ex) {
-            System.out.println("Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         }
     }
     

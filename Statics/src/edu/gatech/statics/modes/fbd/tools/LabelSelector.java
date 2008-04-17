@@ -63,7 +63,7 @@ public class LabelSelector /*extends SelectionTool*/ {
         StaticsApplication.getApp().setAdvice(advice);
 
         final BPopupWindow popup = new ModalPopupWindow(new BorderLayout(5, 5));
-        popup.setStyleClass("info_window");
+        popup.setStyleClass("application_popup");
         popup.setModal(true);
 
         BLabel label = new BLabel("Label Force:\n(give a name or a number)");

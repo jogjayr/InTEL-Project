@@ -8,7 +8,6 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,7 +67,7 @@ public class FBDChecker {
 
         // step 1: assemble a list of all the forces the user has added.
         List<Load> addedForces = getAddedForces();
-        System.out.println("check: user added forces: " + addedForces);
+        Logger.getLogger("Statics").info("check: user added forces: " + addedForces);
 
         // make list for weights, as we will need these later.
         Map<Load, Body> weights = new HashMap<Load, Body>();
@@ -95,8 +95,8 @@ public class FBDChecker {
             }
 
             if (!success) {
-                System.out.println("check: diagram does not contain external force " + external);
-                System.out.println("check: FAILED");
+                Logger.getLogger("Statics").info("check: diagram does not contain external force " + external);
+                Logger.getLogger("Statics").info("check: FAILED");
 
                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external");
                 return false;
@@ -115,13 +115,13 @@ public class FBDChecker {
                 if (addedForces.contains(weight)) {
                     // still using units here....
                     // this should be changed so the test is independent of magnitude.
-                    System.out.println("check: removing weight for " + body);
+                    Logger.getLogger("Statics").info("check: removing weight for " + body);
                     addedForces.remove(weight);
                 } else {
                     // weight does not exist in system.
-                    System.out.println("check: diagram does not contain weight for " + body);
-                    System.out.println("check: weight is: " + weight);
-                    System.out.println("check: FAILED");
+                    Logger.getLogger("Statics").info("check: diagram does not contain weight for " + body);
+                    Logger.getLogger("Statics").info("check: weight is: " + weight);
+                    Logger.getLogger("Statics").info("check: FAILED");
 
                     StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight");
                     return false;
@@ -166,24 +166,24 @@ public class FBDChecker {
             //jointsAndBodies.add(new Pair(joint, body));
             List<Load> reactions = getReactions(joint, joint.getReactions(body));
 
-            System.out.println("check: testing joint: " + joint);
+            Logger.getLogger("Statics").info("check: testing joint: " + joint);
             for (Load reaction : reactions) {
 
                 if (joint.isForceDirectionNegatable()) {
                     if (!testReaction(reaction, addedForces) &&
                             !testReaction(negate(reaction), addedForces)) {
-                        System.out.println("check: diagram missing reaction force: " + reaction);
-                        System.out.println("check:               or negated force: " + negate(reaction));
-                        System.out.println("check: note: reaction is negatable");
-                        System.out.println("check: FAILED");
+                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
+                        Logger.getLogger("Statics").info("check:               or negated force: " + negate(reaction));
+                        Logger.getLogger("Statics").info("check: note: reaction is negatable");
+                        Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
                         return false;
                     }
                 } else {
                     if (!testReaction(reaction, addedForces)) {
-                        System.out.println("check: diagram missing reaction force: " + reaction);
-                        System.out.println("check: FAILED");
+                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
+                        Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
                         return false;
@@ -195,8 +195,8 @@ public class FBDChecker {
 
         // Step 5: Make sure we've used all the user added forces.
         if (!addedForces.isEmpty()) {
-            System.out.println("check: user added more forces than necessary: " + addedForces);
-            System.out.println("check: FAILED");
+            Logger.getLogger("Statics").info("check: user added more forces than necessary: " + addedForces);
+            Logger.getLogger("Statics").info("check: FAILED");
 
             StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_additional");
             return false;
@@ -225,8 +225,8 @@ public class FBDChecker {
                 // we probably need some sort of means for identifying this later on...
 
                 if (weights.values().contains(force)) {
-                    System.out.println("check: force should not be symbol: " + force);
-                    System.out.println("check: FAILED");
+                    Logger.getLogger("Statics").info("check: force should not be symbol: " + force);
+                    Logger.getLogger("Statics").info("check: FAILED");
 
                     StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_symbol");
                     return false;
@@ -235,8 +235,8 @@ public class FBDChecker {
                 // check for duplication
                 String name = force.getSymbolName();
                 if (names.contains(name)) {
-                    System.out.println("check: user duplicated name for force: " + name);
-                    System.out.println("check: FAILED");
+                    Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
+                    Logger.getLogger("Statics").info("check: FAILED");
 
                     StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate");
                     return false;
@@ -265,8 +265,8 @@ public class FBDChecker {
                     double weight = body.getWeight().doubleValue();
                     //if (force.doubleValue() != weight) {
                     if(!body.getWeight().equals(force.getVector().getQuantity())) {
-                        System.out.println("check: weight value incorrect: " + force.doubleValue() + " != " + weight);
-                        System.out.println("check: FAILED");
+                        Logger.getLogger("Statics").info("check: weight value incorrect: " + force.doubleValue() + " != " + weight);
+                        Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_wrongWeight");
                         return false;
@@ -275,8 +275,8 @@ public class FBDChecker {
                 //}
 
                 /*if(!checked) {
-                System.out.println("check: unknown error, weight winks out of existence: "+force);
-                System.out.println("check: FAILED");
+                Logger.getLogger("Statics").info("check: unknown error, weight winks out of existence: "+force);
+                Logger.getLogger("Statics").info("check: FAILED");
                 StaticsApplication.getApp().setAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_unknown"));
                 return false;
@@ -286,8 +286,8 @@ public class FBDChecker {
                 // OK, do nothing
 
                 } else {
-                    System.out.println("check: force should not be numeric: " + force);
-                    System.out.println("check: FAILED");
+                    Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
+                    Logger.getLogger("Statics").info("check: FAILED");
 
                     StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_numeric");
                     return false;
@@ -296,7 +296,7 @@ public class FBDChecker {
         }
 
         // Yay, we've passed the test!
-        System.out.println("check: PASSED!");
+        Logger.getLogger("Statics").info("check: PASSED!");
         return true;
     }
 

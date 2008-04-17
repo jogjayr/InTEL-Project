@@ -41,6 +41,8 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -92,7 +94,7 @@ public class StaticsApplication {
         Diagram diagram = currentExercise.getRecentDiagram(bodies);
         if (diagram == null) {
             // this is an exceptional condition?
-            System.out.println("bodies do not have a diagram? " + bodies);
+            Logger.getLogger("Statics").info("bodies do not have a diagram? " + bodies);
         } else {
             setCurrentDiagram(diagram);
             Mode newMode = diagram.getMode();
@@ -382,6 +384,9 @@ public class StaticsApplication {
      */
     public void init() {
 
+        // get rid of some obnoxious log messages in com.jme.scene.Node
+        Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
+        
         // initialization of the exercise
         getExercise().initExercise();
 

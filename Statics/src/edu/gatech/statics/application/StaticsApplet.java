@@ -25,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -75,22 +76,22 @@ public class StaticsApplet extends Applet {
         instance = this;
         application = new StaticsApplication();
         alive = true;
-        System.out.println("Applet: StaticsApplet()");
+        Logger.getLogger("Statics").info("Applet: StaticsApplet()");
     }
     
     public StaticsApplication getApplication() {return application;}
 
     private void showTextures() {
-        System.out.println("Textures...");
+        Logger.getLogger("Statics").info("Textures...");
         java.lang.reflect.Field[] fields = TextureManager.class.getDeclaredFields();
         for(java.lang.reflect.Field field : fields) {
             try {
                 field.setAccessible(true);
-                System.out.println(field.getName()+": "+field.get(null));
+                Logger.getLogger("Statics").info(field.getName()+": "+field.get(null));
             } catch (IllegalArgumentException ex) {
-                System.out.println(ex);
+                //System.out.println(ex);
             } catch (IllegalAccessException ex) {
-                System.out.println(ex);
+                //System.out.println(ex);
             }
         }
     }
@@ -102,19 +103,19 @@ public class StaticsApplet extends Applet {
         application = null;
         super.destroy();
         alive = false;
-        System.out.println("Applet: destroy()");
+        Logger.getLogger("Statics").info("Applet: destroy()");
     }
 
     @Override
     public void start() {
         super.start();
-        System.out.println("Applet: start()");
+        Logger.getLogger("Statics").info("Applet: start()");
     }
 
     @Override
     public void stop() {
         super.stop();
-        System.out.println("Applet: stop()");
+        Logger.getLogger("Statics").info("Applet: stop()");
     }
     
     @Override
@@ -135,7 +136,7 @@ public class StaticsApplet extends Applet {
         }
         
         showTextures();
-        System.out.println("Applet: init()");
+        Logger.getLogger("Statics").info("Applet: init()");
         synchronized (INIT_LOCK) {
 
             KeyInput.destroyIfInitalized();
@@ -225,15 +226,15 @@ public class StaticsApplet extends Applet {
             super.doSetup();
             //display.createHeadlessWindow(canvasWidth, canvasHeight, 16);
             //renderer = display.getRenderer();
-            System.out.println("creating renderer...");
+            Logger.getLogger("Statics").info("creating renderer...");
             renderer = new LWJGLRenderer(canvasWidth, canvasHeight);
             renderer.setHeadless(true);
             display.setRenderer(renderer);
             display.getCurrentContext().setupRecords(renderer);
-            System.out.println("updating display...");
+            Logger.getLogger("Statics").info("updating display...");
             DisplaySystem.updateStates(renderer);
             
-            System.out.println("calling StaticsApplication.init()...");
+            Logger.getLogger("Statics").info("calling StaticsApplication.init()...");
             application.init();
         }
         

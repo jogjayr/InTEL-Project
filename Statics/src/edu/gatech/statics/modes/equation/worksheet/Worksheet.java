@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -70,7 +71,7 @@ public class Worksheet {
         }
         
         // do a little check here for submission.
-        System.out.println("system solved: PASSED!");
+        Logger.getLogger("Statics").info("system solved: PASSED!");
         StaticsApplication.getApp().setAdviceKey("equation_system_solved");
         
         return solution;

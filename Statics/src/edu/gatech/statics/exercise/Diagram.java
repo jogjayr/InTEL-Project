@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -134,7 +135,7 @@ public abstract class Diagram {
         if (nodesUpdated) {
             return;
         }
-        System.out.println("*** updating nodes");
+        Logger.getLogger("Statics").info("*** updating nodes");
 
         nodesUpdated = true;
 

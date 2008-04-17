@@ -10,6 +10,8 @@
 package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,21 +24,21 @@ public class Launcher {
         //LoggingSystem.getLogger().setLevel(Level.OFF);
         //LoggingSystem.setLogToFile(null);
         
-        System.out.println("Georgia Tech Statics");
+        Logger.getLogger("Statics").info("Georgia Tech Statics");
         
         if(args.length == 0) {
-            System.out.println("Statics Launcher: Need to specify an exercise!");
+            Logger.getLogger("Statics").severe("Statics Launcher: Need to specify an exercise!");
             return;
         }
         
         String exerciseName = args[0];
-        System.out.println("Statics Launcher: Loading exercise: "+exerciseName);
+        Logger.getLogger("Statics").info("Statics Launcher: Loading exercise: "+exerciseName);
         
         try {
             Class exerciseClass = Class.forName(exerciseName);
             final Exercise exercise = (Exercise) exerciseClass.newInstance();
             
-            System.out.println("Statics Launcher: Exercise loaded!");
+            Logger.getLogger("Statics").info("Statics Launcher: Exercise loaded!");
             
             StaticsGame game = new StaticsGame() {
                 @Override
@@ -46,21 +48,17 @@ public class Launcher {
                 }
             };
             game.start();
-            System.out.println("Statics Launcher: Done.");
+            Logger.getLogger("Statics").info("Statics Launcher: Done.");
             System.exit(0);
             
         } catch(ClassNotFoundException ex) {
-            System.out.println("Statics Launcher: Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE,"Statics Launcher: Could not load exercise",ex);
         } catch(ClassCastException ex) {
-            System.out.println("Statics Launcher: Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE,"Statics Launcher: Could not load exercise",ex);
         } catch(IllegalAccessException ex) {
-            System.out.println("Statics Launcher: Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE,"Statics Launcher: Could not load exercise",ex);
         } catch(InstantiationException ex) {
-            System.out.println("Statics Launcher: Could not load exercise : "+ex);
-            ex.printStackTrace();
+            Logger.getLogger("Statics").log(Level.SEVERE,"Statics Launcher: Could not load exercise",ex);
         }
     }
 }

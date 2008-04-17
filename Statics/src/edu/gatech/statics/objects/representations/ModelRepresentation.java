@@ -25,6 +25,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -83,11 +85,11 @@ public class ModelRepresentation extends Representation {
 
             } else {
                 // ???
-                System.out.println("ModelRepresentation: Unrecognized file format: "+extension);
+                Logger.getLogger("Statics").warning("ModelRepresentation: Unrecognized file format: "+extension);
             }
         
         } catch(IOException e) {
-            System.out.println("IO error while loading file \""+filename+"\"");
+            Logger.getLogger("Statics").log(Level.SEVERE,"IO error while loading file \""+filename+"\"",e);
         }
         
         if(modelNode != null) {

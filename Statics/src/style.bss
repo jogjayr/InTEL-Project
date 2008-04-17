@@ -277,6 +277,7 @@ combobox {
 
 textfield {
   background: solid #ffffffff;
+  border: 1 solid #888888;
   font: "Arial" bold 16;
   padding: 5;
 }
