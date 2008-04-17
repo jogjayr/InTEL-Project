@@ -21,8 +21,10 @@ import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -45,6 +47,7 @@ public class PurseExerciseGraded extends PurseExercise {
     private String studentName;
     //private StreamHandler streamHandler;
     ByteArrayOutputStream bout;
+    StreamHandler streamHandler;
 
     public PurseExerciseGraded() {
 
@@ -59,7 +62,7 @@ public class PurseExerciseGraded extends PurseExercise {
         centerGravityOffset = (float) rand.nextInt(10) / 10 - .5f;
 
         bout = new ByteArrayOutputStream();
-        StreamHandler streamHandler = new StreamHandler(bout, new SimpleFormatter());
+        streamHandler = new StreamHandler(bout, new SimpleFormatter());
         Logger.getLogger("").addHandler(streamHandler);
     }
 
@@ -217,6 +220,27 @@ public class PurseExerciseGraded extends PurseExercise {
 
     private void navigateAway() {
 
+        streamHandler.flush();
+        byte[] loggerData = bout.toByteArray();
+        String loggerString = new String(loggerData);
+
+        System.out.println("*** Size: " + loggerData.length);
+
+        String postData = null;
+        try {
+            postData = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(studentName, "UTF-8");
+            postData += "&" + URLEncoder.encode("loggerData", "UTF-8") + "=" + URLEncoder.encode(loggerString, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+        }
+
+        /*System.out.println("*** LOGGER");
+        System.out.println(loggerString);
+        System.out.println("*** END LOGGER");
+        System.out.println("*** POST DATA");
+        System.out.println(postData);
+        System.out.println("*** END POST DATA");*/
+
+
         // this only works if we have an applet...
         if (StaticsApplet.getInstance() == null) {
             return;
@@ -246,18 +270,35 @@ public class PurseExerciseGraded extends PurseExercise {
             String targetPage = "loggerPost.php";
             URL url = new URL(StaticsApplet.getInstance().getDocumentBase(), targetPage);
 
+            /*
             byte[] loggerData = bout.toByteArray();
             String loggerString = new String(loggerData);
-
+            System.out.println("*** Size: "+loggerData.length);
             String postData = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(studentName, "UTF-8");
             postData += "&" + URLEncoder.encode("loggerData", "UTF-8") + "=" + URLEncoder.encode(loggerString, "UTF-8");
+            System.out.println("*** LOGGER");
+            System.out.println(loggerString);
+            System.out.println("*** END LOGGER");
+            System.out.println("*** POST DATA");
+            System.out.println(postData);
+            System.out.println("*** END POST DATA");
+             */
 
             URLConnection connection = url.openConnection();
             connection.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.write(postData);
-            wr.flush();
-            wr.close();
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(postData);
+            writer.flush();
+
+            /*BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            System.out.println("***** GETTING RESPONSE....");
+            while((line = reader.readLine()) != null) {
+            System.out.println("GOT RESPONSE: "+line);
+            }
+            System.out.println("***** DONE");
+            reader.close();*/
+            writer.close();
         } catch (MalformedURLException ex) {
         } catch (IOException ex) {
         }
