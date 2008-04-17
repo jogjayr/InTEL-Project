@@ -78,7 +78,11 @@ public class TopMenuBar extends AppWindow {
 
         @Override
         protected void onAction(String action) {
-            System.out.println(action);
+            //System.out.println(action);
+            
+            if("submit".equals(action)) {
+                Exercise.getExercise().onSubmit();
+            }
         }
     }
 

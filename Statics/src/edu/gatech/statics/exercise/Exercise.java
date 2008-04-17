@@ -65,6 +65,13 @@ public abstract class Exercise {
         taskListeners.add(listener);
     }
 
+    /**
+     * This method is called when the user tries to submit the exercise.
+     * Do nothing here, it should be overridden.
+     */
+    public void onSubmit() {
+    }
+
     public void removeTaskListener(TaskStatusListener listener) {
         taskListeners.remove(listener);
     }
@@ -233,7 +240,7 @@ public abstract class Exercise {
      * Also calls finishExercise() if the exercise is solved but not finished yet.
      * @return true if tasks are satisfied
      */
-    public boolean testExerciseSolved() {
+    public void testTasks() {
         boolean satisfied = true;
         for (Task task : tasks) {
             if (!task.isSatisfied()) {
@@ -249,7 +256,7 @@ public abstract class Exercise {
             finishExercise();
         }
 
-        return satisfied;
+        //return satisfied;
     }
     private boolean finished = false;
 

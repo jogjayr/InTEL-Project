@@ -62,7 +62,7 @@ final public class Vector implements Quantified {
     public void setValue(BigDecimal magnitude) {
         
         if(magnitude.signum() < 0){
-            magnitude.negate();
+            magnitude = magnitude.negate();
             setVectorValue(value.negate());
         }
         

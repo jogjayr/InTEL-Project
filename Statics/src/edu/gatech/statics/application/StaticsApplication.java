@@ -262,6 +262,8 @@ public class StaticsApplication {
         currentDiagram.update();
         updateLabels();
 
+        // have our exercise test its tasks
+        Exercise.getExercise().testTasks();
 
         if (iRoot != null) {
             iRoot.update();

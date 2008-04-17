@@ -9,8 +9,17 @@
 
 package example01;
 
+import com.jme.system.DisplaySystem;
+import com.jmex.bui.BButton;
+import com.jmex.bui.BContainer;
+import com.jmex.bui.BLabel;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.layout.BorderLayout;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.tasks.SolveJointTask;
+import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,6 +66,12 @@ public class PurseExerciseGraded extends PurseExercise {
         addTask(new SolveJointTask(jointC));
         addTask(new SolveJointTask(jointE));
     }
+
+    @Override
+    public void onSubmit() {
+        showCompletionPopup();
+    }
+    
 
     /*public void postLoadExercise() {
         showNamePopup();
@@ -132,12 +147,11 @@ public class PurseExerciseGraded extends PurseExercise {
         showCompletionPopup();
     }*/
     
-    /*private void showCompletionPopup() {
+    private void showCompletionPopup() {
         
         final ModalPopupWindow popup = new ModalPopupWindow(
-                StaticsApplication.getApp().getCurrentInterface().getToolbar(),
                 new BorderLayout(5, 5));
-        popup.setStyleClass("info_window_opaque");
+        popup.setStyleClass("application_popup");
         popup.setModal(true);
 
         popup.setPreferredSize(300, -1);
@@ -186,7 +200,7 @@ public class PurseExerciseGraded extends PurseExercise {
         
         Dimension dim = new Dimension(300, 0);
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
-    }*/
+    }
     
     private void navigateAway() {
         

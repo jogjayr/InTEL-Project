@@ -42,6 +42,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
             public Dimension getPreferredSize(int whint, int hhint) {
                 Dimension dim = super.getPreferredSize(whint, hhint);
                 dim.height /= 2;
+                dim.height += 10;
                 return dim;
             }
         };

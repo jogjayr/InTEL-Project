@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.equation.worksheet;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
@@ -67,6 +68,11 @@ public class Worksheet {
 
             }
         }
+        
+        // do a little check here for submission.
+        System.out.println("system solved: PASSED!");
+        StaticsApplication.getApp().setAdviceKey("equation_system_solved");
+        
         return solution;
     }
 
