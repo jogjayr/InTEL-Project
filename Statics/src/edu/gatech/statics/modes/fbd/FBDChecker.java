@@ -8,12 +8,14 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.SimulationObject;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,8 +105,12 @@ public class FBDChecker {
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
-            if (body.getWeight().getValue() != 0) {
-                Load weight = new Force(body.getCenterOfMassPoint(), new Vector3f(0, -body.getWeight().getValue(), 0));
+            if (body.getWeight().doubleValue() != 0) {
+                
+                Load weight = new Force(
+                        body.getCenterOfMassPoint(),
+                        new Vector3f(0,-1,0),
+                        new BigDecimal(body.getWeight().doubleValue()));
                 weights.put(weight, body);
                 if (addedForces.contains(weight)) {
                     // still using units here....
@@ -245,6 +251,7 @@ public class FBDChecker {
 
                 if (weights.containsKey(force)) {
 
+                    /*
                     // check each body because lazy
                     //boolean checked = false;
                     Body body = weights.get(force);
@@ -255,14 +262,15 @@ public class FBDChecker {
                     //    checked = true;
 
                     // will this ever happen, given that the weight Load has a magnitude now?
-                    float weight = body.getWeight().getValue();
-                    if (force.getValue() != weight) {
-                        System.out.println("check: weight value incorrect: " + force.getValue() + " != " + weight);
+                    double weight = body.getWeight().doubleValue();
+                    //if (force.doubleValue() != weight) {
+                    if(!body.getWeight().equals(force.getVector().getQuantity())) {
+                        System.out.println("check: weight value incorrect: " + force.doubleValue() + " != " + weight);
                         System.out.println("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_wrongWeight");
                         return false;
-                    }
+                    }*/
                 //}
                 //}
 

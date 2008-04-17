@@ -68,7 +68,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
 
         //Vector3f axis = getTarget().getNormalizedValue();
         //setMagnitude(getTarget().getMagnitude());
-        setMagnitude(getTarget().getValue());
+        setMagnitude((float)getTarget().doubleValue());
     }
 
     protected void buildGeometry() {

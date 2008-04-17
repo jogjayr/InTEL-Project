@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.fbd.tools;
 
 import edu.gatech.statics.objects.Load;
+import java.math.BigDecimal;
 
 /**
  * 
@@ -28,11 +29,16 @@ public class LoadLabelListener implements LabelListener {
             // numerical, try to lop off tail end
             String[] split = label.split(" ");
             try {
-                double value = Double.parseDouble(split[0]);
+                //double value = Double.parseDouble(split[0]);
                 // we do not want null values.
-                if (value == 0) {
+                //if (value == 0) {
+                //    return false;
+                //}
+                BigDecimal value = new BigDecimal(split[0]);
+                
+                if(value.compareTo(new BigDecimal(0)) == 0)
                     return false;
-                }
+                
                 myLoad.setValue(value);
                 myLoad.setSymbol(null);
             } catch (NumberFormatException e) {

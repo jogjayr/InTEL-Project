@@ -63,6 +63,11 @@ public class FBDInput extends InputHandler {
     private Force orientationForce;
 
     private long orientationPress;
+    
+    /**
+     * This should probably be changed to represent an actual tool.
+     * @param force
+     */
     protected void enableOrientationManipulator(Force force) {
         //System.out.println("enabling orientation manipulator: "+force);
 
@@ -76,6 +81,9 @@ public class FBDInput extends InputHandler {
         orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
         orientationManipulator.addListener(new MyOrientationListener());
         addToAttachedHandlers(orientationManipulator);
+        
+        // do not permit a mouse drag while orienting
+        StaticsApplication.getApp().enableDrag(false);
 
         orientationForce = force;
         orientationPress = System.currentTimeMillis();
@@ -119,6 +127,8 @@ public class FBDInput extends InputHandler {
             orientationManipulator.setEnabled(false);
             removeFromAttachedHandlers(orientationManipulator);
             orientationManipulator = null;
+            
+            StaticsApplication.getApp().enableDrag(true);
         }
     }
 }

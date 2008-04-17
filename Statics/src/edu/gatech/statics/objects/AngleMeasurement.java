@@ -12,6 +12,7 @@ package edu.gatech.statics.objects;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.representations.AngleRepresentation;
+import java.math.BigDecimal;
 
 /**
  *
@@ -51,7 +52,7 @@ public class AngleMeasurement extends Measurement {
         
         angle *= (180)/Math.PI;
         
-        updateQuantityValue(angle);
+        updateQuantityValue(new BigDecimal(angle));
     }
 
     public void createDefaultSchematicRepresentation() {

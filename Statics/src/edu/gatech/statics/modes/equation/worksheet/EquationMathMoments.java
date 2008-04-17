@@ -123,7 +123,7 @@ public class EquationMathMoments extends EquationMath {
             
             // clear off things that would not add via cross product
             float contribution = force.getVectorValue().cross( force.getAnchor().getTranslation().subtract(getObservationPoint()) ).length();
-            contribution *= force.getVector().getValue();
+            contribution *= force.getVector().doubleValue();
             
             if(contribution == 0)
                 if(term != null) {

@@ -4,29 +4,33 @@
  */
 package edu.gatech.statics.math;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author Calvin Ashmore
  */
 public class Quantity implements Quantified {
 
-    private int decimalValue;
-    private double floatValue;
+    //private int decimalValue;
+    //private double floatValue;
+    private BigDecimal value;
     private boolean known;
     private String symbolName;
     private boolean symbol;
     private Unit unit;
 
     public Quantity(Unit unit, String symbolName) {
+        
         this.unit = unit;
         this.symbolName = symbolName;
         this.symbol = true;
-        _setValue(1);
+        _setValue(new BigDecimal(1));
 
         known = false;
     }
 
-    public Quantity(Unit unit, double value) {
+    public Quantity(Unit unit, BigDecimal value) {
         this.unit = unit;
         _setValue(value);
 
@@ -39,7 +43,7 @@ public class Quantity implements Quantified {
         known = quantity.known;
         symbol = quantity.symbol;
         symbolName = quantity.symbolName;
-        _setValue(quantity.floatValue);
+        _setValue(quantity.value);
     }
 
     public Quantity getUnmodifiableQuantity() {
@@ -53,24 +57,6 @@ public class Quantity implements Quantified {
      * @param obj
      * @return
      */
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Quantity)) 
-            return false;
-        
-        Quantity quantity = (Quantity)obj;
-        
-        return  unit == quantity.unit &&
-                decimalValue == quantity.decimalValue;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + this.decimalValue;
-        hash = 31 * hash + (this.unit != null ? this.unit.hashCode() : 0);
-        return hash;
-    }
     
     public void setUnit(Unit unit) {
         this.unit = unit;
@@ -80,18 +66,27 @@ public class Quantity implements Quantified {
         return unit;
     }
 
-    public void setValue(double v) {
+    //public void setValue(double v) {
+    //    _setValue(new BigDecimal(v));
+    //}
+    
+    public BigDecimal getValue() {
+        return value;
+    }
+    
+    public void setValue(BigDecimal v) {
+        //floatValue = v;
+        //int precision = unit.getDecimalPrecision();
+        //decimalValue = (int) Math.round(floatValue * Math.pow(10, precision));
         _setValue(v);
     }
     
-    private void _setValue(double v) {
-        floatValue = v;
-        int precision = unit.getDecimalPrecision();
-        decimalValue = (int) Math.round(floatValue * Math.pow(10, precision));
+    private void _setValue(BigDecimal v) {
+        this.value = v.setScale(unit.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
     }
 
-    public float getValue() {
-        return (float) floatValue;
+    public double doubleValue() {
+        return value.doubleValue();
     }
 
     public void setKnown(boolean known) {
@@ -111,7 +106,7 @@ public class Quantity implements Quantified {
             this.symbolName = symbolName;
 
             if (!known) {
-                setValue(1);
+                setValue(new BigDecimal(1));
             }
         }
     }
@@ -134,10 +129,11 @@ public class Quantity implements Quantified {
         if (symbol && !known) {
             return symbolName;
         } else {
-            int precision = unit.getDecimalPrecision();
-            int power = (int) Math.pow(10, precision);
-            return String.format("%d.%02d%s",
-                    decimalValue / power, decimalValue % power, unit.getSuffix());
+            return toStringDecimal() + unit.getSuffix();
+            //int precision = unit.getDecimalPrecision();
+            //int power = (int) Math.pow(10, precision);
+            //return String.format("%d.%0"+precision+"d%s",
+            //        decimalValue / power, decimalValue % power, unit.getSuffix());
         }
     }
 
@@ -147,10 +143,11 @@ public class Quantity implements Quantified {
      * @return
      */
     public String toStringDecimal() {
-        int precision = unit.getDecimalPrecision();
-        int power = (int) Math.pow(10, precision);
-        return String.format("%d.%02d",
-                decimalValue / power, decimalValue % power);
+        return value.toString();
+        //int precision = unit.getDecimalPrecision();
+        //int power = (int) Math.pow(10, precision);
+        //return String.format("%d.%0"+precision+"d",
+        //        decimalValue / power, decimalValue % power);
     }
 
     private class UnmodifiableQuantity extends Quantity {
@@ -170,8 +167,36 @@ public class Quantity implements Quantified {
         }
 
         @Override
-        public void setValue(double v) {
+        public void setValue(BigDecimal v) {
             throw new UnsupportedOperationException("Cannot set value on an unmodifiable quantity");
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Quantity other = (Quantity) obj;
+        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+            return false;
+        }
+        if (this.unit != other.unit) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash = 67 * hash + (this.unit != null ? this.unit.hashCode() : 0);
+        return hash;
+    }
+    
+    
 }

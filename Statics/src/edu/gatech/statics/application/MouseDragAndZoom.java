@@ -29,7 +29,13 @@ public class MouseDragAndZoom extends MouseInputAction {
     private static final float zoomSpeed = .03f;
 
     public void performAction(InputActionEvent evt) {
-        if (!enabled) {
+        if (!enabled || 
+                StaticsApplication.getApp().getCurrentTool() != null) {
+            return;
+        }
+        
+        // special case for continuing to drag while under the interface.
+        if(!mouseWasDown && InterfaceRoot.getInstance().hasMouse()) {
             return;
         }
 

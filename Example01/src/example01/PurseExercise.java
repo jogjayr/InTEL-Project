@@ -30,6 +30,7 @@ import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.representations.ImageRepresentation;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
+import java.math.BigDecimal;
 
 /**
  *
@@ -104,11 +105,16 @@ public class PurseExercise extends FBDExercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         //StaticsApplication.getApp().setWorldScale(2f);
 
-        A = new Point(new Vector3f(handPoint, -16 + 6, 0));
+        /*A = new Point(new Vector3f(handPoint, -16 + 6, 0));
         B = new Point(new Vector3f(tendonAnchorB, -16 + 6, 0));
         C = new Point(new Vector3f(18, -16 + 6, 0));
         D = new Point(new Vector3f(18, tendonAnchorD + 6, 0));
-        E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));
+        E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));*/
+        A = new Point(""+handPoint, "-10", "0");
+        B = new Point(""+tendonAnchorB, "-10", "0");
+        C = new Point("18", "-10", "0");
+        D = new Point("18", ""+(tendonAnchorD + 6), "0");
+        E = new Point("18", ""+(shoulderHeight + 6), "0");
 
         Body upperArm = new Beam(E, C);
         Body forearm = new Beam(C, A);
@@ -123,7 +129,7 @@ public class PurseExercise extends FBDExercise {
         jointC = new Pin2d(C);
         jointE = new Pin2d(E);
 
-        G = new Point(new Vector3f(3.0f, -16 + 6, 0));
+        G = new Point("3", "-10", "0");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.createDefaultSchematicRepresentation(6f);
@@ -157,7 +163,7 @@ public class PurseExercise extends FBDExercise {
         angle3.createDefaultSchematicRepresentation(2f);
         world.add(angle3);
         
-        Force purse = new Force(A, new Vector3f(0, -purseWeight, 0));
+        Force purse = new Force(A, new Vector3f(0, -1, 0), new BigDecimal(purseWeight));
         purse.setName("Purse");
         forearm.addObject(purse);
 
@@ -190,7 +196,7 @@ public class PurseExercise extends FBDExercise {
         shoulder.createDefaultSchematicRepresentation();
         //weight.createDefaultSchematicRepresentation();
 
-        forearm.getWeight().setValue(forearmWeight); // ???
+        forearm.getWeight().setValue(new BigDecimal(forearmWeight)); // ???
         forearm.setCenterOfMassPoint(G);
 
         world.add(upperArm);

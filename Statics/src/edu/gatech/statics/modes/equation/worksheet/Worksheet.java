@@ -48,7 +48,7 @@ public class Worksheet {
                         equationSystem.addTerm(row, term.coefficientValue, vector.getSymbolName());
                         vectorNames.put(vector.getSymbolName(), vector);
                     } else {
-                        equationSystem.addTerm(row, vector.getValue() * term.coefficientValue, null);
+                        equationSystem.addTerm(row, (float)vector.doubleValue() * term.coefficientValue, null);
                     }
                 }
             }

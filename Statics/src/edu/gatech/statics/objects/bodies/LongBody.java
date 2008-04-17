@@ -11,8 +11,10 @@ package edu.gatech.statics.objects.bodies;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
+import java.math.BigDecimal;
 
 /**
  *
@@ -20,38 +22,41 @@ import edu.gatech.statics.objects.Point;
  */
 abstract public class LongBody extends Body {
 
-    private Vector3f end1;
-    private Vector3f end2;
+    private Vector3bd end1;
+    private Vector3bd end2;
     
-    public Vector3f getEndpoint1() {return end1;}
-    public Vector3f getEndpoint2() {return end2;}
+    public Vector3bd getEndpoint1() {return end1;}
+    public Vector3bd getEndpoint2() {return end2;}
     
     public LongBody() {
-        this(Vector3f.ZERO, Vector3f.UNIT_Y);
+        this(Vector3bd.ZERO, Vector3bd.UNIT_Y);
     }
     
-    public LongBody(Vector3f end1, Vector3f end2) {
+    public LongBody(Vector3bd end1, Vector3bd end2) {
         setByEndpoints(end1, end2);
     }
     
     public LongBody(Point end1, Point end2) {
-        setByEndpoints(end1.getTranslation(), end2.getTranslation());
+        setByEndpoints(end1.getPosition(), end2.getPosition());
         addObject(end1);
         addObject(end2);
     }
     
-    public void setByEndpoints(Vector3f end1, Vector3f end2) {
+    public void setByEndpoints(Vector3bd end1, Vector3bd end2) {
         this.end1 = end1;
         this.end2 = end2;
         
         // add a default center of mass point.
         // this may be changed later.
-        setCenterOfMassPoint(new Point(end1.add(end2).mult(.5f)));
         
-        setTranslation( end1.add(end2).mult(.5f) );
+        setCenterOfMassPoint(new Point(end1.add(end2).mult(new BigDecimal(".5"))));
+        
+        setTranslation( getCenterOfMassPoint().getTranslation() );
+        
+        Vector3f direction = end2.subtract(end1).toVector3f();
         
         Matrix3f mat = new Matrix3f();
-        mat.fromStartEndVectors(Vector3f.UNIT_Y, end2.subtract(end1).normalize());
+        mat.fromStartEndVectors(Vector3f.UNIT_Y, direction.normalize());
         
         Matrix3f rotation = new Matrix3f();
         rotation.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_Y);
@@ -59,19 +64,19 @@ abstract public class LongBody extends Body {
         
         setRotation(mat);
         
-        setDimensions(0, end1.distance(end2), 0);
+        setDimensions(0, direction.length(), 0);
     }
 
-    public Vector3f getDirectionFrom(Vector3f end) {
+    public Vector3f getDirectionFrom(Vector3bd end) {
         if(end.equals(end1))
-            return end2.subtract(end1).normalize();
+            return end2.subtract(end1).toVector3f().normalize();
         else if(end.equals(end2))
-            return end1.subtract(end2).normalize();
+            return end1.subtract(end2).toVector3f().normalize();
         return Vector3f.ZERO;
     }
     
     public Vector3f getDirectionFrom(Point end) {
-        return getDirectionFrom(end.getTranslation());
+        return getDirectionFrom(end.getPosition());
     }
     
 }

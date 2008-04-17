@@ -26,7 +26,7 @@ public class Bar extends TwoForceMember {
     }
     
     /** Creates a new instance of Beam */
-    public Bar() {
+    /*public Bar() {
         this(1f);
     }
     
@@ -36,7 +36,7 @@ public class Bar extends TwoForceMember {
     
     public Bar(Vector3f end1, Vector3f end2) {
         super(end1, end2);
-    }
+    }*/
     
     public Bar(Point end1, Point end2) {
         super(end1, end2);

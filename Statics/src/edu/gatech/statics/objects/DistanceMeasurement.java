@@ -12,6 +12,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.representations.DistanceRepresentation;
+import java.math.BigDecimal;
 
 /**
  *
@@ -34,13 +35,13 @@ public class DistanceMeasurement extends Measurement {
         super(v1, v2);
         this.v1 = v1;
         this.v2 = v2;
-        updateQuantityValue(v1.getTranslation().distance(v2.getTranslation()));
+        updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
     }
 
     @Override
     public void update() {
         super.update();
-        updateQuantityValue(v1.getTranslation().distance(v2.getTranslation()));
+        updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
     }
     
     public void createDefaultSchematicRepresentation() {

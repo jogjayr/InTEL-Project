@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.fbd.tools;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -45,7 +46,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     public CreateLoadTool(Diagram diagram) {
         this.diagram = diagram;
-        loadAnchor = new Point(new Vector3f());
+        loadAnchor = new Point(new Vector3bd());
         load = createLoad(loadAnchor);
 
         for (Load aLoad : load) {

@@ -12,6 +12,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,10 +30,10 @@ abstract public class Measurement extends SimulationObject implements Quantified
     
     private Quantity quantity;
     //public Quantity getQuantity() {return quantity.getUnmodifiableQuantity();}
-    public float getValue() {
+    public double doubleValue() {
         //if(getUnit() == Unit.distance)
         //    return quantity.getValue() * StaticsApplication.getApp().getDistanceScale();
-        return quantity.getValue();
+        return quantity.doubleValue();
     }
 
     public boolean isKnown() {
@@ -62,7 +63,7 @@ abstract public class Measurement extends SimulationObject implements Quantified
      * @param v
      */
     @Deprecated
-    public void setValue(double v) {
+    public void setValue(BigDecimal v) {
         throw new UnsupportedOperationException("Cannot set the value of a measurement!");
     }
 
@@ -70,10 +71,10 @@ abstract public class Measurement extends SimulationObject implements Quantified
      * Use this method to update the value for the measurement
      * @param value
      */
-    protected void updateQuantityValue(double value) {
+    protected void updateQuantityValue(BigDecimal value) {
         quantity.setValue(value);
     }
-
+    
     @Override
     public String getLabelText() {
         return quantity.toString();
@@ -85,6 +86,6 @@ abstract public class Measurement extends SimulationObject implements Quantified
     /** Creates a new instance of Measurement */
     public Measurement(Point ... points) {
         this.points = Arrays.asList(points);
-        quantity = new Quantity(getUnit(), 0);
+        quantity = new Quantity(getUnit(), BigDecimal.ZERO);
     }
 }

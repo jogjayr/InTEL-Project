@@ -36,6 +36,7 @@ import edu.gatech.statics.objects.representations.CurveUtil;
 //import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,7 @@ public class EquationDiagram extends SubDiagram {
                     // v is a symbolic force, but is not yet solved.
                     float value = values.get(v);
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    vObj.setValue(value);
+                    vObj.setValue(new BigDecimal(value));
                     vObj.setKnown(true);
                 }
             }
@@ -271,7 +272,7 @@ public class EquationDiagram extends SubDiagram {
         // have a direction vector pointing from the observation point to the target point
         //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
         Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
-        momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection));
+        momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
         momentArmTarget = target;
 
         ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);

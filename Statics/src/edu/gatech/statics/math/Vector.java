@@ -9,6 +9,7 @@
 package edu.gatech.statics.math;
 
 import com.jme.math.Vector3f;
+import java.math.BigDecimal;
 
 /**
  * This class contains the guts of a vector, its pure mathematical representation
@@ -50,26 +51,26 @@ final public class Vector implements Quantified {
         magnitude.setSymbol(symbolName);
     }
 
-    public float getValue() {
-        return magnitude.getValue();
+    public double doubleValue() {
+        return magnitude.doubleValue();
     }
 
     public Quantity getQuantity() {
         return magnitude.getUnmodifiableQuantity();
     }
 
-    public void setValue(double magnitude) {
-
-        if (magnitude < 0) {
-            magnitude *= -1;
+    public void setValue(BigDecimal magnitude) {
+        
+        if(magnitude.signum() < 0){
+            magnitude.negate();
             setVectorValue(value.negate());
         }
-
+        
         this.magnitude.setValue(magnitude);
     }
-
+    
     public Vector negate() {
-        Vector r = new Vector(getUnit(), value.negate());
+        Vector r = new Vector(getUnit(), value.negate(), magnitude.getValue());
         return r;
     }
 
@@ -88,10 +89,9 @@ final public class Vector implements Quantified {
     }
 
     /** Creates a new instance of Vector */
-    public Vector(Unit unit, Vector3f value) {
+    public Vector(Unit unit, Vector3f value, BigDecimal magnitude) {
         //constructQuantity();
-        magnitude = new Quantity(unit, 1);
-        setValue(value.length());
+        this.magnitude = new Quantity(unit, magnitude);
         setVectorValue(value);
     }
     
@@ -106,7 +106,7 @@ final public class Vector implements Quantified {
     public Vector(Vector vector) {
         //constructQuantity();
         magnitude = new Quantity(vector.getQuantity());
-        setValue(vector.getValue());
+        //setValue(vector.doubleValue());
         setVectorValue(vector.getVectorValue());
     }
 

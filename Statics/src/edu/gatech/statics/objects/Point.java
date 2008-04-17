@@ -9,8 +9,8 @@
 
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.*;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.representations.PointRepresentation;
 
@@ -21,10 +21,34 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
 public class Point extends SimulationObject {
     
     // location, etc, already built into SimulationObject
+    private Vector3bd point;
     
-    public Point(Vector3f position) {
-        setTranslation(position);
+    public Point(Point other) {
+        this.point = new Vector3bd(other.point);
+        updateTranslation();
     }
+    
+    public Point(Vector3bd point) {
+        this.point = point;
+        updateTranslation();
+    }
+    
+    public Point(String x, String y, String z) {
+        this.point = new Vector3bd(x, y, z);
+        updateTranslation();
+    }
+    
+    private void updateTranslation() {
+        setTranslation(point.toVector3f());
+    }
+    
+    public Vector3bd getPosition() {
+        return point;
+    }
+    
+    //public Point(Vector3f position) {
+    //    setTranslation(position);
+    //}
 
     public void createDefaultSchematicRepresentation() {
         Representation rep1 = new PointRepresentation(this);
@@ -39,5 +63,6 @@ public class Point extends SimulationObject {
     public String getDescription() {
         return "Point: "+getName();
     }
+    
     
 }

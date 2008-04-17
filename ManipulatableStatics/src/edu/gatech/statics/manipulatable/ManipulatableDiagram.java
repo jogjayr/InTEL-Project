@@ -116,7 +116,7 @@ public class ManipulatableDiagram extends Diagram {
                     //pCylinder.setLocalRotation(beam.getRotation());
                     //pCylinder.setLocalTranslation(beam.getTranslation());
                     //pCylinder.setLocalScale(new Vector3f(.03f, .03f, beam.getHeight()));
-                    node.setMass(beam.getWeight().getValue());
+                    node.setMass(beam.getWeight().doubleValue());
                     node.setCenterOfMass(beam.getTranslation());
 
                     node.setLocalRotation(new Matrix3f(beam.getRotation()));
@@ -126,7 +126,7 @@ public class ManipulatableDiagram extends Diagram {
                     dynamicsMap.put(beam, node);
 
                     for (Load load : loads) {
-                        Vector3f value = new Vector3f(load.getVectorValue().mult(load.getValue()));
+                        Vector3f value = new Vector3f(load.getVectorValue().mult(load.doubleValue()));
                         //value.multLocal(100f);
                         Vector3f at = load.getAnchor().getTranslation();
 

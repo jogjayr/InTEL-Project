@@ -12,6 +12,7 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
+import java.math.BigDecimal;
 
 /**
  * This denotes the object representation of a vector. It contains listeners as 
@@ -137,8 +138,8 @@ public class VectorObject extends SimulationObject implements Quantified {
         return vector.getUnit();
     }
 
-    public float getValue() {
-        return vector.getValue();
+    public double doubleValue() {
+        return vector.doubleValue();
     }
 
     public boolean isKnown() {
@@ -157,7 +158,7 @@ public class VectorObject extends SimulationObject implements Quantified {
         vector.setSymbol(symbolName);
     }
 
-    public void setValue(double v) {
+    public void setValue(BigDecimal v) {
         vector.setValue(v);
     }
 

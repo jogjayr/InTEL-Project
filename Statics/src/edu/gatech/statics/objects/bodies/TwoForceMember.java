@@ -20,7 +20,7 @@ abstract public class TwoForceMember extends LongBody {
 
     // methods for determining tension and compression...
     
-    public TwoForceMember() {
+    /*public TwoForceMember() {
     }
     
     public TwoForceMember(float length) {
@@ -29,7 +29,7 @@ abstract public class TwoForceMember extends LongBody {
     
     public TwoForceMember(Vector3f end1, Vector3f end2) {
         super(end1, end2);
-    }
+    }*/
     
     public TwoForceMember(Point end1, Point end2) {
         super(end1, end2);

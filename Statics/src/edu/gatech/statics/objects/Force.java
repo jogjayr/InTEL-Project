@@ -15,6 +15,7 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.representations.ArrowRepresentationFixedLength;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
+import java.math.BigDecimal;
 
 /**
  *
@@ -29,8 +30,8 @@ public class Force extends Load {
         //setName("F");
     }
 
-    public Force(Point anchor, Vector3f value) {
-        super(anchor, new Vector(Unit.force, value));
+    public Force(Point anchor, Vector3f value, BigDecimal magnitude) {
+        super(anchor, new Vector(Unit.force, value, magnitude));
     }
     
     public Force(Point anchor, Vector3f value, String symbolName) {

@@ -30,8 +30,8 @@ public class UnitUtils {
         switch(unit) {
             case angle:     return 1;
             case distance:  return 1;
-            case force:     return 2;
-            case moment:    return 2;
+            case force:     return 1;
+            case moment:    return 1;
             case none:      return 2;
             default:        throw new IllegalArgumentException("Unrecognized unit: "+unit);
         }

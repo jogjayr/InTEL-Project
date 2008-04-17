@@ -91,7 +91,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     }
 
     private void writeWeightReaction(Body body, StringBuffer contents) {
-        if (body.getWeight().getValue() == 0) {
+        if (body.getWeight().doubleValue() == 0) {
             return;
         }
 

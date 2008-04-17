@@ -5,6 +5,8 @@
 
 package edu.gatech.statics.math;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author Calvin Ashmore
@@ -13,7 +15,7 @@ public interface Quantified {
 
     Unit getUnit();
 
-    float getValue();
+    double doubleValue();
 
     boolean isKnown();
 
@@ -25,6 +27,6 @@ public interface Quantified {
 
     void setSymbol(String symbolName);
 
-    void setValue(double v);
-
+    //void setValue(double v);
+    void setValue(BigDecimal value);
 }

@@ -113,8 +113,13 @@ public class StaticsApplication {
     }
     //private boolean hideGrays = true;
     private MousePick selector;
+    private MouseDragAndZoom drag;
     private Tool currentTool;
 
+    public void enableDrag(boolean enabled) {
+        drag.setEnabled(enabled);
+    }
+    
     public void setCurrentTool(Tool tool) {
         if (currentTool != null && currentTool.isActive()) {
             currentTool.cancel();
@@ -397,7 +402,7 @@ public class StaticsApplication {
         //display.getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
 
         selector = new MousePick(this);
-        MouseDragAndZoom drag = new MouseDragAndZoom(this);
+        drag = new MouseDragAndZoom(this);
         
         input.addAction(selector);
         input.addAction(drag);

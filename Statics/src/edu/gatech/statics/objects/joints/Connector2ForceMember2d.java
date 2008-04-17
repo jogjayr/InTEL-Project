@@ -14,6 +14,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +50,6 @@ public class Connector2ForceMember2d extends Joint {
 
     public List<Vector> getReactions() {
         return Arrays.asList(
-                new Vector(Unit.force, direction));
+                new Vector(Unit.force, direction, new BigDecimal(1)));
     }
 }

@@ -12,6 +12,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.*;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +49,7 @@ abstract public class Body extends SimulationObject {
     }
     //public void setWeight(float weight) {this.weight = weight;}
     //public float getWeight() {return weight;}
-    private Quantity weight = new Quantity(Unit.force, 0);
+    private Quantity weight = new Quantity(Unit.force, BigDecimal.ZERO);
 
     public Quantity getWeight() {
         return weight;
