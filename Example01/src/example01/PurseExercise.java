@@ -176,6 +176,9 @@ public class PurseExercise extends FBDExercise {
         jointC.attach(forearm, upperArm);
         jointD.attach(upperArm, tendon);
         jointE.attachToWorld(upperArm);
+        
+        jointC.createDefaultSchematicRepresentation();
+        jointE.createDefaultSchematicRepresentation();
 
         E.setName("E");
         D.setName("D");

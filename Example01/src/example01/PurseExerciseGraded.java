@@ -19,6 +19,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -76,10 +78,15 @@ public class PurseExerciseGraded extends PurseExercise {
     public void initExercise() {
         super.initExercise();
 
+        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(),BigDecimal.ROUND_HALF_UP);
+        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(),BigDecimal.ROUND_HALF_UP);
+        
         setDescription(
                 "Here is a simplified model of the human arm. " +
-                "Please solve for the reactions at each of the points: B, C, and E." +
-                "The weight of the forearm is " + forearmWeight + " N, and the weight of the purse is " + purseWeight + " N.");
+                "Please solve for the reactions at each of the points: B, C, and E. " +
+                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
+                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
+                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
     }
 
     @Override

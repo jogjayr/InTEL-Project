@@ -313,7 +313,10 @@ public class FBDChecker {
     }
 
     private Load negate(Load reaction) {
-        return new Load(reaction.getAnchor(), reaction.getVector().negate());
+        if(reaction instanceof Force)
+            return new Force(reaction.getAnchor(), reaction.getVector().negate());
+        else 
+            return new Moment(reaction.getAnchor(), reaction.getVector().negate());
     }
 
     private boolean testReaction(Load reaction, List<Load> addedForces) {
