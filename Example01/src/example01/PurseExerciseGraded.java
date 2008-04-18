@@ -19,6 +19,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -44,10 +46,11 @@ import java.util.logging.StreamHandler;
  */
 public class PurseExerciseGraded extends PurseExercise {
 
-    private String studentName;
+    private String studentName = "No Name";
     //private StreamHandler streamHandler;
     ByteArrayOutputStream bout;
     StreamHandler streamHandler;
+    private int instance; // used for uniqueness of logger data
 
     public PurseExerciseGraded() {
 
@@ -61,11 +64,15 @@ public class PurseExerciseGraded extends PurseExercise {
         purseWeight = 19.6f + (float) rand.nextInt(20) / 10 - 1;
         centerGravityOffset = (float) rand.nextInt(10) / 10 - .5f;
 
+        instance = rand.nextInt();
+
         bout = new ByteArrayOutputStream();
         streamHandler = new StreamHandler(bout, new SimpleFormatter());
         Logger.getLogger("").addHandler(streamHandler);
+
     }
 
+    @Override
     public void initExercise() {
         super.initExercise();
 
@@ -75,6 +82,7 @@ public class PurseExerciseGraded extends PurseExercise {
                 "The weight of the forearm is " + forearmWeight + " N, and the weight of the purse is " + purseWeight + " N.");
     }
 
+    @Override
     public void loadExercise() {
         super.loadExercise();
 
@@ -88,24 +96,12 @@ public class PurseExerciseGraded extends PurseExercise {
         showCompletionPopup();
     }
 
+    @Override
     public void postLoadExercise() {
         showNamePopup();
     //showSubmitButton();
     }
 
-    /*private void showSubmitButton() {
-    BWindow submitWindow = new AppWindow(new BorderLayout());
-    submitWindow.add(new BButton("Submit", new ActionListener() {
-    public void actionPerformed(ActionEvent event) {
-    showCompletionPopup();
-    }
-    }, "submit"), BorderLayout.CENTER);
-    StaticsApplication.getApp().getRootInterface().getBuiNode().addWindow(submitWindow);
-    submitWindow.pack();
-    submitWindow.setLocation(
-    DisplaySystem.getDisplaySystem().getWidth()-submitWindow.getWidth(),
-    DisplaySystem.getDisplaySystem().getHeight()-submitWindow.getHeight());
-    }*/
     private void showNamePopup() {
 
         final ModalPopupWindow popup = new ModalPopupWindow(new BorderLayout());
@@ -157,6 +153,7 @@ public class PurseExerciseGraded extends PurseExercise {
         popup.center();
     }
 
+    @Override
     public void finishExercise() {
         super.finishExercise();
         showCompletionPopup();
@@ -181,9 +178,12 @@ public class PurseExerciseGraded extends PurseExercise {
         if (isExerciseFinished()) {
             textLabel = new BLabel("CONGRATULATIONS! You have solved for all of the unknown joints in this exercise. " +
                     "Please click the button below to submit your work.");
-        } else {
-            textLabel = new BLabel("You can submit your exercise for full extra credit now, " +
+        } else if(isHalfSolved()){
+            textLabel = new BLabel("You have solved one of the diagrams, so you can submit your exercise for half credit now, " +
                     "But you have not finished the exercise. Are you sure you want to submit?");
+        } else {
+            textLabel = new BLabel("You have solved any of the diagrams yet, so you will not get any credit. Are you sure you " +
+                    "want to submit?");
         }
 
         BContainer textContainer = new BContainer(new BorderLayout());
@@ -218,8 +218,56 @@ public class PurseExerciseGraded extends PurseExercise {
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
     }
 
-    private void navigateAway() {
+    private boolean isHalfSolved() {
+        // enumerate all diagrams and find out whether they are solved.
+        List<EquationDiagram> equationDiagrams = getEquationDiagrams();
+        for (EquationDiagram diagram : equationDiagrams) {
+            if (diagram.getWorksheet().isSolved()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    // NOTE: this is being used in place of an update() method
+    // this is bad style and should be fixed. Maybe we should have a general
+    // facility for logger posting?
+    @Override
+    public void testTasks() {
+        super.testTasks();
+        
+        my_frame++;
+        if(my_frame >= frames_until_post) {
+            my_frame = 0;
+            sendLoggerData();
+        }
+    }
+    private int my_frame = 0;
+    private static final int frames_until_post = 100;
+    
+    private void sendLoggerData() {
+        new Thread(new Runnable() {
+            public void run() {
+                sendLoggerDataImpl();
+            }
+        }).start();
+    }
+    
+    private void sendLoggerDataImpl() {
+        
+        URL documentBase = null;
+        if (StaticsApplet.getInstance() == null) {
+            try {
+                documentBase = new URL("http://intel.gatech.edu/assignment.php");
+            } catch (MalformedURLException ex) {
+                // ???
+                //Logger.getLogger(PurseExerciseGraded.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            documentBase = StaticsApplet.getInstance().getDocumentBase();
+        }
+
+        // first, attempt to gather the logger data
         streamHandler.flush();
         byte[] loggerData = bout.toByteArray();
         String loggerString = new String(loggerData);
@@ -229,17 +277,36 @@ public class PurseExerciseGraded extends PurseExercise {
         String postData = null;
         try {
             postData = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(studentName, "UTF-8");
+            postData += "&" + URLEncoder.encode("instance", "UTF-8") + "=" + URLEncoder.encode("" + instance, "UTF-8");
             postData += "&" + URLEncoder.encode("loggerData", "UTF-8") + "=" + URLEncoder.encode(loggerString, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
         }
 
-        /*System.out.println("*** LOGGER");
-        System.out.println(loggerString);
-        System.out.println("*** END LOGGER");
-        System.out.println("*** POST DATA");
-        System.out.println(postData);
-        System.out.println("*** END POST DATA");*/
+        // ***
+        // first send out our log messages
+        try {
+            String targetPage = "loggerPost.php";
+            URL url = new URL(documentBase, targetPage);
 
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(postData);
+            writer.flush();
+            
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while((line = reader.readLine()) != null) {
+                System.out.println("response: "+line);
+            }
+
+            writer.close();
+        } catch (MalformedURLException ex) {
+        } catch (IOException ex) {
+        }
+    }
+
+    private void navigateAway() {
 
         // this only works if we have an applet...
         if (StaticsApplet.getInstance() == null) {
@@ -257,51 +324,18 @@ public class PurseExerciseGraded extends PurseExercise {
 
         String exerciseName = getName();
         if (isExerciseFinished()) {
+            // if exercise is solved, give full credit
             exerciseName += " [Solved]";
+        } else if (isHalfSolved()) {
+            exerciseName += " [1PartSolved]";
         }
         String finalString = studentName + "@" + exerciseName;
         byte[] resultBytes = md5.digest(finalString.getBytes());
 
         String finalCode = String.format("%02x%02x%02x", resultBytes[0], resultBytes[1], resultBytes[2]);
 
-        // ***
-        // first send out our log messages
-        try {
-            String targetPage = "loggerPost.php";
-            URL url = new URL(StaticsApplet.getInstance().getDocumentBase(), targetPage);
-
-            /*
-            byte[] loggerData = bout.toByteArray();
-            String loggerString = new String(loggerData);
-            System.out.println("*** Size: "+loggerData.length);
-            String postData = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(studentName, "UTF-8");
-            postData += "&" + URLEncoder.encode("loggerData", "UTF-8") + "=" + URLEncoder.encode(loggerString, "UTF-8");
-            System.out.println("*** LOGGER");
-            System.out.println(loggerString);
-            System.out.println("*** END LOGGER");
-            System.out.println("*** POST DATA");
-            System.out.println(postData);
-            System.out.println("*** END POST DATA");
-             */
-
-            URLConnection connection = url.openConnection();
-            connection.setDoOutput(true);
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            writer.write(postData);
-            writer.flush();
-
-            /*BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            System.out.println("***** GETTING RESPONSE....");
-            while((line = reader.readLine()) != null) {
-            System.out.println("GOT RESPONSE: "+line);
-            }
-            System.out.println("***** DONE");
-            reader.close();*/
-            writer.close();
-        } catch (MalformedURLException ex) {
-        } catch (IOException ex) {
-        }
+        // first send out our logger data
+        sendLoggerData();
 
         // next send out the actual submission
         try {
