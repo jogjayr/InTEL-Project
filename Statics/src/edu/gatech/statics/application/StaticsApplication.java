@@ -27,6 +27,7 @@ import com.jmex.bui.BRootNode;
 import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
@@ -197,6 +198,10 @@ public class StaticsApplication {
     }
 
     public void setCurrentDiagram(Diagram diagram) {
+        Logger.getLogger("Statics").info("Loading diagram: "+diagram);
+        if(diagram instanceof SubDiagram)
+            Logger.getLogger("Statics").info("Diagram bodies: "+((SubDiagram)diagram).getBodySubset());
+        
         if (currentDiagram != null) {
             if (currentDiagram.getInputHandler() != null) {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
