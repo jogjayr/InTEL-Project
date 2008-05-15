@@ -16,7 +16,6 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -57,26 +56,9 @@ public class PurseExercise extends FBDExercise {
                 "Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
                 "The weight of the forearm is 9 N and its center of mass is at G. " +
                 "The weight of the purse is 19.6 N.");
-        Unit.setUtils(new UnitUtils() {
-
-            @Override
-            public String getSuffix(Unit unit) {
-                switch (unit) {
-                    case angle:
-                        return "°";
-                    case distance:
-                        return " cm";
-                    case force:
-                        return " N";
-                    case moment:
-                        return " N*cm";
-                    case none:
-                        return "";
-                    default:
-                        throw new IllegalArgumentException("Unrecognized unit: " + unit);
-                }
-            }
-        });
+        
+        Unit.setSuffix(Unit.distance, " cm");
+        Unit.setSuffix(Unit.moment, " N*cm");
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
