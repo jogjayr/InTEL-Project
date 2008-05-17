@@ -122,6 +122,20 @@ public class Vector3bd {
         return this;
     }
 
+    public Vector3bd divide(BigDecimal scalar) {
+        return new Vector3bd(
+                x.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP),
+                y.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP),
+                z.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP));
+    }
+
+    public Vector3bd divideLocal(BigDecimal scalar) {
+        x = x.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        y = y.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        z = z.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        return this;
+    }
+
     public Vector3bd mult(BigDecimal scalar) {
         return new Vector3bd(
                 x.multiply(scalar),

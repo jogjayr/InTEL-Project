@@ -61,6 +61,9 @@ public class EquationMathMoments extends EquationMath {
                 Vector3bd vectorOrient = getSource().getVectorValue();
                 Vector3bd distance = anchor.getPosition().subtract(observationPoint);
 
+                // distance is described in world units, so apply the world scale
+                distance.divideLocal(Unit.distance.getDisplayScale());
+                
                 targetValue = vectorOrient.cross(distance).dot(getObservationDirection());
                 targetValue = targetValue.negate();
             }

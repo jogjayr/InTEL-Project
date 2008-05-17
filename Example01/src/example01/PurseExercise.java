@@ -58,8 +58,9 @@ public class PurseExercise extends FBDExercise {
                 "The weight of the forearm is 9 N and its center of mass is at G. " +
                 "The weight of the purse is 19.6 N.");
 
-        Unit.setSuffix(Unit.distance, " cm");
-        Unit.setSuffix(Unit.moment, " N*cm");
+        Unit.setSuffix(Unit.distance, " mm");
+        Unit.setSuffix(Unit.moment, " N*mm");
+        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;

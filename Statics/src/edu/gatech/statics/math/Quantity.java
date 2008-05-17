@@ -101,7 +101,7 @@ public class Quantity implements Quantified {
     }
 
     public double doubleValue() {
-        return value.doubleValue();
+        return getDiagramValue().doubleValue();
     }
 
     public void setKnown(boolean known) {
