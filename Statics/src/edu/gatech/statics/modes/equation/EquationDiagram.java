@@ -24,6 +24,7 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
@@ -111,7 +112,7 @@ public class EquationDiagram extends SubDiagram {
                     // v is a symbolic force, but is not yet solved.
                     float value = values.get(v);
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    vObj.setValue(new BigDecimal(value));
+                    vObj.setDiagramValue(new BigDecimal(value));
                     vObj.setKnown(true);
                 }
             }
@@ -266,12 +267,13 @@ public class EquationDiagram extends SubDiagram {
         }
 
         //Vector3f observationPoint = ((EquationMathMoments) sumBar.getMath()).getObservationPoint();
-        Vector3f observationPointPos = this.momentPoint.getTranslation();
+        //Vector3f observationPointPos = this.momentPoint.getTranslation();
         Point targetPoint = target.getAnchor();
 
         // have a direction vector pointing from the observation point to the target point
         //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
-        Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
+        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
+        Vector3bd armDirection = targetPoint.getPosition().subtract(this.momentPoint.getPosition());
         momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
         momentArmTarget = target;
 

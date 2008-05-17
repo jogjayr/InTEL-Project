@@ -9,12 +9,12 @@
 
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
+import edu.gatech.statics.math.Vector3bd;
 
 /**
  *
  * @author Calvin Ashmore
  */
 public interface VectorListener {
-    public void valueChanged(Vector3f oldValue);
+    public void valueChanged(Vector3bd oldValue);
 }

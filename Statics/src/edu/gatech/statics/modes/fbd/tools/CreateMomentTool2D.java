@@ -8,12 +8,11 @@
  */
 package edu.gatech.statics.modes.fbd.tools;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
@@ -53,7 +52,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
     @Override
     protected List<Load> createLoad(Point anchor) {
 
-        moment = new Moment(anchor, new Vector3f(0, 0, 1), "M");
+        moment = new Moment(anchor, new Vector3bd("0", "0", "1"), "M");
         moment.createDefaultSchematicRepresentation();
         return Collections.singletonList((Load) moment);
     }

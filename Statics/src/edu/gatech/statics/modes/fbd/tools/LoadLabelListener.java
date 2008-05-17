@@ -39,7 +39,7 @@ public class LoadLabelListener implements LabelListener {
                 if(value.compareTo(new BigDecimal(0)) == 0)
                     return false;
                 
-                myLoad.setValue(value);
+                myLoad.setDiagramValue(value);
                 myLoad.setSymbol(null);
             } catch (NumberFormatException e) {
                 return false;

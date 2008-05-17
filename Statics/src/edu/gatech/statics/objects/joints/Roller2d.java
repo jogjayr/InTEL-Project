@@ -9,9 +9,9 @@
 package edu.gatech.statics.objects.joints;
 
 import edu.gatech.statics.objects.Joint;
-import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.PointRepresentation;
 import java.math.BigDecimal;
@@ -24,13 +24,13 @@ import java.util.List;
  */
 public class Roller2d extends Joint {
 
-    private Vector3f direction;
+    private Vector3bd direction;
 
-    public Vector3f getDirection() {
+    public Vector3bd getDirection() {
         return direction;
     }
 
-    public void setDirection(Vector3f direction) {
+    public void setDirection(Vector3bd direction) {
         this.direction = direction.normalize();
     }
 

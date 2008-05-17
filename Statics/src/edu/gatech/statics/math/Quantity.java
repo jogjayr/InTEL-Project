@@ -21,7 +21,7 @@ public class Quantity implements Quantified {
     private Unit unit;
 
     public Quantity(Unit unit, String symbolName) {
-        
+
         this.unit = unit;
         this.symbolName = symbolName;
         this.symbol = true;
@@ -57,7 +57,6 @@ public class Quantity implements Quantified {
      * @param obj
      * @return
      */
-    
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
@@ -66,21 +65,37 @@ public class Quantity implements Quantified {
         return unit;
     }
 
-    //public void setValue(double v) {
-    //    _setValue(new BigDecimal(v));
-    //}
-    
-    public BigDecimal getValue() {
+    /**
+     * Returns the value of this quantity, according to the diagram scale.
+     * The converse of this method is get3DValue.
+     * @return
+     */
+    public BigDecimal getDiagramValue() {
+        return value.multiply(unit.getDisplayScale());
+    }
+
+    public void setDiagramValue(BigDecimal v) {
+        _setValue(v.divide(unit.getDisplayScale()));
+    }
+
+    /**
+     * Returns the value of this quanity in raw form, to the scale of the 
+     * 3d engine. This is the value that is actually held within memory.
+     * Generally, it should not need to be accessed directly.
+     * @return
+     */
+    public BigDecimal get3DValue() {
         return value;
     }
-    
-    public void setValue(BigDecimal v) {
-        //floatValue = v;
-        //int precision = unit.getDecimalPrecision();
-        //decimalValue = (int) Math.round(floatValue * Math.pow(10, precision));
+
+    public void set3DValue(BigDecimal v) {
         _setValue(v);
     }
-    
+
+    /**
+     * private implementation of value setting.
+     * @param v
+     */
     private void _setValue(BigDecimal v) {
         this.value = v.setScale(unit.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
     }
@@ -106,7 +121,7 @@ public class Quantity implements Quantified {
             this.symbolName = symbolName;
 
             if (!known) {
-                setValue(new BigDecimal(1));
+                setDiagramValue(new BigDecimal(1));
             }
         }
     }
@@ -130,10 +145,6 @@ public class Quantity implements Quantified {
             return symbolName;
         } else {
             return toStringDecimal() + unit.getSuffix();
-            //int precision = unit.getDecimalPrecision();
-            //int power = (int) Math.pow(10, precision);
-            //return String.format("%d.%0"+precision+"d%s",
-            //        decimalValue / power, decimalValue % power, unit.getSuffix());
         }
     }
 
@@ -144,10 +155,6 @@ public class Quantity implements Quantified {
      */
     public String toStringDecimal() {
         return value.toString();
-        //int precision = unit.getDecimalPrecision();
-        //int power = (int) Math.pow(10, precision);
-        //return String.format("%d.%0"+precision+"d",
-        //        decimalValue / power, decimalValue % power);
     }
 
     private class UnmodifiableQuantity extends Quantity {
@@ -167,7 +174,12 @@ public class Quantity implements Quantified {
         }
 
         @Override
-        public void setValue(BigDecimal v) {
+        public void setDiagramValue(BigDecimal v) {
+            throw new UnsupportedOperationException("Cannot set value on an unmodifiable quantity");
+        }
+
+        @Override
+        public void set3DValue(BigDecimal v) {
             throw new UnsupportedOperationException("Cannot set value on an unmodifiable quantity");
         }
     }
@@ -197,6 +209,4 @@ public class Quantity implements Quantified {
         hash = 67 * hash + (this.unit != null ? this.unit.hashCode() : 0);
         return hash;
     }
-    
-    
 }

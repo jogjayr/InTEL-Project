@@ -11,6 +11,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.math.Quantified;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import java.math.BigDecimal;
 
@@ -73,22 +74,33 @@ public class VectorObject extends SimulationObject implements Quantified {
     @Override
     public Matrix3f getRotation() {
         Matrix3f mat = new Matrix3f();
-
-        mat.fromStartEndVectors(Vector3f.UNIT_Z, getVectorValue());
+        mat.fromStartEndVectors(Vector3f.UNIT_Z, getVectorValue().toVector3f());
         return mat;
     }
 
+    /**
+     * This method is necessary for orientation and placement of forces,
+     * however it also has the effect of slightly comprimising the precision of
+     * vectors.
+     * @param mat
+     */
     @Override
     public void setRotation(Matrix3f mat) {
         Vector3f v = mat.mult(Vector3f.UNIT_Z);
-        setVectorValue(v);
+        
+        Vector3bd vbd = new Vector3bd(
+                BigDecimal.valueOf(v.x), 
+                BigDecimal.valueOf(v.y), 
+                BigDecimal.valueOf(v.z));
+        
+        setVectorValue(vbd);
     }
-
-    public Vector3f getVectorValue() {
+    
+    public Vector3bd getVectorValue() {
         return vector.getVectorValue();
     }
 
-    public void setVectorValue(Vector3f value) {
+    public void setVectorValue(Vector3bd value) {
         vector.setVectorValue(value);
     }
 
@@ -125,7 +137,7 @@ public class VectorObject extends SimulationObject implements Quantified {
         }
 
         float distance = 1 + 2 * (arrow.getLength() + arrow.getAxisOffset());
-        return getTranslation().add(vector.getVectorValue().mult(distance));
+        return getTranslation().add(vector.getVectorValue().toVector3f().mult(distance));
     }
 
     @Override
@@ -158,10 +170,14 @@ public class VectorObject extends SimulationObject implements Quantified {
         vector.setSymbol(symbolName);
     }
 
-    public void setValue(BigDecimal v) {
-        vector.setValue(v);
+    public void setDiagramValue(BigDecimal v) {
+        vector.setDiagramValue(v);
     }
-
+    
+    public BigDecimal getDiagramValue() {
+        return vector.getDiagramValue();
+    }
+    
     /**
      * Returns a String representation of the vector without a unit.
      * Will return 1.0 for symbolic quantities.
@@ -200,6 +216,4 @@ public class VectorObject extends SimulationObject implements Quantified {
     public boolean equalsSymbolic(Load v) {
         return vector.equalsSymbolic(v.getVector()) && anchor.equals(v.getAnchor());
     }
-    
-    
 }

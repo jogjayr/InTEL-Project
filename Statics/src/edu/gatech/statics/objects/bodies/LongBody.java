@@ -67,15 +67,15 @@ abstract public class LongBody extends Body {
         setDimensions(0, direction.length(), 0);
     }
 
-    public Vector3f getDirectionFrom(Vector3bd end) {
+    public Vector3bd getDirectionFrom(Vector3bd end) {
         if(end.equals(end1))
-            return end2.subtract(end1).toVector3f().normalize();
+            return end2.subtract(end1).normalize();
         else if(end.equals(end2))
-            return end1.subtract(end2).toVector3f().normalize();
-        return Vector3f.ZERO;
+            return end1.subtract(end2).normalize();
+        return Vector3bd.ZERO;
     }
     
-    public Vector3f getDirectionFrom(Point end) {
+    public Vector3bd getDirectionFrom(Point end) {
         return getDirectionFrom(end.getPosition());
     }
     

@@ -28,5 +28,6 @@ public interface Quantified {
     void setSymbol(String symbolName);
 
     //void setValue(double v);
-    void setValue(BigDecimal value);
+    BigDecimal getDiagramValue();
+    void setDiagramValue(BigDecimal value);
 }

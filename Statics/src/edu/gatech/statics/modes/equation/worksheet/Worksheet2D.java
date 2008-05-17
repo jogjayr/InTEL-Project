@@ -5,10 +5,8 @@
 
 package edu.gatech.statics.modes.equation.worksheet;
 
-import com.jme.math.Vector3f;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationDiagram;
-import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 
 /**
  *
@@ -22,9 +20,9 @@ public class Worksheet2D extends Worksheet {
         EquationMath sumFx = new EquationMath(diagram);
         EquationMath sumFy = new EquationMath(diagram);
         EquationMath sumMp = new EquationMathMoments(diagram);
-        sumFx.setObservationDirection(Vector3f.UNIT_X);
-        sumFy.setObservationDirection(Vector3f.UNIT_Y);
-        sumMp.setObservationDirection(Vector3f.UNIT_Z);
+        sumFx.setObservationDirection(Vector3bd.UNIT_X);
+        sumFy.setObservationDirection(Vector3bd.UNIT_Y);
+        sumMp.setObservationDirection(Vector3bd.UNIT_Z);
         
         addEquation(sumFx);
         addEquation(sumFy);

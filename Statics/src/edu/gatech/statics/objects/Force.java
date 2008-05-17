@@ -8,11 +8,11 @@
  */
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Vector;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentationFixedLength;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import java.math.BigDecimal;
@@ -30,11 +30,11 @@ public class Force extends Load {
         //setName("F");
     }
 
-    public Force(Point anchor, Vector3f value, BigDecimal magnitude) {
+    public Force(Point anchor, Vector3bd value, BigDecimal magnitude) {
         super(anchor, new Vector(Unit.force, value, magnitude));
     }
     
-    public Force(Point anchor, Vector3f value, String symbolName) {
+    public Force(Point anchor, Vector3bd value, String symbolName) {
         super(anchor, new Vector(Unit.force, value, symbolName));
     }
     

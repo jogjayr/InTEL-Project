@@ -38,6 +38,11 @@ public class Point extends SimulationObject {
         updateTranslation();
     }
     
+    public Point(String formattedString) {
+        this.point = new Vector3bd(formattedString);
+        updateTranslation();
+    }
+    
     private void updateTranslation() {
         setTranslation(point.toVector3f());
     }

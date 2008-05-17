@@ -10,11 +10,11 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.modes.equation.*;
-import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath.TermError;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
@@ -30,9 +30,9 @@ import java.util.logging.Logger;
 public class EquationMathMoments extends EquationMath {
     
     private boolean observationPointSet = false;
-    private Vector3f observationPoint = new Vector3f();
-    public Vector3f getObservationPoint() {return observationPoint;}
-    public void setObservationPoint(Vector3f point) {this.observationPoint = point; observationPointSet = true;}
+    private Vector3bd observationPoint = new Vector3bd();
+    public Vector3bd getObservationPoint() {return observationPoint;}
+    public void setObservationPoint(Vector3bd point) {this.observationPoint = point; observationPointSet = true;}
     public boolean getObservationPointSet() {return observationPointSet;}
     
     @Override
@@ -51,30 +51,18 @@ public class EquationMathMoments extends EquationMath {
         
         @Override
         boolean check() {
-            /*if(vector.source instanceof Moment) {
-                if(!coefficient.parse()) {
-                    error = TermError.badCoefficient;
-                    return false;
-                }
-                error = TermError.none;
-                coefficientValue = coefficient.getValue();
-                return coefficientValue == 1.0f || coefficientValue == -1.0f;
-            }*/
             
             if(getSource().getUnit() == Unit.moment) {
-                
                 // this is a moment
-                Vector3f vectorOrient = getSource().getVectorValue();
+                Vector3bd vectorOrient = getSource().getVectorValue();
                 targetValue = vectorOrient.dot(getObservationDirection());
-                
             } else {
-            
                 // this is a force
-                Vector3f vectorOrient = getSource().getVectorValue();
-                Vector3f distance = anchor.getTranslation().subtract(observationPoint);
+                Vector3bd vectorOrient = getSource().getVectorValue();
+                Vector3bd distance = anchor.getPosition().subtract(observationPoint);
 
-                targetValue = -vectorOrient.cross(distance).dot(getObservationDirection());
-                //targetValue *= StaticsApplication.getApp().getWorldScale();
+                targetValue = vectorOrient.cross(distance).dot(getObservationDirection());
+                targetValue = targetValue.negate();
             }
             
             if(!coefficient.parse()) {
@@ -84,7 +72,7 @@ public class EquationMathMoments extends EquationMath {
             
             coefficientValue = coefficient.getValue();
             
-            if (Math.abs(coefficientValue - targetValue) < accuracy) {
+            if (Math.abs(coefficientValue - targetValue.floatValue()) < TEST_ACCURACY) {
                 error = TermError.none;
                 return true;
             } else {
@@ -123,10 +111,10 @@ public class EquationMathMoments extends EquationMath {
             Term term = getTerm(force.getVector());
             
             // clear off things that would not add via cross product
-            float contribution = force.getVectorValue().cross( force.getAnchor().getTranslation().subtract(getObservationPoint()) ).length();
+            float contribution = (float) force.getVectorValue().cross( force.getAnchor().getPosition().subtract(getObservationPoint()) ).length();
             contribution *= force.getVector().doubleValue();
             
-            if(contribution == 0)
+            if(Math.abs(contribution) < TEST_ACCURACY)
                 if(term != null) {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: "+term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");

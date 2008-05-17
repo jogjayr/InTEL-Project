@@ -24,11 +24,33 @@ public class Vector3bd {
     public Vector3f toVector3f() {
         return new Vector3f(x.floatValue(), y.floatValue(), z.floatValue());
     }
-    
+
+    /**
+     * This takes a string in the form of "[XString, YString, ZString]"
+     * and gives a Vector3bd that has that as a representation. It should give
+     * a reversal of the toString() method.
+     * @param formattedString
+     */
+    public Vector3bd(String formattedString) {
+        try {
+            String newString = formattedString.trim();
+            newString = newString.substring(1, newString.length() - 1);
+            String[] split = newString.split(",");
+
+            this.x = new BigDecimal(split[0].trim());
+            this.y = new BigDecimal(split[1].trim());
+            this.z = new BigDecimal(split[2].trim());
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new NumberFormatException("Incorrect format: \"" + formattedString + "\"");
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("Incorrect format: \"" + formattedString + "\"");
+        }
+    }
+
     public Vector3bd() {
         this("0", "0", "0");
     }
-    
+
     public Vector3bd(Vector3bd vec) {
         this.x = vec.x;
         this.y = vec.y;
@@ -47,10 +69,10 @@ public class Vector3bd {
         this.y = new BigDecimal(y);
         this.z = new BigDecimal(z);
     }
-    
+
     @Override
     public String toString() {
-        return "edu.gatech.statics.math [X=" + x + ", Y=" + y + ", Z=" + z + "]";
+        return "[" + x + ", " + y + ", " + z + "]";
     }
 
     public Vector3bd subtractLocal(Vector3bd vec) {
@@ -136,12 +158,25 @@ public class Vector3bd {
         z = z.add(vec.z);
         return this;
     }
-    
+
     public Vector3bd add(Vector3bd vec) {
         return new Vector3bd(
                 x.add(vec.x),
                 y.add(vec.y),
                 z.add(vec.z));
+    }
+
+    public BigDecimal dot(Vector3bd vec) {
+        return vec.x.multiply(x).
+                add(vec.y.multiply(y)).
+                add(vec.z.multiply(z));
+    }
+
+    public Vector3bd cross(Vector3bd vec) {
+        BigDecimal resX = y.multiply(vec.z).subtract(z.multiply(vec.y));
+        BigDecimal resY = z.multiply(vec.x).subtract(x.multiply(vec.z));
+        BigDecimal resZ = x.multiply(vec.y).subtract(y.multiply(vec.x));
+        return new Vector3bd(resX, resY, resZ);
     }
 
     @Override
@@ -173,6 +208,18 @@ public class Vector3bd {
         hash = 73 * hash + (this.z != null ? this.z.hashCode() : 0);
         return hash;
     }
-    
-    
+    private static final int VECTOR_PRECISION = 4;
+
+    public Vector3bd normalize() {
+        double magnitude = Math.sqrt(
+                Math.pow(x.doubleValue(), 2) +
+                Math.pow(y.doubleValue(), 2) +
+                Math.pow(z.doubleValue(), 2));
+        BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
+        BigDecimal xn = x.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        BigDecimal yn = y.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        BigDecimal zn = z.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+
+        return new Vector3bd(xn, yn, zn);
+    }
 }

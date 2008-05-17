@@ -14,10 +14,12 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorListener;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     }
 
     protected List<Load> createLoad(Point anchor) {
-        force = new Force(anchor, new Vector3f(1.5f, 1f, 0).normalize(), "F");
+        force = new Force(anchor, new Vector3bd("1.5", "1", "0").normalize(), "F");
         force.createDefaultSchematicRepresentation();
         return Collections.singletonList((Load) force);
     }
@@ -53,7 +55,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     protected void onFinish() {
         super.onFinish();
-        
+
         VectorListener forceListener = new VectorOverlapDetector(diagram, force);
         force.addListener(forceListener);
     }
@@ -111,7 +113,13 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     public void releaseOrientationManipulator() {
         if (orientationManipulator.getCurrentSnap() != null) {
 
-            force.setVectorValue(orientationManipulator.getCurrentSnap());
+            Vector3f currentSnap = orientationManipulator.getCurrentSnap();
+            Vector3bd vbd = new Vector3bd(
+                    BigDecimal.valueOf(currentSnap.x),
+                    BigDecimal.valueOf(currentSnap.y),
+                    BigDecimal.valueOf(currentSnap.z));
+
+            force.setVectorValue(vbd);
 
             orientationManipulator.setEnabled(false);
             removeFromAttachedHandlers(orientationManipulator);

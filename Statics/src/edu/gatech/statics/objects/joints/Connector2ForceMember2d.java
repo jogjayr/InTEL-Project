@@ -8,9 +8,9 @@
  */
 package edu.gatech.statics.objects.joints;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
@@ -25,9 +25,9 @@ import java.util.List;
 public class Connector2ForceMember2d extends Joint {
 
     private TwoForceMember member;
-    private Vector3f direction;
+    private Vector3bd direction;
 
-    public Vector3f getDirection() {
+    public Vector3bd getDirection() {
         return direction;
     }
     //public void setDirection(Vector3f direction) {this.direction = direction.normalize();}

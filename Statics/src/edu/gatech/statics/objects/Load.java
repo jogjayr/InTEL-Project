@@ -5,8 +5,8 @@
 
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +35,9 @@ public class Load extends VectorObject {
     }
     
     @Override
-    public void setVectorValue(Vector3f value) {
+    public void setVectorValue(Vector3bd value) {
 
-        Vector3f oldValue = getVectorValue();
+        Vector3bd oldValue = getVectorValue();
         super.setVectorValue(value);
 
         for (VectorListener listener : listeners) {

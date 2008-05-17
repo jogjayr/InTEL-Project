@@ -1,3 +1,4 @@
+
 /*
  * Equation.java
  *
@@ -9,13 +10,14 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.modes.equation.*;
-import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.parser.Parser;
 import edu.gatech.statics.objects.Force;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class EquationMath {
 
-    protected static final float accuracy = .01f;
+    protected static final float TEST_ACCURACY = .001f;
     private boolean locked = false;
 
     public void setLocked(boolean locked) {
@@ -43,13 +45,13 @@ public class EquationMath {
     public EquationDiagram getWorld() {
         return world;
     }
-    private Vector3f observationDirection;
+    private Vector3bd observationDirection;
 
-    public Vector3f getObservationDirection() {
+    public Vector3bd getObservationDirection() {
         return observationDirection;
     }
 
-    public void setObservationDirection(Vector3f direction) {
+    public void setObservationDirection(Vector3bd direction) {
         this.observationDirection = direction;
     }
     private Map<Vector, Term> terms = new HashMap();
@@ -59,21 +61,21 @@ public class EquationMath {
     }
 
     public String getName() {
-        if (observationDirection.dot(Vector3f.UNIT_X) != 0) {
+        if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
             return "F[X]";
         } else {
             return "F[Y]";
         }
     }
 
-    abstract protected class Element {
+    abstract protected static class Element {
 
         abstract String getText();
 
         abstract boolean isKnown();
     }
 
-    protected class VectorElement extends Element {
+    protected static class VectorElement extends Element {
 
         VectorElement(Vector source) {
             this.source = source;
@@ -90,7 +92,7 @@ public class EquationMath {
         //{return !source.isSymbol();}
     }
 
-    protected class CoefficientElement extends Element {
+    protected static class CoefficientElement extends Element {
 
         CoefficientElement() {
             expression = "";
@@ -129,7 +131,7 @@ public class EquationMath {
         } // may wish to change this later on...
     }
 
-    protected enum TermError {
+    protected static enum TermError {
 
         none, parse, incorrect, badCoefficient
     }
@@ -148,10 +150,10 @@ public class EquationMath {
         final CoefficientElement coefficient;
         TermError error;
         float coefficientValue;
-        float targetValue;
+        BigDecimal targetValue;
 
         boolean check() {
-            Vector3f vectorOrient = vectorElement.source.getVectorValue();
+            Vector3bd vectorOrient = vectorElement.source.getVectorValue();
             targetValue = vectorOrient.dot(observationDirection);
 
             if (!coefficient.parse()) {
@@ -161,7 +163,7 @@ public class EquationMath {
 
             coefficientValue = coefficient.getValue();
 
-            if (Math.abs(coefficientValue - targetValue) < accuracy) {
+            if (Math.abs(coefficientValue - targetValue.floatValue()) < TEST_ACCURACY) {
                 error = TermError.none;
                 return true;
             } else {
@@ -234,7 +236,11 @@ public class EquationMath {
         for (Force force : allForces) {
             Term term = terms.get(force.getVector());
 
-            if (force.getVectorValue().dot(getObservationDirection()) == 0) {
+            // is this force aligned with our observation direction, even slightly?
+            // if no, complain.
+            // this condition checks to see if the dot product with the observation
+            // direction is close enough to zero to be inappropriate.
+            if (Math.abs(force.getVectorValue().dot(getObservationDirection()).floatValue()) <= TEST_ACCURACY) {
                 if (term != null) {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: "+term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -246,6 +252,7 @@ public class EquationMath {
                 }
             }
 
+            // a term that we expected has not been added.
             if (term == null) {
                 Logger.getLogger("Statics").info("check: equation has not added all terms: "+force.getVector());
                 Logger.getLogger("Statics").info("check: FAILED");

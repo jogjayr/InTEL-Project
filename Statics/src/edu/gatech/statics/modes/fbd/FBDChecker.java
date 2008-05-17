@@ -4,10 +4,10 @@
  */
 package edu.gatech.statics.modes.fbd;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
@@ -105,11 +105,11 @@ public class FBDChecker {
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
-            if (body.getWeight().doubleValue() != 0) {
+            if (body.getWeight().getDiagramValue().floatValue() != 0) {
                 
                 Load weight = new Force(
                         body.getCenterOfMassPoint(),
-                        new Vector3f(0,-1,0),
+                        Vector3bd.UNIT_Y.negate(),
                         new BigDecimal(body.getWeight().doubleValue()));
                 weights.put(weight, body);
                 if (addedForces.contains(weight)) {

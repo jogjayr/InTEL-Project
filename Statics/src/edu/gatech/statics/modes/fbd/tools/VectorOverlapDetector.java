@@ -8,9 +8,9 @@
  */
 package edu.gatech.statics.modes.fbd.tools;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.VectorListener;
 import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
@@ -30,12 +30,7 @@ class VectorOverlapDetector implements VectorListener {
         this.world = world;
     }
 
-    public void valueChanged(Vector3f oldValue) {
-
-        //ArrowRepresentation myArrow = myVector.getArrow();
-
-        //if (myArrow == null)
-        //    return;
+    public void valueChanged(Vector3bd oldValue) {
 
         List<VectorObject> nearVectors = getVectors();
         updateVectors(nearVectors, oldValue);
@@ -61,30 +56,14 @@ class VectorOverlapDetector implements VectorListener {
         return r;
     }
 
-    /*private void moveVector(List<Vector> nearVectors, ArrowRepresentation myArrow) {
-    float myOffset = 0;
-    for (Vector v : nearVectors) {
-    if(v == myVector)
-    continue;
-    // vectors live on same point, let's check if they point in the same direction
-    Vector3f vNorm = v.getValue().normalize();
-    Vector3f myNorm = myVector.getValue().normalize();
-    if (vNorm.equals(myNorm)) {
-    // directions are concurrent.
-    if (v.getArrow() != null)
-    myOffset += v.getArrow().getLength();
-    }
-    }
-    myArrow.setAxisOffset(myOffset);
-    }*/
-    private void updateVectors(List<VectorObject> nearVectors, Vector3f direction) {
+    private void updateVectors(List<VectorObject> nearVectors, Vector3bd direction) {
 
         // sort vectors pointing towards oldValue
         direction = direction.normalize();
         float currentOffset = 0;
 
         for (VectorObject v : nearVectors) {
-            Vector3f vNorm = v.getVectorValue().normalize();
+            Vector3bd vNorm = v.getVectorValue().normalize();
 
             if (vNorm.equals(direction)) {
                 if (v.getArrow() != null) {

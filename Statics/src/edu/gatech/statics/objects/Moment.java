@@ -13,6 +13,7 @@ import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.representations.MomentRepresentation;
 import java.math.BigDecimal;
@@ -29,11 +30,11 @@ public class Moment extends Load {
     //setName("M");
     }
 
-    public Moment(Point anchor, Vector3f value, BigDecimal magnitude) {
+    public Moment(Point anchor, Vector3bd value, BigDecimal magnitude) {
         super(anchor, new Vector(Unit.moment, value, magnitude));
     }
 
-    public Moment(Point anchor, Vector3f value, String symbolName) {
+    public Moment(Point anchor, Vector3bd value, String symbolName) {
         super(anchor, new Vector(Unit.moment, value, symbolName));
     }
 

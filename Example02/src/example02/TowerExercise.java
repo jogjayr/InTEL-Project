@@ -21,7 +21,6 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.UnitUtils;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
@@ -31,6 +30,7 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.URL;
 
 /**
@@ -56,26 +56,10 @@ public class TowerExercise extends FBDExercise {
                 "This is a model of the tower of Pisa, solve for the reaction forces at its base. " +
                 "The tower's weight is 14700 tons."
                 );
-        Unit.setUtils(new UnitUtils() {
-
-            @Override
-            public String getSuffix(Unit unit) {
-                switch (unit) {
-                    case angle:
-                        return "°";
-                    case distance:
-                        return " cm";
-                    case force:
-                        return " N";
-                    case moment:
-                        return " N*cm";
-                    case none:
-                        return "";
-                    default:
-                        throw new IllegalArgumentException("Unrecognized unit: " + unit);
-                }
-            }
-        });
+        
+        Unit.setSuffix(Unit.distance, " ft");
+        Unit.setSuffix(Unit.force, " ton");
+        Unit.setSuffix(Unit.moment, " ton*ft");
     }
 
     @Override
@@ -96,14 +80,14 @@ public class TowerExercise extends FBDExercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 24.0f, 100.0f ));
         //StaticsApplication.getApp().setDrawScale(3.5f);
         
-        Point A = new Point(new Vector3f(0,0,0));
-        Point B = new Point(new Vector3f(2.5f,55,0));
-        Point G = new Point(A.getTranslation().add(B.getTranslation()).mult(.5f));
+        Point A = new Point("0","0","0");
+        Point B = new Point("2.5","55","0");
+        Point G = new Point(A.getPosition().add(B.getPosition()).mult(new BigDecimal(".5")));
         A.setName("A");
         B.setName("B");
         G.setName("G");
         
-        Point underG = new Point(new Vector3f(G.getTranslation().x,0,0));
+        Point underG = new Point(""+G.getPosition().getX(),"0","0");
         
         DistanceMeasurement horizontalDistance = new DistanceMeasurement(A, underG);
         horizontalDistance.createDefaultSchematicRepresentation();
@@ -118,7 +102,7 @@ public class TowerExercise extends FBDExercise {
         Body tower = new Beam(A,B);
         tower.setCenterOfMassPoint(G);
         tower.createDefaultSchematicRepresentation();
-        tower.getWeight().setValue(14700f);
+        tower.getWeight().setDiagramValue(new BigDecimal("14700"));
         world.add(tower);
         
         jointA.attachToWorld(tower);

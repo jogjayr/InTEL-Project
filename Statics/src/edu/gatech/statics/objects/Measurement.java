@@ -63,16 +63,21 @@ abstract public class Measurement extends SimulationObject implements Quantified
      * @param v
      */
     @Deprecated
-    public void setValue(BigDecimal v) {
+    public void setDiagramValue(BigDecimal v) {
         throw new UnsupportedOperationException("Cannot set the value of a measurement!");
     }
+
+    public BigDecimal getDiagramValue() {
+        return quantity.getDiagramValue();
+    }
+    
 
     /**
      * Use this method to update the value for the measurement
      * @param value
      */
     protected void updateQuantityValue(BigDecimal value) {
-        quantity.setValue(value);
+        quantity.setDiagramValue(value);
     }
     
     @Override

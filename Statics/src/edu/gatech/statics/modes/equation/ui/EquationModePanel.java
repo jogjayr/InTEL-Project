@@ -82,7 +82,7 @@ public class EquationModePanel extends ApplicationModePanel {
     public void setMomentPoint(Point momentPoint) {
         for (EquationUIData data : uiMap.values()) {
             if (data.equationBar.getMath() instanceof EquationMathMoments) {
-                ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint.getTranslation());
+                ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint.getPosition());
                 data.equationBar.setMomentCenter(momentPoint);
             }
         }
