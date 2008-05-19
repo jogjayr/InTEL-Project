@@ -39,9 +39,6 @@ public class FBDChecker {
             if (!(obj instanceof Load)) {
                 continue;
             }
-            //if (obj.isGiven()) {
-            //    continue;
-            //}
 
             // this force has been added, and is not a given that could have been selected.
             addedForces.add((Load) obj);
@@ -155,15 +152,6 @@ public class FBDChecker {
                 continue;
             }
 
-            // actually, this is not done in the current implementation, so don't remove them otherwise chaos ensues.
-            //if (joint.isSolved()) {
-            // this particular joint has been solved for in another FBD, its influence should be here already,
-            // so just pass it by for now.
-            //    addedForces.removeAll(joint.getReactions(body));
-            //    continue;
-            //}
-
-            //jointsAndBodies.add(new Pair(joint, body));
             List<Load> reactions = getReactions(joint, joint.getReactions(body));
 
             Logger.getLogger("Statics").info("check: testing joint: " + joint);
@@ -250,37 +238,6 @@ public class FBDChecker {
                 // make sure the value given is equal to the weight of the object.
 
                 if (weights.containsKey(force)) {
-
-                    /*
-                    // check each body because lazy
-                    //boolean checked = false;
-                    Body body = weights.get(force);
-
-                    //for(Body body : getObservedBodies()) {
-
-                    //if(force.getAnchor() == body.getCenterOfMassPoint()) {
-                    //    checked = true;
-
-                    // will this ever happen, given that the weight Load has a magnitude now?
-                    double weight = body.getWeight().doubleValue();
-                    //if (force.doubleValue() != weight) {
-                    if(!body.getWeight().equals(force.getVector().getQuantity())) {
-                        Logger.getLogger("Statics").info("check: weight value incorrect: " + force.doubleValue() + " != " + weight);
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_wrongWeight");
-                        return false;
-                    }*/
-                //}
-                //}
-
-                /*if(!checked) {
-                Logger.getLogger("Statics").info("check: unknown error, weight winks out of existence: "+force);
-                Logger.getLogger("Statics").info("check: FAILED");
-                StaticsApplication.getApp().setAdvice(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_fail_unknown"));
-                return false;
-                }*/
 
                 } else if (externalForces.contains(force)) {
                 // OK, do nothing

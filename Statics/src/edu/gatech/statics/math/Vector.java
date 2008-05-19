@@ -107,10 +107,7 @@ final public class Vector implements Quantified {
         setVectorValue(vector.getVectorValue());
     }
 
-    /*boolean isEquivalent(Vector vector) {
-    return magnitude.equals(vector.magnitude) &&
-    valuesCloseEnough(value, vector.value);
-    }*/
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

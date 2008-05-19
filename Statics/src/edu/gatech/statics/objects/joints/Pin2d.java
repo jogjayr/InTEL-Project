@@ -14,7 +14,6 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.PointRepresentation;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,8 +35,8 @@ public class Pin2d extends Joint {
 
     public List<Vector> getReactions() {
         return Arrays.asList(
-                new Vector(Unit.force, Vector3bd.UNIT_X, new BigDecimal(1)),
-                new Vector(Unit.force, Vector3bd.UNIT_Y, new BigDecimal(1)));
+                new Vector(Unit.force, Vector3bd.UNIT_X, ""),
+                new Vector(Unit.force, Vector3bd.UNIT_Y, ""));
     }
 
     @Override

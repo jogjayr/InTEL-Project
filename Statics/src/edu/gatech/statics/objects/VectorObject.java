@@ -24,9 +24,12 @@ public class VectorObject extends SimulationObject implements Quantified {
 
     private Point anchor;
     private Vector vector;
+    private String name;
 
     @Override
     public String getName() {
+        if(name != null)
+            return name;
         return vector.getSymbolName();
     }
 
@@ -45,8 +48,8 @@ public class VectorObject extends SimulationObject implements Quantified {
 
     @Override
     public void setName(String name) {
-        // ???
-        vector.setSymbol(name);
+        this.name = name;
+        //vector.setSymbol(name);
     }
 
     @Override
@@ -117,6 +120,7 @@ public class VectorObject extends SimulationObject implements Quantified {
     public VectorObject(VectorObject obj) {
         this.anchor = obj.anchor;
         this.vector = new Vector(obj.vector);
+        this.name = obj.name;
     }
 
     public ArrowRepresentation getArrow() {
@@ -167,6 +171,7 @@ public class VectorObject extends SimulationObject implements Quantified {
     }
 
     public void setSymbol(String symbolName) {
+        setName(symbolName);
         vector.setSymbol(symbolName);
     }
 

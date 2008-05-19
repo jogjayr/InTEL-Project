@@ -115,7 +115,6 @@ public class SelectModePanel extends ApplicationModePanel {
             //FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
             //StaticsApplication.getApp().
             FBDMode.instance.load(bodies);
-
         }
     }
 }

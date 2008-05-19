@@ -196,6 +196,9 @@ public class Quantity implements Quantified {
         if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
             return false;
         }
+        if (this.symbol != other.symbol) {
+            return false;
+        }
         if (this.unit != other.unit) {
             return false;
         }
@@ -204,9 +207,10 @@ public class Quantity implements Quantified {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + (this.value != null ? this.value.hashCode() : 0);
-        hash = 67 * hash + (this.unit != null ? this.unit.hashCode() : 0);
+        int hash = 3;
+        hash = 61 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash = 61 * hash + (this.symbol ? 1 : 0);
+        hash = 61 * hash + (this.unit != null ? this.unit.hashCode() : 0);
         return hash;
     }
 }

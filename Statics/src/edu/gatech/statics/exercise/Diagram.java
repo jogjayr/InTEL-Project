@@ -20,6 +20,7 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
@@ -28,8 +29,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -247,16 +250,20 @@ public abstract class Diagram {
 
     }
 
+    /**
+     * Return a list of directions that make sense as snapping options for a
+     * force being positioned around a point. 
+     * @param point
+     * @return
+     */
     public List<Vector3f> getSensibleDirections(Point point) {
-        List<Vector3f> directions = new ArrayList<Vector3f>();
+        //List<Vector3f> directions = new ArrayList<Vector3f>();
+        Set<Vector3f> directions = new HashSet<Vector3f>();
 
-        directions.add(new Vector3f(1, 0, 0));
-        directions.add(new Vector3f(-1, 0, 0));
-        directions.add(new Vector3f(0, 1, 0));
-        directions.add(new Vector3f(0, -1, 0));
-        directions.add(new Vector3f(0, 0, 1));
-        directions.add(new Vector3f(0, 0, -1));
+        // add cardinal directions
+        addCardinalDirectionsAroundMatrix(new Matrix3f(), directions);
 
+        // first try going through bodies to add their orientations
         for (Body body : getSchematic().allBodies()) {
             if (!body.getAttachedObjects().contains(point)) {
                 continue;
@@ -264,15 +271,36 @@ public abstract class Diagram {
 
             // body has the point, now get its orientations...
             Matrix3f orientation = body.getRotation();
-
-            directions.add(orientation.mult(new Vector3f(1, 0, 0)));
-            directions.add(orientation.mult(new Vector3f(-1, 0, 0)));
-            directions.add(orientation.mult(new Vector3f(0, 1, 0)));
-            directions.add(orientation.mult(new Vector3f(0, -1, 0)));
-            directions.add(orientation.mult(new Vector3f(0, 0, 1)));
-            directions.add(orientation.mult(new Vector3f(0, 0, -1)));
+            addCardinalDirectionsAroundMatrix(orientation, directions);
+        }
+        
+        // now check angle measurements
+        for(SimulationObject object : getSchematic().allObjects()) {
+            if(object instanceof AngleMeasurement) {
+                AngleMeasurement measure = (AngleMeasurement)object;
+                
+                // our angle is anchored at this point
+                if(measure.getAnchor() == point) {
+                    Matrix3f matrix = new Matrix3f();
+                    
+                    matrix.fromStartEndVectors(Vector3f.UNIT_X, measure.getAxis1());
+                    addCardinalDirectionsAroundMatrix(matrix, directions);
+                    
+                    matrix.fromStartEndVectors(Vector3f.UNIT_X, measure.getAxis2());
+                    addCardinalDirectionsAroundMatrix(matrix, directions);
+                }
+            }
         }
 
-        return directions;
+        return new ArrayList<Vector3f>(directions);
+    }
+    
+    private void addCardinalDirectionsAroundMatrix(Matrix3f matrix, Set<Vector3f> directions) {
+            directions.add(matrix.mult(new Vector3f(1, 0, 0)));
+            directions.add(matrix.mult(new Vector3f(-1, 0, 0)));
+            directions.add(matrix.mult(new Vector3f(0, 1, 0)));
+            directions.add(matrix.mult(new Vector3f(0, -1, 0)));
+            directions.add(matrix.mult(new Vector3f(0, 0, 1)));
+            directions.add(matrix.mult(new Vector3f(0, 0, -1)));
     }
 }

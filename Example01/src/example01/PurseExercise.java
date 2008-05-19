@@ -61,6 +61,7 @@ public class PurseExercise extends FBDExercise {
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
+        //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
@@ -83,18 +84,9 @@ public class PurseExercise extends FBDExercise {
 
         Schematic world = getSchematic();
 
-
-        //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .2f, 1.0f));
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
-
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
-        //StaticsApplication.getApp().setWorldScale(2f);
 
-        /*A = new Point(new Vector3f(handPoint, -16 + 6, 0));
-        B = new Point(new Vector3f(tendonAnchorB, -16 + 6, 0));
-        C = new Point(new Vector3f(18, -16 + 6, 0));
-        D = new Point(new Vector3f(18, tendonAnchorD + 6, 0));
-        E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));*/
         A = new Point("" + handPoint, "-10", "0");
         B = new Point("" + tendonAnchorB, "-10", "0");
         C = new Point("18", "-10", "0");
