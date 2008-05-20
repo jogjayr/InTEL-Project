@@ -152,6 +152,7 @@ final public class Vector implements Quantified {
     }*/
     public String getSymbolName() {
         return magnitude.getSymbolName();
+        
     }
 
     // returns true if the vectors are close enough

@@ -95,7 +95,7 @@ abstract public class Body extends SimulationObject {
     private List<SimulationObject> attachedObjects = new ArrayList();
 
     public void addObject(SimulationObject obj) {
-
+    
         if (!attachedObjects.contains(obj)) {
             attachedObjects.add(obj);
         }

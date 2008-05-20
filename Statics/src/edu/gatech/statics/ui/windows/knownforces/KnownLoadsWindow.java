@@ -76,7 +76,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
             // look at free vectors
             if (obj instanceof VectorObject) {
                 VectorObject vObj = (VectorObject) obj;
-                writeReaction(vObj.getVector(), vObj.getAnchor(), contents);
+                writeReaction(vObj.getVector(), vObj.getAnchor(), contents, vObj.getName());
             }
 
             if (obj instanceof Body) {
@@ -107,6 +107,10 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     }
 
     private void writeReaction(Vector force, Point applicationPoint, StringBuffer contents) {
+        writeReaction(force, applicationPoint, contents, force.getSymbolName());
+    }
+    
+    private void writeReaction(Vector force, Point applicationPoint, StringBuffer contents, String name) {
         if (force.isSymbol() && !force.isKnown()) {
             return;
         }
@@ -118,7 +122,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         //if(Diagram.getSchematic().allObjects())
         //    contents.append("<b>"+force.getName()+"</b>");
         //else
-        contents.append("<font color=\"#ff0000\"><b>" + force.getSymbolName() + "</b></font>");
+        contents.append("<font color=\"#ff0000\"><b>" + name + "</b></font>");
         if (applicationPoint != null) {
             contents.append(" at [" + applicationPoint.getName() + "]: ");
         }
