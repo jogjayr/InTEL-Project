@@ -53,11 +53,17 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
             }
         }
 
+        // adds a new button corresponding to the new diagram
+        // If the set of bodies is null, we assign it to create a new diagram
+        // If the set of bodies exists, the label is formatted and the action
+        // set to a simple hash code referencing the collection
         BButton item;
-        String action = bodies == null ? "new" : Integer.toHexString(bodies.hashCode());
+        String action;
         if (bodies == null) {
+            action = "new";
             item = new BButton("new", listener, action);
         } else {
+            action = Integer.toHexString(bodies.hashCode());
             String buttonString = bodies.toString().replaceAll(",", ",\n");
             item = new BButton(buttonString, listener, action);
         }
