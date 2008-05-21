@@ -84,6 +84,7 @@ public class EquationMath {
 
         String getText() {
             return source.toString();//.getLabelText();
+
         }
 
         boolean isKnown() {
@@ -129,6 +130,7 @@ public class EquationMath {
         boolean isKnown() {
             return true;
         } // may wish to change this later on...
+
     }
 
     protected static enum TermError {
@@ -219,19 +221,18 @@ public class EquationMath {
     //static Map<String, Float> solve(EquationMath... equations) {
     //    return null;
     //}
-
     public boolean check() {
 
         // first, make sure all of the necessary terms are added to the equation.
         List<Force> allForces = new ArrayList();
         for (SimulationObject obj : world.allObjects()) {
-            if (obj instanceof Force && !obj.isDisplayGrayed()) // should not be grayed anyway, but just in case.
-            {
+            if (obj instanceof Force && !obj.isDisplayGrayed()) {
+                // should not be grayed anyway, but just in case.
                 allForces.add((Force) obj);
             }
         }
-        
-        Logger.getLogger("Statics").info("check: allForces: "+allForces);
+
+        Logger.getLogger("Statics").info("check: allForces: " + allForces);
 
         for (Force force : allForces) {
             Term term = terms.get(force.getVector());
@@ -242,7 +243,7 @@ public class EquationMath {
             // direction is close enough to zero to be inappropriate.
             if (Math.abs(force.getVectorValue().dot(getObservationDirection()).floatValue()) <= TEST_ACCURACY) {
                 if (term != null) {
-                    Logger.getLogger("Statics").info("check: equation has unnecessary term: "+term.getSource());
+                    Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
                     StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary");
@@ -254,7 +255,7 @@ public class EquationMath {
 
             // a term that we expected has not been added.
             if (term == null) {
-                Logger.getLogger("Statics").info("check: equation has not added all terms: "+force.getVector());
+                Logger.getLogger("Statics").info("check: equation has not added all terms: " + force.getVector());
                 Logger.getLogger("Statics").info("check: FAILED");
 
                 StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces");
@@ -266,7 +267,7 @@ public class EquationMath {
 
             //if(term.getVector() instanceof Moment) {
             if (term.getSource().getUnit() == Unit.moment) {
-                Logger.getLogger("Statics").info("check: equation has unnecessary moment term: "+term.getSource());
+                Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + term.getSource());
                 Logger.getLogger("Statics").info("check: FAILED");
 
                 StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment");
@@ -304,7 +305,7 @@ public class EquationMath {
 
             }
         }
-        
+
         setLocked(true);
 
         Logger.getLogger("Statics").info("check: PASSED!");

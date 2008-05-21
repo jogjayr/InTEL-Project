@@ -99,6 +99,14 @@ public class EquationMathMoments extends EquationMath {
     @Override
     public boolean check() {
         
+        if(!observationPointSet) {
+            Logger.getLogger("Statics").info("check: Moment point is not set!");
+            Logger.getLogger("Statics").info("check: FAILED");
+
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_moment_point_not_set");
+            return false;
+        }
+        
         // first, make sure all of the necessary terms are added to the equation.
         List<Force> allForces = new ArrayList();
         List<Moment> allMoments = new ArrayList();
