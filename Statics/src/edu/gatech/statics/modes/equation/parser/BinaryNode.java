@@ -13,7 +13,7 @@ package edu.gatech.statics.modes.equation.parser;
  *
  * @author Calvin Ashmore
  */
-public class BinaryNode extends Node {
+class BinaryNode extends Node {
     
     enum Operation {
         add, subtract,

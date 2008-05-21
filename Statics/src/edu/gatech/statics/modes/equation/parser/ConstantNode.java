@@ -13,7 +13,7 @@ package edu.gatech.statics.modes.equation.parser;
  *
  * @author Calvin Ashmore
  */
-public class ConstantNode extends Node {
+class ConstantNode extends Node {
     
     private float value;
 
