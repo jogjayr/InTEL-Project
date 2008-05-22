@@ -23,6 +23,38 @@ public class Parser {
         public String symbolName;
         public float symbolCoefficient;
         public float constant;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final SymbolResult other = (SymbolResult) obj;
+            if (this.symbolName != other.symbolName && (this.symbolName == null || !this.symbolName.equals(other.symbolName))) {
+                return false;
+            }
+            if (this.symbolCoefficient != other.symbolCoefficient) {
+                return false;
+            }
+            if (this.constant != other.constant) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 37 * hash + (this.symbolName != null ? this.symbolName.hashCode() : 0);
+            hash = 37 * hash + Float.floatToIntBits(this.symbolCoefficient);
+            hash = 37 * hash + Float.floatToIntBits(this.constant);
+            return hash;
+        }
+        
+        
     }
 
     /**

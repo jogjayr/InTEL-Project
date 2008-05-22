@@ -46,6 +46,10 @@ public class Point extends SimulationObject {
     private void updateTranslation() {
         setTranslation(point.toVector3f());
     }
+
+    protected void setPoint(Vector3bd point) {
+        this.point = point;
+    }
     
     public Vector3bd getPosition() {
         return point;

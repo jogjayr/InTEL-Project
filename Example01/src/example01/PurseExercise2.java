@@ -17,11 +17,12 @@ import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Pin2d;
@@ -60,7 +61,7 @@ public class PurseExercise2 extends FBDExercise {
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
-        //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
+    //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
@@ -69,7 +70,8 @@ public class PurseExercise2 extends FBDExercise {
     protected float forearmWeight = 9;
     protected float purseWeight = 19.6f;
     protected float centerGravityOffset = 0;
-    Point A, B, C, G;
+    Point A, C, G;
+    UnknownPoint B;
     Connector2ForceMember2d jointB, jointD;
     Pin2d jointC, jointE;
 
@@ -96,7 +98,9 @@ public class PurseExercise2 extends FBDExercise {
         D = new Point(new Vector3f(18, tendonAnchorD + 6, 0));
         E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));*/
         A = new Point("" + handPoint, "-10", "0");
-        B = new Point("" + tendonAnchorB, "-10", "0");
+        
+        B = new UnknownPoint(new Point("13", "-10", "0"), 
+                C, Vector3bd.UNIT_X.negate());
         C = new Point("18", "-10", "0");
         //D = new Point("18", "" + (tendonAnchorD + 6), "0");
         //E = new Point("18", "" + (shoulderHeight + 6), "0");
@@ -113,7 +117,7 @@ public class PurseExercise2 extends FBDExercise {
         //jointD = new Connector2ForceMember2d(D, tendon);
         jointC = new Pin2d(C);
         //jointE = new Pin2d(E);
-        
+
         jointC.attachToWorld(forearm);
 
         G = new Point("" + (centerGravityOffset + 3), "-10", "0");
@@ -122,7 +126,7 @@ public class PurseExercise2 extends FBDExercise {
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);
 
-        DistanceMeasurement distance2 = new DistanceMeasurement(G, B);
+        DistanceMeasurement distance2 = new DistanceMeasurement(A, G);
         distance2.createDefaultSchematicRepresentation(3f);
         world.add(distance2);
 
@@ -131,17 +135,21 @@ public class PurseExercise2 extends FBDExercise {
         distance3.setKnown(false);
         distance3.setSymbol("X");
         world.add(distance3);
+        B.setMeasurement(distance3);
 
-        Point D = new Point("18", "" + (tendonAnchorD + 6), "0");
-        AngleMeasurement angle1 = new AngleMeasurement(B, D, C);
+        //Point D = new Point("18", "" + (tendonAnchorD + 6), "0");
+        Vector3bd tendonDirection = new Vector3bd("[.13,.8,0]");
+        tendonDirection = tendonDirection.normalize();
+
+        FixedAngleMeasurement angle1 = new FixedAngleMeasurement(B, C, tendonDirection.toVector3f());
         angle1.createDefaultSchematicRepresentation(2f);
         world.add(angle1);
 
         Force purse = new Force(A, Vector3bd.UNIT_Y.negate(), new BigDecimal(purseWeight));
         purse.setName("Purse");
         forearm.addObject(purse);
-        
-        Vector3bd tendonDirection = D.getPosition().subtract(B.getPosition());
+
+        //Vector3bd tendonDirection = D.getPosition().subtract(B.getPosition());
         Force tendonForce = new Force(B, tendonDirection, new BigDecimal(160));
         purse.setName("Tendon");
         tendonForce.createDefaultSchematicRepresentation();

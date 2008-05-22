@@ -8,11 +8,10 @@
  */
 package edu.gatech.statics.objects;
 
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
-import edu.gatech.statics.math.Unit;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -90,7 +89,11 @@ abstract public class Measurement extends SimulationObject implements Quantified
     //public boolean isKnown() {return known;}
     /** Creates a new instance of Measurement */
     public Measurement(Point ... points) {
-        this.points = Arrays.asList(points);
+        this.points = new ArrayList<Point>(Arrays.asList(points));
         quantity = new Quantity(getUnit(), BigDecimal.ZERO);
+    }
+    
+    protected void addPoint(Point point) {
+        points.add(point);
     }
 }
