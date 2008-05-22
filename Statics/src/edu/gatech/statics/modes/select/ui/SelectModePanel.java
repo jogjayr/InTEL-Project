@@ -69,8 +69,9 @@ public class SelectModePanel extends ApplicationModePanel {
     @Override
     public void activate() {
         getTitleLabel().setText("Nothing Selected");
+        selectionList.setContents("");
         StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
-
+        
         // disable all tabs when the mode is selected
         // then enable this tab
         InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
