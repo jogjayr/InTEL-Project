@@ -14,7 +14,10 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.FBDMode;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -112,9 +115,13 @@ public class SelectModePanel extends ApplicationModePanel {
             }
 
             BodySubset bodies = new BodySubset(selection);
-            //FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
+            FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
             //StaticsApplication.getApp().
-            FBDMode.instance.load(bodies);
+            if (fbd.isSolved()) {
+                EquationMode.instance.load(bodies);
+            } else {
+                FBDMode.instance.load(bodies);
+            }
         }
     }
 }
