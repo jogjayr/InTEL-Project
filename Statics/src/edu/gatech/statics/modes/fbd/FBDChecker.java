@@ -85,17 +85,9 @@ public class FBDChecker {
 
             boolean success = false;
             if (external.isSymbol()) {
-                success = testReaction(external, addedForces);
-                /*Load addedExternal = null;
-                for (Load candidate : addedForces) {
-                    if (external.equalsSymbolic(candidate) || external.equalsSymbolic(negate(candidate))) {
-                        addedExternal = candidate;
-                        break;
-                    }
-                }
-                if (addedExternal != null) {
-                    success = addedForces.remove(addedExternal);
-                }*/
+                // if the force is symbolic, it is allowed to be negated.
+                success = testReaction(external, addedForces) ||
+                        testReaction(negate(external), addedForces);
             } else {
                 success = addedForces.remove(external);
             }
