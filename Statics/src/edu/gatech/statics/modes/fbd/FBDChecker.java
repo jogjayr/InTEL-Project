@@ -66,6 +66,14 @@ public class FBDChecker {
         List<Load> addedForces = getAddedForces();
         Logger.getLogger("Statics").info("check: user added forces: " + addedForces);
 
+        if (addedForces.size() <= 0) {
+            Logger.getLogger("Statics").info("check: diagram does not contain any forces");
+            Logger.getLogger("Statics").info("check: FAILED");
+
+            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_add");
+            return false;
+        }
+
         // make list for weights, as we will need these later.
         Map<Load, Body> weights = new HashMap<Load, Body>();
 
@@ -92,10 +100,44 @@ public class FBDChecker {
             }
 
             if (!success) {
+                //if the code reaches this point there is a problem. this checks
+                //to see if the falure is related to a force added as an external that
+                //was wrong (numerically or symbolically)
+                for (Load addedExt : addedForces) {
+                    if (addedExt.getAnchor() == external.getAnchor()) {
+                        //An external value that should be symbolic has been added as numeric
+                        if (external.isSymbol() && !addedExt.isSymbol()) {
+                            Logger.getLogger("Statics").info("check: external value should be a symbol at point" + external.getAnchor().getLabelText());
+                            Logger.getLogger("Statics").info("check: FAILED");
+
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_symbol", addedExt.getAnchor().getLabelText());
+                            return false;
+                        }
+                        //An external value that should be numeric has been added as symbolic
+                        else if (!external.isSymbol() && addedExt.isSymbol()) {
+                            Logger.getLogger("Statics").info("check: external value should be a numeric at point" + external.getAnchor().getLabelText());
+                            Logger.getLogger("Statics").info("check: FAILED");
+
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_number", addedExt.getAnchor().getLabelText());
+                            return false;
+                        }
+                        //An external value was added as numeric, correctly, but was the wrong number
+                        else {
+                            Logger.getLogger("Statics").info("check: diagram contains incorrect external force " + external);
+                            Logger.getLogger("Statics").info("check: FAILED");
+
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_value", addedExt.getAnchor().getLabelText());
+                            return false;
+                        }
+                    }
+                }
+
+                //if the above is not the error it is assumed to be because the
+                //user has forgotten to add an external force
                 Logger.getLogger("Statics").info("check: diagram does not contain external force " + external);
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external");
+                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external", external.getAnchor().getLabelText());
                 return false;
             }
         }
@@ -103,7 +145,7 @@ public class FBDChecker {
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
             if (body.getWeight().getDiagramValue().floatValue() != 0) {
-                
+
                 Load weight = new Force(
                         body.getCenterOfMassPoint(),
                         Vector3bd.UNIT_Y.negate(),
@@ -115,12 +157,43 @@ public class FBDChecker {
                     Logger.getLogger("Statics").info("check: removing weight for " + body);
                     addedForces.remove(weight);
                 } else {
+                    //if the code reaches this point there is a problem. this checks
+                    //to see if the falure is related to a force added as a weight that
+                    //was wrong (numerically or symbolically)
+                    for (Load addedWeight : addedForces) {
+                        if (addedWeight.getAnchor() == weight.getAnchor()) {
+                            //A weight that should be symbolic has been added as numeric
+                            if (weight.isSymbol() && !addedWeight.isSymbol()) {
+                                Logger.getLogger("Statics").info("check: weight should be a symbol at point" + weight.getAnchor().getLabelText());
+                                Logger.getLogger("Statics").info("check: FAILED");
+
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_symbol", addedWeight.getAnchor().getLabelText());
+                                return false;
+                            }
+                            //A weight that should be numeric has been added as symbolic
+                            else if (!weight.isSymbol() && addedWeight.isSymbol()) {
+                                Logger.getLogger("Statics").info("check: weight should be numeric at point" + weight.getAnchor().getLabelText());
+                                Logger.getLogger("Statics").info("check: FAILED");
+
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_number", addedWeight.getAnchor().getLabelText());
+                                return false;
+                            }
+                            //A weight was added as numeric, correctly, but was the wrong number
+                            else {
+                                Logger.getLogger("Statics").info("check: diagram contains incorrect weight " + weight);
+                                Logger.getLogger("Statics").info("check: FAILED");
+
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_value", addedWeight.getAnchor().getLabelText());
+                                return false;
+                            }
+                        }
+                    }
                     // weight does not exist in system.
                     Logger.getLogger("Statics").info("check: diagram does not contain weight for " + body);
                     Logger.getLogger("Statics").info("check: weight is: " + weight);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight", weight.getAnchor().getLabelText());
                     return false;
                 }
             }
@@ -186,7 +259,7 @@ public class FBDChecker {
             Logger.getLogger("Statics").info("check: user added more forces than necessary: " + addedForces);
             Logger.getLogger("Statics").info("check: FAILED");
 
-            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_additional");
+            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_additional", addedForces.get(0).getAnchor().getLabelText());
             return false;
         }
 
@@ -216,7 +289,7 @@ public class FBDChecker {
                     Logger.getLogger("Statics").info("check: force should not be symbol: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_symbol");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_symbol", force.getAnchor().getLabelText());
                     return false;
                 }
 
@@ -226,7 +299,7 @@ public class FBDChecker {
                     Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate", name);
                     return false;
                 }
                 names.add(name);
@@ -246,7 +319,7 @@ public class FBDChecker {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_numeric");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_numeric", force.getAnchor().getLabelText());
                     return false;
                 }
             }
@@ -270,10 +343,11 @@ public class FBDChecker {
     }
 
     private Load negate(Load reaction) {
-        if(reaction instanceof Force)
+        if (reaction instanceof Force) {
             return new Force(reaction.getAnchor(), reaction.getVector().negate());
-        else 
+        } else {
             return new Moment(reaction.getAnchor(), reaction.getVector().negate());
+        }
     }
 
     private boolean testReaction(Load reaction, List<Load> addedForces) {
