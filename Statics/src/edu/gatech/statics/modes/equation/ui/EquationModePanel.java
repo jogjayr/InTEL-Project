@@ -20,7 +20,7 @@ import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
@@ -30,6 +30,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -235,31 +236,30 @@ public class EquationModePanel extends ApplicationModePanel {
     private void performSolve() {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         boolean firstTime = !diagram.getWorksheet().isSolved();
-        Map<Vector, Float> solution = diagram.getWorksheet().solve();
+        Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
-
-            for (Map.Entry<Vector, Float> entry : solution.entrySet()) {
-                BLabel entryLabel = new BLabel(
-                        "@=b(@=#ff0000(" + entry.getKey().getSymbolName() + ")" +
-                        " = " + entry.getValue() + " " + entry.getKey().getUnit().getSuffix() + ")");
-                solutionContainer.add(entryLabel);
-            }
 
             if (firstTime) {
                 // this is our first time solving the system.
-
                 diagram.performSolve(solution);
+            }
+            
+            for (Map.Entry<Quantity, Float> entry : solution.entrySet()) {
+                Quantity q = entry.getKey();
+                q = new Quantity(q);
+                q.setDiagramValue(BigDecimal.valueOf(entry.getValue()));
+                
+                BLabel entryLabel = new BLabel(
+                        "@=b(@=#ff0000(" + q.getSymbolName() + ")" +
+                        " = " + q.getDiagramValue() + //entry.getValue() + 
+                        " " + q.getUnit().getSuffix() + ")");
+                solutionContainer.add(entryLabel);
             }
 
         } else {
             InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
         }
     }
-
-    /*private void selectMomentPoint() {
-        PointSelector selector = new PointSelector((EquationDiagram) getDiagram());
-        selector.activate();
-    }*/
 
     private class EquationUIData {
 

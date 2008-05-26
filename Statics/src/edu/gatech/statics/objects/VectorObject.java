@@ -218,6 +218,12 @@ public class VectorObject extends SimulationObject implements Quantified {
         return hash;
     }
 
+    /**
+     * Returns true if the vector objects are equivalent as symbolic vectors. 
+     * This tests to make sure that they point in the same direction.
+     * @param v
+     * @return
+     */
     public boolean equalsSymbolic(Load v) {
         return vector.equalsSymbolic(v.getVector()) && anchor.equals(v.getAnchor());
     }

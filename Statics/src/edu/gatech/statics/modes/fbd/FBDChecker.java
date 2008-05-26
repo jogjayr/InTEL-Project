@@ -85,16 +85,17 @@ public class FBDChecker {
 
             boolean success = false;
             if (external.isSymbol()) {
-                Load addedExternal = null;
+                success = testReaction(external, addedForces);
+                /*Load addedExternal = null;
                 for (Load candidate : addedForces) {
-                    if (external.equalsSymbolic(candidate)) {
+                    if (external.equalsSymbolic(candidate) || external.equalsSymbolic(negate(candidate))) {
                         addedExternal = candidate;
                         break;
                     }
                 }
                 if (addedExternal != null) {
                     success = addedForces.remove(addedExternal);
-                }
+                }*/
             } else {
                 success = addedForces.remove(external);
             }
@@ -345,20 +346,26 @@ public class FBDChecker {
     private Load negate(Load reaction) {
         if (reaction instanceof Force) {
             return new Force(reaction.getAnchor(), reaction.getVector().negate());
-        } else {
+        } else if (reaction instanceof Moment) {
             return new Moment(reaction.getAnchor(), reaction.getVector().negate());
+        } else {
+            // ignore this case
+            return null;
         }
     }
 
     private boolean testReaction(Load reaction, List<Load> addedForces) {
 
-        // if the reaction is given to the user, leave it be.
-        //if(externalForces.contains(reaction))
-        //    return true;
-
-        // test and remove reaction in the addedForces
-        if (addedForces.contains(reaction)) {
-            addedForces.remove(reaction);
+        // the equality check on Load requires that we ignore the symbol name
+        
+        Load equivalent = null;
+        for(Load candidate : addedForces) {
+            if(candidate.equalsSymbolic(reaction))
+                equivalent = candidate;
+        }
+        
+        if(equivalent != null) {
+            addedForces.remove(equivalent);
             return true;
         }
 

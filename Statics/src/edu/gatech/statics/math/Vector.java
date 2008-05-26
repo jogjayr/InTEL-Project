@@ -168,19 +168,18 @@ final public class Vector implements Quantified {
 
     // QUESTION:
     // should there be a thing for configuring the precision of equals-tests?
+    
     /**
      * Compare two vectors accounting for them both being symbols
-     * This means that they are equal if they are equal or opposite
+     * We do not test negation here, but we do test for the equality of terms, ignoring
+     * the symbol names.
      */
     public boolean equalsSymbolic(Vector v) {
-        if (v.isKnown() && isKnown()) {
+        //if (v.isKnown() && isKnown()) {
+        //    return value.equals(v.value);
+        //}
 
-            return value.equals(v.value);
-        }
-
-        //return valuesCloseEnough(v.value, value) ||
-        //        valuesCloseEnough(v.value, value.negate());
-        return value.equals(v.value) || value.equals(v.value.negate());
+        return value.equals(v.value); // || value.equals(v.value.negate());
     }
 
     @Override

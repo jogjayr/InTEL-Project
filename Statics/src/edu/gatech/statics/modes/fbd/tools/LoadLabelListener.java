@@ -29,11 +29,6 @@ public class LoadLabelListener implements LabelListener {
             // numerical, try to lop off tail end
             String[] split = label.split(" ");
             try {
-                //double value = Double.parseDouble(split[0]);
-                // we do not want null values.
-                //if (value == 0) {
-                //    return false;
-                //}
                 BigDecimal value = new BigDecimal(split[0]);
                 
                 if(value.compareTo(new BigDecimal(0)) == 0)
@@ -41,12 +36,14 @@ public class LoadLabelListener implements LabelListener {
                 
                 myLoad.setDiagramValue(value);
                 myLoad.setSymbol(null);
+                myLoad.setKnown(true);
             } catch (NumberFormatException e) {
                 return false;
             }
         } else {
             //obj.setName(text);
             myLoad.setSymbol(label);
+            myLoad.setKnown(false);
         }
         return true;
     }

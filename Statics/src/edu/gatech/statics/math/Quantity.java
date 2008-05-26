@@ -115,7 +115,7 @@ public class Quantity implements Quantified {
     public void setSymbol(String symbolName) {
         if (symbolName == null) {
             symbol = false;
-            symbolName = null;
+            this.symbolName = null;
         } else {
             symbol = true;
             this.symbolName = symbolName;
@@ -196,6 +196,12 @@ public class Quantity implements Quantified {
         if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
             return false;
         }
+        if (this.known != other.known) {
+            return false;
+        }
+        if (this.symbolName != other.symbolName && (this.symbolName == null || !this.symbolName.equals(other.symbolName))) {
+            return false;
+        }
         if (this.symbol != other.symbol) {
             return false;
         }
@@ -204,13 +210,18 @@ public class Quantity implements Quantified {
         }
         return true;
     }
+    
+    //public boolean equalsSymbolic(Quantity other) {  
+    //}
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 61 * hash + (this.value != null ? this.value.hashCode() : 0);
-        hash = 61 * hash + (this.symbol ? 1 : 0);
-        hash = 61 * hash + (this.unit != null ? this.unit.hashCode() : 0);
+        int hash = 7;
+        hash = 97 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash = 97 * hash + (this.known ? 1 : 0);
+        hash = 97 * hash + (this.symbolName != null ? this.symbolName.hashCode() : 0);
+        hash = 97 * hash + (this.symbol ? 1 : 0);
+        hash = 97 * hash + (this.unit != null ? this.unit.hashCode() : 0);
         return hash;
     }
 }

@@ -19,6 +19,7 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Joint;
@@ -88,6 +89,18 @@ public class EquationDiagram extends SubDiagram {
             }
         return null;
     }
+    
+    public Load getLoad(String symbolName) {
+        if(symbolName == null)
+            return null;
+        for(SimulationObject obj : allObjects())
+            if (obj instanceof Load) {
+                Load load = (Load) obj;
+                if(load.getSymbolName() != null && load.getSymbolName().equals(symbolName))
+                    return load;
+            }
+        return null;
+    }
 
     /** Creates a new instance of EquationWorld */
     public EquationDiagram(BodySubset bodies) {
@@ -100,7 +113,13 @@ public class EquationDiagram extends SubDiagram {
         worksheet = new Worksheet2D(this);
     }
     
-    public void performSolve(Map<Vector, Float> values) {
+    /**
+     * This actually updates the vectors and joints with the result of the solution.
+     * The update applies to objects within the EquationDiagram, but these are references
+     * to the original copies defined in the schematic, which are updated correspondingly.
+     * @param values
+     */
+    public void performSolve(Map<Quantity, Float> values) {
         
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
@@ -110,7 +129,7 @@ public class EquationDiagram extends SubDiagram {
                 Vector v = vObj.getVector();
                 if (v.isSymbol() && !v.isKnown()) {
                     // v is a symbolic force, but is not yet solved.
-                    float value = values.get(v);
+                    float value = values.get(v.getQuantity());
                     //v.setValue(v.getValueNormalized().mult( value ));
                     vObj.setDiagramValue(new BigDecimal(value));
                     vObj.setKnown(true);
@@ -129,9 +148,10 @@ public class EquationDiagram extends SubDiagram {
 
                 Point point = joint.getPoint();
                 List<Vector> reactions = new ArrayList<Vector>();
-                for (Vector v : values.keySet()) {
-                    if (getLoad(v).getAnchor() == point) {
-                        reactions.add(v);
+                for (Quantity q : values.keySet()) {
+                    Load load = getLoad(q.getSymbolName());
+                    if (load != null && load.getAnchor() == point) {
+                        reactions.add(load.getVector());
                     }
                 }
 
