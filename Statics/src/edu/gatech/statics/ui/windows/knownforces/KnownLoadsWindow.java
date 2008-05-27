@@ -68,7 +68,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
                     // iterate through reactions at joint
                     for (Vector force : joint.getReactions(joint.getBody1())) {
 
-                        writeReaction(force, joint.getPoint(), contents);
+                        writeReaction(force, joint.getAnchor(), contents);
                     }
                 }
             }

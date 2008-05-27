@@ -101,7 +101,7 @@ abstract public class Body extends SimulationObject {
         }
 
         if (obj instanceof Joint) {
-            addObject(((Joint) obj).getPoint());
+            addObject(((Joint) obj).getAnchor());
         }
     }
 

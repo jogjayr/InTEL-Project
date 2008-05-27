@@ -22,7 +22,7 @@ import java.util.List;
  */
 abstract public class Joint extends SimulationObject {
 
-    private Point myPoint;
+    private Point anchor;
     private Body body1,  body2;
     private boolean isSolved = false;
     private List<Vector> solvedReactions = null;
@@ -55,14 +55,14 @@ abstract public class Joint extends SimulationObject {
 
     @Override
     public Vector3f getTranslation() {
-        return myPoint.getTranslation();
+        return anchor.getTranslation();
     }
 
     public void createDefaultSchematicRepresentation() {
     }
 
-    public Point getPoint() {
-        return myPoint;
+    public Point getAnchor() {
+        return anchor;
     }
 
     public void attachToWorld(Body body) {
@@ -107,7 +107,7 @@ abstract public class Joint extends SimulationObject {
 
     /** Creates a new instance of Joint */
     public Joint(Point point) {
-        myPoint = point;
+        anchor = point;
     }
 
     public List<Vector> getReactions(Body body) {
@@ -137,6 +137,6 @@ abstract public class Joint extends SimulationObject {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " @ " + getPoint().getName();
+        return getClass().getSimpleName() + " @ " + getAnchor().getName();
     }
 }

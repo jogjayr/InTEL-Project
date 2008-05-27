@@ -13,6 +13,7 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -105,16 +106,14 @@ public class FBDChecker {
 
                             StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_symbol", addedExt.getAnchor().getLabelText());
                             return false;
-                        }
-                        //An external value that should be numeric has been added as symbolic
+                        } //An external value that should be numeric has been added as symbolic
                         else if (!external.isSymbol() && addedExt.isSymbol()) {
                             Logger.getLogger("Statics").info("check: external value should be a numeric at point" + external.getAnchor().getLabelText());
                             Logger.getLogger("Statics").info("check: FAILED");
 
                             StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_number", addedExt.getAnchor().getLabelText());
                             return false;
-                        }
-                        //An external value was added as numeric, correctly, but was the wrong number
+                        } //An external value was added as numeric, correctly, but was the wrong number
                         else {
                             Logger.getLogger("Statics").info("check: diagram contains incorrect external force " + external);
                             Logger.getLogger("Statics").info("check: FAILED");
@@ -162,16 +161,14 @@ public class FBDChecker {
 
                                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_symbol", addedWeight.getAnchor().getLabelText());
                                 return false;
-                            }
-                            //A weight that should be numeric has been added as symbolic
+                            } //A weight that should be numeric has been added as symbolic
                             else if (!weight.isSymbol() && addedWeight.isSymbol()) {
                                 Logger.getLogger("Statics").info("check: weight should be numeric at point" + weight.getAnchor().getLabelText());
                                 Logger.getLogger("Statics").info("check: FAILED");
 
                                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_number", addedWeight.getAnchor().getLabelText());
                                 return false;
-                            }
-                            //A weight was added as numeric, correctly, but was the wrong number
+                            } //A weight was added as numeric, correctly, but was the wrong number
                             else {
                                 Logger.getLogger("Statics").info("check: diagram contains incorrect weight " + weight);
                                 Logger.getLogger("Statics").info("check: FAILED");
@@ -304,10 +301,8 @@ public class FBDChecker {
                 // make sure the value given is equal to the weight of the object.
 
                 if (weights.containsKey(force)) {
-
                 } else if (externalForces.contains(force)) {
-                // OK, do nothing
-
+                    // OK, do nothing
                 } else {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -327,9 +322,9 @@ public class FBDChecker {
         List<Load> loads = new ArrayList<Load>();
         for (Vector vector : reactions) {
             if (vector.getUnit() == Unit.force) {
-                loads.add(new Force(joint.getPoint(), vector));
+                loads.add(new Force(joint.getAnchor(), vector));
             } else if (vector.getUnit() == Unit.moment) {
-                loads.add(new Moment(joint.getPoint(), vector));
+                loads.add(new Moment(joint.getAnchor(), vector));
             }
         }
         return loads;
@@ -346,18 +341,57 @@ public class FBDChecker {
         }
     }
 
+    private List<Load> getForcesAtPoint(Point p, List<Load> addedForces) {
+        List<Load> forcesAtPoint = new ArrayList<Load>();
+        for (Load load : addedForces) {
+            if (load.getAnchor() == p) {
+                forcesAtPoint.add(load);
+            }
+        }
+        return forcesAtPoint;
+    }
+
+    private boolean testJoint(Joint joint, List<Load> addedForces) {
+
+        // gather loads operating at the joint
+        List<Load> forcesAtJoint = getForcesAtPoint(joint.getAnchor(), addedForces);
+
+        // see if we can clear them all
+        boolean success = true;
+        for (Load load : forcesAtJoint) {
+            // SHOULD DO NEGATABLE CHECK HERE
+            if (!testReaction(load, forcesAtJoint)) {
+                success = false;
+            }
+        }
+        if (!success || !forcesAtJoint.isEmpty()) {
+            // return false, without having changed addedForces at all
+            return false;
+        }
+        // otherwise go through and remove these forces 
+        addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
+        return true;
+    }
+
     private boolean testReaction(Load reaction, List<Load> addedForces) {
+        return testReaction(reaction, addedForces, true);
+    }
+
+    private boolean testReaction(Load reaction, List<Load> addedForces, boolean remove) {
 
         // the equality check on Load requires that we ignore the symbol name
-        
+
         Load equivalent = null;
-        for(Load candidate : addedForces) {
-            if(candidate.equalsSymbolic(reaction))
+        for (Load candidate : addedForces) {
+            if (candidate.equalsSymbolic(reaction)) {
                 equivalent = candidate;
+            }
         }
-        
-        if(equivalent != null) {
-            addedForces.remove(equivalent);
+
+        if (equivalent != null) {
+            if (remove) {
+                addedForces.remove(equivalent);
+            }
             return true;
         }
 

@@ -28,6 +28,6 @@ public class SolveJointTask implements Task {
     }
 
     public String getDescription() {
-        return "Solve for reactions at "+joint.getPoint().getName();
+        return "Solve for reactions at "+joint.getAnchor().getName();
     }
 }

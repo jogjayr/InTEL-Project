@@ -146,7 +146,7 @@ public class EquationDiagram extends SubDiagram {
                     continue;
                 }
 
-                Point point = joint.getPoint();
+                Point point = joint.getAnchor();
                 List<Vector> reactions = new ArrayList<Vector>();
                 for (Quantity q : values.keySet()) {
                     Load load = getLoad(q.getSymbolName());
