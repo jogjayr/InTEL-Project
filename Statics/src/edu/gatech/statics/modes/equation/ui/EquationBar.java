@@ -29,6 +29,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
+import edu.gatech.statics.modes.equation.worksheet.Term;
 import edu.gatech.statics.objects.Point;
 import java.io.IOException;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class EquationBar extends BContainer {
             BContainer startContainer = makeStartContainer();
             add(startContainer);
 
-            for (EquationMath.Term term : math.allTerms()) {
+            for (Term term : math.allTerms()) {
                 addBox(term);
             }
 
@@ -240,7 +241,7 @@ public class EquationBar extends BContainer {
     }
 
     private void update() {
-        for (EquationMath.Term term : math.allTerms()) {
+        for (Term term : math.allTerms()) {
             TermBox box = terms.get(term.getSource());
             if (box == null) {
                 continue;
@@ -251,7 +252,7 @@ public class EquationBar extends BContainer {
     }
 
     // placement information???
-    private void addBox(final EquationMath.Term term) {
+    private void addBox(final Term term) {
         // add plus icon unless firstvb
         if (terms.size() > 0) {
 
@@ -319,7 +320,7 @@ public class EquationBar extends BContainer {
         }
 
         if (!terms.containsKey(source)) {
-            EquationMath.Term term = math.addTerm(source);
+            Term term = math.addTerm(source);
             addBox(term);
         }
     }

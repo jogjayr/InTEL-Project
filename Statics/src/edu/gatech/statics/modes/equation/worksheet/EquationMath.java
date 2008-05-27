@@ -68,127 +68,12 @@ public class EquationMath {
         }
     }
 
-    abstract protected static class Element {
-
-        abstract String getText();
-
-        abstract boolean isKnown();
-    }
-
-    protected static class VectorElement extends Element {
-
-        VectorElement(Vector source) {
-            this.source = source;
-        }
-        final Vector source;
-
-        String getText() {
-            return source.toString();//.getLabelText();
-
-        }
-
-        boolean isKnown() {
-            return source.isKnown();
-        }
-        //{return !source.isSymbol();}
-    }
-
-    protected static class CoefficientElement extends Element {
-
-        CoefficientElement() {
-            expression = "";
-        }
-        private String expression;
-        float value;
-
-        void setText(String text) {
-            expression = text.trim();
-        }
-
-        String getText() {
-            return expression;
-        }
-
-        boolean parse() {
-            if (expression.equals("")) {
-                value = 1.0f;
-                return true;
-            }
-            value = Parser.evaluate(expression);
-            return !Float.isNaN(value);
-        }
-
-        // only works if quantity is known.
-        float getValue() {
-            if (parse()) {
-                return value;
-            } else {
-                return Float.NaN;
-            }
-        }
-
-        boolean isKnown() {
-            return true;
-        } // may wish to change this later on...
-
-    }
-
-    protected static enum TermError {
-
-        none, parse, incorrect, badCoefficient
-    }
-
-    public class Term {
-
-        Term(Vector source) {
-            vectorElement = new VectorElement(source);
-            coefficient = new CoefficientElement();
-        }
-
-        public void setCoefficientText(String s) {
-            coefficient.setText(s);
-        }
-        final VectorElement vectorElement;
-        final CoefficientElement coefficient;
-        TermError error;
-        float coefficientValue;
-        BigDecimal targetValue;
-
-        boolean check() {
-            Vector3bd vectorOrient = vectorElement.source.getVectorValue();
-            targetValue = vectorOrient.dot(observationDirection);
-
-            if (!coefficient.parse()) {
-                error = TermError.parse;
-                return false;
-            }
-
-            coefficientValue = coefficient.getValue();
-
-            if (Math.abs(coefficientValue - targetValue.floatValue()) < TEST_ACCURACY) {
-                error = TermError.none;
-                return true;
-            } else {
-                error = TermError.incorrect;
-                return false;
-            }
-        }
-
-        public Vector getSource() {
-            return vectorElement.source;
-        }
-
-        public String getCoefficient() {
-            return coefficient.expression;
-        }
-    }
-
     public void setCoefficient(Vector target, String coefficientExpression) {
         getTerm(target).coefficient.setText(coefficientExpression);
     }
 
     public Term createTerm(Vector source) {
-        return new Term(source);
+        return new Term(source,this);
     }
 
     public Term getTerm(Vector target) {

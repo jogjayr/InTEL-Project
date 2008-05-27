@@ -42,7 +42,7 @@ public class Worksheet {
 
             for (int row = 0; row < numberEquations; row++) {
                 EquationMath math = equations.get(row);
-                for (EquationMath.Term term : math.allTerms()) {
+                for (Term term : math.allTerms()) {
 
                     Quantity q = term.getSource().getQuantity();
                     if (q.isSymbol() && !q.isKnown()) {

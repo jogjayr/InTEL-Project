@@ -12,13 +12,10 @@ package edu.gatech.statics.modes.equation.worksheet;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.modes.equation.worksheet.EquationMath.TermError;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
-import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,54 +37,9 @@ public class EquationMathMoments extends EquationMath {
         return "M[P]";
     }
     
-    protected class MomentTerm extends Term {
-        
-        private Point anchor;
-        
-        MomentTerm(Vector vector) {
-            super(vector);
-            anchor = getWorld().getLoad(vector).getAnchor();
-        }
-        
-        @Override
-        boolean check() {
-            
-            if(getSource().getUnit() == Unit.moment) {
-                // this is a moment
-                Vector3bd vectorOrient = getSource().getVectorValue();
-                targetValue = vectorOrient.dot(getObservationDirection());
-            } else {
-                // this is a force
-                Vector3bd vectorOrient = getSource().getVectorValue();
-                Vector3bd distance = anchor.getPosition().subtract(observationPoint);
-
-                // distance is described in world units, so apply the world scale
-                distance.divideLocal(Unit.distance.getDisplayScale());
-                
-                targetValue = vectorOrient.cross(distance).dot(getObservationDirection());
-                targetValue = targetValue.negate();
-            }
-            
-            if(!coefficient.parse()) {
-                error = TermError.parse;
-                return false;
-            }
-            
-            coefficientValue = coefficient.getValue();
-            
-            if (Math.abs(coefficientValue - targetValue.floatValue()) < TEST_ACCURACY) {
-                error = TermError.none;
-                return true;
-            } else {
-                error = TermError.incorrect;
-                return false;
-            }
-        }
-    }
-    
     @Override
     public Term createTerm(Vector source) {
-        return new MomentTerm(source);
+        return new MomentTerm(source,this);
     }
     
     /** Creates a new instance of EquationMoments */
