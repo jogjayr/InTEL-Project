@@ -15,6 +15,9 @@ import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
+import edu.gatech.statics.objects.joints.Fix2d;
+import edu.gatech.statics.objects.joints.Pin2d;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,26 +102,39 @@ public class FBDChecker {
                 //was wrong (numerically or symbolically)
                 for (Load addedExt : addedForces) {
                     if (addedExt.getAnchor() == external.getAnchor()) {
+
+                        //check to see if pointing the wrong direction
+                        for (int i = 0; i < addedForces.size(); i++) {
+                            if (addedForces.get(i).equalsSymbolic(negate(external))) {
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reverse",
+                                        forceOrMoment(addedForces.get(i)),
+                                        addedForces.get(i).getLabelText(),
+                                        addedForces.get(i).getAnchor().getLabelText());
+                                return false;
+                            }
+                        }
+
                         //An external value that should be symbolic has been added as numeric
                         if (external.isSymbol() && !addedExt.isSymbol()) {
                             Logger.getLogger("Statics").info("check: external value should be a symbol at point" + external.getAnchor().getLabelText());
                             Logger.getLogger("Statics").info("check: FAILED");
 
-                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_symbol", addedExt.getAnchor().getLabelText());
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_given_symbol", addedExt.getLabelText(), addedExt.getAnchor().getLabelText());
                             return false;
                         } //An external value that should be numeric has been added as symbolic
                         else if (!external.isSymbol() && addedExt.isSymbol()) {
                             Logger.getLogger("Statics").info("check: external value should be a numeric at point" + external.getAnchor().getLabelText());
                             Logger.getLogger("Statics").info("check: FAILED");
 
-                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_number", addedExt.getAnchor().getLabelText());
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_given_number", addedExt.getLabelText(), addedExt.getAnchor().getLabelText());
                             return false;
                         } //An external value was added as numeric, correctly, but was the wrong number
+                        //pointing the wrong way
                         else {
                             Logger.getLogger("Statics").info("check: diagram contains incorrect external force " + external);
                             Logger.getLogger("Statics").info("check: FAILED");
 
-                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external_value", addedExt.getAnchor().getLabelText());
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_given_value", addedExt.getLabelText(), addedExt.getAnchor().getLabelText());
                             return false;
                         }
                     }
@@ -129,7 +145,7 @@ public class FBDChecker {
                 Logger.getLogger("Statics").info("check: diagram does not contain external force " + external);
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_external", external.getAnchor().getLabelText());
+                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_given", external.getAnchor().getLabelText());
                 return false;
             }
         }
@@ -154,26 +170,38 @@ public class FBDChecker {
                     //was wrong (numerically or symbolically)
                     for (Load addedWeight : addedForces) {
                         if (addedWeight.getAnchor() == weight.getAnchor()) {
+
+                            //check to see if pointing the wrong direction
+                            for (int i = 0; i < addedForces.size(); i++) {
+                                if (addedForces.get(i).equalsSymbolic(negate(weight))) {
+                                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reverse",
+                                            forceOrMoment(addedForces.get(i)),
+                                            addedForces.get(i).getLabelText(),
+                                            addedForces.get(i).getAnchor().getLabelText());
+                                    return false;
+                                }
+                            }
+
                             //A weight that should be symbolic has been added as numeric
                             if (weight.isSymbol() && !addedWeight.isSymbol()) {
                                 Logger.getLogger("Statics").info("check: weight should be a symbol at point" + weight.getAnchor().getLabelText());
                                 Logger.getLogger("Statics").info("check: FAILED");
 
-                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_symbol", addedWeight.getAnchor().getLabelText());
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_symbol", body.getLabelText());
                                 return false;
                             } //A weight that should be numeric has been added as symbolic
                             else if (!weight.isSymbol() && addedWeight.isSymbol()) {
                                 Logger.getLogger("Statics").info("check: weight should be numeric at point" + weight.getAnchor().getLabelText());
                                 Logger.getLogger("Statics").info("check: FAILED");
 
-                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_number", addedWeight.getAnchor().getLabelText());
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_number", body.getLabelText());
                                 return false;
                             } //A weight was added as numeric, correctly, but was the wrong number
                             else {
                                 Logger.getLogger("Statics").info("check: diagram contains incorrect weight " + weight);
                                 Logger.getLogger("Statics").info("check: FAILED");
 
-                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_value", addedWeight.getAnchor().getLabelText());
+                                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight_value", body.getLabelText());
                                 return false;
                             }
                         }
@@ -183,7 +211,7 @@ public class FBDChecker {
                     Logger.getLogger("Statics").info("check: weight is: " + weight);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight", weight.getAnchor().getLabelText());
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_weight", body.getLabelText());
                     return false;
                 }
             }
@@ -218,30 +246,67 @@ public class FBDChecker {
             List<Load> reactions = getReactions(joint, joint.getReactions(body));
 
             Logger.getLogger("Statics").info("check: testing joint: " + joint);
-            for (Load reaction : reactions) {
 
-                if (joint.isForceDirectionNegatable()) {
-                    if (!testReaction(reaction, addedForces) &&
-                            !testReaction(negate(reaction), addedForces)) {
-                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
-                        Logger.getLogger("Statics").info("check:               or negated force: " + negate(reaction));
-                        Logger.getLogger("Statics").info("check: note: reaction is negatable");
-                        Logger.getLogger("Statics").info("check: FAILED");
+            //no reaction forces added
+            if (getForcesAtPoint(joint.getAnchor(), addedForces).isEmpty()) {
+                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
+                return false;
+            }
 
-                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
-                        return false;
-                    }
-                } else {
-                    if (!testReaction(reaction, addedForces)) {
-                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
-                        Logger.getLogger("Statics").info("check: FAILED");
+            if (testJoint(joint, addedForces)) {
+                continue;
+            } else {
+                // joint check has failed,
+                // so check some common errors
 
-                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
+                //check to see if pointing the wrong direction
+                if (!(joint instanceof Pin2d)) {
+                    Pin2d testPin = new Pin2d(joint.getAnchor());
+                    if (testJoint(testPin, addedForces)) {
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "pin", connectorType(joint));
                         return false;
                     }
                 }
 
+                if (!(joint instanceof Fix2d)) {
+                    Fix2d testFix = new Fix2d(joint.getAnchor());
+                    if (testJoint(testFix, addedForces)) {
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "fix", connectorType(joint));
+                        return false;
+                    }
+                }
+                if (joint instanceof Connector2ForceMember2d) {
+                //cable catch
+
+                }
+                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong", connectorType(joint), joint.getAnchor().getLabelText());
+                return false;
             }
+
+//            for (Load reaction : reactions) {
+//
+//                if (joint.isForceDirectionNegatable()) {
+//                    if (!testReaction(reaction, addedForces) &&
+//                            !testReaction(negate(reaction), addedForces)) {
+//                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
+//                        Logger.getLogger("Statics").info("check:               or negated force: " + negate(reaction));
+//                        Logger.getLogger("Statics").info("check: note: reaction is negatable");
+//                        Logger.getLogger("Statics").info("check: FAILED");
+//
+//                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
+//                        return false;
+//                    }
+//                } else {
+//                    if (!testReaction(reaction, addedForces)) {
+//                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
+//                        Logger.getLogger("Statics").info("check: FAILED");
+//
+//                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
+//                        return false;
+//                    }
+//                }
+//
+//            }
         }
 
         // Step 5: Make sure we've used all the user added forces.
@@ -285,11 +350,16 @@ public class FBDChecker {
 
                 // check for duplication
                 String name = force.getSymbolName();
+
                 if (names.contains(name)) {
                     Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate", name);
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
+                            forceOrMoment(force),
+                            force.getAnchor().getLabelText(),
+                            forceOrMoment(addedForces.get(names.indexOf(name))),
+                            addedForces.get(names.indexOf(name)).getAnchor().getLabelText());
                     return false;
                 }
                 names.add(name);
@@ -302,7 +372,7 @@ public class FBDChecker {
 
                 if (weights.containsKey(force)) {
                 } else if (externalForces.contains(force)) {
-                    // OK, do nothing
+                // OK, do nothing
                 } else {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -355,13 +425,19 @@ public class FBDChecker {
 
         // gather loads operating at the joint
         List<Load> forcesAtJoint = getForcesAtPoint(joint.getAnchor(), addedForces);
+        List<Load> jointForces = getReactions(joint, joint.getReactions());
 
         // see if we can clear them all
         boolean success = true;
-        for (Load load : forcesAtJoint) {
-            // SHOULD DO NEGATABLE CHECK HERE
-            if (!testReaction(load, forcesAtJoint)) {
-                success = false;
+        for (Load load : jointForces) {
+            if (joint.isForceDirectionNegatable()) {
+                if (!testReaction(load, forcesAtJoint) && !testReaction(negate(load), forcesAtJoint)) {
+                    success = false;
+                }
+            } else {
+                if (!testReaction(load, forcesAtJoint)) {
+                    success = false;
+                }
             }
         }
         if (!success || !forcesAtJoint.isEmpty()) {
@@ -396,5 +472,23 @@ public class FBDChecker {
         }
 
         return false;
+    }
+
+    private String forceOrMoment(Load l) {
+        if (l instanceof Force) {
+            return "force";
+        } else {
+            return "moment";
+        }
+    }
+
+    private String connectorType(Joint joint) {
+        if (joint instanceof Pin2d) {
+            return "pin";
+        } else if (joint instanceof Fix2d) {
+            return "fix";
+        } else {
+            return "roller";
+        }
     }
 }
