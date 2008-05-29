@@ -39,6 +39,10 @@ public class Term {
             error = TermError.none;
             return true;
         } else {
+            if (Math.abs(-1 * coefficientValue - targetValue.floatValue()) < EquationMath.TEST_ACCURACY) {
+                error = TermError.badSign;
+                return false;
+            }
             error = TermError.incorrect;
             return false;
         }

@@ -67,6 +67,14 @@ public class EquationMath {
             return "F[Y]";
         }
     }
+    
+    public String getAxis() {
+        if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
+            return "X";
+        } else {
+            return "Y";
+        }
+    }
 
     public void setCoefficient(Vector target, String coefficientExpression) {
         getTerm(target).coefficient.setText(coefficientExpression);
@@ -131,7 +139,7 @@ public class EquationMath {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary");
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getSymbolName());
                     return false;
                 } else {
                     continue;
@@ -143,7 +151,7 @@ public class EquationMath {
                 Logger.getLogger("Statics").info("check: equation has not added all terms: " + force.getVector());
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces");
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces", getAxis());
                 return false;
             }
         }
@@ -155,7 +163,7 @@ public class EquationMath {
                 Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + term.getSource());
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment");
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getSymbolName());
                 return false;
             }
 
@@ -165,6 +173,9 @@ public class EquationMath {
 
                 switch (term.error) {
                     case none:
+                    case badSign:
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getSymbolName());
+                        return false;
                     case badCoefficient:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
@@ -176,7 +187,7 @@ public class EquationMath {
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getSymbolName());
                         return false;
                     case incorrect:
                         Logger.getLogger("Statics").info("check: for " + term.getSource().toString());
