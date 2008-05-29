@@ -135,6 +135,9 @@ public class EquationMathMoments extends EquationMath {
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
                         return false;
+                    case badSign:
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getSymbolName());
+                        return false;
                     case badCoefficient:
                         Logger.getLogger("Statics").info("check: bad coefficient");
                         Logger.getLogger("Statics").info("check: FAILED");
@@ -155,7 +158,7 @@ public class EquationMathMoments extends EquationMath {
                         Logger.getLogger("Statics").info("check: should be: " + term.targetValue);
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getSource().toString());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getSymbolName());
                         //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }

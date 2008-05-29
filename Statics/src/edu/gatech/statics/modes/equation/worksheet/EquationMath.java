@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class EquationMath {
 
-    protected static final float TEST_ACCURACY = .001f;
+    protected static final float TEST_ACCURACY = .1f;
     private boolean locked = false;
 
     public void setLocked(boolean locked) {
@@ -195,7 +195,7 @@ public class EquationMath {
                         Logger.getLogger("Statics").info("check: should be: " + term.targetValue);
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getSource().toString());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getSymbolName());
                         return false;
                 }
 
