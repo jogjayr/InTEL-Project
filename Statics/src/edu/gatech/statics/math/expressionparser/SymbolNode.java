@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.parser;
+package edu.gatech.statics.math.expressionparser;
+
+import java.math.BigDecimal;
 
 /**
  *
@@ -15,13 +17,13 @@ class SymbolNode extends Node {
     public String getSymbolName() {
         return symbolName;
     }
-    
+
     public SymbolNode(String symbolName) {
         this.symbolName = symbolName;
     }
 
     @Override
-    float evaluate() {
+    BigDecimal evaluate() {
         throw new UnsupportedOperationException("Cannot evaluate symbol \"" + symbolName + "\"");
     }
 

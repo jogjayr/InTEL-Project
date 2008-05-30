@@ -6,8 +6,12 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.parser;
+package edu.gatech.statics.math.expressionparser;
 
+import edu.gatech.statics.math.AffineQuantity;
+import edu.gatech.statics.math.Unit;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -18,45 +22,44 @@ import java.util.StringTokenizer;
  */
 public class Parser {
 
-    public static class SymbolResult {
-
-        public String symbolName;
-        public float symbolCoefficient;
-        public float constant;
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final SymbolResult other = (SymbolResult) obj;
-            if (this.symbolName != other.symbolName && (this.symbolName == null || !this.symbolName.equals(other.symbolName))) {
-                return false;
-            }
-            if (this.symbolCoefficient != other.symbolCoefficient) {
-                return false;
-            }
-            if (this.constant != other.constant) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 37 * hash + (this.symbolName != null ? this.symbolName.hashCode() : 0);
-            hash = 37 * hash + Float.floatToIntBits(this.symbolCoefficient);
-            hash = 37 * hash + Float.floatToIntBits(this.constant);
-            return hash;
-        }
-        
-        
+    /*public static class SymbolResult {
+    
+    public String symbolName;
+    public float symbolCoefficient;
+    public float constant;
+    
+    @Override
+    public boolean equals(Object obj) {
+    if (obj == null) {
+    return false;
     }
-
+    if (getClass() != obj.getClass()) {
+    return false;
+    }
+    final SymbolResult other = (SymbolResult) obj;
+    if (this.symbolName != other.symbolName && (this.symbolName == null || !this.symbolName.equals(other.symbolName))) {
+    return false;
+    }
+    if (this.symbolCoefficient != other.symbolCoefficient) {
+    return false;
+    }
+    if (this.constant != other.constant) {
+    return false;
+    }
+    return true;
+    }
+    
+    @Override
+    public int hashCode() {
+    int hash = 7;
+    hash = 37 * hash + (this.symbolName != null ? this.symbolName.hashCode() : 0);
+    hash = 37 * hash + Float.floatToIntBits(this.symbolCoefficient);
+    hash = 37 * hash + Float.floatToIntBits(this.constant);
+    return hash;
+    }
+    
+    
+    }*/
     /**
      * Attempts to parse and evaluate the expression as a linear symbolic term
      * That is, the expression has the form A+B*S, where A and B are known floating
@@ -64,7 +67,7 @@ public class Parser {
      * null if there is an error in the expression or if there are more than one symbolic
      * terms.
      */
-    public static SymbolResult evaluateSymbol(String expression) {
+    public static AffineQuantity evaluateSymbol(String expression) {
         Parser parser = new Parser();
         Node topNode;
         try {
@@ -79,8 +82,8 @@ public class Parser {
 
         // for the simple case if the symbol term is not there in the first place
         if (symbol == null) {
-            SymbolResult result = new SymbolResult();
-            result.constant = topNode.evaluate();
+            BigDecimal constant = topNode.evaluate();
+            AffineQuantity result = new AffineQuantity(constant, BigDecimal.ZERO, null);
             return result;
         }
 
@@ -105,7 +108,7 @@ public class Parser {
                     // this cannot be parsed, so we return null here
                     return null;
                 }
-                if(leftSymbol != null && rightSymbol != null) {
+                if (leftSymbol != null && rightSymbol != null) {
                     // there are two symbols in the heirarchy. This is bad, so we return null here
                     return null;
                 }
@@ -140,10 +143,10 @@ public class Parser {
         // if we have reached here, the symbol should be only underneath linear terms
         // this way we can go up from the top and collect the terms.
 
-        SymbolResult result = new SymbolResult();
-        result.symbolName = symbol.getSymbolName();
-        result.symbolCoefficient = 1;
-        result.constant = 0;
+        //SymbolResult result = new SymbolResult();
+        String symbolName = symbol.getSymbolName();
+        BigDecimal multiplier = BigDecimal.ONE;
+        BigDecimal constant = BigDecimal.ZERO;
 
         // start at 1 as to skip the original symbol node
         for (int i = 1; i < symbolChain.size(); i++) {
@@ -153,14 +156,14 @@ public class Parser {
             if (node instanceof UnaryNode) {
                 UnaryNode unaryNode = (UnaryNode) node;
                 if (unaryNode.getOperation() == UnaryNode.Operation.negate) {
-                    result.constant *= -1;
-                    result.symbolCoefficient *= -1;
+                    constant = constant.negate();
+                    multiplier = multiplier.negate();
                 }
             // the only other option would be identity, and this leaves the values
             // the same, so it is not necessary to check for it
             } else if (node instanceof BinaryNode) {
                 BinaryNode binaryNode = (BinaryNode) node;
-                float otherValue;
+                BigDecimal otherValue;
 
                 try {
                     if (thisBranch == 1) {
@@ -173,36 +176,45 @@ public class Parser {
                     return null;
                 }
 
-                if (otherValue == Float.NaN) {
+                if (otherValue == null) {
                     // this is unexpected, there is some evaluation error within this branch.
                     return null;
                 }
 
                 switch (binaryNode.getOperation()) {
                     case add:
-                        result.constant += otherValue;
+                        //result.constant += otherValue;
+                        constant = constant.add(otherValue);
                         break;
                     case divide:
-                        result.symbolCoefficient /= otherValue;
-                        result.constant /= otherValue;
+                        constant = constant.divide(otherValue, Unit.getPrecision(), RoundingMode.HALF_UP);
+                        multiplier = multiplier.divide(otherValue, Unit.getPrecision(), RoundingMode.HALF_UP);
                         break;
                     case multiply:
-                        result.symbolCoefficient *= otherValue;
-                        result.constant *= otherValue;
+                        constant = constant.multiply(otherValue);
+                        multiplier = multiplier.multiply(otherValue);
                         break;
                     case subtract:
-                        float sign = thisBranch == 1 ? 1 : -1;
-                        result.constant = sign * (result.constant - otherValue);
+                        if (thisBranch == 1) {
+                            constant = constant.subtract(otherValue);
+                        } else {
+                            constant = otherValue.subtract(constant);
+                            multiplier = multiplier.negate();
+                        }
                 }
             }
         }
 
-        return result;
+        return new AffineQuantity(constant, multiplier, symbolName);
     }
 
     public static float evaluate(String expression) {
         // parse non-symbolic expressions
-        return new Parser().evaluateInternal(expression);
+        BigDecimal result = new Parser().evaluateInternal(expression);
+        if (result == null) {
+            return Float.NaN;
+        }
+        return result.floatValue();
     }
 
     private List<String> tokenize(String s) {
@@ -259,23 +271,26 @@ public class Parser {
         return rootNode;
     }
 
-    private float evaluateInternal(String expression) {
+    private BigDecimal evaluateInternal(String expression) {
         try {
 
             // automatically handle a single minus sign as a negation
             if (expression.trim().equals("-")) {
-                return -1;
+                return BigDecimal.ONE.negate();
 
             // shave off a * multiplier if the user has added one
             }
             if (expression.endsWith("*")) {
                 expression = expression.substring(0, expression.length() - 1);
             }
-            return parse(expression).evaluate();
+            Node node = parse(expression);
+            BigDecimal result = node.evaluate();
+            return result.setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+
         } catch (UnsupportedOperationException e) {
-            return Float.NaN;
+            return null;
         } catch (NullPointerException e) {
-            return Float.NaN;
+            return null;
         }
     }
 

@@ -124,15 +124,15 @@ public class Vector3bd {
 
     public Vector3bd divide(BigDecimal scalar) {
         return new Vector3bd(
-                x.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP),
-                y.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP),
-                z.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP));
+                x.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP),
+                y.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP),
+                z.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP));
     }
 
     public Vector3bd divideLocal(BigDecimal scalar) {
-        x = x.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
-        y = y.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
-        z = z.divide(scalar, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        x = x.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        y = y.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        z = z.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
         return this;
     }
 
@@ -222,7 +222,6 @@ public class Vector3bd {
         hash = 73 * hash + (this.z != null ? this.z.hashCode() : 0);
         return hash;
     }
-    private static final int VECTOR_PRECISION = 4;
 
     public Vector3bd normalize() {
         double magnitude = Math.sqrt(
@@ -230,9 +229,9 @@ public class Vector3bd {
                 Math.pow(y.doubleValue(), 2) +
                 Math.pow(z.doubleValue(), 2));
         BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
-        BigDecimal xn = x.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
-        BigDecimal yn = y.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
-        BigDecimal zn = z.divide(bdMagnitude, VECTOR_PRECISION, BigDecimal.ROUND_HALF_UP);
+        BigDecimal xn = x.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal yn = y.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal zn = z.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
 
         return new Vector3bd(xn, yn, zn);
     }

@@ -15,7 +15,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.modes.equation.parser.Parser;
+import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.objects.Force;
 import java.math.BigDecimal;
 import java.util.ArrayList;

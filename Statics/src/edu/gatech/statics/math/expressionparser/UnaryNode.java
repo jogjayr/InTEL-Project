@@ -6,7 +6,11 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.parser;
+package edu.gatech.statics.math.expressionparser;
+
+import edu.gatech.statics.math.Unit;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
@@ -15,8 +19,10 @@ package edu.gatech.statics.modes.equation.parser;
 class UnaryNode extends Node {
 
     enum Operation {
+
         sin, cos, sqrt, atan, negate,
         identity // identity is for (parentheses)
+
     };
     private Operation operation;
     private Node child;
@@ -34,22 +40,29 @@ class UnaryNode extends Node {
         child.setParent(this);
     }
 
-    float evaluate() {
+    BigDecimal evaluate() {
+
+        BigDecimal result = child.evaluate();
+        if (result == null) {
+            return null;
+        }
+        float resultFloat = result.floatValue();
+
         switch (operation) {
             case sin:
-                return (float) Math.sin((Math.PI / 180) * child.evaluate());
+                return new BigDecimal(Math.sin((Math.PI / 180) * resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
             case cos:
-                return (float) Math.cos((Math.PI / 180) * child.evaluate());
+                return new BigDecimal(Math.cos((Math.PI / 180) * resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
             case atan:
-                return (float) ((180 / Math.PI) * Math.atan(child.evaluate()));
+                return new BigDecimal(((180 / Math.PI) * Math.atan(resultFloat))).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
             case sqrt:
-                return (float) Math.sqrt(child.evaluate());
+                return new BigDecimal(Math.sqrt(resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
             case identity:
                 return child.evaluate();
             case negate:
-                return -child.evaluate();
+                return child.evaluate().negate();
             default:
-                return Float.NaN;
+                return null;
         }
     }
 

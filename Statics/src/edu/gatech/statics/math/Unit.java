@@ -22,9 +22,13 @@ public enum Unit {
     none;
     
     private static BigDecimal forcePerMass;
+    private static int Precision = 4;
 
     public static BigDecimal getForcePerMass() {return forcePerMass;}
     public static void setForcePerMass(BigDecimal forcePerMass) {Unit.forcePerMass = forcePerMass;}
+
+    public static int getPrecision() {return Precision;}
+    public static void setPrecision(int Precision) {Unit.Precision = Precision;}
     
     private static Map<Unit, String> suffixMap = new HashMap<Unit, String>();
     private static Map<Unit, Integer> precisionMap = new HashMap<Unit, Integer>();

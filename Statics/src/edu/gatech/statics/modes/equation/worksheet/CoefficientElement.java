@@ -1,6 +1,7 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
-import edu.gatech.statics.modes.equation.parser.Parser;
+import edu.gatech.statics.math.AffineQuantity;
+import edu.gatech.statics.math.expressionparser.Parser;
 
 class CoefficientElement extends TermElement {
 
@@ -29,8 +30,8 @@ class CoefficientElement extends TermElement {
     }
 
     boolean isSymbolic() {
-        Parser.SymbolResult result = Parser.evaluateSymbol(expression);
-        return result != null && result.symbolName != null;
+        AffineQuantity result = Parser.evaluateSymbol(expression);
+        return result != null && result.getSymbolName() != null;
     }
     
     

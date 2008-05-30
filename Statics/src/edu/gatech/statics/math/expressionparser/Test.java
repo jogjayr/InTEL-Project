@@ -6,7 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.parser;
+package edu.gatech.statics.math.expressionparser;
+
+import edu.gatech.statics.math.AffineQuantity;
 
 /**
  *
@@ -16,15 +18,15 @@ public class Test {
 
     public static void main(String args[]) {
 
-        String expression = "(X*sin(atan(.5))+23)/2";
+        String expression = "1-(X*sin(atan(.5))+23)/2";
 
         System.out.println(expression);
         System.out.println(Parser.evaluate(expression));
         System.out.println(new Parser().parse(expression).printout());
 
-        Parser.SymbolResult result = Parser.evaluateSymbol(expression);
+        AffineQuantity result = Parser.evaluateSymbol(expression);
         if (result != null) {
-            System.out.println("Symbol result: " + result.symbolName + " * " + result.symbolCoefficient + " + " + result.constant);
+            System.out.println("Symbol result: " +result);//+ result.getSymbolName() + " * " + result.getMultiplier() + " + " + result.getConstant());
         } else {
             System.out.println("Symbol parse FAILED!");
         }
