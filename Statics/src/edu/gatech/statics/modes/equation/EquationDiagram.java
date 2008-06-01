@@ -31,7 +31,9 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
@@ -65,7 +67,7 @@ public class EquationDiagram extends SubDiagram {
     public Point getMomentPoint() {
         return momentPoint;
     }
-    
+
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,
     // then it will no longer be *equal* to the value stored as a key
@@ -73,32 +75,38 @@ public class EquationDiagram extends SubDiagram {
     // This is why we do not use a hashmap
     public Load getLoad(Vector vector) {
         //return vectorMap.get(vector);
-        if(vector == null)
+        if (vector == null) {
             return null;
-        for(SimulationObject obj : allObjects())
+        }
+        for (SimulationObject obj : allObjects()) {
             if (obj instanceof Load) {
                 Load load = (Load) obj;
-                if(vector.equals(load.getVector()))
+                if (vector.equals(load.getVector())) {
                     return load;
-                
-                if(     vector.isSymbol() && load.isSymbol() &&
-                        vector.equalsSymbolic(load.getVector()) && 
-                        vector.getSymbolName().equals(load.getSymbolName()))
+                }
+                if (vector.isSymbol() && load.isSymbol() &&
+                        vector.equalsSymbolic(load.getVector()) &&
+                        vector.getSymbolName().equals(load.getSymbolName())) {
                     return load;
                 //vectorMap.put(load.getVector(), load);
+                }
             }
+        }
         return null;
     }
-    
+
     public Load getLoad(String symbolName) {
-        if(symbolName == null)
+        if (symbolName == null) {
             return null;
-        for(SimulationObject obj : allObjects())
+        }
+        for (SimulationObject obj : allObjects()) {
             if (obj instanceof Load) {
                 Load load = (Load) obj;
-                if(load.getSymbolName() != null && load.getSymbolName().equals(symbolName))
+                if (load.getSymbolName() != null && load.getSymbolName().equals(symbolName)) {
                     return load;
+                }
             }
+        }
         return null;
     }
 
@@ -108,11 +116,11 @@ public class EquationDiagram extends SubDiagram {
 
         FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
         addAll(fbd.allObjects());
-        
+
         // FIXME: This diagram automatically loads a 2D worksheet
         worksheet = new Worksheet2D(this);
     }
-    
+
     /**
      * This actually updates the vectors and joints with the result of the solution.
      * The update applies to objects within the EquationDiagram, but these are references
@@ -120,9 +128,14 @@ public class EquationDiagram extends SubDiagram {
      * @param values
      */
     public void performSolve(Map<Quantity, Float> values) {
+
+        // FIRST BATCH
+        // this first batch of updates updates basic values, vectors and measurements
+        // the second batch will depend on these values.
         
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
+        // also go through measurements
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Load) {
                 Load vObj = (Load) obj;
@@ -135,10 +148,30 @@ public class EquationDiagram extends SubDiagram {
                     vObj.setKnown(true);
                 }
             }
+
+            if (obj instanceof Measurement) {
+                Measurement measure = (Measurement) obj;
+                // ignore if the measurement is already known
+                if (measure.isKnown()) {
+                    continue;
+                }
+                // this is kind of a crummy test, but we'll try it anyway
+                for (Map.Entry<Quantity, Float> entry : values.entrySet()) {
+                    if (measure.getSymbolName().equals(entry.getKey().getSymbolName())) {
+                        // okay, our measure actually is actually solved for in the solution
+                        measure.updateQuantityValue(new BigDecimal(entry.getValue()));
+                        measure.setKnown(true);
+                    }
+                }
+            }
         }
+        
+        // SECOND BATCH
+        // this depends on the first batch to be updated before it will work
 
         // go through the joints, and mark the joints as solved,
         // assigning to them the solved values as having the updated vectors.
+        // also go through unknown points...
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Joint) {
                 Joint joint = (Joint) obj;
@@ -169,6 +202,21 @@ public class EquationDiagram extends SubDiagram {
                     joint.solveReaction(solveBody, reactions);
                 }
             }
+
+            if (obj instanceof UnknownPoint) {
+                UnknownPoint point = (UnknownPoint) obj;
+
+                // we do not test whether point is known, because by virtue of the measurement being solved just above
+                // this would cause the point to always be known
+                
+                // this is kind of a crummy test, but we'll try it anyway
+                for(Map.Entry<Quantity, Float> entry : values.entrySet()) {
+                    if(point.getSymbol().equals(entry.getKey().getSymbolName())) {
+                        // okay, our measure actually is actually solved for in the solution
+                        point.setSolved();
+                    }
+                }
+            }
         }
     }
 
@@ -188,14 +236,15 @@ public class EquationDiagram extends SubDiagram {
     @Override
     public void onHover(SimulationObject obj) {
         super.onHover(obj);
-        
+
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         eqPanel.onHover((Load) obj);
 
-        if(obj == null)
+        if (obj == null) {
             highlightVector(null);
-        else
+        } else {
             highlightVector(((Load) obj).getVector());
+        }
     }
 
     @Override
@@ -233,20 +282,20 @@ public class EquationDiagram extends SubDiagram {
             CurveUtil.renderCircle(r, ColorRGBA.blue, momentPoint.getTranslation(), 2, r.getCamera().getDirection());
         }
     }
-    
     private SimulationObject currentHover;
 
     public void highlightVector(final Vector v) {
-        
+
         // handle visual highlighting
-        if(currentHover != null)
+        if (currentHover != null) {
             currentHover.setDisplayHighlight(false);
-        
+        }
         Load load = getLoad(v);
-        if(load != null)
+        if (load != null) {
             load.setDisplayHighlight(true);
+        }
         currentHover = load;
-        
+
         //sumBar.highlightVector(obj);
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         EquationBar activeEquation = eqPanel.getActiveEquation();
@@ -255,7 +304,7 @@ public class EquationDiagram extends SubDiagram {
                 //showMomentArm(load);
             }
         }
-        //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
+    //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
     }
     private VectorObject momentArm;
     private Load momentArmTarget;

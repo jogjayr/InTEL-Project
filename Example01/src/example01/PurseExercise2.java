@@ -90,34 +90,19 @@ public class PurseExercise2 extends FBDExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
-        //StaticsApplication.getApp().setWorldScale(2f);
-
-        /*A = new Point(new Vector3f(handPoint, -16 + 6, 0));
-        B = new Point(new Vector3f(tendonAnchorB, -16 + 6, 0));
-        C = new Point(new Vector3f(18, -16 + 6, 0));
-        D = new Point(new Vector3f(18, tendonAnchorD + 6, 0));
-        E = new Point(new Vector3f(18f, shoulderHeight + 6, 0));*/
+        
         A = new Point("" + handPoint, "-10", "0");
         
+        C = new Point("18", "-10", "0");
         B = new UnknownPoint(new Point("13", "-10", "0"), 
                 C, Vector3bd.UNIT_X.negate());
-        C = new Point("18", "-10", "0");
-        //D = new Point("18", "" + (tendonAnchorD + 6), "0");
-        //E = new Point("18", "" + (shoulderHeight + 6), "0");
-
-        //Body upperArm = new Beam(E, C);
+        
         Body forearm = new Beam(C, A);
-        //Cable tendon = new Cable(D, B);
-
-        //upperArm.setName("Upper Arm");
+        
         forearm.setName("Forearm");
-        //tendon.setName("Bicep Muscle");
-
-        //jointB = new Connector2ForceMember2d(B, tendon);
-        //jointD = new Connector2ForceMember2d(D, tendon);
+        
         jointC = new Pin2d(C);
-        //jointE = new Pin2d(E);
-
+        
         jointC.attachToWorld(forearm);
 
         G = new Point("" + (centerGravityOffset + 3), "-10", "0");
@@ -137,7 +122,6 @@ public class PurseExercise2 extends FBDExercise {
         world.add(distance3);
         B.setMeasurement(distance3);
 
-        //Point D = new Point("18", "" + (tendonAnchorD + 6), "0");
         Vector3bd tendonDirection = new Vector3bd("[.13,.8,0]");
         tendonDirection = tendonDirection.normalize();
 
@@ -149,9 +133,8 @@ public class PurseExercise2 extends FBDExercise {
         purse.setName("Purse");
         forearm.addObject(purse);
 
-        //Vector3bd tendonDirection = D.getPosition().subtract(B.getPosition());
-        Force tendonForce = new Force(B, tendonDirection, new BigDecimal(160));
-        purse.setName("Tendon");
+        Force tendonForce = new Force(B, tendonDirection, new BigDecimal(360));
+        tendonForce.setName("Tendon");
         tendonForce.createDefaultSchematicRepresentation();
         forearm.addObject(tendonForce);
         forearm.addObject(B);

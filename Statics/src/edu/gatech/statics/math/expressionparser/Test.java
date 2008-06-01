@@ -18,7 +18,8 @@ public class Test {
 
     public static void main(String args[]) {
 
-        String expression = "1-(X*sin(atan(.5))+23)/2";
+        //String expression = "1-(X*sin(atan(.5))+23)/2";
+        String expression = "";
 
         System.out.println(expression);
         System.out.println(Parser.evaluate(expression));

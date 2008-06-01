@@ -42,6 +42,11 @@ class UnaryNode extends Node {
 
     BigDecimal evaluate() {
 
+        /*if(child == null && operation == Operation.negate)
+        return BigDecimal.ONE.negate();
+        if(child == null && operation == Operation.identity)
+        return BigDecimal.ONE; // absence implies 1*/
+
         BigDecimal result = child.evaluate();
         if (result == null) {
             return null;

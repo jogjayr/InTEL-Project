@@ -12,9 +12,9 @@ import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Vector;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,13 +26,13 @@ import java.util.logging.Logger;
 public class EquationMathMoments extends EquationMath {
 
     private boolean observationPointSet = false;
-    private Vector3bd observationPoint = new Vector3bd();
+    private Point observationPoint = null; //new Vector3bd();
 
-    public Vector3bd getObservationPoint() {
+    public Point getObservationPoint() {
         return observationPoint;
     }
 
-    public void setObservationPoint(Vector3bd point) {
+    public void setObservationPoint(Point point) {
         this.observationPoint = point;
         observationPointSet = true;
     }
@@ -85,7 +85,7 @@ public class EquationMathMoments extends EquationMath {
             Term term = getTerm(force.getVector());
 
             // clear off things that would not add via cross product
-            float contribution = (float) force.getVectorValue().cross(force.getAnchor().getPosition().subtract(getObservationPoint())).length();
+            float contribution = (float) force.getVectorValue().cross(force.getAnchor().getPosition().subtract(getObservationPoint().getPosition())).length();
             contribution *= force.getVector().doubleValue();
 
             if (Math.abs(contribution) < TEST_ACCURACY) {
@@ -93,7 +93,7 @@ public class EquationMathMoments extends EquationMath {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getSymbolName());
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getPrettyName());
                     return false;
                 } else {
                     continue;
@@ -121,7 +121,6 @@ public class EquationMathMoments extends EquationMath {
             }
         }
 
-
         for (Term term : allTerms()) {
             if (!term.check()) {
 
@@ -129,36 +128,64 @@ public class EquationMathMoments extends EquationMath {
 
                 switch (term.error) {
                     case none:
+                    case internal:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
                         return false;
-                    case badSign:
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getSymbolName());
-                        return false;
-                    case badCoefficient:
-                        Logger.getLogger("Statics").info("check: bad coefficient");
+                        
+                    case cannotHandle:
+                        Logger.getLogger("Statics").info("check: cannot handle term");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_momentCoefficient");
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getPrettyName());
                         return false;
+                        
+                    case shouldNotBeSymbolic:
+                        Logger.getLogger("Statics").info("check: should not be symbolic");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getPrettyName());
+                        return false;
+                        
+                    case shouldBeSymbolic:
+                        Logger.getLogger("Statics").info("check: should be symbolic");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", term.getSource().getPrettyName());
+                        return false;
+                        
+                    case wrongSymbol:
+                        Logger.getLogger("Statics").info("check: wrong symbol");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", term.getSource().getPrettyName());
+                        return false;
+                        
+                    case badSign:
+                        Logger.getLogger("Statics").info("check: sign is wrong");
+                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getPrettyName());
+                        return false;
+                        
                     case parse:
                         Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getSymbolName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getPrettyName());
                         //"Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
                         return false;
+                        
                     case incorrect:
                         Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
-                        Logger.getLogger("Statics").info("check: incorrect value: " + term.coefficientValue);
-                        Logger.getLogger("Statics").info("check: should be: " + term.targetValue);
+                        Logger.getLogger("Statics").info("check: incorrect value: " + (term.coefficientValue == null ? term.coefficientAffineValue : term.coefficientValue));
+                        Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getSymbolName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());
                         //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }

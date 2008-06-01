@@ -107,7 +107,6 @@ final public class Vector implements Quantified {
         setVectorValue(vector.getVectorValue());
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -134,41 +133,24 @@ final public class Vector implements Quantified {
         return hash;
     }
 
-    /*@Override
-    public boolean equals(Object obj) {
-    if (obj == null || obj.getClass() != this.getClass()) {
-    return false;
-    }
-    Vector v = (Vector) obj;
-    // this is the low tech, ghetto way of doing things
-    // but it should suffice for now.
-    return valuesCloseEnough(v.value, value);
-    }
-    @Override
-    public int hashCode() {
-    int hash = 7;
-    //hash = 23 * hash + (this.anchor != null ? this.anchor.hashCode() : 0);
-    return hash;
-    }*/
     public String getSymbolName() {
         return magnitude.getSymbolName();
-        
     }
 
-    // returns true if the vectors are close enough
-    // close enough means that they have the same values in their decimal places
-    // up to the decimal precision for forces in Units.
-    /*private boolean valuesCloseEnough(Vector3f v1, Vector3f v2) {
-    double power = Math.pow(10, getUnit().getDecimalPrecision());
-    double xdiff = Math.floor(v1.x * power) - Math.floor(v2.x * power);
-    double ydiff = Math.floor(v1.y * power) - Math.floor(v2.y * power);
-    double zdiff = Math.floor(v1.z * power) - Math.floor(v2.z * power);
-    return Math.abs(xdiff) + Math.abs(ydiff) + Math.abs(zdiff) < .1;
-    }*/
+    /**
+     * Returns a nice printable representation of the vector's value.
+     * If the vector is symbolic, it will give the symbol name, otherwise it 
+     * will give the quantity value.
+     * @return
+     */
+    public String getPrettyName() {
+        if (getSymbolName() != null) {
+            return getSymbolName();
+        } else {
+            return magnitude.toString();
+        }
+    }
 
-    // QUESTION:
-    // should there be a thing for configuring the precision of equals-tests?
-    
     /**
      * Compare two vectors accounting for them both being symbols
      * We do not test negation here, but we do test for the equality of terms, ignoring
@@ -180,6 +162,7 @@ final public class Vector implements Quantified {
         //}
 
         return value.equals(v.value); // || value.equals(v.value.negate());
+
     }
 
     @Override
@@ -194,9 +177,4 @@ final public class Vector implements Quantified {
         }
         return r;
     }
-    /*private void positivizeZeroes() {
-    if(value.x == -0f) value.x = 0f;
-    if(value.y == -0f) value.y = 0f;
-    if(value.z == -0f) value.z = 0f;
-    }*/
 }

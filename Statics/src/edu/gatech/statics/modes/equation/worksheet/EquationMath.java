@@ -15,9 +15,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.objects.Force;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class EquationMath {
 
-    protected static final float TEST_ACCURACY = .1f;
+    protected static final float TEST_ACCURACY = .01f;
     private boolean locked = false;
 
     public void setLocked(boolean locked) {
@@ -67,7 +65,7 @@ public class EquationMath {
             return "F[Y]";
         }
     }
-    
+
     public String getAxis() {
         if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
             return "X";
@@ -81,7 +79,7 @@ public class EquationMath {
     }
 
     public Term createTerm(Vector source) {
-        return new Term(source,this);
+        return new Term(source, this);
     }
 
     public Term getTerm(Vector target) {
@@ -139,7 +137,7 @@ public class EquationMath {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getSymbolName());
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getPrettyName());
                     return false;
                 } else {
                     continue;
@@ -163,7 +161,7 @@ public class EquationMath {
                 Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + term.getSource());
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getSymbolName());
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getPrettyName());
                 return false;
             }
 
@@ -173,29 +171,50 @@ public class EquationMath {
 
                 switch (term.error) {
                     case none:
-                    case badSign:
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getSymbolName());
-                        return false;
-                    case badCoefficient:
+                    case internal:
+                    case shouldBeSymbolic:
+                    case wrongSymbol:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
                         return false;
+
+                    case cannotHandle:
+                        Logger.getLogger("Statics").info("check: cannot handle term");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getPrettyName());
+                        return false;
+                        
+                    case shouldNotBeSymbolic:
+                        Logger.getLogger("Statics").info("check: should not be symbolic");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getPrettyName());
+                        return false;
+
+                    case badSign:
+                        Logger.getLogger("Statics").info("check: wrong sign");
+                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getPrettyName());
+                        return false;
+
                     case parse:
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getSymbolName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getPrettyName());
                         return false;
+
                     case incorrect:
                         Logger.getLogger("Statics").info("check: for " + term.getSource().toString());
                         Logger.getLogger("Statics").info("check: incorrect value: " + term.coefficientValue);
                         Logger.getLogger("Statics").info("check: should be: " + term.targetValue);
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getSymbolName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());
                         return false;
                 }
 

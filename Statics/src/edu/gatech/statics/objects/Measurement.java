@@ -23,12 +23,13 @@ import java.util.List;
 abstract public class Measurement extends SimulationObject implements Quantified {
 
     private List<Point> points;
+
     public List<Point> getPoints() {
         return Collections.unmodifiableList(points);
     }
-    
     private Quantity quantity;
     //public Quantity getQuantity() {return quantity.getUnmodifiableQuantity();}
+
     public double doubleValue() {
         //if(getUnit() == Unit.distance)
         //    return quantity.getValue() * StaticsApplication.getApp().getDistanceScale();
@@ -54,7 +55,7 @@ abstract public class Measurement extends SimulationObject implements Quantified
     public String getSymbolName() {
         return quantity.getSymbolName();
     }
-    
+
     /**
      * This is the public accessor for Measurement as a Quantified object.
      * This will throw an UnsupportedOperationException if called.
@@ -69,16 +70,15 @@ abstract public class Measurement extends SimulationObject implements Quantified
     public BigDecimal getDiagramValue() {
         return quantity.getDiagramValue();
     }
-    
 
     /**
      * Use this method to update the value for the measurement
      * @param value
      */
-    protected void updateQuantityValue(BigDecimal value) {
+    public void updateQuantityValue(BigDecimal value) {
         quantity.setDiagramValue(value);
     }
-    
+
     @Override
     public String getLabelText() {
         return quantity.toString();
@@ -88,11 +88,11 @@ abstract public class Measurement extends SimulationObject implements Quantified
     //public void setKnown(boolean known) {this.known = known;}
     //public boolean isKnown() {return known;}
     /** Creates a new instance of Measurement */
-    public Measurement(Point ... points) {
+    public Measurement(Point... points) {
         this.points = new ArrayList<Point>(Arrays.asList(points));
         quantity = new Quantity(getUnit(), BigDecimal.ZERO);
     }
-    
+
     protected void addPoint(Point point) {
         points.add(point);
     }

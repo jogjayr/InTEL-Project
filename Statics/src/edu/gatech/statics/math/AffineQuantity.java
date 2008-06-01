@@ -42,6 +42,25 @@ public class AffineQuantity {
         return symbolName != null && multiplier.floatValue() != 0;
     }
 
+    public AffineQuantity add(AffineQuantity x) {
+        if (symbolName != null && x.symbolName != null && !symbolName.equals(x.symbolName)) {
+            throw new ArithmeticException("Attempting to add two AffineQuantities with different symbols");
+        }
+        // this symbol name or the other one, in case one of them is null
+        String newSymbol = symbolName != null ? symbolName : x.symbolName;
+        return new AffineQuantity(constant.add(x.constant), multiplier.add(x.multiplier), newSymbol);
+    }
+    
+    public AffineQuantity subtract(AffineQuantity x) {
+        if (symbolName != null && x.symbolName != null && !symbolName.equals(x.symbolName)) {
+            throw new ArithmeticException("Attempting to add two AffineQuantities with different symbols");
+        }
+        // this symbol name or the other one, in case one of them is null
+        String newSymbol = symbolName != null ? symbolName : x.symbolName;
+        return new AffineQuantity(constant.subtract(x.constant), multiplier.subtract(x.multiplier), newSymbol);
+    }
+    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

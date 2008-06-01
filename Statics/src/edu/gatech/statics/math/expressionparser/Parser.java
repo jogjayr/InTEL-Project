@@ -70,19 +70,24 @@ public class Parser {
     public static AffineQuantity evaluateSymbol(String expression) {
         Parser parser = new Parser();
         Node topNode;
+        SymbolNode symbol;
         try {
             topNode = parser.parse(expression);
+            symbol = parser.getSymbol(topNode);
         } catch (NullPointerException ex) {
             return null;
         } catch (UnsupportedOperationException ex) {
             return null;
         }
 
-        SymbolNode symbol = parser.getSymbol(topNode);
-
         // for the simple case if the symbol term is not there in the first place
         if (symbol == null) {
-            BigDecimal constant = topNode.evaluate();
+            BigDecimal constant;
+            try {
+                constant = topNode.evaluate();
+            } catch (NullPointerException ex) {
+                return null;
+            }
             AffineQuantity result = new AffineQuantity(constant, BigDecimal.ZERO, null);
             return result;
         }
@@ -208,13 +213,14 @@ public class Parser {
         return new AffineQuantity(constant, multiplier, symbolName);
     }
 
-    public static float evaluate(String expression) {
+    public static BigDecimal evaluate(String expression) {
         // parse non-symbolic expressions
         BigDecimal result = new Parser().evaluateInternal(expression);
-        if (result == null) {
-            return Float.NaN;
-        }
-        return result.floatValue();
+        return result;
+    //if (result == null) {
+    //    return Float.NaN;
+    //}
+    //return result.floatValue();
     }
 
     private List<String> tokenize(String s) {
