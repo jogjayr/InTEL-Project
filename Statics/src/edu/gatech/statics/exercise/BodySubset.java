@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @author ashmore
  */
-public class BodySubset {
+public class BodySubset implements DiagramKey {
 
     private Set<Body> bodies;
     

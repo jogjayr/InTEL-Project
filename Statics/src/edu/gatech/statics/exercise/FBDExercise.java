@@ -6,6 +6,8 @@ package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.*;
 import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
+import edu.gatech.statics.ui.InterfaceConfiguration;
 
 /**
  *
@@ -17,11 +19,14 @@ abstract public class FBDExercise extends Exercise {
         super(schematic);
     }
 
-    
+    @Override
+    public InterfaceConfiguration createInterfaceConfiguration() {
+        return new DefaultInterfaceConfiguration();
+    }
+
     @Override
     public Mode loadStartingMode() {
         SelectMode.instance.load();
         return SelectMode.instance;
     }
-    
 }

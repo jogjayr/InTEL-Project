@@ -37,10 +37,6 @@ import java.math.BigDecimal;
  */
 public class PurseExercise2 extends FBDExercise {
 
-    public InterfaceConfiguration createInterfaceConfiguration() {
-        return new DefaultInterfaceConfiguration();
-    }
-
     /** Creates a new instance of PurseExercise */
     public PurseExercise2() {
         super(new Schematic());
