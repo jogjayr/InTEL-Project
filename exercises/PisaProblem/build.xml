@@ -7,8 +7,8 @@
     <import file="nbproject/build-impl.xml"/>
 
     <target name="-post-jar">
-        <signjar jar="dist/Example02.jar" alias="mykey" storepass="monkeys" keystore="../Statics/.keystore"/>
-        <copyfile src="dist/Example02.jar" dest="../applet/Example02.jar" />
+        <signjar jar="dist/PisaProblem.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/PisaProblem.jar" dest="../../applet/PisaProblem.jar" />
     </target>
 
     <!--

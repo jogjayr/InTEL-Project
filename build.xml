@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="InTEL" default="build" basedir=".">
+    <description>Builds all of the sources in the InTEL project.</description>
+    
+    <echo>**********************************</echo>
+    <echo>*** InTEL Project Master Build ***</echo>
+    <echo>**********************************</echo>
+    
+    <available file="JavaMonkeyEngine/dist/JavaMonkeyEngine.jar" property="jme_exists"/>
+    
+    <target name="getJME" unless="jme_exists">
+        <echo>*** Downloading JavaMonkeyEngine.zip</echo>
+        <echo>*** This may take a moment...</echo>
+        <get src="http://lcc.gatech.edu/~cashmore/Statics/JavaMonkeyEngine.zip" dest="./JavaMonkeyEngine.zip"/>
+        <unzip src="JavaMonkeyEngine.zip" dest="."/>
+        <delete file="JavaMonkeyEngine.zip"/>
+        <echo>*** Done!</echo>
+    </target>
+    
+    <target name="build" depends="getJME">
+        <echo>*** BUILDING ALL</echo>
+        <echo>***</echo>
+        <echo>*** Building BUI</echo>
+        <subant buildpath="BUI/" target="jar"/>
+        
+        <echo>*** Building Statics</echo>
+        <subant buildpath="Statics/" target="jar"/>
+        
+        <echo>*** Building BUI</echo>
+        <subant buildpath="BUI/" target="jar"/>
+        
+        <echo>*** Building Exercises:</echo>
+        <subant buildpath="exercises/PurseProblem/" target="jar"/>
+        <subant buildpath="exercises/PisaProblem/" target="jar"/>
+        
+    </target>
+    <target name="clean">
+        <echo>*** Cleaning ALL</echo>
+        <echo>***</echo>
+        <echo>*** Cleaning BUI</echo>
+        <subant buildpath="BUI/" target="clean"/>
+        
+        <echo>*** Cleaning Statics</echo>
+        <subant buildpath="Statics/" target="clean"/>
+        
+        <echo>*** Cleaning exercises</echo>
+        <subant buildpath="exercises/PurseProblem" target="clean"/>
+        <subant buildpath="exercises/PisaProblem" target="clean"/>
+    </target>
+</project>
