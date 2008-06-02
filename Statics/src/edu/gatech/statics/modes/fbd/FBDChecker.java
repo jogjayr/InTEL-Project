@@ -9,6 +9,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Load;
@@ -35,6 +36,16 @@ public class FBDChecker {
 
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
+    }
+
+    private List<DistanceMeasurement> getSymbolicDistances() {
+        List<DistanceMeasurement> m = new ArrayList<DistanceMeasurement>();
+        for (SimulationObject obj : diagram.allObjects()) {
+            if (obj instanceof DistanceMeasurement && ((DistanceMeasurement) obj).isSymbol()) {
+                m.add((DistanceMeasurement) obj);
+            }
+        }
+        return m;
     }
 
     private List<Load> getAddedForces() {
@@ -68,6 +79,7 @@ public class FBDChecker {
 
         // step 1: assemble a list of all the forces the user has added.
         List<Load> addedForces = getAddedForces();
+
         Logger.getLogger("Statics").info("check: user added forces: " + addedForces);
 
         if (addedForces.size() <= 0) {
@@ -227,6 +239,8 @@ public class FBDChecker {
 
             //no reaction forces added
             if (getForcesAtPoint(joint.getAnchor(), addedForces).isEmpty()) {
+                Logger.getLogger("Statics").info("check: have any forces been added");
+                Logger.getLogger("Statics").info("check: FAILED");
                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
                 return false;
             }
@@ -237,26 +251,34 @@ public class FBDChecker {
                 // joint check has failed,
                 // so check some common errors
 
-                //check to see if pointing the wrong direction
+                //check to see if the user has wrongly created a pin
                 if (!(joint instanceof Pin2d)) {
                     Pin2d testPin = new Pin2d(joint.getAnchor());
                     if (testJoint(testPin, addedForces)) {
+                        Logger.getLogger("Statics").info("check: user wrongly created a pin at point " + joint.getAnchor().getLabelText());
+                        Logger.getLogger("Statics").info("check: FAILED");
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "pin", connectorType(joint));
                         return false;
                     }
                 }
-
+                //check to see if the user has wrongly created a fix
                 if (!(joint instanceof Fix2d)) {
                     Fix2d testFix = new Fix2d(joint.getAnchor());
                     if (testJoint(testFix, addedForces)) {
+                        Logger.getLogger("Statics").info("check: user wrongly created a fix at point " + joint.getAnchor().getLabelText());
+                        Logger.getLogger("Statics").info("check: FAILED");
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "fix", connectorType(joint));
                         return false;
                     }
                 }
+
+                //check to see if the user has created a cable that is in compression
                 if (joint instanceof Connector2ForceMember2d) {
                     for (Load load : reactions) {
                         for (int i = 0; i < addedForces.size(); i++) {
                             if (addedForces.get(i).equalsSymbolic(negate(load))) {
+                                Logger.getLogger("Statics").info("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
+                                Logger.getLogger("Statics").info("check: FAILED");
                                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_cable",
                                         addedForces.get(i).getAnchor().getLabelText(),
                                         addedForces.get(i).getLabelText());
@@ -265,34 +287,11 @@ public class FBDChecker {
                         }
                     }
                 }
+                Logger.getLogger("Statics").info("check: user simply added reactions to a joint that don't make sense to point " + joint.getAnchor().getLabelText());
+                Logger.getLogger("Statics").info("check: FAILED");
                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_wrong", connectorType(joint), joint.getAnchor().getLabelText());
                 return false;
             }
-
-//            for (Load reaction : reactions) {
-//
-//                if (joint.isForceDirectionNegatable()) {
-//                    if (!testReaction(reaction, addedForces) &&
-//                            !testReaction(negate(reaction), addedForces)) {
-//                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
-//                        Logger.getLogger("Statics").info("check:               or negated force: " + negate(reaction));
-//                        Logger.getLogger("Statics").info("check: note: reaction is negatable");
-//                        Logger.getLogger("Statics").info("check: FAILED");
-//
-//                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
-//                        return false;
-//                    }
-//                } else {
-//                    if (!testReaction(reaction, addedForces)) {
-//                        Logger.getLogger("Statics").info("check: diagram missing reaction force: " + reaction);
-//                        Logger.getLogger("Statics").info("check: FAILED");
-//
-//                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reaction");
-//                        return false;
-//                    }
-//                }
-//
-//            }
         }
 
         // Step 5: Make sure we've used all the user added forces.
@@ -312,6 +311,19 @@ public class FBDChecker {
 
         addedForces = getAddedForces();
         List<String> names = new ArrayList<String>();
+
+
+        List<DistanceMeasurement> distanceMeasurements = getSymbolicDistances();
+        for (Load force : addedForces) {
+            for (DistanceMeasurement d : distanceMeasurements) {
+                if (d.getLabelText().equals(force.getLabelText())) {
+                    Logger.getLogger("Statics").info("check: force or moment should not share the same name with the unknown measurement: " + d.getLabelText());
+                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", forceOrMoment(force), force.getAnchor().getLabelText(), d.getLabelText());
+                    return false;
+                }
+            }
+        }
 
         // go through each force that the user has added
         for (Load force : addedForces) {
