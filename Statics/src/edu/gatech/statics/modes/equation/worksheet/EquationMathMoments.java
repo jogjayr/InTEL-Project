@@ -131,9 +131,16 @@ public class EquationMathMoments extends EquationMath {
                     case internal:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
+                        Logger.getLogger("Statics").info("check: got inappropriate error code: "+term.error);
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
+                        return false;
+                        
+                    case missingInclination:
+                        Logger.getLogger("Statics").info("check: missing the inclination in the term");
+                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", term.getSource().getPrettyName());
                         return false;
                         
                     case cannotHandle:

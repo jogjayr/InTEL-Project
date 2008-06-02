@@ -174,8 +174,10 @@ public class EquationMath {
                     case internal:
                     case shouldBeSymbolic:
                     case wrongSymbol:
+                    case missingInclination:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
+                        Logger.getLogger("Statics").info("check: got inappropriate error code: "+term.error);
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");

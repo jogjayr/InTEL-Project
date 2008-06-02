@@ -23,6 +23,11 @@ enum TermError {
      */
     parse,
     /**
+     * The coefficient for a force in the moment equation is missing the inclination
+     * of the force, but does have the distance. 
+     */
+    missingInclination,
+    /**
      * The parse simply has the wrong value. Common mistakes are omitting the 
      * distance or force inclination in the moment equation, or just simple 
      * mathematical errors.

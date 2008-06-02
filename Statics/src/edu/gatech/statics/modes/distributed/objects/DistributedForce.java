@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.distributed.objects;
 
+import edu.gatech.statics.Representation;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.objects.SimulationObject;
 
@@ -15,6 +16,7 @@ public class DistributedForce extends SimulationObject implements DiagramKey {
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Representation rep = new DistributedForceRepresentation(this);
+        addRepresentation(rep);
     }
 }

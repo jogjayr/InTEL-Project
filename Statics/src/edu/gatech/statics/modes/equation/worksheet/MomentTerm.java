@@ -14,9 +14,11 @@ class MomentTerm extends Term {
 
     /**
      * This performs a check of the coeffieient against targetValue.
+     * distanceValue is used for checking the distance between the force and the moment point,
+     * so it only applies if the term is not a couple.
      * @return
      */
-    protected boolean checkAgainstTarget(BigDecimal targetValue) {
+    protected boolean checkAgainstTarget(BigDecimal targetValue, BigDecimal distanceValue) {
 
         // parse the coefficient
         if (!coefficient.parse()) {
@@ -45,6 +47,13 @@ class MomentTerm extends Term {
                 error = TermError.badSign;
                 return false;
             }
+            
+            // if coefficient is not correct, and is equal to the distance for a force, then the inclination of
+            // the force is missing, and we inform the user
+            if(Math.abs(coefficientValue.floatValue()) - distanceValue.floatValue() < EquationMath.TEST_ACCURACY) {
+                error = TermError.missingInclination;
+                return false;
+            }
 
             // otherwise return incorrect
             error = TermError.incorrect;
@@ -56,10 +65,12 @@ class MomentTerm extends Term {
     boolean check() {
 
         // build targetValue
+        BigDecimal distanceMagnitude;
         if (getSource().getUnit() == Unit.moment) {
             // if this is a moment, get the dot. 
             Vector3bd vectorOrient = getSource().getVectorValue();
             targetValue = vectorOrient.dot(math.getObservationDirection());
+            distanceMagnitude = BigDecimal.ZERO;
         } else {
 
             // if one of the points is unknown, do a special affine check
@@ -75,13 +86,14 @@ class MomentTerm extends Term {
             Vector3bd vectorOrient = getSource().getVectorValue();
             // distance is described in world units, so apply the world scale
             Vector3bd distance = anchor.getPosition().subtract(((EquationMathMoments) math).getObservationPoint().getPosition());
-
             distance.divideLocal(Unit.distance.getDisplayScale());
 
+            distanceMagnitude = new BigDecimal(distance.length());
+            
             targetValue = vectorOrient.cross(distance).dot(math.getObservationDirection());
             targetValue = targetValue.negate();
         }
-        return checkAgainstTarget(targetValue);
+        return checkAgainstTarget(targetValue, distanceMagnitude);
     }
 
     /**
@@ -152,7 +164,7 @@ class MomentTerm extends Term {
         // check the magnitude of symbolicContribution to make sure that we still have a symbolic term in there.
         if (symbolicContribution.floatValue() == 0) {
             // okay, we just need to do a regular check here.
-            return checkAgainstTarget(constantContribution);
+            return checkAgainstTarget(constantContribution, new BigDecimal(differenceBase.length()));
         }
 
         targetAffineValue = new AffineQuantity(constantContribution, symbolicContribution, distanceSymbol);
