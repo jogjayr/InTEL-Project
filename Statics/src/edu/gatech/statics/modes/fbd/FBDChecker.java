@@ -38,11 +38,21 @@ public class FBDChecker {
         this.diagram = diagram;
     }
 
-    private List<DistanceMeasurement> getSymbolicDistances() {
+    private List<DistanceMeasurement> getSymbolicMeasurements() {
         List<DistanceMeasurement> m = new ArrayList<DistanceMeasurement>();
         for (SimulationObject obj : diagram.allObjects()) {
             if (obj instanceof DistanceMeasurement && ((DistanceMeasurement) obj).isSymbol()) {
                 m.add((DistanceMeasurement) obj);
+            }
+        }
+        return m;
+    }
+
+    private List<Point> getAnchors() {
+        List<Point> m = new ArrayList<Point>();
+        for (SimulationObject obj : diagram.allObjects()) {
+            if (obj instanceof Point) {
+                m.add((Point) obj);
             }
         }
         return m;
@@ -313,10 +323,10 @@ public class FBDChecker {
         List<String> names = new ArrayList<String>();
 
 
-        List<DistanceMeasurement> distanceMeasurements = getSymbolicDistances();
+        List<DistanceMeasurement> distanceMeasurements = getSymbolicMeasurements();
         for (Load force : addedForces) {
             for (DistanceMeasurement d : distanceMeasurements) {
-                if (d.getLabelText().equals(force.getLabelText())) {
+                if (d.getLabelText().equalsIgnoreCase(force.getLabelText())) {
                     Logger.getLogger("Statics").info("check: force or moment should not share the same name with the unknown measurement: " + d.getLabelText());
                     Logger.getLogger("Statics").info("check: FAILED");
                     StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", forceOrMoment(force), force.getAnchor().getLabelText(), d.getLabelText());
@@ -325,6 +335,21 @@ public class FBDChecker {
             }
         }
 
+        List<Point> anchors = getAnchors();
+        for (Load force : addedForces) {
+            for (Point p : anchors) {
+                if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                    Logger.getLogger("Statics").info("check: anchors and added force/moments should not share names");
+                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", forceOrMoment(force), force.getAnchor().getLabelText(), p.getLabelText());
+                    return false;
+                }
+            }
+        }
+
+        
+        List<Load> tempLoad = addedForces;
+        
         // go through each force that the user has added
         for (Load force : addedForces) {
             if (force.isSymbol()) {
@@ -346,21 +371,34 @@ public class FBDChecker {
                     return false;
                 }
 
-                // check for duplication
-                String name = force.getSymbolName();
-
-                if (names.contains(name)) {
-                    Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
-                    Logger.getLogger("Statics").info("check: FAILED");
-
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
+                //tempLoad.remove(force);
+                for (Load f : tempLoad) {
+                    if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
                             forceOrMoment(force),
                             force.getAnchor().getLabelText(),
-                            forceOrMoment(addedForces.get(names.indexOf(name))),
-                            addedForces.get(names.indexOf(name)).getAnchor().getLabelText());
-                    return false;
+                            forceOrMoment(f),
+                            f.getAnchor().getLabelText());
+                        
+                        return false;
+                    }
                 }
-                names.add(name);
+                
+//                // check for duplication
+//                String name = force.getSymbolName();
+//
+//                if (names.contains(name)) {
+//                    Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
+//                    Logger.getLogger("Statics").info("check: FAILED");
+//
+//                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
+//                            forceOrMoment(force),
+//                            force.getAnchor().getLabelText(),
+//                            forceOrMoment(addedForces.get(names.indexOf(name))),
+//                            addedForces.get(names.indexOf(name)).getAnchor().getLabelText());
+//                    return false;
+//                }
+//                names.add(name);
 
             } else {
 
