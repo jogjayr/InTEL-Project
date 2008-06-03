@@ -40,18 +40,8 @@ public class Force extends Load {
     
     public Force(Force force) {
         super(force);
-        //setName(force.getName());
     }
 
-    //@Override
-    //public Unit getUnit() {
-    //    return Unit.force;
-    //}
-    /*public Vector3f getDisplayCenter() {
-    // this is kind of a hack, since we expect forces to have equal sizes
-    // workaround how?
-    return getTranslation().add( getValue().normalize().mult(labelDistance)  );
-    }*/
     @Override
     public void createDefaultSchematicRepresentation() {
         Representation rep = new ArrowRepresentationFixedLength(this);
