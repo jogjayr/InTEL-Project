@@ -51,9 +51,33 @@ public class KeyboardExercise extends FBDExercise {
         
         Body strut1 = new Beam(A,B);
         
+        
+        // THIS DOES NOT ACTUALLY SEEM TO DO ANYTHING
+        float scale = 1;
+        
         Representation rep = new ModelRepresentation(strut1, "keyboard/assets/", "keyboard/assets/strut2.dae");
-        rep.setLocalScale(.1f);
+        rep.setLocalScale(scale);
         strut1.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(strut1, "keyboard/assets/", "keyboard/assets/strut1.dae");
+        rep.setLocalScale(scale);
+        strut1.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(strut1, "keyboard/assets/", "keyboard/assets/strut3.dae");
+        rep.setLocalScale(scale);
+        strut1.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(strut1, "keyboard/assets/", "keyboard/assets/background.dae");
+        rep.setLocalScale(scale);
+        strut1.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
         
         schematic.add(strut1);
         
