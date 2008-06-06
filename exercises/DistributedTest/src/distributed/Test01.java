@@ -58,6 +58,7 @@ public class Test01 extends DistributedExercise {
         B.createDefaultSchematicRepresentation();
         beam.createDefaultSchematicRepresentation();
         distributedForce.createDefaultSchematicRepresentation(4,10);
+        //distributedForce.setDisplayGrayed(true);
         
         pin.createDefaultSchematicRepresentation();
         roller.createDefaultSchematicRepresentation();

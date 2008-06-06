@@ -78,6 +78,16 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
             Arrow arrow = createArrow((i+.5f)/arrows, distance, displayScale);
             attachChild(arrow);
         }
+        
+        setDiffuse(ColorRGBA.red);
+        setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
+    }
+
+    @Override
+    public void setDisplayGrayed(boolean grayed) {
+        super.setDisplayGrayed(grayed);
+        surface.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, .5f));
+        border.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, 1));
     }
     
     /**

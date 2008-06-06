@@ -163,13 +163,13 @@ public class KeyboardExercise extends FBDExercise {
         
         rep = new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
         rep.setLocalScale(scale);
-        leftLeg.addRepresentation(rep);
+        rightLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
         rep = new ModelRepresentation(bar, "keyboard/assets/", "keyboard/assets/strut3.dae");
         rep.setLocalScale(scale);
-        leftLeg.addRepresentation(rep);
+        bar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
