@@ -15,6 +15,9 @@ import edu.gatech.statics.ui.InterfaceConfiguration;
  */
 abstract public class FBDExercise extends Exercise {
 
+    public FBDExercise() {
+    }
+
     public FBDExercise(Schematic schematic) {
         super(schematic);
     }

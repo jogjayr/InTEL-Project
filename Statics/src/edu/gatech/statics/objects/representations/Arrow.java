@@ -67,7 +67,7 @@ public class Arrow extends Node {
         updateRenderState();
     }
 
-    protected void setLength(float length) {
+    public void setLength(float length) {
 
         this.length = length;
         //magnitude /= StaticsApplication.getApp().getDrawScale();

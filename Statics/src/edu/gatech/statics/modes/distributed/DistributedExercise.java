@@ -26,6 +26,9 @@ public class DistributedExercise extends FBDExercise {
         return new DistributedInterfaceConfiguration();
     }
 
+    public DistributedExercise() {
+    }
+
     public DistributedExercise(Schematic schematic) {
         super(schematic);
     }

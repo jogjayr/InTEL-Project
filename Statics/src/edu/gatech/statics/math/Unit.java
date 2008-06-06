@@ -15,6 +15,7 @@ import java.util.Map;
 public enum Unit {
 
     distance,
+    forceOverDistance,
     angle,
     force,
     moment,
@@ -38,6 +39,7 @@ public enum Unit {
         setSuffix(angle, "°");
         setSuffix(distance, " m");
         setSuffix(force, " N");
+        setSuffix(forceOverDistance, " N/m");
         setSuffix(moment, " N*m");
         setSuffix(mass, " kg");
         setSuffix(none, "");
@@ -45,6 +47,7 @@ public enum Unit {
         setPrecision(angle, 1);
         setPrecision(distance, 1);
         setPrecision(force, 1);
+        setPrecision(forceOverDistance, 1);
         setPrecision(moment, 1);
         setPrecision(mass, 1);
         setPrecision(none, 2);
@@ -52,6 +55,7 @@ public enum Unit {
         setDisplayScale(angle, new BigDecimal("1"));
         setDisplayScale(distance, new BigDecimal("1"));
         setDisplayScale(force, new BigDecimal("1"));
+        setDisplayScale(forceOverDistance, new BigDecimal("1"));
         setDisplayScale(moment, new BigDecimal("1"));
         setDisplayScale(mass, new BigDecimal("1"));
         setDisplayScale(none, new BigDecimal("1"));

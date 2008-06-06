@@ -60,6 +60,10 @@ public class AffineQuantity {
         return new AffineQuantity(constant.subtract(x.constant), multiplier.subtract(x.multiplier), newSymbol);
     }
     
+    public AffineQuantity multiply(BigDecimal x) {
+        return new AffineQuantity(constant.multiply(x), multiplier.multiply(x), symbolName);
+    }
+    
 
     @Override
     public boolean equals(Object obj) {
