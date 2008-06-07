@@ -19,6 +19,11 @@ public class DistributedDiagram extends Diagram {
     
     public DistributedDiagram(DistributedForce dl) {
         this.dl = dl;
+        
+        add(dl);
+        add(dl.getSurface());
+        add(dl.getEndPoint());
+        add(dl.getStartPoint());
     }
 
     @Override

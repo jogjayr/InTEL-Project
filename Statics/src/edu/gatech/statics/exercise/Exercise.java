@@ -138,10 +138,14 @@ public abstract class Exercise {
     public void setCoordinateSystem(CoordinateSystem sys) {
         this.coordinateSystem = sys;
     }
+    
+    protected SelectDiagram createSelectDiagram() {
+        return new SelectDiagram();
+    }
 
-    public SelectDiagram getSelectDiagram() {
+    public final SelectDiagram getSelectDiagram() {
         if (selectDiagram == null) {
-            selectDiagram = new SelectDiagram();
+            selectDiagram = createSelectDiagram();
         }
         return selectDiagram;
     }
@@ -155,17 +159,25 @@ public abstract class Exercise {
         this.schematic = world;
         currentExercise = this;
     }
+    
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
+        return new FreeBodyDiagram(bodySubset);
+    }
 
-    public FreeBodyDiagram getFreeBodyDiagram(BodySubset bodySubset) {
+    public final FreeBodyDiagram getFreeBodyDiagram(BodySubset bodySubset) {
 
         //BodySubset bodySubset = new BodySubset(bodies);
         FreeBodyDiagram fbd = freeBodyDiagrams.get(bodySubset);
 
         if (fbd == null) {
-            fbd = new FreeBodyDiagram(bodySubset);
+            fbd = createFreeBodyDiagram(bodySubset);
             freeBodyDiagrams.put(bodySubset, fbd);
         }
         return fbd;
+    }
+    
+    protected EquationDiagram createEquationDiagram(BodySubset bodySubset) {
+        return new EquationDiagram(bodySubset);
     }
 
     public EquationDiagram getEquationDiagram(BodySubset bodySubset) {
@@ -177,7 +189,7 @@ public abstract class Exercise {
         EquationDiagram eq = equationDiagrams.get(bodySubset);
 
         if (eq == null) {
-            eq = new EquationDiagram(bodySubset);
+            eq = createEquationDiagram(bodySubset);
             equationDiagrams.put(bodySubset, eq);
         }
         return eq;

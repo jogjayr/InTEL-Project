@@ -97,4 +97,5 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      */
     abstract float getCurveValue(float x);
     
+    abstract public void createDefaultSchematicRepresentation(float displayScale, int arrows);
 }

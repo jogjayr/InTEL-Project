@@ -11,7 +11,8 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
-import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Pin2d;
@@ -42,7 +43,9 @@ public class Test01 extends DistributedExercise {
         Beam beam = new Beam(A, B);
         beam.setName("beam");
 
-        QuarterEllipseDistributedForce distributedForce = new QuarterEllipseDistributedForce(beam, A, B,
+        //DistributedForce distributedForce = new QuarterEllipseDistributedForce(beam, A, B,
+        //        new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y, new BigDecimal(100)));
+        DistributedForce distributedForce = new TriangularDistributedForce(beam, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y, new BigDecimal(100)));
         beam.addObject(distributedForce);
 

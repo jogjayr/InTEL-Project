@@ -4,10 +4,13 @@
  */
 package edu.gatech.statics.modes.distributed;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.ui.DistributedInterfaceConfiguration;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +19,10 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-
 public class DistributedExercise extends FBDExercise {
 
     private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
-    
+
     @Override
     public InterfaceConfiguration createInterfaceConfiguration() {
         return new DistributedInterfaceConfiguration();
@@ -35,10 +37,20 @@ public class DistributedExercise extends FBDExercise {
 
     public DistributedDiagram getDiagram(DistributedForce dl) {
         DistributedDiagram diagram = diagramMap.get(dl);
-        if(diagram == null) {
+        if (diagram == null) {
             diagram = new DistributedDiagram(dl);
             diagramMap.put(dl, diagram);
         }
         return diagram;
+    }
+
+    @Override
+    protected SelectDiagram createSelectDiagram() {
+        return new DistributedSelectDiagram();
+    }
+
+    @Override
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
+        return new DistributedFreeBodyDiagram(bodySubset);
     }
 }

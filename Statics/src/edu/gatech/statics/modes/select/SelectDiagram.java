@@ -58,7 +58,7 @@ public class SelectDiagram extends Diagram {
         
         setDiffuseHighlights(true);
     }
-    private Body currentHighlight;
+    private SimulationObject currentHighlight;
 
     @Override
     public void onHover(SimulationObject obj) {
@@ -78,7 +78,7 @@ public class SelectDiagram extends Diagram {
         }
 
         if (!currentlySelected.contains(obj)) {
-            currentHighlight = (Body) obj;
+            currentHighlight = obj;
             currentHighlight.setDisplayHighlight(true);
         }
     }
