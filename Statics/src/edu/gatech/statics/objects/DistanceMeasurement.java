@@ -21,7 +21,26 @@ import java.math.BigDecimal;
 public class DistanceMeasurement extends Measurement {
 
     private Point v1,  v2;
+    private boolean verticalLine = false, horizontalLine = false;
 
+    public void setVertical() {
+        horizontalLine = false;
+        verticalLine = true;
+    }
+    
+    public void setHorizontal() {
+        verticalLine = false;
+        horizontalLine = true;
+    }
+    
+    public boolean isVertical() {
+        return verticalLine;
+    }
+    
+    public boolean isHorizontal() {
+        return horizontalLine;
+    }
+    
     public Point getPoint1() {
         return v1;
     }
