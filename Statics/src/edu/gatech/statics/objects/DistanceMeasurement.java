@@ -11,6 +11,7 @@ package edu.gatech.statics.objects;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.DistanceRepresentation;
 import java.math.BigDecimal;
 
@@ -21,26 +22,26 @@ import java.math.BigDecimal;
 public class DistanceMeasurement extends Measurement {
 
     private Point v1,  v2;
-    private boolean verticalLine = false, horizontalLine = false;
+    private boolean verticalLine = false,  horizontalLine = false;
 
-    public void setVertical() {
+    public void forceVertical() {
         horizontalLine = false;
         verticalLine = true;
     }
-    
-    public void setHorizontal() {
+
+    public void forceHorizontal() {
         verticalLine = false;
         horizontalLine = true;
     }
-    
+
     public boolean isVertical() {
         return verticalLine;
     }
-    
+
     public boolean isHorizontal() {
         return horizontalLine;
     }
-    
+
     public Point getPoint1() {
         return v1;
     }
@@ -54,15 +55,31 @@ public class DistanceMeasurement extends Measurement {
         super(v1, v2);
         this.v1 = v1;
         this.v2 = v2;
-        updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
+        if (isVertical() == true) {
+            Point p1 = new Point(new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
+            updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
+        } else if (isHorizontal() == true) {
+            Point p1 = new Point(new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
+            updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
+        } else {
+            updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
+        }
     }
 
     @Override
     public void update() {
         super.update();
-        updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
+        if (isVertical() == true) {
+            Point p1 = new Point(new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
+            updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
+        } else if (isHorizontal() == true) {
+            Point p1 = new Point(new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
+            updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
+        } else {
+            updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
+        }
     }
-    
+
     public void createDefaultSchematicRepresentation() {
         Representation rep = new DistanceRepresentation(this);
         addRepresentation(rep);

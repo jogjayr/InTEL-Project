@@ -122,16 +122,12 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         super.draw(r);
 
         if (getTarget().isVertical() == true) {
-            worldPointDifference.set(new Vector3f(getTarget().getPoint2().getTranslation().x,
-                    getTarget().getPoint2().getTranslation().y,
-                    getTarget().getPoint2().getTranslation().z));
+            worldPointDifference.set(getTarget().getPoint2().getTranslation());
             worldPointDifference.subtractLocal(new Vector3f(getTarget().getPoint2().getTranslation().x,
                     getTarget().getPoint1().getTranslation().y,
                     getTarget().getPoint1().getTranslation().z));
         } else if (getTarget().isHorizontal() == true) {
-            worldPointDifference.set(new Vector3f(getTarget().getPoint2().getTranslation().x,
-                    getTarget().getPoint2().getTranslation().y,
-                    getTarget().getPoint2().getTranslation().z));
+            worldPointDifference.set(getTarget().getPoint2().getTranslation());
             worldPointDifference.subtractLocal(new Vector3f(getTarget().getPoint1().getTranslation().x,
                     getTarget().getPoint2().getTranslation().y,
                     getTarget().getPoint1().getTranslation().z));
@@ -152,18 +148,14 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
                     getTarget().getPoint1().getTranslation().y,
                     getTarget().getPoint1().getTranslation().z));
             p1.addLocal(scaledOffsetDirection);
-            p2.set(new Vector3f(getTarget().getPoint2().getTranslation().x,
-                    getTarget().getPoint2().getTranslation().y,
-                    getTarget().getPoint2().getTranslation().z));
+            p2.set(getTarget().getPoint2().getTranslation());
             p2.addLocal(scaledOffsetDirection);
         } else if (getTarget().isHorizontal() == true) {
             p1.set(new Vector3f(getTarget().getPoint2().getTranslation().x,
                     getTarget().getPoint1().getTranslation().y,
                     getTarget().getPoint2().getTranslation().z));
             p1.addLocal(scaledOffsetDirection);
-            p2.set(new Vector3f(getTarget().getPoint1().getTranslation().x,
-                    getTarget().getPoint1().getTranslation().y,
-                    getTarget().getPoint1().getTranslation().z));
+            p2.set(getTarget().getPoint1().getTranslation());
             p2.addLocal(scaledOffsetDirection);
         } else {
             p1.set(getTarget().getPoint1().getTranslation());
@@ -246,12 +238,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
 
         if (drawRightBar) {
             if (getTarget().isHorizontal() == true) {
-                bar1.set(new Vector3f(getTarget().getPoint1().getTranslation().x,
-                        getTarget().getPoint1().getTranslation().y,
-                        getTarget().getPoint1().getTranslation().z));
-                bar2.set(new Vector3f(getTarget().getPoint1().getTranslation().x,
-                        getTarget().getPoint1().getTranslation().y,
-                        getTarget().getPoint1().getTranslation().z));
+                bar1.set(getTarget().getPoint1().getTranslation());
+                bar2.set(getTarget().getPoint1().getTranslation());
                 bar1.addLocal(barOffset1);
                 bar2.addLocal(barOffset2);
                 CurveUtil.renderLine(r, color, bar1, bar2);

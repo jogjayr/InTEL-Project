@@ -94,23 +94,23 @@ public class KeyboardExercise extends FBDExercise {
         jointB = new Roller2d(B);
         jointE = new Roller2d(E);
         
-//        DistanceMeasurement distance1 = new DistanceMeasurement(B, D);
-//        distance1.createDefaultSchematicRepresentation(1.5f);
-//        schematic.add(distance1);
-//
-//        DistanceMeasurement distance2 = new DistanceMeasurement(A, D);
-//        distance2.createDefaultSchematicRepresentation(.5f);
-//        schematic.add(distance2);        
+        DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
+        distance1.createDefaultSchematicRepresentation(0.5f);
+        schematic.add(distance1);
+
+        DistanceMeasurement distance2 = new DistanceMeasurement(Q, D);
+        distance2.createDefaultSchematicRepresentation(0.5f);
+        distance2.forceVertical();
+        schematic.add(distance2);        
         
-        DistanceMeasurement distance3 = new DistanceMeasurement(Q, D);
-        distance3.createDefaultSchematicRepresentation(0.5f);
-        distance3.setVertical();
+        DistanceMeasurement distance3 = new DistanceMeasurement(C, Q);
+        distance3.createDefaultSchematicRepresentation(2.4f);
+        distance3.forceVertical();
         schematic.add(distance3);
         
-//        DistanceMeasurement distance4 = new DistanceMeasurement(C, Q);
-//        distance4.createDefaultSchematicRepresentation(2.4f);
-//        distance4.setVertical();
-//        schematic.add(distance4);
+        DistanceMeasurement distance4 = new DistanceMeasurement(B, D);
+        distance4.createDefaultSchematicRepresentation(2.4f);
+        schematic.add(distance4);
         
         Force keyboardLeft = new Force(A, Vector3bd.UNIT_Y.negate(), new BigDecimal(50));
         keyboardLeft.setName("Keyboard Left");
