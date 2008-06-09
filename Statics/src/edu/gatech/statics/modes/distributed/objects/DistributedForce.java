@@ -58,19 +58,9 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
         Vector3f myZ = direction.cross(unitPeak);
         
         Matrix3f mat = new Matrix3f();
-        //mat.setRow(0, direction);
-        //mat.setRow(1, unitPeak);
-        //mat.setRow(2, myZ);
         mat.setColumn(0, direction);
         mat.setColumn(1, unitPeak);
         mat.setColumn(2, myZ);
-        
-        //Matrix3f mirror = new Matrix3f();
-        //mirror.fromStartEndVectors(Vector3f.UNIT_X, Vector3f.UNIT_X.negate());
-        //mat = mirror.mult(mat);
-        //mirror.fromStartEndVectors(Vector3f.UNIT_X, Vector3f.UNIT_X.negate());
-        //mat = mirror.mult(mat);
-        //mat.multLocal(mirror);
         
         return mat;
     }
@@ -112,7 +102,7 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * used for the checking process.
      * @return
      */
-    AffineQuantity getResultantPosition() {
+    public AffineQuantity getResultantPosition() {
 
         // get the direction of the surface
         Vector3bd direction = getSurface().getEndpoint1().subtract(getSurface().getEndpoint2());
@@ -139,7 +129,7 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * The method is to be used for the checking process.
      * @return
      */
-    AffineQuantity getResultantMagnitude() {
+    public AffineQuantity getResultantMagnitude() {
         // first get the length of the span
         Vector3bd span = getSurface().getEndpoint1().subtract(getSurface().getEndpoint2());
         BigDecimal length = new BigDecimal(span.length());

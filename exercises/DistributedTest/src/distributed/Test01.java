@@ -14,14 +14,11 @@ import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceConfiguration;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
-import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import java.math.BigDecimal;
 
 /**
@@ -29,16 +26,6 @@ import java.math.BigDecimal;
  * @author Calvin Ashmore
  */
 public class Test01 extends DistributedExercise {
-
-    @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
-        return new DefaultInterfaceConfiguration() {
-            @Override
-            public NavigationWindow createNavigationWindow() {
-                return new Navigation3DWindow();
-            }
-        };
-    }
 
     @Override
     public void initExercise() {
@@ -55,8 +42,8 @@ public class Test01 extends DistributedExercise {
         Point A = new Point("-4", "-1", "0");
         Point B = new Point("0", "0", "0");
         Point C = new Point("4", "1", "0");
-        Point D = new Point("-4", "-1", "-4");
-        Point E = new Point("-4", "-1", "-8");
+        //Point D = new Point("-4", "-1", "-4");
+        //Point E = new Point("-4", "-1", "-8");
 
         A.setName("A");
         B.setName("B");
@@ -66,9 +53,9 @@ public class Test01 extends DistributedExercise {
         beam.addObject(B);
         beam.setName("beam 1");
 
-        Beam beam2 = new Beam(A, E);
-        beam.addObject(D);
-        beam.setName("beam 2");
+        //Beam beam2 = new Beam(A, E);
+        //beam.addObject(D);
+        //beam.setName("beam 2");
 
         //Vector3bd direction = Vector3bd.UNIT_Y.negate();
         Vector3bd direction = new Vector3bd("1", "-4", "0");
@@ -83,17 +70,25 @@ public class Test01 extends DistributedExercise {
         beam.addObject(distributedForce1);
         beam.addObject(distributedForce2);
         
-        DistributedForce distributedForce3 = new QuarterEllipseDistributedForce(beam, A, D,
+        DistanceMeasurement measure1 = new DistanceMeasurement(A, B);
+        measure1.createDefaultSchematicRepresentation();
+        schematic.add(measure1);
+        
+        DistanceMeasurement measure2 = new DistanceMeasurement(B,C);
+        measure2.createDefaultSchematicRepresentation();
+        schematic.add(measure2);
+        
+        /*DistributedForce distributedForce3 = new QuarterEllipseDistributedForce(beam, A, D,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal(100)));
 
         DistributedForce distributedForce4 = new TriangularDistributedForce(beam, E, D,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal(100)));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal(100)));*/
 
         beam.addObject(distributedForce1);
         beam.addObject(distributedForce2);
         
-        beam2.addObject(distributedForce3);
-        beam2.addObject(distributedForce4);
+        //beam2.addObject(distributedForce3);
+        //beam2.addObject(distributedForce4);
 
         Pin2d pin = new Pin2d(A);
         pin.attachToWorld(beam);
@@ -102,7 +97,7 @@ public class Test01 extends DistributedExercise {
         roller.attachToWorld(beam);
 
         schematic.add(beam);
-        schematic.add(beam2);
+        //schematic.add(beam2);
 
         A.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
@@ -112,11 +107,11 @@ public class Test01 extends DistributedExercise {
         distributedForce2.createDefaultSchematicRepresentation(4, 10);
         //distributedForce.setDisplayGrayed(true);
         
-        D.createDefaultSchematicRepresentation();
+        /*D.createDefaultSchematicRepresentation();
         E.createDefaultSchematicRepresentation();
         beam2.createDefaultSchematicRepresentation();
         distributedForce3.createDefaultSchematicRepresentation(4, 10);
-        distributedForce4.createDefaultSchematicRepresentation(4, 10);
+        distributedForce4.createDefaultSchematicRepresentation(4, 10);*/
 
         pin.createDefaultSchematicRepresentation();
         roller.createDefaultSchematicRepresentation();

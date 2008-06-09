@@ -6,6 +6,7 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.objects.Body;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +19,10 @@ import java.util.Set;
 public class BodySubset implements DiagramKey {
 
     private Set<Body> bodies;
+    
+    public BodySubset(Body ... bodies) {
+        this(Arrays.asList(bodies));
+    }
     
     public BodySubset(Collection<Body> bodies) {
         this.bodies = new HashSet<Body>(bodies);
