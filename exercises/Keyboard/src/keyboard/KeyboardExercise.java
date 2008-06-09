@@ -120,6 +120,10 @@ public class KeyboardExercise extends FBDExercise {
         keyboardRight.setName("Keyboard Right");
         rightLeg.addObject(keyboardRight);
         
+        Force center = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(9));
+        center.setName("Center Joint");
+        rightLeg.addObject(center);
+        
         jointC.attach(leftLeg, rightLeg);
         jointP.attach(leftLeg, bar);
         jointQ.attach(bar, rightLeg);
@@ -145,8 +149,6 @@ public class KeyboardExercise extends FBDExercise {
         keyboardLeft.createDefaultSchematicRepresentation();
         keyboardRight.createDefaultSchematicRepresentation();
         leftLeg.createDefaultSchematicRepresentation();
-        leftLeg.getWeight().setDiagramValue(new BigDecimal(9));
-        leftLeg.setCenterOfMassPoint(C);
         bar.createDefaultSchematicRepresentation();
         rightLeg.createDefaultSchematicRepresentation();
         
