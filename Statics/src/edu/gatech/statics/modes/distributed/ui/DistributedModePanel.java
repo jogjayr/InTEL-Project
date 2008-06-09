@@ -76,6 +76,9 @@ public class DistributedModePanel extends ApplicationModePanel {
         DistributedDiagram diagram = (DistributedDiagram) getDiagram();
         if(diagram.check(positionField.getText(), magnitudeField.getText())) {
             System.out.println("OK!");
+            
+            diagram.updateResultant();
+            
         } else {
             System.out.println("Oh noes!");
         }

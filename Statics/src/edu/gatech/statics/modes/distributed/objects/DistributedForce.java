@@ -105,7 +105,7 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
     public AffineQuantity getResultantPosition() {
 
         // get the direction of the surface
-        Vector3bd direction = getSurface().getEndpoint1().subtract(getSurface().getEndpoint2());
+        Vector3bd direction = getSurface().getEndpoint2().subtract(getSurface().getEndpoint1());
         direction = direction.normalize();
 
         // develop an affine vector and then dot it with the beam direction
@@ -130,21 +130,42 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * @return
      */
     public AffineQuantity getResultantMagnitude() {
-        // first get the length of the span
-        Vector3bd span = getSurface().getEndpoint1().subtract(getSurface().getEndpoint2());
-        BigDecimal length = new BigDecimal(span.length());
+        // get the direction of the surface
+        Vector3bd direction = getSurface().getEndpoint2().subtract(getSurface().getEndpoint1());
+        direction = direction.normalize();
 
+        // develop an affine vector and then dot it with the beam direction
+        UnknownPoint start = new UnknownPoint(getStartPoint());
+        UnknownPoint end = new UnknownPoint(getEndPoint());
+        AffineQuantity startPosition = start.getDirectionalContribution(direction, getSurface().getEndpoint1());
+        AffineQuantity endPosition = end.getDirectionalContribution(direction, getSurface().getEndpoint1());
+        
+        AffineQuantity length = endPosition.subtract(startPosition);
+        
+        // FIXME, I do not think that this is mathematically correct...
+        // the affine quantity should have the absolute value to represent the length here,
+        // but there is some ambiguity in terms of the values.
+        length = new AffineQuantity(length.getConstant().abs(), length.getMultiplier(), length.getSymbolName());
+        
         //double magnitude = Math.PI / 4;
         BigDecimal multiplier = getMagnitudeMultiplier();
 
         Vector peakVector = getPeak();
         if (peakVector.isSymbol() && !peakVector.isKnown()) {
+            
+            if(length.isSymbolic()) {
+                // uh oh, both the peak vector and the span length are affine quantities.
+                // this is not permitted, so we throw a generic exception.
+                throw new UnsupportedOperationException("Both peak vector and span length are symbolic quantities!");
+            }
+            BigDecimal lengthValue = length.getConstant();
+            
+            
             AffineQuantity result = new AffineQuantity(
-                    BigDecimal.ZERO, length.multiply(multiplier), peakVector.getSymbolName());
+                    BigDecimal.ZERO, lengthValue.multiply(multiplier), peakVector.getSymbolName());
             return result;
         } else {
-            AffineQuantity result = new AffineQuantity(
-                    length.multiply(peakVector.getDiagramValue()).multiply(multiplier), BigDecimal.ZERO, null);
+            AffineQuantity result = length.multiply(peakVector.getDiagramValue().multiply(multiplier));
             return result;
         }
     }

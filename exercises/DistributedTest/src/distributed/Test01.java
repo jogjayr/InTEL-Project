@@ -39,9 +39,9 @@ public class Test01 extends DistributedExercise {
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.8f, .8f, .8f, 1.0f));
 
-        Point A = new Point("-4", "-1", "0");
+        Point A = new Point("-4", "-3", "0");
         Point B = new Point("0", "0", "0");
-        Point C = new Point("4", "1", "0");
+        Point C = new Point("4", "3", "0");
         //Point D = new Point("-4", "-1", "-4");
         //Point E = new Point("-4", "-1", "-8");
 
@@ -58,7 +58,7 @@ public class Test01 extends DistributedExercise {
         //beam.setName("beam 2");
 
         //Vector3bd direction = Vector3bd.UNIT_Y.negate();
-        Vector3bd direction = new Vector3bd("1", "-4", "0");
+        Vector3bd direction = new Vector3bd("3", "-4", "0");
 
 
         DistributedForce distributedForce1 = new QuarterEllipseDistributedForce(beam, A, B,

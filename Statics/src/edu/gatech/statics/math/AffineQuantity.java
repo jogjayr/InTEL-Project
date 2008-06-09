@@ -64,6 +64,14 @@ public class AffineQuantity {
         return new AffineQuantity(constant.multiply(x), multiplier.multiply(x), symbolName);
     }
     
+    public boolean equalsWithinTolerance(AffineQuantity quantity, float tolerance) {
+        boolean pass = true;
+        
+        pass &= Math.abs(quantity.multiplier.floatValue() - multiplier.floatValue()) < tolerance;
+        pass &= Math.abs(quantity.constant.floatValue() - constant.floatValue()) < tolerance;
+        pass &= symbolName == null || symbolName.equals(quantity.symbolName);
+        return pass;
+    }
 
     @Override
     public boolean equals(Object obj) {

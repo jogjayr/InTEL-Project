@@ -14,6 +14,7 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Measurement;
+import edu.gatech.statics.objects.Point;
 
 /**
  *
@@ -38,10 +39,13 @@ public class DistributedDiagram extends Diagram {
         add(resultant);
         add(resultant.getAnchor());
         
-        DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
+        resultant.setDisplayGrayed(true);
+        
+        //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
+        DistanceMeasurement measure = new DistanceMeasurement(new Point(dl.getSurface().getEndpoint1()), resultant.getAnchor());
         measure.setKnown(false);
         measure.setSymbol("pos");
-        measure.createDefaultSchematicRepresentation();
+        measure.createDefaultSchematicRepresentation(2f);
         add(measure);
         
         for (Measurement measurement : getSchematic().getMeasurements(new BodySubset(dl.getSurface()))) {
@@ -66,9 +70,18 @@ public class DistributedDiagram extends Diagram {
         System.out.println("mag: "+resultantMagnitude);
         
         boolean success = true;
-        success &= resultantMagnitude.equals(userMagnitude);
-        success &= resultantPosition.equals(userPosition);
+        
+        success &= resultantMagnitude.equalsWithinTolerance(userMagnitude,.1f);
+        success &= resultantPosition.equalsWithinTolerance(userPosition,.1f);
         return success;
+    }
+
+    public void updateResultant() {
+        Force resultant = dl.getResultant();
+        dl.setDisplayGrayed(true);
+        resultant.setDisplayGrayed(false);
+        dl.getSurface().addObject(resultant);
+        getSchematic().add(resultant);
     }
     
     protected DistributedForce getForce() {
