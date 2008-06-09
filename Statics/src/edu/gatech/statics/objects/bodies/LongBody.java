@@ -67,6 +67,13 @@ abstract public class LongBody extends Body {
         setDimensions(0, direction.length(), 0);
     }
 
+    /**
+     * Returns a Vector3bd denoting the direction that the body points in, from the end specified.
+     * If the body is a beam from A to B, getDirectionFrom(A) will return a vector pointing towards B.
+     * 
+     * @param end
+     * @return
+     */
     public Vector3bd getDirectionFrom(Vector3bd end) {
         if(end.equals(end1))
             return end2.subtract(end1).normalize();
@@ -75,6 +82,11 @@ abstract public class LongBody extends Body {
         return Vector3bd.ZERO;
     }
     
+    /**
+     * This is like the method that requires a Vector3bd, but takes a Point instead.
+     * @param end
+     * @return
+     */
     public Vector3bd getDirectionFrom(Point end) {
         return getDirectionFrom(end.getPosition());
     }

@@ -33,16 +33,6 @@ public class Navigation3DWindow extends Navigation2DWindow {
 
         NavigationListener3D navListener = new NavigationListener3D();
 
-        /*try {
-            ImageIcon icon;
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCW_up.png")));
-            rotateLeft = new RepeatingButton(icon, navListener, "rotateLeft");
-            
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/navigation/rotateCCW_up.png")));
-            rotateRight = new RepeatingButton(icon, navListener, "rotateRight");
-        } catch (IOException e) {
-        }*/
-        
         rotateLeft = new RepeatingButton("", navListener, "rotateLeft");
         rotateRight = new RepeatingButton("", navListener, "rotateRight");
         

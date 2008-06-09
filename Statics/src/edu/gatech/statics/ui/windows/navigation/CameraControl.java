@@ -79,7 +79,7 @@ public class CameraControl {
         if (viewUserState.getYaw() < -Math.PI) {
             viewUserState.incrementYaw(2 * (float) Math.PI);
         }
-        if (viewUserState.getYaw() > -Math.PI) {
+        if (viewUserState.getYaw() > Math.PI) {
             viewUserState.incrementYaw(-2 * (float) Math.PI);
         }
 

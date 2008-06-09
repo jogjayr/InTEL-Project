@@ -33,7 +33,6 @@ public class DistributedSelectDiagram extends SelectDiagram {
     public void onClick(SimulationObject obj) {
 
         if (obj instanceof DistributedForce) {
-            System.out.println("ping!");
             DistributedMode.instance.load((DistributedForce)obj);
             return;
         }

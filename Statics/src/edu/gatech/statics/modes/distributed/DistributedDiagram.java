@@ -8,6 +8,7 @@ package edu.gatech.statics.modes.distributed;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.objects.Force;
 
 /**
  *
@@ -24,6 +25,13 @@ public class DistributedDiagram extends Diagram {
         add(dl.getSurface());
         add(dl.getEndPoint());
         add(dl.getStartPoint());
+        
+        Force resultant = dl.getResultant();
+        resultant.createDefaultSchematicRepresentation();
+        resultant.getAnchor().createDefaultSchematicRepresentation();
+        
+        add(resultant);
+        add(resultant.getAnchor());
     }
 
     @Override

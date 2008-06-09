@@ -56,8 +56,8 @@ public class ViewConstraints {
         if(state.getPitch() > pitchMax)
             state.setPitch(pitchMax);
         
-        if(state.getYaw() < pitchMin)
-            state.setYaw(pitchMin);
+        if(state.getYaw() < yawMin)
+            state.setYaw(yawMin);
         if(state.getYaw() > yawMax)
             state.setYaw(yawMax);
         
@@ -77,46 +77,4 @@ public class ViewConstraints {
             state.setYPos(yposMax);
         
     }
-    
-    /*public float getPitchMax() {
-        return pitchMax;
-    }
-
-    public float getPitchMin() {
-        return pitchMin;
-    }
-
-    public float getXposMax() {
-        return xposMax;
-    }
-
-    public float getXposMin() {
-        return xposMin;
-    }
-
-    public float getYawMax() {
-        return yawMax;
-    }
-
-    public float getYawMin() {
-        return yawMin;
-    }
-
-    public float getYposMax() {
-        return yposMax;
-    }
-
-    public float getYposMin() {
-        return yposMin;
-    }
-
-    public float getZoomMax() {
-        return zoomMax;
-    }
-
-    public float getZoomMin() {
-        return zoomMin;
-    }*/
-    
-    
 }

@@ -24,7 +24,9 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 
 /**
- *
+ * This class creates the popup for changing the text for the label of a force or moment.
+ * The typical usage is to create the LabelSelector, set various properties, and 
+ * then call createPopup().
  * @author Calvin Ashmore
  */
 public class LabelSelector /*extends SelectionTool*/ {

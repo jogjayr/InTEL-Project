@@ -20,7 +20,9 @@ import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
- *
+ * This class enables the user to click on labels to edit them.
+ * It is only necessary to call <code>new LabelManipulator(load)</code>,
+ * and the class will set up and manage the input.
  * @author Calvin Ashmore
  */
 public class LabelManipulator /*extends Manipulator<VectorObject>*/ {

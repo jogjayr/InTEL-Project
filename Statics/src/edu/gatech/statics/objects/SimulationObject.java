@@ -55,8 +55,10 @@ abstract public class SimulationObject {
     //public String getNotes() {return notes;}
     //public void setNotes(String notes) {this.notes = notes;}
     
-    // sometimes we want to get the logical center of the object, rather than the origin of its coordinate system
-    // epecially in the case of vectors. Override for these cases
+    /**
+     * Sometimes we want to get the logical center of the object, rather than the origin of its coordinate system
+     * epecially in the case of vectors. This is useful for finding the point at which to apply a label.
+     */
     public Vector3f getDisplayCenter() {
         return getTranslation();
     }

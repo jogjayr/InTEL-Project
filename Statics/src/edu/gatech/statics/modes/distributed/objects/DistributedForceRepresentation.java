@@ -9,6 +9,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Line;
+import com.jme.scene.Node;
 import com.jme.scene.TriMesh;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.CullState;
@@ -18,6 +19,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.Arrow;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -40,7 +42,11 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         attachChild(surface);
         attachChild(border);
 
-        float distance = (float) getTarget().getStartPoint().getPosition().distance(getTarget().getEndPoint().getPosition());
+        Vector3bd startPoint = getTarget().getStartPoint().getPosition();
+        Vector3bd endPoint = getTarget().getEndPoint().getPosition();
+        float distance = (float) startPoint.distance(endPoint);
+        
+        //Vector3bd center = startPoint.add(endPoint).divide(new BigDecimal("2"));
         
         surface.setLocalScale(new Vector3f(distance/2, displayScale, 1));
         border.setLocalScale(new Vector3f(distance/2, displayScale, 1));
@@ -74,10 +80,26 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         surface.updateRenderState();
         border.updateRenderState();
         
+        Node arrowNode = new Node();
+        
         for(int i=0;i<arrows;i++) {
             Arrow arrow = createArrow((i+.5f)/arrows, distance, displayScale);
-            attachChild(arrow);
+            arrowNode.attachChild(arrow);
         }
+        
+        attachChild(arrowNode);
+        arrowNode.updateRenderState();
+        
+        /*
+        Matrix3f matrix = new Matrix3f();
+        matrix.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Z);
+        Matrix3f matrix2 = new Matrix3f();
+        matrix2.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_X.negate());
+        matrix.multLocal(matrix2);
+        
+        border.setLocalRotation(matrix);
+        surface.setLocalRotation(matrix);
+        arrowNode.setLocalRotation(matrix);*/
         
         setDiffuse(ColorRGBA.red);
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
