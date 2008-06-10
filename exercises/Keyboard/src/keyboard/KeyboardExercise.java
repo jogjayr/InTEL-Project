@@ -47,12 +47,12 @@ public class KeyboardExercise extends FBDExercise {
         
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal("5"));       
+        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));       
     }
     
     Point A, B, C, D, E, P, Q;
-    Pin2d jointC, jointP, jointQ;
-    Roller2d jointB, jointE;
+    Pin2d jointC;//, jointP, jointQ;
+//    Roller2d jointB, jointE;
     
     @Override
     public float getDrawScale() {
@@ -69,12 +69,7 @@ public class KeyboardExercise extends FBDExercise {
         A = new Point("-2.9","4.3","0");
         D = new Point("2.9","4.3","0");
         B = new Point("2.9","0","0");
-        E = new Point("-2.9","0","0");
-//right distances but wrong positions
-//        A = new Point("-2.3","4.3","0");
-//        D = new Point("2.3","4.3","0");
-//        B = new Point("2.3","1.5","0");
-//        E = new Point("-2.3","1.5","0");       
+        E = new Point("-2.9","0","0");       
         C = new Point("0","2.15","0");
         P = new Point("-1","2.9","0");
         Q = new Point("1","2.9","0");
@@ -88,11 +83,11 @@ public class KeyboardExercise extends FBDExercise {
         rightLeg.setName("Right Leg");
         
         jointC = new Pin2d(C);
-        jointP = new Pin2d(P);
-        jointQ = new Pin2d(Q);
-        
-        jointB = new Roller2d(B);
-        jointE = new Roller2d(E);
+//        jointP = new Pin2d(P);
+//        jointQ = new Pin2d(Q);
+//        
+//        jointB = new Roller2d(B);
+//        jointE = new Roller2d(E);
         
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
@@ -120,15 +115,11 @@ public class KeyboardExercise extends FBDExercise {
         keyboardRight.setName("Keyboard Right");
         rightLeg.addObject(keyboardRight);
         
-        Force center = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(9));
-        center.setName("Center Joint");
-        rightLeg.addObject(center);
-        
         jointC.attach(leftLeg, rightLeg);
-        jointP.attach(leftLeg, bar);
-        jointQ.attach(bar, rightLeg);
-        jointE.attachToWorld(rightLeg);
-        jointB.attachToWorld(leftLeg);
+//        jointP.attach(leftLeg, bar);
+//        jointQ.attach(bar, rightLeg);
+//        jointE.attachToWorld(rightLeg);
+//        jointB.attachToWorld(leftLeg);
         
         A.setName("A");
         B.setName("B");
