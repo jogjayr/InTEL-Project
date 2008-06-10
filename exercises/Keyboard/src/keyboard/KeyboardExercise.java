@@ -47,12 +47,12 @@ public class KeyboardExercise extends FBDExercise {
         
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));       
+        Unit.setDisplayScale(Unit.distance, new BigDecimal("5"));       
     }
     
     Point A, B, C, D, E, P, Q;
-    Pin2d jointC;//, jointP, jointQ;
-//    Roller2d jointB, jointE;
+    Pin2d jointC, jointP, jointQ;
+    Roller2d jointB, jointE;
     
     @Override
     public float getDrawScale() {
@@ -83,11 +83,11 @@ public class KeyboardExercise extends FBDExercise {
         rightLeg.setName("Right Leg");
         
         jointC = new Pin2d(C);
-//        jointP = new Pin2d(P);
-//        jointQ = new Pin2d(Q);
-//        
-//        jointB = new Roller2d(B);
-//        jointE = new Roller2d(E);
+        jointP = new Pin2d(P);
+        jointQ = new Pin2d(Q);
+        
+        jointB = new Roller2d(B);
+        jointE = new Roller2d(E);
         
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
@@ -116,10 +116,10 @@ public class KeyboardExercise extends FBDExercise {
         rightLeg.addObject(keyboardRight);
         
         jointC.attach(leftLeg, rightLeg);
-//        jointP.attach(leftLeg, bar);
-//        jointQ.attach(bar, rightLeg);
-//        jointE.attachToWorld(rightLeg);
-//        jointB.attachToWorld(leftLeg);
+        jointP.attach(leftLeg, bar);
+        jointQ.attach(bar, rightLeg);
+        jointE.attachToWorld(rightLeg);
+        jointB.attachToWorld(leftLeg);
         
         A.setName("A");
         B.setName("B");
