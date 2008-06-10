@@ -125,7 +125,11 @@ public class EquationMathMoments extends EquationMath {
             if (!term.check()) {
 
                 Logger.getLogger("Statics").info("check: term does not evaluate correctly: " + term.getCoefficient());
+                Logger.getLogger("Statics").info("check: for vector: \"" + term.getSource().toString() + "\"");
+                Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
+                Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
 
+                
                 switch (term.error) {
                     case none:
                     case internal:
@@ -178,7 +182,7 @@ public class EquationMathMoments extends EquationMath {
                         return false;
                         
                     case parse:
-                        Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
+                        //Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
@@ -187,9 +191,10 @@ public class EquationMathMoments extends EquationMath {
                         return false;
                         
                     case incorrect:
-                        Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
-                        Logger.getLogger("Statics").info("check: incorrect value: " + (term.coefficientValue == null ? term.coefficientAffineValue : term.coefficientValue));
-                        Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
+                        //Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
+                        //Logger.getLogger("Statics").info("check: incorrect value: " + (term.coefficientValue == null ? term.coefficientAffineValue : term.coefficientValue));
+                        //Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
+                        Logger.getLogger("Statics").info("check: incorrect value");
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());

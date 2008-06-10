@@ -167,7 +167,10 @@ public class EquationMath {
 
             if (!term.check()) {
 
-                Logger.getLogger("Statics").info("check: term does not evaluate correctly");
+                Logger.getLogger("Statics").info("check: term does not evaluate correctly: " + term.getCoefficient());
+                Logger.getLogger("Statics").info("check: for vector: \"" + term.getSource().toString() + "\"");
+                Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
+                Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
 
                 switch (term.error) {
                     case none:
@@ -177,7 +180,7 @@ public class EquationMath {
                     case missingInclination:
                         // ??? should not be here
                         Logger.getLogger("Statics").info("check: unknown error?");
-                        Logger.getLogger("Statics").info("check: got inappropriate error code: "+term.error);
+                        Logger.getLogger("Statics").info("check: got inappropriate error code: " + term.error);
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
@@ -189,7 +192,7 @@ public class EquationMath {
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getPrettyName());
                         return false;
-                        
+
                     case shouldNotBeSymbolic:
                         Logger.getLogger("Statics").info("check: should not be symbolic");
                         Logger.getLogger("Statics").info("check: FAILED");
@@ -211,9 +214,7 @@ public class EquationMath {
                         return false;
 
                     case incorrect:
-                        Logger.getLogger("Statics").info("check: for " + term.getSource().toString());
-                        Logger.getLogger("Statics").info("check: incorrect value: " + term.coefficientValue);
-                        Logger.getLogger("Statics").info("check: should be: " + term.targetValue);
+                        Logger.getLogger("Statics").info("check: term is incorrect");
                         Logger.getLogger("Statics").info("check: FAILED");
 
                         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());

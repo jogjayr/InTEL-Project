@@ -19,6 +19,7 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Fix2d;
 import edu.gatech.statics.objects.joints.Pin2d;
+import edu.gatech.statics.objects.joints.Roller2d;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -347,9 +348,9 @@ public class FBDChecker {
             }
         }
 
-        
+
         List<Load> tempLoad = addedForces;
-        
+
         // go through each force that the user has added
         for (Load force : addedForces) {
             if (force.isSymbol()) {
@@ -375,15 +376,15 @@ public class FBDChecker {
                 for (Load f : tempLoad) {
                     if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
-                            forceOrMoment(force),
-                            force.getAnchor().getLabelText(),
-                            forceOrMoment(f),
-                            f.getAnchor().getLabelText());
-                        
+                                forceOrMoment(force),
+                                force.getAnchor().getLabelText(),
+                                forceOrMoment(f),
+                                f.getAnchor().getLabelText());
+
                         return false;
                     }
                 }
-                
+
 //                // check for duplication
 //                String name = force.getSymbolName();
 //
@@ -408,7 +409,7 @@ public class FBDChecker {
 
                 if (weights.containsKey(force)) {
                 } else if (externalForces.contains(force)) {
-                // OK, do nothing
+                    // OK, do nothing
                 } else {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -510,21 +511,25 @@ public class FBDChecker {
         return false;
     }
 
-    private String forceOrMoment(Load l) {
-        if (l instanceof Force) {
+    private String forceOrMoment(Load load) {
+        if (load instanceof Force) {
             return "force";
-        } else {
+        } else if (load instanceof Moment) {
             return "moment";
+        } else {
+            return "unknown?";
         }
     }
 
     private String connectorType(Joint joint) {
-        if (joint instanceof Pin2d) {
+        if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
             return "pin";
         } else if (joint instanceof Fix2d) {
             return "fix";
-        } else {
+        } else if (joint instanceof Roller2d) {
             return "roller";
+        } else {
+            return "connector";
         }
     }
 }
