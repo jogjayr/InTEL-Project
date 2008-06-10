@@ -18,10 +18,9 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
-import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
-import edu.gatech.statics.objects.joints.Fix2d;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
@@ -51,7 +50,8 @@ public class KeyboardExercise extends FBDExercise {
     }
     
     Point A, B, C, D, E, P, Q;
-    Pin2d jointC, jointP, jointQ;
+    Pin2d jointC;
+    Connector2ForceMember2d jointP, jointQ;
     Roller2d jointB, jointE;
     
     @Override
@@ -75,7 +75,7 @@ public class KeyboardExercise extends FBDExercise {
         Q = new Point("1","2.9","0");
         
         Body leftLeg = new Beam(B,A);
-        Body bar = new Beam(P,Q);
+        Bar bar = new Bar(P,Q);
         Body rightLeg = new Beam(E,D);
         
         leftLeg.setName("Left Leg");
@@ -83,11 +83,14 @@ public class KeyboardExercise extends FBDExercise {
         rightLeg.setName("Right Leg");
         
         jointC = new Pin2d(C);
-        jointP = new Pin2d(P);
-        jointQ = new Pin2d(Q);
+        jointP = new Connector2ForceMember2d(P, bar);  //Pin2d(P);
+        jointQ = new Connector2ForceMember2d(Q, bar); //new Pin2d(Q);
         
         jointB = new Roller2d(B);
         jointE = new Roller2d(E);
+        
+        jointB.setDirection(Vector3bd.UNIT_Y);
+        jointE.setDirection(Vector3bd.UNIT_Y);
         
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
