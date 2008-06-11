@@ -16,6 +16,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
@@ -126,6 +127,8 @@ public class BicycleExercise extends FBDExercise {
         angle4.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle4);
         
+        
+        
         Force seatWeight = new Force(K, Vector3bd.UNIT_Y.negate(), new BigDecimal(500));
         seatWeight.setName("Seat");
         seatPole.addObject(seatWeight);
@@ -134,7 +137,16 @@ public class BicycleExercise extends FBDExercise {
         pedalWeight.setName("Pedals");
         seatPole.addObject(pedalWeight);
         
-        Force handleWeight = new Force(I, new Vector3bd("-1", "-0.66", "0"), new BigDecimal(20));
+        Vector3bd handleForceDirection = new Vector3bd(
+                new BigDecimal(-Math.cos(Math.PI/6)), 
+                new BigDecimal(-Math.sin(Math.PI/6)), BigDecimal.ZERO);
+        handleForceDirection = handleForceDirection.normalize();
+        
+        FixedAngleMeasurement angle5 = new FixedAngleMeasurement(I, Vector3bd.UNIT_X.negate(), handleForceDirection.toVector3f());
+        angle5.createDefaultSchematicRepresentation(0.5f);
+        schematic.add(angle5);
+        
+        Force handleWeight = new Force(I, handleForceDirection, new BigDecimal(20));
         handleWeight.setName("Handlebar");
         handlebar.addObject(handleWeight);
         

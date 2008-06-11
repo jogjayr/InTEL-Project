@@ -5,6 +5,7 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.math.Vector3bd;
 
 /**
  * Represents an angle measurement that has a fixed side composed of an anchor and a point,
@@ -16,6 +17,15 @@ public class FixedAngleMeasurement extends AngleMeasurement {
     private Vector3f axis;
     private Point side;
 
+    public FixedAngleMeasurement(Point anchor, Vector3bd sideVector, Vector3f axis) {
+        super(anchor);
+        
+        side = new Point(anchor.getPosition().add(sideVector));
+        addPoint(side);
+        this.axis = axis;
+        update();
+    }
+    
     public FixedAngleMeasurement(Point anchor, Point side, Vector3f axis) {
         super(anchor);
         addPoint(side);
