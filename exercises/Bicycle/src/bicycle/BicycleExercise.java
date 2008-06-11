@@ -53,7 +53,8 @@ public class BicycleExercise extends FBDExercise {
     }
     
     Point A, I, H, J, G, F, B, K;
-    
+    Roller2d rollerA, rollerB;
+    Connector2ForceMember2d twoForceF, twoForceH;
     @Override
     public float getDrawScale() {
         return 0.2f;
@@ -67,26 +68,35 @@ public class BicycleExercise extends FBDExercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         
         A = new Point("-2.145","1.75","0");
-        I = new Point("-0.1","5.3","0");
+        I = new Point("-0.15","5.25","0");
         H = new Point("-0.65","4.35","0");
         J = new Point("2.35","4.35","0");
         G = new Point("0.85","1.75","0");
         F = new Point("-1.05","3.65","0");
         B = new Point("3.85","1.75","0");
-        K = new Point("2.9","5.3","0");
+        K = new Point("2.85","5.21","0");
         
         Body handlebar = new Beam(I, A);
         handlebar.setName("Handle Bar");
-        Body top = new Beam(J, H);
+        Bar top = new Bar(J, H);
         top.setName("Top Bar");
         Body seatPole = new Beam(K, G);
         seatPole.setName("Seat Pole");
-        Body front = new Beam(F, G);
+        Bar front = new Bar(F, G);
         front.setName("Front Bar");
-        Body back = new Beam(J, B);
+        Bar back = new Bar(J, B);
         back.setName("Back Bar");
-        Body bottom = new Beam(B, G);
+        Bar bottom = new Bar(B, G);
         bottom.setName("Bottom Bar");
+        
+        rollerA = new Roller2d(A);
+        rollerB = new Roller2d(B);
+        
+        twoForceF = new Connector2ForceMember2d(F, front);
+        twoForceH = new Connector2ForceMember2d(H, top);
+        
+        rollerA.setDirection(Vector3bd.UNIT_Y);
+        rollerB.setDirection(Vector3bd.UNIT_Y);
         
         DistanceMeasurement distance1 = new DistanceMeasurement(I, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
@@ -111,7 +121,7 @@ public class BicycleExercise extends FBDExercise {
         distance5.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance5);
         
-        PointAngleMeasurement angle1 = new PointAngleMeasurement(A, G, F);
+        PointAngleMeasurement angle1 = new PointAngleMeasurement(A, G, I);
         angle1.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle1);
         
@@ -153,6 +163,12 @@ public class BicycleExercise extends FBDExercise {
         Moment handleMoment = new Moment(I, Vector3bd.UNIT_Z, new BigDecimal(5)); // use symbol here
         handleMoment.setSymbol("Handlebar");
         handlebar.addObject(handleMoment);
+        
+        rollerA.attachToWorld(handlebar);
+        rollerB.attachToWorld(seatPole);
+        
+        twoForceF.attach(front, handlebar);
+        twoForceH.attach(top, handlebar);
         
         A.setName("A");
         I.setName("I");
