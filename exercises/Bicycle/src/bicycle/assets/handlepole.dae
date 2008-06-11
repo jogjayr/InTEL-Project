@@ -4,8 +4,8 @@
     <contributor>
       <authoring_tool>FBX COLLADA exporter</authoring_tool>
     </contributor>
-    <created>2008-06-11T14:59:08Z</created>
-    <modified>2008-06-11T14:59:08Z</modified>
+    <created>2008-06-11T14:58:09Z</created>
+    <modified>2008-06-11T14:58:09Z</modified>
     <unit meter="0.010000"/>
     <up_axis>Y_UP</up_axis>
   </asset>
@@ -40,10 +40,10 @@
     </effect>
   </library_effects>
   <library_geometries>
-    <geometry id="beam2-lib" name="beam2Mesh">
+    <geometry id="beam6-lib" name="beam6Mesh">
       <mesh>
-        <source id="beam2-lib-Position">
-          <float_array id="beam2-lib-Position-array" count="96">
+        <source id="beam6-lib-Position">
+          <float_array id="beam6-lib-Position-array" count="96">
 0.923880 -0.503400 -0.382683
 0.707107 -0.503400 -0.707106
 0.382684 -0.503400 -0.923879
@@ -78,15 +78,15 @@
 1.000000 0.503400 0.000000
 </float_array>
           <technique_common>
-            <accessor source="#beam2-lib-Position-array" count="32" stride="3">
+            <accessor source="#beam6-lib-Position-array" count="32" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="beam2-lib-Normal0">
-          <float_array id="beam2-lib-Normal0-array" count="540">
+        <source id="beam6-lib-Normal0">
+          <float_array id="beam6-lib-Normal0-array" count="540">
 0.947173 0.000000 -0.320722
 0.752339 0.000000 -0.658776
 0.896538 0.000000 -0.442967
@@ -269,15 +269,15 @@
 0.000000 1.000000 0.000000
 </float_array>
           <technique_common>
-            <accessor source="#beam2-lib-Normal0-array" count="180" stride="3">
+            <accessor source="#beam6-lib-Normal0-array" count="180" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="beam2-lib-UV1">
-          <float_array id="beam2-lib-UV1-array" count="96">
+        <source id="beam6-lib-UV1">
+          <float_array id="beam6-lib-UV1-array" count="96">
 0.000000 0.159155
 0.062500 0.159155
 0.125000 0.159155
@@ -328,19 +328,19 @@
 0.937500 0.159155
 </float_array>
           <technique_common>
-            <accessor source="#beam2-lib-UV1-array" count="48" stride="2">
+            <accessor source="#beam6-lib-UV1-array" count="48" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="beam2-lib-Vertex">
-          <input semantic="POSITION" source="#beam2-lib-Position"/>
+        <vertices id="beam6-lib-Vertex">
+          <input semantic="POSITION" source="#beam6-lib-Position"/>
         </vertices>
         <polygons material="lambert4" count="60">
-          <input semantic="VERTEX" offset="0" source="#beam2-lib-Vertex"/>
-          <input semantic="NORMAL" offset="1" source="#beam2-lib-Normal0"/>
-          <input semantic="TEXCOORD" offset="2" set="1" source="#beam2-lib-UV1"/>
+          <input semantic="VERTEX" offset="0" source="#beam6-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#beam6-lib-Normal0"/>
+          <input semantic="TEXCOORD" offset="2" set="1" source="#beam6-lib-UV1"/>
           <p>0 0 0 1 1 1 16 2 16</p>
           <p>16 3 16 1 4 1 17 5 17</p>
           <p>1 6 1 2 7 2 17 8 17</p>
@@ -422,11 +422,11 @@
           <scale sid="scale">2.500000 2.500000 2.500000</scale>
           <node id="bike" name="bike">
             <rotate sid="rotateY">0 1 0 89.070778</rotate>
-            <node id="beam2" name="beam2">
-              <translate sid="translate">1.672040 8.683075 0.000000</translate>
-              <rotate sid="rotateZ">0 0 1 90.000000</rotate>
-              <scale sid="scale">0.114861 6.000000 0.114861</scale>
-              <instance_geometry url="#beam2-lib">
+            <node id="beam6" name="beam6">
+              <translate sid="translate">-2.341189 6.949550 0.000000</translate>
+              <rotate sid="rotateZ">0 0 1 -30.000000</rotate>
+              <scale sid="scale">0.114861 8.062000 0.114861</scale>
+              <instance_geometry url="#beam6-lib">
                 <bind_material>
                   <technique_common>
                     <instance_material symbol="lambert4" target="#lambert4"/>

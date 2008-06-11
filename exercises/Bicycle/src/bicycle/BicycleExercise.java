@@ -50,7 +50,7 @@ public class BicycleExercise extends FBDExercise {
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));       
     }
     
-    Point A, I;
+    Point A, I, H, J;
     
     @Override
     public float getDrawScale() {
@@ -64,10 +64,14 @@ public class BicycleExercise extends FBDExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         
-        A = new Point("-2.9","4.3","0");
-        I = new Point("2.9","4.3","0");
+        A = new Point("-2.2","1.7","0");
+        I = new Point("-0.1","5.3","0");
+        H = new Point("-0.65","4.35","0");
+        J = new Point("2.35","4.35","0");
         Body handlebar = new Beam(I, A);
         handlebar.setName("Handle Bar");
+        Body top = new Beam(J, H);
+        top.setName("Top Bar");
         
         DistanceMeasurement distance1 = new DistanceMeasurement(I, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
@@ -80,20 +84,80 @@ public class BicycleExercise extends FBDExercise {
         
         A.setName("A");
         I.setName("I");
+        H.setName("H");
+        J.setName("J");
         
         A.createDefaultSchematicRepresentation();
         I.createDefaultSchematicRepresentation();
+        H.createDefaultSchematicRepresentation();
+        J.createDefaultSchematicRepresentation();
         handlebar.createDefaultSchematicRepresentation();
+        handle.createDefaultSchematicRepresentation();
+        top.createDefaultSchematicRepresentation();
         
         schematic.add(handlebar);
+        schematic.add(top);
         
         float scale = 0.1f;
         
-        Representation rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
+        Representation rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlepole.dae");
         rep.setLocalScale(scale);
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/back.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+//        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
+//        rep.setLocalScale(scale);
+//        handlebar.addRepresentation(rep);
+//        rep.setSynchronizeRotation(false);
+//        rep.setSynchronizeTranslation(false);
+//        
+//        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bike.dae");
+//        rep.setLocalScale(scale);
+//        handlebar.addRepresentation(rep);
+//        rep.setSynchronizeRotation(false);
+//        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bottom.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/front.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/seat.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/seatpole.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/top.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
     }
 }

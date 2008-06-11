@@ -4,8 +4,8 @@
     <contributor>
       <authoring_tool>FBX COLLADA exporter</authoring_tool>
     </contributor>
-    <created>2008-06-10T23:54:53Z</created>
-    <modified>2008-06-10T23:54:53Z</modified>
+    <created>2008-06-11T14:58:55Z</created>
+    <modified>2008-06-11T14:58:55Z</modified>
     <unit meter="0.010000"/>
     <up_axis>Y_UP</up_axis>
   </asset>
@@ -417,19 +417,23 @@
   <library_visual_scenes>
     <visual_scene id="RootNode" name="RootNode">
       <node id="model" name="model">
-        <node id="bike" name="bike">
-          <rotate sid="rotateY">0 1 0 89.070778</rotate>
-          <node id="beam4" name="beam4">
-            <translate sid="translate">4.734535 3.497086 0.000000</translate>
-            <rotate sid="rotateZ">0 0 1 90.000000</rotate>
-            <scale sid="scale">-0.114861 6.000000 0.114861</scale>
-            <instance_geometry url="#beam4-lib">
-              <bind_material>
-                <technique_common>
-                  <instance_material symbol="lambert4" target="#lambert4"/>
-                </technique_common>
-              </bind_material>
-            </instance_geometry>
+        <node id="group2" name="group2">
+          <rotate sid="rotateY">0 1 0 -90.000000</rotate>
+          <scale sid="scale">2.500000 2.500000 2.500000</scale>
+          <node id="bike" name="bike">
+            <rotate sid="rotateY">0 1 0 89.070778</rotate>
+            <node id="beam4" name="beam4">
+              <translate sid="translate">4.734535 3.497086 0.000000</translate>
+              <rotate sid="rotateZ">0 0 1 90.000000</rotate>
+              <scale sid="scale">-0.114861 6.000000 0.114861</scale>
+              <instance_geometry url="#beam4-lib">
+                <bind_material>
+                  <technique_common>
+                    <instance_material symbol="lambert4" target="#lambert4"/>
+                  </technique_common>
+                </bind_material>
+              </instance_geometry>
+            </node>
           </node>
         </node>
       </node>
