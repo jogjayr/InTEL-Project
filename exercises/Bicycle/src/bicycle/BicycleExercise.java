@@ -54,7 +54,7 @@ public class BicycleExercise extends FBDExercise {
     
     Point A, I, H, J, G, F, B, K;
     Roller2d rollerA, rollerB;
-    Connector2ForceMember2d twoForceF, twoForceH;
+    Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
     @Override
     public float getDrawScale() {
         return 0.2f;
@@ -94,6 +94,10 @@ public class BicycleExercise extends FBDExercise {
         
         twoForceF = new Connector2ForceMember2d(F, front);
         twoForceH = new Connector2ForceMember2d(H, top);
+        twoForceJH = new Connector2ForceMember2d(J, top);
+        twoForceJB = new Connector2ForceMember2d(J, back);
+        twoForceGF = new Connector2ForceMember2d(G, front);
+        twoForceGB = new Connector2ForceMember2d(G, bottom);
         
         rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerB.setDirection(Vector3bd.UNIT_Y);
@@ -165,11 +169,14 @@ public class BicycleExercise extends FBDExercise {
         handlebar.addObject(handleMoment);
         
         rollerA.attachToWorld(handlebar);
-        rollerB.attachToWorld(seatPole);
+        rollerB.attach(back, bottom);
         
         twoForceF.attach(front, handlebar);
         twoForceH.attach(top, handlebar);
-        
+        twoForceJH.attach(top, seatPole);
+        twoForceJB.attach(back, seatPole);
+        twoForceGF.attach(front, seatPole);
+        twoForceGB.attach(bottom, seatPole);
         A.setName("A");
         I.setName("I");
         H.setName("H");
