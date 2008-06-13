@@ -31,6 +31,12 @@ public class Schematic {
      */
     private Background background;
 
+    /**
+     * The background is a "body" that represents the external world in a diagram.
+     * It should show up as scenery in the selection mode, but disappear in the FBD mode.
+     * Representations may be attached to it, and it has no transformation.
+     * @return
+     */
     public Background getBackground() {
         return background;
     }

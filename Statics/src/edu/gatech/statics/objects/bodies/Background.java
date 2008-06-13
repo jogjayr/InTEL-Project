@@ -14,9 +14,14 @@ import edu.gatech.statics.objects.Body;
  */
 public class Background extends Body{
 
+    /**
+     * This method should not be called, the background should not have a default representation.
+     * @deprecated
+     */
     @Override
+    @Deprecated
     public void createDefaultSchematicRepresentation() {
-        
+        throw new UnsupportedOperationException("The background should not have a default representation.");
     }
 
 }

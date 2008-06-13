@@ -115,9 +115,9 @@ public class TowerExercise extends FBDExercise {
         float scale = 4f;
         
         ModelRepresentation rep;
-        rep = new ModelRepresentation(A, "example02/assets/", "example02/assets/pisa1_background.dae");
+        rep = new ModelRepresentation(world.getBackground(), "example02/assets/", "example02/assets/pisa1_background.dae");
         //rep.setLocalScale(scale);
-        A.addRepresentation(rep);
+        world.getBackground().addRepresentation(rep);
         
         rep = new ModelRepresentation(tower, "example02/assets/", "example02/assets/pisa3_tower.dae");
         rep.setModelOffset(new Vector3f(0, 0, -22.0f/scale));
