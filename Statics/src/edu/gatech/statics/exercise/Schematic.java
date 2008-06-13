@@ -12,6 +12,7 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.bodies.Background;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,8 +26,19 @@ import java.util.Set;
  */
 public class Schematic {
 
+    /**
+     * This is the body that represnts the background.
+     */
+    private Background background;
+
+    public Background getBackground() {
+        return background;
+    }
+
     /** Creates a new instance of ExercizeWorld */
     public Schematic() {
+        background = new Background();
+        allObjects.add(background);
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     private List<Body> allBodies = new ArrayList<Body>();
@@ -34,7 +46,7 @@ public class Schematic {
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
-    
+
     public List<Body> allBodies() {
         return Collections.unmodifiableList(allBodies);
     }
@@ -60,7 +72,7 @@ public class Schematic {
 
         }
     }
-    
+
     /**
      * This method fetches all the measurements that apply to the specified bodies
      * This is done by checking to see that at least two of the points of the measurement
@@ -70,30 +82,33 @@ public class Schematic {
      */
     public List<Measurement> getMeasurements(BodySubset bodies) {
         List<Measurement> r = new ArrayList<Measurement>();
-        
+
         Set<Point> bodyPoints = new HashSet<Point>();
-        for(Body body : bodies.getBodies()) {
-            for(SimulationObject obj : body.getAttachedObjects())
-                if(obj instanceof Point)
-                    bodyPoints.add((Point)obj);
+        for (Body body : bodies.getBodies()) {
+            for (SimulationObject obj : body.getAttachedObjects()) {
+                if (obj instanceof Point) {
+                    bodyPoints.add((Point) obj);
+                }
+            }
         }
-        
-        for(SimulationObject obj : allObjects) {
-            if(!(obj instanceof Measurement))
+
+        for (SimulationObject obj : allObjects) {
+            if (!(obj instanceof Measurement)) {
                 continue;
-            
+            }
             Measurement measurement = (Measurement) obj;
-            
+
             // we count the measurement to be added if
             // two of the points described by the measurement are covered by
             // the bodies
-            if(containsTwo(bodyPoints, measurement.getPoints()))
+            if (containsTwo(bodyPoints, measurement.getPoints())) {
                 r.add(measurement);
+            }
         }
-        
+
         return r;
     }
-    
+
     /**
      * This helper method returns true if two of toCheck are contained in
      * sourcePoints.
@@ -102,14 +117,18 @@ public class Schematic {
      * @return
      */
     private boolean containsTwo(Set<Point> sourcePoints, List<Point> toCheck) {
-        if(toCheck.size() <= 1) return false;
-        if(toCheck.size() == 2)
+        if (toCheck.size() <= 1) {
+            return false;
+        }
+        if (toCheck.size() == 2) {
             return sourcePoints.containsAll(toCheck);
-        else {
+        } else {
             int found = 0;
-            for(Point check : toCheck)
-                if(sourcePoints.contains(check))
+            for (Point check : toCheck) {
+                if (sourcePoints.contains(check)) {
                     found++;
+                }
+            }
             return found >= 2;
         }
     }

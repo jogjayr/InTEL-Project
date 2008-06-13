@@ -62,7 +62,7 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
                 return labelCenter;
             }
         };
-        attachChild(label);
+        getRelativeNode().attachChild(label);
         
         setUseWorldScale(false);
         

@@ -58,7 +58,7 @@ public class ImageRepresentation extends Representation {
         setRenderState(alphaState);
         
         quad = new Quad("",1,1);
-        attachChild(quad);
+        getRelativeNode().attachChild(quad);
         
         TextureState textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         textureState.setTexture(texture);

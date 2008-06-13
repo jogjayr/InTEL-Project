@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics;
 
+import com.jme.scene.Spatial;
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
@@ -62,6 +63,33 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     private ColorRGBA grayColor = new ColorRGBA(.2f, .2f, .2f, 1f);
     private ColorRGBA grayEmissive = new ColorRGBA(.40f, .40f, .40f, 1f);
 
+    private boolean useWorldScale = true;
+    private boolean synchronizeTranslation = true;
+    private boolean synchronizeRotation = true;
+    
+    /**
+     * Representation is a subclass of Node, and we want it to automatically update its
+     * transformations. However, we may wish to have there be relative transformations
+     * underneath the main one, and that is what this is for.
+     */
+    private Node relativeNode;
+    
+    public Node getRelativeNode() {return relativeNode;}
+
+    /**
+     * Use getRelativeNode().attachChild() instead
+     * @param child
+     * @return
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public int attachChild(Spatial child) {
+        return super.attachChild(child);
+    }
+    
+    
+    
     public ColorRGBA getAmbient() {
         return ambient;
     }
@@ -101,9 +129,6 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     public ColorRGBA getGrayEmissive() {
         return grayEmissive;
     }
-    private boolean useWorldScale = true;
-    private boolean synchronizeTranslation = true;
-    private boolean synchronizeRotation = true;
 
     protected boolean useWorldScale() {
         return useWorldScale;
@@ -173,6 +198,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     /** Creates a new instance of Representation */
     public Representation(final SimType target) {
         this.target = target;
+        relativeNode = new Node();
+        attachChild(relativeNode);
 
         materialState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
         materialState.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
@@ -220,10 +247,6 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         }
 
         updateMaterial();
-
-    //updateModelBound();
-    //updateGeometricState(0,true);
-    //updateWorldVectors();
     }
 
     @Override
@@ -232,7 +255,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
 
     public boolean isHidden() {
-        return hidden;// || (grayed && StaticsApplication.getApp().isHidingGrays());
+        return hidden;
     }
 
     private void updateMaterial() {

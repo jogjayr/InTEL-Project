@@ -56,7 +56,7 @@ public class MomentRepresentation extends Representation<Moment> {
         mat.fromStartEndVectors(Vector3f.UNIT_Z, new Vector3f(0, 0, -1));
         contents.setLocalRotation(mat);
         
-        attachChild(contents);
+        getRelativeNode().attachChild(contents);
         
         setModelBound(new BoundingBox());
         update();

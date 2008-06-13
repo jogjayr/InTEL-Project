@@ -22,18 +22,27 @@ import edu.gatech.statics.ui.windows.navigation.Navigation2DWindow;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import edu.gatech.statics.ui.windows.selectdiagram.SelectFBDWindow;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
+public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguration {
 
-    public List<TitledDraggablePopupWindow> createPopupWindows() {
-        List<TitledDraggablePopupWindow> popups = new ArrayList<TitledDraggablePopupWindow>();
+    public DefaultInterfaceConfiguration() {
+
+        createPopupWindows();
+        createModePanels();
+        createDisplayNames();
+        setCoordinateSystemWindow(createCoordinateSystemWindow());
+        setNavigationWindow(createNavigationWindow());
+        setViewConstraints(createViewConstraints());
+        setDiagramDisplayCalculator(createDisplayCalculator());
+    }
+
+    public void createPopupWindows() {
+        List<TitledDraggablePopupWindow> popups = getPopupWindows();
 
         int displayWidth = DisplaySystem.getDisplaySystem().getWidth();
         int displayHeight = DisplaySystem.getDisplaySystem().getHeight();
@@ -73,21 +82,18 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         selectFBDWindow.setVisible(true);
         popups.add(selectFBDWindow);
 
-        return popups;
     }
 
-    public List<ApplicationModePanel> createModePanels() {
-        List<ApplicationModePanel> r = new ArrayList<ApplicationModePanel>();
+    public void createModePanels() {
+        List<ApplicationModePanel> r = getModePanels();
         r.add(new SelectModePanel());
         r.add(new FBDModePanel());
         r.add(new EquationModePanel());
-        return r;
     }
 
     //public String getDefaultModePanelName() {
     //    return SelectModePanel.panelName;
     //}
-
     public NavigationWindow createNavigationWindow() {
         return new Navigation2DWindow();
     }
@@ -96,22 +102,19 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         return new SimpleCoordinateSystemWindow();
     }
 
-    public List<String> getDisplayNames() {
-        return Arrays.asList(new String[] {
-            "measurements",
-            "bones",
-            "real world",
-            "schematic"
-        });
+    public void createDisplayNames() {
+        getDisplayNames().add("measurements");
+        getDisplayNames().add("real world");
+        getDisplayNames().add("schematic");
     }
 
     public ViewConstraints createViewConstraints() {
         ViewConstraints constraints = new ViewConstraints();
-        
+
         constraints.setPositionConstraints(-20, 20, -20, 20);
         constraints.setZoomConstraints(.5f, 2);
         constraints.setRotationConstraints(-2f, 2f);
-        
+
         return constraints;
     }
 
@@ -119,12 +122,11 @@ public class DefaultInterfaceConfiguration implements InterfaceConfiguration {
         //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
         //cameraControl.setRotationCenter(rotationCenter);
         cameraControl.getViewDiagramState().setCameraFrame(
-                new Vector3f(0,0,30),
-                new Vector3f(0,0,0));
+                new Vector3f(0, 0, 30),
+                new Vector3f(0, 0, 0));
     }
 
-    public DiagramDisplayCalculator getDisplayCalculator() {
+    public DiagramDisplayCalculator createDisplayCalculator() {
         return new DiagramDisplayCalculator();
     }
-    
 }

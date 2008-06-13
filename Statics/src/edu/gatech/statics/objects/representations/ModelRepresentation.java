@@ -93,7 +93,7 @@ public class ModelRepresentation extends Representation {
         }
         
         if(modelNode != null) {
-            attachChild(modelNode);
+            getRelativeNode().attachChild(modelNode);
             updateRenderState();
         }
     }

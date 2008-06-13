@@ -27,8 +27,10 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Fix2d;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -39,8 +41,11 @@ import java.net.URL;
  */
 public class TowerExercise extends FBDExercise {
     
+    @Override
     public InterfaceConfiguration createInterfaceConfiguration() {
-        return new DefaultInterfaceConfiguration();
+        AbstractInterfaceConfiguration interfaceConfiguration = new DefaultInterfaceConfiguration();
+        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+        return interfaceConfiguration;
     }
 
     /** Creates a new instance of TowerExercise */

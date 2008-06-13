@@ -49,7 +49,7 @@ public class CylinderRepresentation extends BodyRepresentation {
         height = 1;
         
         cylinder = new Cylinder("", 10, 10, 1, 1, true);
-        attachChild(cylinder);
+        getRelativeNode().attachChild(cylinder);
         
         //Matrix3f rotation = new Matrix3f();
         //rotation.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_Y);

@@ -65,7 +65,7 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
                 return labelCenter;
             }
         };
-        attachChild(label);
+        getRelativeNode().attachChild(label);
 
         setUseWorldScale(false);
 

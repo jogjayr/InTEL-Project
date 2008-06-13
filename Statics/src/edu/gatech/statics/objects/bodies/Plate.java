@@ -9,7 +9,6 @@
 
 package edu.gatech.statics.objects.bodies;
 
-import edu.gatech.statics.Representation;
 import edu.gatech.statics.objects.Body;
 
 /**

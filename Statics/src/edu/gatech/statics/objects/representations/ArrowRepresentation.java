@@ -42,7 +42,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
         super(target);
         arrow = new Arrow(hasTip);
         setLayer(RepresentationLayer.vectors);
-        attachChild(arrow);
+        getRelativeNode().attachChild(arrow);
 
         //setModelBound(new OrientedBoundingBox());
         setModelBound(new BoundingBox());

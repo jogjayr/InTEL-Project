@@ -183,7 +183,7 @@ public class InterfaceRoot {
 
         // LOAD POPUP WINDOWS
         List<String> windowNames = new ArrayList<String>();
-        allPopupWindows.addAll(configuration.createPopupWindows());
+        allPopupWindows.addAll(configuration.getPopupWindows());
         for (TitledDraggablePopupWindow popup : allPopupWindows) {
             popupWindows.put(popup.getName(), popup);
             windowNames.add(popup.getName());
@@ -194,7 +194,7 @@ public class InterfaceRoot {
         menuBar.setDisplayList(configuration.getDisplayNames());
         
         // LOAD APPLICATION BAR
-        allModePanels.addAll(configuration.createModePanels());
+        allModePanels.addAll(configuration.getModePanels());
         for(ApplicationModePanel panel : allModePanels) {
             modePanels.put(panel.getPanelName(), panel);
         }
@@ -203,20 +203,20 @@ public class InterfaceRoot {
         //applicationBar.setModePanel(modePanels.get(configuration.getDefaultModePanelName()));
 
         // LOAD NAVIGATION WINDOW
-        navWindow = configuration.createNavigationWindow();
+        navWindow = configuration.getNavigationWindow();
         buiNode.addWindow(navWindow);
         navWindow.pack();
         navWindow.setLocation(
                 DisplaySystem.getDisplaySystem().getWidth()-navWindow.getPreferredSize(-1, -1).width - 5,
                 ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
 
-        cameraControl = new CameraControl(camera, configuration.createViewConstraints());
+        cameraControl = new CameraControl(camera, configuration.getViewConstraints());
         configuration.setupCameraControl(cameraControl);
         navWindow.setCameraControl(cameraControl);
         cameraControl.updateCamera();
         
         // LOAD COORDINATES WINDOW
-        coordinatesWindow = configuration.createCoordinateSystemWindow();
+        coordinatesWindow = configuration.getCoordinateSystemWindow();
         buiNode.addWindow(coordinatesWindow);
         coordinatesWindow.pack();
         coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT

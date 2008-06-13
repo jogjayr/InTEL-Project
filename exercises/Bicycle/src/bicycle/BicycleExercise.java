@@ -57,7 +57,7 @@ public class BicycleExercise extends FBDExercise {
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
     @Override
     public float getDrawScale() {
-        return 0.2f;
+        return 1f;
     }
 
     @Override
@@ -233,17 +233,17 @@ public class BicycleExercise extends FBDExercise {
         
         
         //uncomment these to see the madness
-//        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
-//        rep.setLocalScale(scale);
-//        handlebar.addRepresentation(rep);
-//        rep.setSynchronizeRotation(false);
-//        rep.setSynchronizeTranslation(false);
-//        
-//        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bike.dae");
-//        rep.setLocalScale(scale);
-//        handlebar.addRepresentation(rep);
-//        rep.setSynchronizeRotation(false);
-//        rep.setSynchronizeTranslation(false);
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bike.dae");
+        rep.setLocalScale(scale);
+        handlebar.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
         
         rep = new ModelRepresentation(bottom, "bicycle/assets/", "bicycle/assets/bottom.dae");
         rep.setLocalScale(scale);

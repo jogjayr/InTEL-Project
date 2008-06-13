@@ -74,7 +74,7 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         TextureState textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         textureState.setTexture(pointTexture);
         pointQuad.setRenderState(textureState);
-        attachChild(pointQuad);
+        getRelativeNode().attachChild(pointQuad);
         
         setDiffuse(ColorRGBA.white);
         setAmbient(ColorRGBA.lightGray);

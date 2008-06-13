@@ -20,16 +20,14 @@ import java.util.List;
  */
 public interface InterfaceConfiguration {
 
-    public List<TitledDraggablePopupWindow> createPopupWindows();
-    public List<ApplicationModePanel> createModePanels();
-    public NavigationWindow createNavigationWindow();
-    public CoordinateSystemWindow createCoordinateSystemWindow();
+    public List<TitledDraggablePopupWindow> getPopupWindows();
+    public List<ApplicationModePanel> getModePanels();
+    public NavigationWindow getNavigationWindow();
+    public CoordinateSystemWindow getCoordinateSystemWindow();
 
     public List<String> getDisplayNames();
     
-    //abstract public String getDefaultModePanelName();
-    
-    public ViewConstraints createViewConstraints();
+    public ViewConstraints getViewConstraints();
 
     public void setupCameraControl(CameraControl cameraControl);
     public DiagramDisplayCalculator getDisplayCalculator();

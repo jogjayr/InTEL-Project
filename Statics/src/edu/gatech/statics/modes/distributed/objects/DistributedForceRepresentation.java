@@ -39,8 +39,8 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         surface = createSurface(samples);
         border = createBorder(samples);
         
-        attachChild(surface);
-        attachChild(border);
+        getRelativeNode().attachChild(surface);
+        getRelativeNode().attachChild(border);
 
         Vector3bd startPoint = getTarget().getStartPoint().getPosition();
         Vector3bd endPoint = getTarget().getEndPoint().getPosition();
@@ -87,7 +87,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
             arrowNode.attachChild(arrow);
         }
         
-        attachChild(arrowNode);
+        getRelativeNode().attachChild(arrowNode);
         arrowNode.updateRenderState();
         
         /*
@@ -119,7 +119,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
     protected Arrow createArrow(float pos, float spanSize, float displayScale) {
         
         Arrow arrow = new Arrow();
-        attachChild(arrow);
+        //attachChild(arrow);
 
         Matrix3f matrix = new Matrix3f();
         matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_Y.negate());

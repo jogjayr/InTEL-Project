@@ -16,8 +16,8 @@ import java.util.List;
 public class DistributedInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
     @Override
-    public List<ApplicationModePanel> createModePanels() {
-        List<ApplicationModePanel> r = super.createModePanels();
+    public List<ApplicationModePanel> getModePanels() {
+        List<ApplicationModePanel> r = super.getModePanels();
         r.add(new DistributedModePanel());
         return r;
     }
