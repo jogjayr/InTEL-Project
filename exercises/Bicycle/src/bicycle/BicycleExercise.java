@@ -231,6 +231,8 @@ public class BicycleExercise extends FBDExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
+        
+        //uncomment these to see the madness
 //        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
 //        rep.setLocalScale(scale);
 //        handlebar.addRepresentation(rep);
