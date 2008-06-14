@@ -16,6 +16,7 @@ import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Fix2d;
 import edu.gatech.statics.objects.joints.Pin2d;
@@ -287,7 +288,7 @@ public class FBDChecker {
                 if (joint instanceof Connector2ForceMember2d) {
                     for (Load load : reactions) {
                         for (int i = 0; i < addedForces.size(); i++) {
-                            if (addedForces.get(i).equalsSymbolic(negate(load))) {
+                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(i).equalsSymbolic(negate(load))) {
                                 Logger.getLogger("Statics").info("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
                                 Logger.getLogger("Statics").info("check: FAILED");
                                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_cable",

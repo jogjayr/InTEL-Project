@@ -57,7 +57,7 @@ public class BicycleExercise extends FBDExercise {
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
     @Override
     public float getDrawScale() {
-        return 1f;
+        return 0.2f;
     }
 
     @Override
@@ -165,7 +165,7 @@ public class BicycleExercise extends FBDExercise {
         handlebar.addObject(handleWeight);
         
         Moment handleMoment = new Moment(I, Vector3bd.UNIT_Z, new BigDecimal(5)); // use symbol here
-        handleMoment.setSymbol("Handlebar");
+        handleMoment.setName("Handlebar");
         handlebar.addObject(handleMoment);
         
         rollerA.attachToWorld(handlebar);
