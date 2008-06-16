@@ -35,6 +35,8 @@ import java.util.logging.Logger;
 public class FBDChecker {
 
     private FreeBodyDiagram diagram;
+    private Joint nextJoint;
+    private boolean done = false;
 
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
@@ -89,9 +91,11 @@ public class FBDChecker {
 
     public boolean checkDiagram() {
 
+        done = false;
+        
         // step 1: assemble a list of all the forces the user has added.
         List<Load> addedForces = getAddedForces();
-
+        
         Logger.getLogger("Statics").info("check: user added forces: " + addedForces);
 
         if (addedForces.size() <= 0) {
@@ -222,12 +226,26 @@ public class FBDChecker {
         // Step 4: go through all the border joints connecting this FBD to the external world,
         // and check each force implied by the joint.
         //List<Pair<Joint, Body>> jointsAndBodies = new ArrayList(); // joints between system and external.
-        for (SimulationObject obj : diagram.allObjects()) {
+//        for (SimulationObject obj : diagram.allObjects()) {
+        for (int i = 0; i < diagram.allObjects().size(); i++) {
+            SimulationObject obj = diagram.allObjects().get(i);
             if (!(obj instanceof Joint)) {
                 continue;
             }
 
             Joint joint = (Joint) obj;
+            
+            for (int ii = i+1; ii < diagram.allObjects().size(); ii++) {
+                SimulationObject obj2 = diagram.allObjects().get(ii);
+                if (!(obj2 instanceof Joint)) {
+                    if (ii == diagram.allObjects().size()-1) {
+                        done = true;
+                    }
+                    continue;
+                }
+                nextJoint = (Joint) obj2;
+                break;
+            }
 
             Body body = null;
             if (diagram.getBodySubset().getBodies().contains(joint.getBody1())) {
@@ -249,20 +267,19 @@ public class FBDChecker {
 
             Logger.getLogger("Statics").info("check: testing joint: " + joint);
 
-            //no reaction forces added
-            if (getForcesAtPoint(joint.getAnchor(), addedForces).isEmpty()) {
-                Logger.getLogger("Statics").info("check: have any forces been added");
-                Logger.getLogger("Statics").info("check: FAILED");
-                StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
-                return false;
-            }
-
             if (testJoint(joint, addedForces)) {
                 continue;
             } else {
                 // joint check has failed,
                 // so check some common errors
 
+                //no reaction forces added
+                if (getForcesAtPoint(joint.getAnchor(), addedForces).isEmpty()) {
+                    Logger.getLogger("Statics").info("check: have any forces been added");
+                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
+                    return false;
+                }
                 //check to see if the user has wrongly created a pin
                 if (!(joint instanceof Pin2d)) {
                     Pin2d testPin = new Pin2d(joint.getAnchor());
@@ -287,13 +304,13 @@ public class FBDChecker {
                 //check to see if the user has created a cable that is in compression
                 if (joint instanceof Connector2ForceMember2d) {
                     for (Load load : reactions) {
-                        for (int i = 0; i < addedForces.size(); i++) {
-                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(i).equalsSymbolic(negate(load))) {
+                        for (int iii = 0; iii < addedForces.size(); iii++) {
+                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(iii).equalsSymbolic(negate(load))) {
                                 Logger.getLogger("Statics").info("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
                                 Logger.getLogger("Statics").info("check: FAILED");
                                 StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_joint_cable",
-                                        addedForces.get(i).getAnchor().getLabelText(),
-                                        addedForces.get(i).getLabelText());
+                                        addedForces.get(iii).getAnchor().getLabelText(),
+                                        addedForces.get(iii).getLabelText());
                                 return false;
                             }
                         }
@@ -385,23 +402,6 @@ public class FBDChecker {
                         return false;
                     }
                 }
-
-//                // check for duplication
-//                String name = force.getSymbolName();
-//
-//                if (names.contains(name)) {
-//                    Logger.getLogger("Statics").info("check: user duplicated name for force: " + name);
-//                    Logger.getLogger("Statics").info("check: FAILED");
-//
-//                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
-//                            forceOrMoment(force),
-//                            force.getAnchor().getLabelText(),
-//                            forceOrMoment(addedForces.get(names.indexOf(name))),
-//                            addedForces.get(names.indexOf(name)).getAnchor().getLabelText());
-//                    return false;
-//                }
-//                names.add(name);
-
             } else {
 
                 // force is numeric.
@@ -410,7 +410,7 @@ public class FBDChecker {
 
                 if (weights.containsKey(force)) {
                 } else if (externalForces.contains(force)) {
-                    // OK, do nothing
+                // OK, do nothing
                 } else {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -424,18 +424,6 @@ public class FBDChecker {
         // Yay, we've passed the test!
         Logger.getLogger("Statics").info("check: PASSED!");
         return true;
-    }
-
-    private List<Load> getReactions(Joint joint, List<Vector> reactions) {
-        List<Load> loads = new ArrayList<Load>();
-        for (Vector vector : reactions) {
-            if (vector.getUnit() == Unit.force) {
-                loads.add(new Force(joint.getAnchor(), vector));
-            } else if (vector.getUnit() == Unit.moment) {
-                loads.add(new Moment(joint.getAnchor(), vector));
-            }
-        }
-        return loads;
     }
 
     private Load negate(Load reaction) {
@@ -459,11 +447,36 @@ public class FBDChecker {
         return forcesAtPoint;
     }
 
+    private List<Load> getReactions(Joint joint, List<Vector> reactions) {
+        List<Load> loads = new ArrayList<Load>();
+        for (Vector vector : reactions) {
+            if (vector.getUnit() == Unit.force) {
+                loads.add(new Force(joint.getAnchor(), vector));
+            } else if (vector.getUnit() == Unit.moment) {
+                loads.add(new Moment(joint.getAnchor(), vector));
+            }
+        }
+        return loads;
+    }
+
     private boolean testJoint(Joint joint, List<Load> addedForces) {
 
-        // gather loads operating at the joint
+        //has the forces that the user added
         List<Load> forcesAtJoint = getForcesAtPoint(joint.getAnchor(), addedForces);
-        List<Load> jointForces = getReactions(joint, joint.getReactions());
+        //has the forces that its looking for, might be a prettier way to do this
+        List<Load> jointForces = new ArrayList<Load>();
+
+        // gather loads operating at the joint
+        for (SimulationObject obj : diagram.allObjects()) {
+            if (!(obj instanceof Joint)) {
+                continue;
+            }
+            if (((Joint) obj).getAnchor().getLabelText().equals(joint.getAnchor().getLabelText())) {
+                for (Load l : getReactions(joint, ((Joint) obj).getReactions())) {
+                    jointForces.add(l);
+                }
+            }
+        }
 
         // see if we can clear them all
         boolean success = true;
@@ -482,8 +495,11 @@ public class FBDChecker {
             // return false, without having changed addedForces at all
             return false;
         }
+        
         // otherwise go through and remove these forces 
-        addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
+        if (done || !nextJoint.getAnchor().getLabelText().equals(joint.getAnchor().getLabelText())) {
+            addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
+        }
         return true;
     }
 
