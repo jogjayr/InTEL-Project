@@ -37,7 +37,7 @@ public class Test extends ViewerExercise {
         ModelRepresentation rep = new ModelRepresentation(getSchematic().getBackground(),
                 "viewer/demo/", "viewer/demo/bicycleNoLights.dae");
         getSchematic().getBackground().addRepresentation(rep);
-
+        
         setModel(rep);
         
         Point origin = new Point(Vector3bd.ZERO);

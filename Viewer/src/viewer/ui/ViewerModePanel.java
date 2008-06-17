@@ -13,7 +13,10 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import viewer.ViewerDiagram;
+import viewer.ui.heirarchy.HeirarchyFrame;
 
 /**
  *
@@ -49,6 +52,16 @@ public class ViewerModePanel extends ApplicationModePanel {
         Node modelNode = (Node) diagram.getModel().getChild(0);
 
         listNode(modelNode, 0);
+        
+        HeirarchyFrame frame = new HeirarchyFrame(modelNode);
+        //frame.setRoot(modelNode);
+        frame.pack();
+        frame.setVisible(true);
+        
+        /*JFrame frame = new JFrame();
+        frame.add(new JLabel("EEK!"));
+        frame.pack();
+        frame.setVisible(true);*/
     }
     
     private String makeSpacerString(int spaces) {
