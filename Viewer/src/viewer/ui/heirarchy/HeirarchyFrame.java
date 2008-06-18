@@ -8,8 +8,8 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -26,7 +26,8 @@ import javax.swing.tree.TreeSelectionModel;
 public class HeirarchyFrame extends JFrame {
 
     private JTree tree;
-    private JEditorPane textPane;
+    //private JEditorPane textPane;
+    private InfoPanel infoPanel;
     private DefaultMutableTreeNode root;
 
     public HeirarchyFrame(Node rootNode) {
@@ -40,23 +41,29 @@ public class HeirarchyFrame extends JFrame {
         tree.addTreeSelectionListener(treeListener);
         JScrollPane treeView = new JScrollPane(tree);
 
-        textPane = new JEditorPane();
-        textPane.setEditable(false);
-        JScrollPane textView = new JScrollPane(textPane);
+        infoPanel = new InfoPanel();
+        //textPane = new JEditorPane();
+        //textPane.setEditable(false);
+        //JScrollPane textView = new JScrollPane(textPane);
 
         //getContentPane().add(treeView);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(treeView);
-        splitPane.setBottomComponent(textView);
+        //JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        //splitPane.setTopComponent(treeView);
+        //splitPane.setBottomComponent(infoPanel);
 
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(treeView, BorderLayout.CENTER);
+        mainPanel.add(infoPanel, BorderLayout.SOUTH);
+        
         Dimension minimumSize = new Dimension(100, 50);
-        textView.setMinimumSize(minimumSize);
+        //textView.setMinimumSize(minimumSize);
         treeView.setMinimumSize(minimumSize);
-        splitPane.setDividerLocation(100);
-        splitPane.setPreferredSize(new Dimension(500, 300));
-
-        getContentPane().add(splitPane, BorderLayout.CENTER);
+        //splitPane.setDividerLocation(100);
+        //splitPane.setPreferredSize(new Dimension(500, 300));
+        //mainPanel.setPreferredSize(new Dimension(500, 300));
+        
+        getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
 
     private void setRoot(Node rootNode) {
@@ -73,7 +80,7 @@ public class HeirarchyFrame extends JFrame {
     private MutableTreeNode createChild(Spatial spatial) {
 
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(spatial);
-        
+
         if (spatial instanceof Node) {
             Node node = (Node) spatial;
             for (Spatial child : node.getChildren()) {
@@ -87,6 +94,15 @@ public class HeirarchyFrame extends JFrame {
     private TreeSelectionListener treeListener = new TreeSelectionListener() {
 
         public void valueChanged(TreeSelectionEvent e) {
+            Object lastSelection = tree.getLastSelectedPathComponent();
+            //System.out.println(lastSelection);
+
+            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) lastSelection;
+            Object object = treeNode.getUserObject();
+
+            if (object instanceof Spatial) {
+                infoPanel.updateSelection((Spatial) object);
+            }
         }
     };
 }
