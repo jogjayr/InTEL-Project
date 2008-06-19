@@ -6,13 +6,10 @@ package edu.gatech.statics.ui.windows.navigation;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
-import com.jmex.bui.BImage;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.ui.components.RepeatingButton;
-import java.io.IOException;
 
 /**
  *

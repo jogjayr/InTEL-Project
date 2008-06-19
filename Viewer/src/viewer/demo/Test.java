@@ -35,7 +35,9 @@ public class Test extends ViewerExercise {
     public void loadExercise() {
 
         ModelRepresentation rep = new ModelRepresentation(getSchematic().getBackground(),
-                "viewer/demo/", "viewer/demo/bicycleNoLights.dae");
+                //"viewer/demo/", "viewer/demo/bicycleNoLights.dae");
+                "viewer/demo/", "viewer/demo/bicycle6.dae");
+                //"viewer/demo/", "viewer/demo/toast.dae");
         getSchematic().getBackground().addRepresentation(rep);
         
         setModel(rep);

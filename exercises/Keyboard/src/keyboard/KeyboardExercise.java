@@ -56,7 +56,7 @@ public class KeyboardExercise extends FBDExercise {
     
     @Override
     public float getDrawScale() {
-        return 0.2f;
+        return .2f;
     }
 
     @Override
