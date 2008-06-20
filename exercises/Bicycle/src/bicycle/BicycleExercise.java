@@ -49,16 +49,17 @@ public class BicycleExercise extends FBDExercise {
         
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));       
+        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));  
+        //getDisplayConstants().setDrawScale(0.2f);
+        getDisplayConstants().setMomentSize(0.2f);
+        getDisplayConstants().setForceSize(0.2f);
+        getDisplayConstants().setPointSize(0.2f);
+        getDisplayConstants().setCylinderRadius(0.2f);
     }
     
     Point A, I, H, J, G, F, B, K;
     Roller2d rollerA, rollerB;
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
-    @Override
-    public float getDrawScale() {
-        return 0.2f;
-    }
 
     @Override
     public void loadExercise() { 

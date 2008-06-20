@@ -46,7 +46,8 @@ public class KeyboardExercise extends FBDExercise {
         
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal("5"));       
+        Unit.setDisplayScale(Unit.distance, new BigDecimal("5"));
+        getDisplayConstants().setDrawScale(0.2f);
     }
     
     Point A, B, C, D, E, P, Q;
@@ -54,11 +55,6 @@ public class KeyboardExercise extends FBDExercise {
     Connector2ForceMember2d jointP, jointQ;
     Roller2d jointB, jointE;
     
-    @Override
-    public float getDrawScale() {
-        return .2f;
-    }
-
     @Override
     public void loadExercise() { 
         Schematic schematic = getSchematic();
@@ -151,7 +147,7 @@ public class KeyboardExercise extends FBDExercise {
         schematic.add(rightLeg);
         
         // THIS DOES NOT ACTUALLY SEEM TO DO ANYTHING
-        float scale = 0.1f;
+        float scale = .5f;
         
         Representation rep = new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
         rep.setLocalScale(scale);

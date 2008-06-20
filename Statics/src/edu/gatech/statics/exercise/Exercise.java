@@ -34,13 +34,14 @@ import java.util.Map;
 public abstract class Exercise {
 
     private static Exercise currentExercise;
+    private DisplayConstants displayConstants;
 
     public static Exercise getExercise() {
         return currentExercise;
     }
 
-    public float getDrawScale() {
-        return 1;
+    public DisplayConstants getDisplayConstants() {
+        return displayConstants;
     }
 
     // informational collection of world and diagram objects
@@ -138,7 +139,7 @@ public abstract class Exercise {
     public void setCoordinateSystem(CoordinateSystem sys) {
         this.coordinateSystem = sys;
     }
-    
+
     protected SelectDiagram createSelectDiagram() {
         return new SelectDiagram();
     }
@@ -158,8 +159,9 @@ public abstract class Exercise {
     public Exercise(Schematic world) {
         this.schematic = world;
         currentExercise = this;
+        displayConstants = new DisplayConstants();
     }
-    
+
     protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
         return new FreeBodyDiagram(bodySubset);
     }
@@ -175,7 +177,7 @@ public abstract class Exercise {
         }
         return fbd;
     }
-    
+
     protected EquationDiagram createEquationDiagram(BodySubset bodySubset) {
         return new EquationDiagram(bodySubset);
     }
@@ -268,7 +270,7 @@ public abstract class Exercise {
             finishExercise();
         }
 
-        //return satisfied;
+    //return satisfied;
     }
     private boolean finished = false;
 

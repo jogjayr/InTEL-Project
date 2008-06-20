@@ -84,8 +84,28 @@ public class StaticsApplication {
 
     //private float drawScale = 1.0f;
     public float getDrawScale() {
-        return currentExercise.getDrawScale();
+        return currentExercise.getDisplayConstants().getDrawScale();
     }
+    
+    public float getForceScale() {
+        return currentExercise.getDisplayConstants().getForceSize();
+    }
+    
+    public float getMomentScale() {
+        return currentExercise.getDisplayConstants().getMomentSize();
+    }
+    
+    public float getPointScale() {
+        return currentExercise.getDisplayConstants().getPointSize();
+    }
+    
+    public float getCylinderScale() {
+        return currentExercise.getDisplayConstants().getCylinderRadius();
+    }
+    
+//    public float getLabelScale() {
+//        return currentExercise.getDisplayConstants().getLabelDistance();
+//    }
 
     /**
      * This method loads the most finished diagram with the specified bodies.

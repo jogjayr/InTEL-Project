@@ -421,6 +421,9 @@ public class Parser {
             }
             return new BinaryNode(BinaryNode.Operation.subtract);
         }
+        if (token.equals("PI")) {
+            return new ConstantNode((float)Math.PI);
+        }
 
         try {
             float f = Float.parseFloat(token);
