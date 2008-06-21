@@ -61,7 +61,9 @@ public class PurseExercise extends FBDExercise {
         getDisplayConstants().setForceSize(2f);
         getDisplayConstants().setPointSize(2f);
         getDisplayConstants().setCylinderRadius(2f);
-//        getDisplayConstants().setArrowLabelDistance(2f);
+        getDisplayConstants().setForceLabelDistance(9f);
+        getDisplayConstants().setMomentLabelDistance(40f);
+        getDisplayConstants().setMeasurementSize(0.5f);
         //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
     protected float handPoint = -17;

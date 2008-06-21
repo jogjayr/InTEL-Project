@@ -13,6 +13,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.DistanceMeasurement;
 
 /**
@@ -203,9 +204,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
 
         barOffset1.set(offsetDirection);
         barOffset2.set(offsetDirection);
-        barOffset1.multLocal(offset + edgeWidth / 2);
-        barOffset2.multLocal(offset - edgeWidth / 2);
-
+        barOffset1.multLocal(offset + StaticsApplication.getApp().getMeasurementScale() / 2);
+        barOffset2.multLocal(offset - StaticsApplication.getApp().getMeasurementScale() / 2);
         if (drawLeftBar) {
             if (getTarget().isVertical() == true) {
                 bar1.set(new Vector3f(getTarget().getPoint2().getTranslation().x,

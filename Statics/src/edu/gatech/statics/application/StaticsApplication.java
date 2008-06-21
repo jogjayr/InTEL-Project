@@ -103,10 +103,17 @@ public class StaticsApplication {
         return currentExercise.getDisplayConstants().getCylinderRadius();
     }
     
-//    public float getLabelScale() {
-//        return currentExercise.getDisplayConstants().getLabelDistance();
-//    }
+    public float getForceLabelScale() {
+        return currentExercise.getDisplayConstants().getForceLabelDistance();
+    }
 
+    public float getMomentLabelScale() {
+        return currentExercise.getDisplayConstants().getMomentLabelDistance();
+    }
+    
+    public float getMeasurementScale() {
+        return currentExercise.getDisplayConstants().getMeasurementSize();
+    }
     /**
      * This method loads the most finished diagram with the specified bodies.
      * @param bodies

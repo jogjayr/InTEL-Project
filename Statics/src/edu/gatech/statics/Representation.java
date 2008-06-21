@@ -243,11 +243,9 @@ abstract public class Representation<SimType extends SimulationObject> extends N
                 setLocalScale(StaticsApplication.getApp().getMomentScale());
             } else if (target instanceof Force) {
                 setLocalScale(StaticsApplication.getApp().getForceScale());
-//                StaticsApplication.getApp().getLabelScale();
-//                ((Force)target).getArrow().setAxisOffset(7f);
             } else if (target instanceof Point) {
                 setLocalScale(StaticsApplication.getApp().getPointScale());
-            } 
+            }
         }
         if (synchronizeTranslation) {
             setLocalTranslation(target.getTranslation());

@@ -9,8 +9,9 @@ package edu.gatech.statics.exercise;
  * @author Jimmy Truesdell
  */
 public class DisplayConstants {
-
-    private float labelDistance;
+    private float measurementSize;
+    private float momentLabelDistance;
+    private float forceLabelDistance;
     private float cylinderRadius;
     private float forceSize;
     private float drawScale;
@@ -18,12 +19,14 @@ public class DisplayConstants {
     private float momentSize;
 
     public void setDrawScale(float value) {
-        labelDistance = value;
+        forceLabelDistance = value;
         cylinderRadius = value;
         forceSize = value;
         drawScale = value;
         pointSize = value;
         momentSize = value;
+        measurementSize = value;
+        momentLabelDistance = value;
     }
 
     public float getDrawScale() {
@@ -61,10 +64,28 @@ public class DisplayConstants {
     public float getForceSize() {
         return forceSize;
     }
-//    public void setLabelDistance(float value) {
-//        labelDistance = value;
-//    }
-//    public float getLabelDistance() {
-//        return labelDistance;
-//    }
+    
+    public void setForceLabelDistance(float value) {
+        forceLabelDistance = value;
+    }
+    
+    public float getForceLabelDistance() {
+        return forceLabelDistance;
+    }
+    
+    public void setMomentLabelDistance(float value) {
+        momentLabelDistance = value;
+    }
+    
+    public float getMomentLabelDistance() {
+        return momentLabelDistance;
+    }
+    
+    public void setMeasurementSize(float value) {
+        measurementSize = value;
+    }
+    
+    public float getMeasurementSize() {
+        return measurementSize;
+    }
 }
