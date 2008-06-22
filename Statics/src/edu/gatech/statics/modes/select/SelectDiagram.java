@@ -11,6 +11,7 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class SelectDiagram extends Diagram {
     private static final SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
-            return obj instanceof Body;
+            return obj instanceof Body && !(obj instanceof Background);
         }
     };
 

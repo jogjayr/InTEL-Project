@@ -23,6 +23,7 @@ import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
 import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
+import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import java.math.BigDecimal;
 
@@ -152,30 +153,30 @@ public class KeyboardExercise extends FBDExercise {
         schematic.add(bar);
         schematic.add(rightLeg);
         
-        // THIS DOES NOT ACTUALLY SEEM TO DO ANYTHING
-        float scale = .5f;
+        ModelNode modelNode = ModelNode.load("keyboard/assets/", "keyboard/assets/keyboard.dae");
         
-        Representation rep = new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
-        rep.setLocalScale(scale);
+        Representation rep = modelNode.extractElement(leftLeg, "VisualSceneNode/stand/leg1");
+        //new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
         leftLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
-        rep = new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/strut1.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(rightLeg, "VisualSceneNode/stand/leg2");
+        //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/strut1.dae");
         rightLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
-        rep = new ModelRepresentation(bar, "keyboard/assets/", "keyboard/assets/strut3.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(bar, "VisualSceneNode/stand/middle_support");
+                //new ModelRepresentation(bar, "keyboard/assets/", "keyboard/assets/strut3.dae");
         bar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
-        rep = new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
-        rep.setLocalScale(scale);
-        leftLeg.addRepresentation(rep);
+        rep = modelNode.getRemainder(schematic.getBackground());
+                
+                //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
+        schematic.getBackground().addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
     }

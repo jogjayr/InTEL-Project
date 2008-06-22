@@ -11,11 +11,9 @@ import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import viewer.ViewerDiagram;
 import viewer.ui.heirarchy.HeirarchyFrame;
 
 /**
@@ -29,7 +27,12 @@ public class ViewerModePanel extends ApplicationModePanel {
         return "viewer";
     }
     private BContainer itemContainer;
+    private HeirarchyFrame heirarchyFrame;
 
+    public void setModel(ModelRepresentation rep) {
+        heirarchyFrame.setRoot(rep);
+    }
+    
     public ViewerModePanel() {
 
         getTitleLabel().setText("Viewer");
@@ -48,15 +51,15 @@ public class ViewerModePanel extends ApplicationModePanel {
     @Override
     public void activate() {
 
-        ViewerDiagram diagram = (ViewerDiagram) getDiagram();
-        Node modelNode = (Node) diagram.getModel().getChild(0);
+        //ViewerDiagram diagram = (ViewerDiagram) getDiagram();
+        //Node modelNode = (Node) diagram.getModel().getChild(0);
 
-        listNode(modelNode, 0);
+        //listNode(modelNode, 0);
         
-        HeirarchyFrame frame = new HeirarchyFrame(modelNode);
+        heirarchyFrame = new HeirarchyFrame();
         //frame.setRoot(modelNode);
-        frame.pack();
-        frame.setVisible(true);
+        heirarchyFrame.pack();
+        heirarchyFrame.setVisible(true);
         
         /*JFrame frame = new JFrame();
         frame.add(new JLabel("EEK!"));

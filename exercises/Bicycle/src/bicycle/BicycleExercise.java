@@ -5,10 +5,10 @@
 
 package bicycle;
 
+import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
@@ -24,8 +24,8 @@ import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
-import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
+import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import java.math.BigDecimal;
 
@@ -214,68 +214,82 @@ public class BicycleExercise extends FBDExercise {
         schematic.add(back);
         schematic.add(bottom);
         
-        float scale = 0.1f;
+        //float scale = 0.1f;
         
-        Representation rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlepole.dae");
-        rep.setLocalScale(scale);
+        ModelNode modelNode = ModelNode.load("bicycle/assets/", "bicycle/assets/bicycle.dae");
+        
+        /*Representation rep = modelNode.extractElement(handlebar, "VisualSceneNode/model/bike/handleBar");
+                //new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlepole.dae");
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
     
-        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(han, elementPath)
+                //new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
+        rep.setSynchronizeTranslation(false);*/
+
+        ModelRepresentation rep;
         
-        rep = new ModelRepresentation(back, "bicycle/assets/", "bicycle/assets/back.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(back, "VisualSceneNode/model/bike/beam3");
+                //new ModelRepresentation(back, "bicycle/assets/", "bicycle/assets/back.dae");
         back.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
         
         //uncomment these to see the madness
-        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
-        rep.setLocalScale(scale);
+        /*rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
         rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bike.dae");
-        rep.setLocalScale(scale);
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
+        rep.setSynchronizeTranslation(false);*/
         
-        rep = new ModelRepresentation(bottom, "bicycle/assets/", "bicycle/assets/bottom.dae");
-        rep.setLocalScale(scale);
+        Matrix3f matrix = new Matrix3f();
+        matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_X.negate());
+        
+        rep = modelNode.extractElement(bottom, "VisualSceneNode/model/bike/beam4");
+                //new ModelRepresentation(bottom, "bicycle/assets/", "bicycle/assets/bottom.dae");
         bottom.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
         
-        rep = new ModelRepresentation(front, "bicycle/assets/", "bicycle/assets/front.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(front, "VisualSceneNode/model/bike/beam1");
+                //new ModelRepresentation(front, "bicycle/assets/", "bicycle/assets/front.dae");
         front.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
         
-        rep = new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seat.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/beam5");
+                //new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seat.dae");
         seatPole.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
         
-        rep = new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seatpole.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/seat");
+                //new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seatpole.dae");
         seatPole.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
         
-        rep = new ModelRepresentation(top, "bicycle/assets/", "bicycle/assets/top.dae");
-        rep.setLocalScale(scale);
+        rep = modelNode.extractElement(top, "VisualSceneNode/model/bike/beam2");
+                //new ModelRepresentation(top, "bicycle/assets/", "bicycle/assets/top.dae");
         top.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
+        
+        rep = modelNode.getRemainder(schematic.getBackground());
+        schematic.getBackground().addRepresentation(rep);
+        rep.setModelRotation(matrix);
     }
 }

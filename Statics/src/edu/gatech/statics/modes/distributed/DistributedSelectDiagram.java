@@ -6,7 +6,6 @@ package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.select.SelectDiagram;
-import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 
@@ -20,7 +19,7 @@ public class DistributedSelectDiagram extends SelectDiagram {
     private SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
-            return obj instanceof Body || obj instanceof DistributedForce;
+            return DistributedSelectDiagram.super.getSelectionFilter().canSelect(obj) || obj instanceof DistributedForce;
         }
     };
 
@@ -33,7 +32,7 @@ public class DistributedSelectDiagram extends SelectDiagram {
     public void onClick(SimulationObject obj) {
 
         if (obj instanceof DistributedForce) {
-            DistributedMode.instance.load((DistributedForce)obj);
+            DistributedMode.instance.load((DistributedForce) obj);
             return;
         }
 

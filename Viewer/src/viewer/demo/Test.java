@@ -4,6 +4,7 @@
  */
 package viewer.demo;
 
+import viewer.ui.heirarchy.OpeningPanel;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
@@ -11,6 +12,10 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import viewer.ViewerExercise;
 
 /**
@@ -19,6 +24,24 @@ import viewer.ViewerExercise;
  */
 public class Test extends ViewerExercise {
 
+    public Test() {
+        // set native look and feel, since we use Swing dialogs.
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OpeningPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(OpeningPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(OpeningPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(OpeningPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //OpeningFrame opener = new OpeningFrame();
+        //opener.setVisible(true);
+    }
+    
     @Override
     public InterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
@@ -28,13 +51,14 @@ public class Test extends ViewerExercise {
 
     @Override
     public void loadExercise() {
-        ModelRepresentation rep = new ModelRepresentation(getSchematic().getBackground(),
+        //ModelRepresentation rep = new ModelRepresentation(getSchematic().getBackground(),
                 //"viewer/demo/", "viewer/demo/bicycleNoLights.dae");
-                "viewer/demo/", "viewer/demo/bicycle6.dae");
+        //        "viewer/demo/", "viewer/demo/keyboard3.dae");
+                //"viewer/demo/", "viewer/demo/bicycle5.dae");
                 //"viewer/demo/", "viewer/demo/toast.dae");
-        getSchematic().getBackground().addRepresentation(rep);
+        //getSchematic().getBackground().addRepresentation(rep);
         getDisplayConstants().setDrawScale(2f);
-        setModel(rep);
+        //setModel(rep);
         
         Point origin = new Point(Vector3bd.ZERO);
         origin.setName("zero");
