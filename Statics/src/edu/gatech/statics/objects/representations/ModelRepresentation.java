@@ -11,21 +11,9 @@ package edu.gatech.statics.objects.representations;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.util.export.binary.BinaryImporter;
-import com.jmex.model.converters.AseToJme;
-import com.jmex.model.converters.MaxToJme;
-import com.jmex.model.converters.MilkToJme;
-import edu.gatech.newcollada.ColladaImporter;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.SimulationObject;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

@@ -7,7 +7,6 @@ package keyboard;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
@@ -151,13 +150,10 @@ public class KeyboardExercise extends FBDExercise {
         schematic.add(rightLeg);
 
         ModelNode modelNode = ModelNode.load("keyboard/assets/", "keyboard/assets/keyboard.dae");
-        
-        // THIS DOES NOT ACTUALLY SEEM TO DO ANYTHING
+
         float scale = .28f;
 
-//        ModelRepresentation rep = new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
         ModelRepresentation rep = modelNode.extractElement(leftLeg, "VisualSceneNode/stand/leg1");
-        //new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
         rep.setLocalScale(scale);
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         leftLeg.addRepresentation(rep);
@@ -165,24 +161,22 @@ public class KeyboardExercise extends FBDExercise {
         rep.setSynchronizeTranslation(false);
 
         rep = modelNode.extractElement(rightLeg, "VisualSceneNode/stand/leg2");
-        //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/strut1.dae");
+        rep.setLocalScale(scale);
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         rightLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
         rep = modelNode.extractElement(bar, "VisualSceneNode/stand/middle_support");
-                //new ModelRepresentation(bar, "keyboard/assets/", "keyboard/assets/strut3.dae");
+        rep.setLocalScale(scale);
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         bar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
         rep = modelNode.getRemainder(schematic.getBackground());
-                
-                //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
+
         schematic.getBackground().addRepresentation(rep);
-        //rep = new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
         rep.setLocalScale(scale);
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         leftLeg.addRepresentation(rep);

@@ -48,7 +48,7 @@ public abstract class Diagram {
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
-    
+
     abstract public Mode getMode();
 
     public void add(SimulationObject obj) {
@@ -125,7 +125,7 @@ public abstract class Diagram {
 
     /** Creates a new instance of World */
     public Diagram() {
-    //setSelectableFilterDefault();
+        //setSelectableFilterDefault();
     }
     private boolean nodesUpdated = false;
 
@@ -236,14 +236,17 @@ public abstract class Diagram {
             if (layer.isEnabled()) {
                 r.draw(getNode(layer));
                 r.renderQueue();
-            //GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER).execute();
 
-            /*
-            if(layer == RepresentationLayer.vectors)
-            Debugger.setBoundsColor(ColorRGBA.pink);
-            else Debugger.setBoundsColor(ColorRGBA.white);
-            Debugger.drawBounds(getNode(layer), r, true);
-             */
+                // This is a little bit of code tthat may be uncommented to 
+                // view the bounding volumes
+                /*if (layer == RepresentationLayer.vectors) {
+                    Debugger.setBoundsColor(ColorRGBA.pink);
+                } else if (layer == RepresentationLayer.schematicBodies) {
+                    Debugger.setBoundsColor(ColorRGBA.white);
+                } else {
+                    Debugger.setBoundsColor(ColorRGBA.green);
+                }
+                Debugger.drawBounds(getNode(layer), r, true);*/
             }
             r.clearZBuffer();
         }
@@ -273,19 +276,19 @@ public abstract class Diagram {
             Matrix3f orientation = body.getRotation();
             addCardinalDirectionsAroundMatrix(orientation, directions);
         }
-        
+
         // now check angle measurements
-        for(SimulationObject object : getSchematic().allObjects()) {
-            if(object instanceof AngleMeasurement) {
-                AngleMeasurement measure = (AngleMeasurement)object;
-                
+        for (SimulationObject object : getSchematic().allObjects()) {
+            if (object instanceof AngleMeasurement) {
+                AngleMeasurement measure = (AngleMeasurement) object;
+
                 // our angle is anchored at this point
-                if(measure.getAnchor() == point) {
+                if (measure.getAnchor() == point) {
                     Matrix3f matrix = new Matrix3f();
-                    
+
                     matrix.fromStartEndVectors(Vector3f.UNIT_X, measure.getAxis1());
                     addCardinalDirectionsAroundMatrix(matrix, directions);
-                    
+
                     matrix.fromStartEndVectors(Vector3f.UNIT_X, measure.getAxis2());
                     addCardinalDirectionsAroundMatrix(matrix, directions);
                 }
@@ -294,13 +297,13 @@ public abstract class Diagram {
 
         return new ArrayList<Vector3f>(directions);
     }
-    
+
     private void addCardinalDirectionsAroundMatrix(Matrix3f matrix, Set<Vector3f> directions) {
-            directions.add(matrix.mult(new Vector3f(1, 0, 0)));
-            directions.add(matrix.mult(new Vector3f(-1, 0, 0)));
-            directions.add(matrix.mult(new Vector3f(0, 1, 0)));
-            directions.add(matrix.mult(new Vector3f(0, -1, 0)));
-            directions.add(matrix.mult(new Vector3f(0, 0, 1)));
-            directions.add(matrix.mult(new Vector3f(0, 0, -1)));
+        directions.add(matrix.mult(new Vector3f(1, 0, 0)));
+        directions.add(matrix.mult(new Vector3f(-1, 0, 0)));
+        directions.add(matrix.mult(new Vector3f(0, 1, 0)));
+        directions.add(matrix.mult(new Vector3f(0, -1, 0)));
+        directions.add(matrix.mult(new Vector3f(0, 0, 1)));
+        directions.add(matrix.mult(new Vector3f(0, 0, -1)));
     }
 }

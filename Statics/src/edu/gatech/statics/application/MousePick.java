@@ -29,7 +29,6 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.gatech.statics.application;
 
 import edu.gatech.statics.Representation;
@@ -38,8 +37,8 @@ import edu.gatech.statics.objects.SimulationObject;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
-import com.jme.intersection.BoundingPickResults;
-import com.jme.intersection.PickResults;
+import com.jme.intersection.TrianglePickData;
+import com.jme.intersection.TrianglePickResults;
 import com.jme.math.Ray;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -48,6 +47,7 @@ import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.ui.InterfaceRoot;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -58,120 +58,138 @@ import java.util.logging.Logger;
  * @version
  */
 public class MousePick extends MouseInputAction {
-    
-    //private StaticsApplication app;
-
     private List<RepresentationLayer> layers;
-    
+
     public MousePick(StaticsApplication app) {
         //this.app = app;
-        
+
         layers = RepresentationLayer.getLayers();
         Collections.sort(layers, RepresentationLayer.getComparator());
         mouse = app.getMouse();
         wasMouseDown = MouseInput.get().isButtonDown(0);
     }
-    
     private boolean wasMouseDown;
     private boolean enabled;
 
     void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-    
-    
+
     public void performAction(InputActionEvent evt) {
-        
-        if(!enabled)
+
+        if (!enabled) {
             return;
-        
+        }
         boolean isMouseDown = MouseInput.get().isButtonDown(0);
         boolean isClicking = isMouseDown && !wasMouseDown;
-        
+
         wasMouseDown = isMouseDown;
-        
+
         Camera camera = StaticsApplication.getApp().getCamera();
         Diagram world = StaticsApplication.getApp().getCurrentDiagram();
-        
-        
-        //Vector2f screenPos2 = new Vector2f(
-        //        MouseInput.get().getXAbsolute(),
-        //        MouseInput.get().getYAbsolute());
-        
+
         Vector3f screenPos = mouse.getLocalTranslation();
         Vector2f screenPos2 = new Vector2f(screenPos.x, screenPos.y);
-        
+
         Vector3f direction = camera.getWorldCoordinates(screenPos2, 0.1f);
         direction.subtractLocal(camera.getLocation());
         direction.normalizeLocal();
-        
+
         Ray ray = new Ray(camera.getLocation(), direction); // camera direction is already normalized
-        PickResults results = new BoundingPickResults();
+        //PickResults results = new BoundingPickResults();
+        TrianglePickResults results = new TrianglePickResults();
         results.setCheckDistance(false);
-        
-        for(RepresentationLayer layer : layers) {
-            if(world.getNode(layer) != null)
+
+        for (RepresentationLayer layer : layers) {
+            if (world.getNode(layer) != null) {
                 world.getNode(layer).findPick(ray, results);
+            }
         }
-        
-        if(results.getNumber() > 0) {
-            for(int i = 0; i < results.getNumber(); i++) {
-                Geometry geom = results.getPickData(i).getTargetMesh().getParentGeom();
+
+        List<SimulationObject> selected = new ArrayList<SimulationObject>();
+
+        if (results.getNumber() > 0) {
+            // okay, there is *something* that has been selected.
+            for (int i = 0; i < results.getNumber(); i++) {
+                TrianglePickData tPickData = (TrianglePickData) results.getPickData(i);
+                if (tPickData.getTargetTris().isEmpty()) {
+                    continue;
+                }
+                Geometry geom = tPickData.getTargetMesh().getParentGeom();
                 SimulationObject obj;
-                if(geom != null && (obj=getSimObject(geom)) != null) {
-                    
+                if (geom != null && (obj = getSimObject(geom)) != null) {
+
                     // bypass the object if it is not marked as selectable.
-                    if(!obj.isSelectable())
+                    if (!obj.isSelectable()) {
                         continue;
-                    
-                    if(     StaticsApplication.getApp().getSelectionFilter() != null &&
-                            !StaticsApplication.getApp().getSelectionFilter().canSelect(obj))
-                        continue;
-                    
-                    hover(obj);
-                    if(isClicking) {
-                        click(obj);
-                        //toastCondition1 = true;
+                    }
+                    if (StaticsApplication.getApp().getSelectionFilter() != null &&
+                            !StaticsApplication.getApp().getSelectionFilter().canSelect(obj)) {
+                        continue;                    // we did in fact mouse over or select something useful
+                    }
+
+                    if (!selected.contains(obj)) {
+                        selected.add(obj);
                     }
                 }
             }
+        }
+
+        // we use a second loop to actually perform the hovering/clicking
+        // so that objects that have two representations do not get double-selected
+
+        if (!selected.isEmpty()) {
+            // okay, we have results, let's go through and highlight or select them
+            for (SimulationObject obj : selected) {
+                hover(obj);
+                if (isClicking) {
+                    click(obj);
+                }
+            }
         } else {
+            // if we did not get a result, report no click.
             hover(null);
-            if(isClicking)
+            if (isClicking) {
                 click(null);
+            }
         }
     }
-    
+
     private SimulationObject getSimObject(Geometry geom) {
         Node parent = geom.getParent();
-        while(parent != null && !(parent instanceof Representation))
+        while (parent != null && !(parent instanceof Representation)) {
             parent = parent.getParent();
-        if(parent != null && parent instanceof Representation) {
-            Representation rep = (Representation)parent;
+        }
+        if (parent != null && parent instanceof Representation) {
+            Representation rep = (Representation) parent;
             return rep.getTarget();
         }
         return null;
     }
-    
+
     public void hover(SimulationObject obj) {
         // check to see that the mouse is free first
-        if(!InterfaceRoot.getInstance().hasMouse()) {
-            if(StaticsApplication.getApp().getCurrentTool() != null)
+        if (!InterfaceRoot.getInstance().hasMouse()) {
+            if (StaticsApplication.getApp().getCurrentTool() != null) {
                 StaticsApplication.getApp().getCurrentTool().onHover(obj);
-            else StaticsApplication.getApp().getCurrentDiagram().onHover(obj);
+            } else {
+                StaticsApplication.getApp().getCurrentDiagram().onHover(obj);
+            }
         }
-        //    StaticsApplication.getApp().getSelectionListener().onHover(obj);
+    //    StaticsApplication.getApp().getSelectionListener().onHover(obj);
     }
-    
+
     public void click(SimulationObject obj) {
         // check to see that the mouse is free first
-        if(!InterfaceRoot.getInstance().hasMouse()) {
-            Logger.getLogger("Statics").info("Clicked on "+obj);
-            
-            if(StaticsApplication.getApp().getCurrentTool() != null)
+        if (!InterfaceRoot.getInstance().hasMouse()) {
+            Logger.getLogger("Statics").info("Clicked on " + obj);
+
+            if (StaticsApplication.getApp().getCurrentTool() != null) {
                 StaticsApplication.getApp().getCurrentTool().onClick(obj);
-            else StaticsApplication.getApp().getCurrentDiagram().onClick(obj);
+            } else {
+                StaticsApplication.getApp().getCurrentDiagram().onClick(obj);
+            }
         }
-        //    StaticsApplication.getApp().getSelectionListener().onClick(obj);
+    //    StaticsApplication.getApp().getSelectionListener().onClick(obj);
     }
 }

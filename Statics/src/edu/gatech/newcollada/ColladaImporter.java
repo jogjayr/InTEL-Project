@@ -53,7 +53,7 @@ import com.jme.animation.BoneAnimation;
 import com.jme.animation.BoneTransform;
 import com.jme.animation.SkinNode;
 import com.jme.animation.TextureKeyframeController;
-import com.jme.bounding.BoundingBox;
+import com.jme.bounding.OrientedBoundingBox;
 import com.jme.image.Texture;
 import com.jme.light.DirectionalLight;
 import com.jme.light.Light;
@@ -3079,7 +3079,7 @@ public class ColladaImporter {
             }
         }
 
-        triMesh.setModelBound(new BoundingBox());
+        triMesh.setModelBound(new OrientedBoundingBox());
         triMesh.updateModelBound();
 
         return triMesh;
@@ -3656,7 +3656,7 @@ public class ColladaImporter {
                 }
             }
         }
-        triMesh.setModelBound(new BoundingBox());
+        triMesh.setModelBound(new OrientedBoundingBox());
         triMesh.updateModelBound();
 
         return triMesh;
