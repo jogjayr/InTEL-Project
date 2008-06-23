@@ -31,6 +31,14 @@ public class Test01 extends DistributedExercise {
     public void initExercise() {
         setName("Distributed Test 01");
         setDescription("A simple test for distributed loads. Solve for the unknowns in the FBD.");
+        getDisplayConstants().setMomentSize(0.5f);
+        getDisplayConstants().setForceSize(0.5f);
+        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setCylinderRadius(0.5f);
+        getDisplayConstants().setJointSize(0.5f);
+        getDisplayConstants().setForceLabelDistance(1f);
+        getDisplayConstants().setMomentLabelDistance(0f);
+        getDisplayConstants().setMeasurementSize(0.1f);
     }
 
     @Override

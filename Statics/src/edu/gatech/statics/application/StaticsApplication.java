@@ -83,10 +83,6 @@ public class StaticsApplication {
     }
 
     //private float drawScale = 1.0f;
-    public float getDrawScale() {
-        return currentExercise.getDisplayConstants().getDrawScale();
-    }
-    
     public float getForceScale() {
         return currentExercise.getDisplayConstants().getForceSize();
     }
@@ -114,6 +110,11 @@ public class StaticsApplication {
     public float getMeasurementScale() {
         return currentExercise.getDisplayConstants().getMeasurementSize();
     }
+    
+    public float getJointScale() {
+        return currentExercise.getDisplayConstants().getJointSize();
+    }
+    
     /**
      * This method loads the most finished diagram with the specified bodies.
      * @param bodies

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package keyboard;
 
 import com.jme.math.Vector3f;
@@ -40,79 +39,77 @@ public class KeyboardExercise extends FBDExercise {
     @Override
     public void initExercise() {
         setName("Keyboard Stand");
-        
+
         setDescription(
-                "This is a keyboard stand!"
-                );
-        
+                "This is a keyboard stand!");
+
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal("5"));
-        getDisplayConstants().setMomentSize(0.2f);
-        getDisplayConstants().setForceSize(0.2f);
-        getDisplayConstants().setPointSize(0.2f);
-        getDisplayConstants().setCylinderRadius(0.2f);
+        Unit.setDisplayScale(Unit.distance, new BigDecimal("10"));
+        getDisplayConstants().setMomentSize(0.5f);
+        getDisplayConstants().setForceSize(0.5f);
+        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setCylinderRadius(0.5f);
         getDisplayConstants().setForceLabelDistance(1f);
         getDisplayConstants().setMomentLabelDistance(0f);
         getDisplayConstants().setMeasurementSize(0.1f);
     }
-    
     Point A, B, C, D, E, P, Q;
     Pin2d jointC;
     Connector2ForceMember2d jointP, jointQ;
     Roller2d jointB, jointE;
-    
+
     @Override
-    public void loadExercise() { 
+    public void loadExercise() {
         Schematic schematic = getSchematic();
-        
+
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
-        
-        A = new Point("-2.9","4.3","0");
-        D = new Point("2.9","4.3","0");
-        B = new Point("2.9","0","0");
-        E = new Point("-2.9","0","0");       
-        C = new Point("0","2.15","0");
-        P = new Point("-1","2.9","0");
-        Q = new Point("1","2.9","0");
-        
-        Body leftLeg = new Beam(B,A);
-        Bar bar = new Bar(P,Q);
-        Body rightLeg = new Beam(E,D);
-        
+
+        A = new Point("0", "6", "0");
+        D = new Point("8", "6", "0");
+        B = new Point("8", "0", "0");
+        E = new Point("0", "0", "0");
+        C = new Point("4", "3", "0");
+        P = new Point("2.7", "4", "0");
+        Q = new Point("5.3", "4", "0");
+
+        Body leftLeg = new Beam(B, A);
+        Bar bar = new Bar(P, Q);
+        Body rightLeg = new Beam(E, D);
+
         leftLeg.setName("Left Leg");
         bar.setName("Bar");
         rightLeg.setName("Right Leg");
-        
+
         jointC = new Pin2d(C);
         jointP = new Connector2ForceMember2d(P, bar);  //Pin2d(P);
         jointQ = new Connector2ForceMember2d(Q, bar); //new Pin2d(Q);
-        
+
         jointB = new Roller2d(B);
         jointE = new Roller2d(E);
-        
+
         jointB.setDirection(Vector3bd.UNIT_Y);
         jointE.setDirection(Vector3bd.UNIT_Y);
-        
+
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance1);
 
-        DistanceMeasurement distance2 = new DistanceMeasurement(Q, D);
+        DistanceMeasurement distance2 = new DistanceMeasurement(C, D);
         distance2.createDefaultSchematicRepresentation(0.5f);
         distance2.forceVertical();
-        schematic.add(distance2);        
-        
+        schematic.add(distance2);
+
         DistanceMeasurement distance3 = new DistanceMeasurement(C, Q);
-        distance3.createDefaultSchematicRepresentation(2.4f);
+        distance3.createDefaultSchematicRepresentation(1f);
         distance3.forceVertical();
         schematic.add(distance3);
-        
+
         DistanceMeasurement distance4 = new DistanceMeasurement(B, D);
         distance4.createDefaultSchematicRepresentation(2.4f);
         schematic.add(distance4);
-        
+
         Force keyboardLeft = new Force(A, Vector3bd.UNIT_Y.negate(), new BigDecimal(50));
         keyboardLeft.setName("Keyboard Left");
         leftLeg.addObject(keyboardLeft);
@@ -120,13 +117,13 @@ public class KeyboardExercise extends FBDExercise {
         Force keyboardRight = new Force(D, Vector3bd.UNIT_Y.negate(), new BigDecimal(50));
         keyboardRight.setName("Keyboard Right");
         rightLeg.addObject(keyboardRight);
-        
+
         jointC.attach(leftLeg, rightLeg);
         jointP.attach(leftLeg, bar);
         jointQ.attach(bar, rightLeg);
         jointE.attachToWorld(rightLeg);
         jointB.attachToWorld(leftLeg);
-        
+
         A.setName("A");
         B.setName("B");
         C.setName("C");
@@ -134,7 +131,7 @@ public class KeyboardExercise extends FBDExercise {
         E.setName("E");
         P.setName("P");
         Q.setName("Q");
-        
+
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
@@ -142,41 +139,53 @@ public class KeyboardExercise extends FBDExercise {
         E.createDefaultSchematicRepresentation();
         P.createDefaultSchematicRepresentation();
         Q.createDefaultSchematicRepresentation();
-        
+
         keyboardLeft.createDefaultSchematicRepresentation();
         keyboardRight.createDefaultSchematicRepresentation();
         leftLeg.createDefaultSchematicRepresentation();
         bar.createDefaultSchematicRepresentation();
         rightLeg.createDefaultSchematicRepresentation();
-        
+
         schematic.add(leftLeg);
         schematic.add(bar);
         schematic.add(rightLeg);
-        
+
         ModelNode modelNode = ModelNode.load("keyboard/assets/", "keyboard/assets/keyboard.dae");
         
-        Representation rep = modelNode.extractElement(leftLeg, "VisualSceneNode/stand/leg1");
+        // THIS DOES NOT ACTUALLY SEEM TO DO ANYTHING
+        float scale = .28f;
+
+//        ModelRepresentation rep = new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
+        ModelRepresentation rep = modelNode.extractElement(leftLeg, "VisualSceneNode/stand/leg1");
         //new ModelRepresentation(leftLeg, "keyboard/assets/", "keyboard/assets/strut2.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(14f, 0, 0));
         leftLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         rep = modelNode.extractElement(rightLeg, "VisualSceneNode/stand/leg2");
         //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/strut1.dae");
+        rep.setModelOffset(new Vector3f(14f, 0, 0));
         rightLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         rep = modelNode.extractElement(bar, "VisualSceneNode/stand/middle_support");
                 //new ModelRepresentation(bar, "keyboard/assets/", "keyboard/assets/strut3.dae");
+        rep.setModelOffset(new Vector3f(14f, 0, 0));
         bar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         rep = modelNode.getRemainder(schematic.getBackground());
                 
                 //new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
         schematic.getBackground().addRepresentation(rep);
+        //rep = new ModelRepresentation(rightLeg, "keyboard/assets/", "keyboard/assets/background.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(14f, 0, 0));
+        leftLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
     }

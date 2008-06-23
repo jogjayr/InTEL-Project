@@ -5,10 +5,10 @@
 
 package bicycle;
 
-import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
@@ -24,8 +24,8 @@ import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
+import edu.gatech.statics.objects.joints.Pin2d;
 import edu.gatech.statics.objects.joints.Roller2d;
-import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import java.math.BigDecimal;
 
@@ -49,13 +49,13 @@ public class BicycleExercise extends FBDExercise {
         
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*m");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));  
-        getDisplayConstants().setMomentSize(0.2f);
-        getDisplayConstants().setForceSize(0.2f);
-        getDisplayConstants().setPointSize(0.2f);
-        getDisplayConstants().setCylinderRadius(0.2f);
-        getDisplayConstants().setForceLabelDistance(1f);
-        getDisplayConstants().setMomentLabelDistance(0f);
+        Unit.setDisplayScale(Unit.distance, new BigDecimal(".01"));  
+        getDisplayConstants().setMomentSize(0.7f);
+        getDisplayConstants().setForceSize(0.7f);
+        getDisplayConstants().setPointSize(0.7f);
+        getDisplayConstants().setCylinderRadius(0.7f);
+        getDisplayConstants().setForceLabelDistance(3.1f);
+        getDisplayConstants().setMomentLabelDistance(1f);
         getDisplayConstants().setMeasurementSize(0.1f);
     }
     
@@ -70,14 +70,14 @@ public class BicycleExercise extends FBDExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         
-        A = new Point("-2.145","1.75","0");
-        I = new Point("-0.15","5.25","0");
-        H = new Point("-0.65","4.35","0");
-        J = new Point("2.35","4.35","0");
-        G = new Point("0.85","1.75","0");
-        F = new Point("-1.05","3.65","0");
-        B = new Point("3.85","1.75","0");
-        K = new Point("2.85","5.21","0");
+        A = new Point("0","0","0");
+        I = new Point("4","7","0");
+        H = new Point("3","5.26","0");
+        J = new Point("9","5.26","0");
+        G = new Point("6","0","0");
+        F = new Point("2.2","3.8","0");
+        B = new Point("12","0","0");
+        K = new Point("10","7","0");
         
         Body handlebar = new Beam(I, A);
         handlebar.setName("Handle Bar");
@@ -111,21 +111,21 @@ public class BicycleExercise extends FBDExercise {
         schematic.add(distance1);
         
         DistanceMeasurement distance2 = new DistanceMeasurement(I, A);
-        distance2.createDefaultSchematicRepresentation(0.5f);
+        distance2.createDefaultSchematicRepresentation(2f);
         distance2.forceHorizontal();
         schematic.add(distance2);
         
         DistanceMeasurement distance3 = new DistanceMeasurement(B, K);
-        distance3.createDefaultSchematicRepresentation(4.1f);
+        distance3.createDefaultSchematicRepresentation(9f);
         distance3.forceHorizontal();
         schematic.add(distance3);
         
         DistanceMeasurement distance4 = new DistanceMeasurement(A, G);
-        distance4.createDefaultSchematicRepresentation(0.5f);
+        distance4.createDefaultSchematicRepresentation(2f);
         schematic.add(distance4);
         
         DistanceMeasurement distance5 = new DistanceMeasurement(G, B);
-        distance5.createDefaultSchematicRepresentation(0.5f);
+        distance5.createDefaultSchematicRepresentation(2f);
         schematic.add(distance5);
         
         PointAngleMeasurement angle1 = new PointAngleMeasurement(A, G, I);
@@ -214,82 +214,78 @@ public class BicycleExercise extends FBDExercise {
         schematic.add(back);
         schematic.add(bottom);
         
-        //float scale = 0.1f;
+        float scale = 0.4f;
         
-        ModelNode modelNode = ModelNode.load("bicycle/assets/", "bicycle/assets/bicycle.dae");
-        
-        /*Representation rep = modelNode.extractElement(handlebar, "VisualSceneNode/model/bike/handleBar");
-                //new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlepole.dae");
+        ModelRepresentation rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlepole.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
     
-        rep = modelNode.extractElement(han, elementPath)
-                //new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/handlebar.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);*/
-
-        ModelRepresentation rep;
+        rep.setSynchronizeTranslation(false);
         
-        rep = modelNode.extractElement(back, "VisualSceneNode/model/bike/beam3");
-                //new ModelRepresentation(back, "bicycle/assets/", "bicycle/assets/back.dae");
+        rep = new ModelRepresentation(back, "bicycle/assets/", "bicycle/assets/back.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         back.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
         
         //uncomment these to see the madness
-        /*rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
+        rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/body.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         
         rep = new ModelRepresentation(handlebar, "bicycle/assets/", "bicycle/assets/bike.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         handlebar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);*/
+        rep.setSynchronizeTranslation(false);
         
-        Matrix3f matrix = new Matrix3f();
-        matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_X.negate());
-        
-        rep = modelNode.extractElement(bottom, "VisualSceneNode/model/bike/beam4");
-                //new ModelRepresentation(bottom, "bicycle/assets/", "bicycle/assets/bottom.dae");
+        rep = new ModelRepresentation(bottom, "bicycle/assets/", "bicycle/assets/bottom.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         bottom.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
         
-        rep = modelNode.extractElement(front, "VisualSceneNode/model/bike/beam1");
-                //new ModelRepresentation(front, "bicycle/assets/", "bicycle/assets/front.dae");
+        rep = new ModelRepresentation(front, "bicycle/assets/", "bicycle/assets/front.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         front.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
         
-        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/beam5");
-                //new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seat.dae");
+        rep = new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seat.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         seatPole.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
         
-        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/seat");
-                //new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seatpole.dae");
+        rep = new ModelRepresentation(seatPole, "bicycle/assets/", "bicycle/assets/seatpole.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         seatPole.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
         
-        rep = modelNode.extractElement(top, "VisualSceneNode/model/bike/beam2");
-                //new ModelRepresentation(top, "bicycle/assets/", "bicycle/assets/top.dae");
+        rep = new ModelRepresentation(top, "bicycle/assets/", "bicycle/assets/top.dae");
+        rep.setLocalScale(scale);
+        rep.setModelOffset(new Vector3f(11f,-8f,0));
         top.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
-        
-        rep = modelNode.getRemainder(schematic.getBackground());
-        schematic.getBackground().addRepresentation(rep);
-        rep.setModelRotation(matrix);
     }
 }

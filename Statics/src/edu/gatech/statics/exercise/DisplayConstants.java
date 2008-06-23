@@ -9,13 +9,12 @@ package edu.gatech.statics.exercise;
  * @author Jimmy Truesdell
  */
 public class DisplayConstants {
-
+    private float jointSize;
     private float measurementSize;
     private float momentLabelDistance;
     private float forceLabelDistance;
     private float cylinderRadius;
     private float forceSize;
-    private float drawScale;
     private float pointSize;
     private float momentSize;
 
@@ -33,15 +32,11 @@ public class DisplayConstants {
         forceLabelDistance = value;
         cylinderRadius = value;
         forceSize = value;
-        drawScale = value;
         pointSize = value;
         momentSize = value;
         measurementSize = value;
         momentLabelDistance = value;
-    }
-
-    public float getDrawScale() {
-        return drawScale;
+        jointSize = value;
     }
 
     public void setCylinderRadius(float value) {
@@ -98,5 +93,13 @@ public class DisplayConstants {
 
     public float getMeasurementSize() {
         return measurementSize;
+    }
+    
+    public void setJointSize(float value) {
+        jointSize = value;
+    }
+
+    public float getJointSize() {
+        return jointSize;
     }
 }

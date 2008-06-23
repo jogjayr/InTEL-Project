@@ -16,9 +16,9 @@ import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Joint;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.bodies.Beam;
 
 /**
  *
@@ -245,6 +245,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
                 setLocalScale(StaticsApplication.getApp().getForceScale());
             } else if (target instanceof Point) {
                 setLocalScale(StaticsApplication.getApp().getPointScale());
+            } else if (target instanceof Joint) {
+                setLocalScale(StaticsApplication.getApp().getJointScale());
             }
         }
         if (synchronizeTranslation) {
