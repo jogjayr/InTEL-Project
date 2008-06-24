@@ -48,7 +48,7 @@ public class FBDInput extends InputHandler {
             return;
         }
         if (diagram.getSelection() != null) {
-            diagram.remove(diagram.getSelection());
+            diagram.removeUserObject(diagram.getSelection());
             diagram.onClick(null);
         }
     }

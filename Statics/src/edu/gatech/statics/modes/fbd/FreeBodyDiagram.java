@@ -46,7 +46,7 @@ public class FreeBodyDiagram extends SubDiagram {
 
     public void reset() {
         for (Load load : addedForces) {
-            remove(load);
+            removeUserObject(load);
         }
         addedForces.clear();
 
@@ -64,29 +64,35 @@ public class FreeBodyDiagram extends SubDiagram {
         StaticsApplication.getApp().resetAdvice();
     }
 
-    /** Creates a new instance of FBDWorld */
-    public FreeBodyDiagram(BodySubset bodies) {
-        super(bodies);
-
-        for (Body body : bodies.getBodies()) {
-            add(body);
+    @Override
+    protected List<SimulationObject> getBaseObjects() {
+        List<SimulationObject> objects = new ArrayList<SimulationObject>();
+        for (Body body : getBodySubset().getBodies()) {
+            objects.add(body);
             for (SimulationObject obj : body.getAttachedObjects()) {
                 if (!(obj instanceof Load)) {
-                    add(obj);
+                    objects.add(obj);
                 }
             }
         }
 
-        for (Measurement measurement : getSchematic().getMeasurements(bodies)) {
-            add(measurement);
+        for (Measurement measurement : getSchematic().getMeasurements(getBodySubset())) {
+            objects.add(measurement);
         }
+        return objects;
+    }
+
+    /** Creates a new instance of FBDWorld */
+    public FreeBodyDiagram(BodySubset bodies) {
+        super(bodies);
+
 
         fbdInput = new FBDInput(this);
     }
 
     @Override
-    public void add(SimulationObject obj) {
-        super.add(obj);
+    public void addUserObject(SimulationObject obj) {
+        super.addUserObject(obj);
         if (obj instanceof Load) {
             addedForces.add((Load) obj);
             new LabelManipulator((Load) obj);
@@ -169,10 +175,11 @@ public class FreeBodyDiagram extends SubDiagram {
         labelTool.setAdvice("Please give a name or a value for your load");
         labelTool.setUnits(load.getUnit().getSuffix());
         //labelTool.setHintText("");
-        if(load.isSymbol())
+        if (load.isSymbol()) {
             labelTool.setHintText(load.getSymbolName());
-        else
+        } else {
             labelTool.setHintText(load.toStringDecimal());
+        }
         labelTool.setIsCreating(false);
         labelTool.createPopup();
     }

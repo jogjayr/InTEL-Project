@@ -110,12 +110,15 @@ public class EquationDiagram extends SubDiagram {
         return null;
     }
 
+    @Override
+    protected List<SimulationObject> getBaseObjects() {
+        FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
+        return fbd.allObjects();
+    }
+
     /** Creates a new instance of EquationWorld */
     public EquationDiagram(BodySubset bodies) {
         super(bodies);
-
-        FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(bodies);
-        addAll(fbd.allObjects());
 
         // FIXME: This diagram automatically loads a 2D worksheet
         worksheet = new Worksheet2D(this);
@@ -132,7 +135,7 @@ public class EquationDiagram extends SubDiagram {
         // FIRST BATCH
         // this first batch of updates updates basic values, vectors and measurements
         // the second batch will depend on these values.
-        
+
         // go through the vectors, and make sure everything is in order:
         // give the vectors the new solved values
         // also go through measurements
@@ -165,7 +168,7 @@ public class EquationDiagram extends SubDiagram {
                 }
             }
         }
-        
+
         // SECOND BATCH
         // this depends on the first batch to be updated before it will work
 
@@ -208,10 +211,10 @@ public class EquationDiagram extends SubDiagram {
 
                 // we do not test whether point is known, because by virtue of the measurement being solved just above
                 // this would cause the point to always be known
-                
+
                 // this is kind of a crummy test, but we'll try it anyway
-                for(Map.Entry<Quantity, Float> entry : values.entrySet()) {
-                    if(point.getSymbol().equals(entry.getKey().getSymbolName())) {
+                for (Map.Entry<Quantity, Float> entry : values.entrySet()) {
+                    if (point.getSymbol().equals(entry.getKey().getSymbolName())) {
                         // okay, our measure actually is actually solved for in the solution
                         point.setSolved();
                     }
@@ -321,7 +324,7 @@ public class EquationDiagram extends SubDiagram {
         }
 
         if (momentArm != null) {
-            remove(momentArm);
+            removeUserObject(momentArm);
             momentArm = null;
             momentArmTarget = null;
         }
@@ -351,7 +354,7 @@ public class EquationDiagram extends SubDiagram {
         rep.setDiffuse(ColorRGBA.yellow);
         momentArm.addRepresentation(rep);
         momentArm.setSelectable(false);
-        add(momentArm);
+        addUserObject(momentArm);
     }
     private boolean showingCurve = false;
     private Vector3f curvePoints[] = new Vector3f[3];

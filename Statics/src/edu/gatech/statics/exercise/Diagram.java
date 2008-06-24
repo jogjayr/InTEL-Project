@@ -26,7 +26,6 @@ import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +43,7 @@ public abstract class Diagram {
         return StaticsApplication.getApp().getExercise().getSchematic();
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
+    private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
 
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
@@ -51,7 +51,36 @@ public abstract class Diagram {
 
     abstract public Mode getMode();
 
-    public void add(SimulationObject obj) {
+    /**
+     * Get base objects that belong in the diagram.
+     * This will get all of the objects that belong in the diagram from its particular
+     * context. It does not contain anything that the user might have added.
+     * @return
+     */
+    abstract protected List<SimulationObject> getBaseObjects();
+    
+    /**
+     * Adds an object to the list of objects that users have added to the diagram.
+     */
+    public void addUserObject(SimulationObject obj) {
+        userObjects.add(obj);
+        allObjects.add(obj);
+        invalidateNodes();
+    }
+    public void removeUserObject(SimulationObject obj) {
+        userObjects.remove(obj);
+        allObjects.remove(obj);
+        invalidateNodes();
+    }
+    
+    /*
+     
+    public void remove(SimulationObject obj) {
+        allObjects.remove(obj);
+        invalidateNodes();
+    }
+     * 
+     public void add(SimulationObject obj) {
         if (!allObjects.contains(obj)) {
             allObjects.add(obj);
             invalidateNodes();
@@ -62,7 +91,7 @@ public abstract class Diagram {
         for (SimulationObject obj : objs) {
             add(obj);
         }
-    }
+    }*/
     private static final SelectionFilter defaultFilter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -78,10 +107,6 @@ public abstract class Diagram {
         return defaultFilter;
     }
 
-    public void remove(SimulationObject obj) {
-        allObjects.remove(obj);
-        invalidateNodes();
-    }
     private Map<RepresentationLayer, Node> representationNodes = new HashMap<RepresentationLayer, Node>();
 
     public Node getNode(RepresentationLayer layer) {
@@ -220,12 +245,27 @@ public abstract class Diagram {
     public void onClick(SimulationObject obj) {
     }
 
+    /**
+     * This method is called when a diagram is activated and the user switches to it
+     */
     public void activate() {
         //setSelectableFilterDefault();
         invalidateNodes();
         StaticsApplication.getApp().setCurrentTool(null);
+        updateDiagram();
     }
 
+    /**
+     * Check to see if there are any objects that have changed outside of this diagram
+     * and that need to get updated or added.
+     */
+    protected void updateDiagram() {
+        allObjects.clear();
+        allObjects.addAll(getBaseObjects());
+        allObjects.addAll(userObjects);
+        invalidateNodes();
+    }
+    
     public void deactivate() {
     }
 
@@ -237,7 +277,7 @@ public abstract class Diagram {
                 r.draw(getNode(layer));
                 r.renderQueue();
 
-                // This is a little bit of code tthat may be uncommented to 
+                // This is a little bit of code that may be uncommented to 
                 // view the bounding volumes
                 /*if (layer == RepresentationLayer.vectors) {
                     Debugger.setBoundsColor(ColorRGBA.pink);

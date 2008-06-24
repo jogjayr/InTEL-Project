@@ -50,7 +50,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         load = createLoad(loadAnchor);
 
         for (Load aLoad : load) {
-            diagram.add(aLoad);
+            diagram.addUserObject(aLoad);
         }
 
         pressAction = new MousePressInputAction();
@@ -86,7 +86,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     @Override
     protected void onCancel() {
         for (Load aLoad : load) {
-            diagram.remove(aLoad);
+            diagram.removeUserObject(aLoad);
         }
     }
 

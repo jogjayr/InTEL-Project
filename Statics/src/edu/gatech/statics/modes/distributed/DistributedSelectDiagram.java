@@ -29,6 +29,13 @@ public class DistributedSelectDiagram extends SelectDiagram {
     }
 
     @Override
+    public void activate() {
+        super.activate();
+    }
+    
+    
+
+    @Override
     public void onClick(SimulationObject obj) {
 
         if (obj instanceof DistributedForce) {
