@@ -179,7 +179,6 @@ public class KeyboardExercise extends FBDExercise {
         schematic.getBackground().addRepresentation(rep);
         rep.setLocalScale(scale);
         rep.setModelOffset(new Vector3f(14f, 0, 0));
-        leftLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
     }

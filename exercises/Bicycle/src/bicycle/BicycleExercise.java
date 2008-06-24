@@ -215,6 +215,7 @@ public class BicycleExercise extends FBDExercise {
         Vector3f modelTranslation = new Vector3f(4.25f, -3.5f, 0);
 
         ModelNode modelNode = ModelNode.load("bicycle/assets/", "bicycle/assets/bicycle.dae");
+        modelNode.extractLights();
 
         ModelRepresentation rep;
 
