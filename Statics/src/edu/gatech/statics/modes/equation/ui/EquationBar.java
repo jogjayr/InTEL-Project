@@ -268,6 +268,7 @@ public class EquationBar extends BContainer {
         TermBox box = new TermBox(term.getSource(), term.getCoefficient());
         terms.put(term.getSource(), box);
         add(1, box);
+        if(box.isAdded()) {
         box.coefficient.requestFocus();
         invalidate();
         parent.refreshRows();
