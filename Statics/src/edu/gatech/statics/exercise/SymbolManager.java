@@ -49,8 +49,10 @@ public class SymbolManager {
      */
     public String getSymbol(Load load) {
         for (Load toCheck : symbolicLoads) {
-            if (load.getVectorValue().equals(toCheck.getVectorValue()) &&
-                    load.getAnchor() == toCheck.getAnchor()) {
+            if (load.getAnchor() == toCheck.getAnchor() &&
+                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate()))))  {
+
                 return toCheck.getSymbolName();
             }
         }
