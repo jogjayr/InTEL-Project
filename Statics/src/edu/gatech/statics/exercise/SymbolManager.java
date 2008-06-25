@@ -5,6 +5,7 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.math.Quantified;
+import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.objects.Load;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,19 +42,19 @@ public class SymbolManager {
     }
 
     /**
-     * Returns the symbol for the specified load. This method is used for verifying that
+     * Returns the symbolic quantity for the specified load. This method is used for verifying that
      * the load given is the same as one which has been stored in the symbol manager. 
      * If it does match, then the symbol name is returned, otherwise the method returns null.
      * @param load
      * @return
      */
-    public String getSymbol(Load load) {
+    public Quantity getSymbol(Load load) {
         for (Load toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                     (load.getVectorValue().equals(toCheck.getVectorValue().negate()))))  {
 
-                return toCheck.getSymbolName();
+                return toCheck.getVector().getQuantity();
             }
         }
         return null;
