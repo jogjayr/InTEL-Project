@@ -4,23 +4,24 @@ import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.VectorObject;
 import java.math.BigDecimal;
 
 public class Term {
 
     EquationMath math;
 
-    Term(Vector source, EquationMath math) {
+    Term(VectorObject source, EquationMath math) {
         super();
         this.math = math;
-        vectorElement = new VectorElement(source);
+        vectorObject = source;
         coefficient = new CoefficientElement();
     }
 
     public void setCoefficientText(String s) {
         coefficient.setText(s);
     }
-    private final VectorElement vectorElement;
+    private final VectorObject vectorObject;
     final CoefficientElement coefficient;
     TermError error;
     protected BigDecimal coefficientValue;
@@ -72,8 +73,8 @@ public class Term {
         }
     }
 
-    public Vector getSource() {
-        return vectorElement.source;
+    public VectorObject getSource() {
+        return vectorObject;
     }
 
     public String getCoefficient() {

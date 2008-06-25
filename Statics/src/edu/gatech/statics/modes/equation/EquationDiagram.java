@@ -73,7 +73,7 @@ public class EquationDiagram extends SubDiagram {
     // then it will no longer be *equal* to the value stored as a key
     // in vectorMap. So, we need to use another approach to pull out the vector.
     // This is why we do not use a hashmap
-    public Load getLoad(Vector vector) {
+    public Load getLoad(VectorObject vector) {
         //return vectorMap.get(vector);
         if (vector == null) {
             return null;
@@ -81,11 +81,11 @@ public class EquationDiagram extends SubDiagram {
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Load) {
                 Load load = (Load) obj;
-                if (vector.equals(load.getVector())) {
+                if (vector.equals(load)) {
                     return load;
                 }
                 if (vector.isSymbol() && load.isSymbol() &&
-                        vector.equalsSymbolic(load.getVector()) &&
+                        vector.getVector().equalsSymbolic(load.getVector()) &&
                         vector.getSymbolName().equals(load.getSymbolName())) {
                     return load;
                 //vectorMap.put(load.getVector(), load);
@@ -246,7 +246,7 @@ public class EquationDiagram extends SubDiagram {
         if (obj == null) {
             highlightVector(null);
         } else {
-            highlightVector(((Load) obj).getVector());
+            highlightVector(((Load) obj));
         }
     }
 
@@ -287,13 +287,19 @@ public class EquationDiagram extends SubDiagram {
     }
     private SimulationObject currentHover;
 
-    public void highlightVector(final Vector v) {
+    public void highlightVector(final VectorObject v) {
 
         // handle visual highlighting
         if (currentHover != null) {
             currentHover.setDisplayHighlight(false);
         }
-        Load load = getLoad(v);
+        Load load;
+        if(v == null) {
+            load = null;
+        } else {
+            load = getLoad(v);
+        }
+     
         if (load != null) {
             load.setDisplayHighlight(true);
         }

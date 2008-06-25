@@ -49,7 +49,7 @@ public class Worksheet {
                 for (Term term : math.allTerms()) {
 
                     // work with the term's quantity
-                    Quantity q = term.getSource().getQuantity();
+                    Quantity q = term.getSource().getVector().getQuantity();
                     if (q.isSymbol() && !q.isKnown()) {
                         // the vector represented by the term is an unknown symbol
                         equationSystem.addTerm(row, term.coefficientValue.floatValue(), q.getSymbolName());

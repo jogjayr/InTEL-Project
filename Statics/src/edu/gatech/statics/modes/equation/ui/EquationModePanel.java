@@ -58,10 +58,10 @@ public class EquationModePanel extends ApplicationModePanel {
         if (activeEquation == null || load == null) {
             return;
         }
-        activeEquation.addTerm(load.getVector());
+        activeEquation.addTerm(load);
         //activeEquation.highlightVector(load.getVector());
         for (EquationUIData data : uiMap.values()) {
-            data.equationBar.highlightVector(load == null ? null : load.getVector());
+            data.equationBar.highlightVector(load == null ? null : load);
         }
     }
 
@@ -71,7 +71,7 @@ public class EquationModePanel extends ApplicationModePanel {
         //}
         //activeEquation.highlightVector(load == null ? null : load.getVector());
         for (EquationUIData data : uiMap.values()) {
-            data.equationBar.highlightVector(load == null ? null : load.getVector());
+            data.equationBar.highlightVector(load == null ? null : load);
         }
     }
 

@@ -15,6 +15,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,7 +48,7 @@ public class EquationMathMoments extends EquationMath {
     }
 
     @Override
-    public Term createTerm(Vector source) {
+    public Term createTerm(VectorObject source) {
         return new MomentTerm(source, this);
     }
 
@@ -82,7 +83,7 @@ public class EquationMathMoments extends EquationMath {
         }
 
         for (Force force : allForces) {
-            Term term = getTerm(force.getVector());
+            Term term = getTerm(force);
 
             // clear off things that would not add via cross product
             float contribution = (float) force.getVectorValue().cross(force.getAnchor().getPosition().subtract(getObservationPoint().getPosition())).length();
@@ -93,7 +94,7 @@ public class EquationMathMoments extends EquationMath {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getPrettyName());
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getVector().getPrettyName());
                     return false;
                 } else {
                     continue;
@@ -111,7 +112,7 @@ public class EquationMathMoments extends EquationMath {
 
         for (Moment moment : allMoments) {
 
-            Term term = getTerm(moment.getVector());
+            Term term = getTerm(moment);
             if (term == null) {
                 Logger.getLogger("Statics").info("check: equation has not added all terms: " + moment.getVector());
                 Logger.getLogger("Statics").info("check: FAILED");
@@ -144,41 +145,41 @@ public class EquationMathMoments extends EquationMath {
                     case missingInclination:
                         Logger.getLogger("Statics").info("check: missing the inclination in the term");
                         Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case cannotHandle:
                         Logger.getLogger("Statics").info("check: cannot handle term");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case shouldNotBeSymbolic:
                         Logger.getLogger("Statics").info("check: should not be symbolic");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case shouldBeSymbolic:
                         Logger.getLogger("Statics").info("check: should be symbolic");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case wrongSymbol:
                         Logger.getLogger("Statics").info("check: wrong symbol");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case badSign:
                         Logger.getLogger("Statics").info("check: sign is wrong");
                         Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getVector().getPrettyName());
                         return false;
                         
                     case parse:
@@ -186,7 +187,7 @@ public class EquationMathMoments extends EquationMath {
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         //"Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
                         return false;
                         
@@ -197,7 +198,7 @@ public class EquationMathMoments extends EquationMath {
                         Logger.getLogger("Statics").info("check: incorrect value");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
                         return false;
                 }

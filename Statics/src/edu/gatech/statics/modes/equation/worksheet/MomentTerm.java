@@ -6,6 +6,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.UnknownPoint;
+import edu.gatech.statics.objects.VectorObject;
 import java.math.BigDecimal;
 
 class MomentTerm extends Term {
@@ -210,7 +211,7 @@ class MomentTerm extends Term {
         }
     }
 
-    MomentTerm(Vector vector, EquationMathMoments math) {
+    MomentTerm(VectorObject vector, EquationMathMoments math) {
         super(vector, math);
         anchor = math.getWorld().getLoad(vector).getAnchor();
     }

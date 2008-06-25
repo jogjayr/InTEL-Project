@@ -31,6 +31,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Term;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.VectorObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class EquationBar extends BContainer {
 
     private EquationModePanel parent;
     private EquationMath math;
-    private Map<Vector, TermBox> terms = new HashMap<Vector, EquationBar.TermBox>();
+    private Map<VectorObject, TermBox> terms = new HashMap<VectorObject, EquationBar.TermBox>();
     //private BLabel sumOperand;
     private BButton momentButton; // present only for moment math, pressing this sets the moment point
     private boolean locked = false;
@@ -123,9 +124,9 @@ public class EquationBar extends BContainer {
 
     private class TermBox extends BContainer {
 
-        Vector source;
+        VectorObject source;
 
-        Vector getSource() {
+        VectorObject getSource() {
             return source;
         }
         BLabel vectorLabel;
@@ -142,18 +143,18 @@ public class EquationBar extends BContainer {
             invalidate();
         }
 
-        TermBox(Vector source) {
+        TermBox(VectorObject source) {
             this(source, "");
         }
 
-        TermBox(final Vector source, String coefficientText) {
+        TermBox(final VectorObject source, String coefficientText) {
             super(new BorderLayout());
             this.source = source;
 
             if (source.isSymbol()) {
-                vectorLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getQuantity().getSymbolName() + "))");
+                vectorLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getVector().getQuantity().getSymbolName() + "))");
             } else {
-                vectorLabel = new BLabel("(@=b(" + source.getQuantity().toStringDecimal() + "))");
+                vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
             coefficient = new BTextField(coefficientText);
             coefficient.setStyleClass("textfield_appbar");
@@ -314,7 +315,7 @@ public class EquationBar extends BContainer {
         parent.refreshRows();
     }
 
-    public void addTerm(Vector source) {
+    public void addTerm(VectorObject source) {
         if (locked) {
             return;
         }
@@ -324,9 +325,9 @@ public class EquationBar extends BContainer {
             addBox(term);
         }
     }
-    private Vector currentHighlight;
+    private VectorObject currentHighlight;
 
-    void highlightVector(Vector obj) {
+    void highlightVector(VectorObject obj) {
 
         if (obj == currentHighlight) {
             return;
@@ -349,7 +350,7 @@ public class EquationBar extends BContainer {
         }
     }
 
-    public Vector2f getLineAnchor(Vector obj) {
+    public Vector2f getLineAnchor(VectorObject obj) {
 
         TermBox box = terms.get(obj);
         if (box != null) {

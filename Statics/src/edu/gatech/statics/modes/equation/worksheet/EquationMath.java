@@ -16,6 +16,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +53,7 @@ public class EquationMath {
     public void setObservationDirection(Vector3bd direction) {
         this.observationDirection = direction;
     }
-    private Map<Vector, Term> terms = new HashMap();
+    private Map<VectorObject, Term> terms = new HashMap();
 
     public List<Term> allTerms() {
         return new ArrayList(terms.values());
@@ -74,19 +75,19 @@ public class EquationMath {
         }
     }
 
-    public void setCoefficient(Vector target, String coefficientExpression) {
+    public void setCoefficient(VectorObject target, String coefficientExpression) {
         getTerm(target).coefficient.setText(coefficientExpression);
     }
 
-    public Term createTerm(Vector source) {
+    public Term createTerm(VectorObject source) {
         return new Term(source, this);
     }
 
-    public Term getTerm(Vector target) {
+    public Term getTerm(VectorObject target) {
         return terms.get(target);
     }
 
-    public Term addTerm(Vector source) {
+    public Term addTerm(VectorObject source) {
         if (terms.get(source) != null) {
             return getTerm(source);
         }
@@ -95,7 +96,7 @@ public class EquationMath {
         return getTerm(source);
     }
 
-    public void removeTerm(Vector target) {
+    public void removeTerm(VectorObject target) {
         //terms.remove(world.getLoad(target));
         terms.remove(target);
     }
@@ -126,7 +127,7 @@ public class EquationMath {
         Logger.getLogger("Statics").info("check: allForces: " + allForces);
 
         for (Force force : allForces) {
-            Term term = terms.get(force.getVector());
+            Term term = terms.get(force);
 
             // is this force aligned with our observation direction, even slightly?
             // if no, complain.
@@ -137,7 +138,7 @@ public class EquationMath {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getPrettyName());
+                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getVector().getPrettyName());
                     return false;
                 } else {
                     continue;
@@ -161,7 +162,7 @@ public class EquationMath {
                 Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + term.getSource());
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getPrettyName());
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getVector().getPrettyName());
                 return false;
             }
 
@@ -190,34 +191,34 @@ public class EquationMath {
                         Logger.getLogger("Statics").info("check: cannot handle term");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         return false;
 
                     case shouldNotBeSymbolic:
                         Logger.getLogger("Statics").info("check: should not be symbolic");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getVector().getPrettyName());
                         return false;
 
                     case badSign:
                         Logger.getLogger("Statics").info("check: wrong sign");
                         Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getVector().getPrettyName());
                         return false;
 
                     case parse:
                         Logger.getLogger("Statics").info("check: parse error");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         return false;
 
                     case incorrect:
                         Logger.getLogger("Statics").info("check: term is incorrect");
                         Logger.getLogger("Statics").info("check: FAILED");
 
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getPrettyName());
+                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getVector().getPrettyName());
                         return false;
                 }
 
