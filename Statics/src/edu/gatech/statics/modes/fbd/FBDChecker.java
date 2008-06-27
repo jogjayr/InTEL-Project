@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.fbd;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -92,10 +93,10 @@ public class FBDChecker {
     public boolean checkDiagram() {
 
         done = false;
-        
+
         // step 1: assemble a list of all the forces the user has added.
         List<Load> addedForces = getAddedForces();
-        
+
         Logger.getLogger("Statics").info("check: user added forces: " + addedForces);
 
         if (addedForces.size() <= 0) {
@@ -234,11 +235,11 @@ public class FBDChecker {
             }
 
             Joint joint = (Joint) obj;
-            
-            for (int ii = i+1; ii < diagram.allObjects().size(); ii++) {
+
+            for (int ii = i + 1; ii < diagram.allObjects().size(); ii++) {
                 SimulationObject obj2 = diagram.allObjects().get(ii);
                 if (!(obj2 instanceof Joint)) {
-                    if (ii == diagram.allObjects().size()-1) {
+                    if (ii == diagram.allObjects().size() - 1) {
                         done = true;
                     }
                     continue;
@@ -339,34 +340,8 @@ public class FBDChecker {
         // symbols must also not be repeated, unless this is valid somehow? (not yet)
 
         addedForces = getAddedForces();
-        List<String> names = new ArrayList<String>();
-
-
         List<DistanceMeasurement> distanceMeasurements = getSymbolicMeasurements();
-        for (Load force : addedForces) {
-            for (DistanceMeasurement d : distanceMeasurements) {
-                if (d.getLabelText().equalsIgnoreCase(force.getLabelText())) {
-                    Logger.getLogger("Statics").info("check: force or moment should not share the same name with the unknown measurement: " + d.getLabelText());
-                    Logger.getLogger("Statics").info("check: FAILED");
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", forceOrMoment(force), force.getAnchor().getLabelText(), d.getLabelText());
-                    return false;
-                }
-            }
-        }
-
         List<Point> anchors = getAnchors();
-        for (Load force : addedForces) {
-            for (Point p : anchors) {
-                if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
-                    Logger.getLogger("Statics").info("check: anchors and added force/moments should not share names");
-                    Logger.getLogger("Statics").info("check: FAILED");
-                    StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", forceOrMoment(force), force.getAnchor().getLabelText(), p.getLabelText());
-                    return false;
-                }
-            }
-        }
-
-
         List<Load> tempLoad = addedForces;
 
         // go through each force that the user has added
@@ -390,7 +365,33 @@ public class FBDChecker {
                     return false;
                 }
 
-                //tempLoad.remove(force);
+                Quantity q = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(force);
+
+                if (q != null) {
+                    if (!q.toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getName(), force.getAnchor().getLabelText());
+                        return false;
+                    }
+                }
+                
+                for (Point p : anchors) {
+                    if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                        Logger.getLogger("Statics").info("check: anchors and added force/moments should not share names");
+                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", forceOrMoment(force), force.getAnchor().getLabelText(), p.getLabelText());
+                        return false;
+                    }
+                }
+
+                for (DistanceMeasurement d : distanceMeasurements) {
+                    if (d.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                        Logger.getLogger("Statics").info("check: force or moment should not share the same name with the unknown measurement: " + d.getLabelText());
+                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", forceOrMoment(force), force.getAnchor().getLabelText(), d.getLabelText());
+                        return false;
+                    }
+                }
+
                 for (Load f : tempLoad) {
                     if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
@@ -402,15 +403,36 @@ public class FBDChecker {
                         return false;
                     }
                 }
+                
+                if (q == null) {
+                    for (String symbol : StaticsApplication.getApp().getExercise().getSymbolManager().getSymbols()) {
+                        if (symbol.equals(force.getVector().getSymbolName())) {
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_name", forceOrMoment(force), force.getVector().getSymbolName(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                    }
+                }
             } else {
 
                 // force is numeric.
                 // the only forces that WOULD be numeric are weights right now.
                 // make sure the value given is equal to the weight of the object.
 
+                Load tLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
+
                 if (weights.containsKey(force)) {
                 } else if (externalForces.contains(force)) {
                 // OK, do nothing
+                } else if (tLoad != null) {
+                    if (tLoad.getVector().getQuantity().toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
+                        if (tLoad.getVectorValue().negate().equals(force.getVectorValue())) {
+                            StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reverse", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                    } else {
+                        StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
+                        return false;
+                    }
                 } else {
                     Logger.getLogger("Statics").info("check: force should not be numeric: " + force);
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -495,7 +517,7 @@ public class FBDChecker {
             // return false, without having changed addedForces at all
             return false;
         }
-        
+
         // otherwise go through and remove these forces 
         if (done || !nextJoint.getAnchor().getLabelText().equals(joint.getAnchor().getLabelText())) {
             addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
@@ -514,6 +536,7 @@ public class FBDChecker {
         Load equivalent = null;
         for (Load candidate : addedForces) {
             if (candidate.equalsSymbolic(reaction)) {
+                StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(candidate);
                 equivalent = candidate;
             }
         }

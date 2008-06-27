@@ -56,7 +56,17 @@ public class FreeBodyDiagram extends SubDiagram {
 
     public void setSolved() {
         solved = true;
-
+        
+        for (SimulationObject obj : allObjects()) {
+            if (!(obj instanceof Load)) {
+                continue;
+            }
+            if (!(((Load)obj).isSymbol())) {
+                continue;
+            }
+            StaticsApplication.getApp().getExercise().getSymbolManager().addSymbol((Load)obj);
+        }
+        
         String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
         StaticsApplication.getApp().setAdvice(advice);
         StaticsApplication.getApp().setDefaultAdvice(advice);

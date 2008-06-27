@@ -35,13 +35,18 @@ public abstract class Exercise {
 
     private static Exercise currentExercise;
     private DisplayConstants displayConstants;
-
+    private SymbolManager symbolManager;
+    
     public static Exercise getExercise() {
         return currentExercise;
     }
 
     public DisplayConstants getDisplayConstants() {
         return displayConstants;
+    }
+    
+    public SymbolManager getSymbolManager() {
+        return symbolManager;
     }
 
     // informational collection of world and diagram objects
@@ -160,6 +165,7 @@ public abstract class Exercise {
         this.schematic = world;
         currentExercise = this;
         displayConstants = new DisplayConstants();
+        symbolManager = new SymbolManager();
     }
 
     protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {

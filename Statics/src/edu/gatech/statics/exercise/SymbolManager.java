@@ -40,7 +40,23 @@ public class SymbolManager {
                     "Cannot add a symbol to the symbol manager for the non-symbolic quantified object \"" + quantified + "\"");
         }
     }
+    
+    public Load getLoad(Load load) {
+        for (Load toCheck : symbolicLoads) {
+            if (load.getAnchor() == toCheck.getAnchor() &&
+                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate()))))  {
 
+                return toCheck;
+            }
+        }
+        return null;
+    }
+
+    public List<Load> allLoads() {
+        return Collections.unmodifiableList(symbolicLoads);
+    }
+    
     /**
      * Returns the symbolic quantity for the specified load. This method is used for verifying that
      * the load given is the same as one which has been stored in the symbol manager. 
