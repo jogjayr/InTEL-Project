@@ -86,19 +86,19 @@ public class StaticsApplication {
     public float getForceScale() {
         return currentExercise.getDisplayConstants().getForceSize();
     }
-    
+
     public float getMomentScale() {
         return currentExercise.getDisplayConstants().getMomentSize();
     }
-    
+
     public float getPointScale() {
         return currentExercise.getDisplayConstants().getPointSize();
     }
-    
+
     public float getCylinderScale() {
         return currentExercise.getDisplayConstants().getCylinderRadius();
     }
-    
+
     public float getForceLabelScale() {
         return currentExercise.getDisplayConstants().getForceLabelDistance();
     }
@@ -106,15 +106,15 @@ public class StaticsApplication {
     public float getMomentLabelScale() {
         return currentExercise.getDisplayConstants().getMomentLabelDistance();
     }
-    
+
     public float getMeasurementScale() {
         return currentExercise.getDisplayConstants().getMeasurementSize();
     }
-    
+
     public float getJointScale() {
         return currentExercise.getDisplayConstants().getJointSize();
     }
-    
+
     /**
      * This method loads the most finished diagram with the specified bodies.
      * @param bodies
@@ -150,7 +150,7 @@ public class StaticsApplication {
     public void enableDrag(boolean enabled) {
         drag.setEnabled(enabled);
     }
-    
+
     public void setCurrentTool(Tool tool) {
         if (currentTool != null && currentTool.isActive()) {
             currentTool.cancel();
@@ -168,13 +168,16 @@ public class StaticsApplication {
     }
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
-    public void setAdviceKey(String key, Object ... formatTerms) {
-        if(formatTerms == null || formatTerms.length == 0)
-            iRoot.setAdvice(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key));
-        else {
-            String advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
-            iRoot.setAdvice(advice);
+    public void setAdviceKey(String key, Object... formatTerms) {
+        String advice;
+        if (formatTerms == null || formatTerms.length == 0) {
+            advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
+        } else {
+            advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
+        Logger.getLogger("Statics").info("Setting advice key: "+key);
+        Logger.getLogger("Statics").info("Setting advice: "+advice);
+        iRoot.setAdvice(advice);
     }
 
     public void setAdvice(String advice) {
@@ -226,10 +229,10 @@ public class StaticsApplication {
     }
 
     public void setCurrentDiagram(Diagram diagram) {
-        Logger.getLogger("Statics").info("Loading diagram: "+diagram);
-        if(diagram instanceof SubDiagram)
-            Logger.getLogger("Statics").info("Diagram bodies: "+((SubDiagram)diagram).getBodySubset());
-        
+        Logger.getLogger("Statics").info("Loading diagram: " + diagram);
+        if (diagram instanceof SubDiagram) {
+            Logger.getLogger("Statics").info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
+        }
         if (currentDiagram != null) {
             if (currentDiagram.getInputHandler() != null) {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
@@ -419,7 +422,7 @@ public class StaticsApplication {
 
         // get rid of some obnoxious log messages in com.jme.scene.Node
         Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
-        
+
         // initialization of the exercise
         getExercise().initExercise();
 
@@ -443,10 +446,10 @@ public class StaticsApplication {
 
         selector = new MousePick(this);
         drag = new MouseDragAndZoom(this);
-        
+
         input.addAction(selector);
         input.addAction(drag);
-        
+
         iRoot = new InterfaceRoot(timer, input, camera);
 
         // load exercise here

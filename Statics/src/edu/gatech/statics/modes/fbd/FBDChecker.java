@@ -38,16 +38,23 @@ public class FBDChecker {
     private FreeBodyDiagram diagram;
     private Joint nextJoint;
     private boolean done = false;
-    
-    protected FreeBodyDiagram getDiagram() {return diagram;}
+
+    protected FreeBodyDiagram getDiagram() {
+        return diagram;
+    }
 
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
     }
 
+    /**
+     * Get all of the symbolic measurements in the schematic, for making sure their names
+     * do are not being used for loads.
+     * @return
+     */
     private List<DistanceMeasurement> getSymbolicMeasurements() {
         List<DistanceMeasurement> m = new ArrayList<DistanceMeasurement>();
-        for (SimulationObject obj : diagram.allObjects()) {
+        for (SimulationObject obj : FreeBodyDiagram.getSchematic().allObjects()) {
             if (obj instanceof DistanceMeasurement && ((DistanceMeasurement) obj).isSymbol()) {
                 m.add((DistanceMeasurement) obj);
             }
@@ -55,9 +62,13 @@ public class FBDChecker {
         return m;
     }
 
-    private List<Point> getAnchors() {
+    /**
+     * Get all the points in the schematic, to check against for force names.
+     * @return
+     */
+    private List<Point> getAllPoints() {
         List<Point> m = new ArrayList<Point>();
-        for (SimulationObject obj : diagram.allObjects()) {
+        for (SimulationObject obj : FreeBodyDiagram.getSchematic().allObjects()) {
             if (obj instanceof Point) {
                 m.add((Point) obj);
             }
@@ -65,6 +76,10 @@ public class FBDChecker {
         return m;
     }
 
+    /**
+     * Get all the loads added to the free body diagram.
+     * @return
+     */
     private List<Load> getAddedForces() {
         List<Load> addedForces = new ArrayList<Load>();
         for (SimulationObject obj : diagram.allObjects()) {
@@ -78,18 +93,18 @@ public class FBDChecker {
         return addedForces;
     }
 
-    private List<Load> getExternalForces() {
-        List<Load> externalForces = new ArrayList<Load>();
+    private List<Load> getGivenForces() {
+        List<Load> givenForces = new ArrayList<Load>();
         for (Body body : FreeBodyDiagram.getSchematic().allBodies()) {
             if (diagram.getBodySubset().getBodies().contains(body)) {
                 for (SimulationObject obj : body.getAttachedObjects()) {
                     if (obj instanceof Load) {
-                        externalForces.add((Load) obj);
+                        givenForces.add((Load) obj);
                     }
                 }
             }
         }
-        return externalForces;
+        return givenForces;
     }
 
     public boolean checkDiagram() {
@@ -112,12 +127,11 @@ public class FBDChecker {
         // make list for weights, as we will need these later.
         Map<Load, Body> weights = new HashMap<Load, Body>();
 
-        List<Load> externalForces = getExternalForces();
+        List<Load> givenForces = getGivenForces();
 
-        // step 2: for vectors that we can click on and add, ie, external added forces,
+        // step 2: for vectors that we can click on and add, ie, given added forces,
         // make sure that the user has added all of them.
-        for (Load external : externalForces) {
-
+        for (Load external : givenForces) {
             boolean success = false;
             if (external.isSymbol()) {
                 // if the force is symbolic, it is allowed to be negated.
@@ -342,9 +356,6 @@ public class FBDChecker {
         // symbols must also not be repeated, unless this is valid somehow? (not yet)
 
         addedForces = getAddedForces();
-        List<DistanceMeasurement> distanceMeasurements = getSymbolicMeasurements();
-        List<Point> anchors = getAnchors();
-        List<Load> tempLoad = addedForces;
 
         // go through each force that the user has added
         for (Load force : addedForces) {
@@ -367,16 +378,18 @@ public class FBDChecker {
                     return false;
                 }
 
-                Quantity q = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(force);
+                // here we check against a quantity set in the symbol manager
+                Quantity symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(force);
 
-                if (q != null) {
-                    if (!q.toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
+                if (symbolicQuantity != null) {
+                    if (!symbolicQuantity.toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getName(), force.getAnchor().getLabelText());
                         return false;
                     }
                 }
-                
-                for (Point p : anchors) {
+
+                // make sure that points 
+                for (Point p : getAllPoints()) {
                     if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
                         Logger.getLogger("Statics").info("check: anchors and added force/moments should not share names");
                         Logger.getLogger("Statics").info("check: FAILED");
@@ -385,7 +398,9 @@ public class FBDChecker {
                     }
                 }
 
-                for (DistanceMeasurement d : distanceMeasurements) {
+                // go through our distance measurements and make sure that no labels share names with
+                // symbolic distance measurements
+                for (DistanceMeasurement d : getSymbolicMeasurements()) {
                     if (d.getLabelText().equalsIgnoreCase(force.getLabelText())) {
                         Logger.getLogger("Statics").info("check: force or moment should not share the same name with the unknown measurement: " + d.getLabelText());
                         Logger.getLogger("Statics").info("check: FAILED");
@@ -394,8 +409,11 @@ public class FBDChecker {
                     }
                 }
 
-                for (Load f : tempLoad) {
+                // loop through our added forces a second time, to check for duplicate names.
+                for (Load f : addedForces) {
                     if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
+                        Logger.getLogger("Statics").info("check: force or moment have incorrectly duplicate names: " + force);
+                        Logger.getLogger("Statics").info("check: FAILED");
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate",
                                 forceOrMoment(force),
                                 force.getAnchor().getLabelText(),
@@ -405,10 +423,12 @@ public class FBDChecker {
                         return false;
                     }
                 }
-                
-                if (q == null) {
+
+                if (symbolicQuantity == null) {
                     for (String symbol : StaticsApplication.getApp().getExercise().getSymbolManager().getSymbols()) {
                         if (symbol.equals(force.getVector().getSymbolName())) {
+                            Logger.getLogger("Statics").info("check: force or moment have incorrectly duplicate names (with a symbol from another diagram): " + force);
+                            Logger.getLogger("Statics").info("check: FAILED");
                             StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_duplicate_name", forceOrMoment(force), force.getVector().getSymbolName(), force.getAnchor().getLabelText());
                             return false;
                         }
@@ -423,15 +443,20 @@ public class FBDChecker {
                 Load tLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
 
                 if (weights.containsKey(force)) {
-                } else if (externalForces.contains(force)) {
-                // OK, do nothing
+                    // ignore this case, weights have already been taken care of
+                } else if (givenForces.contains(force)) {
+                    // OK, do nothing, givens have also been taken care of.
                 } else if (tLoad != null) {
                     if (tLoad.getVector().getQuantity().toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
                         if (tLoad.getVectorValue().negate().equals(force.getVectorValue())) {
+                            Logger.getLogger("Statics").info("check: force or moment has been solved before, and is reversed: " + force);
+                            Logger.getLogger("Statics").info("check: FAILED");
                             StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_reverse", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
                             return false;
                         }
                     } else {
+                        Logger.getLogger("Statics").info("check: force or moment has been solved before, and has the wrong number reversed: " + force);
+                        Logger.getLogger("Statics").info("check: FAILED");
                         StaticsApplication.getApp().setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
                         return false;
                     }
