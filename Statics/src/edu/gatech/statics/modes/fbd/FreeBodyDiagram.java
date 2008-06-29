@@ -62,24 +62,33 @@ public class FreeBodyDiagram extends SubDiagram {
         currentSelection = null;
     }
 
-    public void setSolved() {
-        solved = true;
-        
-        for (SimulationObject obj : allObjects()) {
-            if (!(obj instanceof Load)) {
-                continue;
-            }
-            if (!(((Load)obj).isSymbol())) {
-                continue;
-            }
-            StaticsApplication.getApp().getExercise().getSymbolManager().addSymbol((Load)obj);
-        }
-        
-        String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
-        StaticsApplication.getApp().setAdvice(advice);
-        StaticsApplication.getApp().setDefaultAdvice(advice);
+    /**
+     * This marks the diagram as solved (or unmarks it when passing false),
+     * and locks or unlocks the diagram correspondingly.
+     * @param solved
+     */
+    public void setSolved(boolean solved) {
+        this.solved = solved;
 
-        StaticsApplication.getApp().resetAdvice();
+        if (solved) {
+            for (SimulationObject obj : allObjects()) {
+                if (!(obj instanceof Load)) {
+                    continue;
+                }
+                if (!(((Load) obj).isSymbol())) {
+                    continue;
+                }
+                StaticsApplication.getApp().getExercise().getSymbolManager().addSymbol((Load) obj);
+            }
+
+            String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
+            StaticsApplication.getApp().setAdvice(advice);
+            StaticsApplication.getApp().setDefaultAdvice(advice);
+
+            StaticsApplication.getApp().resetAdvice();
+        } else {
+            
+        }
     }
 
     @Override
@@ -217,7 +226,7 @@ public class FreeBodyDiagram extends SubDiagram {
         StaticsApplication.getApp().resetAdvice();
 
         if (solved) {
-            setSolved();
+            setSolved(true);
         }
     }
 

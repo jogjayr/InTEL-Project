@@ -58,15 +58,38 @@ public class EquationDiagram extends SubDiagram {
     }
     private Point momentPoint;
 
+    /**
+     * Sets the point about which the moment will be calculated.
+     * This also notifies the panel to update its value for the moment point.
+     * @param momentPoint
+     */
     public void setMomentPoint(Point momentPoint) {
         this.momentPoint = momentPoint;
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         eqPanel.setMomentPoint(momentPoint);
     }
 
+    /**
+     * Returns the point about which the moment is being calculated.
+     * @return
+     */
     public Point getMomentPoint() {
         return momentPoint;
     }
+    
+    /**
+     * This function should be called during activation, and 
+     * @return
+     */
+    public boolean doesFBDRequireUpdating() {
+    
+        // Check forces to make sure they are up to date.
+        // return false if things are groovy and no updating is necessary,
+        // otherwise return true.
+        
+        return false;
+    }
+    
 
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,

@@ -31,21 +31,23 @@ public class SymbolManager {
      */
     public void addSymbol(Quantified quantified) {
         if (quantified.isSymbol()) {
-            symbols.add(quantified.getSymbolName());
-            if (quantified instanceof Load) {
-                symbolicLoads.add((Load) quantified);
+            if (!symbols.contains(quantified)) {
+                symbols.add(quantified.getSymbolName());
+                if (quantified instanceof Load) {
+                    symbolicLoads.add((Load) quantified);
+                }
             }
         } else {
             throw new UnsupportedOperationException(
                     "Cannot add a symbol to the symbol manager for the non-symbolic quantified object \"" + quantified + "\"");
         }
     }
-    
+
     public Load getLoad(Load load) {
         for (Load toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate()))))  {
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
 
                 return toCheck;
             }
@@ -56,7 +58,7 @@ public class SymbolManager {
     public List<Load> allLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
-    
+
     /**
      * Returns the symbolic quantity for the specified load. This method is used for verifying that
      * the load given is the same as one which has been stored in the symbol manager. 
@@ -68,7 +70,7 @@ public class SymbolManager {
         for (Load toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate()))))  {
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
 
                 return toCheck.getVector().getQuantity();
             }
