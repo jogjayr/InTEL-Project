@@ -32,7 +32,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
 
     private TriMesh surface;
     private Line border;
-
+    
     public DistributedForceRepresentation(DistributedForce target, int samples, float displayScale, int arrows) {
         super(target);
 
@@ -90,17 +90,6 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         getRelativeNode().attachChild(arrowNode);
         arrowNode.updateRenderState();
         
-        /*
-        Matrix3f matrix = new Matrix3f();
-        matrix.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Z);
-        Matrix3f matrix2 = new Matrix3f();
-        matrix2.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_X.negate());
-        matrix.multLocal(matrix2);
-        
-        border.setLocalRotation(matrix);
-        surface.setLocalRotation(matrix);
-        arrowNode.setLocalRotation(matrix);*/
-        
         setDiffuse(ColorRGBA.red);
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
     }
@@ -108,8 +97,13 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
     @Override
     public void setDisplayGrayed(boolean grayed) {
         super.setDisplayGrayed(grayed);
-        surface.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, .5f));
-        border.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, 1));
+        if(grayed) {
+            surface.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, .5f));
+            border.setDefaultColor(new ColorRGBA(.7f, .7f, .7f, 1));
+        } else {
+            surface.setDefaultColor(new ColorRGBA(1f, 0f, 0f, .5f));
+            border.setDefaultColor(new ColorRGBA(1f, 0f, 0f, 1f));
+        }
     }
     
     /**

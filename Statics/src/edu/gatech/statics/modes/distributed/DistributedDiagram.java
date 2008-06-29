@@ -25,6 +25,15 @@ import java.util.List;
 public class DistributedDiagram extends Diagram {
 
     private DistributedForce dl;
+    DistanceMeasurement measure;
+
+    @Override
+    public void activate() {
+        super.activate();
+        if (dl.isSolved()) {
+            dl.setDisplayGrayed(true);
+        }
+    }
 
     @Override
     protected List<SimulationObject> getBaseObjects() {
@@ -48,16 +57,13 @@ public class DistributedDiagram extends Diagram {
 
         return baseObjects;
     }
-    DistanceMeasurement measure;
 
     public DistributedDiagram(DistributedForce dl) {
         this.dl = dl;
 
-
         Force resultant = dl.getResultant();
         resultant.createDefaultSchematicRepresentation();
         resultant.getAnchor().createDefaultSchematicRepresentation();
-
 
         resultant.setDisplayGrayed(true);
 
@@ -66,7 +72,6 @@ public class DistributedDiagram extends Diagram {
         measure.setKnown(false);
         measure.setSymbol("pos");
         measure.createDefaultSchematicRepresentation(2f);
-
     }
 
     public boolean check(String positionValue, String magnitudeValue) {
@@ -76,6 +81,10 @@ public class DistributedDiagram extends Diagram {
 
         System.out.println("user pos: \"" + positionValue + "\" " + userPosition);
         System.out.println("user mag: \"" + magnitudeValue + "\" " + userMagnitude);
+
+        if (userMagnitude == null || userPosition == null) {
+            return false;
+        }
 
         DistributedForce force = getForce();
         AffineQuantity resultantMagnitude = force.getResultantMagnitude();
@@ -91,12 +100,45 @@ public class DistributedDiagram extends Diagram {
         return success;
     }
 
+    /**
+     * This should be called after the user's values for the resultant have been checked.
+     * The method adds the resultant (and its supporting objects) to the schematic.
+     */
     public void updateResultant() {
+
         Force resultant = dl.getResultant();
         dl.setDisplayGrayed(true);
         resultant.setDisplayGrayed(false);
         dl.getSurface().addObject(resultant);
+
+        dl.setSolved(true);
+
+        AffineQuantity resultantMagnitude = dl.getResultantMagnitude();
+        AffineQuantity resultantPosition = dl.getResultantPosition();
+
+        measure.setKnown(true);
+        resultant.setKnown(true);
+
+        // ??
+        resultant.setSymbol(null);
+
+        // IMPORTANT THINGS TO NOTE:
+        // THIS CODE DOES NOT WORK 100% JUST YET
+        // The following things remain to be done:
+        // 1) accomodate what happens when the affine value for the resultantMagnitude is symbolic.
+        // 2) accomodate what happens when the affine value for the resultantPosition is symbolic.
+
+        if (resultantMagnitude.isSymbolic() || resultantPosition.isSymbolic()) {
+            throw new UnsupportedOperationException("Symbolic values not supported yet in the resultant");
+        }
+
+        resultant.getVector().setDiagramValue(resultantMagnitude.getConstant());
+
         getSchematic().add(resultant);
+        getSchematic().add(resultant.getAnchor());
+        getSchematic().add(measure);
+        dl.getSurface().addObject(resultant);
+        dl.getSurface().addObject(resultant.getAnchor());
     }
 
     protected DistributedForce getForce() {

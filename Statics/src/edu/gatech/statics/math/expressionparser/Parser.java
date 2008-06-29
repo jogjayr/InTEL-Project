@@ -22,44 +22,6 @@ import java.util.StringTokenizer;
  */
 public class Parser {
 
-    /*public static class SymbolResult {
-    
-    public String symbolName;
-    public float symbolCoefficient;
-    public float constant;
-    
-    @Override
-    public boolean equals(Object obj) {
-    if (obj == null) {
-    return false;
-    }
-    if (getClass() != obj.getClass()) {
-    return false;
-    }
-    final SymbolResult other = (SymbolResult) obj;
-    if (this.symbolName != other.symbolName && (this.symbolName == null || !this.symbolName.equals(other.symbolName))) {
-    return false;
-    }
-    if (this.symbolCoefficient != other.symbolCoefficient) {
-    return false;
-    }
-    if (this.constant != other.constant) {
-    return false;
-    }
-    return true;
-    }
-    
-    @Override
-    public int hashCode() {
-    int hash = 7;
-    hash = 37 * hash + (this.symbolName != null ? this.symbolName.hashCode() : 0);
-    hash = 37 * hash + Float.floatToIntBits(this.symbolCoefficient);
-    hash = 37 * hash + Float.floatToIntBits(this.constant);
-    return hash;
-    }
-    
-    
-    }*/
     /**
      * Attempts to parse and evaluate the expression as a linear symbolic term
      * That is, the expression has the form A+B*S, where A and B are known floating
@@ -402,16 +364,16 @@ public class Parser {
         if (token.equals("(")) {
             return new UnaryNode(UnaryNode.Operation.identity);
         }
-        if (token.equals("sin")) {
+        if (token.toLowerCase().equals("sin")) {
             return new UnaryNode(UnaryNode.Operation.sin);
         }
-        if (token.equals("cos")) {
+        if (token.toLowerCase().equals("cos")) {
             return new UnaryNode(UnaryNode.Operation.cos);
         }
-        if (token.equals("atan")) {
+        if (token.toLowerCase().equals("atan")) {
             return new UnaryNode(UnaryNode.Operation.atan);
         }
-        if (token.equals("sqrt")) {
+        if (token.toLowerCase().equals("sqrt")) {
             return new UnaryNode(UnaryNode.Operation.sqrt);
         // special case of subtraction / negation
         }
@@ -421,7 +383,7 @@ public class Parser {
             }
             return new BinaryNode(BinaryNode.Operation.subtract);
         }
-        if (token.equals("PI")) {
+        if (token.toLowerCase().equals("pi")) {
             return new ConstantNode((float)Math.PI);
         }
 

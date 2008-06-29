@@ -40,6 +40,14 @@ public class FreeBodyDiagram extends SubDiagram {
         return Collections.unmodifiableList(addedForces);
     }
 
+    /**
+     * Override this method to supply diagram checkers with additional functionality.
+     * @return
+     */
+    public FBDChecker getChecker() {
+        return new FBDChecker(this);
+    }
+
     public boolean isSolved() {
         return solved;
     }

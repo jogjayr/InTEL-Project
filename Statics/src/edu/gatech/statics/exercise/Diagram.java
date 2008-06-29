@@ -73,25 +73,6 @@ public abstract class Diagram {
         invalidateNodes();
     }
     
-    /*
-     
-    public void remove(SimulationObject obj) {
-        allObjects.remove(obj);
-        invalidateNodes();
-    }
-     * 
-     public void add(SimulationObject obj) {
-        if (!allObjects.contains(obj)) {
-            allObjects.add(obj);
-            invalidateNodes();
-        }
-    }
-
-    public void addAll(Collection<SimulationObject> objs) {
-        for (SimulationObject obj : objs) {
-            add(obj);
-        }
-    }*/
     private static final SelectionFilter defaultFilter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {

@@ -12,10 +12,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import edu.gatech.statics.math.AffineQuantity;
-import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
-import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 

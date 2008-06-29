@@ -31,10 +31,10 @@ public class DistributedSelectDiagram extends SelectDiagram {
     @Override
     public void activate() {
         super.activate();
+        DistributedUtil.grayoutSolvedDistributedObjects();
     }
     
     
-
     @Override
     public void onClick(SimulationObject obj) {
 

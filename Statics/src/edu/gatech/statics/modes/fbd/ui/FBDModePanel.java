@@ -87,7 +87,7 @@ public class FBDModePanel extends ApplicationModePanel {
                 popup.popup(0, 0, true);
                 popup.center();
             } else if(event.getAction().equals("check")) {
-                FBDChecker checker = new FBDChecker(diagram);
+                FBDChecker checker = diagram.getChecker();//new FBDChecker(diagram);
                 if(checker.checkDiagram()) {
                     diagram.setSolved();
                     //System.out.println("woo!");

@@ -38,6 +38,8 @@ public class FBDChecker {
     private FreeBodyDiagram diagram;
     private Joint nextJoint;
     private boolean done = false;
+    
+    protected FreeBodyDiagram getDiagram() {return diagram;}
 
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
