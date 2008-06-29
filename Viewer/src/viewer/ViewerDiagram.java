@@ -9,6 +9,7 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import java.util.List;
 
 /**
  *
@@ -25,10 +26,11 @@ public class ViewerDiagram extends Diagram {
         return ((ViewerExercise) Exercise.getExercise()).getModel();
     }
 
-    public ViewerDiagram() {
+    @Override
+    protected List<SimulationObject> getBaseObjects() {
+        return getSchematic().allObjects();
+    }
 
-        for (SimulationObject object : getSchematic().allObjects()) {
-            add(object);
-        }
+    public ViewerDiagram() {
     }
 }
