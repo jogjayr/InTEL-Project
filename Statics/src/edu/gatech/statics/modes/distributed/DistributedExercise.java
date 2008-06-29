@@ -9,6 +9,7 @@ import edu.gatech.statics.exercise.FBDExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.ui.DistributedInterfaceConfiguration;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.InterfaceConfiguration;
@@ -47,6 +48,11 @@ public class DistributedExercise extends FBDExercise {
     @Override
     protected SelectDiagram createSelectDiagram() {
         return new DistributedSelectDiagram();
+    }
+
+    @Override
+    protected EquationDiagram createEquationDiagram(BodySubset bodySubset) {
+        return new DistributedEquationDiagram(bodySubset);
     }
 
     @Override

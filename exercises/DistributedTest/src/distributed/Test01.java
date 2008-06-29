@@ -39,6 +39,8 @@ public class Test01 extends DistributedExercise {
         getDisplayConstants().setForceLabelDistance(1f);
         getDisplayConstants().setMomentLabelDistance(0f);
         getDisplayConstants().setMeasurementSize(0.1f);
+        
+        Unit.setPrecision(Unit.distance, 2);
     }
 
     @Override

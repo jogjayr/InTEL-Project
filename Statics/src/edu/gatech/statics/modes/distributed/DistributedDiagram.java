@@ -15,6 +15,8 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.util.SolveListener;
+import edu.gatech.statics.application.StaticsApplication;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import java.util.List;
 public class DistributedDiagram extends Diagram {
 
     private DistributedForce dl;
-    DistanceMeasurement measure;
+    private DistanceMeasurement measure;
 
     @Override
     public void activate() {
@@ -99,6 +101,9 @@ public class DistributedDiagram extends Diagram {
         success &= resultantPosition.equalsWithinTolerance(userPosition, .1f);
         return success;
     }
+    
+    // THIS IS A TEMPORARY SOLUTION
+    private static int count = 1;
 
     /**
      * This should be called after the user's values for the resultant have been checked.
@@ -116,6 +121,11 @@ public class DistributedDiagram extends Diagram {
         AffineQuantity resultantMagnitude = dl.getResultantMagnitude();
         AffineQuantity resultantPosition = dl.getResultantPosition();
 
+        // set names for the resultant and its anchor?
+        resultant.setName("Resultant "+count);
+        resultant.getAnchor().setName("pos "+count);
+        count++;
+        
         measure.setKnown(true);
         resultant.setKnown(true);
 
@@ -139,6 +149,12 @@ public class DistributedDiagram extends Diagram {
         getSchematic().add(measure);
         dl.getSurface().addObject(resultant);
         dl.getSurface().addObject(resultant.getAnchor());
+
+        // update our UI view now that the resultants are found
+
+        for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
+            listener.onLoadSolved(resultant);
+        }
     }
 
     protected DistributedForce getForce() {
