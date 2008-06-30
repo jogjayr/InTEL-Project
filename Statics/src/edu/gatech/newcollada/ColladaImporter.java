@@ -1336,9 +1336,11 @@ public class ColladaImporter {
     private void processCameraLibrary(library_camerasType libraryCam)
             throws Exception {
         if (libraryCam.hascamera()) {
-            for (int i = 0; i < libraryCam.getcameraCount(); i++) {
-                processCamera(libraryCam.getcameraAt(i));
-            }
+            // Modification in Statics:
+            // we ignore cameras.
+            //for (int i = 0; i < libraryCam.getcameraCount(); i++) {
+            //    processCamera(libraryCam.getcameraAt(i));
+            //}
         }
     }
 

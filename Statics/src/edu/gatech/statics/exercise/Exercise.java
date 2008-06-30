@@ -235,15 +235,19 @@ public abstract class Exercise {
     }
 
     /**
-     * this handles things before the interface has been constructed:
-     * should be material such as doing display and problem manipulation.
+     * This method does initial loading before the interface is created.
+     * You should put methods defining the precision and suffixes of units here,
+     * as well as display scales, and any problem descriptions.
      */
     public void initExercise() {
     }
 
     /**
-     * for file based, can involve deserialization
-     * for code based can just create objects as is.
+     * This method loads all of the objects and constructs the actual problem
+     * itself. 
+     * For file based exercises, this can involve deserialization of saved information.
+     * For code based exercises, this method must be overridden to programmatically
+     * create all the objects that belong within the exercise.
      */
     public void loadExercise() {
     }

@@ -89,7 +89,7 @@ public class FBDModePanel extends ApplicationModePanel {
             } else if(event.getAction().equals("check")) {
                 FBDChecker checker = diagram.getChecker();//new FBDChecker(diagram);
                 if(checker.checkDiagram()) {
-                    diagram.setSolved();
+                    diagram.setSolved(true);
                     //System.out.println("woo!");
                     
                     EquationMode.instance.load(diagram.getBodySubset());
