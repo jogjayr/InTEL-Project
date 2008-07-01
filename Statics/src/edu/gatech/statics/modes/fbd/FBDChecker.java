@@ -38,6 +38,7 @@ public class FBDChecker {
     private FreeBodyDiagram diagram;
     private Joint nextJoint;
     private boolean done = false;
+    private boolean verbose = true;
 
     protected FreeBodyDiagram getDiagram() {
         return diagram;
@@ -62,6 +63,10 @@ public class FBDChecker {
         return m;
     }
 
+    public void setVerbose(boolean enable) {
+        verbose = enable;
+    }
+    
     /**
      * Get all the points in the schematic, to check against for force names.
      * @return

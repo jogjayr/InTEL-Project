@@ -17,7 +17,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
  */
 public abstract class Mode {
     
-    public void postLoad() {}
+    public void postLoad(DiagramKey key) {}
     
     abstract public String getModePanelName();
     abstract protected Diagram getDiagram(DiagramKey key);
@@ -33,7 +33,7 @@ public abstract class Mode {
         // loading the ModePanel occurs after the diagram.
         // the ModePanel may depend on the diagram for labeling, etc
         InterfaceRoot.getInstance().activateModePanel(getModePanelName());
-        postLoad();
+        postLoad(key);
     }
     
     /**

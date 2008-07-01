@@ -36,7 +36,7 @@ public abstract class Exercise {
     private static Exercise currentExercise;
     private DisplayConstants displayConstants;
     private SymbolManager symbolManager;
-    
+
     public static Exercise getExercise() {
         return currentExercise;
     }
@@ -44,7 +44,7 @@ public abstract class Exercise {
     public DisplayConstants getDisplayConstants() {
         return displayConstants;
     }
-    
+
     public SymbolManager getSymbolManager() {
         return symbolManager;
     }
@@ -207,7 +207,7 @@ public abstract class Exercise {
         if (bodies == null) {
             return getSelectDiagram();
         }
-        if (equationDiagrams.get(bodies) != null) {
+        if (equationDiagrams.get(bodies) != null && freeBodyDiagrams.get(bodies) != null && freeBodyDiagrams.get(bodies).isSolved()) {
             return equationDiagrams.get(bodies);
         }
         if (freeBodyDiagrams.get(bodies) != null) {
