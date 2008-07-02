@@ -18,6 +18,7 @@ import com.jme.renderer.Renderer;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
@@ -76,20 +77,6 @@ public class EquationDiagram extends SubDiagram {
     public Point getMomentPoint() {
         return momentPoint;
     }
-    
-    /**
-     * This function should be called during activation, and 
-     * @return
-     */
-    public boolean doesFBDRequireUpdating() {
-    
-        // Check forces to make sure they are up to date.
-        // return false if things are groovy and no updating is necessary,
-        // otherwise return true.
-        
-        return false;
-    }
-    
 
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,
@@ -172,6 +159,13 @@ public class EquationDiagram extends SubDiagram {
                     //v.setValue(v.getValueNormalized().mult( value ));
                     vObj.setDiagramValue(new BigDecimal(value));
                     vObj.setKnown(true);
+                    
+                    // attempt to make sure the vector value is updated in the symbol manager
+                    Load symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj);
+                    if(symbolManagerLoad != vObj) {
+                        symbolManagerLoad.setDiagramValue(new BigDecimal(value));
+                        symbolManagerLoad.setKnown(true);
+                    }
                 }
             }
 

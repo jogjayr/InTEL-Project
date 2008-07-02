@@ -14,7 +14,7 @@ import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
-import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.objects.Load;
 
 /**
  *
@@ -35,14 +35,30 @@ public class EquationMode extends Mode {
         return StaticsApplication.getApp().getExercise().getEquationDiagram(bodies);
     }
 
+    /**
+     * Here we override postLoad to check that the FBD is still OK. If the FBD
+     * needs to be updated because another diagram was solved, then the equation
+     * mode will detect this change and force the user to update their diagram.
+     * Here, postLoad will return the user to the FBDMode if changes need to be made.
+     * @param key
+     */
     @Override
     public void postLoad(DiagramKey key) {
-        
+
         FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram((BodySubset) key);
-        
+
         FBDChecker fbdChecker = fbd.getChecker();
         fbdChecker.setVerbose(false);
-        
+
+        /*System.out.println("****************");
+        System.out.println("*** postLoad ***");
+        System.out.println("****************");
+        System.out.println(Exercise.getExercise().getSymbolManager().getSymbols());
+        for (Load load : Exercise.getExercise().getSymbolManager().allLoads()) {
+            System.out.println("  " + load);
+        }*/
+
+        // okay, the check fails, no we load up the fbd mode.
         if (!fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
             FBDMode.instance.load(key);

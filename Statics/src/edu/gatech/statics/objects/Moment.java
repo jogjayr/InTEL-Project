@@ -38,6 +38,10 @@ public class Moment extends Load {
     public Moment(Point anchor, Vector3bd value, String symbolName) {
         super(anchor, new Vector(Unit.moment, value, symbolName));
     }
+    
+    public Moment(Moment moment) {
+        super(moment);
+    }
 
     @Override
     public Vector3f getDisplayCenter() {
@@ -59,5 +63,10 @@ public class Moment extends Load {
 //        label.setOffset(0, 40);
         label.setOffset(0, StaticsApplication.getApp().getMomentLabelScale());
         addRepresentation(label);
+    }
+
+    @Override
+    public Moment clone() {
+        return new Moment(this);
     }
 }

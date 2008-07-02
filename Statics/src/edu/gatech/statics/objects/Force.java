@@ -53,4 +53,9 @@ public class Force extends Load {
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
         addRepresentation(label);
     }
+
+    @Override
+    public Force clone() {
+        return new Force(this);
+    }
 }

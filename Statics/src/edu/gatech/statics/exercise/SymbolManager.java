@@ -27,14 +27,16 @@ public class SymbolManager {
     /**
      * Add a symbol to the symbol manager for the quantified object. 
      * Loads are recognized and kept track of for use later.
+     * Loads are also *cloned* so that solving a load in an equation does not have
+     * unexpected consequences.
      * @param quantified
      */
     public void addSymbol(Quantified quantified) {
         if (quantified.isSymbol()) {
-            if (!symbols.contains(quantified)) {
+            if (!symbols.contains(quantified.getSymbolName())) {
                 symbols.add(quantified.getSymbolName());
                 if (quantified instanceof Load) {
-                    symbolicLoads.add((Load) quantified);
+                    symbolicLoads.add(((Load) quantified).clone());
                 }
             }
         } else {

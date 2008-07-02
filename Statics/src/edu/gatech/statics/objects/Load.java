@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.objects;
 
 import edu.gatech.statics.math.Vector;
@@ -14,7 +13,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class Load extends VectorObject {
+public abstract class Load extends VectorObject {
 
     public Load(Load load) {
         super(load);
@@ -23,7 +22,6 @@ public class Load extends VectorObject {
     public Load(Point anchor, Vector vector) {
         super(anchor, vector);
     }
-    
     private List<VectorListener> listeners = new ArrayList<VectorListener>();
 
     public void addListener(VectorListener listener) {
@@ -33,7 +31,7 @@ public class Load extends VectorObject {
     public void removeListener(VectorListener listener) {
         listeners.remove(listener);
     }
-    
+
     @Override
     public void setVectorValue(Vector3bd value) {
 
@@ -44,4 +42,7 @@ public class Load extends VectorObject {
             listener.valueChanged(oldValue);
         }
     }
+
+    @Override
+    abstract public Load clone();
 }

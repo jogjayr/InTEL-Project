@@ -22,10 +22,19 @@ public abstract class Mode {
     abstract public String getModePanelName();
     abstract protected Diagram getDiagram(DiagramKey key);
     
+    /**
+     * This is the method to call when loading a new exercise, and will load the
+     * default mode and diagram, which is usually the Select diagram.
+     */
     public final void load() {
         load(null);
     }
     
+    /**
+     * This is the method you should call whenever the mode needs to be changed.
+     * Pass in a diagram key and this will load up this mode with the appropriate diagram.
+     * @param key
+     */
     public final void load(DiagramKey key) {
         // load the diagram
         StaticsApplication.getApp().setCurrentDiagram(getDiagram(key));
