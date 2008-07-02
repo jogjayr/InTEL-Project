@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-abstract public class Joint extends SimulationObject {
+abstract public class Connector extends SimulationObject {
 
     private Point anchor;
     private Body body1,  body2;
@@ -106,7 +106,7 @@ abstract public class Joint extends SimulationObject {
     abstract public List<Vector> getReactions();
 
     /** Creates a new instance of Joint */
-    public Joint(Point point) {
+    public Connector(Point point) {
         anchor = point;
     }
 

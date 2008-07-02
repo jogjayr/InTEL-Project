@@ -20,8 +20,8 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
-import edu.gatech.statics.objects.joints.Pin2d;
-import edu.gatech.statics.objects.joints.Roller2d;
+import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 
 /**
  *

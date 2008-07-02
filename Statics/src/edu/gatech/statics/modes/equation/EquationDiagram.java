@@ -23,7 +23,7 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -193,8 +193,8 @@ public class EquationDiagram extends SubDiagram {
         // assigning to them the solved values as having the updated vectors.
         // also go through unknown points...
         for (SimulationObject obj : allObjects()) {
-            if (obj instanceof Joint) {
-                Joint joint = (Joint) obj;
+            if (obj instanceof Connector) {
+                Connector joint = (Connector) obj;
                 if (joint.isSolved()) {
                     continue;
                 }

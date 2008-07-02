@@ -8,7 +8,6 @@
  */
 package edu.gatech.statics.objects;
 
-import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import java.math.BigDecimal;
@@ -71,8 +70,8 @@ abstract public class Body extends SimulationObject {
             attachedObjects.add(obj);
         }
 
-        if (obj instanceof Joint) {
-            addObject(((Joint) obj).getAnchor());
+        if (obj instanceof Connector) {
+            addObject(((Connector) obj).getAnchor());
         }
     }
 

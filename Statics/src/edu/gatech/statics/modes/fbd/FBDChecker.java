@@ -12,16 +12,16 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Cable;
-import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
-import edu.gatech.statics.objects.joints.Fix2d;
-import edu.gatech.statics.objects.joints.Pin2d;
-import edu.gatech.statics.objects.joints.Roller2d;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.Fix2d;
+import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,11 +269,11 @@ public class FBDChecker {
 //        for (SimulationObject obj : diagram.allObjects()) {
         for (int i = 0; i < diagram.allObjects().size(); i++) {
             SimulationObject obj = diagram.allObjects().get(i);
-            if (!(obj instanceof Joint)) {
+            if (!(obj instanceof Connector)) {
                 continue;
             }
 
-            Joint joint = (Joint) obj;
+            Connector joint = (Connector) obj;
 
             // no idea what this next section does.
             // commenting out seems to do no harm for the time being.
@@ -521,7 +521,7 @@ public class FBDChecker {
         return forcesAtPoint;
     }
 
-    private List<Load> getReactions(Joint joint, List<Vector> reactions) {
+    private List<Load> getReactions(Connector joint, List<Vector> reactions) {
         List<Load> loads = new ArrayList<Load>();
         for (Vector vector : reactions) {
             if (vector.getUnit() == Unit.force) {
@@ -541,7 +541,7 @@ public class FBDChecker {
      * @param reactions the loads that should be present at the joint.
      * @return
      */
-    private boolean testJoint(Joint joint, List<Load> addedForces, List<Load> reactions) {
+    private boolean testJoint(Connector joint, List<Load> addedForces, List<Load> reactions) {
 
         //has the forces that the user added
         List<Load> forcesAtJoint = getForcesAtPoint(joint.getAnchor(), addedForces);
@@ -608,7 +608,7 @@ public class FBDChecker {
         }
     }
 
-    private String connectorType(Joint joint) {
+    private String connectorType(Connector joint) {
         if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
             return "pin";
         } else if (joint instanceof Fix2d) {

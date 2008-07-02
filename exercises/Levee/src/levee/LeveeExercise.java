@@ -14,11 +14,11 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
-import edu.gatech.statics.objects.joints.Fix2d;
+import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
@@ -92,7 +92,7 @@ public class LeveeExercise extends DistributedExercise {
         
         schematic.add(levee);
 
-        Joint base = new Fix2d(A);
+        Connector base = new Fix2d(A);
         base.attachToWorld(levee);
 
         ModelNode modelNode = ModelNode.load("levee/assets/", "levee/assets/levee.dae");

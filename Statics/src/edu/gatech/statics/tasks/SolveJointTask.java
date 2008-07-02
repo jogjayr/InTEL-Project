@@ -9,7 +9,7 @@
 
 package edu.gatech.statics.tasks;
 
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 
 /**
  *
@@ -17,9 +17,9 @@ import edu.gatech.statics.objects.Joint;
  */
 public class SolveJointTask implements Task {
 
-    private Joint joint;
+    private Connector joint;
     
-    public SolveJointTask(Joint joint) {
+    public SolveJointTask(Connector joint) {
         this.joint = joint;
     }
 

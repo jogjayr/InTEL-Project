@@ -6,9 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.objects.joints;
+package edu.gatech.statics.objects.connectors;
 
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class Roller2d extends Joint {
+public class Roller2d extends Connector {
 
     private Vector3bd direction;
 

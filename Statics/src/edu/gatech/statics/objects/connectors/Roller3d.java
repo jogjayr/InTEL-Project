@@ -6,9 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.objects.joints;
+package edu.gatech.statics.objects.connectors;
 
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Point;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class Roller3d extends Joint {
+public class Roller3d extends Connector {
 
     private Vector3f normal;
 

@@ -17,8 +17,8 @@ import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
-import edu.gatech.statics.objects.joints.Pin2d;
-import edu.gatech.statics.objects.joints.Roller2d;
+import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import java.math.BigDecimal;
 
 /**

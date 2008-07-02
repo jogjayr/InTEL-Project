@@ -12,7 +12,7 @@ package edu.gatech.statics.objects.bodies;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.joints.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.representations.PointRepresentation;
 
 /**

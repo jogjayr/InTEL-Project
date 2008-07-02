@@ -5,7 +5,7 @@
 
 package edu.gatech.statics.util;
 
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
 
 /**
@@ -14,5 +14,5 @@ import edu.gatech.statics.objects.Load;
  */
 public interface SolveListener {
     public void onLoadSolved(Load load);
-    public void onJointSolved(Joint joint);
+    public void onJointSolved(Connector joint);
 }

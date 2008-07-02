@@ -6,12 +6,12 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.objects.joints;
+package edu.gatech.statics.objects.connectors;
 
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class Fix2d extends Joint {
+public class Fix2d extends Connector {
 
     /** Creates a new instance of Fix */
     public Fix2d(Point point) {

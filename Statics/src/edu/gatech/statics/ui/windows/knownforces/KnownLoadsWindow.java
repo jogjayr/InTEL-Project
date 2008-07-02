@@ -11,7 +11,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.Joint;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -61,8 +61,8 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         for (SimulationObject obj : exercise.getSchematic().allObjects()) {
 
             // look at joints, specifically
-            if (obj instanceof Joint) {
-                Joint joint = (Joint) obj;
+            if (obj instanceof Connector) {
+                Connector joint = (Connector) obj;
                 if (joint.isSolved()) {
                     // iterate through reactions at joint
                     for (Vector force : joint.getReactions(joint.getBody1())) {
@@ -139,7 +139,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         onSolve();
     }
 
-    public void onJointSolved(Joint joint) {
+    public void onJointSolved(Connector joint) {
         onSolve();
     }
 }
