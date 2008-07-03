@@ -8,11 +8,12 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.modes.select.SelectMode;
-import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.SimpleFreeBodyDiagram;
+import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.util.List;
+import edu.gatech.statics.modes.select.ui.SelectModePanel;
 
 /**
  *
@@ -42,7 +43,7 @@ public class SimpleFBDExercise extends Exercise {
     protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
         return new SimpleFreeBodyDiagram(bodySubset);
     }
-    
+
     /**
      * Returns an interface configuration without the EquationModePanel.
      * @return
@@ -55,17 +56,26 @@ public class SimpleFBDExercise extends Exercise {
     private class SimpleInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
         public SimpleInterfaceConfiguration() {
-
-            // remove the equation mode panel from the application mode panels,
+            
+            /*    // remove the equation mode panel from the application mode panels,
             // so it does not show up in the tab navigation.
             List<ApplicationModePanel> modePanels = super.getModePanels();
             ApplicationModePanel equationPanel = null;
             for (ApplicationModePanel panel : modePanels) {
-                if (panel instanceof EquationModePanel) {
-                    equationPanel = panel;
-                }
+            if (panel instanceof EquationModePanel) {
+            equationPanel = panel;
+            }
             }
             modePanels.remove(equationPanel);
+            
+            super.get*/
+        }
+
+        @Override
+        public void createModePanels() {
+            List<ApplicationModePanel> r = getModePanels();
+            r.add(new SelectModePanel());
+            r.add(new FBDModePanel());
         }
     }
 }

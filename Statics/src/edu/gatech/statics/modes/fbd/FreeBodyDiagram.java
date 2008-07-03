@@ -10,7 +10,7 @@ package edu.gatech.statics.modes.fbd;
 
 import com.jme.input.InputHandler;
 import com.jme.renderer.Renderer;
-import edu.gatech.statics.*;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
@@ -26,6 +26,7 @@ import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -85,13 +86,11 @@ public class FreeBodyDiagram extends SubDiagram {
             String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
             StaticsApplication.getApp().setAdvice(advice);
             StaticsApplication.getApp().setDefaultAdvice(advice);
-
             StaticsApplication.getApp().resetAdvice();
         } else {
-            
         }
     }
-    
+
     /**
      * This handles what happens when the diagram is solved.
      * By default, we load the equation mode. Later on, other exercise types may 
@@ -140,9 +139,25 @@ public class FreeBodyDiagram extends SubDiagram {
     public InputHandler getInputHandler() {
         return fbdInput;
     }
-    private static final SelectionFilter filter = new SelectionFilter() {
+    private static final SelectionFilter filter = new  
 
-        public boolean canSelect(SimulationObject obj) {
+          SelectionFilter( ) {
+
+               
+        
+    
+
+    public    
+         
+    
+      
+      
+
+        
+            
+            
+        
+           boolean canSelect(SimulationObject obj) {
             return obj instanceof Load;
         }
     };

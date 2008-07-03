@@ -58,21 +58,17 @@ public class TowerExercise extends OrdinaryExercise {
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.force, " ton");
         Unit.setSuffix(Unit.moment, " ton*ft");
+
+        getDisplayConstants().setDrawScale(3.5f);
     }
 
     @Override
     public void loadExercise() {
-        //ExerciseWorld world = getWorld();
         Schematic world = getSchematic();
 
-        getDisplayConstants().setDrawScale(3.5f);
-
-        //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
 
-        //StaticsApplication.getApp().getCamera().setLocation(new Vector3f( 0.0f, 10.0f, 60.0f ));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 24.0f, 100.0f));
-        //StaticsApplication.getApp().setDrawScale(3.5f);
 
         Point A = new Point("0", "0", "0");
         Point B = new Point("2.5", "55", "0");
@@ -109,31 +105,18 @@ public class TowerExercise extends OrdinaryExercise {
         modelNode.extractLights();
 
         ModelRepresentation rep = modelNode.extractElement(tower, "VisualSceneNode/group27");
-        //new ModelRepresentation(tower, "example02/assets/", "example02/assets/pisa3_tower.dae");
         rep.setModelOffset(new Vector3f(0, 0, -22.0f / scale));
         Matrix3f rotation = new Matrix3f(
                 -1, 0, 0,
                 0, 0, 1,
                 0, 1, 0);
-        
-        
-        //rotation.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Z);
-        
+
         rep.setModelRotation(rotation);
-        rep.setLocalScale(scale*1.5f);
-        //rep.setSynchronizeRotation(false);
-        //rep.setSynchronizeTranslation(false);
-        
-        //rotation = new Matrix3f();
-        //rotation.fromStartEndVectors(Vector3f.UNIT_Y, Vector3f.UNIT_Y.negate());
-        
-        //rep.getRelativeNode().setLocalRotation(rotation);
-        
+        rep.setLocalScale(scale * 1.5f);
+
         tower.addRepresentation(rep);
 
-
         rep = modelNode.getRemainder(world.getBackground());
-        //new ModelRepresentation(world.getBackground(), "example02/assets/", "example02/assets/pisa1_background.dae");
         rep.setLocalScale(scale);
         world.getBackground().addRepresentation(rep);
 
