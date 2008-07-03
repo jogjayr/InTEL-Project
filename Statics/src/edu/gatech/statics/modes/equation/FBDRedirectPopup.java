@@ -52,7 +52,6 @@ public class FBDRedirectPopup extends ModalPopupWindow {
 
         public void actionPerformed(ActionEvent event) {
             
-            FBDMode.instance.load(key);
             dismiss();
         }
     }

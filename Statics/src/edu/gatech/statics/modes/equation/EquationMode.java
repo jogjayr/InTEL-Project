@@ -65,6 +65,8 @@ public class EquationMode extends Mode {
             fbd.setSolved(false);
             eq.getWorksheet().resetSolve();
             
+            FBDMode.instance.load(key);
+            
             //FBDMode.instance.load(key);
             FBDRedirectPopup popup = new FBDRedirectPopup(key);
             popup.popup(0, 0, true);
