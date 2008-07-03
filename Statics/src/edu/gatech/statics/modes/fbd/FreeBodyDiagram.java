@@ -14,6 +14,7 @@ import edu.gatech.statics.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.modes.fbd.tools.LoadLabelListener;
@@ -89,6 +90,15 @@ public class FreeBodyDiagram extends SubDiagram {
         } else {
             
         }
+    }
+    
+    /**
+     * This handles what happens when the diagram is solved.
+     * By default, we load the equation mode. Later on, other exercise types may 
+     * choose to pass this step.
+     */
+    public void postSolve() {
+        EquationMode.instance.load(getBodySubset());
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.FBDExercise;
+import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
@@ -32,7 +32,7 @@ import java.math.BigDecimal;
  *
  * @author Calvin Ashmore
  */
-public class BicycleExercise extends FBDExercise {
+public class BicycleExercise extends OrdinaryExercise {
 
     public BicycleExercise() {
         super(new Schematic());

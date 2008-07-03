@@ -5,7 +5,7 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.exercise.BodySubset;
-import edu.gatech.statics.exercise.FBDExercise;
+import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.ui.DistributedInterfaceConfiguration;
@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class DistributedExercise extends FBDExercise {
+public class DistributedExercise extends OrdinaryExercise {
 
     private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
 

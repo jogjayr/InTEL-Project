@@ -77,6 +77,10 @@ public class FBDModePanel extends ApplicationModePanel {
         Exercise.getExercise().enableTabs(diagram.getBodySubset());
     }
     
+    /**
+     * This class handles what happens when the user presses the "check" or "reset" buttons.
+     * if the check passes, the diagram is set as solved.
+     */
     private class CheckListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
@@ -92,7 +96,8 @@ public class FBDModePanel extends ApplicationModePanel {
                     diagram.setSolved(true);
                     //System.out.println("woo!");
                     
-                    EquationMode.instance.load(diagram.getBodySubset());
+                    // let the diagram to know to advance past the FBD stage.
+                    diagram.postSolve();
                 }
             }
         }

@@ -1,0 +1,71 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package edu.gatech.statics.exercise;
+
+import edu.gatech.statics.Mode;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.ui.InterfaceConfiguration;
+import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.fbd.SimpleFreeBodyDiagram;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
+import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
+import java.util.List;
+
+/**
+ *
+ * @author Calvin Ashmore
+ */
+public class SimpleFBDExercise extends Exercise {
+
+    public SimpleFBDExercise(Schematic world) {
+        super(world);
+    }
+
+    public SimpleFBDExercise() {
+    }
+
+    @Override
+    public Mode loadStartingMode() {
+        SelectMode.instance.load();
+        return SelectMode.instance;
+    }
+
+    /**
+     * Returns a SimpleFreeBodyDiagram instead of a regular FreeBodyDiagram.
+     * @param bodySubset
+     * @return
+     */
+    @Override
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
+        return new SimpleFreeBodyDiagram(bodySubset);
+    }
+    
+    /**
+     * Returns an interface configuration without the EquationModePanel.
+     * @return
+     */
+    @Override
+    public InterfaceConfiguration createInterfaceConfiguration() {
+        return new SimpleInterfaceConfiguration();
+    }
+
+    private class SimpleInterfaceConfiguration extends DefaultInterfaceConfiguration {
+
+        public SimpleInterfaceConfiguration() {
+
+            // remove the equation mode panel from the application mode panels,
+            // so it does not show up in the tab navigation.
+            List<ApplicationModePanel> modePanels = super.getModePanels();
+            ApplicationModePanel equationPanel = null;
+            for (ApplicationModePanel panel : modePanels) {
+                if (panel instanceof EquationModePanel) {
+                    equationPanel = panel;
+                }
+            }
+            modePanels.remove(equationPanel);
+        }
+    }
+}

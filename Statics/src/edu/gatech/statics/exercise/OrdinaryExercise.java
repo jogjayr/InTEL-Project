@@ -10,15 +10,19 @@ import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 
 /**
- *
+ * OrdinaryExercise is the default type of exercise. It uses the DefaultInterfaceConfiguration,
+ * and starts with the select mode. Users are able to select subsets of bodies, build FBDs for those
+ * bodies, and then allows users to solve for equilibrium. Generally, this most easily allows
+ * solutions of problems that might be designated as "frame" problems, but does not include
+ * the other interface elements to support them.
  * @author Calvin Ashmore
  */
-abstract public class FBDExercise extends Exercise {
+abstract public class OrdinaryExercise extends Exercise {
 
-    public FBDExercise() {
+    public OrdinaryExercise() {
     }
 
-    public FBDExercise(Schematic schematic) {
+    public OrdinaryExercise(Schematic schematic) {
         super(schematic);
     }
 
