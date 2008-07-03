@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.fbd.ui;
+package edu.gatech.statics.modes.equation;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
@@ -12,27 +12,30 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
+import edu.gatech.statics.modes.fbd.FBDMode;
 
 /**
- *
+ * this popup is displayed when the user needs to make modifications to the
+ * FreeBodyDiagram before continuing on the equation mode.
  * @author Calvin Ashmore
  */
-public class ResetPopup extends ModalPopupWindow {
+public class FBDRedirectPopup extends ModalPopupWindow {
 
-    private FreeBodyDiagram diagram;
-
-    public ResetPopup(FreeBodyDiagram diagram) {
+    private DiagramKey key;
+    
+    public FBDRedirectPopup(DiagramKey key) {
         super(new BorderLayout());
-        this.diagram = diagram;
-        //setStyleClass("info_window");
+        this.key = key;
+
         setStyleClass("application_popup");
 
-        BLabel title = new BLabel("Reset Diagram");
+        BLabel title = new BLabel("Revise Diagram");
         add(title, BorderLayout.NORTH);
         HTMLView text = new HTMLView();
-        text.setContents("Are you sure you want to reset the diagram and clear your forces?");
+        text.setContents("There have been changes to adjacent free body diagrams," +
+                "so you need to revise your free body diagram for these bodies.");
         text.setPreferredSize(300, 100);
 
         add(text, BorderLayout.CENTER);
@@ -42,18 +45,14 @@ public class ResetPopup extends ModalPopupWindow {
 
         ActionListener listener = new MyActionListener();
         BButton ok = new BButton("OK", listener, "ok");
-        BButton cancel = new BButton("Cancel", listener, "cancel");
         buttonContainer.add(ok);
-        buttonContainer.add(cancel);
     }
 
     private class MyActionListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            //System.out.println(event.getAction());
-            if (event.getAction().equals("ok")) {
-                diagram.reset();
-            }
+            
+            FBDMode.instance.load(key);
             dismiss();
         }
     }

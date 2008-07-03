@@ -46,6 +46,7 @@ public class EquationMode extends Mode {
     public void postLoad(DiagramKey key) {
 
         FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram((BodySubset) key);
+        EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
 
         FBDChecker fbdChecker = fbd.getChecker();
         fbdChecker.setVerbose(false);
@@ -58,10 +59,16 @@ public class EquationMode extends Mode {
             System.out.println("  " + load);
         }*/
 
-        // okay, the check fails, no we load up the fbd mode.
+        // okay, the check fails, now we clear check flags and
+        // load up the fbd mode.
         if (!fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
-            FBDMode.instance.load(key);
+            eq.getWorksheet().resetSolve();
+            
+            //FBDMode.instance.load(key);
+            FBDRedirectPopup popup = new FBDRedirectPopup(key);
+            popup.popup(0, 0, true);
+            popup.center();
         }
     }
 }

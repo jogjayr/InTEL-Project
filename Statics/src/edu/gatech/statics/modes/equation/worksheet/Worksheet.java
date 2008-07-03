@@ -36,6 +36,12 @@ public class Worksheet {
         return solved;
     }
 
+    public void resetSolve() {
+        for (EquationMath math : equations) {
+            math.setLocked(false);
+        }
+    }
+
     public Map<Quantity, Float> solve() {
         if (!solved) {
 
