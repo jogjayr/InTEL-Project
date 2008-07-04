@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.objects.Body;
@@ -19,13 +18,16 @@ import java.util.Set;
 public class BodySubset implements DiagramKey {
 
     private Set<Body> bodies;
-    
-    public BodySubset(Body ... bodies) {
+
+    public BodySubset(Body... bodies) {
         this(Arrays.asList(bodies));
     }
-    
+
     public BodySubset(Collection<Body> bodies) {
         this.bodies = new HashSet<Body>(bodies);
+        if (bodies.size() == 0) {
+            throw new UnsupportedOperationException("There must be at least one body in a body subset");
+        }
     }
 
     public Set<Body> getBodies() {

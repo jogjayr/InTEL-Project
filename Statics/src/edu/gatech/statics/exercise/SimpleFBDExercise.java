@@ -56,19 +56,6 @@ public class SimpleFBDExercise extends Exercise {
     private class SimpleInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
         public SimpleInterfaceConfiguration() {
-            
-            /*    // remove the equation mode panel from the application mode panels,
-            // so it does not show up in the tab navigation.
-            List<ApplicationModePanel> modePanels = super.getModePanels();
-            ApplicationModePanel equationPanel = null;
-            for (ApplicationModePanel panel : modePanels) {
-            if (panel instanceof EquationModePanel) {
-            equationPanel = panel;
-            }
-            }
-            modePanels.remove(equationPanel);
-            
-            super.get*/
         }
 
         @Override

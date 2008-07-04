@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package example02;
 
 import edu.gatech.statics.exercise.SimpleFBDExercise;
@@ -11,6 +10,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
@@ -20,8 +20,8 @@ import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.math.BigDecimal;
@@ -86,7 +86,7 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         B.createDefaultSchematicRepresentation();
         G.createDefaultSchematicRepresentation();
 
-        Body tower = new Beam(A, B);
+        Body tower = new Beam(B, A);
         tower.setName("Tower");
         tower.setCenterOfMassPoint(G);
         tower.createDefaultSchematicRepresentation();
@@ -102,14 +102,14 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         modelNode.extractLights();
 
         ModelRepresentation rep = modelNode.extractElement(tower, "VisualSceneNode/group27");
-        rep.setModelOffset(new Vector3f(0, 0, -22.0f / scale));
-        Matrix3f rotation = new Matrix3f(
-                -1, 0, 0,
-                0, 0, 1,
-                0, 1, 0);
-
+        //rep.setModelOffset(new Vector3f(0, 0, -22.0f / scale));
+        
+        Matrix3f rotation = new Matrix3f();
+        rotation.fromAngleAxis(-.24f, Vector3f.UNIT_Z);
         rep.setModelRotation(rotation);
         rep.setLocalScale(scale * 1.5f);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
 
         tower.addRepresentation(rep);
 
@@ -117,5 +117,6 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         rep.setLocalScale(scale);
         world.getBackground().addRepresentation(rep);
 
+        addTask(new CompleteFBDTask(new BodySubset(tower)));
     }
 }
