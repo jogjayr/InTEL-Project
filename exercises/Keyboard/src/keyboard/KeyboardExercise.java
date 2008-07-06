@@ -141,9 +141,9 @@ public class KeyboardExercise extends OrdinaryExercise {
 
         keyboardLeft.createDefaultSchematicRepresentation();
         keyboardRight.createDefaultSchematicRepresentation();
-        leftLeg.createDefaultSchematicRepresentation();
-        bar.createDefaultSchematicRepresentation();
-        rightLeg.createDefaultSchematicRepresentation();
+        //leftLeg.createDefaultSchematicRepresentation();
+        //bar.createDefaultSchematicRepresentation();
+        //rightLeg.createDefaultSchematicRepresentation();
 
         schematic.add(leftLeg);
         schematic.add(bar);
