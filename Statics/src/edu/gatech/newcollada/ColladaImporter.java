@@ -1817,6 +1817,7 @@ public class ColladaImporter {
                 mat.setState(ms);
             }
 
+            /*
             if (pass.getcolor_material().hasface()) {
                 String face = pass.getcolor_material().getface().getvalue2().toString();
                 if ("FRONT".equals(face)) {
@@ -1826,7 +1827,10 @@ public class ColladaImporter {
                 } else if ("FRONT_AND_BACK".equals(face)) {
                     ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
                 }
-            }
+            }*/
+            // Statics specific override:
+            // all materials should be front and back materials:
+            ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
 
             if (pass.getcolor_material().hasmode()) {
                 String mode = pass.getcolor_material().getmode().getvalue2().toString();
