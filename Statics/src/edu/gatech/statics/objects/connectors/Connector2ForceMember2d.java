@@ -55,4 +55,9 @@ public class Connector2ForceMember2d extends Connector {
     public TwoForceMember getMember() {
         return member;
     }
+
+    @Override
+    public String connectorName() {
+        return "pin";
+    }
 }

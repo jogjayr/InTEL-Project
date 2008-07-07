@@ -38,4 +38,9 @@ public class Roller3d extends Connector {
     public List<Vector> getReactions() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    @Override
+    public String connectorName() {
+        return "roller";
+    }
 }

@@ -139,4 +139,6 @@ abstract public class Connector extends SimulationObject {
     public String toString() {
         return getClass().getSimpleName() + " @ " + getAnchor().getName();
     }
+    
+    abstract public String connectorName();
 }

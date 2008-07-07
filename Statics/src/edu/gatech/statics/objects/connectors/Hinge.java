@@ -42,4 +42,9 @@ public class Hinge extends Connector {
     new Vector(Unit.force, Vector3f.UNIT_Y),
     new Vector(Unit.moment, Vector3f.UNIT_Z));*/
     }
+
+    @Override
+    public String connectorName() {
+        return "hinge";
+    }
 }

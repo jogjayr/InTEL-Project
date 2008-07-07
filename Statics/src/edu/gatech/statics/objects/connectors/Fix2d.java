@@ -47,4 +47,9 @@ public class Fix2d extends Connector {
                 new Vector(Unit.force, Vector3bd.UNIT_Y, ""),
                 new Vector(Unit.moment, Vector3bd.UNIT_Z, ""));
     }
+
+    @Override
+    public String connectorName() {
+        return "fix";
+    }
 }

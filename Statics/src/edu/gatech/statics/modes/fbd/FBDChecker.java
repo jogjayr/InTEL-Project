@@ -21,7 +21,6 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
-import edu.gatech.statics.objects.connectors.Roller2d;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -273,7 +272,7 @@ public class FBDChecker {
                 continue;
             }
 
-            Connector joint = (Connector) obj;
+            Connector connector = (Connector) obj;
 
             // no idea what this next section does.
             // commenting out seems to do no harm for the time being.
@@ -290,45 +289,45 @@ public class FBDChecker {
             }*/
 
             Body body = null;
-            if (diagram.getBodySubset().getBodies().contains(joint.getBody1())) {
-                body = joint.getBody1();
+            if (diagram.getBodySubset().getBodies().contains(connector.getBody1())) {
+                body = connector.getBody1();
             }
-            if (diagram.getBodySubset().getBodies().contains(joint.getBody2())) {
-                body = joint.getBody2();
+            if (diagram.getBodySubset().getBodies().contains(connector.getBody2())) {
+                body = connector.getBody2();
             }
 
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
-            if (!(diagram.getBodySubset().getBodies().contains(joint.getBody1()) ^
-                    diagram.getBodySubset().getBodies().contains(joint.getBody2()))) {
+            if (!(diagram.getBodySubset().getBodies().contains(connector.getBody1()) ^
+                    diagram.getBodySubset().getBodies().contains(connector.getBody2()))) {
                 continue;
             }
 
-            List<Load> reactions = getReactions(joint, joint.getReactions(body));
+            List<Load> reactions = getReactions(connector, connector.getReactions(body));
 
-            logInfo("check: testing joint: " + joint);
+            logInfo("check: testing joint: " + connector);
 
-            if (testJoint(joint, addedForces, reactions)) {
+            if (testJoint(connector, addedForces, reactions)) {
                 continue;
             } else {
                 // joint check has failed,
                 // so check some common errors
 
                 //no reaction forces added
-                if (getForcesAtPoint(joint.getAnchor(), addedForces).isEmpty()) {
+                if (getForcesAtPoint(connector.getAnchor(), addedForces).isEmpty()) {
                     logInfo("check: have any forces been added");
                     logInfo("check: FAILED");
-                    setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
+                    setAdviceKey("fbd_feedback_check_fail_joint_reaction", connector.connectorName(), connector.getAnchor().getLabelText());
                     return false;
                 }
 
                 //check to see if the user has created a cable that is in compression
-                if (joint instanceof Connector2ForceMember2d) {
+                if (connector instanceof Connector2ForceMember2d) {
                     for (Load load : reactions) {
                         for (int iii = 0; iii < addedForces.size(); iii++) {
-                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(iii).equalsSymbolic(negate(load))) {
-                                logInfo("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
+                            if ((connector.getBody1() instanceof Cable || connector.getBody2() instanceof Cable) && addedForces.get(iii).equalsSymbolic(negate(load))) {
+                                logInfo("check: user created a cable in compression at point " + connector.getAnchor().getLabelText());
                                 logInfo("check: FAILED");
                                 setAdviceKey("fbd_feedback_check_fail_joint_cable",
                                         addedForces.get(iii).getAnchor().getLabelText(),
@@ -340,29 +339,29 @@ public class FBDChecker {
                 }
 
                 //check to see if the user has wrongly created a pin
-                if (!(joint instanceof Pin2d)) {
-                    Pin2d testPin = new Pin2d(joint.getAnchor());
+                if (!(connector instanceof Pin2d)) {
+                    Pin2d testPin = new Pin2d(connector.getAnchor());
                     if (testJoint(testPin, addedForces, reactions)) {
-                        logInfo("check: user wrongly created a pin at point " + joint.getAnchor().getLabelText());
+                        logInfo("check: user wrongly created a pin at point " + connector.getAnchor().getLabelText());
                         logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "pin", connectorType(joint));
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "pin", connector.connectorName());
                         return false;
                     }
                 }
                 //check to see if the user has wrongly created a fix
-                if (!(joint instanceof Fix2d)) {
-                    Fix2d testFix = new Fix2d(joint.getAnchor());
+                if (!(connector instanceof Fix2d)) {
+                    Fix2d testFix = new Fix2d(connector.getAnchor());
                     if (testJoint(testFix, addedForces, reactions)) {
-                        logInfo("check: user wrongly created a fix at point " + joint.getAnchor().getLabelText());
+                        logInfo("check: user wrongly created a fix at point " + connector.getAnchor().getLabelText());
                         logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", joint.getAnchor().getLabelText(), "fix", connectorType(joint));
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "fix", connector.connectorName());
                         return false;
                     }
                 }
 
-                logInfo("check: user simply added reactions to a joint that don't make sense to point " + joint.getAnchor().getLabelText());
+                logInfo("check: user simply added reactions to a joint that don't make sense to point " + connector.getAnchor().getLabelText());
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_joint_wrong", connectorType(joint), joint.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_joint_wrong", connector.connectorName(), connector.getAnchor().getLabelText());
                 return false;
             }
         }
@@ -661,7 +660,7 @@ public class FBDChecker {
         }
     }
 
-    private String connectorType(Connector joint) {
+    /*private String connectorType(Connector joint) {
         if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
             return "pin";
         } else if (joint instanceof Fix2d) {
@@ -671,5 +670,5 @@ public class FBDChecker {
         } else {
             return "connector";
         }
-    }
+    }*/
 }

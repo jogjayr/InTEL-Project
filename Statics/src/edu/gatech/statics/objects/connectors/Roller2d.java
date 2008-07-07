@@ -13,7 +13,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.representations.PointRepresentation;
+import edu.gatech.statics.objects.representations.ConnectorRepresentation;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,10 +46,15 @@ public class Roller2d extends Connector {
     @Override
     public void createDefaultSchematicRepresentation() {
         
-        PointRepresentation rep = new PointRepresentation(this, "rsrc/roller.png");
+        ConnectorRepresentation rep = new ConnectorRepresentation(this, "rsrc/roller.png");
         rep.getQuad().setLocalScale(2);
         rep.getQuad().setLocalTranslation(0,-.5f,0);
         addRepresentation(rep);
+    }
+
+    @Override
+    public String connectorName() {
+        return "roller";
     }
     
 }
