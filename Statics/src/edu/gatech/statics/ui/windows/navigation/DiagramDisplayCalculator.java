@@ -63,6 +63,9 @@ public class DiagramDisplayCalculator {
         // first merge with the schematic node
         volume.mergeLocal(schematicNode.getWorldBound());
 
+        if(modelNode.getChildren() == null)
+            return volume;
+        
         // then merge with appropriate model bodies
         for (Spatial spatial : modelNode.getChildren()) {
             if (spatial instanceof Representation) {
