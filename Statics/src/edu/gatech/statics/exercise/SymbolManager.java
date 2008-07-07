@@ -7,6 +7,7 @@ package edu.gatech.statics.exercise;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,6 +73,18 @@ public class SymbolManager {
         for (Load toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+
+                return toCheck.getVector().getQuantity();
+            }
+        }
+        return null;
+    }
+    
+    public Quantity getSymbol(TwoForceMember tfm, Load load) {
+        for (Load toCheck : symbolicLoads) {
+            if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
+                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                     (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
 
                 return toCheck.getVector().getQuantity();

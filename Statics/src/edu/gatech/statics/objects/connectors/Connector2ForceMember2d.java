@@ -51,4 +51,8 @@ public class Connector2ForceMember2d extends Connector {
         return Arrays.asList(
                 new Vector(Unit.force, direction, ""));
     }
+    
+    public TwoForceMember getMember() {
+        return member;
+    }
 }

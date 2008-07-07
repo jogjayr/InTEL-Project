@@ -278,15 +278,15 @@ public class FBDChecker {
             // no idea what this next section does.
             // commenting out seems to do no harm for the time being.
             /*for (int ii = i + 1; ii < diagram.allObjects().size(); ii++) {
-                SimulationObject obj2 = diagram.allObjects().get(ii);
-                if (!(obj2 instanceof Joint)) {
-                    if (ii == diagram.allObjects().size() - 1) {
-                        done = true;
-                    }
-                    continue;
-                }
-                nextJoint = (Joint) obj2;
-                break;
+            SimulationObject obj2 = diagram.allObjects().get(ii);
+            if (!(obj2 instanceof Joint)) {
+            if (ii == diagram.allObjects().size() - 1) {
+            done = true;
+            }
+            continue;
+            }
+            nextJoint = (Joint) obj2;
+            break;
             }*/
 
             Body body = null;
@@ -322,6 +322,23 @@ public class FBDChecker {
                     setAdviceKey("fbd_feedback_check_fail_joint_reaction", connectorType(joint), joint.getAnchor().getLabelText());
                     return false;
                 }
+
+                //check to see if the user has created a cable that is in compression
+                if (joint instanceof Connector2ForceMember2d) {
+                    for (Load load : reactions) {
+                        for (int iii = 0; iii < addedForces.size(); iii++) {
+                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(iii).equalsSymbolic(negate(load))) {
+                                logInfo("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_joint_cable",
+                                        addedForces.get(iii).getAnchor().getLabelText(),
+                                        addedForces.get(iii).getLabelText());
+                                return false;
+                            }
+                        }
+                    }
+                }
+
                 //check to see if the user has wrongly created a pin
                 if (!(joint instanceof Pin2d)) {
                     Pin2d testPin = new Pin2d(joint.getAnchor());
@@ -343,21 +360,6 @@ public class FBDChecker {
                     }
                 }
 
-                //check to see if the user has created a cable that is in compression
-                if (joint instanceof Connector2ForceMember2d) {
-                    for (Load load : reactions) {
-                        for (int iii = 0; iii < addedForces.size(); iii++) {
-                            if ((joint.getBody1() instanceof Cable || joint.getBody2() instanceof Cable) && addedForces.get(iii).equalsSymbolic(negate(load))) {
-                                logInfo("check: user created a cable in compression at point " + joint.getAnchor().getLabelText());
-                                logInfo("check: FAILED");
-                                setAdviceKey("fbd_feedback_check_fail_joint_cable",
-                                        addedForces.get(iii).getAnchor().getLabelText(),
-                                        addedForces.get(iii).getLabelText());
-                                return false;
-                            }
-                        }
-                    }
-                }
                 logInfo("check: user simply added reactions to a joint that don't make sense to point " + joint.getAnchor().getLabelText());
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_joint_wrong", connectorType(joint), joint.getAnchor().getLabelText());
@@ -406,14 +408,29 @@ public class FBDChecker {
                 // here we check against a quantity set in the symbol manager
                 Quantity symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(force);
 
+                //it might just be that we are dealing with a Connector2ForceMember which needs an additional check
+                if (symbolicQuantity == null) {
+                    for (SimulationObject obj : diagram.allObjects()) {
+                        if (obj instanceof Connector2ForceMember2d) {
+                            symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(((Connector2ForceMember2d) obj).getMember(), force);
+                            if (symbolicQuantity != null) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //check if the force or moment is right but with the wrong label
                 if (symbolicQuantity != null) {
                     if (!symbolicQuantity.toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
+                        logInfo("check: force or moment is correct but its label does not match its equivalent: " + force);
+                        logInfo("check: FAILED");
                         setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getName(), force.getAnchor().getLabelText());
                         return false;
                     }
                 }
 
-                // make sure that points 
+                // make sure that points have unique names from everything else
                 for (Point p : getAllPoints()) {
                     if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
                         logInfo("check: anchors and added force/moments should not share names");
@@ -437,25 +454,61 @@ public class FBDChecker {
                 // loop through our added forces a second time, to check for duplicate names.
                 for (Load f : addedForces) {
                     if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
-                        logInfo("check: force or moment have incorrectly duplicate names: " + force);
-                        logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_duplicate",
-                                forceOrMoment(force),
-                                force.getAnchor().getLabelText(),
-                                forceOrMoment(f),
-                                f.getAnchor().getLabelText());
+                        //check to see if a body is a two force member which makes it ok for the force labels to be the same
+                        boolean correct = false;
+                        for (SimulationObject obj : diagram.allObjects()) {
+                            if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(f.getAnchor(), force.getAnchor())) {
+                                correct = true;
+                                break;
+                            }
+                        }
+                        if (!correct) {
+                            logInfo("check: force or moment have incorrectly duplicate names: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_duplicate",
+                                    forceOrMoment(force),
+                                    force.getAnchor().getLabelText(),
+                                    forceOrMoment(f),
+                                    f.getAnchor().getLabelText());
 
-                        return false;
+                            return false;
+                        }
+                    } else if (f != force) {
+                        boolean correct = false;
+                        for (SimulationObject obj : diagram.allObjects()) {
+                            if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(f.getAnchor(), force.getAnchor())) {
+                                correct = true;
+                                break;
+                            }
+                        }
+                        if (correct) {
+                            logInfo("check: force or moment have incorrectly duplicate names: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_2force_not_same", f.getAnchor().getLabelText(), force.getAnchor().getLabelText());
+
+                            return false;
+                        }
                     }
                 }
 
                 if (symbolicQuantity == null) {
-                    for (String symbol : StaticsApplication.getApp().getExercise().getSymbolManager().getSymbols()) {
-                        if (symbol.equals(force.getVector().getSymbolName())) {
-                            logInfo("check: force or moment have incorrectly duplicate names (with a symbol from another diagram): " + force);
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_duplicate_name", forceOrMoment(force), force.getVector().getSymbolName(), force.getAnchor().getLabelText());
-                            return false;
+                    for (Load symbolLoad : StaticsApplication.getApp().getExercise().getSymbolManager().allLoads()) {
+                        if (symbolLoad.getVector().getSymbolName().equalsIgnoreCase(force.getVector().getSymbolName())) {
+                            //test to allow a force on a two force member to have the same name as 
+                            //its opposing force as represented in an adjoining body
+                            boolean correct = false;
+                            for (SimulationObject obj : diagram.allObjects()) {
+                                if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(symbolLoad.getAnchor(), force.getAnchor())) {
+                                    correct = true;
+                                    break;
+                                }
+                            }
+                            if (!correct) {
+                                logInfo("check: force or moment have incorrectly duplicate names (with a symbol from another diagram): " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_duplicate_name", forceOrMoment(force), force.getVector().getSymbolName(), force.getAnchor().getLabelText());
+                                return false;
+                            }
                         }
                     }
                 }
@@ -566,7 +619,7 @@ public class FBDChecker {
 
         // otherwise go through and remove these forces 
         //if (done || !nextJoint.getAnchor().getLabelText().equals(joint.getAnchor().getLabelText())) {
-            addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
+        addedForces.removeAll(getForcesAtPoint(joint.getAnchor(), addedForces));
         //}
         return true;
     }
