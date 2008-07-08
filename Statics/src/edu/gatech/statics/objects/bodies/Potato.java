@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.objects.bodies;
 
 import edu.gatech.statics.objects.Body;
@@ -13,11 +12,9 @@ import edu.gatech.statics.objects.Body;
  * that has no precise shape or placement. 
  * @author Calvin Ashmore
  */
-public class Potato extends Body{
+public class Potato extends Body {
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        
     }
-
 }
