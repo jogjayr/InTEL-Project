@@ -113,7 +113,7 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
 
         constraints.setPositionConstraints(-20, 20, -20, 20);
         constraints.setZoomConstraints(.5f, 2);
-        constraints.setRotationConstraints(-2f, 2f);
+        constraints.setRotationConstraints(-1f, 1f);
 
         return constraints;
     }
