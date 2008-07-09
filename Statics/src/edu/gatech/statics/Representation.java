@@ -222,6 +222,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         setRenderState(lightState);
         DirectionalLight dLight = new DirectionalLight();
         dLight.setDirection(Vector3f.UNIT_Z.negate());
+        dLight.setAmbient(ColorRGBA.black);
         light = dLight;
 
         //light.setAmbient(ColorRGBA.white);
@@ -328,12 +329,12 @@ abstract public class Representation<SimType extends SimulationObject> extends N
 
         if (selected) {
             light.setEnabled(true);
-            light.setAmbient(selectLightColor);
+            //light.setAmbient(selectLightColor);
             light.setDiffuse(selectLightColor);
 
         } else if (hover) {
             light.setEnabled(true);
-            light.setAmbient(hoverLightColor);
+            //light.setAmbient(hoverLightColor);
             light.setDiffuse(hoverLightColor);
 
         } else {
