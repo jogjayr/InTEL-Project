@@ -42,6 +42,7 @@ public class Connector2ForceMember2d extends Connector {
     /** Creates a new instance of Connector2ForceMember */
     public Connector2ForceMember2d(Point point, TwoForceMember member) {
         super(point);
+        point.setMember(member);
         this.member = member;
 
         this.direction = member.getDirectionFrom(point);

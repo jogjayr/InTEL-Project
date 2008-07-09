@@ -7,6 +7,7 @@ package edu.gatech.statics.exercise;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,10 @@ public class SymbolManager {
 
     private List<String> symbols = new ArrayList<String>();
     private List<Load> symbolicLoads = new ArrayList<Load>();
+
+    public List<Load> getLoads() {
+        return Collections.unmodifiableList(symbolicLoads);
+    }
 
     public List<String> getSymbols() {
         return Collections.unmodifiableList(symbols);
@@ -58,6 +63,18 @@ public class SymbolManager {
         return null;
     }
 
+    public Load getLoad2FM(TwoForceMember tfm, Load load) {
+        for (Load toCheck : symbolicLoads) {
+            if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
+                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+
+                return toCheck;
+            }
+        }
+        return null;
+    }
+    
     public List<Load> allLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
@@ -81,7 +98,7 @@ public class SymbolManager {
         return null;
     }
     
-    public Quantity getSymbol(TwoForceMember tfm, Load load) {
+    public Quantity getSymbol2FM(TwoForceMember tfm, Load load) {
         for (Load toCheck : symbolicLoads) {
             if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
                 (load.getVectorValue().equals(toCheck.getVectorValue()) ||

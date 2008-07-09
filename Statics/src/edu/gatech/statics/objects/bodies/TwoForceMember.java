@@ -29,8 +29,11 @@ abstract public class TwoForceMember extends LongBody {
     super(end1, end2);
     }*/
     public boolean containsPoints(Point point1, Point point2) {
-        if (getAttachedObjects().contains(point1) && getAttachedObjects().contains(point2)) {
-            return true;
+
+        if (point1 != point2) {
+            if (getAttachedObjects().contains(point1) && getAttachedObjects().contains(point2)) {
+                return true;
+            }
         }
         return false;
     }

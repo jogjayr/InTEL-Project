@@ -411,7 +411,7 @@ public class FBDChecker {
                 if (symbolicQuantity == null) {
                     for (SimulationObject obj : diagram.allObjects()) {
                         if (obj instanceof Connector2ForceMember2d) {
-                            symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(((Connector2ForceMember2d) obj).getMember(), force);
+                            symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol2FM(((Connector2ForceMember2d) obj).getMember(), force);
                             if (symbolicQuantity != null) {
                                 break;
                             }
@@ -512,36 +512,94 @@ public class FBDChecker {
                     }
                 }
             } else {
-
                 // force is numeric.
-                // the only forces that WOULD be numeric are weights right now.
-                // make sure the value given is equal to the weight of the object.
-
-                Load tLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
-
+                Load adjacentLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
                 if (weights.containsKey(force)) {
                     // ignore this case, weights have already been taken care of
                 } else if (givenForces.contains(force)) {
                     // OK, do nothing, givens have also been taken care of.
-                } else if (tLoad != null) {
-                    if (tLoad.getVector().getQuantity().toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
-                        if (tLoad.getVectorValue().negate().equals(force.getVectorValue())) {
-                            logInfo("check: force or moment has been solved before, and is reversed: " + force);
+                } else if (force.getAnchor().getMember() != null) {
+                    //the force we are dealing with is part of a two force member
+                    Load opposingLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad2FM(force.getAnchor().getMember(), force);
+                    if (opposingLoad != null) {
+                        //if the representative force for the 2FM is on the opposing point
+                        if (!opposingLoad.isKnown()) {
+                            //the opposing force has a symbolic value
+                            logInfo("check: force should not be numeric: " + force);
                             logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_reverse", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
+                            setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
                             return false;
+                        } else {
+                            //the opposing force has a numeric value
+                            if (!force.getVector().getQuantity().getDiagramValue().equals(opposingLoad.getVector().getQuantity().getDiagramValue())) {
+                                //the student has created two numeric forces with different values
+                                logInfo("check: numeric values do not match: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                                return false;
+                            }
+                        }
+                    } else if (adjacentLoad != null) {
+                        //if the representative force for the 2FM is on the same point as force
+                        if (!adjacentLoad.isKnown()) {
+                            //the opposing force has a symbolic value
+                            logInfo("check: force should not be numeric: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        } else {
+                            //the opposing force has a numeric value
+                            if (!force.getVector().getQuantity().getDiagramValue().equals(adjacentLoad.getVector().getQuantity().getDiagramValue())) {
+                                //the student has created two numeric forces with different values
+                                logInfo("check: numeric values do not match: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                                return false;
+                            }
                         }
                     } else {
-                        logInfo("check: force or moment has been solved before, and has the wrong number reversed: " + force);
+                        //the student has created a force that is numeric when an adjacent and opposing forces don't exist
+                        logInfo("check: force should not be numeric: " + force);
                         logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getVector().getQuantity(), force.getAnchor().getLabelText());
+                        setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                        return false;
+                    }
+                } else if (force.getAnchor().getMember() == null) {
+                    //the force we are dealing with is not part of a two force member
+                    if (adjacentLoad == null) {
+                        //the student has created a force that is numeric when the adjacent force does not exist
+                        logInfo("check: force should not be numeric: " + force);
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                        return false;
+                    } else if (adjacentLoad.isKnown()) {
+                        //the student has created a force that is numeric and the adjacent force also is numeric
+                        if (!force.getVector().getQuantity().getDiagramValue().equals(adjacentLoad.getVector().getQuantity().getDiagramValue())) {
+                            //the student has created two numeric forces with different values
+                            logInfo("check: numeric values do not match: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                        if (force.equalsSymbolic(adjacentLoad)) {
+                            //the student has created two numeric forces with the same direction
+                            logInfo("check: force is pointing the wrong direction: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_reverse", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                    } else if (!adjacentLoad.isKnown()) {
+                        //the student has created a force that is numeric when the adjacent force is symbolic
+                        logInfo("check: force should not be numeric: " + force);
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
                         return false;
                     }
                 } else {
+                    //something really REALLY awful happened, it shouldn't be possible to reach this point I don't think
                     logInfo("check: force should not be numeric: " + force);
                     logInfo("check: FAILED");
-
-                    setAdviceKey("fbd_feedback_check_fail_numeric", force.getAnchor().getLabelText());
+                    setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
                     return false;
                 }
             }
@@ -661,14 +719,14 @@ public class FBDChecker {
     }
 
     /*private String connectorType(Connector joint) {
-        if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
-            return "pin";
-        } else if (joint instanceof Fix2d) {
-            return "fix";
-        } else if (joint instanceof Roller2d) {
-            return "roller";
-        } else {
-            return "connector";
-        }
+    if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
+    return "pin";
+    } else if (joint instanceof Fix2d) {
+    return "fix";
+    } else if (joint instanceof Roller2d) {
+    return "roller";
+    } else {
+    return "connector";
+    }
     }*/
 }

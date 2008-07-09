@@ -162,6 +162,11 @@ public class EquationDiagram extends SubDiagram {
                     
                     // attempt to make sure the vector value is updated in the symbol manager
                     Load symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj);
+                    
+                    if (symbolManagerLoad == null) {
+                        symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad2FM(vObj.getAnchor().getMember(), vObj);
+                    }
+                    
                     if(symbolManagerLoad != vObj) {
                         symbolManagerLoad.setDiagramValue(new BigDecimal(value));
                         symbolManagerLoad.setKnown(true);
