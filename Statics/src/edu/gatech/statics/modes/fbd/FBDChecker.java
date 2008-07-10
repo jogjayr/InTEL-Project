@@ -18,6 +18,7 @@ import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Cable;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
@@ -169,7 +170,6 @@ public class FBDChecker {
                 for (Load addedExt : addedForces) {
                     if (addedExt.getAnchor() == external.getAnchor()) {
                         if ((addedExt instanceof Force && external instanceof Force) || (addedExt instanceof Moment && external instanceof Moment)) {
-
                             if (external.isSymbol() && !addedExt.isSymbol()) {
                                 //An external value that should be symbolic has been added as numeric
                                 logInfo("check: external value should be a symbol at point" + external.getAnchor().getLabelText());
@@ -386,49 +386,113 @@ public class FBDChecker {
         // go through each force that the user has added
         for (Load force : addedForces) {
             if (force.isSymbol()) {
-
+                // force is symbolic
+                Load adjacentLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
                 // ignore solved forces
                 if (force.isKnown()) {
                     continue;
                 }
-
                 // should force be a symbol?
                 // the only forces that should not be symbols now are weights.
                 // we probably need some sort of means for identifying this later on...
-
                 if (weights.values().contains(force)) {
                     logInfo("check: force should not be symbol: " + force);
                     logInfo("check: FAILED");
-
                     setAdviceKey("fbd_feedback_check_fail_symbol", force.getAnchor().getLabelText());
                     return false;
-                }
-
-                // here we check against a quantity set in the symbol manager
-                Quantity symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol(force);
-
-                //it might just be that we are dealing with a Connector2ForceMember which needs an additional check
-                if (symbolicQuantity == null) {
-                    for (SimulationObject obj : diagram.allObjects()) {
-                        if (obj instanceof Connector2ForceMember2d) {
-                            symbolicQuantity = StaticsApplication.getApp().getExercise().getSymbolManager().getSymbol2FM(((Connector2ForceMember2d) obj).getMember(), force);
-                            if (symbolicQuantity != null) {
-                                break;
+                } else if (force.getAnchor().getMember() != null) {
+                    //the symbolic force is part of a 2FM
+                    Load opposingLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad2FM(force.getAnchor().getMember(), force);
+                    if (opposingLoad != null) {
+                        //if the representative force for the 2FM is on the opposing point
+                        if (!opposingLoad.isKnown()) {
+                            //the opposing force has a symbolic value
+                            if (!opposingLoad.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                                //the student has created a load with a name that doesn't match its opposing force
+                                logInfo("check: force should equal its opposite: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                                return false;
+                            }
+                        } else {
+                            //the opposing force has a numeric value and the student has added a symbolic force
+                            logInfo("check: force should not be symbolic: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                    } else if (adjacentLoad != null) {
+                        //if the representative force for the 2FM is on the same point as force
+                        if (!adjacentLoad.isKnown()) {
+                            //the adjacent force has a symbolic value
+                            if (!force.getLabelText().equalsIgnoreCase(adjacentLoad.getLabelText())) {
+                                //the student has created two symbolic forces with different values
+                                logInfo("check: symbolic values do not match: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                                return false;
+                            }
+                        } else {
+                            //the adjacent force has a numeric value and should not be symbolic
+                            logInfo("check: force should not be symbolic: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        }
+                    }
+                    for (Body bod : diagram.allBodies()) {
+                        //a horrible complicated mess to determine if a 2FM's two forces are the same
+                        if (bod instanceof TwoForceMember) {
+                            for (SimulationObject obj : diagram.allObjects()) {
+                                if (obj instanceof Load && ((TwoForceMember) bod).containsPoints(force.getAnchor(), ((Load) obj).getAnchor())) {
+                                    if (!obj.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                                        //loads on a 2FM that are symbolic need to have the same symbol
+                                        logInfo("check: forces on a 2FM need to have the same name: " + force);
+                                        logInfo("check: FAILED");
+                                        setAdviceKey("fbd_feedback_check_fail_2force_not_same", ((Load) obj).getAnchor().getLabelText(), force.getAnchor().getLabelText());
+                                        return false;
+                                    }
+                                }
                             }
                         }
                     }
-                }
-
-                //check if the force or moment is right but with the wrong label
-                if (symbolicQuantity != null) {
-                    if (!symbolicQuantity.toString().equalsIgnoreCase(force.getVector().getQuantity().toString())) {
-                        logInfo("check: force or moment is correct but its label does not match its equivalent: " + force);
+                } else if (force.getAnchor().getMember() == null) {
+                    //the force we are dealing with is not part of a 2FM
+                    if (adjacentLoad == null) {
+                        //check to make sure no loads have the same name unless they should
+                        for (Load obj : addedForces) {
+                            if (obj != force && obj.getLabelText().equals(force.getLabelText())) {
+                                logInfo("check: forces and moments should not have the same name as any other force or moment: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_duplicate", forceOrMoment(force), force.getAnchor().getLabelText(), forceOrMoment(obj), obj.getAnchor().getLabelText());
+                                return false;
+                            }
+                        }
+                    } else if (adjacentLoad.isKnown() && adjacentLoad != force) {
+                        //the student has created a symbolic force where it should have been numeric
+                        logInfo("check: load should not be symbolic: " + force);
                         logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getName(), force.getAnchor().getLabelText());
+                        setAdviceKey("fbd_feedback_check_fail_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
                         return false;
+
+                    } else if (!adjacentLoad.isKnown() && adjacentLoad != force) {
+                        for (Load obj : addedForces) {
+                            if (obj != force && obj.getLabelText().equals(force.getLabelText())) {
+                                logInfo("check: forces and moments should not have the same name as any other force or moment: " + force);
+                                logInfo("check: FAILED");
+                                setAdviceKey("fbd_feedback_check_fail_duplicate", forceOrMoment(force), force.getAnchor().getLabelText(), forceOrMoment(obj), obj.getAnchor().getLabelText());
+                                return false;
+                            }
+                        }
+                        if (!adjacentLoad.getLabelText().equalsIgnoreCase(force.getLabelText())) {
+                            //the student has created a load with a name that doesn't match its opposing force
+                            logInfo("check: force should equal its opposite: " + force);
+                            logInfo("check: FAILED");
+                            setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(force), force.getLabelText(), force.getAnchor().getLabelText());
+                            return false;
+                        }
                     }
                 }
-
                 // make sure that points have unique names from everything else
                 for (Point p : getAllPoints()) {
                     if (p.getLabelText().equalsIgnoreCase(force.getLabelText())) {
@@ -438,7 +502,6 @@ public class FBDChecker {
                         return false;
                     }
                 }
-
                 // go through our distance measurements and make sure that no labels share names with
                 // symbolic distance measurements
                 for (DistanceMeasurement d : getSymbolicMeasurements()) {
@@ -449,77 +512,15 @@ public class FBDChecker {
                         return false;
                     }
                 }
-
-                // loop through our added forces a second time, to check for duplicate names.
-                for (Load f : addedForces) {
-                    if (f.getLabelText().equalsIgnoreCase(force.getLabelText()) && f != force) {
-                        //check to see if a body is a two force member which makes it ok for the force labels to be the same
-                        boolean correct = false;
-                        for (SimulationObject obj : diagram.allObjects()) {
-                            if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(f.getAnchor(), force.getAnchor())) {
-                                correct = true;
-                                break;
-                            }
-                        }
-                        if (!correct) {
-                            logInfo("check: force or moment have incorrectly duplicate names: " + force);
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_duplicate",
-                                    forceOrMoment(force),
-                                    force.getAnchor().getLabelText(),
-                                    forceOrMoment(f),
-                                    f.getAnchor().getLabelText());
-
-                            return false;
-                        }
-                    } else if (f != force) {
-                        boolean correct = false;
-                        for (SimulationObject obj : diagram.allObjects()) {
-                            if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(f.getAnchor(), force.getAnchor())) {
-                                correct = true;
-                                break;
-                            }
-                        }
-                        if (correct) {
-                            logInfo("check: force or moment have incorrectly duplicate names: " + force);
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_2force_not_same", f.getAnchor().getLabelText(), force.getAnchor().getLabelText());
-
-                            return false;
-                        }
-                    }
-                }
-
-                if (symbolicQuantity == null) {
-                    for (Load symbolLoad : StaticsApplication.getApp().getExercise().getSymbolManager().allLoads()) {
-                        if (symbolLoad.getVector().getSymbolName().equalsIgnoreCase(force.getVector().getSymbolName())) {
-                            //test to allow a force on a two force member to have the same name as 
-                            //its opposing force as represented in an adjoining body
-                            boolean correct = false;
-                            for (SimulationObject obj : diagram.allObjects()) {
-                                if (obj instanceof Connector2ForceMember2d && ((Connector2ForceMember2d) obj).getMember().containsPoints(symbolLoad.getAnchor(), force.getAnchor())) {
-                                    correct = true;
-                                    break;
-                                }
-                            }
-                            if (!correct) {
-                                logInfo("check: force or moment have incorrectly duplicate names (with a symbol from another diagram): " + force);
-                                logInfo("check: FAILED");
-                                setAdviceKey("fbd_feedback_check_fail_duplicate_name", forceOrMoment(force), force.getVector().getSymbolName(), force.getAnchor().getLabelText());
-                                return false;
-                            }
-                        }
-                    }
-                }
             } else {
                 // force is numeric.
                 Load adjacentLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
                 if (weights.containsKey(force)) {
-                    // ignore this case, weights have already been taken care of
+                // ignore this case, weights have already been taken care of
                 } else if (givenForces.contains(force)) {
-                    // OK, do nothing, givens have also been taken care of.
+                // OK, do nothing, givens have also been taken care of.
                 } else if (force.getAnchor().getMember() != null) {
-                    //the force we are dealing with is part of a two force member
+                    //the numeric force is part of a 2FM
                     Load opposingLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad2FM(force.getAnchor().getMember(), force);
                     if (opposingLoad != null) {
                         //if the representative force for the 2FM is on the opposing point
@@ -686,9 +687,7 @@ public class FBDChecker {
     }
 
     private boolean testReaction(Load reaction, List<Load> addedForces, boolean remove) {
-
         // the equality check on Load requires that we ignore the symbol name
-
         Load equivalent = null;
         for (Load candidate : addedForces) {
             if (candidate.equalsSymbolic(reaction)) {
@@ -704,7 +703,6 @@ public class FBDChecker {
             }
             return true;
         }
-
         return false;
     }
 
@@ -717,16 +715,4 @@ public class FBDChecker {
             return "unknown?";
         }
     }
-
-    /*private String connectorType(Connector joint) {
-    if (joint instanceof Pin2d || joint instanceof Connector2ForceMember2d) {
-    return "pin";
-    } else if (joint instanceof Fix2d) {
-    return "fix";
-    } else if (joint instanceof Roller2d) {
-    return "roller";
-    } else {
-    return "connector";
-    }
-    }*/
 }
