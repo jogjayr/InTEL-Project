@@ -18,7 +18,7 @@ import com.jme.scene.Node;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.MaterialState;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Moment;
@@ -259,13 +259,13 @@ abstract public class Representation<SimType extends SimulationObject> extends N
 
         if (useWorldScale) {
             if (target instanceof Moment) {
-                setLocalScale(StaticsApplication.getApp().getMomentScale());
+                setLocalScale(DisplayConstants.getInstance().getMomentSize());
             } else if (target instanceof Force) {
-                setLocalScale(StaticsApplication.getApp().getForceScale());
+                setLocalScale(DisplayConstants.getInstance().getForceSize());
             } else if (target instanceof Point) {
-                setLocalScale(StaticsApplication.getApp().getPointScale());
+                setLocalScale(DisplayConstants.getInstance().getPointSize());
             } else if (target instanceof Connector) {
-                setLocalScale(StaticsApplication.getApp().getJointScale());
+                setLocalScale(DisplayConstants.getInstance().getJointSize());
             }
         }
         if (synchronizeTranslation) {

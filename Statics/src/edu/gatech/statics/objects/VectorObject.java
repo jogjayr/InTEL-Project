@@ -10,7 +10,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
@@ -141,7 +141,7 @@ public class VectorObject extends SimulationObject implements Quantified {
             return super.getDisplayCenter();
         }
 
-        float distance = StaticsApplication.getApp().getForceLabelScale();
+        float distance = DisplayConstants.getInstance().getForceSize();
 //        1 + 2 * (arrow.getLength() + arrow.getAxisOffset());
         return getTranslation().add(vector.getVectorValue().toVector3f().mult(distance));
     }

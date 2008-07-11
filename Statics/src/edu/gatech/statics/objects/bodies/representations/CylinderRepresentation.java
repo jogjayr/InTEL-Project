@@ -9,11 +9,10 @@
 package edu.gatech.statics.objects.bodies.representations;
 
 import com.jme.bounding.OrientedBoundingBox;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Body;
-import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Cylinder;
+import edu.gatech.statics.exercise.DisplayConstants;
 
 /**
  *
@@ -101,7 +100,7 @@ public class CylinderRepresentation extends BodyRepresentation {
         float effectiveRadius = radius;
         //if(useWorldScale())
         
-        effectiveRadius *= StaticsApplication.getApp().getCylinderScale();
+        effectiveRadius *= DisplayConstants.getInstance().getCylinderRadius();
 
         cylinder.setLocalScale(new Vector3f(effectiveRadius, effectiveRadius, height));
     }

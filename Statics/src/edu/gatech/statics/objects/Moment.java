@@ -11,7 +11,7 @@ package edu.gatech.statics.objects;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
-import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -38,7 +38,7 @@ public class Moment extends Load {
     public Moment(Point anchor, Vector3bd value, String symbolName) {
         super(anchor, new Vector(Unit.moment, value, symbolName));
     }
-    
+
     public Moment(Moment moment) {
         super(moment);
     }
@@ -61,7 +61,7 @@ public class Moment extends Load {
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
 //        label.setOffset(0, (StaticsApplication.getApp().getMomentScale()*40)/2);
 //        label.setOffset(0, 40);
-        label.setOffset(0, StaticsApplication.getApp().getMomentLabelScale());
+        label.setOffset(0, DisplayConstants.getInstance().getMomentLabelDistance());
         addRepresentation(label);
     }
 

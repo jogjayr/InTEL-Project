@@ -9,6 +9,8 @@ package edu.gatech.statics.exercise;
  * @author Jimmy Truesdell
  */
 public class DisplayConstants {
+
+    private static DisplayConstants instance;
     private float jointSize;
     private float measurementSize;
     private float momentLabelDistance;
@@ -17,6 +19,14 @@ public class DisplayConstants {
     private float forceSize;
     private float pointSize;
     private float momentSize;
+
+    public static DisplayConstants getInstance() {
+        return instance;
+    }
+
+    public void activate() {
+        instance = this;
+    }
 
     public DisplayConstants() {
         setMomentSize(0.2f);
@@ -94,7 +104,7 @@ public class DisplayConstants {
     public float getMeasurementSize() {
         return measurementSize;
     }
-    
+
     public void setJointSize(float value) {
         jointSize = value;
     }

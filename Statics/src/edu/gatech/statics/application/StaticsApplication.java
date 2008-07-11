@@ -82,39 +82,6 @@ public class StaticsApplication {
         return Collections.unmodifiableList(solveListeners);
     }
 
-    //private float drawScale = 1.0f;
-    public float getForceScale() {
-        return currentExercise.getDisplayConstants().getForceSize();
-    }
-
-    public float getMomentScale() {
-        return currentExercise.getDisplayConstants().getMomentSize();
-    }
-
-    public float getPointScale() {
-        return currentExercise.getDisplayConstants().getPointSize();
-    }
-
-    public float getCylinderScale() {
-        return currentExercise.getDisplayConstants().getCylinderRadius();
-    }
-
-    public float getForceLabelScale() {
-        return currentExercise.getDisplayConstants().getForceLabelDistance();
-    }
-
-    public float getMomentLabelScale() {
-        return currentExercise.getDisplayConstants().getMomentLabelDistance();
-    }
-
-    public float getMeasurementScale() {
-        return currentExercise.getDisplayConstants().getMeasurementSize();
-    }
-
-    public float getJointScale() {
-        return currentExercise.getDisplayConstants().getJointSize();
-    }
-
     /**
      * This method loads the most finished diagram with the specified bodies.
      * @param bodies
@@ -221,7 +188,7 @@ public class StaticsApplication {
 
     public void setExercise(Exercise exercise) {
         this.currentExercise = exercise;
-    //loadExercizeWorld();
+        exercise.getDisplayConstants().activate();
     }
 
     public Exercise getExercise() {
