@@ -55,6 +55,8 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
         if(InterfaceRoot.getInstance().hasMouse())
             return;
         
+        StaticsApplication.getApp().getCurrentDiagram().onClick(null);
+        
         Diagram diagram = StaticsApplication.getApp().getCurrentDiagram();
         if(diagram instanceof FreeBodyDiagram)
             ((FreeBodyDiagram)diagram).onLabel(myLoad);
