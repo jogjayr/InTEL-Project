@@ -11,7 +11,9 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.exercise.SimpleFBDExercise;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
@@ -57,18 +59,30 @@ public class ArcherExercise extends SimpleFBDExercise {
         bowFront.setName("C");
         bowBottom.setName("D");
 
+        Vector3bd directionUnitTop = new Vector3bd(".5", "-.866", "0");
+        Vector3bd directionUnitBottom = new Vector3bd(".5", ".866", "0");
+        
         Pin2dKnownDirection connectorTop = new Pin2dKnownDirection(bowTop);
-        connectorTop.setDirection(new Vector3bd(".5", "-.866", "0"));
+        connectorTop.setDirection(directionUnitTop);
         connectorTop.attach(bowString, bow);
 
         Pin2dKnownDirection connectorBottom = new Pin2dKnownDirection(bowBottom);
-        connectorBottom.setDirection(new Vector3bd(".5", ".866", "0"));
+        connectorBottom.setDirection(directionUnitBottom);
         connectorBottom.attach(bowString, bow);
 
+        AngleMeasurement measureTop = new FixedAngleMeasurement(bowTop, directionUnitTop, Vector3f.UNIT_X);
+        AngleMeasurement measureBottom = new FixedAngleMeasurement(bowBottom, directionUnitBottom, Vector3f.UNIT_X);
+        
+        schematic.add(measureTop);
+        schematic.add(measureBottom);
+        
         bowTop.createDefaultSchematicRepresentation();
         stringBack.createDefaultSchematicRepresentation();
         bowBottom.createDefaultSchematicRepresentation();
         bowFront.createDefaultSchematicRepresentation();
+        
+        measureBottom.createDefaultSchematicRepresentation();
+        measureTop.createDefaultSchematicRepresentation();
 
         bow.addObject(bowFront);
         bowString.addObject(stringBack);
