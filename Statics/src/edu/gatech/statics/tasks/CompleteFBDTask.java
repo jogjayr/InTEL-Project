@@ -21,6 +21,11 @@ public class CompleteFBDTask implements Task {
     }
 
     public boolean isSatisfied() {
+        
+        // terminate early if the diagram does not yet exist.
+        if(!Exercise.getExercise().hasFreeBodyDiagram(bodies))
+            return false;
+        
         FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
         return fbd.isSolved();
     }

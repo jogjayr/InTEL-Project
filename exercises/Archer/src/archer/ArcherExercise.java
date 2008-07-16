@@ -20,6 +20,9 @@ import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.CompleteFBDTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.InterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 
 /**
  *
@@ -32,7 +35,14 @@ public class ArcherExercise extends SimpleFBDExercise {
         setName("Archer");
         setDescription("An olympic archer is holding a bow. Build free body diagrams of the bow, the bowstring, and the two together.");
         
-        getDisplayConstants().setDrawScale(2);
+        getDisplayConstants().setDrawScale(1);
+    }
+
+    @Override
+    public InterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        ic.setNavigationWindow(new Navigation3DWindow());
+        return ic;
     }
 
     
@@ -49,9 +59,9 @@ public class ArcherExercise extends SimpleFBDExercise {
         bowString.setName("Bow String");
         bow.setName("Bow");
 
-        Point bowTop = new Point("0", "5", "0");
-        Point stringBack = new Point("-3", "0", "0");
-        Point bowBottom = new Point("0", "-5", "0");
+        Point bowTop = new Point("-1.25", "5.5", "0");
+        Point stringBack = new Point("-4.5", "0", "0");
+        Point bowBottom = new Point("-1.25", "-5.5", "0");
         Point bowFront = new Point("3", "0", "0");
 
         stringBack.setName("A");
@@ -59,8 +69,8 @@ public class ArcherExercise extends SimpleFBDExercise {
         bowFront.setName("C");
         bowBottom.setName("D");
 
-        Vector3bd directionUnitTop = new Vector3bd(".5", "-.866", "0");
-        Vector3bd directionUnitBottom = new Vector3bd(".5", ".866", "0");
+        Vector3bd directionUnitTop = new Vector3bd(".5", ".866", "0");
+        Vector3bd directionUnitBottom = new Vector3bd(".5", "-.866", "0");
         
         Pin2dKnownDirection connectorTop = new Pin2dKnownDirection(bowTop);
         connectorTop.setDirection(directionUnitTop);
@@ -70,8 +80,16 @@ public class ArcherExercise extends SimpleFBDExercise {
         connectorBottom.setDirection(directionUnitBottom);
         connectorBottom.attach(bowString, bow);
 
-        AngleMeasurement measureTop = new FixedAngleMeasurement(bowTop, directionUnitTop, Vector3f.UNIT_X);
-        AngleMeasurement measureBottom = new FixedAngleMeasurement(bowBottom, directionUnitBottom, Vector3f.UNIT_X);
+        Pin2dKnownDirection connectorFront = new Pin2dKnownDirection(bowFront);
+        connectorFront.setDirection(Vector3bd.UNIT_X);
+        connectorFront.attachToWorld(bow);
+        
+        Pin2dKnownDirection connectorBack = new Pin2dKnownDirection(stringBack);
+        connectorBack.setDirection(Vector3bd.UNIT_X.negate());
+        connectorBack.attachToWorld(bowString);
+        
+        AngleMeasurement measureTop = new FixedAngleMeasurement(bowTop, directionUnitTop.negate(), Vector3f.UNIT_X.negate());
+        AngleMeasurement measureBottom = new FixedAngleMeasurement(bowBottom, directionUnitBottom.negate(), Vector3f.UNIT_X.negate());
         
         schematic.add(measureTop);
         schematic.add(measureBottom);
@@ -96,7 +114,7 @@ public class ArcherExercise extends SimpleFBDExercise {
         ModelRepresentation rep;
 
         float scale = 1;
-        Vector3f modelOffset = new Vector3f(-5, -16, 0);
+        Vector3f modelOffset = new Vector3f(-5.25f, -15.7f, -1.5f);
 
         rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringTop");
         rep.getRelativeNode().setLocalScale(scale);

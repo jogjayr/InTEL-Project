@@ -74,6 +74,12 @@ public class FBDModePanel extends ApplicationModePanel {
         FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: "+diagram.getBodySubset());
         Exercise.getExercise().enableTabs(diagram.getBodySubset());
+        
+        if(diagram.isSolved()) {
+            checkButton.setEnabled(false);
+            resetButton.setEnabled(false);
+            tools.setEnabled(false);
+        }
     }
     
     /**

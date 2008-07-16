@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.fbd;
 
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -313,6 +312,9 @@ public class FBDChecker {
             } else {
                 // joint check has failed,
                 // so check some common errors
+                logInfo("check: joint test failed");
+                logInfo("check: addedForces: " + addedForces);
+                logInfo("check: reactions:   " + reactions);
 
                 //no reaction forces added
                 if (getForcesAtPoint(connector.getAnchor(), addedForces).isEmpty()) {
@@ -335,6 +337,18 @@ public class FBDChecker {
                                 return false;
                             }
                         }
+                    }
+                }
+
+                //check whether the forces should be negated.
+                if (!connector.isForceDirectionNegatable()) {
+                    // make a copy of the forces at the point and negate them
+                    
+                    if(testJoint(connector, addedForces, reactions, true)) {
+                        logInfo("check: loads have wrong direction at point " + connector.getAnchor().getLabelText());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_some_reverse", connector.getAnchor().getLabelText());
+                        return false;
                     }
                 }
 
@@ -516,9 +530,9 @@ public class FBDChecker {
                 // force is numeric.
                 Load adjacentLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad(force);
                 if (weights.containsKey(force)) {
-                // ignore this case, weights have already been taken care of
+                    // ignore this case, weights have already been taken care of
                 } else if (givenForces.contains(force)) {
-                // OK, do nothing, givens have also been taken care of.
+                    // OK, do nothing, givens have also been taken care of.
                 } else if (force.getAnchor().getMember() != null) {
                     //the numeric force is part of a 2FM
                     Load opposingLoad = StaticsApplication.getApp().getExercise().getSymbolManager().getLoad2FM(force.getAnchor().getMember(), force);
@@ -647,12 +661,26 @@ public class FBDChecker {
     /**
      * Tests whether the correct user-added loads are present at the joint specified.
      * This method will remove the correct loads from addedForces if the test passes.
+     * This will test reversed according to the connector.
      * @param joint
      * @param addedForces all remaining forces that the user has added.
      * @param reactions the loads that should be present at the joint.
      * @return
      */
     private boolean testJoint(Connector joint, List<Load> addedForces, List<Load> reactions) {
+        return testJoint(joint, addedForces, reactions, joint.isForceDirectionNegatable());
+    }
+    
+    /**
+     * Tests whether the correct user-added loads are present at the joint specified.
+     * This method will remove the correct loads from addedForces if the test passes.
+     * @param joint
+     * @param addedForces all remaining forces that the user has added.
+     * @param reactions the loads that should be present at the joint.
+     * @param testNegated whether to test negated reactions
+     * @return
+     */
+    private boolean testJoint(Connector joint, List<Load> addedForces, List<Load> reactions, boolean testNegated) {
 
         //has the forces that the user added
         List<Load> forcesAtJoint = getForcesAtPoint(joint.getAnchor(), addedForces);
@@ -660,7 +688,7 @@ public class FBDChecker {
         // see if we can clear them all
         boolean success = true;
         for (Load load : reactions) {
-            if (joint.isForceDirectionNegatable()) {
+            if (testNegated) {
                 if (!testReaction(load, forcesAtJoint) && !testReaction(negate(load), forcesAtJoint)) {
                     success = false;
                 }

@@ -183,6 +183,10 @@ public abstract class Exercise {
         }
         return fbd;
     }
+    
+    public boolean hasFreeBodyDiagram(BodySubset bodySubset) {
+        return freeBodyDiagrams.containsKey(bodySubset);
+    }
 
     protected EquationDiagram createEquationDiagram(BodySubset bodySubset) {
         return new EquationDiagram(bodySubset);

@@ -63,6 +63,6 @@ public class SimpleFBDExercise extends Exercise {
             List<ApplicationModePanel> r = getModePanels();
             r.add(new SelectModePanel());
             r.add(new FBDModePanel());
-        }
+        }        
     }
 }

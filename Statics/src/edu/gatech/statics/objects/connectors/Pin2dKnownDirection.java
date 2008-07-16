@@ -16,8 +16,24 @@ import edu.gatech.statics.objects.representations.ConnectorRepresentation;
  */
 public class Pin2dKnownDirection extends Roller2d {
 
+    private boolean negatable;
+    
     public Pin2dKnownDirection(Point point) {
+        this(point, false);
+    }
+    
+    public Pin2dKnownDirection(Point point, boolean negatable) {
         super(point);
+        this.negatable = negatable;
+    }
+    
+    /**
+     * Depending on the type of pin, it cuold be negatable
+     * @return
+     */
+    @Override
+    public boolean isForceDirectionNegatable() {
+        return negatable;
     }
 
     @Override
