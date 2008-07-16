@@ -6,6 +6,7 @@ package archer;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Spatial;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
@@ -116,20 +117,21 @@ public class ArcherExercise extends SimpleFBDExercise {
         float scale = 1;
         Vector3f modelOffset = new Vector3f(-5.25f, -15.7f, -1.5f);
 
-        rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringTop");
+        rep = modelNode.extractElement(bowString, "VisualSceneNode/BowString");
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);
         bowString.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-        rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringBottom");
+        rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringBound");
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);
+        rep.setCullMode(Spatial.CULL_ALWAYS);
         bowString.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-
+        
         rep = modelNode.extractElement(bow, "VisualSceneNode/Bow");
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);

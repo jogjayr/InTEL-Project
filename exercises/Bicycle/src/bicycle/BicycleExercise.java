@@ -48,13 +48,15 @@ public class BicycleExercise extends OrdinaryExercise {
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*m");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
-        getDisplayConstants().setMomentSize(0.2f);
+        /*getDisplayConstants().setMomentSize(0.2f);
         getDisplayConstants().setForceSize(0.2f);
         getDisplayConstants().setPointSize(0.2f);
         getDisplayConstants().setCylinderRadius(0.2f);
         getDisplayConstants().setForceLabelDistance(1f);
         getDisplayConstants().setMomentLabelDistance(0f);
-        getDisplayConstants().setMeasurementSize(0.1f);
+        getDisplayConstants().setMeasurementSize(0.1f);*/
+        getDisplayConstants().setDrawScale(.5f);
+        getDisplayConstants().setForceLabelDistance(1);
     }
     Point A, I, H, J, G, F, B, K;
     Roller2d rollerA, rollerB;
