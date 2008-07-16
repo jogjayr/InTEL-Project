@@ -31,6 +31,10 @@ public class EquationSystem {
         }
     }
 
+    public void resetTerms() {
+        symbols.clear();
+    }
+    
     public void addTerm(int equation, float term, String symbol) {
         equations.get(equation).addTerm(term, symbol);
         if (!symbols.contains(symbol) && symbol != null) {

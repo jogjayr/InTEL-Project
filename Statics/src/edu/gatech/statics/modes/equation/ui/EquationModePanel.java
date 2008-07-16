@@ -251,6 +251,8 @@ public class EquationModePanel extends ApplicationModePanel {
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 
+            //this might be broken now because it can get in on non first time
+            //should the equation set had been initially unsolvable
             if (firstTime) {
                 // this is our first time solving the system.
                 diagram.performSolve(solution);

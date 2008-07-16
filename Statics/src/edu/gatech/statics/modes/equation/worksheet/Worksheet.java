@@ -54,6 +54,8 @@ public class Worksheet {
 
             Map<String, Quantity> vectorNames = new HashMap<String, Quantity>();
 
+            equationSystem.resetTerms();
+            
             // go through each row
             for (int row = 0; row < numberEquations; row++) {
 
