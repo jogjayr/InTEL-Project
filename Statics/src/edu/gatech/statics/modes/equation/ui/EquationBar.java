@@ -56,6 +56,10 @@ public class EquationBar extends BContainer {
         return math;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+    
     public EquationBar(EquationMath math, EquationModePanel parent) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         this.math = math;
@@ -286,6 +290,19 @@ public class EquationBar extends BContainer {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
+    public void setUnlocked() {
+        for (TermBox box : terms.values()) {
+            box.coefficient.setEnabled(true);
+        }
+        locked = false;
+        
+        if(momentButton != null)
+            momentButton.setEnabled(true);
+
+        // clear the current tool
+        StaticsApplication.getApp().setCurrentTool(null);
+    }
+    
     private void removeBox(TermBox box) {
         if (locked) {
             return;

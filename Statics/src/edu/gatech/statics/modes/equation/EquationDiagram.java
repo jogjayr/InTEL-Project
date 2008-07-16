@@ -28,6 +28,7 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -78,6 +79,10 @@ public class EquationDiagram extends SubDiagram {
         return momentPoint;
     }
 
+    public EquationMath getChecker() {
+        return new EquationMath(this);
+    }
+    
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,
     // then it will no longer be *equal* to the value stored as a key

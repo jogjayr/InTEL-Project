@@ -187,7 +187,11 @@ public class EquationModePanel extends ApplicationModePanel {
         if (math.isLocked()) {
             data.equationBar.setLocked();
             setCheckIcon(data.equationBar);
-        }
+        } 
+//        else if (!math.isLocked()) {
+//            data.equationBar.setUnlocked();
+//            unsetCheckIcon(data.equationBar);
+//        }
 
         // check our bar
         //check(data.equationBar);
@@ -197,6 +201,14 @@ public class EquationModePanel extends ApplicationModePanel {
         }
     }
 
+//    private void unsetCheckIcon(EquationBar bar) {
+//
+//        EquationUIData data = uiMap.get(bar.getMath());
+//        data.checkButton.setEnabled(true);
+//
+//        data.checkButton.setText("check");
+//    }
+    
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData data = uiMap.get(bar.getMath());

@@ -11,6 +11,8 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -50,13 +52,13 @@ public class EquationMode extends Mode {
 
         FBDChecker fbdChecker = fbd.getChecker();
         fbdChecker.setVerbose(false);
-
+        eq.getWorksheet().updateEquations();
         /*System.out.println("****************");
         System.out.println("*** postLoad ***");
         System.out.println("****************");
         System.out.println(Exercise.getExercise().getSymbolManager().getSymbols());
         for (Load load : Exercise.getExercise().getSymbolManager().allLoads()) {
-            System.out.println("  " + load);
+        System.out.println("  " + load);
         }*/
 
         // okay, the check fails, now we clear check flags and
@@ -64,13 +66,26 @@ public class EquationMode extends Mode {
         if (!fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
             eq.getWorksheet().resetSolve();
-            
             FBDMode.instance.load(key);
-            
+
             //FBDMode.instance.load(key);
             FBDRedirectPopup popup = new FBDRedirectPopup(key);
             popup.popup(0, 0, true);
             popup.center();
-        }
+        } 
+//        else {
+//            boolean pass = true;
+//            for (EquationMath eqm : eq.getWorksheet().getEquations()) {
+//                if (eq.getWorksheet().isSolved() && !eqm.check()) {
+//                    pass = false;
+//                    eqm.setLocked(false);
+//                }
+//            }
+//            if (!pass) {
+//                EquationModePopup popup = new EquationModePopup(key);
+//                popup.popup(0, 0, true);
+//                popup.center();
+//            }
+//        }
     }
 }

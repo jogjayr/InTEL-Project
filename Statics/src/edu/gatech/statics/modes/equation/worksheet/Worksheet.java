@@ -32,6 +32,12 @@ public class Worksheet {
     private Map<Quantity, Float> solution = null;
     private boolean solved = false;
 
+    public void updateEquations() {
+        for(EquationMath em : equations) {
+            em.update();
+        }
+    }
+    
     public boolean isSolved() {
         return solved;
     }
@@ -40,6 +46,7 @@ public class Worksheet {
         for (EquationMath math : equations) {
             math.setLocked(false);
         }
+//        solved = false;
     }
 
     public Map<Quantity, Float> solve() {
@@ -76,10 +83,12 @@ public class Worksheet {
             }
 
             equationSystem.process();
-            solved = true;
+            //moved "solved = true" to line 92 so that solve() can be run multiple times on 
+            //things that are initially unable to be solved
             if (!equationSystem.isSolvable()) {
                 solution = null;
             } else {
+                solved = true;
                 //solution = equationSystem.solve();
                 Map<String, Float> nameSolution = equationSystem.solve();
                 solution = new HashMap<Quantity, Float>();

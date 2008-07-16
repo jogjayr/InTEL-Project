@@ -13,14 +13,14 @@ import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
@@ -107,6 +107,30 @@ public class EquationMath {
     }
 
     /**
+     * update method works to update the terms in the equation,
+     * making sure that the the math correctly reflects the diagram.
+     * This method will also remove forces that are present in the terms, but
+     * no longer exist in the diagram.
+     */
+    void update() {
+        // this will need to be overridden by EquationMathMoments, or 
+        // alternately have getDiagramForces turn into getDiagramLoads
+        List<Load> loads = getDiagramLoads();
+
+        // make sure that terms are up to date
+        // use a list because the set would be backed by the map, and then cleared
+        List<Entry<VectorObject, Term>> allTerms =
+                new ArrayList<Entry<VectorObject, Term>>(terms.entrySet());
+        terms.clear();
+        for (Entry<VectorObject, Term> entry : allTerms) {
+
+            if (loads.contains(entry.getKey())) {
+                terms.put(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
      * Returns a map of String symbol names to floats according to their values.
      * Will return null if the set of equations is not deemed solvable.
      */
@@ -116,24 +140,23 @@ public class EquationMath {
     public boolean check() {
 
         // first, make sure all of the necessary terms are added to the equation.
-        List<Force> allForces = new ArrayList();
-        for (SimulationObject obj : world.allObjects()) {
-            if (obj instanceof Force && !obj.isDisplayGrayed()) {
-                // should not be grayed anyway, but just in case.
-                allForces.add((Force) obj);
+        List<Load> allLoads = getDiagramLoads();
+
+        Logger.getLogger("Statics").info("check: allForces: " + allLoads);
+
+        for (Load load : allLoads) {
+
+            // ignore moments that may appear
+            if (load.getUnit() == Unit.moment) {
+                continue;
             }
-        }
-
-        Logger.getLogger("Statics").info("check: allForces: " + allForces);
-
-        for (Force force : allForces) {
-            Term term = terms.get(force);
+            Term term = terms.get(load);
 
             // is this force aligned with our observation direction, even slightly?
             // if no, complain.
             // this condition checks to see if the dot product with the observation
             // direction is close enough to zero to be inappropriate.
-            if (Math.abs(force.getVectorValue().dot(getObservationDirection()).floatValue()) <= TEST_ACCURACY) {
+            if (Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) <= TEST_ACCURACY) {
                 if (term != null) {
                     Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
                     Logger.getLogger("Statics").info("check: FAILED");
@@ -147,7 +170,7 @@ public class EquationMath {
 
             // a term that we expected has not been added.
             if (term == null) {
-                Logger.getLogger("Statics").info("check: equation has not added all terms: " + force.getVector());
+                Logger.getLogger("Statics").info("check: equation has not added all terms: " + load.getVector());
                 Logger.getLogger("Statics").info("check: FAILED");
 
                 StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces", getAxis());
@@ -230,5 +253,17 @@ public class EquationMath {
         Logger.getLogger("Statics").info("check: PASSED!");
         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_success");
         return true;
+    }
+
+    protected List<Load> getDiagramLoads() {
+        List<Load> allLoads = new ArrayList();
+        for (SimulationObject obj : world.allObjects()) {
+            if (obj instanceof Load && !obj.isDisplayGrayed()) {
+                // should not be grayed anyway, but just in case.
+                allLoads.add((Load) obj);
+            }
+        }
+
+        return allLoads;
     }
 }
