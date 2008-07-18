@@ -37,6 +37,12 @@ public class EquationMode extends Mode {
         return StaticsApplication.getApp().getExercise().getEquationDiagram(bodies);
     }
 
+    @Override
+    public void preLoad(DiagramKey key) {
+        EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
+        eq.getWorksheet().updateEquations();
+    }
+
     /**
      * Here we override postLoad to check that the FBD is still OK. If the FBD
      * needs to be updated because another diagram was solved, then the equation
@@ -72,7 +78,7 @@ public class EquationMode extends Mode {
             FBDRedirectPopup popup = new FBDRedirectPopup(key);
             popup.popup(0, 0, true);
             popup.center();
-        } 
+        }
 //        else {
 //            boolean pass = true;
 //            for (EquationMath eqm : eq.getWorksheet().getEquations()) {

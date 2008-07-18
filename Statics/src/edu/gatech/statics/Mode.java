@@ -17,6 +17,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
  */
 public abstract class Mode {
     
+    public void preLoad(DiagramKey key) {}
     public void postLoad(DiagramKey key) {}
     
     abstract public String getModePanelName();
@@ -37,8 +38,9 @@ public abstract class Mode {
      */
     public final void load(DiagramKey key) {
         // load the diagram
+   
         StaticsApplication.getApp().setCurrentDiagram(getDiagram(key));
-        
+        preLoad(key);
         // loading the ModePanel occurs after the diagram.
         // the ModePanel may depend on the diagram for labeling, etc
         InterfaceRoot.getInstance().activateModePanel(getModePanelName());
