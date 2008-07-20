@@ -33,11 +33,11 @@ public class Worksheet {
     private boolean solved = false;
 
     public void updateEquations() {
-        for(EquationMath em : equations) {
+        for (EquationMath em : equations) {
             em.update();
         }
     }
-    
+
     public boolean isSolved() {
         return solved;
     }
@@ -55,12 +55,16 @@ public class Worksheet {
             Map<String, Quantity> vectorNames = new HashMap<String, Quantity>();
 
             equationSystem.resetTerms();
-            
+
             // go through each row
             for (int row = 0; row < numberEquations; row++) {
 
                 // now go through each term in the equation for the row
                 EquationMath math = equations.get(row);
+                if (!math.isLocked()) {
+                    continue;
+                }
+                
                 for (Term term : math.allTerms()) {
 
                     // work with the term's quantity

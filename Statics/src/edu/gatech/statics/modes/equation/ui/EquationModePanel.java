@@ -20,18 +20,22 @@ import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +52,6 @@ public class EquationModePanel extends ApplicationModePanel {
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
     //private BButton momentSelectButton;
-    
     private static final ColorRGBA regularBackgroundColor = ColorRGBA.black;
     private static final ColorRGBA regularBorderColor = ColorRGBA.black;
     private static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
@@ -102,15 +105,15 @@ public class EquationModePanel extends ApplicationModePanel {
         activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
         activeEquation.setBorder(new LineBorder(activeBorderColor));
 
-        // show the select moment warning popup
+    // show the select moment warning popup
         /*if (bar.getMath() instanceof EquationMathMoments) {
-            EquationDiagram diagram = (EquationDiagram) getDiagram();
-            if (diagram.getMomentPoint() == null) {
-                ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
-                popup.popup(0, 0, true);
-                popup.center();
-            }
-        }*/
+    EquationDiagram diagram = (EquationDiagram) getDiagram();
+    if (diagram.getMomentPoint() == null) {
+    ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
+    popup.popup(0, 0, true);
+    popup.center();
+    }
+    }*/
     }
 
     @Override
@@ -122,10 +125,10 @@ public class EquationModePanel extends ApplicationModePanel {
         super();
 
         /*momentSelectButton = new BButton("choose\nmoment\npoint", new ActionListener() {
-
-            public void actionPerformed(ActionEvent event) {
-                selectMomentPoint();
-            }
+        
+        public void actionPerformed(ActionEvent event) {
+        selectMomentPoint();
+        }
         }, "momentSelect");
         add(momentSelectButton, BorderLayout.WEST);*/
 
@@ -149,7 +152,7 @@ public class EquationModePanel extends ApplicationModePanel {
         GroupLayout solutionLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         solutionLayout.setOffAxisJustification(GroupLayout.LEFT);
         solutionContainer = new BContainer(solutionLayout);
-        
+
         add(solutionContainer, BorderLayout.EAST);
         solutionContainer.setPreferredSize(200, -1);
     }
@@ -187,7 +190,7 @@ public class EquationModePanel extends ApplicationModePanel {
         if (math.isLocked()) {
             data.equationBar.setLocked();
             setCheckIcon(data.equationBar);
-        } 
+        }
 //        else if (!math.isLocked()) {
 //            data.equationBar.setUnlocked();
 //            unsetCheckIcon(data.equationBar);
@@ -208,7 +211,6 @@ public class EquationModePanel extends ApplicationModePanel {
 //
 //        data.checkButton.setText("check");
 //    }
-    
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData data = uiMap.get(bar.getMath());
@@ -232,17 +234,42 @@ public class EquationModePanel extends ApplicationModePanel {
             setCheckIcon(bar);
             //InterfaceRoot.getInstance().setAdvice("yay, it worked!");
 
-            boolean allSolved = true;
+            //boolean allSolved = true;
+            int numberSolved = 0;
             for (EquationMath math : uiMap.keySet()) {
-                if (!math.isLocked()) {
-                    allSolved = false;
+                if (math.isLocked()) {
+                    //allSolved = false;
+                    numberSolved++;
                 }
             }
 
-            if (allSolved) {
+            if (numberSolved >= getNumberUnknowns()) {
+                //if (allSolved) {
                 performSolve();
             }
         }
+    }
+
+    /**
+     * find the number of unknowns for use in determining whether the user
+     * has solved enough equations
+     * @return
+     */
+    private int getNumberUnknowns() {
+        EquationDiagram diagram = (EquationDiagram) getDiagram();
+        List<String> symbols = new ArrayList<String>();
+        for (SimulationObject obj : diagram.allObjects()) {
+            if (obj instanceof Quantified) {
+                Quantified q = (Quantified) obj;
+                if (q.isSymbol() && !q.isKnown()) {
+                    String symbol = q.getSymbolName();
+                    if (!symbols.contains(symbol)) {
+                        symbols.add(symbol);
+                    }
+                }
+            }
+        }
+        return symbols.size();
     }
 
     private void performSolve() {
@@ -257,12 +284,12 @@ public class EquationModePanel extends ApplicationModePanel {
                 // this is our first time solving the system.
                 diagram.performSolve(solution);
             }
-            
+
             for (Map.Entry<Quantity, Float> entry : solution.entrySet()) {
                 Quantity q = entry.getKey();
                 q = new Quantity(q);
                 q.setDiagramValue(BigDecimal.valueOf(entry.getValue()));
-                
+
                 BLabel entryLabel = new BLabel(
                         "@=b(@=#ff0000(" + q.getSymbolName() + ")" +
                         " = " + q.getDiagramValue() + //entry.getValue() + 
@@ -271,7 +298,15 @@ public class EquationModePanel extends ApplicationModePanel {
             }
 
         } else {
-            InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
+            boolean allSolved = true;
+            for (EquationMath math : uiMap.keySet()) {
+                if (!math.isLocked()) {
+                    allSolved = false;
+                }
+            }
+            if (allSolved) {
+                InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
+            }
         }
     }
 
@@ -309,9 +344,9 @@ public class EquationModePanel extends ApplicationModePanel {
         if (diagram.getWorksheet().isSolved()) {
             performSolve();
         }
-        
+
         Exercise.getExercise().enableTabs(diagram.getBodySubset());
-        
+
         refreshRows();
         invalidate();
     }

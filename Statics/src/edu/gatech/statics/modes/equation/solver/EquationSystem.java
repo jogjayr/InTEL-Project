@@ -21,8 +21,10 @@ public class EquationSystem {
 
     private List<LinearEquation> equations;
     private List<String> symbols;
+    private int numberEquations;
 
     public EquationSystem(int number) {
+        this.numberEquations = number;
         equations = new ArrayList<LinearEquation>();
         symbols = new ArrayList<String>();
 
@@ -33,14 +35,19 @@ public class EquationSystem {
 
     public void resetTerms() {
         symbols.clear();
+        equations.clear();
+        for (int i = 0; i < numberEquations; i++) {
+            equations.add(new LinearEquation());
+        }
     }
-    
+
     public void addTerm(int equation, float term, String symbol) {
         equations.get(equation).addTerm(term, symbol);
         if (!symbols.contains(symbol) && symbol != null) {
             symbols.add(symbol);
         }
-    }    // CALL IN THIS ORDER:
+    }
+    // CALL IN THIS ORDER:
     // process, isSolvable, solve
     private Matrix matrix;
     private float[] constantTerms;
@@ -59,7 +66,7 @@ public class EquationSystem {
         if (symbols.size() > equations.size()) {
             return;
         }
-        
+
         int size = equations.size();
         float[][] matrixValues = new float[size][size];
         constantTerms = new float[size];
