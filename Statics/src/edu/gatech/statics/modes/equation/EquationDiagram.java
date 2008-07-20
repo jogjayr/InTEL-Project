@@ -82,7 +82,6 @@ public class EquationDiagram extends SubDiagram {
     public EquationMath getChecker() {
         return new EquationMath(this);
     }
-    
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,
     // then it will no longer be *equal* to the value stored as a key
@@ -164,15 +163,15 @@ public class EquationDiagram extends SubDiagram {
                     //v.setValue(v.getValueNormalized().mult( value ));
                     vObj.setDiagramValue(new BigDecimal(value));
                     vObj.setKnown(true);
-                    
+
                     // attempt to make sure the vector value is updated in the symbol manager
                     Load symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj);
-                    
+
                     /*if (symbolManagerLoad == null) {
-                        symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad2FM(vObj.getAnchor().getMember(), vObj);
+                    symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad2FM(vObj.getAnchor().getMember(), vObj);
                     }*/
-                    
-                    if(symbolManagerLoad != vObj) {
+
+                    if (symbolManagerLoad != vObj) {
                         symbolManagerLoad.setDiagramValue(new BigDecimal(value));
                         symbolManagerLoad.setKnown(true);
                     }
@@ -204,22 +203,42 @@ public class EquationDiagram extends SubDiagram {
         // also go through unknown points...
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Connector) {
-                Connector joint = (Connector) obj;
-                if (joint.isSolved()) {
+                Connector connector = (Connector) obj;
+                if (connector.isSolved()) {
                     continue;
                 }
 
-                Point point = joint.getAnchor();
+                Point point = connector.getAnchor();
                 List<Vector> reactions = new ArrayList<Vector>();
-                for (Quantity q : values.keySet()) {
-                    Load load = getLoad(q.getSymbolName());
-                    if (load != null && load.getAnchor() == point) {
-                        reactions.add(load.getVector());
+                /*for (Quantity q : values.keySet()) {
+                Load load = getLoad(q.getSymbolName());
+                if (load != null && load.getAnchor() == point) {
+                reactions.add(load.getVector());
+                }
+                }*/
+
+                // it's possible that the reactions are not meant for this particular connector
+                // go through all of our solved quantities and see if we can get some matches.
+                for (Vector reaction : connector.getReactions()) {
+                    for (Quantity q : values.keySet()) {
+                        Load load = getLoad(q.getSymbolName());
+                        if (load != null && load.getAnchor() == point) {
+                            // now test if the direction is okay
+                            if (load.getVectorValue().equals(reaction.getVectorValue()) ||
+                                    load.getVectorValue().equals(reaction.getVectorValue().negate())) {
+                                reactions.add(load.getVector());
+                            }
+                        }
                     }
+                }
+
+                if (reactions.isEmpty()) {
+                    continue;
                 }
 
                 // hopefully this should be accurate...
                 Body solveBody = null;
+
                 for (Body body : allBodies()) {
                     if (body.getAttachedObjects().contains(point)) {
                         solveBody = body;
@@ -228,9 +247,7 @@ public class EquationDiagram extends SubDiagram {
 
                 // we want to say that we have solved this joint from the perspective
                 // of the current body in question. 
-                if (reactions.size() > 0) {
-                    joint.solveReaction(solveBody, reactions);
-                }
+                connector.solveReaction(solveBody, reactions);
             }
 
             if (obj instanceof UnknownPoint) {
@@ -256,6 +273,9 @@ public class EquationDiagram extends SubDiagram {
 
         if (StaticsApplication.getApp().getCurrentTool() != null &&
                 StaticsApplication.getApp().getCurrentTool().isActive()) {
+
+
+
             return;
         } // do not select vectors if we have a tool active
 
@@ -286,6 +306,7 @@ public class EquationDiagram extends SubDiagram {
 
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
+
         StaticsApplication.getApp().resetAdvice();
     }
     private SelectionFilter selector = new SelectionFilter() {
@@ -309,7 +330,8 @@ public class EquationDiagram extends SubDiagram {
         }
 
         if (momentPoint != null) {
-            CurveUtil.renderCircle(r, ColorRGBA.blue, momentPoint.getTranslation(), 2, r.getCamera().getDirection());
+            CurveUtil.renderCircle(r, ColorRGBA.blue, momentPoint.getTranslation(),
+                    2, r.getCamera().getDirection());
         }
     }
     private SimulationObject currentHover;
@@ -321,14 +343,16 @@ public class EquationDiagram extends SubDiagram {
             currentHover.setDisplayHighlight(false);
         }
         Load load;
-        if(v == null) {
+        if (v == null) {
             load = null;
         } else {
             load = getLoad(v);
         }
-     
+
         if (load != null) {
             load.setDisplayHighlight(true);
+
+
         }
         currentHover = load;
 
@@ -387,6 +411,7 @@ public class EquationDiagram extends SubDiagram {
         rep.setDiffuse(ColorRGBA.yellow);
         momentArm.addRepresentation(rep);
         momentArm.setSelectable(false);
+
         addUserObject(momentArm);
     }
     private boolean showingCurve = false;
@@ -395,14 +420,16 @@ public class EquationDiagram extends SubDiagram {
     private void showCurve(Load obj, Vector2f pos) {
         if (obj == null || pos == null) {
             showingCurve = false;
+
             return;
         }
 
         // yet another hack in finding the vector center here....
-        curvePoints[0] = obj.getDisplayCenter().add(obj.getTranslation()).mult(.5f);
-        curvePoints[2] = StaticsApplication.getApp().getCamera().getWorldCoordinates(pos, .1f);
-        curvePoints[1] = new Vector3f(curvePoints[2]);
-        curvePoints[1].y += .5f;
+        curvePoints[  0] = obj.getDisplayCenter().add(obj.getTranslation()).mult(.5f);
+        curvePoints[   2] = StaticsApplication.getApp().getCamera().getWorldCoordinates(pos, .1f);
+        curvePoints[   1] = new Vector3f(curvePoints[
+        2]);
+        curvePoints[  1].y += .5f;
         showingCurve = true;
     }
 

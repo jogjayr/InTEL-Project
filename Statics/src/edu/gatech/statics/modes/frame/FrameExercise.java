@@ -40,7 +40,7 @@ public class FrameExercise extends OrdinaryExercise {
             }
         }
         modePanels.remove(selectModePanel);
-        modePanels.add(new FrameSelectModePanel());
+        modePanels.add(0, new FrameSelectModePanel());
 
         return ic;
     }
