@@ -66,20 +66,23 @@ abstract public class Connector extends SimulationObject {
     }
 
     public void attachToWorld(Body body) {
-        this.body1 = body;
+        /*this.body1 = body;
         this.body2 = null;
 
-        body.addObject(this);
-    // other stuff regarding simulation logic
+        body.addObject(this);*/
+        attach(body, null);
     }
 
     public void attach(Body body1, Body body2) {
         this.body1 = body1;
         this.body2 = body2;
 
-        body1.addObject(this);
-        body2.addObject(this);
-    // other stuff regarding simulation logic
+        if (body1 != null) {
+            body1.addObject(this);
+        }
+        if (body2 != null) {
+            body2.addObject(this);
+        }
     }
 
     public Body getBody1() {
@@ -139,6 +142,6 @@ abstract public class Connector extends SimulationObject {
     public String toString() {
         return getClass().getSimpleName() + " @ " + getAnchor().getName();
     }
-    
+
     abstract public String connectorName();
 }

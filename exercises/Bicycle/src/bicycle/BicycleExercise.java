@@ -78,28 +78,29 @@ public class BicycleExercise extends OrdinaryExercise {
         B = new Point("12", "0", "0");
         K = new Point("10", "7", "0");
 
-        Body handlebar = new Beam(I, A);
-        handlebar.setName("Handle Bar");
-        Bar top = new Bar(J, H);
-        top.setName("Top Bar");
-        Body seatPole = new Beam(K, G);
-        seatPole.setName("Seat Pole");
-        Bar front = new Bar(F, G);
-        front.setName("Front Bar");
-        Bar back = new Bar(J, B);
-        back.setName("Back Bar");
-        Bar bottom = new Bar(B, G);
-        bottom.setName("Bottom Bar");
+        Body handlebarBeam = new Beam(I, A);
+        Bar topBar = new Bar(J, H);
+        Body seatPoleBeam = new Beam(K, G);
+        Bar frontBar = new Bar(F, G);
+        Bar backBar = new Bar(J, B);
+        Bar bottomBar = new Bar(B, G);
+        
+        handlebarBeam.setName("Handle Bar");
+        topBar.setName("Top Bar");
+        seatPoleBeam.setName("Seat Pole");
+        frontBar.setName("Front Bar");
+        backBar.setName("Back Bar");
+        bottomBar.setName("Bottom Bar");
 
         rollerA = new Roller2d(A);
         rollerB = new Roller2d(B);
 
-        twoForceF = new Connector2ForceMember2d(F, front);
-        twoForceH = new Connector2ForceMember2d(H, top);
-        twoForceJH = new Connector2ForceMember2d(J, top);
-        twoForceJB = new Connector2ForceMember2d(J, back);
-        twoForceGF = new Connector2ForceMember2d(G, front);
-        twoForceGB = new Connector2ForceMember2d(G, bottom);
+        twoForceF = new Connector2ForceMember2d(F, frontBar);
+        twoForceH = new Connector2ForceMember2d(H, topBar);
+        twoForceJH = new Connector2ForceMember2d(J, topBar);
+        twoForceJB = new Connector2ForceMember2d(J, backBar);
+        twoForceGF = new Connector2ForceMember2d(G, frontBar);
+        twoForceGB = new Connector2ForceMember2d(G, bottomBar);
 
         rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerB.setDirection(Vector3bd.UNIT_Y);
@@ -147,11 +148,11 @@ public class BicycleExercise extends OrdinaryExercise {
 
         Force seatWeight = new Force(K, Vector3bd.UNIT_Y.negate(), new BigDecimal(500));
         seatWeight.setName("Seat");
-        seatPole.addObject(seatWeight);
+        seatPoleBeam.addObject(seatWeight);
 
         Force pedalWeight = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(150));
         pedalWeight.setName("Pedals");
-        seatPole.addObject(pedalWeight);
+        seatPoleBeam.addObject(pedalWeight);
 
         Vector3bd handleForceDirection = new Vector3bd(
                 new BigDecimal(-Math.cos(Math.PI / 6)),
@@ -164,21 +165,21 @@ public class BicycleExercise extends OrdinaryExercise {
 
         Force handleWeight = new Force(I, handleForceDirection, new BigDecimal(20));
         handleWeight.setName("Handlebar");
-        handlebar.addObject(handleWeight);
+        handlebarBeam.addObject(handleWeight);
 
         Moment handleMoment = new Moment(I, Vector3bd.UNIT_Z, new BigDecimal(5)); // use symbol here
         handleMoment.setName("Handlebar");
-        handlebar.addObject(handleMoment);
+        handlebarBeam.addObject(handleMoment);
 
-        rollerA.attachToWorld(handlebar);
-        rollerB.attach(back, bottom);
+        rollerA.attachToWorld(handlebarBeam);
+        rollerB.attach(backBar, bottomBar);
 
-        twoForceF.attach(front, handlebar);
-        twoForceH.attach(top, handlebar);
-        twoForceJH.attach(top, seatPole);
-        twoForceJB.attach(back, seatPole);
-        twoForceGF.attach(front, seatPole);
-        twoForceGB.attach(bottom, seatPole);
+        twoForceF.attach(frontBar, handlebarBeam);
+        twoForceH.attach(topBar, handlebarBeam);
+        twoForceJH.attach(topBar, seatPoleBeam);
+        twoForceJB.attach(backBar, seatPoleBeam);
+        twoForceGF.attach(frontBar, seatPoleBeam);
+        twoForceGB.attach(bottomBar, seatPoleBeam);
         A.setName("A");
         I.setName("I");
         H.setName("H");
@@ -206,12 +207,12 @@ public class BicycleExercise extends OrdinaryExercise {
         seatWeight.createDefaultSchematicRepresentation();
         pedalWeight.createDefaultSchematicRepresentation();
         handleWeight.createDefaultSchematicRepresentation();
-        schematic.add(handlebar);
-        schematic.add(top);
-        schematic.add(seatPole);
-        schematic.add(front);
-        schematic.add(back);
-        schematic.add(bottom);
+        schematic.add(handlebarBeam);
+        schematic.add(topBar);
+        schematic.add(seatPoleBeam);
+        schematic.add(frontBar);
+        schematic.add(backBar);
+        schematic.add(bottomBar);
 
         float scale = 1.0f;
         Vector3f modelTranslation = new Vector3f(4.25f, -3.5f, 0);
@@ -224,56 +225,56 @@ public class BicycleExercise extends OrdinaryExercise {
         Matrix3f matrix = new Matrix3f();
         matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_X.negate());
 
-        rep = modelNode.extractElement(back, "VisualSceneNode/model/bike/beam3");
-        back.addRepresentation(rep);
+        rep = modelNode.extractElement(backBar, "VisualSceneNode/model/bike/beam3");
+        backBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(bottom, "VisualSceneNode/model/bike/beam4");
-        bottom.addRepresentation(rep);
+        rep = modelNode.extractElement(bottomBar, "VisualSceneNode/model/bike/beam4");
+        bottomBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(handlebar, "VisualSceneNode/model/bike/beam6");
-        handlebar.addRepresentation(rep);
+        rep = modelNode.extractElement(handlebarBeam, "VisualSceneNode/model/bike/beam6");
+        handlebarBeam.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
         
-        rep = modelNode.extractElement(front, "VisualSceneNode/model/bike/beam1");
-        front.addRepresentation(rep);
+        rep = modelNode.extractElement(frontBar, "VisualSceneNode/model/bike/beam1");
+        frontBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/beam5");
-        seatPole.addRepresentation(rep);
+        rep = modelNode.extractElement(seatPoleBeam, "VisualSceneNode/model/bike/beam5");
+        seatPoleBeam.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(seatPole, "VisualSceneNode/model/bike/seat");
-        seatPole.addRepresentation(rep);
+        rep = modelNode.extractElement(seatPoleBeam, "VisualSceneNode/model/bike/seat");
+        seatPoleBeam.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(top, "VisualSceneNode/model/bike/beam2");
-        top.addRepresentation(rep);
+        rep = modelNode.extractElement(topBar, "VisualSceneNode/model/bike/beam2");
+        topBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);

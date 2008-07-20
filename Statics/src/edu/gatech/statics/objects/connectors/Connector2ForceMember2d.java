@@ -44,7 +44,27 @@ public class Connector2ForceMember2d extends Connector {
     public Connector2ForceMember2d(Point point, TwoForceMember member) {
         super(point);
         this.member = member;
-        this.direction = member.getDirectionFrom(point);
+        this.direction = member.getDirectionFrom(point).negate();
+    }
+
+    /**
+     * attach is overridden to automatically make sure that the 2fm is the first body
+     * @param body1
+     * @param body2
+     */
+    @Override
+    public void attach(Body body1, Body body2) {
+        if (body1 == member) {
+            super.attach(body1, body2);
+        } else if (body2 == member) {
+            super.attach(body2, body1);
+        } else {
+            throw new IllegalArgumentException("This type of connector must be attached to its member");
+        }
+
+        if (getBody1() != member) {
+            throw new AssertionError("body1 should be the 2fm...");
+        }
     }
 
     public List<Vector> getReactions() {
@@ -76,12 +96,12 @@ public class Connector2ForceMember2d extends Connector {
         // we will solve the other reactions using the 2fm as a base, so
         // get the other reactions accordingly.
         if (solveBody == member) {
-            otherReactions = reactions;
-        } else {
             otherReactions = new ArrayList<Vector>();
             for (Vector reaction : reactions) {
                 otherReactions.add(reaction.negate());
             }
+        } else {
+            otherReactions = reactions;
         }
 
         // get the other connector.
