@@ -15,8 +15,14 @@ import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Bar;
+import edu.gatech.statics.objects.bodies.Cable;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.util.SolveListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -37,6 +43,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
 
         view = new HTMLView() {
+
             @Override
             public Dimension getPreferredSize(int whint, int hhint) {
                 Dimension dim = super.getPreferredSize(whint, hhint);
@@ -56,18 +63,28 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         //contents.append("<html><body>");
         contents.append("<table cellspacing=\"2\" cellpadding=\"2\">");
 
+        // handled connectors for sake of convenience with 2fms
+        List<Connector2ForceMember2d> handledConnectors = new ArrayList<Connector2ForceMember2d>();
+
         // first go through objects
         Exercise exercise = StaticsApplication.getApp().getExercise();
         for (SimulationObject obj : exercise.getSchematic().allObjects()) {
 
             // look at joints, specifically
             if (obj instanceof Connector) {
-                Connector joint = (Connector) obj;
-                if (joint.isSolved()) {
+                Connector connector = (Connector) obj;
+                if (connector.isSolved()) {
                     // iterate through reactions at joint
-                    for (Vector force : joint.getReactions(joint.getBody1())) {
-
-                        writeReaction(force, joint.getAnchor(), contents);
+                    if (connector instanceof Connector2ForceMember2d) {
+                        Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
+                        if (!handledConnectors.contains(connector2fm.getOpposite())) {
+                            writeReaction2FM(connector2fm, contents);
+                            handledConnectors.add(connector2fm);
+                        }
+                    } else {
+                        for (Vector force : connector.getReactions(connector.getBody1())) {
+                            writeReaction(force, connector.getAnchor(), contents);
+                        }
                     }
                 }
             }
@@ -105,17 +122,50 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td></tr>");
     }
 
-    private void writeReaction(Vector force, Point applicationPoint, StringBuffer contents) {
-        writeReaction(force, applicationPoint, contents, force.getSymbolName());
+    private void writeReaction2FM(Connector2ForceMember2d connector, StringBuffer contents) {
+
+        contents.append("<tr><td>");
+
+        TwoForceMember member = connector.getMember();
+
+        if (member instanceof Cable) {
+            contents.append("cable ");
+        } else if (member instanceof Bar) {
+            contents.append("bar ");
+        } else {
+            contents.append("??? ");
+        }
+
+        contents.append(member.getConnector1().getAnchor().getName());
+        contents.append(member.getConnector2().getAnchor().getName());
+
+        // this is the vector value for the 2fm
+        Vector reaction = connector.getReactions(member).get(0);
+        contents.append(" <font color=\"#ff0000\"><b>" + reaction.getSymbolName() + "</b></font>");
+
+        contents.append("</td><td>");
+
+        String tensionOrCompression;
+        if (connector.getDirection().equals(reaction.getVectorValue())) {
+            tensionOrCompression = "tension";
+        } else {
+            tensionOrCompression = "compression";
+        }
+        contents.append(reaction.getQuantity().toStringDecimal() + reaction.getUnit().getSuffix() + " " + tensionOrCompression);
+        contents.append("</td></tr>");
     }
-    
-    private void writeReaction(Vector force, Point applicationPoint, StringBuffer contents, String name) {
-        if (force.isSymbol() && !force.isKnown()) {
+
+    private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
+        writeReaction(load, applicationPoint, contents, load.getSymbolName());
+    }
+
+    private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
+        if (load.isSymbol() && !load.isKnown()) {
             return;
         }
 
         //String forceType = force instanceof Force ? "Force" : "Moment";
-        String forceType = force.getUnit().name();
+        String forceType = load.getUnit().name();
         contents.append("<tr><td>");
         contents.append(forceType + " ");
         //if(Diagram.getSchematic().allObjects())
@@ -125,14 +175,15 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         if (applicationPoint != null) {
             contents.append(" at [" + applicationPoint.getName() + "]: ");
         }
+
         contents.append("</td><td>");
-        contents.append(force.getQuantity().toStringDecimal()+force.getUnit().getSuffix());
+        contents.append(load.getQuantity().toStringDecimal() + load.getUnit().getSuffix());
         contents.append("</td></tr>");
     }
 
     public void onSolve() {
         updateView();
-        pack(150,-1);
+        pack(150, -1);
     }
 
     public void onLoadSolved(Load load) {

@@ -9,10 +9,10 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
@@ -22,7 +22,9 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
@@ -32,10 +34,9 @@ import java.math.BigDecimal;
  *
  * @author Calvin Ashmore
  */
-public class BicycleExercise extends OrdinaryExercise {
+public class BicycleExercise extends FrameExercise {
 
     public BicycleExercise() {
-        super(new Schematic());
     }
 
     @Override
@@ -59,14 +60,15 @@ public class BicycleExercise extends OrdinaryExercise {
         getDisplayConstants().setForceLabelDistance(1);
     }
     Point A, I, H, J, G, F, B, K;
-    Roller2d rollerA, rollerB;
+    Roller2d rollerB;
+    Pin2d pinA;
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
 
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .7f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
         A = new Point("0", "0", "0");
@@ -84,15 +86,17 @@ public class BicycleExercise extends OrdinaryExercise {
         Bar frontBar = new Bar(F, G);
         Bar backBar = new Bar(J, B);
         Bar bottomBar = new Bar(B, G);
-        
+        Body jointAtB = new PointBody(B);
+
         handlebarBeam.setName("Handle Bar");
         topBar.setName("Top Bar");
         seatPoleBeam.setName("Seat Pole");
         frontBar.setName("Front Bar");
         backBar.setName("Back Bar");
         bottomBar.setName("Bottom Bar");
+        jointAtB.setName("Joint B");
 
-        rollerA = new Roller2d(A);
+        pinA = new Pin2d(A);
         rollerB = new Roller2d(B);
 
         twoForceF = new Connector2ForceMember2d(F, frontBar);
@@ -102,7 +106,7 @@ public class BicycleExercise extends OrdinaryExercise {
         twoForceGF = new Connector2ForceMember2d(G, frontBar);
         twoForceGB = new Connector2ForceMember2d(G, bottomBar);
 
-        rollerA.setDirection(Vector3bd.UNIT_Y);
+        //rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerB.setDirection(Vector3bd.UNIT_Y);
 
         DistanceMeasurement distance1 = new DistanceMeasurement(I, A);
@@ -127,6 +131,16 @@ public class BicycleExercise extends OrdinaryExercise {
         DistanceMeasurement distance5 = new DistanceMeasurement(G, B);
         distance5.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance5);
+        
+        /*DistanceMeasurement distance6 = new DistanceMeasurement(I, H);
+        distance6.forceVertical();
+        distance6.createDefaultSchematicRepresentation(0.5f);
+        schematic.add(distance6);
+        
+        DistanceMeasurement distance7 = new DistanceMeasurement(I, F);
+        distance7.forceVertical();
+        distance7.createDefaultSchematicRepresentation(0.5f);
+        schematic.add(distance7);*/
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(A, G, I);
         angle1.createDefaultSchematicRepresentation(0.5f);
@@ -171,8 +185,18 @@ public class BicycleExercise extends OrdinaryExercise {
         handleMoment.setName("Handlebar");
         handlebarBeam.addObject(handleMoment);
 
-        rollerA.attachToWorld(handlebarBeam);
-        rollerB.attach(backBar, bottomBar);
+        pinA.attachToWorld(handlebarBeam);
+        //rollerB.attach(backBar, bottomBar);
+        
+        // this is terrible in terms of naming conventino
+        // and I apologize for it.
+        Connector2ForceMember2d GBatB, JBatB;
+        GBatB = new Connector2ForceMember2d(B, bottomBar);
+        JBatB = new Connector2ForceMember2d(B, backBar);
+                
+        rollerB.attachToWorld(jointAtB);
+        GBatB.attach(jointAtB, bottomBar);
+        JBatB.attach(jointAtB, backBar);
 
         twoForceF.attach(frontBar, handlebarBeam);
         twoForceH.attach(topBar, handlebarBeam);
@@ -213,7 +237,8 @@ public class BicycleExercise extends OrdinaryExercise {
         schematic.add(frontBar);
         schematic.add(backBar);
         schematic.add(bottomBar);
-
+        schematic.add(jointAtB);
+        
         float scale = 1.0f;
         Vector3f modelTranslation = new Vector3f(4.25f, -3.5f, 0);
 
@@ -248,7 +273,7 @@ public class BicycleExercise extends OrdinaryExercise {
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
-        
+
         rep = modelNode.extractElement(frontBar, "VisualSceneNode/model/bike/beam1");
         frontBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);

@@ -13,10 +13,10 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -28,20 +28,13 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.representations.ImageRepresentation;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceConfiguration;
 import java.math.BigDecimal;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class PurseExercise extends OrdinaryExercise {
-
-    /** Creates a new instance of PurseExercise */
-    public PurseExercise() {
-        super(new Schematic());
-    }
+public class PurseExercise extends FrameExercise {
 
     @Override
     public void initExercise() {
@@ -64,7 +57,7 @@ public class PurseExercise extends OrdinaryExercise {
         getDisplayConstants().setForceLabelDistance(9f);
         getDisplayConstants().setMomentLabelDistance(40f);
         getDisplayConstants().setMeasurementSize(0.5f);
-        //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
+    //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
@@ -79,14 +72,12 @@ public class PurseExercise extends OrdinaryExercise {
 
     @Override
     public void loadExercise() {
-        
+
         Schematic world = getSchematic();
 
-        
-        
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
-        
+
         A = new Point("" + handPoint, "-10", "0");
         B = new Point("" + tendonAnchorB, "-10", "0");
         C = new Point("18", "-10", "0");

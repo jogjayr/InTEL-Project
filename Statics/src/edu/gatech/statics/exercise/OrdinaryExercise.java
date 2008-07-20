@@ -4,10 +4,10 @@
  */
 package edu.gatech.statics.exercise;
 
-import edu.gatech.statics.*;
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceConfiguration;
 
 /**
  * OrdinaryExercise is the default type of exercise. It uses the DefaultInterfaceConfiguration,
@@ -27,7 +27,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new DefaultInterfaceConfiguration();
     }
 

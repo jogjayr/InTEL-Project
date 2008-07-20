@@ -8,10 +8,10 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -29,11 +29,7 @@ import java.math.BigDecimal;
  *
  * @author Calvin Ashmore
  */
-public class KeyboardExercise extends OrdinaryExercise {
-
-    public KeyboardExercise() {
-        super(new Schematic());
-    }
+public class KeyboardExercise extends FrameExercise {
 
     @Override
     public void initExercise() {
@@ -62,7 +58,7 @@ public class KeyboardExercise extends OrdinaryExercise {
     public void loadExercise() {
         Schematic schematic = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.2f, .2f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
         A = new Point("0", "6", "0");

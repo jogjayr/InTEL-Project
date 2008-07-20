@@ -143,7 +143,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
               <color>0.110694 0.130472 0.18604 1</color>
             </ambient>
             <diffuse>
-              <color>0.105424 0.105424 0.105424 1</color>
+              <color>0.405424 0.405424 0.405424 1</color>
             </diffuse>
             <transparent opaque="RGB_ZERO">
               <color>0 0 0 1</color>

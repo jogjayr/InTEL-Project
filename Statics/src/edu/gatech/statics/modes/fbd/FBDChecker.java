@@ -242,6 +242,9 @@ public class FBDChecker {
                     break;
                 case inappropriateDirection:
                     // check for special case of 2FM:
+                    logInfo("check: User added loads at "+connector.getAnchor().getName()+": "+userLoadsAtConnector);
+                    logInfo("check: Was expecting: "+getReactionLoads(connector, connector.getReactions(body)));
+                    
                     if (connector instanceof Connector2ForceMember2d) {
                         Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
                         if (connector2fm.getMember() instanceof Cable) {
@@ -277,6 +280,9 @@ public class FBDChecker {
                     // okay, if we are here then either something is missing, or something is extra.
                     // check against pins or rollers and see what happens.
 
+                    logInfo("check: User added loads at "+connector.getAnchor().getName()+": "+userLoadsAtConnector);
+                    logInfo("check: Was expecting: "+getReactionLoads(connector, connector.getReactions(body)));
+                    
                     // check if this is mistaken for a pin
                     if (!connector.connectorName().equals("pin")) {
                         Pin2d testPin = new Pin2d(connector.getAnchor());

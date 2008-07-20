@@ -14,6 +14,10 @@ import edu.gatech.statics.objects.Body;
  */
 public class Background extends Body{
 
+    public Background() {
+        setName("Background");
+    }
+    
     /**
      * This method should not be called, the background should not have a default representation.
      * @deprecated

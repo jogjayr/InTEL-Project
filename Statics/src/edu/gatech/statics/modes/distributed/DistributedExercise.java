@@ -12,7 +12,7 @@ import edu.gatech.statics.modes.distributed.ui.DistributedInterfaceConfiguration
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
-import edu.gatech.statics.ui.InterfaceConfiguration;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class DistributedExercise extends OrdinaryExercise {
     private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
 
     @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new DistributedInterfaceConfiguration();
     }
 
