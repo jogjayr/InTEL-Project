@@ -240,7 +240,7 @@ public class EquationDiagram extends SubDiagram {
                 Body solveBody = null;
 
                 for (Body body : allBodies()) {
-                    if (body.getAttachedObjects().contains(point)) {
+                    if (body.getAttachedObjects().contains(connector)) {
                         solveBody = body;
                     }
                 }

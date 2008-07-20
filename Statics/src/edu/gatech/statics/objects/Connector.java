@@ -49,7 +49,9 @@ abstract public class Connector extends SimulationObject {
             solvedReactions = negatedReactions;
             solvedReactionsNegated = reactions;
         } else {
-            throw new UnsupportedOperationException("Attempting to solve a connector from the wrong body");
+            throw new UnsupportedOperationException(
+                    "Attempting to solve a connector from the wrong body: "+solveBody+
+                    " my bodies are "+body1+" and "+body2);
         }
 
         isSolved = true;
