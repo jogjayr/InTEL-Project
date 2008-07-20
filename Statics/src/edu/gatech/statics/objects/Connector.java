@@ -34,12 +34,22 @@ abstract public class Connector extends SimulationObject {
             return;
         }
 
-        solvedReactions = reactions;
-        solvedReactionsNegated = new ArrayList<Vector>();
-        for (Vector v : solvedReactions) {
+        //solvedReactions = reactions;
+        List<Vector> negatedReactions = new ArrayList<Vector>();
+        for (Vector v : reactions) {
             Vector v1 = v.negate();
 
-            solvedReactionsNegated.add(v1);
+            negatedReactions.add(v1);
+        }
+        
+        if(solveBody == body1) {
+            solvedReactions = reactions;
+            solvedReactionsNegated = negatedReactions;
+        } else if(solveBody == body2) {
+            solvedReactions = negatedReactions;
+            solvedReactionsNegated = reactions;
+        } else {
+            throw new UnsupportedOperationException("Attempting to solve a connector from the wrong body");
         }
 
         isSolved = true;
