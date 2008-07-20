@@ -8,9 +8,8 @@
  */
 package edu.gatech.statics.objects;
 
-import edu.gatech.statics.*;
+import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.representations.PointRepresentation;
 
@@ -21,7 +20,6 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
 public class Point extends SimulationObject {
     // location, etc, already built into SimulationObject
     private Vector3bd point;
-    private TwoForceMember member;
 
     public Point(Point other) {
         this.point = new Vector3bd(other.point);
@@ -41,14 +39,6 @@ public class Point extends SimulationObject {
     public Point(String formattedString) {
         this.point = new Vector3bd(formattedString);
         updateTranslation();
-    }
-
-    public TwoForceMember getMember() {
-        return member;
-    }
-    
-    public void setMember(TwoForceMember member) {
-        this.member = member;
     }
 
     private void updateTranslation() {
@@ -79,6 +69,11 @@ public class Point extends SimulationObject {
         return "Point: " + getName();
     }
 
+    /**
+     * This is true if both points are the same type of point, and both have the same position.
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

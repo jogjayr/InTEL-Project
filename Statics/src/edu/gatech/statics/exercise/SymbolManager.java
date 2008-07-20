@@ -6,9 +6,9 @@ package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.bodies.TwoForceMember;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,30 +51,66 @@ public class SymbolManager {
         }
     }
 
+    /**
+     * This attempts to find a stored symbolic load for the provided load.
+     * The direction of the symbolic load should not be taken as meaningful, as its opposite may
+     * be the one of interest depending on the circumstance.
+     * This should return a single load if presented with either end of a two force member.
+     * @param load
+     * @return
+     */
     public Load getLoad(Load load) {
         for (Load toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                     (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-
                 return toCheck;
             }
         }
-        return null;
-    }
 
-    public Load getLoad2FM(TwoForceMember tfm, Load load) {
-        for (Load toCheck : symbolicLoads) {
-            if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
-                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+        // okay, here we try to check for the 2fm case
+        // make a list of connectors present at that point
+        // the reaction was not found at this load, so we want to try to find the opposite one.
+        List<Connector> connectors = Exercise.getExercise().getSelectDiagram().getConnectorsAtPoint(load.getAnchor());
+        for (Connector connector : connectors) {
+            if (connector instanceof Connector2ForceMember2d) {
+                Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
+                if (connector2fm.getDirection().equals(load.getVectorValue()) || connector2fm.getDirection().equals(load.getVectorValue().negate())) {
 
-                return toCheck;
+                    // this one lines up with the connector2fm
+                    // perform the main check, but use the other anchor.
+                    Connector2ForceMember2d opposite = connector2fm.getOpposite();
+
+                    if (opposite == null) {
+                        continue;
+                    }
+
+                    // perform the main check again
+                    for (Load toCheck : symbolicLoads) {
+                        if (opposite.getAnchor() == toCheck.getAnchor() &&
+                                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                                (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+                            return toCheck;
+                        }
+                    }
+                }
             }
         }
+
         return null;
     }
+
+    /*public Load getLoad2FM(TwoForceMember tfm, Load load) {
+    for (Load toCheck : symbolicLoads) {
+    if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
+    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
     
+    return toCheck;
+    }
+    }
+    return null;
+    }*/
     public List<Load> allLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
@@ -97,16 +133,15 @@ public class SymbolManager {
         }
         return null;
     }
+    /*public Quantity getSymbol2FM(TwoForceMember tfm, Load load) {
+    for (Load toCheck : symbolicLoads) {
+    if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
+    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
     
-    public Quantity getSymbol2FM(TwoForceMember tfm, Load load) {
-        for (Load toCheck : symbolicLoads) {
-            if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
-                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-
-                return toCheck.getVector().getQuantity();
-            }
-        }
-        return null;
+    return toCheck.getVector().getQuantity();
     }
+    }
+    return null;
+    }*/
 }

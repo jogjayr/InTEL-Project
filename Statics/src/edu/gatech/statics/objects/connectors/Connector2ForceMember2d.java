@@ -11,9 +11,11 @@ package edu.gatech.statics.objects.connectors;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,14 +39,11 @@ public class Connector2ForceMember2d extends Connector {
     public boolean isForceDirectionNegatable() {
         return member.canCompress();
     }
-    
     //public void setDirectionNegatable(boolean negatable) {directionNegatable = negatable;}
     /** Creates a new instance of Connector2ForceMember */
     public Connector2ForceMember2d(Point point, TwoForceMember member) {
         super(point);
-        point.setMember(member);
         this.member = member;
-
         this.direction = member.getDirectionFrom(point);
     }
 
@@ -52,7 +51,53 @@ public class Connector2ForceMember2d extends Connector {
         return Arrays.asList(
                 new Vector(Unit.force, direction, ""));
     }
-    
+
+    /**
+     * Returns the opposite connector if it exists.
+     * @return
+     */
+    public Connector2ForceMember2d getOpposite() {
+        if (member.getConnector1() == this) {
+            return member.getConnector2();
+        } else if (member.getConnector2() == this) {
+            return member.getConnector1();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void solveReaction(Body solveBody, List<Vector> reactions) {
+        super.solveReaction(solveBody, reactions);
+
+        // if this has been solved, then we set our opposite to be solved.
+        List<Vector> otherReactions;
+
+        // we will solve the other reactions using the 2fm as a base, so
+        // get the other reactions accordingly.
+        if (solveBody == member) {
+            otherReactions = reactions;
+        } else {
+            otherReactions = new ArrayList<Vector>();
+            for (Vector reaction : reactions) {
+                otherReactions.add(reaction.negate());
+            }
+        }
+
+        // get the other connector.
+
+        Connector2ForceMember2d otherConnector = getOpposite();
+
+        // if the other connector is solved, don't do anything!
+        if (otherConnector != null && !otherConnector.isSolved()) {
+            otherConnector.solveReaction(member, otherReactions);
+        }
+    }
+
+    /**
+     * Returns the actual TwoForceMember to which this connector is attached.
+     * @return
+     */
     public TwoForceMember getMember() {
         return member;
     }

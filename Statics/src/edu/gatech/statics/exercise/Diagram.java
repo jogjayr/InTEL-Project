@@ -23,6 +23,8 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Connector;
+import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public abstract class Diagram {
      * @return
      */
     abstract protected List<SimulationObject> getBaseObjects();
-    
+
     /**
      * Adds an object to the list of objects that users have added to the diagram.
      */
@@ -67,12 +69,12 @@ public abstract class Diagram {
         allObjects.add(obj);
         invalidateNodes();
     }
+
     public void removeUserObject(SimulationObject obj) {
         userObjects.remove(obj);
         allObjects.remove(obj);
         invalidateNodes();
     }
-    
     private static final SelectionFilter defaultFilter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -87,7 +89,6 @@ public abstract class Diagram {
     public SelectionFilter getSelectionFilter() {
         return defaultFilter;
     }
-
     private Map<RepresentationLayer, Node> representationNodes = new HashMap<RepresentationLayer, Node>();
 
     public Node getNode(RepresentationLayer layer) {
@@ -246,7 +247,7 @@ public abstract class Diagram {
         allObjects.addAll(userObjects);
         invalidateNodes();
     }
-    
+
     public void deactivate() {
     }
 
@@ -258,20 +259,58 @@ public abstract class Diagram {
                 r.draw(getNode(layer));
                 r.renderQueue();
 
-                // This is a little bit of code that may be uncommented to 
-                // view the bounding volumes
+            // This is a little bit of code that may be uncommented to 
+            // view the bounding volumes
                 /*if (layer == RepresentationLayer.vectors) {
-                    Debugger.setBoundsColor(ColorRGBA.pink);
-                } else if (layer == RepresentationLayer.schematicBodies) {
-                    Debugger.setBoundsColor(ColorRGBA.white);
-                } else {
-                    Debugger.setBoundsColor(ColorRGBA.green);
-                }
-                Debugger.drawBounds(getNode(layer), r, true);*/
+            Debugger.setBoundsColor(ColorRGBA.pink);
+            } else if (layer == RepresentationLayer.schematicBodies) {
+            Debugger.setBoundsColor(ColorRGBA.white);
+            } else {
+            Debugger.setBoundsColor(ColorRGBA.green);
+            }
+            Debugger.drawBounds(getNode(layer), r, true);*/
             }
             r.clearZBuffer();
         }
+    }
 
+    /**
+     * Returns a list of the connectors in the diagram present at the given point.
+     * Generally there will only be one connector, but in some cases, especially with two force members,
+     * multiple connectors may be present at the point.
+     * @param point
+     * @return
+     */
+    public List<Connector> getConnectorsAtPoint(Point point) {
+        List<Connector> connectors = new ArrayList<Connector>();
+        for (SimulationObject obj : allObjects) {
+            if (obj instanceof Connector) {
+                Connector connector = (Connector) obj;
+                if (connector.getAnchor().equals(point)) {
+                    connectors.add(connector);
+                }
+            }
+        }
+        return connectors;
+    }
+
+    /**
+     * A convenience method to get all of the loads at a given point. This goes through
+     * all of the loads in the current diagram and checks against them.
+     * @param point
+     * @return
+     */
+    public List<Load> getLoadsAtPoint(Point point) {
+        List<Load> loads = new ArrayList<Load>();
+        for (SimulationObject obj : allObjects) {
+            if (obj instanceof Load) {
+                Load load = (Load) obj;
+                if (load.getAnchor().equals(point)) {
+                    loads.add(load);
+                }
+            }
+        }
+        return loads;
     }
 
     /**

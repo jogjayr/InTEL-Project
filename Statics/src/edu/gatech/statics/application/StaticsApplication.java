@@ -136,13 +136,13 @@ public class StaticsApplication {
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
     public void setAdviceKey(String key, Object... formatTerms) {
+        Logger.getLogger("Statics").info("Setting advice key: "+key);
         String advice;
         if (formatTerms == null || formatTerms.length == 0) {
             advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
         } else {
             advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
-        Logger.getLogger("Statics").info("Setting advice key: "+key);
         Logger.getLogger("Statics").info("Setting advice: "+advice);
         iRoot.setAdvice(advice);
     }
