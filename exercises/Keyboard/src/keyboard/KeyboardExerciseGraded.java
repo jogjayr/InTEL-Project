@@ -16,6 +16,7 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.BufferedReader;
@@ -71,8 +72,9 @@ public class KeyboardExerciseGraded extends KeyboardExercise {
     public void loadExercise() {
         super.loadExercise();
 
-        addTask(new SolveJointTask(jointP));
-        addTask(new SolveJointTask(jointQ));
+//        addTask(new SolveJointTask(jointP));
+//        addTask(new SolveJointTask(jointQ));
+        addTask(new Solve2FMTask(bar, jointP, jointQ));
         addTask(new SolveJointTask(jointB));
         addTask(new SolveJointTask(jointE));
     }

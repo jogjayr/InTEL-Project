@@ -53,7 +53,8 @@ public class KeyboardExercise extends FrameExercise {
     Pin2d jointC;
     Connector2ForceMember2d jointP, jointQ;
     Roller2d jointB, jointE;
-
+    Body leftLeg, rightLeg;
+    Bar bar;
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
@@ -69,9 +70,9 @@ public class KeyboardExercise extends FrameExercise {
         P = new Point("2.7", "4", "0");
         Q = new Point("5.3", "4", "0");
 
-        Body leftLeg = new Beam(B, A);
-        Bar bar = new Bar(P, Q);
-        Body rightLeg = new Beam(E, D);
+        leftLeg = new Beam(B, A);
+        bar = new Bar(P, Q);
+        rightLeg = new Beam(E, D);
 
         leftLeg.setName("Left Leg");
         bar.setName("Bar");
