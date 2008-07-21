@@ -105,12 +105,14 @@ public class TowerExercise extends OrdinaryExercise {
         modelNode.extractLights();
 
         ModelRepresentation rep = modelNode.extractElement(tower, "VisualSceneNode/group27");
-        
+        //rep.setModelOffset(new Vector3f(0, 0, -22.0f / scale));
+
         Matrix3f rotation = new Matrix3f();
         rotation.fromAngleAxis(-.24f, Vector3f.UNIT_Z);
         rep.setModelRotation(rotation);
-        
         rep.setLocalScale(scale * 1.5f);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
 
         tower.addRepresentation(rep);
 
