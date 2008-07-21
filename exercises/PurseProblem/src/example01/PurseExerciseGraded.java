@@ -22,7 +22,7 @@ import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.tasks.Solve2FMTask;
-import edu.gatech.statics.tasks.SolveJointTask;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -95,9 +95,9 @@ public class PurseExerciseGraded extends PurseExercise {
         super.loadExercise();
 
         //addTask(new SolveJointTask(jointB));
-        addTask(new SolveJointTask(jointC));
-        addTask(new SolveJointTask(jointE));
-        addTask(new Solve2FMTask(tendon, jointB, jointD));
+        addTask(new SolveConnectorTask(jointC));
+        addTask(new SolveConnectorTask(jointE));
+        addTask(new Solve2FMTask(tendon, jointB));
     }
 
     @Override

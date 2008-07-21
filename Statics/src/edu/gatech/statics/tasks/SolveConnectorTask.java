@@ -15,11 +15,11 @@ import edu.gatech.statics.objects.Connector;
  *
  * @author Calvin Ashmore
  */
-public class SolveJointTask implements Task {
+public class SolveConnectorTask implements Task {
 
     private Connector joint;
     
-    public SolveJointTask(Connector joint) {
+    public SolveConnectorTask(Connector joint) {
         this.joint = joint;
     }
 

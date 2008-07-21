@@ -30,10 +30,12 @@
         <subant buildpath="BUI/" target="jar"/>
         
         <echo>*** Building Exercises:</echo>
-        <subant buildpath="exercises/PurseProblem/" target="jar"/>
-        <subant buildpath="exercises/PisaProblem/" target="jar"/>
-        <subant buildpath="exercises/Keyboard/" target="jar"/>
+        <subant buildpath="exercises/Archer/" target="jar"/>
         <subant buildpath="exercises/Bicycle/" target="jar"/>
+        <subant buildpath="exercises/Keyboard/" target="jar"/>
+        <subant buildpath="exercises/PisaProblem/" target="jar"/>
+        <subant buildpath="exercises/PurseProblem/" target="jar"/>
+        <subant buildpath="exercises/SeeSaw/" target="jar"/>
         
     </target>
     <target name="clean">
@@ -46,9 +48,11 @@
         <subant buildpath="Statics/" target="clean"/>
         
         <echo>*** Cleaning exercises</echo>
-        <subant buildpath="exercises/PurseProblem" target="clean"/>
-        <subant buildpath="exercises/PisaProblem" target="clean"/>
-        <subant buildpath="exercises/Keyboard" target="clean"/>
-        <subant buildpath="exercises/Bicycle" target="clean"/>
+        <subant buildpath="exercises/Archer/" target="clean"/>
+        <subant buildpath="exercises/Bicycle/" target="clean"/>
+        <subant buildpath="exercises/Keyboard/" target="clean"/>
+        <subant buildpath="exercises/PisaProblem/" target="clean"/>
+        <subant buildpath="exercises/PurseProblem/" target="clean"/>
+        <subant buildpath="exercises/SeeSaw/" target="clean"/>
     </target>
 </project>
