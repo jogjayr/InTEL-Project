@@ -36,7 +36,7 @@ import java.math.BigDecimal;
 public class TowerExercise extends OrdinaryExercise {
 
     @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = new DefaultInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         return interfaceConfiguration;
