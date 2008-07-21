@@ -69,7 +69,8 @@ public class PurseExercise extends FrameExercise {
     Point A, B, C, D, E, G;
     Connector2ForceMember2d jointB, jointD;
     Pin2d jointC, jointE;
-
+    Cable tendon;
+    Body upperArm, forearm;
     @Override
     public void loadExercise() {
 
@@ -84,9 +85,9 @@ public class PurseExercise extends FrameExercise {
         D = new Point("18", "" + (tendonAnchorD + 6), "0");
         E = new Point("18", "" + (shoulderHeight + 6), "0");
 
-        Body upperArm = new Beam(E, C);
-        Body forearm = new Beam(C, A);
-        Cable tendon = new Cable(D, B);
+        upperArm = new Beam(E, C);
+        forearm = new Beam(C, A);
+        tendon = new Cable(D, B);
 
         upperArm.setName("Upper Arm");
         forearm.setName("Forearm");

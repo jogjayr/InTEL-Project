@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class EquationMath {
 
-    protected static final float TEST_ACCURACY = .01f;
+    protected static final float TEST_ACCURACY = .02f;
     private boolean locked = false;
 
     public void setLocked(boolean locked) {

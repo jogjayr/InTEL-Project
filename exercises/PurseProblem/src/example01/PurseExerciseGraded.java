@@ -21,6 +21,7 @@ import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.BufferedReader;
@@ -93,9 +94,10 @@ public class PurseExerciseGraded extends PurseExercise {
     public void loadExercise() {
         super.loadExercise();
 
-        addTask(new SolveJointTask(jointB));
+        //addTask(new SolveJointTask(jointB));
         addTask(new SolveJointTask(jointC));
         addTask(new SolveJointTask(jointE));
+        addTask(new Solve2FMTask(tendon, jointB, jointD));
     }
 
     @Override

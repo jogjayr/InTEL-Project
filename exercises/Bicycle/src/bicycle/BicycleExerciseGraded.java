@@ -16,6 +16,7 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveJointTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import java.io.BufferedReader;
@@ -46,7 +47,7 @@ public class BicycleExerciseGraded extends BicycleExercise {
     ByteArrayOutputStream bout;
     StreamHandler streamHandler;
     private int instance; // used for uniqueness of logger data
-    
+
     public BicycleExerciseGraded() {
         bout = new ByteArrayOutputStream();
         streamHandler = new StreamHandler(bout, new SimpleFormatter());
@@ -61,24 +62,27 @@ public class BicycleExerciseGraded extends BicycleExercise {
                 "Tara is sitting on the bike but it is not moving because there is a stopper at the front wheel. " +
                 "Because of her weight, 500N and 150N are exerted to K and G respectively, which are the location of seat and pedal. Also she is slightly leaning toward the handle by 20N with 30 degrees angle. She is rotating the handle counter clockwise with 5Nm moment. " +
                 "Assume that member AI and GK are beam and member FG, GB, HJ, and JB are two force members. (Note that two force members are pin connected to other structures.) " +
-                "Since node A and B are connected to wheels, let’s simplify the bicycle and consider these as roller supports with a stopper at node A. " +
-                "Solve for the reactions at A, B, H, J, F, and G.");
+                "Since node A and B are connected to wheels, let’s simplify the bicycle and consider these as roller supports with a stopper at node A.");
     }
-    
+
     @Override
     public void loadExercise() {
         super.loadExercise();
 
         addTask(new SolveJointTask(pinA));
         addTask(new SolveJointTask(rollerB));
-        addTask(new SolveJointTask(twoForceF));
-        addTask(new SolveJointTask(twoForceH));
-        addTask(new SolveJointTask(twoForceJH));
-        addTask(new SolveJointTask(twoForceJB));
-        addTask(new SolveJointTask(twoForceGF));
-        addTask(new SolveJointTask(twoForceGB));
+        addTask(new Solve2FMTask(topBar, twoForceJH, twoForceH));
+        addTask(new Solve2FMTask(frontBar, twoForceGF, twoForceF));
+        addTask(new Solve2FMTask(backBar, twoForceJB, rollerB));
+        addTask(new Solve2FMTask(bottomBar, twoForceGB, rollerB));
+//        addTask(new SolveJointTask(twoForceF));
+//        addTask(new SolveJointTask(twoForceH));
+//        addTask(new SolveJointTask(twoForceJH));
+//        addTask(new SolveJointTask(twoForceJB));
+//        addTask(new SolveJointTask(twoForceGF));
+//        addTask(new SolveJointTask(twoForceGB));
     }
-    
+
     @Override
     public void onSubmit() {
         showCompletionPopup();
@@ -88,7 +92,7 @@ public class BicycleExerciseGraded extends BicycleExercise {
     public void postLoadExercise() {
         showNamePopup();
     }
-    
+
     private void showNamePopup() {
 
         final ModalPopupWindow popup = new ModalPopupWindow(new BorderLayout());
@@ -118,9 +122,12 @@ public class BicycleExerciseGraded extends BicycleExercise {
         nameField.setPreferredWidth(200);
         nameRow.add(nameField);
 
-        ActionListener actionListener = new ActionListener() {
+        ActionListener actionListener = new  
 
-            public void actionPerformed(ActionEvent event) {
+              ActionListener( ) {
+
+                   
+                 public void actionPerformed(ActionEvent event) {
                 String name = nameField.getText();
                 if (name.trim().equals("")) {
                     return;
@@ -165,7 +172,7 @@ public class BicycleExerciseGraded extends BicycleExercise {
         if (isExerciseFinished()) {
             textLabel = new BLabel("CONGRATULATIONS! You have solved for all of the unknown joints in this exercise. " +
                     "Please click the button below to submit your work.");
-        } else if(isHalfSolved()){
+        } else if (isHalfSolved()) {
             textLabel = new BLabel("You have solved one of the diagrams, so you can submit your exercise for half credit now, " +
                     "But you have not finished the exercise. Are you sure you want to submit?");
         } else {
@@ -180,9 +187,11 @@ public class BicycleExerciseGraded extends BicycleExercise {
 
         popup.add(textContainer, BorderLayout.CENTER);
 
-        ActionListener actionListener = new ActionListener() {
+        ActionListener actionListener = new  
 
-            public void actionPerformed(ActionEvent event) {
+              ActionListener( ) {
+
+                 public void actionPerformed(ActionEvent event) {
                 if (event.getAction().equals("submit")) {
                     navigateAway();
                 } else {
@@ -222,20 +231,27 @@ public class BicycleExerciseGraded extends BicycleExercise {
     @Override
     public void testTasks() {
         super.testTasks();
-        
+
         my_frame++;
-        if(my_frame >= frames_until_post) {
+        if (my_frame >= frames_until_post) {
             my_frame = 0;
             sendLoggerData();
         }
     }
     private int my_frame = 0;
     private static final int frames_until_post = 100;
-    
+
     private void sendLoggerData() {
-        new Thread(new Runnable() {
-            public void run() {
-                sendLoggerDataImpl();
+        new Thread(new  
+
+              Runnable() {
+                
+            
+        
+    
+
+    public  void run() {
+        sendLoggerDataImpl   ();
             }
         }).start();
     }
@@ -280,11 +296,11 @@ public class BicycleExerciseGraded extends BicycleExercise {
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(postData);
             writer.flush();
-            
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
-            while((line = reader.readLine()) != null) {
-                System.out.println("response: "+line);
+            while ((line = reader.readLine()) != null) {
+                System.out.println("response: " + line);
             }
 
             writer.close();
@@ -339,10 +355,10 @@ public class BicycleExerciseGraded extends BicycleExercise {
             StaticsApplet.getInstance().getAppletContext().showDocument(url);
 
         } catch (MalformedURLException ex) {
-        // shouldn't wind up here, but...
+            // shouldn't wind up here, but...
         } catch (UnsupportedEncodingException ex) {
-        // we're also in trouble if we wind up here.
-        // should do our popup again.
+            // we're also in trouble if we wind up here.
+            // should do our popup again.
         }
     }
 }

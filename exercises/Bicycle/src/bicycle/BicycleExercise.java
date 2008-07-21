@@ -63,7 +63,8 @@ public class BicycleExercise extends FrameExercise {
     Roller2d rollerB;
     Pin2d pinA;
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
-
+    Bar topBar, frontBar, backBar, bottomBar;
+    
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
@@ -81,11 +82,11 @@ public class BicycleExercise extends FrameExercise {
         K = new Point("10", "7", "0");
 
         Body handlebarBeam = new Beam(I, A);
-        Bar topBar = new Bar(J, H);
+        topBar = new Bar(J, H);
         Body seatPoleBeam = new Beam(K, G);
-        Bar frontBar = new Bar(F, G);
-        Bar backBar = new Bar(J, B);
-        Bar bottomBar = new Bar(B, G);
+        frontBar = new Bar(F, G);
+        backBar = new Bar(J, B);
+        bottomBar = new Bar(B, G);
         Body jointAtB = new PointBody(B);
 
         handlebarBeam.setName("Handle Bar");
@@ -100,10 +101,10 @@ public class BicycleExercise extends FrameExercise {
         rollerB = new Roller2d(B);
 
         twoForceF = new Connector2ForceMember2d(F, frontBar);
+        twoForceGF = new Connector2ForceMember2d(G, frontBar);
         twoForceH = new Connector2ForceMember2d(H, topBar);
         twoForceJH = new Connector2ForceMember2d(J, topBar);
         twoForceJB = new Connector2ForceMember2d(J, backBar);
-        twoForceGF = new Connector2ForceMember2d(G, frontBar);
         twoForceGB = new Connector2ForceMember2d(G, bottomBar);
 
         //rollerA.setDirection(Vector3bd.UNIT_Y);
