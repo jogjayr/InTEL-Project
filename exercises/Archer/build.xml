@@ -5,6 +5,11 @@
 <project name="Archer" default="default" basedir=".">
     <description>Builds, tests, and runs the project Archer.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="-post-jar">
+        <signjar jar="dist/Archer.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/Archer.jar" dest="../../applet/Archer.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

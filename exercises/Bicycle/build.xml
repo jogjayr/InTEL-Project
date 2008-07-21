@@ -5,6 +5,11 @@
 <project name="Keyboard" default="default" basedir=".">
     <description>Builds, tests, and runs the project Keyboard.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="-post-jar">
+        <signjar jar="dist/Bicycle.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/Bicycle.jar" dest="../../applet/Bicycle.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

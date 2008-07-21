@@ -4,9 +4,10 @@
  */
 package example01;
 
-import edu.gatech.statics.exercise.ExerciseLogger;
 import edu.gatech.statics.exercise.ExerciseUtilities;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import java.math.BigDecimal;
 import java.util.Random;
 
@@ -47,6 +48,16 @@ public class PurseExerciseGraded2 extends PurseExercise {
                 "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
                 "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
                 "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+    }
+    
+    @Override
+    public void loadExercise() {
+        super.loadExercise();
+
+        //addTask(new SolveJointTask(jointB));
+        addTask(new SolveConnectorTask(jointC));
+        addTask(new SolveConnectorTask(jointE));
+        addTask(new Solve2FMTask(tendon, jointB));
     }
 
     @Override

@@ -19,7 +19,7 @@ public class SeeSawExerciseGraded extends SeeSawExercise {
         //logger = new ExerciseLogger("loggerPost.php");
         //logger.scheduleLogger();
     }
-
+    
     @Override
     public void onSubmit() {
         trySubmission();
