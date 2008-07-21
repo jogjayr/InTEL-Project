@@ -76,6 +76,10 @@ public class FBDModePanel extends ApplicationModePanel {
             checkButton.setEnabled(false);
             resetButton.setEnabled(false);
             tools.setEnabled(false);
+        } else {
+            checkButton.setEnabled(true);
+            resetButton.setEnabled(true);
+            tools.setEnabled(true);
         }
     }
 
