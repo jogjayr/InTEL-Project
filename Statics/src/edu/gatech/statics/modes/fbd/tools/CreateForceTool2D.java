@@ -62,12 +62,16 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
     @Override
     protected void showLabelSelector() {
-        LabelSelector labelTool = new LabelSelector(new LoadLabelListener(force), force.getAnchor().getTranslation());
+        LabelSelector labelTool = new LabelSelector(diagram, force, force.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your force");
         labelTool.setUnits(Unit.force.getSuffix());
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
         labelTool.createPopup();
+        if (force == null) {
+            diagram.removeUserObject(force);
+            diagram.onClick(null);
+        }
     }
 
     protected void enableOrientationManipulator() {
@@ -95,6 +99,12 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         super.update(time);
 
         if (orientationManipulator != null) {
+
+
+
+
+
+
             if (orientationManipulator.mouseReleased()) {
                 releaseOrientationManipulator();
             }
@@ -104,6 +114,12 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     public void onMouseDown() {
         if (getDragManipulator() != null) {
+
+
+
+
+
+
             if (releaseDragManipulator()) {
                 enableOrientationManipulator();
             }
@@ -126,6 +142,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
             orientationManipulator = null;
 
             finish();
+
+
+
             showLabelSelector();
         }
     }

@@ -223,7 +223,7 @@ public class FreeBodyDiagram extends SubDiagram {
             return;
         }
 
-        LabelSelector labelTool = new LabelSelector(new LoadLabelListener(load), load.getAnchor().getTranslation());
+        LabelSelector labelTool = new LabelSelector(this, load, load.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your load");
         labelTool.setUnits(load.getUnit().getSuffix());
         //labelTool.setHintText("");
@@ -233,7 +233,7 @@ public class FreeBodyDiagram extends SubDiagram {
             labelTool.setHintText(load.toStringDecimal());
         }
         labelTool.setIsCreating(false);
-        labelTool.createPopup();
+        labelTool.renamePopup();
     }
 
     @Override

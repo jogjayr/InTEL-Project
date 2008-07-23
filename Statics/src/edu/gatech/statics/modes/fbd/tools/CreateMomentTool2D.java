@@ -35,7 +35,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
     
     @Override
     protected void showLabelSelector() {
-        LabelSelector labelTool = new LabelSelector(new LoadLabelListener(moment), moment.getAnchor().getTranslation());
+        LabelSelector labelTool = new LabelSelector(world, moment, moment.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your moment");
         labelTool.setUnits(Unit.moment.getSuffix());
         labelTool.setHintText("");

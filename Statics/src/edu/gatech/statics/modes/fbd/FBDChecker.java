@@ -232,6 +232,28 @@ public class FBDChecker {
                 return false;
             }
 
+//            //this is trying to make sure two force members have the same values at either end
+//            if (body instanceof TwoForceMember) {
+//                List<Load> userLoadsAtOtherConnector = new ArrayList<Load>();
+//                Connector con;
+//                if (((TwoForceMember) body).getConnector1() == connector) {
+//                    con = ((TwoForceMember) body).getConnector2();
+//                } else {
+//                    con = ((TwoForceMember) body).getConnector1();
+//                }
+//                for (Load load : addedLoads) {
+//                    if (load.getAnchor().equals(con.getAnchor())) {
+//                        userLoadsAtOtherConnector.add(load);
+//                    }
+//                }
+//                if (!userLoadsAtConnector.get(0).getLabelText().equalsIgnoreCase(userLoadsAtOtherConnector.get(0).getLabelText())) {
+//                    logInfo("check: the user has given a 2ForceMember's loads different values");
+//                    logInfo("check: FAILED");
+//                    setAdviceKey("fbd_feedback_check_fail_2force_not_same");
+//                    return false;                
+//                }
+//            }
+
             ConnectorCheckResult connectorResult = checkConnector(userLoadsAtConnector, connector, body);
 
             switch (connectorResult) {
@@ -242,9 +264,9 @@ public class FBDChecker {
                     break;
                 case inappropriateDirection:
                     // check for special case of 2FM:
-                    logInfo("check: User added loads at "+connector.getAnchor().getName()+": "+userLoadsAtConnector);
-                    logInfo("check: Was expecting: "+getReactionLoads(connector, connector.getReactions(body)));
-                    
+                    logInfo("check: User added loads at " + connector.getAnchor().getName() + ": " + userLoadsAtConnector);
+                    logInfo("check: Was expecting: " + getReactionLoads(connector, connector.getReactions(body)));
+
                     if (connector instanceof Connector2ForceMember2d) {
                         Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
                         if (connector2fm.getMember() instanceof Cable) {
@@ -280,9 +302,9 @@ public class FBDChecker {
                     // okay, if we are here then either something is missing, or something is extra.
                     // check against pins or rollers and see what happens.
 
-                    logInfo("check: User added loads at "+connector.getAnchor().getName()+": "+userLoadsAtConnector);
-                    logInfo("check: Was expecting: "+getReactionLoads(connector, connector.getReactions(body)));
-                    
+                    logInfo("check: User added loads at " + connector.getAnchor().getName() + ": " + userLoadsAtConnector);
+                    logInfo("check: Was expecting: " + getReactionLoads(connector, connector.getReactions(body)));
+
                     // check if this is mistaken for a pin
                     if (!connector.connectorName().equals("pin")) {
                         Pin2d testPin = new Pin2d(connector.getAnchor());
@@ -637,13 +659,13 @@ public class FBDChecker {
             // first look at measurements
             if (obj instanceof Measurement) {
                 Measurement measure = (Measurement) obj;
-                if (measure.isSymbol() && measure.getSymbolName().equals(name)) {
+                if (measure.isSymbol() && measure.getSymbolName().equalsIgnoreCase(name)) {
                     return NameCheckResult.matchesMeasurementSymbol;
                 }
             }
             // then points
             if (obj instanceof Point) {
-                if (name.equals(obj.getName())) {
+                if (name.equalsIgnoreCase(obj.getName())) {
                     return NameCheckResult.matchesPointName;
                 }
             }
@@ -658,7 +680,7 @@ public class FBDChecker {
         for (SimulationObject obj : diagram.allObjects()) {
             if (obj instanceof Load && obj != candidate) {
                 Load load = (Load) obj;
-                if (candidate.getSymbolName().equals(load.getSymbolName())) {
+                if (candidate.getSymbolName().equalsIgnoreCase(load.getSymbolName())) {
                     return NameCheckResult.duplicateInThisDiagram;
                 }
             }
@@ -710,7 +732,7 @@ public class FBDChecker {
         for (Load otherLoad : loadsAtOtherReaction) {
             if (otherLoad.getVectorValue().equals(otherReactionTarget.getVectorValue()) ||
                     otherLoad.getVectorValue().equals(otherReactionTarget.getVectorValue().negate())) {
-                if (candidate.getSymbolName().equals(otherLoad.getSymbolName())) {
+                if (candidate.getSymbolName().equalsIgnoreCase(otherLoad.getSymbolName())) {
                     otherReaction = otherLoad;
                 }
             }
@@ -825,7 +847,7 @@ public class FBDChecker {
                 // candidate is not symbolic, so complain
                 return LoadCheckResult.shouldNotBeNumeric;
             }
-            if (!candidate.getSymbolName().equals(target.getSymbolName())) {
+            if (!candidate.getSymbolName().equalsIgnoreCase(target.getSymbolName())) {
                 // candidate has the wrong symbol name
                 return LoadCheckResult.wrongSymbol;
             }
