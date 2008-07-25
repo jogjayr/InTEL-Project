@@ -57,6 +57,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         super.onFinish();
 
         VectorListener forceListener = new VectorOverlapDetector(diagram, force);
+        forceListener.valueChanged(force.getVectorValue());
         force.addListener(forceListener);
     }
 
@@ -100,11 +101,6 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
         if (orientationManipulator != null) {
 
-
-
-
-
-
             if (orientationManipulator.mouseReleased()) {
                 releaseOrientationManipulator();
             }
@@ -114,11 +110,6 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     public void onMouseDown() {
         if (getDragManipulator() != null) {
-
-
-
-
-
 
             if (releaseDragManipulator()) {
                 enableOrientationManipulator();
@@ -136,14 +127,12 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
                     BigDecimal.valueOf(currentSnap.z));
 
             force.setVectorValue(vbd);
-
+            
             orientationManipulator.setEnabled(false);
             removeFromAttachedHandlers(orientationManipulator);
             orientationManipulator = null;
 
             finish();
-
-
 
             showLabelSelector();
         }
