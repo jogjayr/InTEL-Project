@@ -16,7 +16,9 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 
 /**
  *
@@ -74,24 +76,20 @@ public class EquationMode extends Mode {
             eq.getWorksheet().resetSolve();
             FBDMode.instance.load(key);
 
-            //FBDMode.instance.load(key);
             FBDRedirectPopup popup = new FBDRedirectPopup(key);
             popup.popup(0, 0, true);
             popup.center();
         }
-//        else {
-//            boolean pass = true;
-//            for (EquationMath eqm : eq.getWorksheet().getEquations()) {
-//                if (eq.getWorksheet().isSolved() && !eqm.check()) {
-//                    pass = false;
-//                    eqm.setLocked(false);
-//                }
-//            }
-//            if (!pass) {
-//                EquationModePopup popup = new EquationModePopup(key);
-//                popup.popup(0, 0, true);
-//                popup.center();
-//            }
-//        }
+        //warning that gets displayed if the user gets to the equation mode
+        //of a 2FM. Maybe this should be shown only once?
+        if (fbd.getBodySubset().getBodies().size() == 1) {
+            for (Body b : fbd.getBodySubset().getBodies()) {
+                if (b instanceof TwoForceMember) {
+                    EquationMode2FMPopup popup = new EquationMode2FMPopup();
+                    popup.popup(0, 0, true);
+                    popup.center();
+                }
+            }
+        }
     }
 }
