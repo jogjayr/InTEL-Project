@@ -611,6 +611,12 @@ public class FBDChecker {
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", forceOrMoment(candidate), candidate.getAnchor().getLabelText());
                 return;
+            case shouldMatch2FM:
+                //the student has created a 2FM with non matching forces
+                logInfo("check: forces on a 2FM need to have the same name: " + candidate);
+                logInfo("check: FAILED");
+                setAdviceKey("fbd_feedback_check_fail_2force_not_same");
+                return;
         }
     }
 
@@ -638,7 +644,8 @@ public class FBDChecker {
         matchesSymbolElsewhere, // same as a symbolic load from another diagram
         matchesPointName, // same as the name for a point
         matchesMeasurementSymbol, // same as a symbol used in an unknown measurement
-        duplicateInThisDiagram // two loads incorrectly have the same name in this diagram
+        duplicateInThisDiagram, // two loads incorrectly have the same name in this diagram
+        shouldMatch2FM // the opposing forces of a 2FM should match
     }
 
     /**
@@ -673,6 +680,7 @@ public class FBDChecker {
 
         // look through other symbols stored in the symbol manager
         if (Exercise.getExercise().getSymbolManager().getSymbols().contains(name)) {
+            //the name exists elsewhere in the fbd
             return NameCheckResult.matchesSymbolElsewhere;
         }
 
@@ -699,6 +707,13 @@ public class FBDChecker {
      */
     protected NameCheckResult checkLoadName2FM(Load candidate, Connector2ForceMember2d connector) {
         NameCheckResult result = checkLoadName(candidate);
+
+        //if we passed, which we usually want, this means that the loads' labels
+        //do not match, which is bad
+        if (result == NameCheckResult.passed) {
+            return NameCheckResult.shouldMatch2FM;
+        }
+
         // if the result of the standard check is anything but "there is a duplicate in this diagram"
         // then we can return that result. We are only interested in the case where there
         // might be a second load with the same name, which implies a duplicate.

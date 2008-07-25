@@ -22,6 +22,16 @@ abstract public class TwoForceMember extends LongBody {
     private Connector2ForceMember2d connector1;
     private Connector2ForceMember2d connector2;
 
+    public boolean containsPoints(Point point1, Point point2) {
+
+        if (point1 != point2) {
+            if (getAttachedObjects().contains(point1) && getAttachedObjects().contains(point2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public Connector2ForceMember2d getConnector1() {
         return connector1;
     }
