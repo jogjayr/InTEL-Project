@@ -4,16 +4,8 @@
  */
 package edu.gatech.statics.modes.frame;
 
-import com.jmex.bui.BButton;
-import com.jmex.bui.BComponent;
-import com.jmex.bui.BContainer;
-import com.jmex.bui.event.ActionEvent;
-import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
-import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.util.List;
@@ -43,39 +35,5 @@ public class FrameExercise extends OrdinaryExercise {
         modePanels.add(0, new FrameSelectModePanel());
 
         return ic;
-    }
-
-    private class FrameSelectModePanel extends SelectModePanel {
-
-        public FrameSelectModePanel() {
-            // THIS IMPLEMENTATION IS UGLY, IT SHOULD BE FIXED!!!
-            BComponent nextButton = getComponent(2);
-            remove(2); // remove the next button
-
-            BContainer buttonContainer = new BContainer(new BorderLayout());
-            buttonContainer.add(nextButton, BorderLayout.CENTER);
-
-            BButton selectAllButton = new BButton("Frame", new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-                    performSelectAll();
-                }
-            }, "selectall");
-            selectAllButton.setStyleClass("circle_button");
-            buttonContainer.add(selectAllButton, BorderLayout.SOUTH);
-
-            add(buttonContainer, BorderLayout.EAST);
-        }
-
-        private void performSelectAll() {
-            getDiagram().onClick(null);
-
-            for (Body body : getDiagram().allBodies()) {
-                if (body instanceof Background) {
-                    continue;
-                }
-                getDiagram().onClick(body);
-            }
-        }
     }
 }

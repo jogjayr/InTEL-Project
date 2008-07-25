@@ -51,7 +51,7 @@ public class SelectModePanel extends ApplicationModePanel {
         nextButton.setEnabled(false);
 
         //add(selectionLabel, BorderLayout.NORTH);
-        add(selectionListBox, BorderLayout.CENTER);
+        add(selectionListBox, BorderLayout.WEST);
         add(nextButton, BorderLayout.EAST);
 
         selectionList = new HTMLView();
