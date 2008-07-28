@@ -91,7 +91,8 @@ public class FBDChecker {
      * @return
      */
     private List<Load> getAddedLoads() {
-        List<Load> addedForces = new ArrayList<Load>();
+        return diagram.getAddedLoads();
+        /*List<Load> addedForces = new ArrayList<Load>();
         for (SimulationObject obj : diagram.allObjects()) {
             if (!(obj instanceof Load)) {
                 continue;
@@ -100,7 +101,7 @@ public class FBDChecker {
             // this force has been added, and is not a given that could have been selected.
             addedForces.add((Load) obj);
         }
-        return addedForces;
+        return addedForces;*/
     }
 
     /**

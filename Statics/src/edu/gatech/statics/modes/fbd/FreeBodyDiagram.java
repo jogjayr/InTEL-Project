@@ -17,7 +17,6 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
-import edu.gatech.statics.modes.fbd.tools.LoadLabelListener;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
@@ -26,7 +25,6 @@ import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -35,11 +33,11 @@ import edu.gatech.statics.ui.InterfaceRoot;
 public class FreeBodyDiagram extends SubDiagram {
 
     private boolean solved = false;
-    private List<Load> addedForces = new ArrayList<Load>();
+    private List<Load> addedLoads = new ArrayList<Load>();
     private FBDInput fbdInput;
 
-    public List<Load> getAddedForces() {
-        return Collections.unmodifiableList(addedForces);
+    public List<Load> getAddedLoads() {
+        return Collections.unmodifiableList(addedLoads);
     }
 
     /**
@@ -55,10 +53,10 @@ public class FreeBodyDiagram extends SubDiagram {
     }
 
     public void reset() {
-        for (Load load : addedForces) {
+        for (Load load : addedLoads) {
             removeUserObject(load);
         }
-        addedForces.clear();
+        addedLoads.clear();
 
         currentHighlight = null;
         currentSelection = null;
@@ -130,7 +128,7 @@ public class FreeBodyDiagram extends SubDiagram {
     public void addUserObject(SimulationObject obj) {
         super.addUserObject(obj);
         if (obj instanceof Load) {
-            addedForces.add((Load) obj);
+            addedLoads.add((Load) obj);
             new LabelManipulator((Load) obj);
         }
     }
@@ -139,25 +137,9 @@ public class FreeBodyDiagram extends SubDiagram {
     public InputHandler getInputHandler() {
         return fbdInput;
     }
-    private static final SelectionFilter filter = new  
+    private static final SelectionFilter filter = new SelectionFilter() {
 
-          SelectionFilter( ) {
-
-               
-        
-    
-
-    public    
-         
-    
-      
-      
-
-        
-            
-            
-        
-           boolean canSelect(SimulationObject obj) {
+        public boolean canSelect(SimulationObject obj) {
             return obj instanceof Load;
         }
     };
