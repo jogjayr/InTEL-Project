@@ -87,24 +87,6 @@ public class FBDChecker {
     }
 
     /**
-     * Get all the loads added to the free body diagram.
-     * @return
-     */
-    private List<Load> getAddedLoads() {
-        return diagram.getAddedLoads();
-        /*List<Load> addedForces = new ArrayList<Load>();
-        for (SimulationObject obj : diagram.allObjects()) {
-            if (!(obj instanceof Load)) {
-                continue;
-            }
-
-            // this force has been added, and is not a given that could have been selected.
-            addedForces.add((Load) obj);
-        }
-        return addedForces;*/
-    }
-
-    /**
      * Get the given loads that are present in the diagram.
      * The givens are loads present in the schematic, and should be added to the diagram
      * by the user in the FBD. Givens are first looked up in the symbol manager to 
@@ -151,7 +133,7 @@ public class FBDChecker {
         //done = false;
 
         // step 1: assemble a list of all the forces the user has added.
-        List<Load> addedLoads = new ArrayList<Load>(getAddedLoads());
+        List<Load> addedLoads = new ArrayList<Load>(diagram.getAddedLoads());
 
         logInfo("check: user added loads: " + addedLoads);
 
