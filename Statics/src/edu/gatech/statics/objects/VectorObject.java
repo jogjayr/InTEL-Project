@@ -11,6 +11,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.exercise.DisplayConstants;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
@@ -23,56 +24,60 @@ import java.math.BigDecimal;
  */
 public class VectorObject extends SimulationObject implements Quantified {
 
-    private Point anchor;
-    private Vector vector;
+    private AnchoredVector myAnchoredVector;
     private String name;
 
     @Override
     public String getName() {
-        if(name != null)
+        if (name != null) {
             return name;
-        return vector.getSymbolName();
+        }
+        return getVector().getSymbolName();
     }
 
     @Override
     public String getLabelText() {
-        return vector.getQuantity().toString();
+        return getVector().getQuantity().toString();
     }
-    
+
     /**
      * Returns a reference to the VectorObject's backing vector
      * @return
      */
     public Vector getVector() {
-        return vector;
+        return myAnchoredVector.getVector();
     }
 
     @Override
     public void setName(String name) {
         this.name = name;
-        //vector.setSymbol(name);
+    //vector.setSymbol(name);
     }
 
     @Override
     public Vector3f getTranslation() {
-        return anchor.getTranslation();
+        return getAnchor().getTranslation();
     }
 
     @Override
     public void setTranslation(Vector3f v) {
-        anchor.setTranslation(v);
+        getAnchor().setTranslation(v);
     }
 
     public String getSymbolName() {
-        return vector.getSymbolName();
+        return myAnchoredVector.getSymbolName();
     }
 
     public Point getAnchor() {
-        return anchor;
+        return myAnchoredVector.getAnchor();
     }
 
     public void setAnchor(Point anchor) {
-        this.anchor = anchor;
+        myAnchoredVector.setAnchor(anchor);
+    }
+
+    private void setVector(Vector vector) {
+        myAnchoredVector.setVector(vector);
     }
 
     @Override
@@ -91,21 +96,21 @@ public class VectorObject extends SimulationObject implements Quantified {
     @Override
     public void setRotation(Matrix3f mat) {
         Vector3f v = mat.mult(Vector3f.UNIT_Z);
-        
+
         Vector3bd vbd = new Vector3bd(
-                BigDecimal.valueOf(v.x), 
-                BigDecimal.valueOf(v.y), 
+                BigDecimal.valueOf(v.x),
+                BigDecimal.valueOf(v.y),
                 BigDecimal.valueOf(v.z));
-        
+
         setVectorValue(vbd);
     }
-    
+
     public Vector3bd getVectorValue() {
-        return vector.getVectorValue();
+        return getVector().getVectorValue();
     }
 
     public void setVectorValue(Vector3bd value) {
-        vector.setVectorValue(value);
+        getVector().setVectorValue(value);
     }
 
     public void createDefaultSchematicRepresentation() {
@@ -114,14 +119,17 @@ public class VectorObject extends SimulationObject implements Quantified {
     }
 
     public VectorObject(Point anchor, Vector vector) {
-        this.anchor = anchor;
-        this.vector = vector;
+        myAnchoredVector = new AnchoredVector(anchor, vector);
+//        this.setAnchor(anchor);
+//        this.setVector(vector);
     }
 
     public VectorObject(VectorObject obj) {
-        this.anchor = obj.anchor;
-        this.vector = new Vector(obj.vector);
-        this.name = obj.name;
+        myAnchoredVector = new AnchoredVector(obj.getAnchor(), new Vector(obj.getVector()));
+        setName(obj.name);
+//        this.setAnchor(obj.getAnchor());
+//        this.setVector(new Vector(obj.getVector()));
+//        this.name = obj.name;
     }
 
     public ArrowRepresentation getArrow() {
@@ -143,55 +151,55 @@ public class VectorObject extends SimulationObject implements Quantified {
 
         float distance = DisplayConstants.getInstance().getForceSize();
 //        1 + 2 * (arrow.getLength() + arrow.getAxisOffset());
-        return getTranslation().add(vector.getVectorValue().toVector3f().mult(distance));
+        return getTranslation().add(getVector().getVectorValue().toVector3f().mult(distance));
     }
 
     @Override
     public String toString() {
-        String r = getClass().getSimpleName() + " @ " + getAnchor().getName() + " : " + vector.toString();
+        String r = getClass().getSimpleName() + " @ " + getAnchor().getName() + " : " + getAnchor().toString();
         return r;
     }
 
     public Unit getUnit() {
-        return vector.getUnit();
+        return myAnchoredVector.getUnit();
     }
 
     public double doubleValue() {
-        return vector.doubleValue();
+        return myAnchoredVector.doubleValue();
     }
 
     public boolean isKnown() {
-        return vector.isKnown();
+        return myAnchoredVector.isKnown();
     }
 
     public boolean isSymbol() {
-        return vector.isSymbol();
+        return myAnchoredVector.isSymbol();
     }
 
     public void setKnown(boolean known) {
-        vector.setKnown(known);
+        myAnchoredVector.setKnown(known);
     }
 
     public void setSymbol(String symbolName) {
         setName(symbolName);
-        vector.setSymbol(symbolName);
+        myAnchoredVector.setSymbol(symbolName);
     }
 
     public void setDiagramValue(BigDecimal v) {
-        vector.setDiagramValue(v);
+        myAnchoredVector.setDiagramValue(v);
     }
-    
+
     public BigDecimal getDiagramValue() {
-        return vector.getDiagramValue();
+        return myAnchoredVector.getDiagramValue();
     }
-    
+
     /**
      * Returns a String representation of the vector without a unit.
      * Will return 1.0 for symbolic quantities.
      * @return
      */
     public String toStringDecimal() {
-        return vector.getQuantity().toStringDecimal();
+        return getVector().getQuantity().toStringDecimal();
     }
 
     @Override
@@ -203,10 +211,10 @@ public class VectorObject extends SimulationObject implements Quantified {
             return false;
         }
         final VectorObject other = (VectorObject) obj;
-        if (this.anchor != other.anchor && (this.anchor == null || !this.anchor.equals(other.anchor))) {
+        if (getAnchor() != other.getAnchor() && (getAnchor() == null || !getAnchor().equals(other.getAnchor()))) {
             return false;
         }
-        if (this.vector != other.vector && (this.vector == null || !this.vector.equals(other.vector))) {
+        if (getVector() != other.getVector() && (getVector() == null || !getVector().equals(other.getVector()))) {
             return false;
         }
         return true;
@@ -215,8 +223,8 @@ public class VectorObject extends SimulationObject implements Quantified {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 41 * hash + (this.anchor != null ? this.anchor.hashCode() : 0);
-        hash = 41 * hash + (this.vector != null ? this.vector.hashCode() : 0);
+        hash = 41 * hash + (getAnchor() != null ? getAnchor().hashCode() : 0);
+        hash = 41 * hash + (getVector() != null ? getVector().hashCode() : 0);
         return hash;
     }
 
@@ -227,6 +235,6 @@ public class VectorObject extends SimulationObject implements Quantified {
      * @return
      */
     public boolean equalsSymbolic(Load v) {
-        return vector.equalsSymbolic(v.getVector()) && anchor.equals(v.getAnchor());
+        return getVector().equalsSymbolic(v.getVector()) && getAnchor().equals(v.getAnchor());
     }
 }

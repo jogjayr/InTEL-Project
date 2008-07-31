@@ -16,8 +16,9 @@ import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 /**
- *
- * @author Trudetski
+ * A popup window to alert the user that they are trying to solve for a 
+ * 2FM by itself
+ * @author Jimmy Truesdell
  */
     public class EquationMode2FMPopup extends ModalPopupWindow{
    

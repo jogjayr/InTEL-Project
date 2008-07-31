@@ -8,8 +8,8 @@ import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 
 /**
- *
- * @author Trudetski
+ * A task for graded problems specifically for 2FMss
+ * @author Jimmy Truesdell
  */
 public class Solve2FMTask extends SolveConnectorTask {
 
