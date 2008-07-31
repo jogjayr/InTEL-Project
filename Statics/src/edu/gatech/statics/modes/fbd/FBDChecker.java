@@ -151,7 +151,7 @@ public class FBDChecker {
         //done = false;
 
         // step 1: assemble a list of all the forces the user has added.
-        List<Load> addedLoads = getAddedLoads();
+        List<Load> addedLoads = new ArrayList<Load>(getAddedLoads());
 
         logInfo("check: user added loads: " + addedLoads);
 
