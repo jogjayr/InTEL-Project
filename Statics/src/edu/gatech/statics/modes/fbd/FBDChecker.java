@@ -694,7 +694,14 @@ public class FBDChecker {
         //if we passed, which we usually want, this means that the loads' labels
         //do not match, which is bad
         if (result == NameCheckResult.passed) {
-            return NameCheckResult.shouldMatch2FM;
+            for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
+                if (!(obj instanceof Load)) {
+                    continue;
+                }
+                if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
+                    return NameCheckResult.shouldMatch2FM;
+                }
+            }
         }
 
         // if the result of the standard check is anything but "there is a duplicate in this diagram"
