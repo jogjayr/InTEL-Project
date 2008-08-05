@@ -6,8 +6,8 @@ package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
-import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,10 +71,12 @@ public class SymbolManager {
         // okay, here we try to check for the 2fm case
         // make a list of connectors present at that point
         // the reaction was not found at this load, so we want to try to find the opposite one.
-        List<Connector> connectors = Exercise.getExercise().getSelectDiagram().getConnectorsAtPoint(load.getAnchor());
-        for (Connector connector : connectors) {
-            if (connector instanceof Connector2ForceMember2d) {
-                Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
+        //List<Connector> connectors = Exercise.getExercise().getSelectDiagram().getConnectorsAtPoint(load.getAnchor());
+        //List<Connector> connectors = Exercise.getExercise().getSchematic().getConnectorsAtPoint(load.getAnchor());
+        //for (Connector connector : connectors) {
+        for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
+            if (obj instanceof Connector2ForceMember2d) {
+                Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) obj;
                 if (connector2fm.getDirection().equals(load.getVectorValue()) || connector2fm.getDirection().equals(load.getVectorValue().negate())) {
 
                     // this one lines up with the connector2fm

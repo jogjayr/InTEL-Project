@@ -8,24 +8,16 @@
  */
 package edu.gatech.statics.exercise;
 
-import edu.gatech.statics.*;
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
-import edu.gatech.statics.modes.equation.EquationDiagram;
-import edu.gatech.statics.modes.equation.EquationMode;
-import edu.gatech.statics.modes.fbd.FBDMode;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
-import edu.gatech.statics.modes.select.SelectDiagram;
-import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.CoordinateSystem;
+import edu.gatech.statics.Mode;
+import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceRoot;
-import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -35,7 +27,8 @@ public abstract class Exercise {
 
     private static Exercise currentExercise;
     private DisplayConstants displayConstants;
-    private SymbolManager symbolManager;
+    //private SymbolManager symbolManager;
+    private ExerciseState state;
 
     public static Exercise getExercise() {
         return currentExercise;
@@ -46,7 +39,7 @@ public abstract class Exercise {
     }
 
     public SymbolManager getSymbolManager() {
-        return symbolManager;
+        return state.getSymbolManager();
     }
 
     // informational collection of world and diagram objects
@@ -69,6 +62,14 @@ public abstract class Exercise {
 
     public void addTaskListener(TaskStatusListener listener) {
         taskListeners.add(listener);
+    }
+
+    /**
+     * This is meant to be called only once by StaticsApplication, after the exercise is loaded.
+     * This method locks the schematic.
+     */
+    public void lockSchematic() {
+        schematic.lock();
     }
 
     /**
@@ -120,20 +121,9 @@ public abstract class Exercise {
         this.description = description;
     }
     private Schematic schematic;
-    private SelectDiagram selectDiagram;
-    private Map<BodySubset, FreeBodyDiagram> freeBodyDiagrams = new HashMap();
-    private Map<BodySubset, EquationDiagram> equationDiagrams = new HashMap();
 
     public Schematic getSchematic() {
         return schematic;
-    }
-
-    public List<FreeBodyDiagram> getFreeBodyDiagrams() {
-        return new ArrayList<FreeBodyDiagram>(freeBodyDiagrams.values());
-    }
-
-    public List<EquationDiagram> getEquationDiagrams() {
-        return new ArrayList<EquationDiagram>(equationDiagrams.values());
     }
     private CoordinateSystem coordinateSystem = new CoordinateSystem();
 
@@ -145,17 +135,6 @@ public abstract class Exercise {
         this.coordinateSystem = sys;
     }
 
-    protected SelectDiagram createSelectDiagram() {
-        return new SelectDiagram();
-    }
-
-    public final SelectDiagram getSelectDiagram() {
-        if (selectDiagram == null) {
-            selectDiagram = createSelectDiagram();
-        }
-        return selectDiagram;
-    }
-
     public Exercise() {
         this(new Schematic());
     }
@@ -165,77 +144,61 @@ public abstract class Exercise {
         this.schematic = world;
         currentExercise = this;
         displayConstants = new DisplayConstants();
-        symbolManager = new SymbolManager();
-    }
 
-    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodySubset) {
-        return new FreeBodyDiagram(bodySubset);
-    }
-
-    public final FreeBodyDiagram getFreeBodyDiagram(BodySubset bodySubset) {
-
-        //BodySubset bodySubset = new BodySubset(bodies);
-        FreeBodyDiagram fbd = freeBodyDiagrams.get(bodySubset);
-
-        if (fbd == null) {
-            fbd = createFreeBodyDiagram(bodySubset);
-            freeBodyDiagrams.put(bodySubset, fbd);
-        }
-        return fbd;
-    }
-    
-    public boolean hasFreeBodyDiagram(BodySubset bodySubset) {
-        return freeBodyDiagrams.containsKey(bodySubset);
-    }
-
-    protected EquationDiagram createEquationDiagram(BodySubset bodySubset) {
-        return new EquationDiagram(bodySubset);
-    }
-
-    public EquationDiagram getEquationDiagram(BodySubset bodySubset) {
-        FreeBodyDiagram fbd = getFreeBodyDiagram(bodySubset);
-        if (!fbd.isSolved()) {
-            throw new IllegalStateException("Free Body Diagram " + fbd + " is not solved!");
-        }
-        //BodySubset bodySubset = fbd.getBodySubset();
-        EquationDiagram eq = equationDiagrams.get(bodySubset);
-
-        if (eq == null) {
-            eq = createEquationDiagram(bodySubset);
-            equationDiagrams.put(bodySubset, eq);
-        }
-        return eq;
-    }
-
-    public Diagram getRecentDiagram(BodySubset bodies) {
-        if (bodies == null) {
-            return getSelectDiagram();
-        }
-        if (equationDiagrams.get(bodies) != null && freeBodyDiagrams.get(bodies) != null && freeBodyDiagrams.get(bodies).isSolved()) {
-            return equationDiagrams.get(bodies);
-        }
-        if (freeBodyDiagrams.get(bodies) != null) {
-            return freeBodyDiagrams.get(bodies);
-        }
-        throw new IllegalStateException("Cannot select recent diagram for: " + bodies);
+        state = new ExerciseState();
     }
 
     /**
-     * I am not sure if this is the best place to put this method.
-     * It goes through the active diagrams and activates panels accordingly.
-     * This place is also the most open to extension if new modes are added.
-     * @param bodies
+     * This is the method that subclasses of exercise should override to create new types of diagrams.
+     * It is also the method that should be overridden to modify support for existing types of diagrams,
+     * for subclasses to provide their own implementations of standard diagram types.
+     * 
+     * After creating, the new diagram needs to be added to the diagram map in the state.
+     * Where does this happen?
+     * @param key
+     * @param type
      */
-    public void enableTabs(BodySubset bodies) {
-        ApplicationBar applicationBar = InterfaceRoot.getInstance().getApplicationBar();
-        applicationBar.disableAllTabs();
-        applicationBar.enableTab(SelectMode.instance, true);
-        if (equationDiagrams.get(bodies) != null) {
-            applicationBar.enableTab(EquationMode.instance, true);
+    abstract protected Diagram createNewDiagram(DiagramKey key, DiagramType type);
+
+    /**
+     * Returns true if the exercise can support a mode for the type of diagram provided.
+     * This method is useful as a test case.
+     * @param type
+     * @return
+     */
+    abstract public boolean supportsType(DiagramType type);
+
+    /**
+     * Attempts to retrieve the specified diagram. If it does not exist, null is returned.
+     * This method does not attempt to create a new diagram if one is missing.
+     * @param key
+     * @param type
+     * @return
+     */
+    public final Diagram getDiagram(DiagramKey key, DiagramType type) {
+        return state.getDiagram(key, type);
+    }
+
+    /**
+     * Attempts to find a diagram with the specified key of the greatest priority.
+     * If no diagrams have been created with this key, null is returned.
+     * @param key
+     * @return
+     */
+    public final Diagram getRecentDiagram(DiagramKey key) {
+
+        Diagram maxDiagram = null;
+        int maxPriority = 0;
+
+        // go through all diagram types and pick out the best one.
+        for (DiagramType type : DiagramType.allTypes()) {
+            if (type.getPriority() > maxPriority && state.getDiagram(key, type) != null) {
+                maxDiagram = state.getDiagram(key, type);
+                maxPriority = type.getPriority();
+            }
         }
-        if (freeBodyDiagrams.get(bodies) != null) {
-            applicationBar.enableTab(FBDMode.instance, true);
-        }
+
+        return maxDiagram;
     }
 
     /**
@@ -258,6 +221,7 @@ public abstract class Exercise {
 
     /**
      * Called after the exercise is loaded.
+     * This is a good point for overriding classes to put special UI elements.
      */
     public void postLoadExercise() {
     }
@@ -283,11 +247,13 @@ public abstract class Exercise {
         if (satisfied && !isExerciseFinished()) {
             finishExercise();
         }
-
-    //return satisfied;
     }
     private boolean finished = false;
 
+    /**
+     * Returns true if the exercise has been completed.
+     * @return
+     */
     public boolean isExerciseFinished() {
         return finished;
     }
@@ -296,13 +262,26 @@ public abstract class Exercise {
         finished = true;
     }
 
+    /**
+     * This is a utility method for overriding classes to use
+     * when loading textures to use in representations.
+     * @param textureUrl
+     * @return
+     */
     protected Texture loadTexture(String textureUrl) {
         return loadTexture(textureUrl, Texture.FM_LINEAR, Texture.FM_LINEAR);
     }
 
+    /**
+     * This is a utility method for overriding classes to use
+     * when loading textures to use in representations.
+     * @param textureUrl
+     * @param minFilter
+     * @param maxFilter
+     * @return
+     */
     protected Texture loadTexture(String textureUrl, int minFilter, int maxFilter) {
         Texture texture = TextureManager.loadTexture(getClass().getClassLoader().getResource(textureUrl), minFilter, maxFilter);
-        //System.out.println(texture+" "+texture.getTextureId()+" "+texture.getTextureKey());
         return texture;
     }
 }

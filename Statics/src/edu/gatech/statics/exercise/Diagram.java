@@ -9,6 +9,7 @@
 package edu.gatech.statics.exercise;
 
 import com.jme.input.InputHandler;
+import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
@@ -20,6 +21,8 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.state.DiagramAction;
+import edu.gatech.statics.exercise.state.StateStack;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
@@ -39,14 +42,113 @@ import java.util.Set;
  *
  * @author Calvin Ashmore
  */
-public abstract class Diagram {
+public abstract class Diagram<StateType extends DiagramState> {
+
+    private DiagramType myType;
+
+    /**
+     * Returns the type of this diagram. Together, the type and the key should
+     * make a unique identifier for this diagram.
+     * @return
+     */
+    public final DiagramType getType() {
+        return myType;
+    }
+
+    /**
+     * Subclasses of Diagram need to override this method which will return a
+     * String that represents the type of this diagram. All diagram types must
+     * be loaded prior.
+     * @return
+     */
+    protected abstract String getTypeString();
+
+    /**
+     * Returns the diagram key for this particular diagram.
+     * @return
+     */
+    abstract public DiagramKey getKey();
+    /**
+     * The state stack representing the current state and history of this diagram.
+     */
+    private StateStack<StateType> states;
+
+    /**
+     * creates the initial state for the diagram. Subclasses must override this method
+     * and supply a starting state.
+     */
+    abstract protected void createInitialState();
+
+    /**
+     * Undoes the last action done to this diagram
+     */
+    public void undo() {
+        states.undo();
+        updateDiagram();
+    }
+
+    /**
+     * Redoes the last undone action
+     */
+    public void redo() {
+        states.redo();
+        updateDiagram();
+    }
+
+    /**
+     * returns the current state of the diagram.
+     * @return
+     */
+    public StateType getCurrentState() {
+        return states.getCurrent();
+    }
+
+    /**
+     * returns true if it is possible to undo from the current state
+     * @return
+     */
+    public boolean canUndo() {
+        return states.canUndo();
+    }
+
+    /**
+     * returns true if it is possible to redo from the current state
+     * @return
+     */
+    public boolean canRedo() {
+        return states.canRedo();
+    }
+
+    /**
+     * performs the given action if possible.
+     * @param action
+     */
+    public void performAction(DiagramAction<StateType> action) {
+        if (isLocked() || !states.canPush()) {
+            return;
+        }
+        StateType newState = action.performAction(getCurrentState());
+        states.push(newState);
+
+        // update diagram
+        updateDiagram();
+    }
+
+    /**
+     * returns true if the current diagram is locked and cannot be modified.
+     * Diagrams are locked when the user has successfully solved them, but it is
+     * possible for diagrams to get unlocked if external changes are made.
+     * @return
+     */
+    public boolean isLocked() {
+        return getCurrentState().isLocked();
+    }
 
     public static Schematic getSchematic() {
         return StaticsApplication.getApp().getExercise().getSchematic();
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
-    private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
-
+    //private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
@@ -60,21 +162,20 @@ public abstract class Diagram {
      * @return
      */
     abstract protected List<SimulationObject> getBaseObjects();
-
     /**
      * Adds an object to the list of objects that users have added to the diagram.
      */
-    public void addUserObject(SimulationObject obj) {
-        userObjects.add(obj);
-        allObjects.add(obj);
-        invalidateNodes();
+    /*public void addUserObject(SimulationObject obj) {
+    userObjects.add(obj);
+    allObjects.add(obj);
+    invalidateNodes();
     }
-
+    
     public void removeUserObject(SimulationObject obj) {
-        userObjects.remove(obj);
-        allObjects.remove(obj);
-        invalidateNodes();
-    }
+    userObjects.remove(obj);
+    allObjects.remove(obj);
+    invalidateNodes();
+    }*/
     private static final SelectionFilter defaultFilter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -112,6 +213,12 @@ public abstract class Diagram {
     // if new ones are returned, lots of Object[] instances are left and hog memory
     private Map<RepresentationLayer, List<Representation>> representationCache = new HashMap<RepresentationLayer, List<Representation>>();
 
+    /**
+     * Returns a list of all the representations present in the diagram that reside
+     * on the given representation layer.
+     * @param layer
+     * @return
+     */
     public List<Representation> getRepresentations(RepresentationLayer layer) {
         List<Representation> r = representationCache.get(layer);
         if (r == null) {
@@ -126,6 +233,10 @@ public abstract class Diagram {
     }
     private List<LabelRepresentation> labels = new ArrayList<LabelRepresentation>();
 
+    /**
+     * Returns a list of all the label representations present in this diagram.
+     * @return
+     */
     public List<LabelRepresentation> getLabels() {
         return labels;
     }
@@ -133,13 +244,24 @@ public abstract class Diagram {
     /** Creates a new instance of World */
     public Diagram() {
         //setSelectableFilterDefault();
+        //this.myType = createType();
+        this.myType = DiagramType.getType(getTypeString());
     }
     private boolean nodesUpdated = false;
 
+    /**
+     * This is the publicly accepted way to get the diagram to refresh its nodes.
+     */
     public void invalidateNodes() {
         nodesUpdated = false;
     }
 
+    /**
+     * This method updates all the nodes in the scene graph, making sure that
+     * they correctly represent the objects that are present in the diagram.
+     * This is automatically called during the display process, and should 
+     * not usually be overridden.
+     */
     protected void updateNodes() {
         if (nodesUpdated) {
             return;
@@ -214,6 +336,11 @@ public abstract class Diagram {
         }
     }
 
+    /**
+     * This updates the state of the diagram internally. Most of this does not 
+     * involve many state changes, but might involve refreshing of UI elements and
+     * object representations.
+     */
     public void update() {
         updateNodes();
         for (SimulationObject obj : allObjects) {
@@ -221,9 +348,17 @@ public abstract class Diagram {
         }
     }
 
+    /**
+     * called when the user is hovering over the given object.
+     * @param obj
+     */
     public void onHover(SimulationObject obj) {
     }
 
+    /**
+     * called when the given object has been clicked by the user
+     * @param obj
+     */
     public void onClick(SimulationObject obj) {
     }
 
@@ -244,13 +379,24 @@ public abstract class Diagram {
     protected void updateDiagram() {
         allObjects.clear();
         allObjects.addAll(getBaseObjects());
-        allObjects.addAll(userObjects);
+        //allObjects.addAll(userObjects);
+        allObjects.addAll(getCurrentState().getStateObjects());
         invalidateNodes();
     }
 
+    /**
+     * called when the diagram is deactivated. This can be used for clearing away any
+     * temporary data made by the diagram that needs to be disposed.
+     */
     public void deactivate() {
     }
 
+    /**
+     * Renders the current diagram scene graph.
+     * This works by going through all the representation layers and then rendering
+     * each on top of the other.
+     * @param r
+     */
     public void render(Renderer r) {
 
         for (RepresentationLayer layer : RepresentationLayer.getLayers()) {

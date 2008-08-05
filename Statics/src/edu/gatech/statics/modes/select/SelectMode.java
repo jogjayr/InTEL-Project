@@ -19,7 +19,7 @@ public class SelectMode extends Mode {
     public static final SelectMode instance = new SelectMode();
 
     @Override
-    public String getModePanelName() {
+    public String getModeName() {
         return SelectModePanel.panelName;
     }
 

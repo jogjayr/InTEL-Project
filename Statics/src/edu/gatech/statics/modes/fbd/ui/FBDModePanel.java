@@ -10,8 +10,9 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.fbd.FBDChecker;
+import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -20,17 +21,15 @@ import edu.gatech.statics.ui.applicationbar.ApplicationTab;
  *
  * @author Calvin Ashmore
  */
-public class FBDModePanel extends ApplicationModePanel {
+public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
 
-    public static final String panelName = "addLoads";
+    @Override
+    public DiagramType getDiagramType() {
+        return FBDMode.instance.getDiagramType();
+    }
     private FBDTools tools;
     private BContainer checkContainer;
     private BButton checkButton,  resetButton;
-
-    @Override
-    public String getPanelName() {
-        return panelName;
-    }
 
     public FBDModePanel() {
         super();
@@ -70,7 +69,7 @@ public class FBDModePanel extends ApplicationModePanel {
         // need to have list of bodies here...
         FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
-        Exercise.getExercise().enableTabs(diagram.getBodySubset());
+        //Exercise.getExercise().enableTabs(diagram.getBodySubset());
 
         if (diagram.isSolved()) {
             checkButton.setEnabled(false);
@@ -100,7 +99,7 @@ public class FBDModePanel extends ApplicationModePanel {
                 FBDChecker checker = diagram.getChecker();//new FBDChecker(diagram);
                 if (checker.checkDiagram()) {
                     diagram.setSolved(true);
-                    
+
                     resetButton.setEnabled(false);
                     tools.setEnabled(false);
 

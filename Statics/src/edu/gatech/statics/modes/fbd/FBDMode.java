@@ -20,7 +20,7 @@ public class FBDMode extends Mode {
     public static final FBDMode instance = new FBDMode();
 
     @Override
-    public String getModePanelName() {
+    public String getModeName() {
         return FBDModePanel.panelName;
     }
 

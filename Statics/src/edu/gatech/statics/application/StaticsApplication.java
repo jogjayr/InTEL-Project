@@ -59,7 +59,7 @@ public class StaticsApplication {
     // the engine/graphical/interface view of the exercize.
     // controls rendering, connection to jME.
     private Exercise currentExercise;
-    private Diagram currentDiagram;
+    private Diagram<?> currentDiagram;
     private PolledRootNode labelNode;
     private InterfaceRoot iRoot;
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
@@ -282,6 +282,7 @@ public class StaticsApplication {
         if (currentDiagram == null) {
             return;
         }
+        
         for (SimulationObject obj : currentDiagram.allObjects()) {
             obj.setDisplayHighlight(false);
             obj.setDisplaySelected(false);
@@ -421,6 +422,7 @@ public class StaticsApplication {
 
         // load exercise here
         getExercise().loadExercise();
+        getExercise().lockSchematic();
 
         iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
         getExercise().loadStartingMode();

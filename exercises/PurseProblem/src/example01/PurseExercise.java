@@ -71,6 +71,7 @@ public class PurseExercise extends FrameExercise {
     Pin2d jointC, jointE;
     Cable tendon;
     Body upperArm, forearm;
+
     @Override
     public void loadExercise() {
 

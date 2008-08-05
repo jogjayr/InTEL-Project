@@ -11,6 +11,10 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,20 +45,24 @@ public class ApplicationBar extends BWindow {
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }
-    
-    
 
-    public void disableAllTabs() {
-        for(ApplicationTab tab : tabs)
+    protected void disableAllTabs() {
+        for (ApplicationTab tab : tabs) {
             tab.setTabEnabled(false);
+        }
     }
-    public void enableTab(ApplicationTab tab, boolean enabled) {
-        tab.setTabEnabled(enabled);
-    }
+    //protected void enableTab(ApplicationTab tab, boolean enabled) {
+    //    tab.setTabEnabled(enabled);
+    //}
     public void enableTab(Mode mode, boolean enabled) {
-        ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModePanelName());
+        ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModeName());
         panel.getTab().setTabEnabled(enabled);
     }
+
+    /**
+     * Sets a mode panel to be current. This is called after the new diagram is set.
+     * @param modePanel
+     */
     public void setModePanel(ApplicationModePanel modePanel) {
         if (this.modePanel != null) {
             this.modePanel.getTab().setActive(false);
@@ -66,7 +74,46 @@ public class ApplicationBar extends BWindow {
 
             modePanel.activate();
             modePanel.getTab().setActive(true);
+
+            enableTabs();
         }
+    }
+
+    /**
+     * This enables the tabs that should be active, given the current diagram.
+     */
+    protected void enableTabs() {
+
+        // this is the current diagram, the most up-to-date one.
+        DiagramKey key = StaticsApplication.getApp().getCurrentDiagram().getKey();
+
+        // go through all types
+        for (DiagramType type : DiagramType.allTypes()) {
+
+            // is this type enabled for our key?
+            // if not, continue.
+            if (Exercise.getExercise().getDiagram(key, type) == null) {
+                continue;            // go through the types of mode panels
+            // and pick out the one that matches the type
+            }
+            for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
+
+                if (panel.getDiagramType() == type) {
+                    panel.getTab().setTabEnabled(true);
+                }
+            }
+        }
+
+
+    /**ApplicationBar applicationBar = InterfaceRoot.getInstance().getApplicationBar();
+    applicationBar.disableAllTabs();
+    applicationBar.enableTab(SelectMode.instance, true);
+    if (equationDiagrams.get(bodies) != null) {
+    applicationBar.enableTab(EquationMode.instance, true);
+    }
+    if (freeBodyDiagrams.get(bodies) != null) {
+    applicationBar.enableTab(FBDMode.instance, true);
+    }*/
     }
 
     public ApplicationBar() {
@@ -109,7 +156,7 @@ public class ApplicationBar extends BWindow {
         BContainer spacer = new BContainer();
         spacer.setPreferredSize(3, -1);
         tabBar.add(spacer);
-        
+
         for (ApplicationModePanel panel : panels) {
 
             ApplicationTab tab = panel.getTab();

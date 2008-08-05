@@ -5,7 +5,9 @@
 package edu.gatech.statics.tasks;
 
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 
 /**
@@ -21,12 +23,14 @@ public class CompleteFBDTask implements Task {
     }
 
     public boolean isSatisfied() {
-        
+
         // terminate early if the diagram does not yet exist.
-        if(!Exercise.getExercise().hasFreeBodyDiagram(bodies))
+        FreeBodyDiagram fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(
+                bodies, FBDMode.instance.getDiagramType());
+
+        if (fbd == null) {
             return false;
-        
-        FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
+        }
         return fbd.isSolved();
     }
 

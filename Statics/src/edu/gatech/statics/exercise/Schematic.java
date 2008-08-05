@@ -15,8 +15,10 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Background;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,6 +42,16 @@ public class Schematic {
     public Background getBackground() {
         return background;
     }
+    private boolean locked = false;
+
+    /**
+     * The schematic now is locked after Exercises's loadExercise method. 
+     * When the schematic is locked, no changes may be made to it.
+     * @return
+     */
+    public boolean isLocked() {
+        return locked;
+    }
 
     /** Creates a new instance of ExercizeWorld */
     public Schematic() {
@@ -48,6 +60,7 @@ public class Schematic {
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     private List<Body> allBodies = new ArrayList<Body>();
+    private Map<String, SimulationObject> objectsByName = new HashMap<String, SimulationObject>();
 
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
@@ -58,11 +71,17 @@ public class Schematic {
     }
 
     public void remove(SimulationObject obj) {
+        if (locked) {
+            throw new IllegalStateException("Objects may not be removed from the Schematic after it has been locked.");
+        }
         allObjects.remove(obj);
     }
 
     public void add(SimulationObject obj) {
+        if (locked) {
+            throw new IllegalStateException("Objects may not be added to the Schematic after it has been locked.");
         //obj.setGiven(true);
+        }
         if (!allObjects.contains(obj)) {
             allObjects.add(obj);
         }
@@ -75,8 +94,43 @@ public class Schematic {
             for (SimulationObject obj1 : body.getAttachedObjects()) {
                 add(obj1);
             }
-
         }
+    }
+
+    /**
+     * This method locks the schematic.
+     * This method will throw exceptions if naming conventions are not met.
+     * Specifically, all objects must have unique names.
+     * @throws IllegalStateException when naming invariants are invalid.
+     */
+    void lock() {
+
+        // build up the list of names.
+        for (SimulationObject obj : allObjects) {
+            String name = obj.getName();
+            if (name == null) {
+                // complain when name does not exist
+                throw new IllegalStateException("SimulationObject " + obj + " has no name!");
+            }
+            if (objectsByName.containsKey(name)) {
+                // complain when something else has this name
+                throw new IllegalStateException("SimulationObject " + obj + " shares a name with " + objectsByName.get(name));
+            }
+            objectsByName.put(name, obj);
+        }
+
+        locked = true;
+    }
+
+    /**
+     * Schematic maintains a map of all of the objects by name. This will return
+     * a stored simulation object according to its name. This method only works
+     * after the schematic has been locked.
+     * @param name
+     * @return
+     */
+    public SimulationObject getByName(String name) {
+        return objectsByName.get(name);
     }
 
     /**

@@ -5,6 +5,11 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.fbd.FBDMode;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
@@ -35,5 +40,53 @@ abstract public class OrdinaryExercise extends Exercise {
     public Mode loadStartingMode() {
         SelectMode.instance.load();
         return SelectMode.instance;
+    }
+
+    protected SelectDiagram createSelectDiagram() {
+        return new SelectDiagram();
+    }
+
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodies) {
+        return new FreeBodyDiagram(bodies);
+    }
+
+    protected EquationDiagram createEquationDiagram(BodySubset bodies) {
+        return new EquationDiagram(bodies);
+    }
+
+    /**
+     * Ordinary exercises support the Select, FBD, and Equation modes.
+     * @param type
+     * @return
+     */
+    @Override
+    public boolean supportsType(DiagramType type) {
+        if (type == SelectMode.instance.getDiagramType()) {
+            return true;
+        } else if (type == FBDMode.instance.getDiagramType()) {
+            return true;
+        } else if (type == EquationMode.instance.getDiagramType()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    protected Diagram createNewDiagram(DiagramKey key, DiagramType type) {
+        if(!supportsType(type)) {
+            throw new UnsupportedOperationException("OrdinaryExercise does not support the diagram type: " + type);
+        }
+        
+        if (type == SelectMode.instance.getDiagramType()) {
+            return createSelectDiagram();
+        } else if (type == FBDMode.instance.getDiagramType()) {
+            return createFreeBodyDiagram((BodySubset) key);
+        } else if (type == EquationMode.instance.getDiagramType()) {
+            return createEquationDiagram((BodySubset) key);
+        }
+
+        throw new AssertionError("OrdinaryExercise does not support the diagram type: " + type+". " +
+                "This should be marked in the supportsType method!!!");
     }
 }

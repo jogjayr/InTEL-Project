@@ -345,7 +345,7 @@ public class EquationModePanel extends ApplicationModePanel {
             performSolve();
         }
 
-        Exercise.getExercise().enableTabs(diagram.getBodySubset());
+        //Exercise.getExercise().enableTabs(diagram.getBodySubset());
 
         refreshRows();
         invalidate();

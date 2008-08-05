@@ -18,15 +18,20 @@ abstract public class SubDiagram extends Diagram {
     public BodySubset getBodySubset() {
         return bodies;
     }
-    
+
+    @Override
+    public DiagramKey getKey() {
+        return bodies;
+    }
+
     public SubDiagram(BodySubset bodies) {
         this.bodies = bodies;
-        
+
         assert bodies != null : "Bodies cannot be null in constructing FBD!";
         assert !bodies.getBodies().isEmpty() : "Bodies cannot be empty in constructing FBD!";
-        
-        for(DiagramListener listener : StaticsApplication.getApp().getDiagramListeners())
+
+        for (DiagramListener listener : StaticsApplication.getApp().getDiagramListeners()) {
             listener.onDiagramCreated(this);
+        }
     }
-    
 }

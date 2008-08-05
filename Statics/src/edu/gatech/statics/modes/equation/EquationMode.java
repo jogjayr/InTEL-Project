@@ -29,7 +29,7 @@ public class EquationMode extends Mode {
     public static final EquationMode instance = new EquationMode();
 
     @Override
-    public String getModePanelName() {
+    public String getModeName() {
         return EquationModePanel.panelName;
     }
 

@@ -29,12 +29,6 @@ import java.util.List;
  */
 public class SelectModePanel extends ApplicationModePanel {
 
-    public static final String panelName = "select";
-
-    @Override
-    public String getPanelName() {
-        return panelName;
-    }
     BContainer selectionListBox;
     HTMLView selectionList;
     BButton nextButton;

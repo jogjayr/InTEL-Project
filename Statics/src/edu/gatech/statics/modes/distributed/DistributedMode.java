@@ -20,7 +20,7 @@ public class DistributedMode extends Mode {
     public static final DistributedMode instance = new DistributedMode();
     
     @Override
-    public String getModePanelName() {
+    public String getModeName() {
         return "distributed";
     }
 

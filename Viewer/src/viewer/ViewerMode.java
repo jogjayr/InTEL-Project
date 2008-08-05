@@ -17,7 +17,7 @@ public class ViewerMode extends Mode {
     public static final ViewerMode instance = new ViewerMode();
 
     @Override
-    public String getModePanelName() {
+    public String getModeName() {
         return "viewer";
     }
 
