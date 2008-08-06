@@ -73,7 +73,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     @Override
-    protected Diagram createNewDiagram(DiagramKey key, DiagramType type) {
+    protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if(!supportsType(type)) {
             throw new UnsupportedOperationException("OrdinaryExercise does not support the diagram type: " + type);
         }

@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.exercise.state;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,6 +17,13 @@ public class StateStack<T extends DiagramState> {
     // note, we may wish to incorporate some kind of maximum capacity to the stack
     private List<T> stack;
     private int position;
+
+    /**
+     * Clears the undo history and leaves the currently active state.
+     */
+    public void clear() {
+        stack.retainAll(Collections.singleton(getCurrent()));
+    }
 
     /**
      * Returns the current state from the state stack. This is the preferred method

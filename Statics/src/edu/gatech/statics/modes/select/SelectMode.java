@@ -5,10 +5,10 @@
 package edu.gatech.statics.modes.select;
 
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
-import edu.gatech.statics.modes.select.ui.SelectModePanel;
+import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.Exercise;
 
 /**
  *
@@ -19,12 +19,12 @@ public class SelectMode extends Mode {
     public static final SelectMode instance = new SelectMode();
 
     @Override
-    public String getModeName() {
-        return SelectModePanel.panelName;
+    protected Diagram getDiagram(DiagramKey key) {
+        return Exercise.getExercise().getDiagram(null, getDiagramType());
     }
 
     @Override
-    protected Diagram getDiagram(DiagramKey key) {
-        return getExercise().getSelectDiagram();
+    protected DiagramType createDiagramType() {
+        return DiagramType.create("select", 100);
     }
 }

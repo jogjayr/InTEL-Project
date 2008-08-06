@@ -26,7 +26,7 @@ public interface DiagramState<T extends Diagram> extends State {
      * to the serializer to encode this instance. 
      * @return
      */
-    Builder<DiagramState<T>> getBuilder();
+    Builder<? extends DiagramState<T>> getBuilder();
     
     /**
      * Creates a diagram state from a deserialized copy.

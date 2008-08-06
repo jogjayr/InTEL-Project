@@ -7,7 +7,11 @@ package edu.gatech.statics.modes.select;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
@@ -15,19 +19,16 @@ import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class SelectDiagram extends Diagram {
+public class SelectDiagram extends Diagram<SelectState> {
 
-    private List<Body> currentlySelected = new ArrayList();
-
-    public List<Body> getCurrentlySelected() {
-        return Collections.unmodifiableList(currentlySelected);
+    public List<SimulationObject> getCurrentlySelected() {
+        return getCurrentState().getCurrentlySelected();
     }
 
     @Override
@@ -58,7 +59,8 @@ public class SelectDiagram extends Diagram {
     @Override
     public void activate() {
         super.activate();
-        currentlySelected.clear();
+
+        clearStateStack();
         currentHighlight = null;
 
         setDiffuseHighlights(true);
@@ -82,33 +84,35 @@ public class SelectDiagram extends Diagram {
             return;
         }
 
-        if (!currentlySelected.contains(obj)) {
+        if (!getCurrentlySelected().contains(obj)) {
             currentHighlight = obj;
             currentHighlight.setDisplayHighlight(true);
         }
     }
 
+    /**
+     * Creates a SelectAction for use in this diagram.
+     * Subclasses of SelectDiagram that want to do interesting things with
+     * user selection should override this and supply their own version of
+     * SelectAction.
+     * @param obj
+     * @return
+     */
+    protected SelectAction createSelectAction(SimulationObject obj) {
+        return new SelectAction(obj);
+    }
+
     @Override
-    public void onClick(SimulationObject obj) {
+    public void onClick(SimulationObject clicked) {
 
-        if (obj == null) {
-            if (currentlySelected.isEmpty()) {
-                return;
-            }
+        // create and perform the select action
+        SelectAction action = createSelectAction(clicked);
+        performAction(action);
 
-            for (Body selected : currentlySelected) {
-                selected.setDisplaySelected(false);
-            }
-
-            currentlySelected.clear();
-        }
-
-        if (currentlySelected.contains(obj)) {
-            currentlySelected.remove(obj);
-            obj.setDisplaySelected(false);
-        } else if (obj != null) {
-            currentlySelected.add((Body) obj);
-            obj.setDisplaySelected(true);
+        // update the display
+        for (SimulationObject obj : allObjects()) {
+            // mark to display as selected if it is in the list of selected objects.
+            obj.setDisplaySelected(getCurrentlySelected().contains(obj));
         }
 
         SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
@@ -149,5 +153,42 @@ public class SelectDiagram extends Diagram {
                 }
             }
         }
+    }
+
+    /**
+     * The select diagram has no key, so it returns null.
+     * @return
+     */
+    @Override
+    public DiagramKey getKey() {
+        return null;
+    }
+
+    @Override
+    protected void createInitialState() {
+    }
+
+    @Override
+    public void completed() {
+        
+        // get a list of thhe bodies.
+        List<Body> selection = new ArrayList<Body>();
+        for (SimulationObject obj : getCurrentlySelected()) {
+            if (obj instanceof Body) {
+                selection.add((Body) obj);
+            }
+        }
+        
+        BodySubset bodies = new BodySubset(selection);
+        
+        // attempt to get the most recent diagram
+        Diagram recentDiagram = Exercise.getExercise().getRecentDiagram(bodies);
+        
+        if(recentDiagram == null) {
+            // try to create a FBD
+            recentDiagram = Exercise.getExercise().createNewDiagram(bodies, FBDMode.instance.getDiagramType());
+        }
+        
+        recentDiagram.getMode().load(getKey());
     }
 }

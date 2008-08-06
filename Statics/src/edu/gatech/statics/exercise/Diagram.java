@@ -44,24 +44,14 @@ import java.util.Set;
  */
 public abstract class Diagram<StateType extends DiagramState> {
 
-    private DiagramType myType;
-
     /**
      * Returns the type of this diagram. Together, the type and the key should
      * make a unique identifier for this diagram.
      * @return
      */
     public final DiagramType getType() {
-        return myType;
+        return getMode().getDiagramType();
     }
-
-    /**
-     * Subclasses of Diagram need to override this method which will return a
-     * String that represents the type of this diagram. All diagram types must
-     * be loaded prior.
-     * @return
-     */
-    protected abstract String getTypeString();
 
     /**
      * Returns the diagram key for this particular diagram.
@@ -79,6 +69,14 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     abstract protected void createInitialState();
 
+    /**
+     * This is called when the diagram has been completed, and should move on to the next
+     * diagram, or move back into a different mode or do something to that effect.
+     * This behavior is being moved into Diagram (instead of the UI) so that subclasses
+     * can more easily control how the the completion behavior works.
+     */
+    abstract public void completed();
+    
     /**
      * Undoes the last action done to this diagram
      */
@@ -135,6 +133,24 @@ public abstract class Diagram<StateType extends DiagramState> {
     }
 
     /**
+     * Pushes the current state into the state stack.
+     * Does nothing if the state cannot be pushed.
+     * @param state
+     */
+    protected void pushState(StateType state) {
+        states.push(state);
+    }
+
+    /**
+     * Clears the entries in the current state, leaving only the current state
+     * This should only be used when the undo history needs to be cleared,
+     * or if the diagram is just activated.
+     */
+    protected void clearStateStack() {
+        states.clear();
+    }
+
+    /**
      * returns true if the current diagram is locked and cannot be modified.
      * Diagrams are locked when the user has successfully solved them, but it is
      * possible for diagrams to get unlocked if external changes are made.
@@ -162,20 +178,6 @@ public abstract class Diagram<StateType extends DiagramState> {
      * @return
      */
     abstract protected List<SimulationObject> getBaseObjects();
-    /**
-     * Adds an object to the list of objects that users have added to the diagram.
-     */
-    /*public void addUserObject(SimulationObject obj) {
-    userObjects.add(obj);
-    allObjects.add(obj);
-    invalidateNodes();
-    }
-    
-    public void removeUserObject(SimulationObject obj) {
-    userObjects.remove(obj);
-    allObjects.remove(obj);
-    invalidateNodes();
-    }*/
     private static final SelectionFilter defaultFilter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -244,8 +246,6 @@ public abstract class Diagram<StateType extends DiagramState> {
     /** Creates a new instance of World */
     public Diagram() {
         //setSelectableFilterDefault();
-        //this.myType = createType();
-        this.myType = DiagramType.getType(getTypeString());
     }
     private boolean nodesUpdated = false;
 

@@ -152,14 +152,23 @@ public abstract class Exercise {
      * This is the method that subclasses of exercise should override to create new types of diagrams.
      * It is also the method that should be overridden to modify support for existing types of diagrams,
      * for subclasses to provide their own implementations of standard diagram types.
-     * 
-     * After creating, the new diagram needs to be added to the diagram map in the state.
-     * Where does this happen?
      * @param key
      * @param type
      */
-    abstract protected Diagram createNewDiagram(DiagramKey key, DiagramType type);
+    abstract protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type);
 
+    /**
+     * This is the publically accessible way to create new diagrams.
+     * @param key
+     * @param type
+     * @return
+     */
+    public final Diagram createNewDiagram(DiagramKey key, DiagramType type) {
+        Diagram diagram = createNewDiagramImpl(key, type);
+        state.storeDiagram(diagram);
+        return diagram;
+    }
+    
     /**
      * Returns true if the exercise can support a mode for the type of diagram provided.
      * This method is useful as a test case.

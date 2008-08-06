@@ -8,26 +8,26 @@ import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.BodySubset;
-import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.FBDMode;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class SelectModePanel extends ApplicationModePanel {
+public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
     BContainer selectionListBox;
     HTMLView selectionList;
@@ -65,16 +65,23 @@ public class SelectModePanel extends ApplicationModePanel {
         getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
         StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
-        
+
         // disable all tabs when the mode is selected
         // then enable this tab
-        InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
-        InterfaceRoot.getInstance().getApplicationBar().enableTab(getTab(), true);
+        //InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
+        //InterfaceRoot.getInstance().getApplicationBar().enableTab(getTab(), true);
     }
 
     public void updateSelection() {
-        List<Body> selection = ((SelectDiagram) getDiagram()).getCurrentlySelected();
-
+        
+        // refine list to only bodies.
+        List<Body> selection = new ArrayList<Body>();
+        for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
+            if (obj instanceof Body) {
+                selection.add((Body) obj);
+            }
+        }
+        
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
@@ -104,19 +111,13 @@ public class SelectModePanel extends ApplicationModePanel {
     private class ButtonListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            List<Body> selection = ((SelectDiagram) getDiagram()).getCurrentlySelected();
-            if (selection.isEmpty()) {
-                return;
-            }
 
-            BodySubset bodies = new BodySubset(selection);
-            FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram(bodies);
-            //StaticsApplication.getApp().
-            if (fbd.isSolved()) {
-                EquationMode.instance.load(bodies);
-            } else {
-                FBDMode.instance.load(bodies);
-            }
+            getDiagram().completed();
         }
+    }
+
+    @Override
+    public DiagramType getDiagramType() {
+        return SelectMode.instance.getDiagramType();
     }
 }
