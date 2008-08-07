@@ -18,10 +18,9 @@ import java.math.BigDecimal;
  * @see edu.gatech.statics.objects.VectorObject
  * @author Calvin Ashmore
  */
-final public class Vector implements Quantified {
+public class Vector implements Quantified {
 
     private Vector3bd value; // normalized value
-
     private Quantity magnitude;
 
     public Unit getUnit() {
@@ -78,7 +77,6 @@ final public class Vector implements Quantified {
      */
     public void setVectorValue(Vector3bd value) {
         this.value = value.normalize();
-    //positivizeZeroes();
     }
 
     public Vector3bd getVectorValue() {
@@ -87,24 +85,21 @@ final public class Vector implements Quantified {
 
     /** Creates a new instance of Vector */
     public Vector(Unit unit, Vector3bd value, BigDecimal magnitude) {
-        //constructQuantity();
         this.magnitude = new Quantity(unit, magnitude);
-        setVectorValue(value);
+        //setVectorValue(value);
+        this.value = value.normalize();
     }
 
     public Vector(Unit unit, Vector3bd value, String symbolName) {
-        //constructQuantity();
         magnitude = new Quantity(unit, symbolName);
-        //setValue(value.length());
-        setVectorValue(value);
-    //positivizeZeroes();
+        //setVectorValue(value);
+        this.value = value.normalize();
     }
 
     public Vector(Vector vector) {
-        //constructQuantity();
         magnitude = new Quantity(vector.getQuantity());
-        //setValue(vector.doubleValue());
-        setVectorValue(vector.getVectorValue());
+        //setVectorValue(vector.getVectorValue());
+        this.value = vector.getVectorValue();
     }
 
     @Override
@@ -157,14 +152,15 @@ final public class Vector implements Quantified {
      * the symbol names.
      */
     public boolean equalsSymbolic(Vector v) {
-        //if (v.isKnown() && isKnown()) {
-        //    return value.equals(v.value);
-        //}
-
-        return value.equals(v.value); // || value.equals(v.value.negate());
+        return value.equals(v.value);
 
     }
 
+    /**
+     * Creates a string representation of the vector, that should be useful for debugging purposes.
+     * For 
+     * @return
+     */
     @Override
     public String toString() {
         String r = value.toString();
@@ -176,5 +172,40 @@ final public class Vector implements Quantified {
             r += " SOLVED";
         }
         return r;
+    }
+    
+    /**
+     * Returns an unmodifiable copy of the current vector.
+     * @return
+     */
+    public Vector getUnmodifiableVector() {
+        return new UnmodifiableVector(this);
+    }
+
+    private static class UnmodifiableVector extends Vector {
+
+        public UnmodifiableVector(Vector vector) {
+            super(vector);
+        }
+
+        @Override
+        public void setDiagramValue(BigDecimal magnitude) {
+            throw new UnsupportedOperationException("Cannot set values on an UnmodifiableVector");
+        }
+
+        @Override
+        public void setKnown(boolean known) {
+            throw new UnsupportedOperationException("Cannot set values on an UnmodifiableVector");
+        }
+
+        @Override
+        public void setSymbol(String symbolName) {
+            throw new UnsupportedOperationException("Cannot set values on an UnmodifiableVector");
+        }
+
+        @Override
+        public void setVectorValue(Vector3bd value) {
+            throw new UnsupportedOperationException("Cannot set values on an UnmodifiableVector");
+        }
     }
 }

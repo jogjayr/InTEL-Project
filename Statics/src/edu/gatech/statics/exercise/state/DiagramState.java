@@ -36,5 +36,5 @@ public interface DiagramState<T extends Diagram> extends State {
      */
     DiagramState<T> restore();
     
-    List<SimulationObject> getStateObjects();
+    //List<SimulationObject> getStateObjects();
 }

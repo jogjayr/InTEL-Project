@@ -40,6 +40,10 @@ public class VectorObject extends SimulationObject implements Quantified {
         return getVector().getQuantity().toString();
     }
 
+    public AnchoredVector getAnchoredVector() {
+        return myAnchoredVector;
+    }
+
     /**
      * Returns a reference to the VectorObject's backing vector
      * @return
@@ -202,39 +206,38 @@ public class VectorObject extends SimulationObject implements Quantified {
         return getVector().getQuantity().toStringDecimal();
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final VectorObject other = (VectorObject) obj;
-        if (getAnchor() != other.getAnchor() && (getAnchor() == null || !getAnchor().equals(other.getAnchor()))) {
-            return false;
-        }
-        if (getVector() != other.getVector() && (getVector() == null || !getVector().equals(other.getVector()))) {
-            return false;
-        }
-        return true;
+    if (obj == null) {
+    return false;
     }
-
+    if (getClass() != obj.getClass()) {
+    return false;
+    }
+    final VectorObject other = (VectorObject) obj;
+    if (getAnchor() != other.getAnchor() && (getAnchor() == null || !getAnchor().equals(other.getAnchor()))) {
+    return false;
+    }
+    if (getVector() != other.getVector() && (getVector() == null || !getVector().equals(other.getVector()))) {
+    return false;
+    }
+    return true;
+    }
+    
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + (getAnchor() != null ? getAnchor().hashCode() : 0);
-        hash = 41 * hash + (getVector() != null ? getVector().hashCode() : 0);
-        return hash;
-    }
-
+    int hash = 7;
+    hash = 41 * hash + (getAnchor() != null ? getAnchor().hashCode() : 0);
+    hash = 41 * hash + (getVector() != null ? getVector().hashCode() : 0);
+    return hash;
+    }*/
     /**
      * Returns true if the vector objects are equivalent as symbolic vectors. 
      * This tests to make sure that they point in the same direction.
      * @param v
      * @return
      */
-    public boolean equalsSymbolic(Load v) {
-        return getVector().equalsSymbolic(v.getVector()) && getAnchor().equals(v.getAnchor());
-    }
+    /*public boolean equalsSymbolic(Load v) {
+    return getVector().equalsSymbolic(v.getVector()) && getAnchor().equals(v.getAnchor());
+    }*/
 }

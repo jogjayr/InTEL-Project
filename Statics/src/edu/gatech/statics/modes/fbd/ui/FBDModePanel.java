@@ -106,7 +106,8 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
                     //System.out.println("woo!");
 
                     // let the diagram to know to advance past the FBD stage.
-                    diagram.postSolve();
+                    //diagram.postSolve();
+                    diagram.completed();
                 }
             }
         }

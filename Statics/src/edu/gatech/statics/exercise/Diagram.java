@@ -82,6 +82,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void undo() {
         states.undo();
+        stateChanged();
         updateDiagram();
     }
 
@@ -90,7 +91,16 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void redo() {
         states.redo();
+        stateChanged();
         updateDiagram();
+    }
+    
+    /**
+     * This method is called whenever the user has changed the state
+     * of the diagram. This should be overridden by subclasses of diagram
+     * that change display, UI, or other elements in response to state.
+     */
+    protected void stateChanged() {
     }
 
     /**
@@ -127,6 +137,7 @@ public abstract class Diagram<StateType extends DiagramState> {
         }
         StateType newState = action.performAction(getCurrentState());
         states.push(newState);
+        stateChanged();
 
         // update diagram
         updateDiagram();
@@ -164,7 +175,7 @@ public abstract class Diagram<StateType extends DiagramState> {
         return StaticsApplication.getApp().getExercise().getSchematic();
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
-    //private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
+    private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
@@ -380,8 +391,8 @@ public abstract class Diagram<StateType extends DiagramState> {
     protected void updateDiagram() {
         allObjects.clear();
         allObjects.addAll(getBaseObjects());
-        //allObjects.addAll(userObjects);
-        allObjects.addAll(getCurrentState().getStateObjects());
+        allObjects.addAll(userObjects);
+        //allObjects.addAll(getCurrentState().getStateObjects());
         invalidateNodes();
     }
 

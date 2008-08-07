@@ -108,6 +108,13 @@ public class SelectDiagram extends Diagram<SelectState> {
         // create and perform the select action
         SelectAction action = createSelectAction(clicked);
         performAction(action);
+    }
+
+    /**
+     * Handles display changes when the user has changed selection
+     */
+    @Override
+    protected void stateChanged() {
 
         // update the display
         for (SimulationObject obj : allObjects()) {

@@ -14,8 +14,8 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationMode;
-import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
@@ -23,7 +23,6 @@ import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,9 +32,82 @@ import java.util.List;
 public class FreeBodyDiagram extends SubDiagram<FBDState> {
 
     private FBDInput fbdInput;
+    /**
+     * This is a list of Loads that are currently maintained by the diagram.
+     * These loads are not the state of the diagram, but will be updated to reflect
+     * the state. We do not use a Map&lt;AnchoredVector,Load&gt; because that would
+     * require there to be distinct AnchoredVectors in the state. This is not necessarily
+     * the case, becuase users may add two forces that are equivalent. 
+     */
+    private List<Load> loadObjects = new ArrayList<Load>();
 
-    public List<Load> getAddedLoads() {
-        return Collections.unmodifiableList(addedLoads);
+    /**
+     * This method can be used for making sure that the loads which are displayed
+     * are reflective of the state. Returns null if none is found.
+     * This will search to find if a load corresponds to the vector provided. If
+     * there are multiple vectors present in the state that are equivalent, this will return the first one.
+     * @param vector
+     * @return
+     */
+    protected Load getLoad(AnchoredVector vector) {
+        // this uses the brute force technique.
+
+        for (Load load : loadObjects) {
+            if (load.getAnchoredVector().equals(vector)) {
+                return load;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This is called whenever the state changes, and causes the loads in this
+     * diagram to be synchronized with what is present in the state.
+     */
+    @Override
+    protected void stateChanged() {
+
+        // check if there are unnecessary loads now
+        List<Load> missingLoads = new ArrayList<Load>();
+        for (Load load : loadObjects) {
+            AnchoredVector vector = load.getAnchoredVector();
+            if (!getCurrentState().getAddedLoads().contains(vector)) {
+                missingLoads.add(load);
+            }
+        }
+
+        // remove them
+        for (Load load : missingLoads) {
+            missingLoads.remove(load);
+        }
+
+        // check for newly added loads
+        // this check does something special in that it uses an equivalence test,
+        // but also needs to make sure that even duplicates get corresponding loads
+        // to back them.
+        List<AnchoredVector> newVectors = new ArrayList<AnchoredVector>();
+        List<Load> accountedFor = new ArrayList<Load>(loadObjects);
+        for (AnchoredVector vector : getCurrentState().getAddedLoads()) {
+            // try to retrieve from the accounted list.
+            Load load = null;
+            for (Load candidate : accountedFor) {
+                if (candidate.getAnchoredVector().equals(vector)) {
+                    load = candidate;                //if()
+                }
+            }
+            // if we have not found it 
+            if (load == null) {
+                newVectors.add(vector);
+            }
+        }
+
+        for (AnchoredVector vector : newVectors) {
+            Load load = createLoad(vector);
+            loadObjects.add(load);
+        }
+    }
+
+    protected Load createLoad(AnchoredVector vector) {
     }
 
     /**
@@ -46,15 +118,12 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         return new FBDChecker(this);
     }
 
-    public boolean isSolved() {
-        return solved;
-    }
-
+    /**
+     * Reset simply instantiates the initial state.
+     */
     public void reset() {
-        for (Load load : addedLoads) {
-            removeUserObject(load);
-        }
-        addedLoads.clear();
+        FBDState initialState = createInitialState();
+        pushState(initialState);
 
         currentHighlight = null;
         currentSelection = null;
@@ -92,7 +161,8 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * By default, we load the equation mode. Later on, other exercise types may 
      * choose to pass this step.
      */
-    public void postSolve() {
+    @Override
+    public void completed() {
         EquationMode.instance.load(getBodySubset());
     }
 
@@ -122,15 +192,14 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         fbdInput = new FBDInput(this);
     }
 
-    @Override
+    /*@Override
     public void addUserObject(SimulationObject obj) {
-        super.addUserObject(obj);
-        if (obj instanceof Load) {
-            addedLoads.add((Load) obj);
-            new LabelManipulator((Load) obj);
-        }
+    super.addUserObject(obj);
+    if (obj instanceof Load) {
+    addedLoads.add((Load) obj);
+    new LabelManipulator((Load) obj);
     }
-
+    }*/
     @Override
     public InputHandler getInputHandler() {
         return fbdInput;
@@ -247,10 +316,5 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     @Override
     protected FBDState createInitialState() {
         return new FBDState.Builder().build();
-    }
-
-    @Override
-    public void completed() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

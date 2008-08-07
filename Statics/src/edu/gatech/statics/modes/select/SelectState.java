@@ -86,12 +86,4 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         return new Builder().build();
     }
 
-    /**
-     * This state does not have any objects as a part of it, so an empty list
-     * is returned.
-     * @return
-     */
-    public List<SimulationObject> getStateObjects() {
-        return Collections.emptyList();
-    }
 }
