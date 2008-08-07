@@ -30,10 +30,8 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class FreeBodyDiagram extends SubDiagram {
+public class FreeBodyDiagram extends SubDiagram<FBDState> {
 
-    private boolean solved = false;
-    private List<Load> addedLoads = new ArrayList<Load>();
     private FBDInput fbdInput;
 
     public List<Load> getAddedLoads() {
@@ -244,5 +242,15 @@ public class FreeBodyDiagram extends SubDiagram {
     @Override
     public Mode getMode() {
         return FBDMode.instance;
+    }
+
+    @Override
+    protected FBDState createInitialState() {
+        return new FBDState.Builder().build();
+    }
+
+    @Override
+    public void completed() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

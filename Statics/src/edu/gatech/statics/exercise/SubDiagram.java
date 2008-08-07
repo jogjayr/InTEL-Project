@@ -5,13 +5,14 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.util.DiagramListener;
 
 /**
  *
  * @author Calvin Ashmore
  */
-abstract public class SubDiagram extends Diagram {
+abstract public class SubDiagram<StateType extends DiagramState> extends Diagram<StateType> {
 
     private BodySubset bodies;
 

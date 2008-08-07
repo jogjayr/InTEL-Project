@@ -165,12 +165,13 @@ public class SelectDiagram extends Diagram<SelectState> {
     }
 
     @Override
-    protected void createInitialState() {
+    protected SelectState createInitialState() {
+        return new SelectState.Builder().build();
     }
 
     @Override
     public void completed() {
-        
+
         // get a list of thhe bodies.
         List<Body> selection = new ArrayList<Body>();
         for (SimulationObject obj : getCurrentlySelected()) {
@@ -178,17 +179,17 @@ public class SelectDiagram extends Diagram<SelectState> {
                 selection.add((Body) obj);
             }
         }
-        
+
         BodySubset bodies = new BodySubset(selection);
-        
+
         // attempt to get the most recent diagram
         Diagram recentDiagram = Exercise.getExercise().getRecentDiagram(bodies);
-        
-        if(recentDiagram == null) {
+
+        if (recentDiagram == null) {
             // try to create a FBD
             recentDiagram = Exercise.getExercise().createNewDiagram(bodies, FBDMode.instance.getDiagramType());
         }
-        
+
         recentDiagram.getMode().load(getKey());
     }
 }

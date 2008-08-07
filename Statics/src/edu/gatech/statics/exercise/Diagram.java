@@ -67,7 +67,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * creates the initial state for the diagram. Subclasses must override this method
      * and supply a starting state.
      */
-    abstract protected void createInitialState();
+    abstract protected StateType createInitialState();
 
     /**
      * This is called when the diagram has been completed, and should move on to the next
@@ -245,6 +245,7 @@ public abstract class Diagram<StateType extends DiagramState> {
 
     /** Creates a new instance of World */
     public Diagram() {
+        states = new StateStack<StateType>(createInitialState());
         //setSelectableFilterDefault();
     }
     private boolean nodesUpdated = false;

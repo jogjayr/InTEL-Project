@@ -8,8 +8,8 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 
 /**
  *
@@ -20,13 +20,17 @@ public class FBDMode extends Mode {
     public static final FBDMode instance = new FBDMode();
 
     @Override
-    public String getModeName() {
-        return FBDModePanel.panelName;
+    protected Diagram getDiagram(DiagramKey key) {
+        //BodySubset bodies = (BodySubset) key;
+        if (key instanceof BodySubset) {
+            return Exercise.getExercise().getDiagram(key, getDiagramType());
+        } else {
+            throw new IllegalStateException("Attempting to get a FreeBodyDiagram with a key that is not a BodySubset: "+key);
+        }
     }
 
     @Override
-    protected Diagram getDiagram(DiagramKey key) {
-        BodySubset bodies = (BodySubset) key;
-        return Exercise.getExercise().getFreeBodyDiagram(bodies);
+    protected DiagramType createDiagramType() {
+        return DiagramType.create("fbd", 200);
     }
 }
