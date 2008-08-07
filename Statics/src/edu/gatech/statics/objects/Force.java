@@ -11,6 +11,7 @@ package edu.gatech.statics.objects;
 import edu.gatech.statics.math.Vector;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentationFixedLength;
@@ -24,20 +25,22 @@ import java.math.BigDecimal;
 public class Force extends Load {
     //protected static final float labelDistance = 9.0f;
     /** Creates a new instance of Force */
-    public Force(Point anchor, Vector value) {
-        super(anchor, value);
-        assert(value.getUnit() == Unit.force);
-        //setName("F");
+    public Force(AnchoredVector vector) {
+        super(vector);
+        assert (vector.getUnit() == Unit.force);
+    //setName("F");
     }
 
     public Force(Point anchor, Vector3bd value, BigDecimal magnitude) {
-        super(anchor, new Vector(Unit.force, value, magnitude));
+        this(new AnchoredVector(anchor, new Vector(Unit.force, value, magnitude)));
+    //super(anchor, new Vector(Unit.force, value, magnitude));
     }
-    
+
     public Force(Point anchor, Vector3bd value, String symbolName) {
-        super(anchor, new Vector(Unit.force, value, symbolName));
+        this(new AnchoredVector(anchor, new Vector(Unit.force, value, symbolName)));
+    //super(anchor, new Vector(Unit.force, value, symbolName));
     }
-    
+
     public Force(Force force) {
         super(force);
     }

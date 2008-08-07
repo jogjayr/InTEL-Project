@@ -175,9 +175,18 @@ public abstract class Diagram<StateType extends DiagramState> {
         return StaticsApplication.getApp().getExercise().getSchematic();
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
-    private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
+    //private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
+    }
+    
+    /**
+     * This method allows subclasses of Diagram to manage their own collections
+     * of user objects. 
+     * @return
+     */
+    public List<? extends SimulationObject> getUserObjects() {
+        return Collections.emptyList();
     }
 
     abstract public Mode getMode();
@@ -391,7 +400,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     protected void updateDiagram() {
         allObjects.clear();
         allObjects.addAll(getBaseObjects());
-        allObjects.addAll(userObjects);
+        allObjects.addAll(getUserObjects());
         //allObjects.addAll(getCurrentState().getStateObjects());
         invalidateNodes();
     }

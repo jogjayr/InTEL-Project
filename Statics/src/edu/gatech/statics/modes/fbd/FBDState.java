@@ -16,23 +16,29 @@ import java.util.List;
  */
 public class FBDState implements DiagramState<FreeBodyDiagram> {
 
-    private boolean solved = false;
+    final private boolean solved;
     /**
      * This will be an unmodifiable list
      */
-    private List<AnchoredVector> addedLoads;// = new ArrayList<AnchoredVector>();
+    final private List<AnchoredVector> addedLoads;// = new ArrayList<AnchoredVector>();
+
+    public boolean isSolved() {
+        return solved;
+    }
 
     public List<AnchoredVector> getAddedLoads() {
         return addedLoads;
     }
 
     private FBDState(Builder builder) {
-        this.addedLoads = Collections.unmodifiableList(addedLoads);
+        this.addedLoads = Collections.unmodifiableList(builder.addedLoads);
+        this.solved = builder.solved;
     }
 
     public static class Builder implements edu.gatech.statics.util.Builder<FBDState> {
 
         private List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>();
+        private boolean solved;
 
         public Builder(FBDState state) {
             // make mutable copies for the builder
@@ -45,6 +51,14 @@ public class FBDState implements DiagramState<FreeBodyDiagram> {
             return addedLoads;
         }
 
+        public boolean isSolved() {
+            return solved;
+        }
+
+        public void setSolved(boolean solved) {
+            this.solved = solved;
+        }
+
         public Builder() {
         }
 
@@ -54,12 +68,16 @@ public class FBDState implements DiagramState<FreeBodyDiagram> {
     }
 
     public boolean isLocked() {
+        return solved;
     }
 
     public Builder getBuilder() {
         return new Builder(this);
     }
 
-    public DiagramState<FreeBodyDiagram> restore() {
+    public FBDState restore() {
+        // here we need to restore the anchor points on the vectors
+        // or does that happen autmoatically?
+        return this;
     }
 }

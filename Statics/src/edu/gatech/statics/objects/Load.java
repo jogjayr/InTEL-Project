@@ -4,7 +4,7 @@
  */
 package edu.gatech.statics.objects;
 
-import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector3bd;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ public abstract class Load extends VectorObject {
         super(load);
     }
 
-    public Load(Point anchor, Vector vector) {
-        super(anchor, vector);
+    public Load(AnchoredVector vector) {
+        super(vector);
     }
     private List<VectorListener> listeners = new ArrayList<VectorListener>();
 

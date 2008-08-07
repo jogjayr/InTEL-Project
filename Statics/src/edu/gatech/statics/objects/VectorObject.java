@@ -80,10 +80,9 @@ public class VectorObject extends SimulationObject implements Quantified {
         myAnchoredVector.setAnchor(anchor);
     }
 
-    private void setVector(Vector vector) {
-        myAnchoredVector.setVector(vector);
-    }
-
+    //private void setVector(Vector vector) {
+    //    myAnchoredVector.setVector(vector);
+    //}
     @Override
     public Matrix3f getRotation() {
         Matrix3f mat = new Matrix3f();
@@ -122,14 +121,19 @@ public class VectorObject extends SimulationObject implements Quantified {
         addRepresentation(rep);
     }
 
-    public VectorObject(Point anchor, Vector vector) {
-        myAnchoredVector = new AnchoredVector(anchor, vector);
-//        this.setAnchor(anchor);
-//        this.setVector(vector);
+    public VectorObject(AnchoredVector vector) {
+        this.myAnchoredVector = new AnchoredVector(vector);
     }
 
+    //public VectorObject(Point anchor, Vector vector) {
+        //myAnchoredVector = new AnchoredVector(anchor, vector);
+//        this.setAnchor(anchor);
+//        this.setVector(vector);
+    //}
+
     public VectorObject(VectorObject obj) {
-        myAnchoredVector = new AnchoredVector(obj.getAnchor(), new Vector(obj.getVector()));
+        myAnchoredVector = new AnchoredVector(obj.myAnchoredVector);
+        //new AnchoredVector(obj.getAnchor(), new Vector(obj.getVector()));
         setName(obj.name);
 //        this.setAnchor(obj.getAnchor());
 //        this.setVector(new Vector(obj.getVector()));

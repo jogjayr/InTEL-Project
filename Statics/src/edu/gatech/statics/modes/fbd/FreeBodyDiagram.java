@@ -15,11 +15,14 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
+import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
@@ -40,6 +43,15 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * the case, becuase users may add two forces that are equivalent. 
      */
     private List<Load> loadObjects = new ArrayList<Load>();
+
+    /**
+     * The user objects for this diagram are merely the loads that are present.
+     * @return
+     */
+    @Override
+    public List<? extends SimulationObject> getUserObjects() {
+        return loadObjects;
+    }
 
     /**
      * This method can be used for making sure that the loads which are displayed
@@ -108,6 +120,15 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     }
 
     protected Load createLoad(AnchoredVector vector) {
+        if (vector.getUnit() == Unit.force) {
+            return new Force(vector);
+        } else if (vector.getUnit() == Unit.moment) {
+            return new Moment(vector);
+        } else {
+            throw new IllegalArgumentException(
+                    "Have some sort of invalid type of load: " + vector +
+                    " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
+        }
     }
 
     /**
@@ -135,7 +156,20 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * @param solved
      */
     public void setSolved(boolean solved) {
-        this.solved = solved;
+
+        // current state already reflects the change, OK
+        if (getCurrentState().isSolved() == solved) {
+            return;
+        }
+
+        // otherwise...
+        // push the changed state with the solve
+        FBDState.Builder builder = new FBDState.Builder(getCurrentState());
+        builder.setSolved(solved);
+        pushState(builder.build());
+
+        // make sure that the state history is purged
+        clearStateStack();
 
         if (solved) {
             for (SimulationObject obj : allObjects()) {
@@ -268,7 +302,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     }
 
     public void onLabel(Load load) {
-        if (solved) {
+        if (getCurrentState().isLocked()) {
             return;
         }
 
@@ -299,7 +333,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
         StaticsApplication.getApp().resetAdvice();
 
-        if (solved) {
+        if (!getCurrentState().isLocked()) {
             setSolved(true);
         }
     }

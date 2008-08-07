@@ -12,6 +12,7 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.exercise.DisplayConstants;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -26,17 +27,20 @@ import java.math.BigDecimal;
 public class Moment extends Load {
 
     /** Creates a new instance of Moment */
-    public Moment(Point anchor, Vector value) {
-        super(anchor, value);
-    //setName("M");
+    public Moment(AnchoredVector vector) {
+        super(vector);
+        assert (vector.getUnit() == Unit.moment);
+    //setName("F");
     }
 
     public Moment(Point anchor, Vector3bd value, BigDecimal magnitude) {
-        super(anchor, new Vector(Unit.moment, value, magnitude));
+        this(new AnchoredVector(anchor, new Vector(Unit.moment, value, magnitude)));
+    //super(anchor, new Vector(Unit.force, value, magnitude));
     }
 
     public Moment(Point anchor, Vector3bd value, String symbolName) {
-        super(anchor, new Vector(Unit.moment, value, symbolName));
+        this(new AnchoredVector(anchor, new Vector(Unit.moment, value, symbolName)));
+    //super(anchor, new Vector(Unit.force, value, symbolName));
     }
 
     public Moment(Moment moment) {
