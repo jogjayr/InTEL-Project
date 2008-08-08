@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.fbd.actions;
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.fbd.FBDState;
+import edu.gatech.statics.modes.fbd.FBDState.Builder;
 
 /**
  * Adds a new load to the diagram state.
@@ -14,10 +15,17 @@ import edu.gatech.statics.modes.fbd.FBDState;
  */
 public class AddLoad implements DiagramAction<FBDState> {
 
+    AnchoredVector newLoad;
+    
     public AddLoad(AnchoredVector newLoad) {
+        this.newLoad = newLoad;
     }
 
     public FBDState performAction(FBDState oldState) {
+        Builder builder = oldState.getBuilder();
+
+        builder.addLoad(newLoad);
         
+        return builder.build();
     }
 }

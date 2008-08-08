@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.fbd.actions;
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.fbd.FBDState;
+import edu.gatech.statics.modes.fbd.FBDState.Builder;
 
 /**
  * Orients a load from one position to another
@@ -16,10 +17,19 @@ import edu.gatech.statics.modes.fbd.FBDState;
  */
 public class OrientLoad implements DiagramAction<FBDState> {
 
+    private AnchoredVector oldLoad;
+    private AnchoredVector newLoad;
+    
     public OrientLoad(AnchoredVector oldLoad, AnchoredVector newLoad) {
+        this.oldLoad = oldLoad;
+        this.newLoad = newLoad;
     }
 
     public FBDState performAction(FBDState oldState) {
+        Builder builder = oldState.getBuilder();
         
+        builder.changeOrientation(oldLoad, newLoad);
+        
+        return builder.build();
     }
 }
