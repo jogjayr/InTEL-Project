@@ -610,7 +610,7 @@ public class FBDChecker {
      * @param reaction
      * @return
      */
-    private Load negate(Load reaction) {
+    /*private Load negate(Load reaction) {
         if (reaction instanceof Force) {
             return new Force(reaction.getAnchor(), reaction.getVector().negate());
         } else if (reaction instanceof Moment) {
@@ -619,7 +619,7 @@ public class FBDChecker {
             // ignore this case
             return null;
         }
-    }
+    }*/
 
     protected enum NameCheckResult {
 

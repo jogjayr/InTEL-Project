@@ -9,15 +9,12 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.modes.equation.ui.EquationModePanel;
-import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 
 /**
@@ -27,11 +24,6 @@ import edu.gatech.statics.objects.bodies.TwoForceMember;
 public class EquationMode extends Mode {
 
     public static final EquationMode instance = new EquationMode();
-
-    @Override
-    public String getModeName() {
-        return EquationModePanel.panelName;
-    }
 
     @Override
     protected Diagram getDiagram(DiagramKey key) {
@@ -91,5 +83,10 @@ public class EquationMode extends Mode {
                 }
             }
         }
+    }
+
+    @Override
+    protected DiagramType createDiagramType() {
+        return DiagramType.create("equation", 300);
     }
 }

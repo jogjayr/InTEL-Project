@@ -7,7 +7,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.VectorObject;
 import java.math.BigDecimal;
 
-public class Term {
+class Term {
 
     EquationMath math;
 

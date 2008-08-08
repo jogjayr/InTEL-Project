@@ -213,6 +213,6 @@ class MomentTerm extends Term {
 
     MomentTerm(VectorObject vector, EquationMathMoments math) {
         super(vector, math);
-        anchor = math.getWorld().getLoad(vector).getAnchor();
+        anchor = math.getDiagram().getLoad(vector).getAnchor();
     }
 }

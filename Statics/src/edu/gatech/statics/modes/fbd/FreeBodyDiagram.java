@@ -55,6 +55,15 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     }
 
     /**
+     * Returns true if this fbd is solved. This method delegates to the current state
+     * of the diagram.
+     * @return
+     */
+    public boolean isSolved() {
+        return getCurrentState().isSolved();
+    }
+    
+    /**
      * This method can be used for making sure that the loads which are displayed
      * are reflective of the state. Returns null if none is found.
      * This will search to find if a load corresponds to the vector provided. If

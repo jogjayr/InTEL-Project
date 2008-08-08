@@ -17,9 +17,9 @@ public class Worksheet2D extends Worksheet {
     public Worksheet2D(EquationDiagram diagram) {
         super(3);
         
-        EquationMath sumFx = new EquationMath(diagram);
-        EquationMath sumFy = new EquationMath(diagram);
-        EquationMath sumMp = new EquationMathMoments(diagram);
+        EquationMath sumFx = new EquationMath("F[X]",diagram);
+        EquationMath sumFy = new EquationMath("F[X]",diagram);
+        EquationMath sumMp = new EquationMathMoments("M[P]",diagram);
         sumFx.setObservationDirection(Vector3bd.UNIT_X);
         sumFy.setObservationDirection(Vector3bd.UNIT_Y);
         sumMp.setObservationDirection(Vector3bd.UNIT_Z);

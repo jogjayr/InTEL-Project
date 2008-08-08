@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class FBDState implements DiagramState<FreeBodyDiagram> {
+final public class FBDState implements DiagramState<FreeBodyDiagram> {
 
     final private boolean solved;
     /**

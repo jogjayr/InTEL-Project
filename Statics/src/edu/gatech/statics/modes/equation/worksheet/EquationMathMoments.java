@@ -11,11 +11,10 @@ package edu.gatech.statics.modes.equation.worksheet;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -43,18 +42,13 @@ public class EquationMathMoments extends EquationMath {
     }
 
     @Override
-    public String getName() {
-        return "M[P]";
-    }
-
-    @Override
-    public Term createTerm(VectorObject source) {
+    public Term createTerm(AnchoredVector source) {
         return new MomentTerm(source, this);
     }
 
     /** Creates a new instance of EquationMoments */
-    public EquationMathMoments(EquationDiagram world) {
-        super(world);
+    public EquationMathMoments(String name, EquationDiagram world) {
+        super(name, world);
     }
 
     @Override
@@ -72,7 +66,7 @@ public class EquationMathMoments extends EquationMath {
         List<Force> allForces = new ArrayList();
         List<Moment> allMoments = new ArrayList();
 
-        for (SimulationObject obj : getWorld().allObjects()) {
+        for (SimulationObject obj : getDiagram().allObjects()) {
             if (obj instanceof Force && !obj.isDisplayGrayed()) // should not be grayed anyway, but just in case.
             {
                 allForces.add((Force) obj);

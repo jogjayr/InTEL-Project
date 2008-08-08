@@ -12,10 +12,10 @@ package edu.gatech.statics.modes.equation.worksheet;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,48 +24,58 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
- *
+ * EquationMath is the logical end of managing the equations in the equation mode.
+ * Specifically, the job of this class is to perform the equation check, to make sure
+ * that the terms that the user has added are all correct.
+ * This class should not contain any state data. Instead, it should communicate with
+ * the EquationState class, which contains all the information representing the user's
+ * contributions and changes to the terms.
  * @author Calvin Ashmore
  */
 public class EquationMath {
 
     protected static final float TEST_ACCURACY = .02f;
-    private boolean locked = false;
-
-    public void setLocked(boolean locked) {
+    //private boolean locked = false;
+    private String name;
+    private Vector3bd observationDirection;
+    
+    /*public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
     public boolean isLocked() {
         return locked;
-    }
-    private EquationDiagram world;
+    }*/
+    private EquationDiagram diagram;
 
-    public EquationDiagram getWorld() {
-        return world;
+    public EquationDiagram getDiagram() {
+        return diagram;
     }
-    private Vector3bd observationDirection;
 
     public Vector3bd getObservationDirection() {
         return observationDirection;
     }
 
-    public void setObservationDirection(Vector3bd direction) {
+    /*public void setObservationDirection(Vector3bd direction) {
         this.observationDirection = direction;
-    }
-    private Map<VectorObject, Term> terms = new HashMap();
+    }*/
+    private Map<AnchoredVector, Term> terms = new HashMap();
 
     public List<Term> allTerms() {
         return new ArrayList(terms.values());
     }
 
     public String getName() {
+        return name;
+    }
+    
+    /*public String getName() {
         if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
             return "F[X]";
         } else {
             return "F[Y]";
         }
-    }
+    }*/
 
     public String getAxis() {
         if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
@@ -75,35 +85,36 @@ public class EquationMath {
         }
     }
 
-    public void setCoefficient(VectorObject target, String coefficientExpression) {
+    /*public void setCoefficient(AnchoredVector target, String coefficientExpression) {
         getTerm(target).coefficient.setText(coefficientExpression);
-    }
+    }*/
 
-    public Term createTerm(VectorObject source) {
+    Term createTerm(AnchoredVector source) {
         return new Term(source, this);
     }
 
-    public Term getTerm(VectorObject target) {
+    Term getTerm(AnchoredVector target) {
         return terms.get(target);
     }
 
-    public Term addTerm(VectorObject source) {
+    /*public Term addTerm(AnchoredVector source) {
         if (terms.get(source) != null) {
             return getTerm(source);
         }
 
         terms.put(source, createTerm(source));
         return getTerm(source);
-    }
+    }*/
 
-    public void removeTerm(VectorObject target) {
+    /*public void removeTerm(AnchoredVector target) {
         //terms.remove(world.getLoad(target));
         terms.remove(target);
-    }
+    }*/
 
     /** Creates a new instance of Equation */
-    public EquationMath(EquationDiagram world) {
-        this.world = world;
+    public EquationMath(String name, EquationDiagram world) {
+        this.name = name;
+        this.diagram = world;
     }
 
     /**
@@ -119,10 +130,10 @@ public class EquationMath {
 
         // make sure that terms are up to date
         // use a list because the set would be backed by the map, and then cleared
-        List<Entry<VectorObject, Term>> allTerms =
-                new ArrayList<Entry<VectorObject, Term>>(terms.entrySet());
+        List<Entry<AnchoredVector, Term>> allTerms =
+                new ArrayList<Entry<AnchoredVector, Term>>(terms.entrySet());
         terms.clear();
-        for (Entry<VectorObject, Term> entry : allTerms) {
+        for (Entry<AnchoredVector, Term> entry : allTerms) {
 
             if (loads.contains(entry.getKey())) {
                 terms.put(entry.getKey(), entry.getValue());
@@ -257,7 +268,7 @@ public class EquationMath {
 
     protected List<Load> getDiagramLoads() {
         List<Load> allLoads = new ArrayList();
-        for (SimulationObject obj : world.allObjects()) {
+        for (SimulationObject obj : diagram.allObjects()) {
             if (obj instanceof Load && !obj.isDisplayGrayed()) {
                 // should not be grayed anyway, but just in case.
                 allLoads.add((Load) obj);

@@ -103,7 +103,7 @@ public class EquationBar extends BContainer {
             // we do special handling for moment math
             startContainer.add(new BLabel("M["));
             
-            Point momentPoint = math.getWorld().getMomentPoint();
+            Point momentPoint = math.getDiagram().getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
 
             momentButton = new BButton(pointName, new ActionListener() {
@@ -207,14 +207,14 @@ public class EquationBar extends BContainer {
             MouseListener mouseTestListener = new MouseListener() {
 
                 public void mouseEntered(MouseEvent event) {
-                    math.getWorld().highlightVector(source);
+                    math.getDiagram().highlightVector(source);
                     highlightVector(source);
                 //math.getWorld().onHover(source);
                 }
 
                 public void mouseExited(MouseEvent event) {
                     if (getHitComponent(event.getX(), event.getY()) == null) {
-                        math.getWorld().highlightVector(null);
+                        math.getDiagram().highlightVector(null);
                         highlightVector(null);
                     //math.getWorld().onHover(null);
                     }

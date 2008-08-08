@@ -51,14 +51,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class EquationDiagram extends SubDiagram {
-
-    private Worksheet worksheet;
-
-    public Worksheet getWorksheet() {
-        return worksheet;
-    }
-    private Point momentPoint;
+public class EquationDiagram extends SubDiagram<EquationState> {
 
     /**
      * Sets the point about which the moment will be calculated.
@@ -436,5 +429,15 @@ public class EquationDiagram extends SubDiagram {
     @Override
     public Mode getMode() {
         return EquationMode.instance;
+    }
+
+    @Override
+    protected EquationState createInitialState() {
+        
+    }
+
+    @Override
+    public void completed() {
+        
     }
 }

@@ -8,10 +8,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -21,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class Worksheet {
 
-    private List<EquationMath> equations = new ArrayList<EquationMath>();
+    private Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
     private EquationSystem equationSystem;
     private int numberEquations;
 
@@ -112,11 +109,11 @@ public class Worksheet {
         return solution;
     }
 
-    public List<EquationMath> getEquations() {
-        return Collections.unmodifiableList(equations);
-    }
+    //public List<EquationMath> getEquations() {
+    //    return Collections.unmodifiableList(equations);
+    //}
 
     protected void addEquation(EquationMath math) {
-        equations.add(math);
+        equations.put(math.getName(), math);
     }
 }
