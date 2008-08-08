@@ -17,6 +17,7 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.fbd.actions.*;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -90,7 +91,11 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
 
         // remove them
         for (Load load : missingLoads) {
-            missingLoads.remove(load);
+            loadObjects.remove(load);
+            
+            // create and perform the remove action
+            RemoveLoad action = createRemoveLoad(load.getAnchoredVector());
+            performAction(action);
         }
 
         // check for newly added loads
@@ -116,6 +121,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         for (AnchoredVector vector : newVectors) {
             Load load = createLoad(vector);
             loadObjects.add(load);
+            
+            // create and perform the add action
+            AddLoad action = createAddLoad(load.getAnchoredVector());
+            performAction(action);
         }
     }
 
@@ -129,6 +138,42 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                     "Have some sort of invalid type of load: " + vector +
                     " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
         }
+    }
+
+    /**
+     * Creates an AddLoad for use in this diagram.
+     * @param newVector
+     * @return
+     */
+    public AddLoad createAddLoad(AnchoredVector newVector) {
+        return new AddLoad(newVector);
+    }
+
+    /**
+     * Creates an RemoveLoad for use in this diagram.
+     * @param oldVector
+     * @return
+     */
+    public RemoveLoad createRemoveLoad(AnchoredVector oldVector) {
+        return new RemoveLoad(oldVector);
+    }
+
+    /**
+     * Creates an OrientLoad for use in this diagram.
+     * @param oldLoad, newLoad
+     * @return
+     */
+    public OrientLoad createOrientLoad(AnchoredVector oldLoad, AnchoredVector newLoad) {
+        return new OrientLoad(oldLoad, newLoad);
+    }
+    
+    /**
+     * Creates a LabelLoad for use in this diagram.
+     * @param oldLoad, newLabel
+     * @return
+     */
+    public LabelLoad createLabelLoad(AnchoredVector oldLoad, String newLabel) {
+        return new LabelLoad(oldLoad, newLabel);
     }
 
     /**

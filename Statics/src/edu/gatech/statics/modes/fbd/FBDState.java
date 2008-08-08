@@ -54,11 +54,14 @@ public class FBDState implements DiagramState<FreeBodyDiagram> {
         }
 
         public void changeOrientation(AnchoredVector oldLoad, AnchoredVector newLoad) {
-            throw new UnsupportedOperationException("Not yet implemented");
+            if(addedLoads.contains(oldLoad)) {
+                addedLoads.remove(oldLoad);
+                addedLoads.add(newLoad);
+            }
         }
 
         public void setLabel(AnchoredVector load, String newLabel) {
-            throw new UnsupportedOperationException("Not yet implemented");
+            addedLoads.get(addedLoads.indexOf(load)).setSymbol(newLabel);
         }
         
         public void removeLoad(AnchoredVector oldLoad) {
