@@ -5,10 +5,16 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.AffineQuantity;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.expressionparser.Parser;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -18,34 +24,38 @@ import java.util.logging.Logger;
  */
 public class Worksheet {
 
-    private Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
-    private EquationSystem equationSystem;
-    private int numberEquations;
-
-    public Worksheet(int numberEquations) {
-        this.numberEquations = numberEquations;
-        equationSystem = new EquationSystem(numberEquations);
-    }
+    final private Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
+    final private EquationSystem equationSystem;
+    final private EquationDiagram diagram;
     private Map<Quantity, Float> solution = null;
     private boolean solved = false;
 
-    public void updateEquations() {
-        for (EquationMath em : equations) {
-            em.update();
-        }
+    public Worksheet(EquationDiagram diagram, int numberEquations) {
+        this.diagram = diagram;
+        equationSystem = new EquationSystem(numberEquations);
     }
 
-    public boolean isSolved() {
-        return solved;
+    public List<String> getEquationNames() {
+        return new ArrayList(equations.keySet());
     }
 
-    public void resetSolve() {
-        for (EquationMath math : equations) {
-            math.setLocked(false);
-        }
-//        solved = false;
+    /**
+     * This method updates the equations present in the worksheet and makes them consistent with the state.
+     */
+    /*public void update() {
+    for (EquationMath em : equations.values()) {
+    em.update();
     }
+    }*/    //public boolean isSolved() {
+    //    return solved;
+    //}
 
+    /*public void resetSolve() {
+    for (EquationMath math : equations) {
+    math.setLocked(false);
+    }
+    //        solved = false;
+    }*/
     public Map<Quantity, Float> solve() {
         if (!solved) {
 
@@ -53,33 +63,42 @@ public class Worksheet {
 
             equationSystem.resetTerms();
 
+            int numberEquations = equations.size();
+
             // go through each row
             for (int row = 0; row < numberEquations; row++) {
 
                 // now go through each term in the equation for the row
                 EquationMath math = equations.get(row);
-                if (!math.isLocked()) {
+                EquationMathState mathState = diagram.getCurrentState().getEquationStates().get(math.getName());
+
+                if (!mathState.isLocked()) {
                     continue;
                 }
-                
-                for (Term term : math.allTerms()) {
+
+                for (Map.Entry<AnchoredVector, String> entry : mathState.getTerms().entrySet()) {
+                    AnchoredVector load = entry.getKey();
+                    String coefficient = entry.getValue();
+
+                    AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
 
                     // work with the term's quantity
-                    Quantity q = term.getSource().getVector().getQuantity();
+                    Quantity q = load.getVector().getQuantity();
                     if (q.isSymbol() && !q.isKnown()) {
                         // the vector represented by the term is an unknown symbol
-                        equationSystem.addTerm(row, term.coefficientValue.floatValue(), q.getSymbolName());
+                        equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
                         vectorNames.put(q.getSymbolName(), q);
+                        
                     } else {
                         // the vector represented by this term is a constant
 
-                        if (term.coefficientAffineValue != null) {
-                            equationSystem.addTerm(row, (float) q.doubleValue() * term.coefficientAffineValue.getConstant().floatValue(), null);
-                            equationSystem.addTerm(row, (float) q.doubleValue() * term.coefficientAffineValue.getMultiplier().floatValue(), term.coefficientAffineValue.getSymbolName());
-                            Quantity measureQuantity = new Quantity(Unit.distance, term.coefficientAffineValue.getSymbolName());
+                        if (affineCoefficient.isSymbolic()) {
+                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
+                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getMultiplier().floatValue(), affineCoefficient.getSymbolName());
+                            Quantity measureQuantity = new Quantity(Unit.distance, affineCoefficient.getSymbolName());
                             vectorNames.put(measureQuantity.getSymbolName(), measureQuantity);
                         } else {
-                            equationSystem.addTerm(row, (float) q.doubleValue() * term.coefficientValue.floatValue(), null);
+                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
                         }
                     }
                 }
@@ -112,7 +131,6 @@ public class Worksheet {
     //public List<EquationMath> getEquations() {
     //    return Collections.unmodifiableList(equations);
     //}
-
     protected void addEquation(EquationMath math) {
         equations.put(math.getName(), math);
     }

@@ -1,6 +1,6 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
-enum TermError {
+public enum TermError {
 
     /**
      * none denotes that there is no error. If a check fails, and the error is
@@ -48,5 +48,13 @@ enum TermError {
     /**
      * The user has entered the wrong symbol for a symbolic coefficient
      */
-    wrongSymbol;
+    wrongSymbol,
+    /**
+     * The vector to which this term is attached does not belong in the equation.
+     */
+    doesNotBelong,
+    /**
+     * The user has missed a load in the equation
+     */
+    missedALoad;
 }

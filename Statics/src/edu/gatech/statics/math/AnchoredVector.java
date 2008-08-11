@@ -82,6 +82,10 @@ public class AnchoredVector implements Quantified {
     public void setDiagramValue(BigDecimal v) {
         vector.setDiagramValue(v);
     }
+    
+    public Vector3bd getVectorValue() {
+        return vector.getVectorValue();
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -146,6 +150,11 @@ public class AnchoredVector implements Quantified {
         @Override
         public void setVector(Vector vector) {
             throw new UnsupportedOperationException("Cannot set values on an UnmodifiableAnchoredVector");
+        }
+
+        @Override
+        public AnchoredVector getUnmodifiableAnchoredVector() {
+            return this;
         }
     }
 }

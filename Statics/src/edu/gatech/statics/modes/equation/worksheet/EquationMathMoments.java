@@ -9,14 +9,15 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.modes.equation.*;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.objects.Force;
-import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.objects.Point;
-import java.util.ArrayList;
-import java.util.List;
+import edu.gatech.statics.objects.UnknownPoint;
+import java.math.BigDecimal;
 import java.util.logging.Logger;
 
 /**
@@ -25,36 +26,15 @@ import java.util.logging.Logger;
  */
 public class EquationMathMoments extends EquationMath {
 
-    private boolean observationPointSet = false;
-    private Point observationPoint = null; //new Vector3bd();
-
-    public Point getObservationPoint() {
-        return observationPoint;
-    }
-
-    public void setObservationPoint(Point point) {
-        this.observationPoint = point;
-        observationPointSet = true;
-    }
-
-    public boolean getObservationPointSet() {
-        return observationPointSet;
-    }
-
-    @Override
-    public Term createTerm(AnchoredVector source) {
-        return new MomentTerm(source, this);
-    }
-
     /** Creates a new instance of EquationMoments */
-    public EquationMathMoments(String name, EquationDiagram world) {
-        super(name, world);
+    public EquationMathMoments(String name, Vector3bd observationDirection, EquationDiagram world) {
+        super(name, observationDirection, world);
     }
 
     @Override
     public boolean check() {
 
-        if (!observationPointSet) {
+        if (getDiagram().getCurrentState().getMomentPoint() == null) {
             Logger.getLogger("Statics").info("check: Moment point is not set!");
             Logger.getLogger("Statics").info("check: FAILED");
 
@@ -62,147 +42,241 @@ public class EquationMathMoments extends EquationMath {
             return false;
         }
 
-        // first, make sure all of the necessary terms are added to the equation.
-        List<Force> allForces = new ArrayList();
-        List<Moment> allMoments = new ArrayList();
+        return super.check();
+    }
 
-        for (SimulationObject obj : getDiagram().allObjects()) {
-            if (obj instanceof Force && !obj.isDisplayGrayed()) // should not be grayed anyway, but just in case.
-            {
-                allForces.add((Force) obj);
+    @Override
+    protected TermError checkTerm( AnchoredVector load, String coefficient) {
+
+        if (load.getUnit() == Unit.force) {
+
+            if (isAffine(load)) {
+                // this is a force, and one of the points present is unknown,
+                // so we apply the special affine check
+                // if an affine load is present, attempt to check it as such
+                return affineCheck(load, coefficient);
+            } else {
+                // this is a force, there is no affine issue, so we compare normally.
+
+                // get the moment point
+                Vector3bd momentPoint = getDiagram().getCurrentState().getMomentPoint().getPosition();
+                Vector3bd anchorPos = load.getAnchor().getPosition();
+
+                Vector3bd vectorOrient = load.getVectorValue();
+                // distance is described in world units, so apply the world scale
+                Vector3bd distance = anchorPos.subtract(momentPoint);
+                distance.divideLocal(Unit.distance.getDisplayScale());
+
+                BigDecimal distanceValue = new BigDecimal(distance.length());
+
+                BigDecimal targetValue = vectorOrient.cross(distance).dot(momentPoint);
+                targetValue = targetValue.negate();
+
+                return compareValuesMoment(coefficient, targetValue, distanceValue);
             }
-            if (obj instanceof Moment && !obj.isDisplayGrayed()) {
-                allMoments.add((Moment) obj);
+            
+        } else if (load.getUnit() == Unit.moment) {
+
+            // definitely need all moment terms
+            // complain if user has not added this
+            if (coefficient == null) {
+                return TermError.missedALoad;
             }
+
+            // otherwise, get the coefficient
+            AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
+
+            // moment coefficient should not be symbolic.
+            if (affineCoefficient.isSymbolic()) {
+                return TermError.shouldNotBeSymbolic;
+            }
+
+            // check against the direction, make sure that the coefficient is correct.
+            // this is it for the moment test.
+            BigDecimal targetValue = load.getVectorValue().dot(getObservationDirection());
+            BigDecimal userValue = affineCoefficient.getConstant();
+            return compareValues(userValue, targetValue);
+
+        } else {
+            // should never never get here
+            return TermError.internal;
+        }
+    }
+
+    /**
+     * This method compares values for moment terms, but checks for moment
+     * special cases, specifically the inclination check.
+     * @param coefficient
+     * @param targetValue
+     * @param distanceValue
+     * @return
+     */
+    private TermError compareValuesMoment(String coefficient, BigDecimal targetValue, BigDecimal distanceValue) {
+
+        AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
+
+        // parse the coefficient
+        if (affineCoefficient == null) {
+            return TermError.parse;
         }
 
-        for (Force force : allForces) {
-            Term term = getTerm(force);
-
-            // clear off things that would not add via cross product
-            float contribution = (float) force.getVectorValue().cross(force.getAnchor().getPosition().subtract(getObservationPoint().getPosition())).length();
-            contribution *= force.getVector().doubleValue();
-
-            if (Math.abs(contribution) < TEST_ACCURACY) {
-                if (term != null) {
-                    Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
-                    Logger.getLogger("Statics").info("check: FAILED");
-
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getVector().getPrettyName());
-                    return false;
-                } else {
-                    continue;
-                }
-            }
-
-            if (term == null) {
-                Logger.getLogger("Statics").info("check: equation has not added all terms: " + force.getVector());
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_moments");
-                return false;
-            }
+        // if the coefficient is symbolic, complain
+        // symbolic coefficients are handled in the affineCheck
+        if (affineCoefficient.isSymbolic()) {
+            return TermError.shouldNotBeSymbolic;
         }
 
-        for (Moment moment : allMoments) {
+        // we have a regular BigDecimal coefficient
+        BigDecimal coefficientValue = affineCoefficient.getConstant();
 
-            Term term = getTerm(moment);
-            if (term == null) {
-                Logger.getLogger("Statics").info("check: equation has not added all terms: " + moment.getVector());
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_couples");
-                return false;
+        TermError error = compareValues(coefficientValue, targetValue);
+        if (error == TermError.incorrect) {
+            // if coefficient is not correct, and is equal to the distance for a force, then the inclination of
+            // the force is missing, and we inform the user
+            if (Math.abs(coefficientValue.floatValue()) - distanceValue.floatValue() < EquationMath.TEST_ACCURACY) {
+                return TermError.missingInclination;
             }
         }
+        return error;
+    }
 
-        for (Term term : allTerms()) {
-            if (!term.check()) {
-
-                Logger.getLogger("Statics").info("check: term does not evaluate correctly: " + term.getCoefficient());
-                Logger.getLogger("Statics").info("check: for vector: \"" + term.getSource().toString() + "\"");
-                Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
-                Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
-
-                
-                switch (term.error) {
-                    case none:
-                    case internal:
-                        // ??? should not be here
-                        Logger.getLogger("Statics").info("check: unknown error?");
-                        Logger.getLogger("Statics").info("check: got inappropriate error code: "+term.error);
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
-                        return false;
-                        
-                    case missingInclination:
-                        Logger.getLogger("Statics").info("check: missing the inclination in the term");
-                        Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case cannotHandle:
-                        Logger.getLogger("Statics").info("check: cannot handle term");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case shouldNotBeSymbolic:
-                        Logger.getLogger("Statics").info("check: should not be symbolic");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case shouldBeSymbolic:
-                        Logger.getLogger("Statics").info("check: should be symbolic");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case wrongSymbol:
-                        Logger.getLogger("Statics").info("check: wrong symbol");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case badSign:
-                        Logger.getLogger("Statics").info("check: sign is wrong");
-                        Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getVector().getPrettyName());
-                        return false;
-                        
-                    case parse:
-                        //Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
-                        Logger.getLogger("Statics").info("check: parse error");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        //"Note: I can't understand your coefficient: \""+term.getCoefficient()+"\"");
-                        return false;
-                        
-                    case incorrect:
-                        //Logger.getLogger("Statics").info("check: for " + term.getSource());//.getLabelText());
-                        //Logger.getLogger("Statics").info("check: incorrect value: " + (term.coefficientValue == null ? term.coefficientAffineValue : term.coefficientValue));
-                        //Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
-                        Logger.getLogger("Statics").info("check: incorrect value");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        //"Note: Your coefficient is not correct for "+term.getVector().getLabelText());
-                        return false;
-                }
-            }
+    @Override
+    protected void reportError( TermError error, AnchoredVector load, String coefficient) {
+        if (error == TermError.shouldNotBeSymbolic) {
+            Logger.getLogger("Statics").info("check: should not be symbolic");
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
+            return;
+        } else if (error == TermError.shouldBeSymbolic) {
+            Logger.getLogger("Statics").info("check: should be symbolic");
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName());
+            return;
+        } else if (error == TermError.wrongSymbol) {
+            Logger.getLogger("Statics").info("check: wrong symbol");
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName());
+            return;
+        } else if (error == TermError.missingInclination) {
+            Logger.getLogger("Statics").info("check: missing the inclination in the term");
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
+            return;
+        } else if (error == TermError.missedALoad && load.getUnit() == Unit.moment) {
+            Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_couples");
+            return;
         }
 
-        setLocked(true);
+        super.reportError(error, load, coefficient);
+    }
 
-        Logger.getLogger("Statics").info("check: PASSED!");
-        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_success");
-        return true;
+    /**
+     * This check returns true if either the force anchor is unknown, or the 
+     * moment point is unknown. A point must be both an instance of UnknownPoint and 
+     * have isKnown() return false. 
+     * @return
+     */
+    private boolean isAffine(AnchoredVector load) {
+        // check the force anchor
+        if (load.getAnchor() instanceof UnknownPoint && !((UnknownPoint) load.getAnchor()).isKnown()) {
+            return true;
+        }
+        // check the moment point
+        Point momentPoint = getDiagram().getCurrentState().getMomentPoint();
+        if ((momentPoint instanceof UnknownPoint) && !((UnknownPoint) momentPoint).isKnown()) {
+            return true;
+        }
+        // otherwise false
+        return false;
+    }
+
+    /**
+     * This is a special method for handling terms which involve unknown points and 
+     * have an affine quantity inside of them.
+     * @return
+     */
+    private TermError affineCheck(AnchoredVector load, String coefficient) {
+
+        Point anchor = load.getAnchor();
+
+        UnknownPoint uAnchor = new UnknownPoint(anchor);
+        UnknownPoint uObservation = new UnknownPoint(getDiagram().getCurrentState().getMomentPoint());
+
+        Vector3bd differenceBase;
+        Vector3bd differenceDirection;
+        String distanceSymbol;
+        try {
+            // first we want to get the vector between the observation point and the anchor. 
+            // this term is an affine expression, that is, each of the x, y, and z components are affine terms
+            AffineQuantity differenceX = uAnchor.getDirectionalContribution(Vector3bd.UNIT_X).subtract(
+                    uObservation.getDirectionalContribution(Vector3bd.UNIT_X));
+            AffineQuantity differenceY = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Y).subtract(
+                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Y));
+            AffineQuantity differenceZ = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Z).subtract(
+                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Z));
+
+            differenceBase = new Vector3bd(differenceX.getConstant(), differenceY.getConstant(), differenceZ.getConstant());
+            differenceDirection = new Vector3bd(differenceX.getMultiplier(), differenceY.getMultiplier(), differenceZ.getMultiplier());
+            distanceSymbol = differenceX.getSymbolName();
+        } catch (ArithmeticException ex) {
+            // this happens if the points have different symbols. We should never reach a situation like this, ideally.
+            // return false with an internal error
+            return TermError.internal;
+        }
+
+        // get the direction of our actual vector
+        Vector3bd vectorOrient = load.getVectorValue();
+
+        // get the direction of the unit moment arm
+        // this is the direction that the moment arm points.
+        Vector3bd momentArm = vectorOrient.cross(getObservationDirection());
+
+        // compare the actual moment arm with the affine quantity defined by differenceBase and differenceDirection
+        // this is what will get compared to what the student has entered
+        BigDecimal constantContribution = differenceBase.dot(momentArm);
+        BigDecimal symbolicContribution = differenceDirection.dot(momentArm);
+
+        // check the magnitude of symbolicContribution to make sure that we still have a symbolic term in there.
+        if (symbolicContribution.floatValue() == 0) {
+            // okay, we just need to do a regular check here.
+            return compareValuesMoment(coefficient, constantContribution, new BigDecimal(differenceBase.length()));
+        }
+
+        // symbolicContribution is nonzero, so the user entered value MUST be symbolic
+        //AffineQuantity targetAffineValue = new AffineQuantity(constantContribution, symbolicContribution, distanceSymbol);
+        // get the affine quantity described by the user's coefficient
+        AffineQuantity coefficientAffineValue = Parser.evaluateSymbol(coefficient);
+
+        // parse the coefficient
+        if (coefficientAffineValue == null) {
+            return TermError.parse;
+        }
+
+        // if the coefficient is not symbolic, complain
+        if (!coefficientAffineValue.isSymbolic()) {
+            return TermError.shouldBeSymbolic;
+        }
+
+        // do a simple check to make sure the symbol is correct
+        if (!coefficientAffineValue.getSymbolName().equals(distanceSymbol)) {
+            return TermError.wrongSymbol;
+        }
+
+        // actually check the values
+        if (Math.abs(coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < EquationMath.TEST_ACCURACY &&
+                Math.abs(coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < EquationMath.TEST_ACCURACY) {
+            // hooray, our values are correct!
+            return TermError.none;
+        } else {
+            // do negation check
+            if (Math.abs(-coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < EquationMath.TEST_ACCURACY &&
+                    Math.abs(-coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < EquationMath.TEST_ACCURACY) {
+                return TermError.badSign;
+            }
+
+            return TermError.incorrect;
+        }
     }
 }

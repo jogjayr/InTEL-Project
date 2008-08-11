@@ -9,6 +9,7 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.equation.ui.EquationBar;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet;
 import com.jme.math.Vector2f;
@@ -20,6 +21,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
@@ -28,9 +30,9 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
-import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
+import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
@@ -53,15 +55,16 @@ import java.util.Map;
  */
 public class EquationDiagram extends SubDiagram<EquationState> {
 
+    private Worksheet worksheet;
+
     /**
      * Sets the point about which the moment will be calculated.
      * This also notifies the panel to update its value for the moment point.
      * @param momentPoint
      */
-    public void setMomentPoint(Point momentPoint) {
-        this.momentPoint = momentPoint;
-        EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        eqPanel.setMomentPoint(momentPoint);
+    public void setMomentPoint(Point momentPoint) {        //this.momentPoint = momentPoint;
+        //EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        //eqPanel.setMomentPoint(momentPoint);
     }
 
     /**
@@ -69,12 +72,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * @return
      */
     public Point getMomentPoint() {
-        return momentPoint;
+        return getCurrentState().getMomentPoint();
     }
 
-    public EquationMath getChecker() {
-        return new EquationMath(this);
-    }
+    //public EquationMath getChecker() {
+    //    return new EquationMath(this);
+    //}
     // IMPORTANT NOTE HERE
     // if the vector is symbolic and has been reversed,
     // then it will no longer be *equal* to the value stored as a key
@@ -117,9 +120,20 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return null;
     }
 
+    
+    /**
+     * This method retrieves the diagram loads from the underlying FreeBodyDiagram
+     * @return
+     */
+    public List<AnchoredVector> getDiagramLoads() {
+        FreeBodyDiagram fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
+        return fbd.getCurrentState().getAddedLoads();
+    }
+    
     @Override
     protected List<SimulationObject> getBaseObjects() {
-        FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
+        //FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
+        Diagram fbd = Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
         return fbd.allObjects();
     }
 
@@ -418,11 +432,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         // yet another hack in finding the vector center here....
-        curvePoints[  0] = obj.getDisplayCenter().add(obj.getTranslation()).mult(.5f);
-        curvePoints[   2] = StaticsApplication.getApp().getCamera().getWorldCoordinates(pos, .1f);
-        curvePoints[   1] = new Vector3f(curvePoints[
-        2]);
-        curvePoints[  1].y += .5f;
+        curvePoints[0] = obj.getDisplayCenter().add(obj.getTranslation()).mult(.5f);
+        curvePoints[2] = StaticsApplication.getApp().getCamera().getWorldCoordinates(pos, .1f);
+        curvePoints[1] = new Vector3f(curvePoints[2]);
+        curvePoints[1].y += .5f;
         showingCurve = true;
     }
 
@@ -433,11 +446,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected EquationState createInitialState() {
-        
     }
 
     @Override
     public void completed() {
-        
     }
 }

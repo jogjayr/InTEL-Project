@@ -10,17 +10,11 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.modes.equation.*;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.Load;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
@@ -32,21 +26,12 @@ import java.util.logging.Logger;
  * contributions and changes to the terms.
  * @author Calvin Ashmore
  */
-public class EquationMath {
+abstract public class EquationMath {
 
     protected static final float TEST_ACCURACY = .02f;
-    //private boolean locked = false;
-    private String name;
-    private Vector3bd observationDirection;
-    
-    /*public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }*/
-    private EquationDiagram diagram;
+    private final String name;
+    private final Vector3bd observationDirection;
+    private final EquationDiagram diagram;
 
     public EquationDiagram getDiagram() {
         return diagram;
@@ -56,26 +41,13 @@ public class EquationMath {
         return observationDirection;
     }
 
-    /*public void setObservationDirection(Vector3bd direction) {
-        this.observationDirection = direction;
-    }*/
-    private Map<AnchoredVector, Term> terms = new HashMap();
-
-    public List<Term> allTerms() {
-        return new ArrayList(terms.values());
-    }
-
     public String getName() {
         return name;
     }
-    
-    /*public String getName() {
-        if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
-            return "F[X]";
-        } else {
-            return "F[Y]";
-        }
-    }*/
+
+    protected EquationMathState getState() {
+        return getDiagram().getCurrentState().getEquationStates().get(getName());
+    }
 
     public String getAxis() {
         if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
@@ -85,196 +57,159 @@ public class EquationMath {
         }
     }
 
-    /*public void setCoefficient(AnchoredVector target, String coefficientExpression) {
-        getTerm(target).coefficient.setText(coefficientExpression);
-    }*/
-
-    Term createTerm(AnchoredVector source) {
-        return new Term(source, this);
-    }
-
-    Term getTerm(AnchoredVector target) {
-        return terms.get(target);
-    }
-
-    /*public Term addTerm(AnchoredVector source) {
-        if (terms.get(source) != null) {
-            return getTerm(source);
-        }
-
-        terms.put(source, createTerm(source));
-        return getTerm(source);
-    }*/
-
-    /*public void removeTerm(AnchoredVector target) {
-        //terms.remove(world.getLoad(target));
-        terms.remove(target);
-    }*/
-
     /** Creates a new instance of Equation */
-    public EquationMath(String name, EquationDiagram world) {
+    public EquationMath(String name, Vector3bd observationDirection, EquationDiagram world) {
         this.name = name;
+        this.observationDirection = observationDirection;
         this.diagram = world;
     }
 
-    /**
-     * update method works to update the terms in the equation,
-     * making sure that the the math correctly reflects the diagram.
-     * This method will also remove forces that are present in the terms, but
-     * no longer exist in the diagram.
-     */
-    void update() {
-        // this will need to be overridden by EquationMathMoments, or 
-        // alternately have getDiagramForces turn into getDiagramLoads
-        List<Load> loads = getDiagramLoads();
-
-        // make sure that terms are up to date
-        // use a list because the set would be backed by the map, and then cleared
-        List<Entry<AnchoredVector, Term>> allTerms =
-                new ArrayList<Entry<AnchoredVector, Term>>(terms.entrySet());
-        terms.clear();
-        for (Entry<AnchoredVector, Term> entry : allTerms) {
-
-            if (loads.contains(entry.getKey())) {
-                terms.put(entry.getKey(), entry.getValue());
-            }
-        }
-    }
-
-    /**
-     * Returns a map of String symbol names to floats according to their values.
-     * Will return null if the set of equations is not deemed solvable.
-     */
-    //static Map<String, Float> solve(EquationMath... equations) {
-    //    return null;
-    //}
     public boolean check() {
 
+        // get the state
+        EquationMathState state = getState();
+
         // first, make sure all of the necessary terms are added to the equation.
-        List<Load> allLoads = getDiagramLoads();
+        //List<Load> allLoads = getDiagramLoads();
+        List<AnchoredVector> allLoads = diagram.getDiagramLoads();
 
         Logger.getLogger("Statics").info("check: allForces: " + allLoads);
 
-        for (Load load : allLoads) {
+        for (AnchoredVector load : allLoads) {
 
-            // ignore moments that may appear
-            if (load.getUnit() == Unit.moment) {
-                continue;
-            }
-            Term term = terms.get(load);
+            String coefficient = state.getTerms().get(load);
+            TermError error = checkTerm(load, coefficient);
 
-            // is this force aligned with our observation direction, even slightly?
-            // if no, complain.
-            // this condition checks to see if the dot product with the observation
-            // direction is close enough to zero to be inappropriate.
-            if (Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) <= TEST_ACCURACY) {
-                if (term != null) {
-                    Logger.getLogger("Statics").info("check: equation has unnecessary term: " + term.getSource());
-                    Logger.getLogger("Statics").info("check: FAILED");
+            if (error != TermError.none) {
 
-                    StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", term.getSource().getVector().getPrettyName());
-                    return false;
-                } else {
-                    continue;
-                }
-            }
+                Logger.getLogger("Statics").info("check: term does not evaluate correctly: \"" + coefficient + "\"");
+                Logger.getLogger("Statics").info("check: for vector: \"" + load.toString() + "\"");
+                //Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
+                //Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
 
-            // a term that we expected has not been added.
-            if (term == null) {
-                Logger.getLogger("Statics").info("check: equation has not added all terms: " + load.getVector());
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces", getAxis());
-                return false;
+                reportError(error, load, coefficient);
             }
         }
 
-        for (Term term : allTerms()) {
-
-            //if(term.getVector() instanceof Moment) {
-            if (term.getSource().getUnit() == Unit.moment) {
-                Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + term.getSource());
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessaryMoment", term.getSource().getVector().getPrettyName());
-                return false;
-            }
-
-            if (!term.check()) {
-
-                Logger.getLogger("Statics").info("check: term does not evaluate correctly: " + term.getCoefficient());
-                Logger.getLogger("Statics").info("check: for vector: \"" + term.getSource().toString() + "\"");
-                Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
-                Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
-
-                switch (term.error) {
-                    case none:
-                    case internal:
-                    case shouldBeSymbolic:
-                    case wrongSymbol:
-                    case missingInclination:
-                        // ??? should not be here
-                        Logger.getLogger("Statics").info("check: unknown error?");
-                        Logger.getLogger("Statics").info("check: got inappropriate error code: " + term.error);
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
-                        return false;
-
-                    case cannotHandle:
-                        Logger.getLogger("Statics").info("check: cannot handle term");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        return false;
-
-                    case shouldNotBeSymbolic:
-                        Logger.getLogger("Statics").info("check: should not be symbolic");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", term.getSource().getVector().getPrettyName());
-                        return false;
-
-                    case badSign:
-                        Logger.getLogger("Statics").info("check: wrong sign");
-                        Logger.getLogger("Statics").info("check: FAILED");
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", term.getSource().getVector().getPrettyName());
-                        return false;
-
-                    case parse:
-                        Logger.getLogger("Statics").info("check: parse error");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        return false;
-
-                    case incorrect:
-                        Logger.getLogger("Statics").info("check: term is incorrect");
-                        Logger.getLogger("Statics").info("check: FAILED");
-
-                        StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", term.getCoefficient(), term.getSource().getVector().getPrettyName());
-                        return false;
-                }
-
-            }
-        }
-
-        setLocked(true);
+        //setLocked(true);
 
         Logger.getLogger("Statics").info("check: PASSED!");
         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_success");
         return true;
     }
 
-    protected List<Load> getDiagramLoads() {
-        List<Load> allLoads = new ArrayList();
-        for (SimulationObject obj : diagram.allObjects()) {
-            if (obj instanceof Load && !obj.isDisplayGrayed()) {
-                // should not be grayed anyway, but just in case.
-                allLoads.add((Load) obj);
-            }
-        }
+    /**
+     * Compares the two values and returns: TermError.none if the values are equal,
+     * TermError.badSign if the sign is wrong, or TermError.incorrect if the value is
+     * incorrect but not anything else.
+     * @param userValue
+     * @param targetValue
+     * @return
+     */
+    protected TermError compareValues(BigDecimal userValue, BigDecimal targetValue) {
 
-        return allLoads;
+        if (Math.abs(userValue.floatValue() - targetValue.floatValue()) < TEST_ACCURACY) {
+            // value is okay, return positive
+            return TermError.none;
+        } else {
+            // check to see if the negated value is correct instead
+            if (Math.abs(-1 * userValue.floatValue() - targetValue.floatValue()) < TEST_ACCURACY) {
+                return TermError.badSign;
+            }
+
+            // otherwise we just have something random.
+            return TermError.incorrect;
+        }
     }
+
+    /**
+     * This method produces the error response for the error code and the 
+     * load and coefficient.
+     * @param error
+     * @param load
+     * @param coefficient
+     */
+    protected void reportError(TermError error, AnchoredVector load, String coefficient) {
+
+        switch (error) {
+            case internal:
+            case shouldBeSymbolic:
+            case wrongSymbol:
+            case missingInclination:
+                // ??? should not be here
+                Logger.getLogger("Statics").info("check: unknown error?");
+                Logger.getLogger("Statics").info("check: got inappropriate error code: " + error);
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unknown");
+                return;
+
+            case missedALoad:
+                Logger.getLogger("Statics").info("check: equation has not added all terms: " + load.getVector());
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_forces", getAxis());
+                return;
+
+            case doesNotBelong:
+                Logger.getLogger("Statics").info("check: equation has unnecessary term: " + load);
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_unnecessary", load.getVector().getPrettyName());
+                return;
+
+            case cannotHandle:
+                Logger.getLogger("Statics").info("check: cannot handle term");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_cannot_handle", coefficient, load.getVector().getPrettyName());
+                return;
+
+            case shouldNotBeSymbolic:
+                Logger.getLogger("Statics").info("check: should not be symbolic");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
+                return;
+
+            case badSign:
+                Logger.getLogger("Statics").info("check: wrong sign");
+                Logger.getLogger("Statics").info("check: FAILED");
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_sign", load.getVector().getPrettyName());
+                return;
+
+            case parse:
+                Logger.getLogger("Statics").info("check: parse error");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_parse", coefficient, load.getVector().getPrettyName());
+                return;
+
+            case incorrect:
+                Logger.getLogger("Statics").info("check: term is incorrect");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_coefficient", coefficient, load.getVector().getPrettyName());
+                return;
+        }
+    }
+
+    /**
+     * Returns true if the load in question is pointing any at all in the observation 
+     * direction. This specific test depends on the TEST_ACCURACY constant. 
+     * @return
+     */
+    protected boolean isLoadAligned(AnchoredVector load) {
+        return Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) > TEST_ACCURACY;
+    }
+
+    /**
+     * This method should be overridden by the subclasses of EquationMath.
+     * This checks the given load and coefficient, and will return an error code.
+     * If the check passes, checkTerm should return TermError.none
+     * @param load
+     * @param coefficient
+     * @return
+     */
+    protected abstract TermError checkTerm(AnchoredVector load, String coefficient);
 }

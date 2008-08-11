@@ -74,6 +74,12 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             return addedLoads;
         }
 
+        public void setAddedLoads(List<AnchoredVector> addedLoads) {
+            this.addedLoads.clear();
+            this.addedLoads.addAll(addedLoads);
+            //this.addedLoads = addedLoads;
+        }
+        
         public boolean isSolved() {
             return solved;
         }
