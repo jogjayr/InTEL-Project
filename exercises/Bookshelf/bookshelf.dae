@@ -14,8 +14,8 @@ exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=0;
 dereferenceXRefs=1;cameraXFov=0;cameraYFov=1</comments>
       <source_data>file:///C:/Documents%20and%20Settings/Brian/Desktop/Statics/Maya/Cleaned/bookshelf%20cleaned.mb</source_data>
     </contributor>
-    <created>2008-08-11T21:54:04Z</created>
-    <modified>2008-08-11T21:54:04Z</modified>
+    <created>2008-08-11T21:54:59Z</created>
+    <modified>2008-08-11T21:54:59Z</modified>
     <unit meter="0.01" name="centimeter"/>
     <up_axis>Y_UP</up_axis>
   </asset>
