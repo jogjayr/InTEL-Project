@@ -22,6 +22,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.modes.fbd.actions.RemoveLoad;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 
@@ -96,7 +97,12 @@ public class LabelSelector /*extends SelectionTool*/ {
                 if (event.getAction().equals("cancel")) {
                     popup.dismiss();
                     StaticsApplication.getApp().resetAdvice();
-                    diagram.removeUserObject(force);
+                    
+                    // attempt to delete the load.
+                    RemoveLoad removeLoadAction = new RemoveLoad(force.getAnchoredVector());
+                    diagram.performAction(removeLoadAction);
+                    
+                    //diagram.removeUserObject(force);
                     diagram.onClick(null);
                 //StaticsApplication.getApp().setAdvice("I did not seem to recognize that input. Try again?");
                 //System.out.println("some problem?");

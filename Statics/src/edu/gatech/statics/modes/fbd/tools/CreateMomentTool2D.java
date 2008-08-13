@@ -10,9 +10,9 @@ package edu.gatech.statics.modes.fbd.tools;
 
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
@@ -25,17 +25,16 @@ import java.util.List;
 public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListener {
 
     protected Moment moment;
-    protected Diagram world;
+    //protected Diagram world;
 
     /** Creates a new instance of CreateForceTool */
-    public CreateMomentTool2D(Diagram world) {
+    public CreateMomentTool2D(FreeBodyDiagram world) {
         super(world);
-        this.world = world;
     }
     
     @Override
     protected void showLabelSelector() {
-        LabelSelector labelTool = new LabelSelector(world, moment, moment.getAnchor().getTranslation());
+        LabelSelector labelTool = new LabelSelector(getDiagram(), moment, moment.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your moment");
         labelTool.setUnits(Unit.moment.getSuffix());
         labelTool.setHintText("");
@@ -50,7 +49,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
     }
     
     @Override
-    protected List<Load> createLoad(Point anchor) {
+    protected List<Load> createLoads(Point anchor) {
 
         moment = new Moment(anchor, new Vector3bd("0", "0", "1"), "M");
         moment.createDefaultSchematicRepresentation();

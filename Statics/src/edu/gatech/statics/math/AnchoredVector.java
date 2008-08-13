@@ -31,6 +31,10 @@ public class AnchoredVector implements Quantified {
         this.vector = new Vector(anchoredVector.getVector());
     }
 
+    public Quantity getQuantity() {
+        return vector.getQuantity();
+    }
+
     public Vector getVector() {
         return vector;
     }

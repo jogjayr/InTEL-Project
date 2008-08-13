@@ -13,11 +13,11 @@ import com.jme.renderer.Renderer;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationMode;
-import edu.gatech.statics.modes.fbd.actions.*;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -44,7 +44,33 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * the case, becuase users may add two forces that are equivalent. 
      */
     private List<Load> loadObjects = new ArrayList<Load>();
+    /**
+     * This list is of the temporary loads present in the diagram. Right now the list
+     * does not do anything, but it may be useful for keeping track of what the temporary
+     * loads are at any given moment.
+     */
+    private List<Load> temporaryLoads = new ArrayList<Load>();
 
+    /**
+     * This method adds a temporary load to the diagram. This load exists and is visible,
+     * but does not reflect the actual state of the diagram. Any loads added via this method
+     * will be cleared the next time that the state changes. 
+     * @param load
+     */
+    public void addTemporaryLoad(Load load) {
+        loadObjects.add(load);
+        temporaryLoads.add(load);
+    }
+    
+    /**
+     * This method removes the specified temporary load.
+     * @param load
+     */
+    public void removeTemporaryLoad(Load load) {
+        loadObjects.remove(load);
+        temporaryLoads.remove(load);
+    }
+    
     /**
      * The user objects for this diagram are merely the loads that are present.
      * @return
@@ -62,7 +88,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public boolean isSolved() {
         return getCurrentState().isSolved();
     }
-    
+
     /**
      * This method can be used for making sure that the loads which are displayed
      * are reflective of the state. Returns null if none is found.
@@ -88,6 +114,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      */
     @Override
     protected void stateChanged() {
+        
+        // clear the temporary list.
+        // any actual temporary loads will be cleared subsequently.
+        temporaryLoads.clear();
 
         // check if there are unnecessary loads now
         List<Load> missingLoads = new ArrayList<Load>();
@@ -101,10 +131,6 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         // remove them
         for (Load load : missingLoads) {
             loadObjects.remove(load);
-            
-            // create and perform the remove action
-            RemoveLoad action = createRemoveLoad(load.getAnchoredVector());
-            performAction(action);
         }
 
         // check for newly added loads
@@ -130,59 +156,29 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         for (AnchoredVector vector : newVectors) {
             Load load = createLoad(vector);
             loadObjects.add(load);
-            
-            // create and perform the add action
-            AddLoad action = createAddLoad(load.getAnchoredVector());
-            performAction(action);
         }
     }
 
+    /**
+     * This creates a load from a vector object for display.
+     * This creates the representation. It should also probably set up any listeners
+     * that need to work with the object.
+     * @param vector
+     * @return
+     */
     protected Load createLoad(AnchoredVector vector) {
+        Load load;
         if (vector.getUnit() == Unit.force) {
-            return new Force(vector);
+            load = new Force(vector);
         } else if (vector.getUnit() == Unit.moment) {
-            return new Moment(vector);
+            load = new Moment(vector);
         } else {
             throw new IllegalArgumentException(
                     "Have some sort of invalid type of load: " + vector +
                     " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
         }
-    }
-
-    /**
-     * Creates an AddLoad for use in this diagram.
-     * @param newVector
-     * @return
-     */
-    public AddLoad createAddLoad(AnchoredVector newVector) {
-        return new AddLoad(newVector);
-    }
-
-    /**
-     * Creates an RemoveLoad for use in this diagram.
-     * @param oldVector
-     * @return
-     */
-    public RemoveLoad createRemoveLoad(AnchoredVector oldVector) {
-        return new RemoveLoad(oldVector);
-    }
-
-    /**
-     * Creates an OrientLoad for use in this diagram.
-     * @param oldLoad, newLoad
-     * @return
-     */
-    public OrientLoad createOrientLoad(AnchoredVector oldLoad, AnchoredVector newLoad) {
-        return new OrientLoad(oldLoad, newLoad);
-    }
-    
-    /**
-     * Creates a LabelLoad for use in this diagram.
-     * @param oldLoad, newLabel
-     * @return
-     */
-    public LabelLoad createLabelLoad(AnchoredVector oldLoad, String newLabel) {
-        return new LabelLoad(oldLoad, newLabel);
+        load.createDefaultSchematicRepresentation();
+        return load;
     }
 
     /**
@@ -230,10 +226,11 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 if (!(obj instanceof Load)) {
                     continue;
                 }
-                if (!(((Load) obj).isSymbol())) {
+                Load loadObject = (Load) obj;
+                if (!loadObject.isSymbol()) {
                     continue;
                 }
-                StaticsApplication.getApp().getExercise().getSymbolManager().addSymbol((Load) obj);
+                Exercise.getExercise().getSymbolManager().addSymbol(loadObject.getAnchoredVector());
             }
 
             String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
@@ -292,9 +289,25 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public InputHandler getInputHandler() {
         return fbdInput;
     }
-    private static final SelectionFilter filter = new SelectionFilter() {
+    private static final SelectionFilter filter = new  
 
-        public boolean canSelect(SimulationObject obj) {
+          SelectionFilter( ) {
+
+               
+        
+    
+
+    public    
+         
+    
+      
+      
+
+        
+            
+            
+        
+           boolean canSelect(SimulationObject obj) {
             return obj instanceof Load;
         }
     };

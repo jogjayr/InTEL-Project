@@ -189,6 +189,11 @@ public class Vector implements Quantified {
         }
 
         @Override
+        public Quantity getQuantity() {
+            return super.getQuantity().getUnmodifiableQuantity();
+        }
+        
+        @Override
         public void setDiagramValue(BigDecimal magnitude) {
             throw new UnsupportedOperationException("Cannot set values on an UnmodifiableVector");
         }

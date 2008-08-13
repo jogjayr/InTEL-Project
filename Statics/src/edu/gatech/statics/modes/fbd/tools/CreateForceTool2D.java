@@ -15,6 +15,7 @@ import edu.gatech.statics.objects.manipulators.*;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
@@ -30,16 +31,14 @@ import java.util.List;
 public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener*/ {
 
     protected Force force;
-    protected Diagram diagram;
     protected Orientation2DSnapManipulator orientationManipulator;
 
     /** Creates a new instance of CreateForceTool */
-    public CreateForceTool2D(Diagram diagram) {
+    public CreateForceTool2D(FreeBodyDiagram diagram) {
         super(diagram);
-        this.diagram = diagram;
     }
 
-    protected List<Load> createLoad(Point anchor) {
+    protected List<Load> createLoads(Point anchor) {
         force = new Force(anchor, new Vector3bd("1.5", "1", "0").normalize(), "F");
         force.createDefaultSchematicRepresentation();
         return Collections.singletonList((Load) force);
@@ -56,28 +55,29 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     protected void onFinish() {
         super.onFinish();
 
-        VectorListener forceListener = new VectorOverlapDetector(diagram, force);
+        VectorListener forceListener = new VectorOverlapDetector(getDiagram(), force);
         forceListener.valueChanged(force.getVectorValue());
         force.addListener(forceListener);
     }
 
     @Override
     protected void showLabelSelector() {
-        LabelSelector labelTool = new LabelSelector(diagram, force, force.getAnchor().getTranslation());
+        LabelSelector labelTool = new LabelSelector(getDiagram(), force, force.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your force");
         labelTool.setUnits(Unit.force.getSuffix());
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
         labelTool.createPopup();
         if (force == null) {
-            diagram.removeUserObject(force);
-            diagram.onClick(null);
+            //getDiagram().removeUserObject(force);
+            getDiagram().removeTemporaryLoad(force);
+            getDiagram().onClick(null);
         }
     }
 
     protected void enableOrientationManipulator() {
 
-        final List<Vector3f> snapDirections = diagram.getSensibleDirections(getSnapPoint());
+        final List<Vector3f> snapDirections = getDiagram().getSensibleDirections(getSnapPoint());
         orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
         orientationManipulator.addListener(new MyOrientationListener());
         addToAttachedHandlers(orientationManipulator);
@@ -127,7 +127,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
                     BigDecimal.valueOf(currentSnap.z));
 
             force.setVectorValue(vbd);
-            
+
             orientationManipulator.setEnabled(false);
             removeFromAttachedHandlers(orientationManipulator);
             orientationManipulator = null;

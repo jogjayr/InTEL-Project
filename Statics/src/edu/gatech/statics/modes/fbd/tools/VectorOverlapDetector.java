@@ -9,8 +9,8 @@
 package edu.gatech.statics.modes.fbd.tools;
 
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.VectorListener;
 import edu.gatech.statics.objects.VectorObject;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import java.util.List;
 class VectorOverlapDetector implements VectorListener {
 
     private VectorObject myVector;
-    private Diagram world;
+    private FreeBodyDiagram world;
 
-    public VectorOverlapDetector(Diagram world, VectorObject vector) {
+    public VectorOverlapDetector(FreeBodyDiagram world, VectorObject vector) {
         this.myVector = vector;
         this.world = world;
     }

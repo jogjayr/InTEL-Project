@@ -6,8 +6,10 @@ package edu.gatech.statics.modes.fbd.tools;
 
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.modes.fbd.actions.AddLoad;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -27,11 +29,15 @@ import java.util.List;
 public abstract class CreateLoadTool extends Tool implements MousePressListener {
 
     private Point loadAnchor;
-    private List<Load> load;
-    private Diagram diagram;
+    private List<Load> loads;
+    private FreeBodyDiagram diagram;
     private DragSnapManipulator dragManipulator;
     private Point snapPoint;
     private MousePressInputAction pressAction;
+
+    protected FreeBodyDiagram getDiagram() {
+        return diagram;
+    }
 
     protected Point getSnapPoint() {
         return snapPoint;
@@ -44,13 +50,15 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     protected void showLabelSelector() {
     }
 
-    public CreateLoadTool(Diagram diagram) {
+    public CreateLoadTool(FreeBodyDiagram diagram) {
         this.diagram = diagram;
         loadAnchor = new Point(new Vector3bd());
-        load = createLoad(loadAnchor);
+        loads = createLoads(loadAnchor);
 
-        for (Load aLoad : load) {
-            diagram.addUserObject(aLoad);
+        for (Load load : loads) {
+            //diagram.addUserObject(aLoad);
+            //AddLoad addLoadAction= new AddLoad(aLoad);
+            diagram.addTemporaryLoad(load);
         }
 
         pressAction = new MousePressInputAction();
@@ -64,7 +72,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
      * @param anchor
      * @return
      */
-    abstract protected List<Load> createLoad(Point anchor);
+    abstract protected List<Load> createLoads(Point anchor);
 
     public void onMouseDown() {
         if (getDragManipulator() != null) {
@@ -85,8 +93,9 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     @Override
     protected void onCancel() {
-        for (Load aLoad : load) {
-            diagram.removeUserObject(aLoad);
+        for (Load load : loads) {
+            //diagram.removeUserObject(aLoad);
+            diagram.removeTemporaryLoad(load);
         }
     }
 
@@ -124,7 +133,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
         // snap at the drag manipulator and terminate,
         // enable the orientation manipulator
-        for (Load aLoad : load) {
+        for (Load aLoad : loads) {
             aLoad.setAnchor(snapPoint);
         }
 
@@ -132,7 +141,23 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         removeFromAttachedHandlers(dragManipulator);
         dragManipulator = null;
 
+        performAdd();
+
         return true;
+    }
+
+    /**
+     * This method actually adds the loads to the diagram, as an undoable action.
+     * This method is called by releaseDragManipulator() if the release is 
+     * successful.
+     */
+    protected void performAdd() {
+        List<AnchoredVector> loadVectors = new ArrayList<AnchoredVector>();
+        for (Load load : loads) {
+            loadVectors.add(load.getAnchoredVector());
+        }
+        AddLoad addLoadAction = new AddLoad(loadVectors);
+        diagram.performAction(addLoadAction);
     }
 
     protected void updateLoad(Vector3f worldPosition) {

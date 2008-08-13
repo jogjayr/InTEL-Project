@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.fbd;
 
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.math.AnchoredVector;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,8 +61,16 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             }
         }
 
-        public void setLabel(AnchoredVector load, String newLabel) {
-            addedLoads.get(addedLoads.indexOf(load)).setSymbol(newLabel);
+        public void setLabel(AnchoredVector load, String symbol) {
+            load = addedLoads.get(addedLoads.indexOf(load));
+            load.setSymbol(symbol);
+            load.setKnown(false);
+        }
+        
+        public void setLabel(AnchoredVector load, BigDecimal value) {
+            load = addedLoads.get(addedLoads.indexOf(load));
+            load.setDiagramValue(value);
+            load.setKnown(true);
         }
         
         public void removeLoad(AnchoredVector oldLoad) {

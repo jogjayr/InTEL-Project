@@ -462,25 +462,6 @@ public abstract class Diagram<StateType extends DiagramState> {
     }
 
     /**
-     * A convenience method to get all of the loads at a given point. This goes through
-     * all of the loads in the current diagram and checks against them.
-     * @param point
-     * @return
-     */
-    public List<Load> getLoadsAtPoint(Point point) {
-        List<Load> loads = new ArrayList<Load>();
-        for (SimulationObject obj : allObjects) {
-            if (obj instanceof Load) {
-                Load load = (Load) obj;
-                if (load.getAnchor().equals(point)) {
-                    loads.add(load);
-                }
-            }
-        }
-        return loads;
-    }
-
-    /**
      * Return a list of directions that make sense as snapping options for a
      * force being positioned around a point. 
      * @param point

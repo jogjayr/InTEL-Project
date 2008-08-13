@@ -8,6 +8,9 @@ import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FBDState.Builder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Adds a new load to the diagram state.
@@ -15,16 +18,22 @@ import edu.gatech.statics.modes.fbd.FBDState.Builder;
  */
 public class AddLoad implements DiagramAction<FBDState> {
 
-    AnchoredVector newLoad;
-    
+    List<AnchoredVector> newLoads;
+
+    public AddLoad(List<AnchoredVector> newLoads) {
+        this.newLoads = new ArrayList<AnchoredVector>(newLoads);
+    }
+
     public AddLoad(AnchoredVector newLoad) {
-        this.newLoad = newLoad;
+        this.newLoads = Collections.singletonList(newLoad);
     }
 
     public FBDState performAction(FBDState oldState) {
         Builder builder = oldState.getBuilder();
 
-        builder.addLoad(newLoad);
+        for (AnchoredVector load : newLoads) {
+            builder.addLoad(load);
+        }
         
         return builder.build();
     }

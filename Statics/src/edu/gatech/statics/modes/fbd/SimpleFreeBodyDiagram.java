@@ -20,6 +20,6 @@ public class SimpleFreeBodyDiagram extends FreeBodyDiagram {
      * We override postSolve to do nothing: we will not advance to equation mode
      */
     @Override
-    public void postSolve() {
+    public void completed() {
     }
 }

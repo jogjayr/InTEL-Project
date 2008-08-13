@@ -47,6 +47,6 @@ public class Pin2dKnownDirection extends Roller2d {
 
     @Override
     public String connectorName() {
-        return "pin";
+        return "connector";
     }
 }

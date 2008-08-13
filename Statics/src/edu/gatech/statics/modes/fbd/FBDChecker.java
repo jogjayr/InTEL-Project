@@ -7,15 +7,14 @@ package edu.gatech.statics.modes.fbd;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
-import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Cable;
@@ -50,7 +49,7 @@ public class FBDChecker {
 
     /**
      * Get all of the symbolic measurements in the schematic, for making sure their names
-     * do are not being used for loads.
+     * do are not being used for AnchoredVectors.
      * @return
      */
     private List<Measurement> getSymbolicMeasurements() {
@@ -87,33 +86,36 @@ public class FBDChecker {
     }
 
     /**
-     * Get the given loads that are present in the diagram.
-     * The givens are loads present in the schematic, and should be added to the diagram
+     * Get the given AnchoredVectors that are present in the diagram.
+     * The givens are AnchoredVectors present in the schematic, and should be added to the diagram
      * by the user in the FBD. Givens are first looked up in the symbol manager to 
      * see if a stored symbol has been used.
      * @return
      */
-    private List<Load> getGivenLoads() {
+    private List<AnchoredVector> getGivenLoads() {
 
-        List<Load> givenForces = new ArrayList<Load>();
+        List<AnchoredVector> givenLoads = new ArrayList<AnchoredVector>();
+        // look through everything in the schematic, we want to pick out the loads
+        // on the correct bodies.
         for (Body body : FreeBodyDiagram.getSchematic().allBodies()) {
             if (diagram.getBodySubset().getBodies().contains(body)) {
                 for (SimulationObject obj : body.getAttachedObjects()) {
                     if (obj instanceof Load) {
 
                         Load given = (Load) obj;
+
                         // attempt to find an equivalent that might have been stored in the symbol manager.
-                        Load symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoad(given);
+                        AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoad(given.getAnchoredVector());
                         if (symbolEquivalent != null) {
-                            givenForces.add(symbolEquivalent);
+                            givenLoads.add(symbolEquivalent);
                         } else {
-                            givenForces.add(given);
+                            givenLoads.add(given.getAnchoredVector());
                         }
                     }
                 }
             }
         }
-        return givenForces;
+        return givenLoads;
     }
 
     private void logInfo(String info) {
@@ -133,12 +135,12 @@ public class FBDChecker {
         //done = false;
 
         // step 1: assemble a list of all the forces the user has added.
-        List<Load> addedLoads = new ArrayList<Load>(diagram.getAddedLoads());
+        List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>(diagram.getCurrentState().getAddedLoads());
 
-        logInfo("check: user added loads: " + addedLoads);
+        logInfo("check: user added AnchoredVectors: " + addedLoads);
 
         if (addedLoads.size() <= 0) {
-            logInfo("check: diagram does not contain any loads");
+            logInfo("check: diagram does not contain any AnchoredVectors");
             logInfo("check: FAILED");
 
             setAdviceKey("fbd_feedback_check_fail_add");
@@ -147,7 +149,7 @@ public class FBDChecker {
 
         // step 2: for vectors that we can click on and add, ie, given added forces,
         // make sure that the user has added all of them.
-        for (Load given : getGivenLoads()) {
+        for (AnchoredVector given : getGivenLoads()) {
             boolean ok = performGivenCheck(addedLoads, given);
             if (!ok) {
                 return false;
@@ -159,10 +161,10 @@ public class FBDChecker {
             if (body.getWeight().getDiagramValue().floatValue() == 0) {
                 continue;
             }
-            Load weight = new Force(
+            AnchoredVector weight = new AnchoredVector(
                     body.getCenterOfMassPoint(),
-                    Vector3bd.UNIT_Y.negate(),
-                    new BigDecimal(body.getWeight().doubleValue()));
+                    new Vector(Unit.force, Vector3bd.UNIT_Y.negate(),
+                    new BigDecimal(body.getWeight().doubleValue())));
 
             boolean ok = performWeightCheck(addedLoads, weight, body);
             if (!ok) {
@@ -171,7 +173,7 @@ public class FBDChecker {
         }
 
         // Step 4: go through all the border connectors connecting this FBD to the external world,
-        // and check each load implied by the connector.
+        // and check each AnchoredVector implied by the connector.
         for (int i = 0; i < diagram.allObjects().size(); i++) {
             SimulationObject obj = diagram.allObjects().get(i);
             if (!(obj instanceof Connector)) {
@@ -197,18 +199,18 @@ public class FBDChecker {
                 continue;
             }
 
-            // build a list of the loads at this point
-            List<Load> userLoadsAtConnector = new ArrayList<Load>();
-            for (Load load : addedLoads) {
-                if (load.getAnchor().equals(connector.getAnchor())) {
-                    userLoadsAtConnector.add(load);
+            // build a list of the AnchoredVectors at this point
+            List<AnchoredVector> userAnchoredVectorsAtConnector = new ArrayList<AnchoredVector>();
+            for (AnchoredVector AnchoredVector : addedLoads) {
+                if (AnchoredVector.getAnchor().equals(connector.getAnchor())) {
+                    userAnchoredVectorsAtConnector.add(AnchoredVector);
                 }
             }
 
             logInfo("check: testing connector: " + connector);
 
-            // special case, userLoadsAtConnector is empty:
-            if (userLoadsAtConnector.isEmpty()) {
+            // special case, userAnchoredVectorsAtConnector is empty:
+            if (userAnchoredVectorsAtConnector.isEmpty()) {
                 logInfo("check: have any forces been added");
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_joint_reaction", connector.connectorName(), connector.getAnchor().getLabelText());
@@ -217,38 +219,38 @@ public class FBDChecker {
 
 //            //this is trying to make sure two force members have the same values at either end
 //            if (body instanceof TwoForceMember) {
-//                List<Load> userLoadsAtOtherConnector = new ArrayList<Load>();
+//                List<AnchoredVector> userAnchoredVectorsAtOtherConnector = new ArrayList<AnchoredVector>();
 //                Connector con;
 //                if (((TwoForceMember) body).getConnector1() == connector) {
 //                    con = ((TwoForceMember) body).getConnector2();
 //                } else {
 //                    con = ((TwoForceMember) body).getConnector1();
 //                }
-//                for (Load load : addedLoads) {
-//                    if (load.getAnchor().equals(con.getAnchor())) {
-//                        userLoadsAtOtherConnector.add(load);
+//                for (AnchoredVector AnchoredVector : addedAnchoredVectors) {
+//                    if (AnchoredVector.getAnchor().equals(con.getAnchor())) {
+//                        userAnchoredVectorsAtOtherConnector.add(AnchoredVector);
 //                    }
 //                }
-//                if (!userLoadsAtConnector.get(0).getLabelText().equalsIgnoreCase(userLoadsAtOtherConnector.get(0).getLabelText())) {
-//                    logInfo("check: the user has given a 2ForceMember's loads different values");
+//                if (!userAnchoredVectorsAtConnector.get(0).getLabelText().equalsIgnoreCase(userAnchoredVectorsAtOtherConnector.get(0).getLabelText())) {
+//                    logInfo("check: the user has given a 2ForceMember's AnchoredVectors different values");
 //                    logInfo("check: FAILED");
 //                    setAdviceKey("fbd_feedback_check_fail_2force_not_same");
 //                    return false;                
 //                }
 //            }
 
-            ConnectorCheckResult connectorResult = checkConnector(userLoadsAtConnector, connector, body);
+            ConnectorCheckResult connectorResult = checkConnector(userAnchoredVectorsAtConnector, connector, body);
 
             switch (connectorResult) {
                 case passed:
                     // okay, the check passed without complaint. 
-                    // The loads may still not be correct, but that will be tested afterwards.
+                    // The AnchoredVectors may still not be correct, but that will be tested afterwards.
                     // for now, continue normally.
                     break;
                 case inappropriateDirection:
                     // check for special case of 2FM:
-                    logInfo("check: User added loads at " + connector.getAnchor().getName() + ": " + userLoadsAtConnector);
-                    logInfo("check: Was expecting: " + getReactionLoads(connector, connector.getReactions(body)));
+                    logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
+                    logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
 
                     if (connector instanceof Connector2ForceMember2d) {
                         Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
@@ -264,7 +266,7 @@ public class FBDChecker {
                     } else {
                         // one of the directions is the wrong way, and it's not a cable this time
                         // it is probably a roller or something.
-                        logInfo("check: loads have wrong direction at point " + connector.getAnchor().getName());
+                        logInfo("check: AnchoredVectors have wrong direction at point " + connector.getAnchor().getName());
                         logInfo("check: FAILED");
                         setAdviceKey("fbd_feedback_check_fail_some_reverse", connector.getAnchor().getName());
                         return false;
@@ -272,7 +274,7 @@ public class FBDChecker {
                 case somethingExtra:
                     // this particular check could be fine
                     // in some problems there are multiple connectors at one point (notably in frame problems)
-                    // and this means that extra loads are okay. We check to see if multiple connectors are present,
+                    // and this means that extra AnchoredVectors are okay. We check to see if multiple connectors are present,
                     // and if so, continue gracefully, as inapporpriate extra things will be checked at the end
                     // otherwise the check will continue to the next step, "missingSomething" where other conditions
                     // will be tested.
@@ -285,13 +287,13 @@ public class FBDChecker {
                     // okay, if we are here then either something is missing, or something is extra.
                     // check against pins or rollers and see what happens.
 
-                    logInfo("check: User added loads at " + connector.getAnchor().getName() + ": " + userLoadsAtConnector);
-                    logInfo("check: Was expecting: " + getReactionLoads(connector, connector.getReactions(body)));
+                    logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
+                    logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
 
                     // check if this is mistaken for a pin
                     if (!connector.connectorName().equals("pin")) {
                         Pin2d testPin = new Pin2d(connector.getAnchor());
-                        if (checkConnector(userLoadsAtConnector, testPin, null) == ConnectorCheckResult.passed) {
+                        if (checkConnector(userAnchoredVectorsAtConnector, testPin, null) == ConnectorCheckResult.passed) {
                             logInfo("check: user wrongly created a pin at point " + connector.getAnchor().getLabelText());
                             logInfo("check: FAILED");
                             setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "pin", connector.connectorName());
@@ -302,7 +304,7 @@ public class FBDChecker {
                     // check if this is mistaken for a fix
                     if (!connector.connectorName().equals("fix")) {
                         Fix2d testFix = new Fix2d(connector.getAnchor());
-                        if (checkConnector(userLoadsAtConnector, testFix, null) == ConnectorCheckResult.passed) {
+                        if (checkConnector(userAnchoredVectorsAtConnector, testFix, null) == ConnectorCheckResult.passed) {
                             logInfo("check: user wrongly created a fix at point " + connector.getAnchor().getLabelText());
                             logInfo("check: FAILED");
                             setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "fix", connector.connectorName());
@@ -318,50 +320,50 @@ public class FBDChecker {
             }
 
             // okay, now the connector test has passed.
-            // We know now that the loads present in the diagram satisfy the reactions for the connector.
-            // All reactions loads are necessarily symbolic, and thus will either be new symbols, or
+            // We know now that the AnchoredVectors present in the diagram satisfy the reactions for the connector.
+            // All reactions AnchoredVectors are necessarily symbolic, and thus will either be new symbols, or
             // they will be present in the symbol manager.
 
-            List<Load> expectedReactions = getReactionLoads(connector, connector.getReactions(body));
-            for (Load reaction : expectedReactions) {
-                // get a load and result corresponding to this check.
-                Load loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
+            List<AnchoredVector> expectedReactions = getReactionAnchoredVectors(connector, connector.getReactions(body));
+            for (AnchoredVector reaction : expectedReactions) {
+                // get a AnchoredVector and result corresponding to this check.
+                AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
 
                 if (loadFromSymbolManager != null) {
                     // make sure the directions are pointing the correct way:
                     if (reaction.getVectorValue().equals(loadFromSymbolManager.getVectorValue().negate())) {
-                        loadFromSymbolManager = loadFromSymbolManager.clone();
+                        loadFromSymbolManager = new AnchoredVector(loadFromSymbolManager);
                         loadFromSymbolManager.getVectorValue().negateLocal();
                     }
 
-                    // of the user loads, only check those which point in maybe the right direction
-                    List<Load> userLoadsAtConnectorInDirection = new ArrayList<Load>();
-                    for (Load load : userLoadsAtConnector) {
-                        if (load.getVectorValue().equals(reaction.getVectorValue()) ||
-                                load.getVectorValue().equals(reaction.getVectorValue().negate())) {
-                            userLoadsAtConnectorInDirection.add(load);
+                    // of the user AnchoredVectors, only check those which point in maybe the right direction
+                    List<AnchoredVector> userAnchoredVectorsAtConnectorInDirection = new ArrayList<AnchoredVector>();
+                    for (AnchoredVector AnchoredVector : userAnchoredVectorsAtConnector) {
+                        if (AnchoredVector.getVectorValue().equals(reaction.getVectorValue()) ||
+                                AnchoredVector.getVectorValue().equals(reaction.getVectorValue().negate())) {
+                            userAnchoredVectorsAtConnectorInDirection.add(AnchoredVector);
                         }
                     }
 
-                    Pair<Load, LoadCheckResult> result = checkAllCandidatesAgainstTarget(
-                            userLoadsAtConnectorInDirection, loadFromSymbolManager);
-                    Load candidate = result.getLeft();
+                    Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(
+                            userAnchoredVectorsAtConnectorInDirection, loadFromSymbolManager);
+                    AnchoredVector candidate = result.getLeft();
 
-                    // this load has been solved for already. Now we can check against it.
-                    if (result.getRight() == LoadCheckResult.passed) {
-                        // check is OK, we can remove the load from our addedLoads.
+                    // this AnchoredVector has been solved for already. Now we can check against it.
+                    if (result.getRight() == AnchoredVectorCheckResult.passed) {
+                        // check is OK, we can remove the AnchoredVector from our addedAnchoredVectors.
                         addedLoads.remove(candidate);
                     } else {
-                        complainAboutLoadCheck(result.getRight(), candidate);
+                        complainAboutAnchoredVectorCheck(result.getRight(), candidate);
                         return false;
                     }
 
                 } else {
-                    // this load is new, so it requires a name check.
+                    // this AnchoredVector is new, so it requires a name check.
 
-                    // let's find a load that seems to match the expected reaction.
-                    Load candidate = null;
-                    for (Load possibleCandidate : userLoadsAtConnector) {
+                    // let's find a AnchoredVector that seems to match the expected reaction.
+                    AnchoredVector candidate = null;
+                    for (AnchoredVector possibleCandidate : userAnchoredVectorsAtConnector) {
                         // we know that these all are at the right anchor, so only test direction.
                         // direction may also be negated, since these are new symbols.
                         if (possibleCandidate.getVectorValue().equals(reaction.getVectorValue()) ||
@@ -374,7 +376,7 @@ public class FBDChecker {
 
                     NameCheckResult nameResult;
                     if (connector instanceof Connector2ForceMember2d) {
-                        nameResult = checkLoadName2FM(candidate, (Connector2ForceMember2d) connector);
+                        nameResult = checkAnchoredVectorName2FM(candidate, (Connector2ForceMember2d) connector);
                     } else {
                         nameResult = checkLoadName(candidate);
                     }
@@ -410,58 +412,58 @@ public class FBDChecker {
     }
 
     /**
-     * Checks against a given load.
-     * The check removes the candidate from addedLoads if the check passes.
-     * @param addedLoads
+     * Checks against a given AnchoredVector.
+     * The check removes the candidate from addedAnchoredVectors if the check passes.
+     * @param addedAnchoredVectors
      * @param given
      * @return
      */
-    protected boolean performGivenCheck(List<Load> addedLoads, Load given) {
-        List<Load> candidates = getCandidates(addedLoads, given, given.isSymbol() && !given.isKnown());
+    protected boolean performGivenCheck(List<AnchoredVector> addedAnchoredVectors, AnchoredVector given) {
+        List<AnchoredVector> candidates = getCandidates(addedAnchoredVectors, given, given.isSymbol() && !given.isKnown());
 
         // try all candidates
         // realistically there should only be one, but this check tries to be secure.
-        Pair<Load, LoadCheckResult> result = checkAllCandidatesAgainstTarget(candidates, given);
+        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, given);
 
         // we have no candidates, so terminate.
         if (result.getRight() == null) {
-            //user has forgotten to add a given load
-            logInfo("check: diagram does not contain given load " + given);
+            //user has forgotten to add a given AnchoredVector
+            logInfo("check: diagram does not contain given AnchoredVector " + given);
             logInfo("check: FAILED");
             setAdviceKey("fbd_feedback_check_fail_given", given.getAnchor().getLabelText());
             return false;
         }
 
-        Load candidate = result.getLeft();
+        AnchoredVector candidate = result.getLeft();
 
         // report failures
         switch (result.getRight()) {
             case passed:
                 // Our test has passed, we can continue.
-                addedLoads.remove(candidate);
+                addedAnchoredVectors.remove(candidate);
                 break;
             case shouldNotBeNumeric:
                 //A given value that should be symbolic has been added as numeric
-                logInfo("check: external value should be a symbol at point" + given.getAnchor().getLabelText());
+                logInfo("check: external value should be a symbol at point" + given.getAnchor().getName());
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_given_symbol", candidate.getLabelText(), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_given_symbol", candidate.getQuantity().toString(), candidate.getAnchor().getLabelText());
                 return false;
             case shouldNotBeSymbol:
                 //A given value that should be numeric has been added as symbolic
                 logInfo("check: external value should be a numeric at point" + given.getAnchor().getLabelText());
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_given_number", candidate.getLabelText(), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_given_number", candidate.getQuantity().toString(), candidate.getAnchor().getLabelText());
                 return false;
             case wrongSymbol:
-                // user has given a symbol that does not match the symbol of the given load.
+                // user has given a symbol that does not match the symbol of the given AnchoredVector.
                 // this is generally okay, but we want there to be consistency if the user has already put a name down.
                 if (Exercise.getExercise().getSymbolManager().getLoad(candidate) == null) {
                     // we're okay
-                    addedLoads.remove(candidate);
+                    addedAnchoredVectors.remove(candidate);
                     break;
                 }
             default:
-                complainAboutLoadCheck(result.getRight(), candidate);
+                complainAboutAnchoredVectorCheck(result.getRight(), candidate);
                 return false;
         }
 
@@ -480,17 +482,17 @@ public class FBDChecker {
      * Checks against a weight. This method is very similar to the Given check, 
      * but uses different log and feedback messages. A good way to do the check might be to abstract them out,
      * but the difference is kind of immaterial at this point.
-     * The check removes the candidate from addedLoads if the check passes.
-     * @param addedLoads
+     * The check removes the candidate from addedAnchoredVectors if the check passes.
+     * @param addedAnchoredVectors
      * @param given
      * @return
      */
-    protected boolean performWeightCheck(List<Load> addedLoads, Load weight, Body body) {
-        List<Load> candidates = getCandidates(addedLoads, weight, weight.isSymbol() && !weight.isKnown());
+    protected boolean performWeightCheck(List<AnchoredVector> addedAnchoredVectors, AnchoredVector weight, Body body) {
+        List<AnchoredVector> candidates = getCandidates(addedAnchoredVectors, weight, weight.isSymbol() && !weight.isKnown());
 
         // try all candidates
         // realistically there should only be one, but this check tries to be secure.
-        Pair<Load, LoadCheckResult> result = checkAllCandidatesAgainstTarget(candidates, weight);
+        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, weight);
 
         // we have no candidates, so terminate.
         if (result.getRight() == null) {
@@ -503,13 +505,13 @@ public class FBDChecker {
             return false;
         }
 
-        Load candidate = result.getLeft();
+        AnchoredVector candidate = result.getLeft();
 
         // report failures
         switch (result.getRight()) {
             case passed:
                 // Our test has passed, we can continue.
-                addedLoads.remove(candidate);
+                addedAnchoredVectors.remove(candidate);
                 break;
             case shouldNotBeNumeric:
                 //A given value that should be symbolic has been added as numeric
@@ -530,7 +532,7 @@ public class FBDChecker {
                 setAdviceKey("fbd_feedback_check_fail_weight_value", body.getName());
                 return false;
             default:
-                complainAboutLoadCheck(result.getRight(), candidate);
+                complainAboutAnchoredVectorCheck(result.getRight(), candidate);
                 return false;
         }
 
@@ -545,54 +547,54 @@ public class FBDChecker {
         return true;
     }
 
-    private void complainAboutLoadCheck(LoadCheckResult result, Load candidate) {
+    private void complainAboutAnchoredVectorCheck(AnchoredVectorCheckResult result, AnchoredVector candidate) {
         switch (result) {
             case shouldNotBeNumeric:
                 logInfo("check: force should not be numeric: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_numeric", forceOrMoment(candidate), candidate.getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_numeric", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
                 return;
             case shouldNotBeSymbol:
                 logInfo("check: force should not be symbol: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_symbol", forceOrMoment(candidate), candidate.getAnchor().getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_symbol", candidate.getUnit().toString(), candidate.getAnchor().getLabelText(), candidate.getAnchor().getName());
                 return;
             case wrongNumericValue:
                 logInfo("check: numeric values do not match: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_not_same_number", forceOrMoment(candidate), candidate.getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_not_same_number", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
                 return;
             case wrongDirection:
-                logInfo("check: load is pointing the wrong direction: " + candidate);
+                logInfo("check: AnchoredVector is pointing the wrong direction: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_reverse", forceOrMoment(candidate), candidate.getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_reverse", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
                 return;
             case wrongSymbol:
-                //the student has created a load with a name that doesn't match its opposing force
-                logInfo("check: load should equal its opposite: " + candidate);
+                //the student has created a AnchoredVector with a name that doesn't match its opposing force
+                logInfo("check: AnchoredVector should equal its opposite: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", forceOrMoment(candidate), candidate.getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
                 return;
         }
     }
 
-    private void complainAboutName(NameCheckResult result, Load candidate) {
+    private void complainAboutName(NameCheckResult result, AnchoredVector candidate) {
         switch (result) {
             case duplicateInThisDiagram:
             case matchesSymbolElsewhere:
                 logInfo("check: forces and moments should not have the same name as any other force or moment: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate", forceOrMoment(candidate), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
                 return;
             case matchesMeasurementSymbol:
                 logInfo("check: force or moment should not share the same name with an unknown measurement ");
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", forceOrMoment(candidate), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
                 return;
             case matchesPointName:
                 logInfo("check: anchors and added force/moments should not share names");
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", forceOrMoment(candidate), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
                 return;
             case shouldMatch2FM:
                 //the student has created a 2FM with non matching forces
@@ -603,45 +605,27 @@ public class FBDChecker {
         }
     }
 
-    /**
-     * Return a negated version of the given load. The negated version is equal to 
-     * the given reaction only in that it exists at the same anchor and has the same vector value.
-     * It does not necessarily have the same value stored for its symbol or known flag.
-     * @param reaction
-     * @return
-     */
-    /*private Load negate(Load reaction) {
-        if (reaction instanceof Force) {
-            return new Force(reaction.getAnchor(), reaction.getVector().negate());
-        } else if (reaction instanceof Moment) {
-            return new Moment(reaction.getAnchor(), reaction.getVector().negate());
-        } else {
-            // ignore this case
-            return null;
-        }
-    }*/
-
     protected enum NameCheckResult {
 
         passed, // passed, no conficts
-        matchesSymbolElsewhere, // same as a symbolic load from another diagram
+        matchesSymbolElsewhere, // same as a symbolic AnchoredVector from another diagram
         matchesPointName, // same as the name for a point
         matchesMeasurementSymbol, // same as a symbol used in an unknown measurement
-        duplicateInThisDiagram, // two loads incorrectly have the same name in this diagram
+        duplicateInThisDiagram, // two AnchoredVectors incorrectly have the same name in this diagram
         shouldMatch2FM // the opposing forces of a 2FM should match
     }
 
     /**
-     * This check makes sure this load has a suitable name. The given candidate
-     * must be a symbolic load.
-     * This check is intended for loads which have *not yet* been added to the symbol manager.
+     * This check makes sure this AnchoredVector has a suitable name. The given candidate
+     * must be a symbolic AnchoredVector.
+     * This check is intended for AnchoredVectors which have *not yet* been added to the symbol manager.
      * This check will go through and make sure the name does not coincide with that of a point or
-     * a different load in this diagram or in other diagrams. A special case must be 
-     * made with Two Force Members, and for these it is necessary to use checkLoadName2FM().
+     * a different AnchoredVector in this diagram or in other diagrams. A special case must be 
+     * made with Two Force Members, and for these it is necessary to use checkAnchoredVectorName2FM().
      * @param candidate
      * @return
      */
-    protected NameCheckResult checkLoadName(Load candidate) {
+    protected NameCheckResult checkLoadName(AnchoredVector candidate) {
         String name = candidate.getSymbolName();
 
         for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
@@ -667,13 +651,13 @@ public class FBDChecker {
             return NameCheckResult.matchesSymbolElsewhere;
         }
 
-        // now look through other loads in this diagram.
-        for (SimulationObject obj : diagram.allObjects()) {
-            if (obj instanceof Load && obj != candidate) {
-                Load load = (Load) obj;
-                if (candidate.getSymbolName().equalsIgnoreCase(load.getSymbolName())) {
-                    return NameCheckResult.duplicateInThisDiagram;
-                }
+        // now look through other AnchoredVectors in this diagram.
+        for (AnchoredVector load : diagram.getCurrentState().getAddedLoads()) {
+            if (load.equals(candidate)) {
+                continue;
+            }
+            if (candidate.getSymbolName().equalsIgnoreCase(load.getSymbolName())) {
+                return NameCheckResult.duplicateInThisDiagram;
             }
         }
 
@@ -681,17 +665,17 @@ public class FBDChecker {
     }
 
     /**
-     * This is an extension of the checkLoadName() method, which applies specifically
-     * to loads which are reactions to Two Force Members. This method assumes that the candidate provided is 
+     * This is an extension of the checkAnchoredVectorName() method, which applies specifically
+     * to AnchoredVectors which are reactions to Two Force Members. This method assumes that the candidate provided is 
      * actually the reaction force to the 2fm.
      * @param candidate
      * @param connector
      * @return
      */
-    protected NameCheckResult checkLoadName2FM(Load candidate, Connector2ForceMember2d connector) {
+    protected NameCheckResult checkAnchoredVectorName2FM(AnchoredVector candidate, Connector2ForceMember2d connector) {
         NameCheckResult result = checkLoadName(candidate);
 
-        //if we passed, which we usually want, this means that the loads' labels
+        //if we passed, which we usually want, this means that the AnchoredVectors' labels
         //do not match, which is bad
         if (result == NameCheckResult.passed) {
             for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
@@ -706,7 +690,7 @@ public class FBDChecker {
 
         // if the result of the standard check is anything but "there is a duplicate in this diagram"
         // then we can return that result. We are only interested in the case where there
-        // might be a second load with the same name, which implies a duplicate.
+        // might be a second AnchoredVector with the same name, which implies a duplicate.
         if (result != NameCheckResult.duplicateInThisDiagram) {
             return result;
         }
@@ -726,24 +710,24 @@ public class FBDChecker {
             return result;
         }
 
-        // get the other load that satisfies the reactions of the otherConnector
-        List<Load> loadsAtOtherReaction = diagram.getLoadsAtPoint(otherConnector.getAnchor());
-        List<Load> otherConnectorReactions = getReactionLoads(connector, otherConnector.getReactions());
-        Load otherReactionTarget = otherConnectorReactions.get(0);
-        Load otherReaction = null;
+        // get the other AnchoredVector that satisfies the reactions of the otherConnector
+        List<AnchoredVector> AnchoredVectorsAtOtherReaction = getLoadsAtPoint(otherConnector.getAnchor());
+        List<AnchoredVector> otherConnectorReactions = getReactionAnchoredVectors(connector, otherConnector.getReactions());
+        AnchoredVector otherReactionTarget = otherConnectorReactions.get(0);
+        AnchoredVector otherReaction = null;
         // iterate through the list and look for the one that should do it.
         // we want to find something that could be a reaction on the other end of the 2fm,
-        // and we want it to match the name of our current load.
-        for (Load otherLoad : loadsAtOtherReaction) {
-            if (otherLoad.getVectorValue().equals(otherReactionTarget.getVectorValue()) ||
-                    otherLoad.getVectorValue().equals(otherReactionTarget.getVectorValue().negate())) {
-                if (candidate.getSymbolName().equalsIgnoreCase(otherLoad.getSymbolName())) {
-                    otherReaction = otherLoad;
+        // and we want it to match the name of our current AnchoredVector.
+        for (AnchoredVector otherAnchoredVector : AnchoredVectorsAtOtherReaction) {
+            if (otherAnchoredVector.getVectorValue().equals(otherReactionTarget.getVectorValue()) ||
+                    otherAnchoredVector.getVectorValue().equals(otherReactionTarget.getVectorValue().negate())) {
+                if (candidate.getSymbolName().equalsIgnoreCase(otherAnchoredVector.getSymbolName())) {
+                    otherReaction = otherAnchoredVector;
                 }
             }
         }
 
-        // okay, we found it. That means that this load should have an appropriate name.
+        // okay, we found it. That means that this AnchoredVector should have an appropriate name.
         // in the case that there is some case that is invalid and escapes the above, it should
         // be caught by other parts of the check (for instance, if the user was especially
         // difficult and put two reactions at one end of a 2fm or something like that)
@@ -754,8 +738,25 @@ public class FBDChecker {
     }
 
     /**
-     * Attempts to find a load from a pool of possibilities which might match the target.
-     * The search will search for loads that are the same type, are at the same point, and
+     * A convenience method to get all of the loads at a given point. This goes through
+     * all of the loads in the current diagram and checks against them.
+     * @param point
+     * @return
+     */
+    protected List<AnchoredVector> getLoadsAtPoint(Point point) {
+        List<AnchoredVector> loads = new ArrayList<AnchoredVector>();
+        //for (SimulationObject obj : allObjects) {
+        for (AnchoredVector load : diagram.getCurrentState().getAddedLoads()) {
+            if (load.getAnchor().equals(point)) {
+                loads.add(load);
+            }
+        }
+        return loads;
+    }
+
+    /**
+     * Attempts to find a AnchoredVector from a pool of possibilities which might match the target.
+     * The search will search for AnchoredVectors that are the same type, are at the same point, and
      * point in the same direction as the target, or the opposite direction, if the 
      * testOpposites flag is checked.
      * @param searchPool 
@@ -763,31 +764,31 @@ public class FBDChecker {
      * @param testOpposites 
      * @return
      */
-    protected List<Load> getCandidates(List<Load> searchPool, Load target, boolean testOpposites) {
-        List<Load> candidates = new ArrayList<Load>();
-        for (Load load : searchPool) {
+    protected List<AnchoredVector> getCandidates(List<AnchoredVector> searchPool, AnchoredVector target, boolean testOpposites) {
+        List<AnchoredVector> candidates = new ArrayList<AnchoredVector>();
+        for (AnchoredVector AnchoredVector : searchPool) {
             // make sure types are the same
-            if (load.getClass() != target.getClass()) {
+            if (AnchoredVector.getClass() != target.getClass()) {
                 continue;
             }
             // make sure the anchor is the same
-            if (!load.getAnchor().equals(target.getAnchor())) {
+            if (!AnchoredVector.getAnchor().equals(target.getAnchor())) {
                 continue;
             }
             // add if direction is the same, or is opposite and the testOpposites flag is set
-            if (load.getVectorValue().equals(target.getVectorValue()) ||
-                    (testOpposites && load.getVectorValue().negate().equals(target.getVectorValue()))) {
-                candidates.add(load);
+            if (AnchoredVector.getVectorValue().equals(target.getVectorValue()) ||
+                    (testOpposites && AnchoredVector.getVectorValue().negate().equals(target.getVectorValue()))) {
+                candidates.add(AnchoredVector);
             }
         }
         return candidates;
     }
 
     /**
-     * This is a result that is returned when a load is checked against some stored version.
-     * This works when checking against a given, a weight, or a stored symbolic load.
+     * This is a result that is returned when a AnchoredVector is checked against some stored version.
+     * This works when checking against a given, a weight, or a stored symbolic AnchoredVector.
      */
-    protected enum LoadCheckResult {
+    protected enum AnchoredVectorCheckResult {
 
         passed, //check passes
         wrongDirection, // occurs when solved value is in wrong direction
@@ -798,28 +799,28 @@ public class FBDChecker {
     }
 
     /**
-     * Like checkLoadAgainstTarget() this method aims to check whether a load matches the 
+     * Like checkAnchoredVectorAgainstTarget() this method aims to check whether a AnchoredVector matches the 
      * target. However, this method checks against a collection of candidates, rather than just one.
      * @param candidates
      * @param target
      * @return
      */
-    protected Pair<Load, LoadCheckResult> checkAllCandidatesAgainstTarget(List<Load> candidates, Load target) {
-        LoadCheckResult result = null;
-        Load lastCandidate = null;
-        for (Load candidate : candidates) {
+    protected Pair<AnchoredVector, AnchoredVectorCheckResult> checkAllCandidatesAgainstTarget(List<AnchoredVector> candidates, AnchoredVector target) {
+        AnchoredVectorCheckResult result = null;
+        AnchoredVector lastCandidate = null;
+        for (AnchoredVector candidate : candidates) {
             lastCandidate = candidate;
-            result = checkLoadAgainstTarget(candidate, target);
-            if (result == LoadCheckResult.passed) {
-                return new Pair<Load, LoadCheckResult>(candidate, result);
+            result = checkAnchoredVectorAgainstTarget(candidate, target);
+            if (result == AnchoredVectorCheckResult.passed) {
+                return new Pair<AnchoredVector, AnchoredVectorCheckResult>(candidate, result);
             }
         }
-        return new Pair<Load, LoadCheckResult>(lastCandidate, result);
+        return new Pair<AnchoredVector, AnchoredVectorCheckResult>(lastCandidate, result);
     }
 
     /**
      * Returns a result indicating whether the candidate sufficiently matches the target provided.
-     * Target can be a stored symbolic load, a given, or a weight. The target could be known, symbolic, numeric,
+     * Target can be a stored symbolic AnchoredVector, a given, or a weight. The target could be known, symbolic, numeric,
      * or what-have-you. The goal of this check is to abstract out some of the detailed checks making sure
      * that candidates are named or valud appropriately and pointing the right direction given
      * other information that might be known about other diagrams.
@@ -827,44 +828,44 @@ public class FBDChecker {
      * @param target
      * @return
      */
-    protected LoadCheckResult checkLoadAgainstTarget(Load candidate, Load target) {
+    protected AnchoredVectorCheckResult checkAnchoredVectorAgainstTarget(AnchoredVector candidate, AnchoredVector target) {
         if (target.isKnown()) {
-            // target is a known load
+            // target is a known AnchoredVector
             // the numeric value must be correct, and the direction must be correct.
             if (!candidate.isKnown()) {
                 // candidate is not known, so complain.
-                return LoadCheckResult.shouldNotBeSymbol;
+                return AnchoredVectorCheckResult.shouldNotBeSymbol;
             }
             if (!candidate.getDiagramValue().equals(target.getDiagramValue())) {
                 // the numeric values are off.
-                return LoadCheckResult.wrongNumericValue;
+                return AnchoredVectorCheckResult.wrongNumericValue;
             }
             if (!candidate.getVectorValue().equals(target.getVectorValue())) {
                 // pointing the wrong way
-                return LoadCheckResult.wrongDirection;
+                return AnchoredVectorCheckResult.wrongDirection;
             }
-            // this is sufficient for the load to be correct
-            return LoadCheckResult.passed;
+            // this is sufficient for the AnchoredVector to be correct
+            return AnchoredVectorCheckResult.passed;
         } else {
             // target is unknown, it must be symbolic
             // the symbol must be correct
             if (candidate.isKnown()) {
                 // candidate is not symbolic, so complain
-                return LoadCheckResult.shouldNotBeNumeric;
+                return AnchoredVectorCheckResult.shouldNotBeNumeric;
             }
             if (!candidate.getSymbolName().equalsIgnoreCase(target.getSymbolName())) {
                 // candidate has the wrong symbol name
-                return LoadCheckResult.wrongSymbol;
+                return AnchoredVectorCheckResult.wrongSymbol;
             }
             // we should be okay now.
-            return LoadCheckResult.passed;
+            return AnchoredVectorCheckResult.passed;
         }
     }
 
     /**
      * This is a result of a check of a connector. This returns *no* information about
-     * whether the loads are appropriately valued or named, it merely returns information regarding whether
-     * the loads provided could work for the connector.
+     * whether the AnchoredVectors are appropriately valued or named, it merely returns information regarding whether
+     * the AnchoredVectors provided could work for the connector.
      */
     protected enum ConnectorCheckResult {
 
@@ -876,35 +877,35 @@ public class FBDChecker {
     }
 
     /**
-     * Checks to see whether candidateLoads, the list of loads provided, is a suitable match for
-     * the reactions of the given connector. This does not check if the loads are named or have
-     * the correct names or symbols. This check assumes that all candidateLoads are on the connector's anchor.
+     * Checks to see whether candidateAnchoredVectors, the list of AnchoredVectors provided, is a suitable match for
+     * the reactions of the given connector. This does not check if the AnchoredVectors are named or have
+     * the correct names or symbols. This check assumes that all candidateAnchoredVectors are on the connector's anchor.
      * The method will return ConnectorCheckResult.somethingExtra if everything is okay except for there being more
-     * loads than expected. Sometimes, this is okay, for instance if there are more than one connector at a point.
+     * AnchoredVectors than expected. Sometimes, this is okay, for instance if there are more than one connector at a point.
      * The check method itself is responsible for identifying these situations and handling them appropriately.
-     * @param cadidateLoads
+     * @param cadidateAnchoredVectors
      * @param connector
      * @param localBody 
      * @return
      */
-    protected ConnectorCheckResult checkConnector(List<Load> candidateLoads, Connector connector, Body localBody) {
+    protected ConnectorCheckResult checkConnector(List<AnchoredVector> candidateAnchoredVectors, Connector connector, Body localBody) {
         List<Vector> reactions;
         if (localBody == null) {
             reactions = connector.getReactions();
         } else {
             reactions = connector.getReactions(localBody);
         }
-        List<Load> reactionLoads = getReactionLoads(connector, reactions);
+        List<AnchoredVector> reactionAnchoredVectors = getReactionAnchoredVectors(connector, reactions);
 
         boolean negatable = connector.isForceDirectionNegatable();
-        for (Load reaction : reactionLoads) {
-            // check each reaction load to make sure it is present and proper
-            List<Load> candidates = getCandidates(candidateLoads, reaction, negatable);
+        for (AnchoredVector reaction : reactionAnchoredVectors) {
+            // check each reaction AnchoredVector to make sure it is present and proper
+            List<AnchoredVector> candidates = getCandidates(candidateAnchoredVectors, reaction, negatable);
             if (candidates.isEmpty()) {
                 // okay, this one is missing, which is bad.
-                if (!negatable && !getCandidates(candidateLoads, reaction, true).isEmpty()) {
+                if (!negatable && !getCandidates(candidateAnchoredVectors, reaction, true).isEmpty()) {
                     // candidates allowing negation is not empty, meaning that user is adding 
-                    // a load in the wrong direction
+                    // a AnchoredVector in the wrong direction
                     return ConnectorCheckResult.inappropriateDirection;
                 }
                 return ConnectorCheckResult.missingSomething;
@@ -912,8 +913,8 @@ public class FBDChecker {
         }
 
         // okay, all reactions are accounted for.
-        // if our list of candidateLoads is larger, then there may be a problem
-        if (candidateLoads.size() > reactionLoads.size()) {
+        // if our list of candidateAnchoredVectors is larger, then there may be a problem
+        if (candidateAnchoredVectors.size() > reactionAnchoredVectors.size()) {
             return ConnectorCheckResult.somethingExtra;
         }
         // otherwise, we're okay.
@@ -921,37 +922,22 @@ public class FBDChecker {
     }
 
     /**
-     * Returns the reactions present from a connector as Loads instead of Vectors.
-     * This returns a fresh new list, so it does no harm to remove loads from it.
+     * Returns the reactions present from a connector as AnchoredVectors instead of Vectors.
+     * This returns a fresh new list, so it does no harm to remove AnchoredVectors from it.
      * @param joint
      * @param reactions
      * @return
      */
-    private List<Load> getReactionLoads(Connector joint, List<Vector> reactions) {
-        List<Load> loads = new ArrayList<Load>();
+    private List<AnchoredVector> getReactionAnchoredVectors(Connector connector, List<Vector> reactions) {
+        List<AnchoredVector> loads = new ArrayList<AnchoredVector>();
         for (Vector vector : reactions) {
-            if (vector.getUnit() == Unit.force) {
-                loads.add(new Force(joint.getAnchor(), vector));
+            loads.add(new AnchoredVector(connector.getAnchor(), vector));
+            /*if (vector.getUnit() == Unit.force) {
+                AnchoredVectors.add(new Force(joint.getAnchor(), vector));
             } else if (vector.getUnit() == Unit.moment) {
-                loads.add(new Moment(joint.getAnchor(), vector));
-            }
+                AnchoredVectors.add(new Moment(joint.getAnchor(), vector));
+            }*/
         }
         return loads;
-    }
-
-    /**
-     * Returns a string denoting whether the given load is a force or moment.
-     * Simply returns "force" if the load is a Force, and "moment" if the load is a Moment.
-     * @param load
-     * @return
-     */
-    private String forceOrMoment(Load load) {
-        if (load instanceof Force) {
-            return "force";
-        } else if (load instanceof Moment) {
-            return "moment";
-        } else {
-            return "unknown?";
-        }
     }
 }

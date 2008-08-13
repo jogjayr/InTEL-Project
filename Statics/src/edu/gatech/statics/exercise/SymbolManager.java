@@ -4,9 +4,9 @@
  */
 package edu.gatech.statics.exercise;
 
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
-import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ import java.util.List;
 public class SymbolManager {
 
     private List<String> symbols = new ArrayList<String>();
-    private List<Load> symbolicLoads = new ArrayList<Load>();
+    private List<AnchoredVector> symbolicLoads = new ArrayList<AnchoredVector>();
 
-    public List<Load> getLoads() {
+    public List<AnchoredVector> getLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
 
@@ -33,7 +33,7 @@ public class SymbolManager {
     /**
      * Add a symbol to the symbol manager for the quantified object. 
      * Loads are recognized and kept track of for use later.
-     * Loads are also *cloned* so that solving a load in an equation does not have
+     * Loads are also *cloned* so that solving a AnchoredVector in an equation does not have
      * unexpected consequences.
      * @param quantified
      */
@@ -41,8 +41,9 @@ public class SymbolManager {
         if (quantified.isSymbol()) {
             if (!symbols.contains(quantified.getSymbolName())) {
                 symbols.add(quantified.getSymbolName());
-                if (quantified instanceof Load) {
-                    symbolicLoads.add(((Load) quantified).clone());
+                if (quantified instanceof AnchoredVector) {
+                    //symbolicLoads.add(((AnchoredVector) quantified).clone());
+                    symbolicLoads.add(new AnchoredVector((AnchoredVector) quantified));
                 }
             }
         } else {
@@ -52,15 +53,15 @@ public class SymbolManager {
     }
 
     /**
-     * This attempts to find a stored symbolic load for the provided load.
-     * The direction of the symbolic load should not be taken as meaningful, as its opposite may
+     * This attempts to find a stored symbolic AnchoredVector for the provided AnchoredVector.
+     * The direction of the symbolic AnchoredVector should not be taken as meaningful, as its opposite may
      * be the one of interest depending on the circumstance.
-     * This should return a single load if presented with either end of a two force member.
-     * @param load
+     * This should return a single AnchoredVector if presented with either end of a two force member.
+     * @param AnchoredVector
      * @return
      */
-    public Load getLoad(Load load) {
-        for (Load toCheck : symbolicLoads) {
+    public AnchoredVector getLoad(AnchoredVector load) {
+        for (AnchoredVector toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                     (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
@@ -70,9 +71,9 @@ public class SymbolManager {
 
         // okay, here we try to check for the 2fm case
         // make a list of connectors present at that point
-        // the reaction was not found at this load, so we want to try to find the opposite one.
-        //List<Connector> connectors = Exercise.getExercise().getSelectDiagram().getConnectorsAtPoint(load.getAnchor());
-        //List<Connector> connectors = Exercise.getExercise().getSchematic().getConnectorsAtPoint(load.getAnchor());
+        // the reaction was not found at this AnchoredVector, so we want to try to find the opposite one.
+        //List<Connector> connectors = Exercise.getExercise().getSelectDiagram().getConnectorsAtPoint(AnchoredVector.getAnchor());
+        //List<Connector> connectors = Exercise.getExercise().getSchematic().getConnectorsAtPoint(AnchoredVector.getAnchor());
         //for (Connector connector : connectors) {
         for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
             if (obj instanceof Connector2ForceMember2d) {
@@ -88,7 +89,7 @@ public class SymbolManager {
                     }
 
                     // perform the main check again
-                    for (Load toCheck : symbolicLoads) {
+                    for (AnchoredVector toCheck : symbolicLoads) {
                         if (opposite.getAnchor() == toCheck.getAnchor() &&
                                 (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                                 (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
@@ -102,44 +103,44 @@ public class SymbolManager {
         return null;
     }
 
-    /*public Load getLoad2FM(TwoForceMember tfm, Load load) {
-    for (Load toCheck : symbolicLoads) {
-    if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
-    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+    /*public AnchoredVector getLoad2FM(TwoForceMember tfm, AnchoredVector AnchoredVector) {
+    for (AnchoredVector toCheck : symbolicLoads) {
+    if (tfm.containsPoints(toCheck.getAnchor(), AnchoredVector.getAnchor()) &&
+    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue()) ||
+    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
     
     return toCheck;
     }
     }
     return null;
     }*/
-    public List<Load> allLoads() {
+    public List<AnchoredVector> allLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
 
     /**
-     * Returns the symbolic quantity for the specified load. This method is used for verifying that
-     * the load given is the same as one which has been stored in the symbol manager. 
+     * Returns the symbolic quantity for the specified AnchoredVector. This method is used for verifying that
+     * the AnchoredVector given is the same as one which has been stored in the symbol manager. 
      * If it does match, then the symbol name is returned, otherwise the method returns null.
-     * @param load
+     * @param AnchoredVector
      * @return
      */
-    public Quantity getSymbol(Load load) {
-        for (Load toCheck : symbolicLoads) {
-            if (load.getAnchor() == toCheck.getAnchor() &&
-                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+    public Quantity getSymbol(AnchoredVector AnchoredVector) {
+        for (AnchoredVector toCheck : symbolicLoads) {
+            if (AnchoredVector.getAnchor() == toCheck.getAnchor() &&
+                    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
 
                 return toCheck.getVector().getQuantity();
             }
         }
         return null;
     }
-    /*public Quantity getSymbol2FM(TwoForceMember tfm, Load load) {
-    for (Load toCheck : symbolicLoads) {
-    if (tfm.containsPoints(toCheck.getAnchor(), load.getAnchor()) &&
-    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+    /*public Quantity getSymbol2FM(TwoForceMember tfm, AnchoredVector AnchoredVector) {
+    for (AnchoredVector toCheck : symbolicLoads) {
+    if (tfm.containsPoints(toCheck.getAnchor(), AnchoredVector.getAnchor()) &&
+    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue()) ||
+    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
     
     return toCheck.getVector().getQuantity();
     }

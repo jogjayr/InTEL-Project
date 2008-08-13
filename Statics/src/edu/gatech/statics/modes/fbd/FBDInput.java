@@ -13,6 +13,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.actions.RemoveLoad;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
@@ -48,7 +49,9 @@ public class FBDInput extends InputHandler {
             return;
         }
         if (diagram.getSelection() != null) {
-            diagram.removeUserObject(diagram.getSelection());
+            Load selection = diagram.getSelection();
+            RemoveLoad removeAction = new RemoveLoad(selection.getAnchoredVector());
+            diagram.performAction(removeAction);
             diagram.onClick(null);
         }
     }

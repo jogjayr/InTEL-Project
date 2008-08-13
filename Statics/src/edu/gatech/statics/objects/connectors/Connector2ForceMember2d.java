@@ -124,6 +124,6 @@ public class Connector2ForceMember2d extends Connector {
 
     @Override
     public String connectorName() {
-        return "pin";
+        return "connector";
     }
 }

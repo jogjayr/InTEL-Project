@@ -12,7 +12,6 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import java.math.BigDecimal;
@@ -22,7 +21,7 @@ import java.math.BigDecimal;
  * well as the representation and manipulation handles for the quantity.
  * @author Calvin Ashmore
  */
-public class VectorObject extends SimulationObject implements Quantified {
+public class VectorObject extends SimulationObject {//implements Quantified {
 
     private AnchoredVector myAnchoredVector;
     private String name;
@@ -172,16 +171,16 @@ public class VectorObject extends SimulationObject implements Quantified {
         return myAnchoredVector.getUnit();
     }
 
-    public double doubleValue() {
+    public boolean isSymbol() {
+        return myAnchoredVector.isSymbol();
+    }
+
+    /*public double doubleValue() {
         return myAnchoredVector.doubleValue();
     }
 
     public boolean isKnown() {
         return myAnchoredVector.isKnown();
-    }
-
-    public boolean isSymbol() {
-        return myAnchoredVector.isSymbol();
     }
 
     public void setKnown(boolean known) {
@@ -199,7 +198,7 @@ public class VectorObject extends SimulationObject implements Quantified {
 
     public BigDecimal getDiagramValue() {
         return myAnchoredVector.getDiagramValue();
-    }
+    }*/
 
     /**
      * Returns a String representation of the vector without a unit.

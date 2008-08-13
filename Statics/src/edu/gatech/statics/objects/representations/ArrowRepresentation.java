@@ -56,7 +56,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
 
         super.update();
         arrow.setLocalTranslation(0, 0, axisOffset);
-        setMagnitude((float) getTarget().doubleValue());
+        setMagnitude((float) getTarget().getAnchoredVector().doubleValue());
     }
 
     protected void setMagnitude(float magnitude) {
