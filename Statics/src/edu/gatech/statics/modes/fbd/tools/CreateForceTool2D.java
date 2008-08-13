@@ -11,8 +11,6 @@ package edu.gatech.statics.modes.fbd.tools;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.objects.manipulators.*;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -20,6 +18,8 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorListener;
+import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
+import edu.gatech.statics.objects.manipulators.OrientationListener;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +31,8 @@ import java.util.List;
 public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener*/ {
 
     protected Force force;
-    protected Orientation2DSnapManipulator orientationManipulator;
+    //protected Orientation2DSnapManipulator orientationManipulator;
+    protected OrientationHandler orientationHandler;
 
     /** Creates a new instance of CreateForceTool */
     public CreateForceTool2D(FreeBodyDiagram diagram) {
@@ -77,19 +78,13 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
     protected void enableOrientationManipulator() {
 
-        final List<Vector3f> snapDirections = getDiagram().getSensibleDirections(getSnapPoint());
-        orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
-        orientationManipulator.addListener(new MyOrientationListener());
-        addToAttachedHandlers(orientationManipulator);
+        orientationHandler = new OrientationHandler(getDiagram(), this, force);
+        //final List<Vector3f> snapDirections = getDiagram().getSensibleDirections(getSnapPoint());
+        //orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
+        //orientationManipulator.addListener(new MyOrientationListener());
+        //addToAttachedHandlers(orientationManipulator);
 
         StaticsApplication.getApp().setAdviceKey("fbd_tools_createForce2");
-    }
-
-    private class MyOrientationListener implements OrientationListener {
-
-        public void onRotate(Matrix3f rotation) {
-            force.setRotation(rotation);
-        }
     }
 
     // NOTE: 
@@ -99,11 +94,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     public void update(float time) {
         super.update(time);
 
-        if (orientationManipulator != null) {
-
-            if (orientationManipulator.mouseReleased()) {
-                releaseOrientationManipulator();
-            }
+        if (orientationHandler != null && orientationHandler.isEnabled()) {
+            // attempt to release the handler
+            orientationHandler.release();
         }
     }
 
@@ -114,27 +107,6 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
             if (releaseDragManipulator()) {
                 enableOrientationManipulator();
             }
-        }
-    }
-
-    public void releaseOrientationManipulator() {
-        if (orientationManipulator.getCurrentSnap() != null) {
-
-            Vector3f currentSnap = orientationManipulator.getCurrentSnap();
-            Vector3bd vbd = new Vector3bd(
-                    BigDecimal.valueOf(currentSnap.x),
-                    BigDecimal.valueOf(currentSnap.y),
-                    BigDecimal.valueOf(currentSnap.z));
-
-            force.setVectorValue(vbd);
-
-            orientationManipulator.setEnabled(false);
-            removeFromAttachedHandlers(orientationManipulator);
-            orientationManipulator = null;
-
-            finish();
-
-            showLabelSelector();
         }
     }
 }
