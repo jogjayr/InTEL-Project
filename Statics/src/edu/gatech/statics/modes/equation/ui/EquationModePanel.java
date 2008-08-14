@@ -14,6 +14,7 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
@@ -75,6 +76,15 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         //activeEquation.highlightVector(load == null ? null : load.getVector());
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
+        }
+    }
+
+    /**
+     * Called when the diagram state changes. This causes the EquationBars to refresh
+     */
+    public void stateChanged() {
+        for (EquationUIData data : uiMap.values()) {
+            data.equationBar.stateChanged();
         }
     }
 
@@ -259,7 +269,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     private void performSolve() {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         boolean firstTime = !diagram.getCurrentState().isLocked();
-                //!diagram.getWorksheet().isSolved();
+        //!diagram.getWorksheet().isSolved();
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 

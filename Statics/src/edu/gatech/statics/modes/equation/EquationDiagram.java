@@ -42,6 +42,7 @@ import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 //import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -124,6 +125,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void stateChanged() {
+        // tells the UI to update its state
+        EquationModePanel modePanel = (EquationModePanel) InterfaceRoot.getInstance().getModePanel(getType().getName());
+        modePanel.stateChanged();
     }
 
     /**

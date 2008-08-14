@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.equation.actions;
 
+import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
@@ -12,7 +13,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
  * Removes a term from the worksheet
  * @author Calvin Ashmore
  */
-public class RemoveTerm {
+public class RemoveTerm implements DiagramAction<EquationState> {
 
     final private String equationName;
     final private AnchoredVector load;

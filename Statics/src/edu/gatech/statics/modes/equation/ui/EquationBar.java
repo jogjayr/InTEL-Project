@@ -27,13 +27,17 @@ import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.actions.AddTerm;
 import edu.gatech.statics.modes.equation.actions.ChangeTerm;
+import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,9 +78,9 @@ public class EquationBar extends BContainer {
             add(startContainer);
 
             // go through the terms and add boxes for them.
-            for (Map.Entry<AnchoredVector, String> entry : math.getState().getTerms().entrySet()) {
-                addBox(entry.getKey(), entry.getValue());
-            }
+            //for (Map.Entry<AnchoredVector, String> entry : math.getState().getTerms().entrySet()) {
+            //    addBox(entry.getKey(), entry.getValue());
+            //}
 
             // add = 0 icon
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
@@ -129,13 +133,13 @@ public class EquationBar extends BContainer {
 
     private class TermBox extends BContainer {
 
-        AnchoredVector source;
+        private AnchoredVector source;
 
         AnchoredVector getSource() {
             return source;
         }
-        BLabel vectorLabel;
-        BTextField coefficient;
+        private BLabel vectorLabel;
+        private BTextField coefficient;
 
         void setHighlight(boolean highlight) {
             if (highlight) {
@@ -146,6 +150,10 @@ public class EquationBar extends BContainer {
                 setBorder(new LineBorder(regularBorderColor));
             }
             invalidate();
+        }
+
+        void setCoefficient(String coefficient) {
+            this.coefficient.setText(coefficient);
         }
 
         TermBox(AnchoredVector source) {
@@ -191,6 +199,7 @@ public class EquationBar extends BContainer {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
+
                 boolean destroyOK = false;
 
                 public void keyReleased(KeyEvent event) {
@@ -200,7 +209,7 @@ public class EquationBar extends BContainer {
                     {
                         if (destroyOK) {
                             performRemoveTerm(source);
-                            removeBox(TermBox.this);
+                        //removeBox(TermBox.this);
                         } else {
                             destroyOK = true;
                         }
@@ -256,6 +265,8 @@ public class EquationBar extends BContainer {
      * @param source
      */
     protected void performRemoveTerm(AnchoredVector source) {
+        RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
+        getMath().getDiagram().performAction(removeTermAction);
     }
 
     /**
@@ -264,14 +275,42 @@ public class EquationBar extends BContainer {
      * @param source
      */
     protected void performAddTerm(AnchoredVector source) {
+        AddTerm addTermAction = new AddTerm(getMath().getName(), source);
+        getMath().getDiagram().performAction(addTermAction);
     }
 
     /**
      * This is called when the bar is loaded or the state has changed.
-     * Note that this will generally be called after the above methods are called.
-     * 
+     * Note that this will generally be called after the above methods
+     * (performAddTerm and performRemoveTerm) are called.
      */
     protected void stateChanged() {
+
+        // go through terms that are present in the UI and mark the ones to remove
+        List<TermBox> toRemove = new ArrayList<TermBox>();
+
+        for (Map.Entry<AnchoredVector, TermBox> entry : terms.entrySet()) {
+            if (!getMath().getState().getTerms().containsKey(entry.getKey())) {
+                toRemove.add(entry.getValue());
+            }
+        }
+
+        // remove them
+        for (TermBox box : toRemove) {
+            removeBox(box);
+        }
+
+        // go through terms present in the state to add
+        // make sure that the values are correct, as well.
+        for (Map.Entry<AnchoredVector, String> entry : getMath().getState().getTerms().entrySet()) {
+            TermBox box = terms.get(entry.getKey());
+            if (box == null) {
+                // we do not have an existing term box
+                addBox(entry.getKey(), entry.getValue());
+            } else {
+                box.setCoefficient(entry.getValue());
+            }
+        }
     }
 
     public void setMomentCenter(Point point) {
@@ -361,17 +400,6 @@ public class EquationBar extends BContainer {
         invalidate();
         parent.refreshRows();
     }
-
-    /*public void addTerm(VectorObject source) {
-    if (locked) {
-    return;
-    }
-    
-    if (!terms.containsKey(source)) {
-    Term term = math.addTerm(source);
-    addBox(term);
-    }
-    }*/
     private AnchoredVector currentHighlight;
 
     void highlightVector(AnchoredVector obj) {
