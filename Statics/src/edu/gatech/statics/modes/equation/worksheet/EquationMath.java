@@ -45,7 +45,19 @@ abstract public class EquationMath {
         return name;
     }
 
-    protected EquationMathState getState() {
+    /**
+     * Delegates to the state. This method is equivalent to getState().isLocked()
+     * @return
+     */
+    public boolean isLocked() {
+        return getState().isLocked();
+    }
+
+    /**
+     * Returns the state that corresponds to this instance of EquationMath.
+     * @return
+     */
+    public EquationMathState getState() {
         return getDiagram().getCurrentState().getEquationStates().get(getName());
     }
 

@@ -19,14 +19,13 @@ import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
@@ -42,7 +41,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class EquationModePanel extends ApplicationModePanel {
+public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public static final String panelName = "equation";
     private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
@@ -61,10 +60,11 @@ public class EquationModePanel extends ApplicationModePanel {
         if (activeEquation == null || load == null) {
             return;
         }
-        activeEquation.addTerm(load);
+        activeEquation.performAddTerm(load.getAnchoredVector());
+        //activeEquation.addTerm(load);
         //activeEquation.highlightVector(load.getVector());
         for (EquationUIData data : uiMap.values()) {
-            data.equationBar.highlightVector(load == null ? null : load);
+            data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
         }
     }
 
@@ -74,7 +74,7 @@ public class EquationModePanel extends ApplicationModePanel {
         //}
         //activeEquation.highlightVector(load == null ? null : load.getVector());
         for (EquationUIData data : uiMap.values()) {
-            data.equationBar.highlightVector(load == null ? null : load);
+            data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
         }
     }
 
@@ -83,15 +83,14 @@ public class EquationModePanel extends ApplicationModePanel {
      * Right now it is called only by EquationDiagram when the diagram's moment point is set.
      * @param momentPoint
      */
-    public void setMomentPoint(Point momentPoint) {
-        for (EquationUIData data : uiMap.values()) {
-            if (data.equationBar.getMath() instanceof EquationMathMoments) {
-                ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint);
-                data.equationBar.setMomentCenter(momentPoint);
-            }
-        }
+    /*public void setMomentPoint(Point momentPoint) {
+    for (EquationUIData data : uiMap.values()) {
+    if (data.equationBar.getMath() instanceof EquationMathMoments) {
+    ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint);
+    data.equationBar.setMomentCenter(momentPoint);
     }
-
+    }
+    }*/
     public EquationBar getActiveEquation() {
         return activeEquation;
     }
@@ -104,21 +103,6 @@ public class EquationModePanel extends ApplicationModePanel {
         this.activeEquation = bar;
         activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
         activeEquation.setBorder(new LineBorder(activeBorderColor));
-
-    // show the select moment warning popup
-        /*if (bar.getMath() instanceof EquationMathMoments) {
-    EquationDiagram diagram = (EquationDiagram) getDiagram();
-    if (diagram.getMomentPoint() == null) {
-    ChooseMomentPopup popup = new ChooseMomentPopup(diagram);
-    popup.popup(0, 0, true);
-    popup.center();
-    }
-    }*/
-    }
-
-    @Override
-    public String getPanelName() {
-        return panelName;
     }
 
     public EquationModePanel() {
@@ -274,7 +258,8 @@ public class EquationModePanel extends ApplicationModePanel {
 
     private void performSolve() {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
-        boolean firstTime = !diagram.getWorksheet().isSolved();
+        boolean firstTime = !diagram.getCurrentState().isLocked();
+                //!diagram.getWorksheet().isSolved();
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 
@@ -337,17 +322,22 @@ public class EquationModePanel extends ApplicationModePanel {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
 
-        for (EquationMath math : diagram.getWorksheet().getEquations()) {
-            addEquationRow(math);
-        }
-
-        if (diagram.getWorksheet().isSolved()) {
-            performSolve();
-        }
+//        for (EquationMath math : diagram.getWorksheet().getEquations()) {
+//            addEquationRow(math);
+//        }
+//
+//        if (diagram.getWorksheet().isSolved()) {
+//            performSolve();
+//        }
 
         //Exercise.getExercise().enableTabs(diagram.getBodySubset());
 
         refreshRows();
         invalidate();
+    }
+
+    @Override
+    public DiagramType getDiagramType() {
+        return EquationMode.instance.getDiagramType();
     }
 }

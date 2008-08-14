@@ -9,7 +9,6 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.equation.ui.EquationBar;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet;
 import com.jme.math.Vector2f;
@@ -56,23 +55,36 @@ import java.util.Map;
 public class EquationDiagram extends SubDiagram<EquationState> {
 
     private Worksheet worksheet;
+    private FreeBodyDiagram fbd;
+
+    public Worksheet getWorksheet() {
+        return worksheet;
+    }
 
     /**
      * Sets the point about which the moment will be calculated.
      * This also notifies the panel to update its value for the moment point.
      * @param momentPoint
      */
-    public void setMomentPoint(Point momentPoint) {        //this.momentPoint = momentPoint;
-        //EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        //eqPanel.setMomentPoint(momentPoint);
-    }
-
+    //public void setMomentPoint(Point momentPoint) {        //this.momentPoint = momentPoint;
+    //EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+    //eqPanel.setMomentPoint(momentPoint);
+    //}
     /**
      * Returns the point about which the moment is being calculated.
      * @return
      */
     public Point getMomentPoint() {
         return getCurrentState().getMomentPoint();
+    }
+
+    /**
+     * This method attempts to make sure that the underlying state is valid
+     * with respect to the loads from the FreeBodyDiagram that this is based on.
+     * This method will be caused when the diagram is loaded, but is intended to handle
+     * the case when the underlying diagram might have changed.
+     */
+    protected void updateEquations() {
     }
 
     //public EquationMath getChecker() {
@@ -83,23 +95,20 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     // then it will no longer be *equal* to the value stored as a key
     // in vectorMap. So, we need to use another approach to pull out the vector.
     // This is why we do not use a hashmap
-    public Load getLoad(VectorObject vector) {
-        //return vectorMap.get(vector);
+    public Load getLoad(AnchoredVector vector) {
         if (vector == null) {
             return null;
         }
-        for (SimulationObject obj : allObjects()) {
-            if (obj instanceof Load) {
-                Load load = (Load) obj;
-                if (vector.equals(load)) {
-                    return load;
-                }
-                if (vector.isSymbol() && load.isSymbol() &&
-                        vector.getVector().equalsSymbolic(load.getVector()) &&
-                        vector.getSymbolName().equals(load.getSymbolName())) {
-                    return load;
-                //vectorMap.put(load.getVector(), load);
-                }
+        for (Load load : fbd.getUserObjects()) {
+
+            if (vector.equals(load.getAnchoredVector())) {
+                return load;
+            }
+            if (vector.getAnchor() == load.getAnchor() &&
+                    vector.isSymbol() && load.isSymbol() &&
+                    vector.getVector().equalsSymbolic(load.getVector()) &&
+                    vector.getSymbolName().equals(load.getSymbolName())) {
+                return load;
             }
         }
         return null;
@@ -109,31 +118,26 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         if (symbolName == null) {
             return null;
         }
-        for (SimulationObject obj : allObjects()) {
-            if (obj instanceof Load) {
-                Load load = (Load) obj;
-                if (load.getSymbolName() != null && load.getSymbolName().equals(symbolName)) {
-                    return load;
-                }
+        for (AnchoredVector vector : getDiagramLoads()) {
+            if (symbolName.equals(vector.getSymbolName())) {
+                return getLoad(vector);
             }
         }
         return null;
     }
 
-    
     /**
      * This method retrieves the diagram loads from the underlying FreeBodyDiagram
      * @return
      */
     public List<AnchoredVector> getDiagramLoads() {
-        FreeBodyDiagram fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
         return fbd.getCurrentState().getAddedLoads();
     }
-    
+
     @Override
     protected List<SimulationObject> getBaseObjects() {
         //FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
-        Diagram fbd = Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
+        //Diagram fbd = Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
         return fbd.allObjects();
     }
 
@@ -141,6 +145,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public EquationDiagram(BodySubset bodies) {
         super(bodies);
 
+        this.fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
         // FIXME: This diagram automatically loads a 2D worksheet
         worksheet = new Worksheet2D(this);
     }
@@ -168,17 +173,17 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     // v is a symbolic force, but is not yet solved.
                     float value = values.get(v.getQuantity());
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    vObj.setDiagramValue(new BigDecimal(value));
-                    vObj.setKnown(true);
+                    vObj.getAnchoredVector().setDiagramValue(new BigDecimal(value));
+                    vObj.getAnchoredVector().setKnown(true);
 
                     // attempt to make sure the vector value is updated in the symbol manager
-                    Load symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj);
+                    AnchoredVector symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj.getAnchoredVector());
 
                     /*if (symbolManagerLoad == null) {
                     symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad2FM(vObj.getAnchor().getMember(), vObj);
                     }*/
 
-                    if (symbolManagerLoad != vObj) {
+                    if (symbolManagerLoad != vObj.getAnchoredVector()) {
                         symbolManagerLoad.setDiagramValue(new BigDecimal(value));
                         symbolManagerLoad.setKnown(true);
                     }
@@ -229,6 +234,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 for (Vector reaction : connector.getReactions()) {
                     for (Quantity q : values.keySet()) {
                         Load load = getLoad(q.getSymbolName());
+                        //AnchoredVector load = Exercise.getExercise().getSymbolManager().getLoad
                         if (load != null && load.getAnchor() == point) {
                             // now test if the direction is okay
                             if (load.getVectorValue().equals(reaction.getVectorValue()) ||
@@ -294,13 +300,15 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public void onHover(SimulationObject obj) {
         super.onHover(obj);
 
+        Load load = (Load) obj;
+
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        eqPanel.onHover((Load) obj);
+        eqPanel.onHover(load);
 
         if (obj == null) {
             highlightVector(null);
         } else {
-            highlightVector(((Load) obj));
+            highlightVector(load.getAnchoredVector());
         }
     }
 
@@ -336,14 +344,14 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             CurveUtil.renderCurve(r, ColorRGBA.blue, curvePoints);
         }
 
-        if (momentPoint != null) {
-            CurveUtil.renderCircle(r, ColorRGBA.blue, momentPoint.getTranslation(),
+        if (getCurrentState().getMomentPoint() != null) {
+            CurveUtil.renderCircle(r, ColorRGBA.blue, getCurrentState().getMomentPoint().getTranslation(),
                     2, r.getCamera().getDirection());
         }
     }
     private SimulationObject currentHover;
 
-    public void highlightVector(final VectorObject v) {
+    public void highlightVector(final AnchoredVector v) {
 
         // handle visual highlighting
         if (currentHover != null) {
@@ -367,9 +375,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         EquationModePanel eqPanel = (EquationModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
         EquationBar activeEquation = eqPanel.getActiveEquation();
         if (activeEquation.getMath() instanceof EquationMathMoments) {
-            if (activeEquation.getMath().getTerm(v) != null || v == null) {
-                //showMomentArm(load);
-            }
+            //if (activeEquation.getMath().getTerm(v) != null || v == null) {
+            //showMomentArm(load);
+            //}
         }
     //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
     }
@@ -388,7 +396,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         if (momentArm != null) {
-            removeUserObject(momentArm);
+            //removeUserObject(momentArm);
             momentArm = null;
             momentArmTarget = null;
         }
@@ -398,7 +406,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         //if(!((EquationMathMoments) sumBar.getMath()).getObservationPointSet())
-        if (momentPoint == null) {
+        if (getCurrentState().getMomentPoint() == null) {
             return;
         }
 
@@ -409,8 +417,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // have a direction vector pointing from the observation point to the target point
         //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
         //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
-        Vector3bd armDirection = targetPoint.getPosition().subtract(this.momentPoint.getPosition());
-        momentArm = new VectorObject(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
+        Vector3bd armDirection = targetPoint.getPosition().subtract(getCurrentState().getMomentPoint().getPosition());
+        AnchoredVector momentArmVector = new AnchoredVector(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
+        momentArm = new VectorObject(momentArmVector);
         momentArmTarget = target;
 
         ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);
@@ -419,7 +428,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         momentArm.addRepresentation(rep);
         momentArm.setSelectable(false);
 
-        addUserObject(momentArm);
+    //addUserObject(momentArm);
     }
     private boolean showingCurve = false;
     private Vector3f curvePoints[] = new Vector3f[3];
@@ -446,6 +455,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected EquationState createInitialState() {
+        EquationState.Builder builder = new EquationState.Builder(worksheet.getEquationNames());
+        return builder.build();
     }
 
     @Override

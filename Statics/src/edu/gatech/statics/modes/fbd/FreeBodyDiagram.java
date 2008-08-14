@@ -76,7 +76,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * @return
      */
     @Override
-    public List<? extends SimulationObject> getUserObjects() {
+    public List<Load> getUserObjects() {
         return loadObjects;
     }
 

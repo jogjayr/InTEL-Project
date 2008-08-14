@@ -11,6 +11,7 @@ package edu.gatech.statics.modes.equation.ui;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.actions.SetMomentPoint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.util.SelectionFilter;
@@ -22,25 +23,23 @@ import java.util.logging.Logger;
  */
 public class PointSelector extends Tool {
 
-    private EquationDiagram world;
+    private EquationDiagram diagram;
 
     /** Creates a new instance of PointSelector */
-    public PointSelector(EquationDiagram world) {
-        this.world = world;
+    public PointSelector(EquationDiagram diagram) {
+        this.diagram = diagram;
     }
-
     private static final SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
             return obj instanceof Point;
         }
     };
-    
+
     @Override
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
-    
 
     @Override
     protected void onActivate() {
@@ -59,8 +58,11 @@ public class PointSelector extends Tool {
         if (obj != null) {
 
             // store the point, finish.
-            world.setMomentPoint((Point) obj);
+            //world.setMomentPoint((Point) obj);
             //getWorld().clearSelection();
+            SetMomentPoint setMomentPointAction = new SetMomentPoint((Point) obj);
+            diagram.performAction(setMomentPointAction);
+
             finish();
         }
     }

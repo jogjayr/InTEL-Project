@@ -47,6 +47,10 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         public Map<String, EquationMathState> getEquationStates() {
             return equationStates;
         }
+        
+        public void putEquationState(EquationMathState mathState) {
+            equationStates.put(mathState.getName(), mathState);
+        }
 
         public void setEquationStates(Map<String, EquationMathState> equationStates) {
             this.equationStates.clear();

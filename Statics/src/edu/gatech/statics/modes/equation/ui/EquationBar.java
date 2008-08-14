@@ -25,11 +25,11 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
-import edu.gatech.statics.modes.equation.worksheet.Term;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class EquationBar extends BContainer {
 
     private EquationModePanel parent;
     private EquationMath math;
-    private Map<VectorObject, TermBox> terms = new HashMap<VectorObject, EquationBar.TermBox>();
+    private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, EquationBar.TermBox>();
     //private BLabel sumOperand;
     private BButton momentButton; // present only for moment math, pressing this sets the moment point
     private boolean locked = false;
@@ -59,7 +59,7 @@ public class EquationBar extends BContainer {
     public boolean isLocked() {
         return locked;
     }
-    
+
     public EquationBar(EquationMath math, EquationModePanel parent) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         this.math = math;
@@ -73,8 +73,9 @@ public class EquationBar extends BContainer {
             BContainer startContainer = makeStartContainer();
             add(startContainer);
 
-            for (Term term : math.allTerms()) {
-                addBox(term);
+            // go through the terms and add boxes for them.
+            for (Map.Entry<AnchoredVector, String> entry : math.getState().getTerms().entrySet()) {
+                addBox(entry.getKey(), entry.getValue());
             }
 
             // add = 0 icon
@@ -102,7 +103,7 @@ public class EquationBar extends BContainer {
         if (math instanceof EquationMathMoments) {
             // we do special handling for moment math
             startContainer.add(new BLabel("M["));
-            
+
             Point momentPoint = math.getDiagram().getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
 
@@ -113,7 +114,7 @@ public class EquationBar extends BContainer {
                     selector.activate();
                 }
             }, "momentpoint");
-            
+
             startContainer.add(momentButton);
             startContainer.add(new BLabel("]"));
         } else {
@@ -128,9 +129,9 @@ public class EquationBar extends BContainer {
 
     private class TermBox extends BContainer {
 
-        VectorObject source;
+        AnchoredVector source;
 
-        VectorObject getSource() {
+        AnchoredVector getSource() {
             return source;
         }
         BLabel vectorLabel;
@@ -147,11 +148,11 @@ public class EquationBar extends BContainer {
             invalidate();
         }
 
-        TermBox(VectorObject source) {
+        TermBox(AnchoredVector source) {
             this(source, "");
         }
 
-        TermBox(final VectorObject source, String coefficientText) {
+        TermBox(final AnchoredVector source, String coefficientText) {
             super(new BorderLayout());
             this.source = source;
 
@@ -160,7 +161,15 @@ public class EquationBar extends BContainer {
             } else {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
-            coefficient = new BTextField(coefficientText);
+            coefficient = new BTextField(coefficientText) {
+
+                @Override
+                protected void lostFocus() {
+                    super.lostFocus();
+                    ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
+                    parent.getDiagram().performAction(changeTermEvent);
+                }
+            };
             coefficient.setStyleClass("textfield_appbar");
             //coefficient.setPreferredWidth(10);
 
@@ -174,7 +183,7 @@ public class EquationBar extends BContainer {
                     //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
                     //EquationBar.this.setSize(preferredSize.);
                     parent.refreshRows();
-                    update();
+                //update();
                 }
             });
 
@@ -190,6 +199,7 @@ public class EquationBar extends BContainer {
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
                     {
                         if (destroyOK) {
+                            performRemoveTerm(source);
                             removeBox(TermBox.this);
                         } else {
                             destroyOK = true;
@@ -200,7 +210,7 @@ public class EquationBar extends BContainer {
                 }
 
                 public void keyPressed(KeyEvent event) {
-                //destroyOK = false;
+                    //destroyOK = false;
                 }
             });
 
@@ -240,25 +250,47 @@ public class EquationBar extends BContainer {
         }
     }
 
+    /**
+     * This handles the *state change* aspect of removing a term. The UI change occurs in
+     * removeBox, which is called by this method.
+     * @param source
+     */
+    protected void performRemoveTerm(AnchoredVector source) {
+    }
+
+    /**
+     * This handles the *state change* aspect of adding a term. The UI change occurs in
+     * addBox, which is called by this method.
+     * @param source
+     */
+    protected void performAddTerm(AnchoredVector source) {
+    }
+
+    /**
+     * This is called when the bar is loaded or the state has changed.
+     * Note that this will generally be called after the above methods are called.
+     * 
+     */
+    protected void stateChanged() {
+    }
+
     public void setMomentCenter(Point point) {
         momentButton.setText(point.getLabelText());
     //sumOperand.setText("M[" + point.getLabelText() + "]");
     }
 
-    private void update() {
-        for (Term term : math.allTerms()) {
-            TermBox box = terms.get(term.getSource());
-            if (box == null) {
-                continue;
-            }
-
-            term.setCoefficientText(box.coefficient.getText());
-        }
+    /*private void update() {
+    for (Term term : math.allTerms()) {
+    TermBox box = terms.get(term.getSource());
+    if (box == null) {
+    continue;
     }
-
-    // placement information???
-    private void addBox(final Term term) {
-        // add plus icon unless firstvb
+    
+    term.setCoefficientText(box.coefficient.getText());
+    }
+    }*/    // placement information???
+    private void addBox(AnchoredVector load, String coefficient) {
+        // add plus icon unless first box
         if (terms.size() > 0) {
 
             try {
@@ -269,8 +301,8 @@ public class EquationBar extends BContainer {
             }
         }
 
-        TermBox box = new TermBox(term.getSource(), term.getCoefficient());
-        terms.put(term.getSource(), box);
+        TermBox box = new TermBox(load, coefficient);
+        terms.put(load, box);
         add(1, box);
         box.coefficient.requestFocus();
         invalidate();
@@ -282,11 +314,10 @@ public class EquationBar extends BContainer {
             box.coefficient.setEnabled(false);
         }
         locked = true;
-        
-        if(momentButton != null)
-            momentButton.setEnabled(false);
 
-        // clear the current tool
+        if (momentButton != null) {
+            momentButton.setEnabled(false);        // clear the current tool
+        }
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
@@ -295,20 +326,19 @@ public class EquationBar extends BContainer {
             box.coefficient.setEnabled(true);
         }
         locked = false;
-        
-        if(momentButton != null)
-            momentButton.setEnabled(true);
 
-        // clear the current tool
+        if (momentButton != null) {
+            momentButton.setEnabled(true);        // clear the current tool
+        }
         StaticsApplication.getApp().setCurrentTool(null);
     }
-    
+
     private void removeBox(TermBox box) {
         if (locked) {
             return;
         }
 
-        math.removeTerm(box.source);
+        //math.removeTerm(box.source);
         terms.remove(box.source);
 
         for (int i = 0; i < getComponentCount(); i++) {
@@ -332,19 +362,19 @@ public class EquationBar extends BContainer {
         parent.refreshRows();
     }
 
-    public void addTerm(VectorObject source) {
-        if (locked) {
-            return;
-        }
-
-        if (!terms.containsKey(source)) {
-            Term term = math.addTerm(source);
-            addBox(term);
-        }
+    /*public void addTerm(VectorObject source) {
+    if (locked) {
+    return;
     }
-    private VectorObject currentHighlight;
+    
+    if (!terms.containsKey(source)) {
+    Term term = math.addTerm(source);
+    addBox(term);
+    }
+    }*/
+    private AnchoredVector currentHighlight;
 
-    void highlightVector(VectorObject obj) {
+    void highlightVector(AnchoredVector obj) {
 
         if (obj == currentHighlight) {
             return;

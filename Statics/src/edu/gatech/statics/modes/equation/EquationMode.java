@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
@@ -27,14 +26,18 @@ public class EquationMode extends Mode {
 
     @Override
     protected Diagram getDiagram(DiagramKey key) {
-        BodySubset bodies = (BodySubset) key;
-        return StaticsApplication.getApp().getExercise().getEquationDiagram(bodies);
+        if (key instanceof BodySubset) {
+            return Exercise.getExercise().getDiagram(key, getDiagramType());
+        } else {
+            throw new IllegalStateException("Attempting to get an EquationDiagram with a key that is not a BodySubset: " + key);
+        }
     }
 
     @Override
     public void preLoad(DiagramKey key) {
-        EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
-        eq.getWorksheet().updateEquations();
+        EquationDiagram eq = (EquationDiagram) Exercise.getExercise().getDiagram(key, getDiagramType());
+    //EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
+    //eq.getWorksheet().updateEquations();
     }
 
     /**
@@ -47,12 +50,14 @@ public class EquationMode extends Mode {
     @Override
     public void postLoad(DiagramKey key) {
 
-        FreeBodyDiagram fbd = Exercise.getExercise().getFreeBodyDiagram((BodySubset) key);
-        EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
+        FreeBodyDiagram fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(key, FBDMode.instance.getDiagramType());
+        //Exercise.getExercise().getFreeBodyDiagram((BodySubset) key);
+        EquationDiagram eq = (EquationDiagram) Exercise.getExercise().getDiagram(key, getDiagramType());
+        //Exercise.getExercise().getEquationDiagram((BodySubset) key);
 
         FBDChecker fbdChecker = fbd.getChecker();
         fbdChecker.setVerbose(false);
-        eq.getWorksheet().updateEquations();
+        //eq.getWorksheet().updateEquations();
         /*System.out.println("****************");
         System.out.println("*** postLoad ***");
         System.out.println("****************");
@@ -65,7 +70,8 @@ public class EquationMode extends Mode {
         // load up the fbd mode.
         if (!fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
-            eq.getWorksheet().resetSolve();
+            //eq.getWorksheet().resetSolve();
+            eq.updateEquations();
             FBDMode.instance.load(key);
 
             FBDRedirectPopup popup = new FBDRedirectPopup(key);
