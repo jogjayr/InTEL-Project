@@ -62,7 +62,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.add(load);
         temporaryLoads.add(load);
         updateDiagram();
-        System.out.println("****** ADDING TEMPORARY LOAD");
+        //System.out.println("****** ADDING TEMPORARY LOAD");
     }
 
     /**
@@ -73,7 +73,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.remove(load);
         temporaryLoads.remove(load);
         updateDiagram();
-        System.out.println("****** REMOVING TEMPORARY LOAD");
+        //System.out.println("****** REMOVING TEMPORARY LOAD");
     }
 
     /**
@@ -119,8 +119,6 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      */
     @Override
     protected void stateChanged() {
-
-        System.out.println("****** STATE CHANGED");
 
         // clear the temporary list.
         // any actual temporary loads will be cleared subsequently.

@@ -52,4 +52,13 @@ public class LabelLoad implements DiagramAction<FBDState> {
         }
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        if (symbol != null) {
+            return "LabelLoad [" + load + ", \"" + symbol + "\"]";
+        } else {
+            return "LabelLoad [" + load + ", " + value + "]";
+        }
+    }
 }

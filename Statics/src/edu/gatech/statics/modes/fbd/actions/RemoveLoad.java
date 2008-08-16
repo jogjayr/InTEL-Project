@@ -37,4 +37,9 @@ public class RemoveLoad implements DiagramAction<FBDState> {
 
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "RemoveLoad " + oldLoads;
+    }
 }

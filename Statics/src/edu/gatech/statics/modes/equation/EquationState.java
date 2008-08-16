@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
@@ -37,7 +36,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         this.locked = builder.isLocked();
         this.momentPoint = builder.getMomentPoint();
     }
-    
+
     public static final class Builder implements edu.gatech.statics.util.Builder<EquationState> {
 
         private Map<String, EquationMathState> equationStates;
@@ -47,7 +46,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         public Map<String, EquationMathState> getEquationStates() {
             return equationStates;
         }
-        
+
         public void putEquationState(EquationMathState mathState) {
             equationStates.put(mathState.getName(), mathState);
         }
@@ -116,5 +115,35 @@ final public class EquationState implements DiagramState<EquationDiagram> {
     public EquationState restore() {
         // do nothing?
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EquationState other = (EquationState) obj;
+        if (this.equationStates != other.equationStates && (this.equationStates == null || !this.equationStates.equals(other.equationStates))) {
+            return false;
+        }
+        if (this.locked != other.locked) {
+            return false;
+        }
+        if (this.momentPoint != other.momentPoint && (this.momentPoint == null || !this.momentPoint.equals(other.momentPoint))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (this.equationStates != null ? this.equationStates.hashCode() : 0);
+        hash = 53 * hash + (this.locked ? 1 : 0);
+        hash = 53 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
+        return hash;
     }
 }

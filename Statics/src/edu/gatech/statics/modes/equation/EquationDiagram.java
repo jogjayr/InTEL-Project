@@ -40,9 +40,7 @@ import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
-//import edu.gatech.statics.util.SelectableFilter;
 import edu.gatech.statics.ui.InterfaceRoot;
-import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -154,8 +152,17 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         super(bodies);
 
         this.fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
-        // FIXME: This diagram automatically loads a 2D worksheet
-        worksheet = new Worksheet2D(this);
+    // FIXME: This diagram automatically loads a 2D worksheet
+    //worksheet = new Worksheet2D(this);
+    }
+
+    /**
+     * This constructs the worksheet for this diagram. This method is called by
+     * the diagram constructor, so subclasses should not 
+     * @return
+     */
+    protected Worksheet createWorksheet() {
+        return new Worksheet2D(this);
     }
 
     /**
@@ -463,6 +470,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected EquationState createInitialState() {
+        if (worksheet == null) {
+            worksheet = createWorksheet();
+        }
         EquationState.Builder builder = new EquationState.Builder(worksheet.getEquationNames());
         return builder.build();
     }

@@ -34,7 +34,12 @@ public class AddLoad implements DiagramAction<FBDState> {
         for (AnchoredVector load : newLoads) {
             builder.addLoad(load);
         }
-        
+
         return builder.build();
+    }
+
+    @Override
+    public String toString() {
+        return "AddLoad " + newLoads;
     }
 }

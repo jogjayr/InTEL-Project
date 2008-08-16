@@ -19,7 +19,7 @@ public class OrientLoad implements DiagramAction<FBDState> {
 
     private AnchoredVector oldLoad;
     private AnchoredVector newLoad;
-    
+
     public OrientLoad(AnchoredVector oldLoad, AnchoredVector newLoad) {
         this.oldLoad = oldLoad;
         this.newLoad = newLoad;
@@ -27,9 +27,14 @@ public class OrientLoad implements DiagramAction<FBDState> {
 
     public FBDState performAction(FBDState oldState) {
         Builder builder = oldState.getBuilder();
-        
+
         builder.changeOrientation(oldLoad, newLoad);
-        
+
         return builder.build();
+    }
+
+    @Override
+    public String toString() {
+        return "OrientLoad [" + oldLoad + ", " + newLoad + "]";
     }
 }

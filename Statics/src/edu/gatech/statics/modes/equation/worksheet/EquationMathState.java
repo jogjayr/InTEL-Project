@@ -64,9 +64,9 @@ final public class EquationMathState {
         public void setTerms(Map<AnchoredVector, String> terms) {
             this.terms.clear();
             this.terms.putAll(terms);
-            //this.terms = terms;
+        //this.terms = terms;
         }
-        
+
         public Map<AnchoredVector, String> getTerms() {
             return terms;
         }
@@ -82,5 +82,35 @@ final public class EquationMathState {
         public EquationMathState build() {
             return new EquationMathState(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EquationMathState other = (EquationMathState) obj;
+        if (this.name != other.name && (this.name == null || !this.name.equals(other.name))) {
+            return false;
+        }
+        if (this.terms != other.terms && (this.terms == null || !this.terms.equals(other.terms))) {
+            return false;
+        }
+        if (this.locked != other.locked) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 11 * hash + (this.terms != null ? this.terms.hashCode() : 0);
+        hash = 11 * hash + (this.locked ? 1 : 0);
+        return hash;
     }
 }

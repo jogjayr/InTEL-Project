@@ -27,7 +27,6 @@ import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
-import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  *
@@ -76,12 +76,13 @@ public abstract class Diagram<StateType extends DiagramState> {
      * can more easily control how the the completion behavior works.
      */
     abstract public void completed();
-    
+
     /**
      * Undoes the last action done to this diagram
      */
     public void undo() {
         states.undo();
+        Logger.getLogger("Statics").info("undo");
         stateChanged();
         updateDiagram();
     }
@@ -91,10 +92,11 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void redo() {
         states.redo();
+        Logger.getLogger("Statics").info("redo");
         stateChanged();
         updateDiagram();
     }
-    
+
     /**
      * This method is called whenever the user has changed the state
      * of the diagram. This should be overridden by subclasses of diagram
@@ -135,8 +137,14 @@ public abstract class Diagram<StateType extends DiagramState> {
         if (isLocked() || !states.canPush()) {
             return;
         }
+        Logger.getLogger("Statics").info("perform action: " + action);
         StateType newState = action.performAction(getCurrentState());
-        states.push(newState);
+        
+        // only push the state if it is a change.
+        if (!newState.equals(getCurrentState())) {
+            Logger.getLogger("Statics").info("state changed");
+            states.push(newState);
+        }
         stateChanged();
 
         // update diagram
@@ -179,7 +187,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
-    
+
     /**
      * This method allows subclasses of Diagram to manage their own collections
      * of user objects. 
@@ -266,7 +274,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     /** Creates a new instance of World */
     public Diagram() {
         states = new StateStack<StateType>(createInitialState());
-        //setSelectableFilterDefault();
+    //setSelectableFilterDefault();
     }
     private boolean nodesUpdated = false;
 

@@ -36,4 +36,9 @@ public class SelectAction implements DiagramAction<SelectState> {
         }
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "SelectAction [" + clicked + "]";
+    }
 }

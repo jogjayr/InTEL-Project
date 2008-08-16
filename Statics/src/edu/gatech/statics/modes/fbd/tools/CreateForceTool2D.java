@@ -84,6 +84,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
             // attempt to release the handler
             if (orientationHandler.release()) {
                 showLabelSelector();
+                finish();
             }
         }
     }
@@ -91,7 +92,6 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     public void onMouseDown() {
         if (getDragManipulator() != null) {
-
             if (releaseDragManipulator()) {
                 enableOrientationManipulator();
             }

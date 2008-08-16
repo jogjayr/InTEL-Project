@@ -6,9 +6,7 @@
 package edu.gatech.statics.exercise.state;
 
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.Builder;
-import java.util.List;
 
 /**
  * DiagramState represents the state of a Diagram. The classes that make up the
@@ -36,5 +34,13 @@ public interface DiagramState<T extends Diagram> extends State {
      */
     DiagramState<T> restore();
     
-    //List<SimulationObject> getStateObjects();
+    /**
+     * Implementors of DiagramState should implement equals, so to help how states
+     * may be compared and used in the state stack. If a state implements equals,
+     * then accidental duplicates that are added to the stack will not go together.
+     * @param other
+     * @return
+     */
+    @Override
+    boolean equals(Object other);
 }

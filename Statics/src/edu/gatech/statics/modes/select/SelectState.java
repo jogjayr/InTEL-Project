@@ -86,4 +86,25 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         return new Builder().build();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SelectState other = (SelectState) obj;
+        if (this.currentlySelected != other.currentlySelected && (this.currentlySelected == null || !this.currentlySelected.equals(other.currentlySelected))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + (this.currentlySelected != null ? this.currentlySelected.hashCode() : 0);
+        return hash;
+    }
 }

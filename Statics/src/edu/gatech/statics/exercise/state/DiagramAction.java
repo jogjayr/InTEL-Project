@@ -10,7 +10,7 @@ package edu.gatech.statics.exercise.state;
  * @author Calvin Ashmore
  */
 abstract public interface DiagramAction<T extends DiagramState> {
-    
+
     /**
      * Has the action create a new state from the oldState provided, after applying its changes.
      * The implementing class should use the diagram's builder to construct the new state.
@@ -18,4 +18,14 @@ abstract public interface DiagramAction<T extends DiagramState> {
      * @return
      */
     T performAction(T oldState);
+
+    /**
+     * Classes that implement DiagramAction should provide an implementation of toString.
+     * Specifically, for legibility sake and so that it will be easier to debug diagram actions.
+     * Implementations should return a String with the format "ActionName [arg1, arg2, arg3]"
+     * This way it should be easier to figure out exactly what is being changed.
+     * @return
+     */
+    @Override
+    String toString();
 }

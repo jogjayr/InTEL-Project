@@ -54,7 +54,7 @@ public class AnchoredVector implements Quantified {
     public String getSymbolName() {
         return vector.getSymbolName();
     }
-    
+
     public Unit getUnit() {
         return vector.getUnit();
     }
@@ -86,9 +86,14 @@ public class AnchoredVector implements Quantified {
     public void setDiagramValue(BigDecimal v) {
         vector.setDiagramValue(v);
     }
-    
+
     public Vector3bd getVectorValue() {
         return vector.getVectorValue();
+    }
+
+    @Override
+    public String toString() {
+        return "(" + vector.toString() + " @ " + anchor.getName() + ")";
     }
 
     @Override

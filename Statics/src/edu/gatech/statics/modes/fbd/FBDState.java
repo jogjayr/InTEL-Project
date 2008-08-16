@@ -55,7 +55,7 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         }
 
         public void changeOrientation(AnchoredVector oldLoad, AnchoredVector newLoad) {
-            if(addedLoads.contains(oldLoad)) {
+            if (addedLoads.contains(oldLoad)) {
                 addedLoads.remove(oldLoad);
                 addedLoads.add(newLoad);
             }
@@ -67,20 +67,20 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             load.setKnown(false);
             load.setDiagramValue(BigDecimal.ONE);
         }
-        
+
         public void setLabel(AnchoredVector load, BigDecimal value) {
             load = addedLoads.get(addedLoads.indexOf(load));
             load.setDiagramValue(value);
             load.setKnown(true);
             load.setSymbol(null);
         }
-        
+
         public void removeLoad(AnchoredVector oldLoad) {
             if (addedLoads.contains(oldLoad)) {
                 addedLoads.remove(oldLoad);
             }
         }
-        
+
         public List<AnchoredVector> getAddedLoads() {
             return addedLoads;
         }
@@ -88,9 +88,9 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         public void setAddedLoads(List<AnchoredVector> addedLoads) {
             this.addedLoads.clear();
             this.addedLoads.addAll(addedLoads);
-            //this.addedLoads = addedLoads;
+        //this.addedLoads = addedLoads;
         }
-        
+
         public boolean isSolved() {
             return solved;
         }
@@ -119,5 +119,31 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         // here we need to restore the anchor points on the vectors
         // or does that happen autmoatically?
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FBDState other = (FBDState) obj;
+        if (this.solved != other.solved) {
+            return false;
+        }
+        if (this.addedLoads != other.addedLoads && (this.addedLoads == null || !this.addedLoads.equals(other.addedLoads))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + (this.solved ? 1 : 0);
+        hash = 17 * hash + (this.addedLoads != null ? this.addedLoads.hashCode() : 0);
+        return hash;
     }
 }
