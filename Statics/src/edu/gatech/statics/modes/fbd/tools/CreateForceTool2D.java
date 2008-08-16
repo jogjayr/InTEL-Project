@@ -8,19 +8,13 @@
  */
 package edu.gatech.statics.modes.fbd.tools;
 
-import com.jme.math.Matrix3f;
-import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorListener;
-import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
-import edu.gatech.statics.objects.manipulators.OrientationListener;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,18 +56,10 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     }
 
     @Override
-    protected void showLabelSelector() {
+    protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), force, force.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your force");
-        labelTool.setUnits(Unit.force.getSuffix());
-        labelTool.setHintText("");
-        labelTool.setIsCreating(true);
-        labelTool.createPopup();
-        if (force == null) {
-            //getDiagram().removeUserObject(force);
-            getDiagram().removeTemporaryLoad(force);
-            getDiagram().onClick(null);
-        }
+        return labelTool;
     }
 
     protected void enableOrientationManipulator() {
@@ -96,7 +82,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
 
         if (orientationHandler != null && orientationHandler.isEnabled()) {
             // attempt to release the handler
-            orientationHandler.release();
+            if (orientationHandler.release()) {
+                showLabelSelector();
+            }
         }
     }
 

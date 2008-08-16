@@ -18,6 +18,7 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -60,8 +61,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public void addTemporaryLoad(Load load) {
         loadObjects.add(load);
         temporaryLoads.add(load);
+        updateDiagram();
+        System.out.println("****** ADDING TEMPORARY LOAD");
     }
-    
+
     /**
      * This method removes the specified temporary load.
      * @param load
@@ -69,8 +72,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public void removeTemporaryLoad(Load load) {
         loadObjects.remove(load);
         temporaryLoads.remove(load);
+        updateDiagram();
+        System.out.println("****** REMOVING TEMPORARY LOAD");
     }
-    
+
     /**
      * The user objects for this diagram are merely the loads that are present.
      * @return
@@ -114,7 +119,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      */
     @Override
     protected void stateChanged() {
-        
+
+        System.out.println("****** STATE CHANGED");
+
         // clear the temporary list.
         // any actual temporary loads will be cleared subsequently.
         temporaryLoads.clear();
@@ -157,10 +164,13 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             Load load = createLoad(vector);
             loadObjects.add(load);
         }
+
+        updateDiagram();
     }
 
     /**
-     * This creates a load from a vector object for display.
+     * This creates a load from an AnchoredVector for display.
+     * The method is intended to construct loads to reflect the state of the diagram.
      * This creates the representation. It should also probably set up any listeners
      * that need to work with the object.
      * @param vector
@@ -178,6 +188,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                     " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
         }
         load.createDefaultSchematicRepresentation();
+        new LabelManipulator(load);
         return load;
     }
 
@@ -289,25 +300,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public InputHandler getInputHandler() {
         return fbdInput;
     }
-    private static final SelectionFilter filter = new  
+    private static final SelectionFilter filter = new SelectionFilter() {
 
-          SelectionFilter( ) {
-
-               
-        
-    
-
-    public    
-         
-    
-      
-      
-
-        
-            
-            
-        
-           boolean canSelect(SimulationObject obj) {
+        public boolean canSelect(SimulationObject obj) {
             return obj instanceof Load;
         }
     };
@@ -368,6 +363,11 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         }
     }
 
+    /**
+     * This is the method responsible for opening the popup dialog to change the label
+     * of a load when its label has been double-clicked.
+     * @param load
+     */
     public void onLabel(Load load) {
         if (getCurrentState().isLocked()) {
             return;
@@ -383,7 +383,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             labelTool.setHintText(load.toStringDecimal());
         }
         labelTool.setIsCreating(false);
-        labelTool.renamePopup();
+        labelTool.popup();
     }
 
     @Override
@@ -400,7 +400,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
         StaticsApplication.getApp().resetAdvice();
 
-        if (!getCurrentState().isLocked()) {
+        if (getCurrentState().isLocked()) {
             setSolved(true);
         }
     }

@@ -65,12 +65,14 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             load = addedLoads.get(addedLoads.indexOf(load));
             load.setSymbol(symbol);
             load.setKnown(false);
+            load.setDiagramValue(BigDecimal.ONE);
         }
         
         public void setLabel(AnchoredVector load, BigDecimal value) {
             load = addedLoads.get(addedLoads.indexOf(load));
             load.setDiagramValue(value);
             load.setKnown(true);
+            load.setSymbol(null);
         }
         
         public void removeLoad(AnchoredVector oldLoad) {

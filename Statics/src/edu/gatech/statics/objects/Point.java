@@ -64,10 +64,10 @@ public class Point extends SimulationObject {
         addRepresentation(rep2);
     }
 
-    @Override
-    public String getDescription() {
-        return "Point: " + getName();
-    }
+    //@Override
+    //public String getDescription() {
+    //    return "Point: " + getName();
+    //}
 
     /**
      * This is true if both points are the same type of point, and both have the same position.

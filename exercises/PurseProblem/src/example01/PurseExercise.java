@@ -98,30 +98,41 @@ public class PurseExercise extends FrameExercise {
         jointD = new Connector2ForceMember2d(D, tendon);
         jointC = new Pin2d(C);
         jointE = new Pin2d(E);
+        
+        jointB.setName("connector B");
+        jointD.setName("connector D");
+        jointC.setName("pin C");
+        jointE.setName("pin E");
 
         G = new Point("" + (centerGravityOffset + 3), "-10", "0");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
+        distance1.setName("measure AC");
         distance1.createDefaultSchematicRepresentation(6f);
         world.add(distance1);
 
         DistanceMeasurement distance2 = new DistanceMeasurement(G, B);
+        distance2.setName("measure GB");
         distance2.createDefaultSchematicRepresentation(3f);
         world.add(distance2);
 
         DistanceMeasurement distance3 = new DistanceMeasurement(B, C);
+        distance3.setName("measure BC");
         distance3.createDefaultSchematicRepresentation(3f);
         world.add(distance3);
 
         DistanceMeasurement distance4 = new DistanceMeasurement(C, D);
+        distance4.setName("measure CD");
         distance4.createDefaultSchematicRepresentation(5f);
         world.add(distance4);
 
         DistanceMeasurement distance5 = new DistanceMeasurement(D, E);
+        distance5.setName("measure DE");
         distance5.createDefaultSchematicRepresentation(5f);
         world.add(distance5);
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(B, D, C);
+        angle1.setName("Angle BDC");
         angle1.createDefaultSchematicRepresentation(2f);
         world.add(angle1);
 
@@ -130,6 +141,7 @@ public class PurseExercise extends FrameExercise {
         //world.add(angle2);
 
         PointAngleMeasurement angle3 = new PointAngleMeasurement(D, B, C);
+        angle3.setName("Angle DBC");
         angle3.createDefaultSchematicRepresentation(2f);
         world.add(angle3);
 
@@ -139,7 +151,7 @@ public class PurseExercise extends FrameExercise {
 
         Moment shoulder = new Moment(E, Vector3bd.UNIT_Z.negate(), "M shoulder"); // use symbol here
 
-        shoulder.setSymbol("Shoulder");
+        shoulder.getAnchoredVector().setSymbol("Shoulder");
         upperArm.addObject(shoulder);
 
         jointB.attach(forearm, tendon);

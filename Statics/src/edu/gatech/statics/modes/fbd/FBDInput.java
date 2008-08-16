@@ -72,7 +72,7 @@ public class FBDInput extends InputHandler {
     protected void enableOrientationManipulator(Force force) {
         //System.out.println("enabling orientation manipulator: "+force);
 
-        if (orientationHandler != null || orientationHandler.isEnabled()) {
+        if (orientationHandler != null && orientationHandler.isEnabled()) {
             orientationHandler.stop();
             orientationHandler = null;
         }

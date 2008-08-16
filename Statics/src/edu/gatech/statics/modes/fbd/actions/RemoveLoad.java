@@ -8,6 +8,9 @@ import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FBDState.Builder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Removes an existing load from the diagram state.
@@ -15,17 +18,23 @@ import edu.gatech.statics.modes.fbd.FBDState.Builder;
  */
 public class RemoveLoad implements DiagramAction<FBDState> {
 
-    AnchoredVector oldLoad;
-    
+    final private List<AnchoredVector> oldLoads;
+
+    public RemoveLoad(List<AnchoredVector> oldLoads) {
+        this.oldLoads = new ArrayList<AnchoredVector>(oldLoads);
+    }
+
     public RemoveLoad(AnchoredVector oldLoad) {
-    this.oldLoad = oldLoad;
+        this.oldLoads = Collections.singletonList(oldLoad);
     }
 
     public FBDState performAction(FBDState oldState) {
         Builder builder = oldState.getBuilder();
 
-        builder.removeLoad(oldLoad);
-        
+        for (AnchoredVector load : oldLoads) {
+            builder.removeLoad(load);
+        }
+
         return builder.build();
     }
 }

@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.exercise.state;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class StateStack<T extends DiagramState> {
 
     // note, we may wish to incorporate some kind of maximum capacity to the stack
-    private List<T> stack;
+    private List<T> stack = new ArrayList<T>();
     private int position;
 
     /**
@@ -23,6 +24,7 @@ public class StateStack<T extends DiagramState> {
      */
     public void clear() {
         stack.retainAll(Collections.singleton(getCurrent()));
+        position = 0;
     }
 
     /**

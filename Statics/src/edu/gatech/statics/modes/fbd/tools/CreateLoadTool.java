@@ -7,9 +7,11 @@ package edu.gatech.statics.modes.fbd.tools;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.actions.AddLoad;
+import edu.gatech.statics.modes.fbd.actions.RemoveLoad;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -34,6 +36,16 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     private DragSnapManipulator dragManipulator;
     private Point snapPoint;
     private MousePressInputAction pressAction;
+    private boolean hasBeenAdded;
+    private LabelSelector labelTool;
+
+    /**
+     * This is true if the load has been added to the diagram and made part of its state.
+     * @return
+     */
+    protected boolean hasBeenAdded() {
+        return hasBeenAdded;
+    }
 
     protected FreeBodyDiagram getDiagram() {
         return diagram;
@@ -47,7 +59,14 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         return dragManipulator;
     }
 
+    protected abstract LabelSelector createLabelSelector();
+
     protected void showLabelSelector() {
+        labelTool = createLabelSelector();
+        labelTool.setUnits(Unit.force.getSuffix());
+        labelTool.setHintText("");
+        labelTool.setIsCreating(true);
+        labelTool.popup();
     }
 
     public CreateLoadTool(FreeBodyDiagram diagram) {
@@ -58,6 +77,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         for (Load load : loads) {
             //diagram.addUserObject(aLoad);
             //AddLoad addLoadAction= new AddLoad(aLoad);
+            //load.createDefaultSchematicRepresentation();
             diagram.addTemporaryLoad(load);
         }
 
@@ -95,7 +115,15 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     protected void onCancel() {
         for (Load load : loads) {
             //diagram.removeUserObject(aLoad);
-            diagram.removeTemporaryLoad(load);
+            if (hasBeenAdded) {
+                performRemove();
+            } else {
+                diagram.removeTemporaryLoad(load);
+            }
+        }
+
+        if (labelTool != null) {
+            labelTool.dismiss();
         }
     }
 
@@ -158,6 +186,20 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         }
         AddLoad addLoadAction = new AddLoad(loadVectors);
         diagram.performAction(addLoadAction);
+        hasBeenAdded = true;
+    }
+
+    /**
+     * Like performAdd, this method removes the loads carried by the tool.
+     * This will only happen, though, if the user is cancelling the add.
+     */
+    protected void performRemove() {
+        List<AnchoredVector> loadVectors = new ArrayList<AnchoredVector>();
+        for (Load load : loads) {
+            loadVectors.add(load.getAnchoredVector());
+        }
+        RemoveLoad removeLoadAction = new RemoveLoad(loadVectors);
+        diagram.performAction(removeLoadAction);
     }
 
     protected void updateLoad(Vector3f worldPosition) {

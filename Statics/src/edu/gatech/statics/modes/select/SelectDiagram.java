@@ -197,6 +197,6 @@ public class SelectDiagram extends Diagram<SelectState> {
             recentDiagram = Exercise.getExercise().createNewDiagram(bodies, FBDMode.instance.getDiagramType());
         }
 
-        recentDiagram.getMode().load(getKey());
+        recentDiagram.getMode().load(bodies);
     }
 }

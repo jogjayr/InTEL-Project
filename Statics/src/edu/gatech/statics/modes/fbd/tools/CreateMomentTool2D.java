@@ -10,7 +10,6 @@ package edu.gatech.statics.modes.fbd.tools;
 
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Moment;
@@ -26,20 +25,16 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
 
     protected Moment moment;
     //protected Diagram world;
-
     /** Creates a new instance of CreateForceTool */
     public CreateMomentTool2D(FreeBodyDiagram world) {
         super(world);
     }
-    
+
     @Override
-    protected void showLabelSelector() {
+    protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), moment, moment.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your moment");
-        labelTool.setUnits(Unit.moment.getSuffix());
-        labelTool.setHintText("");
-        labelTool.setIsCreating(true);
-        labelTool.createPopup();
+        return labelTool;
     }
 
     @Override
@@ -47,7 +42,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
         super.onActivate();
         StaticsApplication.getApp().setAdviceKey("fbd_tools_createMoment");
     }
-    
+
     @Override
     protected List<Load> createLoads(Point anchor) {
 

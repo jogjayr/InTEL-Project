@@ -24,12 +24,12 @@ import java.math.BigDecimal;
 public class VectorObject extends SimulationObject {//implements Quantified {
 
     private AnchoredVector myAnchoredVector;
-    private String name;
+    //private String name;
 
     @Override
     public String getName() {
-        if (name != null) {
-            return name;
+        if (super.getName() != null) {
+            return super.getName();
         }
         return getVector().getSymbolName();
     }
@@ -51,11 +51,11 @@ public class VectorObject extends SimulationObject {//implements Quantified {
         return myAnchoredVector.getVector();
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    //@Override
+    //public void setName(String name) {
+    //    this.name = name;
     //vector.setSymbol(name);
-    }
+    //}
 
     @Override
     public Vector3f getTranslation() {
@@ -133,7 +133,7 @@ public class VectorObject extends SimulationObject {//implements Quantified {
     public VectorObject(VectorObject obj) {
         myAnchoredVector = new AnchoredVector(obj.myAnchoredVector);
         //new AnchoredVector(obj.getAnchor(), new Vector(obj.getVector()));
-        setName(obj.name);
+        //setName(obj.name);
 //        this.setAnchor(obj.getAnchor());
 //        this.setVector(new Vector(obj.getVector()));
 //        this.name = obj.name;

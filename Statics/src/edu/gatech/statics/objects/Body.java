@@ -92,9 +92,9 @@ abstract public class Body extends SimulationObject {
     public Body() {
     }
 
-    @Override
-    public String getDescription() {
-        return "Body: " + getName() + "<br>" +
-                "Weight: " + getWeight() + " kg";
-    }
+    //@Override
+    //public String getDescription() {
+    //    return "Body: " + getName() + "<br>" +
+    //            "Weight: " + getWeight() + " kg";
+    //}
 }

@@ -20,7 +20,6 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
@@ -37,7 +36,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -79,9 +77,9 @@ public class PurseExerciseGraded extends PurseExercise {
     public void initExercise() {
         super.initExercise();
 
-        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(),BigDecimal.ROUND_HALF_UP);
-        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(),BigDecimal.ROUND_HALF_UP);
-        
+        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+
         setDescription(
                 "Here is a simplified model of the human arm. " +
                 "Please solve for the reactions at each of the points: B, C, and E. " +
@@ -187,9 +185,9 @@ public class PurseExerciseGraded extends PurseExercise {
         if (isExerciseFinished()) {
             textLabel = new BLabel("CONGRATULATIONS! You have solved for all of the unknown joints in this exercise. " +
                     "Please click the button below to submit your work.");
-        } else if(isHalfSolved()){
-            textLabel = new BLabel("You have solved one of the diagrams, so you can submit your exercise for half credit now, " +
-                    "But you have not finished the exercise. Are you sure you want to submit?");
+        //} else if(isHalfSolved()){
+        //    textLabel = new BLabel("You have solved one of the diagrams, so you can submit your exercise for half credit now, " +
+        //            "But you have not finished the exercise. Are you sure you want to submit?");
         } else {
             textLabel = new BLabel("You have solved any of the diagrams yet, so you will not get any credit. Are you sure you " +
                     "want to submit?");
@@ -227,16 +225,16 @@ public class PurseExerciseGraded extends PurseExercise {
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
     }
 
-    private boolean isHalfSolved() {
-        // enumerate all diagrams and find out whether they are solved.
-        List<EquationDiagram> equationDiagrams = getEquationDiagrams();
-        for (EquationDiagram diagram : equationDiagrams) {
-            if (diagram.getWorksheet().isSolved()) {
-                return true;
-            }
-        }
-        return false;
+    /*private boolean isHalfSolved() {
+    // enumerate all diagrams and find out whether they are solved.
+    List<EquationDiagram> equationDiagrams = getEquationDiagrams();
+    for (EquationDiagram diagram : equationDiagrams) {
+    if (diagram.getWorksheet().isSolved()) {
+    return true;
     }
+    }
+    return false;
+    }*/
 
     // NOTE: this is being used in place of an update() method
     // this is bad style and should be fixed. Maybe we should have a general
@@ -244,26 +242,27 @@ public class PurseExerciseGraded extends PurseExercise {
     @Override
     public void testTasks() {
         super.testTasks();
-        
+
         my_frame++;
-        if(my_frame >= frames_until_post) {
+        if (my_frame >= frames_until_post) {
             my_frame = 0;
             sendLoggerData();
         }
     }
     private int my_frame = 0;
     private static final int frames_until_post = 100;
-    
+
     private void sendLoggerData() {
         new Thread(new Runnable() {
+
             public void run() {
                 sendLoggerDataImpl();
             }
         }).start();
     }
-    
+
     private void sendLoggerDataImpl() {
-        
+
         URL documentBase = null;
         if (StaticsApplet.getInstance() == null) {
             try {
@@ -302,11 +301,11 @@ public class PurseExerciseGraded extends PurseExercise {
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(postData);
             writer.flush();
-            
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
-            while((line = reader.readLine()) != null) {
-                System.out.println("response: "+line);
+            while ((line = reader.readLine()) != null) {
+                System.out.println("response: " + line);
             }
 
             writer.close();
@@ -335,9 +334,10 @@ public class PurseExerciseGraded extends PurseExercise {
         if (isExerciseFinished()) {
             // if exercise is solved, give full credit
             exerciseName += " [Solved]";
-        } else if (isHalfSolved()) {
-            exerciseName += " [1PartSolved]";
         }
+        //else if (isHalfSolved()) {
+        //    exerciseName += " [1PartSolved]";
+        //}
         String finalString = studentName + "@" + exerciseName;
         byte[] resultBytes = md5.digest(finalString.getBytes());
 
@@ -361,10 +361,10 @@ public class PurseExerciseGraded extends PurseExercise {
             StaticsApplet.getInstance().getAppletContext().showDocument(url);
 
         } catch (MalformedURLException ex) {
-        // shouldn't wind up here, but...
+            // shouldn't wind up here, but...
         } catch (UnsupportedEncodingException ex) {
-        // we're also in trouble if we wind up here.
-        // should do our popup again.
+            // we're also in trouble if we wind up here.
+            // should do our popup again.
         }
     }
 }

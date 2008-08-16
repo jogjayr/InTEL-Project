@@ -63,8 +63,15 @@ public abstract class Mode {
      */
     public final void load(DiagramKey key) {
         // load the diagram
+        
+        Diagram diagram = getDiagram(key);
+        if(diagram == null) {
+            // create the diagram if it does not exist
+            Exercise.getExercise().createNewDiagram(key, diagramType);
+            diagram = getDiagram(key);
+        }
 
-        StaticsApplication.getApp().setCurrentDiagram(getDiagram(key));
+        StaticsApplication.getApp().setCurrentDiagram(diagram);
         preLoad(key);
         // loading the ModePanel occurs after the diagram.
         // the ModePanel may depend on the diagram for labeling, etc

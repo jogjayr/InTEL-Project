@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class AddLoad implements DiagramAction<FBDState> {
 
-    List<AnchoredVector> newLoads;
+    final private List<AnchoredVector> newLoads;
 
     public AddLoad(List<AnchoredVector> newLoads) {
         this.newLoads = new ArrayList<AnchoredVector>(newLoads);
