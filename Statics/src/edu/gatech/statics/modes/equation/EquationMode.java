@@ -71,7 +71,7 @@ public class EquationMode extends Mode {
         if (!fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
             //eq.getWorksheet().resetSolve();
-            eq.updateEquations();
+            eq.stateChanged();
             FBDMode.instance.load(key);
 
             FBDRedirectPopup popup = new FBDRedirectPopup(key);

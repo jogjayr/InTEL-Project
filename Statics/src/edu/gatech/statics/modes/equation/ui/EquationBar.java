@@ -64,6 +64,18 @@ public class EquationBar extends BContainer {
         return locked;
     }
 
+    /**
+     * Removes all of the contents of the equation bar. This should be called
+     * when the ui is freshly activated.
+     */
+    void clear() {
+        // make a copy list, since removeBox removes the term entry as well.
+        List<TermBox> allBoxes = new ArrayList<TermBox>(terms.values());
+        for (TermBox box : allBoxes) {
+            removeBox(box);
+        }
+    }
+
     public EquationBar(EquationMath math, EquationModePanel parent) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         this.math = math;
@@ -174,8 +186,12 @@ public class EquationBar extends BContainer {
                 @Override
                 protected void lostFocus() {
                     super.lostFocus();
-                    ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
-                    parent.getDiagram().performAction(changeTermEvent);
+                    // if the box has lost focus, post a change term event.
+                    // but do not post if the box has been removed.
+                    if(isAdded()) {
+                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
+                        parent.getDiagram().performAction(changeTermEvent);
+                    }
                 }
             };
             coefficient.setStyleClass("textfield_appbar");
@@ -199,7 +215,6 @@ public class EquationBar extends BContainer {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
-
                 boolean destroyOK = false;
 
                 public void keyReleased(KeyEvent event) {

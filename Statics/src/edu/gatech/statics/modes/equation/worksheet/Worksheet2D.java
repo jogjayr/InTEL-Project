@@ -17,7 +17,7 @@ public class Worksheet2D extends Worksheet {
         super(diagram, 3);
 
         EquationMath sumFx = new EquationMathForces("F[X]", Vector3bd.UNIT_X, diagram);
-        EquationMath sumFy = new EquationMathForces("F[X]", Vector3bd.UNIT_Y, diagram);
+        EquationMath sumFy = new EquationMathForces("F[Y]", Vector3bd.UNIT_Y, diagram);
         EquationMath sumMp = new EquationMathMoments("M[P]", Vector3bd.UNIT_Z, diagram);
 
         addEquation(sumFx);

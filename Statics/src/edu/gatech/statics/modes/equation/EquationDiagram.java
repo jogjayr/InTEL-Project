@@ -80,11 +80,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     /**
      * This method attempts to make sure that the underlying state is valid
      * with respect to the loads from the FreeBodyDiagram that this is based on.
-     * This method will be caused when the diagram is loaded, but is intended to handle
+     * This method will be called when the diagram is loaded, but is intended to handle
      * the case when the underlying diagram might have changed.
      */
-    protected void updateEquations() {
-    }
+    //protected void updateEquations() {
+    //    stateChanged();
+    //}
 
     //public EquationMath getChecker() {
     //    return new EquationMath(this);
@@ -333,6 +334,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         for (SimulationObject obj : allObjects()) {
             obj.setSelectable(true);
         }
+        
+        // mark the state as changed so that the UI updates.
+        stateChanged();
 
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));

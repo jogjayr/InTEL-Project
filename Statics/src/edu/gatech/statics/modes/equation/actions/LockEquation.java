@@ -30,4 +30,9 @@ public class LockEquation implements DiagramAction<EquationState> {
         builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "LockEquation [" + equationName + ", " + locked + "]";
+    }
 }

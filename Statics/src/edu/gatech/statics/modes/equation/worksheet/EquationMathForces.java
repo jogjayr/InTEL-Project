@@ -25,7 +25,7 @@ public class EquationMathForces extends EquationMath {
     }
 
     @Override
-    protected TermError checkTerm( AnchoredVector load, String coefficient) {
+    protected TermError checkTerm(AnchoredVector load, String coefficient) {
 
         // get this case out of the way.
         // if this happens, then the user has added a coefficient for a moment 
@@ -35,8 +35,15 @@ public class EquationMathForces extends EquationMath {
         }
 
         // check the alignment...
-        if (!isLoadAligned(load) && coefficient != null) {
-            return TermError.doesNotBelong;
+        if (!isLoadAligned(load)) {
+            if (coefficient != null) {
+                // the load is not aligned.
+                // complain if the user has added a coefficient
+                return TermError.doesNotBelong;
+            } else {
+                // otherwise we should return ok
+                return TermError.none;
+            }
         }
 
         // if we get here, then the user should have a coefficient.
@@ -59,12 +66,12 @@ public class EquationMathForces extends EquationMath {
         // what is our expected value?
         BigDecimal targetValue = load.getVectorValue().dot(getObservationDirection());
         BigDecimal userValue = affineCoefficient.getConstant();
-        
+
         return compareValues(userValue, targetValue);
     }
 
     @Override
-    protected void reportError( TermError error, AnchoredVector load, String coefficient) {
+    protected void reportError(TermError error, AnchoredVector load, String coefficient) {
 
         if (error == TermError.doesNotBelong && load.getUnit() == Unit.moment) {
 

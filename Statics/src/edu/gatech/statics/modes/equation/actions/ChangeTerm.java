@@ -38,4 +38,9 @@ public class ChangeTerm implements DiagramAction<EquationState> {
         builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "ChangeTerm [" + equationName + ", " + load + ", \"" + coefficient + "\"]";
+    }
 }

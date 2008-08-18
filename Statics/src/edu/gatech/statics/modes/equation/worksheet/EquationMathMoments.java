@@ -46,7 +46,7 @@ public class EquationMathMoments extends EquationMath {
     }
 
     @Override
-    protected TermError checkTerm( AnchoredVector load, String coefficient) {
+    protected TermError checkTerm(AnchoredVector load, String coefficient) {
 
         if (load.getUnit() == Unit.force) {
 
@@ -69,12 +69,12 @@ public class EquationMathMoments extends EquationMath {
 
                 BigDecimal distanceValue = new BigDecimal(distance.length());
 
-                BigDecimal targetValue = vectorOrient.cross(distance).dot(momentPoint);
+                BigDecimal targetValue = vectorOrient.cross(distance).dot(getObservationDirection());
                 targetValue = targetValue.negate();
 
                 return compareValuesMoment(coefficient, targetValue, distanceValue);
             }
-            
+
         } else if (load.getUnit() == Unit.moment) {
 
             // definitely need all moment terms
@@ -113,6 +113,22 @@ public class EquationMathMoments extends EquationMath {
      */
     private TermError compareValuesMoment(String coefficient, BigDecimal targetValue, BigDecimal distanceValue) {
 
+        // check whether the load belongs in the equation or not
+        if (coefficient == null) {
+            if (Math.abs(targetValue.floatValue()) < EquationMath.TEST_ACCURACY) {
+                // this is okay, the value is supposed to be null
+                return TermError.none;
+            } else {
+                // should not be missing, but is
+                return TermError.missedALoad;
+            }
+        } else {
+            if (Math.abs(targetValue.floatValue()) < EquationMath.TEST_ACCURACY) {
+                // coefficient is not null, but should be
+                return TermError.doesNotBelong;
+            }
+        }
+
         AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
 
         // parse the coefficient
@@ -141,7 +157,8 @@ public class EquationMathMoments extends EquationMath {
     }
 
     @Override
-    protected void reportError( TermError error, AnchoredVector load, String coefficient) {
+    protected void reportError(TermError error, AnchoredVector load,
+            String coefficient) {
         if (error == TermError.shouldNotBeSymbolic) {
             Logger.getLogger("Statics").info("check: should not be symbolic");
             Logger.getLogger("Statics").info("check: FAILED");
@@ -162,11 +179,17 @@ public class EquationMathMoments extends EquationMath {
             Logger.getLogger("Statics").info("check: FAILED");
             StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
             return;
-        } else if (error == TermError.missedALoad && load.getUnit() == Unit.moment) {
+        } else if (error == TermError.missedALoad) {
             Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_couples");
-            return;
+            if (load.getUnit() == Unit.moment) {
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_couples");
+                return;
+            } else {
+                // should be a force here
+                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_moments");
+                return;
+            }
         }
 
         super.reportError(error, load, coefficient);

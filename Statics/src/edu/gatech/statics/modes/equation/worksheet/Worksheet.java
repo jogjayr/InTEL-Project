@@ -39,6 +39,10 @@ public class Worksheet {
         return new ArrayList(equations.keySet());
     }
 
+    public EquationMath getMath(String name) {
+        return equations.get(name);
+    }
+
     /**
      * This method updates the equations present in the worksheet and makes them consistent with the state.
      */
@@ -88,7 +92,7 @@ public class Worksheet {
                         // the vector represented by the term is an unknown symbol
                         equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
                         vectorNames.put(q.getSymbolName(), q);
-                        
+
                     } else {
                         // the vector represented by this term is a constant
 

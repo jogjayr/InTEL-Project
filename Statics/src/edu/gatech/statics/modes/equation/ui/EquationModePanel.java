@@ -14,7 +14,6 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
@@ -253,13 +252,18 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         List<String> symbols = new ArrayList<String>();
         for (SimulationObject obj : diagram.allObjects()) {
-            if (obj instanceof Quantified) {
-                Quantified q = (Quantified) obj;
-                if (q.isSymbol() && !q.isKnown()) {
-                    String symbol = q.getSymbolName();
-                    if (!symbols.contains(symbol)) {
-                        symbols.add(symbol);
-                    }
+            Quantified q = null;
+
+            if (obj instanceof Load) {
+                q = ((Load) obj).getVector();
+            } else if (obj instanceof Quantified) {
+                q = (Quantified) obj;
+            }
+
+            if (q != null && q.isSymbol() && !q.isKnown()) {
+                String symbol = q.getSymbolName();
+                if (!symbols.contains(symbol)) {
+                    symbols.add(symbol);
                 }
             }
         }
@@ -317,6 +321,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     }
 
     private void clear() {
+        for (EquationUIData eqdata : uiMap.values()) {
+            eqdata.equationBar.clear();
+        }
+
         equationBarContainer.removeAll();
         equationButtonContainer.removeAll();
         solutionContainer.removeAll();
@@ -332,16 +340,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
 
-//        for (EquationMath math : diagram.getWorksheet().getEquations()) {
-//            addEquationRow(math);
-//        }
-//
-//        if (diagram.getWorksheet().isSolved()) {
-//            performSolve();
-//        }
-
-        //Exercise.getExercise().enableTabs(diagram.getBodySubset());
-
+        for (String mathName : diagram.getWorksheet().getEquationNames()) {
+            EquationMath math = diagram.getWorksheet().getMath(mathName);
+            addEquationRow(math);
+        }
+        
+        stateChanged();
+        
         refreshRows();
         invalidate();
     }

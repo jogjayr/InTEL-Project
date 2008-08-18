@@ -25,4 +25,9 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
         builder.setMomentPoint(momentPoint);
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "SetMomentPoint [" + momentPoint.getName() + "]";
+    }
 }

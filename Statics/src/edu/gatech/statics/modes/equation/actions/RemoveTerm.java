@@ -31,4 +31,9 @@ public class RemoveTerm implements DiagramAction<EquationState> {
         builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "RemoveTerm [" + equationName + ", " + load + "]";
+    }
 }

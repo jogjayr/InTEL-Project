@@ -30,6 +30,19 @@ public class Parser {
      * terms.
      */
     public static AffineQuantity evaluateSymbol(String expression) {
+
+        expression = expression.trim();
+
+        // trim the tailing * if it exists.
+        if (expression.endsWith("*")) {
+            expression = expression.substring(0, expression.length() - 1);
+        }
+
+        // handle the empty case right away
+        if (expression.equals("")) {
+            return new AffineQuantity(BigDecimal.ONE, BigDecimal.ZERO, null);
+        }
+        
         Parser parser = new Parser();
         Node topNode;
         SymbolNode symbol;
@@ -44,10 +57,8 @@ public class Parser {
 
         // for the simple case if the symbol term is not there in the first place
         if (symbol == null) {
-            BigDecimal constant;
-            try {
-                constant = topNode.evaluate();
-            } catch (NullPointerException ex) {
+            BigDecimal constant = new Parser().evaluateInternal(expression);
+            if (constant == null) {
                 return null;
             }
             AffineQuantity result = new AffineQuantity(constant, BigDecimal.ZERO, null);
@@ -384,7 +395,7 @@ public class Parser {
             return new BinaryNode(BinaryNode.Operation.subtract);
         }
         if (token.toLowerCase().equals("pi")) {
-            return new ConstantNode((float)Math.PI);
+            return new ConstantNode((float) Math.PI);
         }
 
         try {

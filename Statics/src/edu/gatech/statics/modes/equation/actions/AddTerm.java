@@ -37,4 +37,9 @@ public class AddTerm implements DiagramAction<EquationState> {
         builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
+
+    @Override
+    public String toString() {
+        return "AddTerm [" + equationName + ", " + load + ", \"" + coefficient + "\"]";
+    }
 }

@@ -100,6 +100,7 @@ abstract public class EquationMath {
                 //Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
 
                 reportError(error, load, coefficient);
+                return false;
             }
         }
 
