@@ -68,10 +68,11 @@ public class EquationMode extends Mode {
 
         // okay, the check fails, now we clear check flags and
         // load up the fbd mode.
-        if (!fbdChecker.checkDiagram()) {
+        if (!eq.isLocked() && !fbdChecker.checkDiagram()) {
             fbd.setSolved(false);
             //eq.getWorksheet().resetSolve();
-            eq.stateChanged();
+            //eq.stateChanged();
+            eq.resetSolve();
             FBDMode.instance.load(key);
 
             FBDRedirectPopup popup = new FBDRedirectPopup(key);

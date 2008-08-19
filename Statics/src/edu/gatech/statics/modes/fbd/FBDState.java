@@ -146,4 +146,9 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         hash = 17 * hash + (this.addedLoads != null ? this.addedLoads.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "FBDState: {solved=" + solved + ", addedLoads=" + addedLoads + "}";
+    }
 }

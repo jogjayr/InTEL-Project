@@ -30,6 +30,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -173,6 +174,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * @param values
      */
     public void performSolve(Map<Quantity, Float> values) {
+
+        // first, lock the diagram:
+        EquationState.Builder builder = new EquationState.Builder(getCurrentState());
+        builder.setLocked(true);
+        pushState(builder.build());
+        clearStateStack();
 
         // FIRST BATCH
         // this first batch of updates updates basic values, vectors and measurements
@@ -334,7 +341,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         for (SimulationObject obj : allObjects()) {
             obj.setSelectable(true);
         }
-        
+
+        // make sure that the state is okay with the underlying diagram.
+        validateState();
+
         // mark the state as changed so that the UI updates.
         stateChanged();
 
@@ -342,6 +352,37 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
 
         StaticsApplication.getApp().resetAdvice();
+    }
+
+    /**
+     * This method is called when the equation mode is loaded, and makes sure that
+     * the loads described in the state are present in the underlying fbd. This is important
+     * because when changes are made to the fbd externally, some forces might move, and others might disappear.
+     */
+    protected void validateState() {
+
+        List<AnchoredVector> fbdLoads = fbd.getCurrentState().getAddedLoads();
+
+        EquationState.Builder builder = new EquationState.Builder(getCurrentState());
+        for (EquationMathState state : builder.getEquationStates().values()) {
+            EquationMathState.Builder mathBuilder = new EquationMathState.Builder(state);
+
+            // get a list of everything present in the math
+            List<AnchoredVector> toRemove = new ArrayList<AnchoredVector>(mathBuilder.getTerms().keySet());
+            toRemove.removeAll(fbdLoads); // take out everything in the fbdLoads
+            for (AnchoredVector load : toRemove) {
+                // what is left is stuff that does not belong.
+                mathBuilder.getTerms().remove(load);
+            }
+
+            // update the state in the builder.
+            builder.putEquationState(mathBuilder.build());
+        }
+        // build the result.
+        pushState(builder.build());
+
+        // clear the states
+        clearStateStack();
     }
     private SelectionFilter selector = new SelectionFilter() {
 
@@ -402,6 +443,25 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     }
     private VectorObject momentArm;
     private Load momentArmTarget;
+
+    /**
+     * This method is called when the underlying diagram has changed.
+     * The function of this method is to unlock all the underlying equations.
+     */
+    void resetSolve() {
+        EquationState.Builder builder = new EquationState.Builder(getCurrentState());
+        builder.setLocked(false);
+        for (EquationMathState state : builder.getEquationStates().values()) {
+            // make sure the sub-states are all unlocked.
+            EquationMathState.Builder mathBuilder = new EquationMathState.Builder(state);
+            mathBuilder.setLocked(false);
+            builder.putEquationState(mathBuilder.build());
+        }
+        pushState(builder.build());
+
+        // clear all of the states
+        clearStateStack();
+    }
 
     private void showMomentArm(Load target) {
 

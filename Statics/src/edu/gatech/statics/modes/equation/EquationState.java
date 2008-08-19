@@ -146,4 +146,9 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         hash = 53 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "EquationState: {locked=" + locked + ", momentPoint=" + momentPoint + ", equationStates=" + equationStates + "}";
+    }
 }

@@ -13,6 +13,7 @@ import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.equation.actions.LockEquation;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
@@ -103,8 +104,10 @@ abstract public class EquationMath {
                 return false;
             }
         }
-
-        //setLocked(true);
+        
+        // lock the math.
+        LockEquation lockEquationAction = new LockEquation(name, true);
+        diagram.performAction(lockEquationAction);
 
         Logger.getLogger("Statics").info("check: PASSED!");
         StaticsApplication.getApp().setAdviceKey("equation_feedback_check_success");

@@ -23,7 +23,9 @@ public class StateStack<T extends DiagramState> {
      * Clears the undo history and leaves the currently active state.
      */
     public void clear() {
-        stack.retainAll(Collections.singleton(getCurrent()));
+        T current = getCurrent();
+        stack.clear();
+        stack.add(current);
         position = 0;
     }
 

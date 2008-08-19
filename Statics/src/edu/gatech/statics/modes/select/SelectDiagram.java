@@ -60,7 +60,6 @@ public class SelectDiagram extends Diagram<SelectState> {
     public void activate() {
         super.activate();
 
-        clearStateStack();
         currentHighlight = null;
 
         setDiffuseHighlights(true);

@@ -67,14 +67,15 @@ public class Worksheet {
 
             equationSystem.resetTerms();
 
-            int numberEquations = equations.size();
+            //int numberEquations = equations.size();
 
             // go through each row
-            for (int row = 0; row < numberEquations; row++) {
+            int row = 0;
+            for (EquationMath math : equations.values()) {
 
                 // now go through each term in the equation for the row
-                EquationMath math = equations.get(row);
-                EquationMathState mathState = diagram.getCurrentState().getEquationStates().get(math.getName());
+                //EquationMath math = equations.get(row);
+                EquationMathState mathState = math.getState();
 
                 if (!mathState.isLocked()) {
                     continue;
@@ -106,6 +107,9 @@ public class Worksheet {
                         }
                     }
                 }
+                
+                // increment our row count.
+                row++;
             }
 
             equationSystem.process();

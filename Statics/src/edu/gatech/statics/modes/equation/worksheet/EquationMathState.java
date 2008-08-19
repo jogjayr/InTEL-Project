@@ -113,4 +113,9 @@ final public class EquationMathState {
         hash = 11 * hash + (this.locked ? 1 : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + "}";
+    }
 }

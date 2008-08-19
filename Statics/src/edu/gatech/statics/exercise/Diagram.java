@@ -80,7 +80,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     /**
      * Undoes the last action done to this diagram
      */
-    public void undo() {
+    final public void undo() {
         states.undo();
         Logger.getLogger("Statics").info("undo");
         stateChanged();
@@ -90,7 +90,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     /**
      * Redoes the last undone action
      */
-    public void redo() {
+    final public void redo() {
         states.redo();
         Logger.getLogger("Statics").info("redo");
         stateChanged();
@@ -109,7 +109,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * returns the current state of the diagram.
      * @return
      */
-    public StateType getCurrentState() {
+    final public StateType getCurrentState() {
         return states.getCurrent();
     }
 
@@ -117,7 +117,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * returns true if it is possible to undo from the current state
      * @return
      */
-    public boolean canUndo() {
+    final public boolean canUndo() {
         return states.canUndo();
     }
 
@@ -125,7 +125,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * returns true if it is possible to redo from the current state
      * @return
      */
-    public boolean canRedo() {
+    final public boolean canRedo() {
         return states.canRedo();
     }
 
@@ -133,19 +133,20 @@ public abstract class Diagram<StateType extends DiagramState> {
      * performs the given action if possible.
      * @param action
      */
-    public void performAction(DiagramAction<StateType> action) {
+    final public void performAction(DiagramAction<StateType> action) {
         if (isLocked() || !states.canPush()) {
             return;
         }
         Logger.getLogger("Statics").info("perform action: " + action);
         StateType newState = action.performAction(getCurrentState());
-        
+
         // only push the state if it is a change.
         if (!newState.equals(getCurrentState())) {
             Logger.getLogger("Statics").info("state changed");
+            Logger.getLogger("Statics").info("  " + newState);
             states.push(newState);
+            stateChanged();
         }
-        stateChanged();
 
         // update diagram
         updateDiagram();
@@ -156,8 +157,11 @@ public abstract class Diagram<StateType extends DiagramState> {
      * Does nothing if the state cannot be pushed.
      * @param state
      */
-    protected void pushState(StateType state) {
+    final protected void pushState(StateType state) {
+        Logger.getLogger("Statics").info("state changed");
+        Logger.getLogger("Statics").info("  " + state);
         states.push(state);
+        stateChanged();
     }
 
     /**
@@ -165,7 +169,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * This should only be used when the undo history needs to be cleared,
      * or if the diagram is just activated.
      */
-    protected void clearStateStack() {
+    final protected void clearStateStack() {
         states.clear();
     }
 
@@ -175,7 +179,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * possible for diagrams to get unlocked if external changes are made.
      * @return
      */
-    public boolean isLocked() {
+    final public boolean isLocked() {
         return getCurrentState().isLocked();
     }
 
@@ -393,9 +397,12 @@ public abstract class Diagram<StateType extends DiagramState> {
 
     /**
      * This method is called when a diagram is activated and the user switches to it
+     * By default this clears the state stack, and refreshes the display.
      */
     public void activate() {
+        Logger.getLogger("Statics").info("diagram activated (" + this + ")");
         //setSelectableFilterDefault();
+        clearStateStack();
         invalidateNodes();
         StaticsApplication.getApp().setCurrentTool(null);
         updateDiagram();

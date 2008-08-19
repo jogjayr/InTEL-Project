@@ -107,4 +107,9 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         hash = 37 * hash + (this.currentlySelected != null ? this.currentlySelected.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "SelectState: {currentlySelected=" + currentlySelected + "}";
+    }
 }
