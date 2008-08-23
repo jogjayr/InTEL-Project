@@ -30,6 +30,13 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
     public final String getPanelName() {
         return getDiagramType().getName();
     }
+
+    /**
+     * This is called when the state changes, so that the mode can update its interface.
+     */
+    public void stateChanged() {
+    }
+
     //public abstract String getPanelName();
     protected BLabel getTitleLabel() {
         return titleLabel;

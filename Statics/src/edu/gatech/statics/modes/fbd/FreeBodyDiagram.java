@@ -119,6 +119,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      */
     @Override
     protected void stateChanged() {
+        super.stateChanged();
 
         // clear the temporary list.
         // any actual temporary loads will be cleared subsequently.

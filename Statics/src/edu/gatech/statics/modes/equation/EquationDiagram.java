@@ -129,9 +129,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected void stateChanged() {
-        // tells the UI to update its state
-        EquationModePanel modePanel = (EquationModePanel) InterfaceRoot.getInstance().getModePanel(getType().getName());
-        modePanel.stateChanged();
+        super.stateChanged();
     }
 
     /**

@@ -4,6 +4,7 @@
  */
 package seesaw;
 
+import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
@@ -61,13 +62,16 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
         measure1.setKnown(false);
         measure1.setSymbol("X");
+        
+        measure1.setName("measure AB");
+        measure2.setName("measure BC");
 
         schematic.add(measure1);
         schematic.add(measure2);
 
         base.setName("B");
-        //end1.setName("end1");
-        //end2.setName("end2");
+        end1.setName("end1");
+        end2.setName("end2");
         child1Point.setName("A");
         child2Point.setName("C");
 
@@ -83,6 +87,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         seesaw.addObject(child2Point);
 
         Connector pin = new Pin2d(base);
+        pin.setName("pin B");
         pin.attachToWorld(seesaw);
 
         //end1.createDefaultSchematicRepresentation();
@@ -99,6 +104,8 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         schematic.add(seesaw);
 
         Vector3f modelOffset = new Vector3f(0, -1.25f, 0);
+        Matrix3f modelRotation = new Matrix3f();
+        modelRotation.fromAngleAxis((float)Math.PI/2, Vector3f.UNIT_Y);
 
         ModelRepresentation rep;
         ModelNode modelNode = ModelNode.load("seesaw/assets", "seesaw/assets/seesaw.dae");
@@ -109,10 +116,12 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelOffset);
+        rep.setModelRotation(modelRotation);
         seesaw.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelOffset);
+        rep.setModelRotation(modelRotation);
         schematic.getBackground().addRepresentation(rep);
         
         addTask(new CompleteFBDTask(new BodySubset(seesaw)));

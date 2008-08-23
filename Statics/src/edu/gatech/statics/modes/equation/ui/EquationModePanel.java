@@ -81,7 +81,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     /**
      * Called when the diagram state changes. This causes the EquationBars to refresh
      */
+    @Override
     public void stateChanged() {
+        super.stateChanged();
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }

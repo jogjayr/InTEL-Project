@@ -28,6 +28,8 @@ import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +105,8 @@ public abstract class Diagram<StateType extends DiagramState> {
      * that change display, UI, or other elements in response to state.
      */
     protected void stateChanged() {
+        ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
+        modePanel.stateChanged();
     }
 
     /**

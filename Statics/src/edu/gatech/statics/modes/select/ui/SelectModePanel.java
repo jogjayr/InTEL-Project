@@ -43,8 +43,21 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
         nextButton = new BButton("Done", new ButtonListener(), "done");
         nextButton.setStyleClass("circle_button");
         nextButton.setEnabled(false);
-
-        //add(selectionLabel, BorderLayout.NORTH);
+        
+        selectionListBox.setPreferredSize(300, -1);
+        
+        /*BContainer undoRedoBox = new BContainer(new BorderLayout());
+        BButton undo = new BButton("undo");
+        BButton redo = new BButton("redo");
+        undoRedoBox.add(undo, BorderLayout.NORTH);
+        undoRedoBox.add(redo, BorderLayout.SOUTH);
+        
+        BContainer mainButtonContainer = new BContainer(new BorderLayout());
+        mainButtonContainer.add(selectionListBox, BorderLayout.WEST);
+        mainButtonContainer.add(undoRedoBox, BorderLayout.EAST);
+        
+        add(mainButtonContainer, BorderLayout.WEST);*/
+        
         add(selectionListBox, BorderLayout.WEST);
         add(nextButton, BorderLayout.EAST);
 

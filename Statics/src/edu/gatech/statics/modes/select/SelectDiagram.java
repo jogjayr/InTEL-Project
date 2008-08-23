@@ -114,6 +114,7 @@ public class SelectDiagram extends Diagram<SelectState> {
      */
     @Override
     protected void stateChanged() {
+        super.stateChanged();
 
         // update the display
         for (SimulationObject obj : allObjects()) {
