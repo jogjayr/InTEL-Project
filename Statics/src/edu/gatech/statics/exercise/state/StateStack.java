@@ -5,7 +5,6 @@
 package edu.gatech.statics.exercise.state;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -104,6 +103,12 @@ public class StateStack<T extends DiagramState> {
      * Adds a new state to the stack and makes it active.
      */
     public void push(T newState) {
+        
+        // pop everything ahead of the position indicator
+        while(stack.size() > position+1) {
+            stack.remove(position+1);
+        }
+        
         stack.add(newState);
         position++;
     }

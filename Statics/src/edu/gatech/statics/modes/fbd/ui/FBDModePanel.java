@@ -66,6 +66,8 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
 
     @Override
     public void activate() {
+        super.activate();
+        
         // need to have list of bodies here...
         FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
         getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());

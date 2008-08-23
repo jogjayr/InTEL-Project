@@ -10,6 +10,7 @@ import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -33,8 +34,12 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 
     /**
      * This is called when the state changes, so that the mode can update its interface.
+     * This by default automatically updates the undo and redo buttons so that they appear enabled correctly.
+     * So, remember to call super.stateChanged() when overriding this method.
      */
     public void stateChanged() {
+        ApplicationBar appBar = InterfaceRoot.getInstance().getApplicationBar();
+        appBar.updateUndoRedoState();
     }
 
     //public abstract String getPanelName();
@@ -49,7 +54,10 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
         add(titleLabel, BorderLayout.NORTH);
     }
 
-    abstract public void activate();
+    //abstract public void activate();
+    public void activate() {
+        stateChanged();
+    }
 
     public ApplicationTab getTab() {
         return tab;

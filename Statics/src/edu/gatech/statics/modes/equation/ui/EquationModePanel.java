@@ -335,6 +335,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     @Override
     public void activate() {
+        super.activate();
+        
         if (!uiMap.isEmpty()) {
             clear();
         }

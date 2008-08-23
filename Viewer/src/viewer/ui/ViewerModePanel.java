@@ -50,6 +50,7 @@ public class ViewerModePanel extends ApplicationModePanel {
 
     @Override
     public void activate() {
+        super.activate();
 
         //ViewerDiagram diagram = (ViewerDiagram) getDiagram();
         //Node modelNode = (Node) diagram.getModel().getChild(0);

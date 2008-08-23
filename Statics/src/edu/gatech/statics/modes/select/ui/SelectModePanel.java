@@ -75,6 +75,8 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
     @Override
     public void activate() {
+        super.activate();
+        
         getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
         StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");

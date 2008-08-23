@@ -5,8 +5,11 @@
 package edu.gatech.statics.ui.applicationbar;
 
 import com.jme.system.DisplaySystem;
+import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BWindow;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
@@ -33,7 +36,7 @@ public class ApplicationBar extends BWindow {
     private BContainer diagramBox;
     private HTMLView adviceBox;
     private ApplicationModePanel modePanel;
-    //private SelectFBDItem currentItem;
+    private BButton undoButton,  redoButton;
 
     // ***
     // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???
@@ -51,9 +54,7 @@ public class ApplicationBar extends BWindow {
             tab.setTabEnabled(false);
         }
     }
-    //protected void enableTab(ApplicationTab tab, boolean enabled) {
-    //    tab.setTabEnabled(enabled);
-    //}
+
     public void enableTab(Mode mode, boolean enabled) {
         ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModeName());
         panel.getTab().setTabEnabled(enabled);
@@ -103,17 +104,6 @@ public class ApplicationBar extends BWindow {
                 }
             }
         }
-
-
-    /**ApplicationBar applicationBar = InterfaceRoot.getInstance().getApplicationBar();
-    applicationBar.disableAllTabs();
-    applicationBar.enableTab(SelectMode.instance, true);
-    if (equationDiagrams.get(bodies) != null) {
-    applicationBar.enableTab(EquationMode.instance, true);
-    }
-    if (freeBodyDiagrams.get(bodies) != null) {
-    applicationBar.enableTab(FBDMode.instance, true);
-    }*/
     }
 
     public ApplicationBar() {
@@ -126,8 +116,14 @@ public class ApplicationBar extends BWindow {
         mainBar = new BContainer(new BorderLayout(5, 0));
         add(mainBar, BorderLayout.CENTER);
 
+        BContainer sideBox = new BContainer(new BorderLayout());
+        mainBar.add(sideBox, BorderLayout.EAST);
+
         adviceBox = createAdviceBox();
-        mainBar.add(adviceBox, BorderLayout.EAST);
+        sideBox.add(adviceBox, BorderLayout.EAST);
+
+        BContainer undoRedoBox = createUndoRedoBox();
+        sideBox.add(undoRedoBox, BorderLayout.CENTER);
 
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);
@@ -142,6 +138,44 @@ public class ApplicationBar extends BWindow {
         diagramBox.setStyleClass("advice_box"); // this will change.
         diagramBox.setPreferredSize(100, 100);
         return diagramBox;
+    }
+
+    private BContainer createUndoRedoBox() {
+        
+        BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+        //outer.add(inner, BorderLayout.CENTER);
+        
+        ActionListener undoRedoListener = new UndoRedoListener();
+        undoButton = new BButton("Undo", undoRedoListener, "undo");
+        redoButton = new BButton("Redo", undoRedoListener, "redo");
+        inner.add(undoButton);
+        inner.add(redoButton);
+
+        return inner;
+    }
+
+    void updateUndoRedoState() {
+        if (getModePanel() == null || getModePanel().getDiagram() == null) {
+            undoButton.setEnabled(false);
+            redoButton.setEnabled(false);
+            return;
+        }
+        undoButton.setEnabled(getModePanel().getDiagram().canUndo());
+        redoButton.setEnabled(getModePanel().getDiagram().canRedo());
+    }
+
+    private final class UndoRedoListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent event) {
+            if (getModePanel() == null || getModePanel().getDiagram() == null) {
+                return;
+            }
+            if (event.getAction().equals("undo")) {
+                getModePanel().getDiagram().undo();
+            } else if(event.getAction().equals("redo")) {
+                getModePanel().getDiagram().redo();
+            }
+        }
     }
 
     private HTMLView createAdviceBox() {
@@ -168,17 +202,4 @@ public class ApplicationBar extends BWindow {
     public void removeTabs() {
         tabBar.removeAll();
     }
-
-    /*private BContainer createTabBar() {
-    tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-    for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
-    BContainer spacer = new BContainer();
-    spacer.setPreferredSize(20, -1);
-    tabBar.add(spacer);
-    ApplicationTab tab = panel.getTab();
-    tabBar.add(tab);
-    tabs.add(tab);
-    }
-    return tabBar;
-    }*/
 }
