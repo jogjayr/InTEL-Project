@@ -12,11 +12,9 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
-import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Background;
-import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,11 @@ public class SelectDiagram extends Diagram<SelectState> {
     @Override
     public void activate() {
         super.activate();
-
+        
+        // reset to the initial state
+        pushState(createInitialState());
+        clearStateStack();
+        
         currentHighlight = null;
 
         setDiffuseHighlights(true);
@@ -122,8 +124,8 @@ public class SelectDiagram extends Diagram<SelectState> {
             obj.setDisplaySelected(getCurrentlySelected().contains(obj));
         }
 
-        SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        modePanel.updateSelection();
+        //SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        //modePanel.updateSelection();
     }
 
     @Override

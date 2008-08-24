@@ -43,9 +43,9 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
         nextButton = new BButton("Done", new ButtonListener(), "done");
         nextButton.setStyleClass("circle_button");
         nextButton.setEnabled(false);
-        
+
         selectionListBox.setPreferredSize(300, -1);
-        
+
         /*BContainer undoRedoBox = new BContainer(new BorderLayout());
         BButton undo = new BButton("undo");
         BButton redo = new BButton("redo");
@@ -57,7 +57,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
         mainButtonContainer.add(undoRedoBox, BorderLayout.EAST);
         
         add(mainButtonContainer, BorderLayout.WEST);*/
-        
+
         add(selectionListBox, BorderLayout.WEST);
         add(nextButton, BorderLayout.EAST);
 
@@ -76,19 +76,25 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     @Override
     public void activate() {
         super.activate();
-        
+
         getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
         StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
 
-        // disable all tabs when the mode is selected
-        // then enable this tab
-        //InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
-        //InterfaceRoot.getInstance().getApplicationBar().enableTab(getTab(), true);
+    // disable all tabs when the mode is selected
+    // then enable this tab
+    //InterfaceRoot.getInstance().getApplicationBar().disableAllTabs();
+    //InterfaceRoot.getInstance().getApplicationBar().enableTab(getTab(), true);
+    }
+
+    @Override
+    public void stateChanged() {
+        super.stateChanged();
+        updateSelection();
     }
 
     public void updateSelection() {
-        
+
         // refine list to only bodies.
         List<Body> selection = new ArrayList<Body>();
         for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
@@ -96,7 +102,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
                 selection.add((Body) obj);
             }
         }
-        
+
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");

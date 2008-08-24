@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.application;
 
+import com.jme.input.action.InputActionEvent;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
@@ -15,6 +16,7 @@ import com.jme.input.AbsoluteMouse;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.input.action.InputActionInterface;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
@@ -136,14 +138,14 @@ public class StaticsApplication {
     private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
     public void setAdviceKey(String key, Object... formatTerms) {
-        Logger.getLogger("Statics").info("Setting advice key: "+key);
+        Logger.getLogger("Statics").info("Setting advice key: " + key);
         String advice;
         if (formatTerms == null || formatTerms.length == 0) {
             advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
         } else {
             advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
-        Logger.getLogger("Statics").info("Setting advice: "+advice);
+        Logger.getLogger("Statics").info("Setting advice: " + advice);
         iRoot.setAdvice(advice);
     }
 
@@ -282,7 +284,7 @@ public class StaticsApplication {
         if (currentDiagram == null) {
             return;
         }
-        
+
         for (SimulationObject obj : currentDiagram.allObjects()) {
             obj.setDisplayHighlight(false);
             obj.setDisplaySelected(false);
@@ -417,6 +419,29 @@ public class StaticsApplication {
 
         input.addAction(selector);
         input.addAction(drag);
+
+        // this defines the key input controls for undo and redo
+        // this specifically maps CTRL+Z to undo, and CTRL+Y to redo
+        InputActionInterface undoRedoAction = new InputActionInterface() {
+
+            public void performAction(InputActionEvent evt) {
+                // only accept CTRL+ modifiers
+                if (!KeyInput.get().isControlDown()) {
+                    return;
+                }
+                // do not do anything if the diagram is null for some reason
+                if (getCurrentDiagram() == null) {
+                    return;
+                }
+                if ("undo".equals(evt.getTriggerName())) {
+                    getCurrentDiagram().undo();
+                } else if ("redo".equals(evt.getTriggerName())) {
+                    getCurrentDiagram().redo();
+                }
+            }
+        };
+        input.addAction(undoRedoAction, "undo", KeyInput.KEY_Z, false);
+        input.addAction(undoRedoAction, "redo", KeyInput.KEY_Y, false);
 
         iRoot = new InterfaceRoot(timer, input, camera);
 
