@@ -98,38 +98,51 @@ public class BicycleExercise extends FrameExercise {
         jointAtB.setName("Joint B");
 
         pinA = new Pin2d(A);
+        pinA.setName("Pin A");
         rollerB = new Roller2d(B);
-
+        rollerB.setName("Roller B");
+        
         twoForceF = new Connector2ForceMember2d(F, frontBar);
+        twoForceF.setName("2FM Connector F");
         twoForceGF = new Connector2ForceMember2d(G, frontBar);
+        twoForceGF.setName("2FM Connector GF");
         twoForceH = new Connector2ForceMember2d(H, topBar);
+        twoForceH.setName("2FM Connector H");
         twoForceJH = new Connector2ForceMember2d(J, topBar);
+        twoForceJH.setName("2FM Connector JH");
         twoForceJB = new Connector2ForceMember2d(J, backBar);
+        twoForceJB.setName("2FM Connector JB");
         twoForceGB = new Connector2ForceMember2d(G, bottomBar);
-
+        twoForceGB.setName("2FM Connector GB");
+        
         //rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerB.setDirection(Vector3bd.UNIT_Y);
 
         DistanceMeasurement distance1 = new DistanceMeasurement(I, A);
+        distance1.setName("Measure AI");
         distance1.createDefaultSchematicRepresentation(0.5f);
         distance1.forceVertical();
         schematic.add(distance1);
 
         DistanceMeasurement distance2 = new DistanceMeasurement(I, A);
+        distance2.setName("Measure AI2");
         distance2.createDefaultSchematicRepresentation(0.5f);
         distance2.forceHorizontal();
         schematic.add(distance2);
 
         DistanceMeasurement distance3 = new DistanceMeasurement(B, K);
+        distance3.setName("Measure BK");
         distance3.createDefaultSchematicRepresentation(4.1f);
         distance3.forceHorizontal();
         schematic.add(distance3);
 
         DistanceMeasurement distance4 = new DistanceMeasurement(A, G);
+        distance4.setName("Measure AG");
         distance4.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance4);
 
         DistanceMeasurement distance5 = new DistanceMeasurement(G, B);
+        distance5.setName("Measure BG");
         distance5.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance5);
         
@@ -144,18 +157,22 @@ public class BicycleExercise extends FrameExercise {
         schematic.add(distance7);*/
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(A, G, I);
+        angle1.setName("Angle AGI");
         angle1.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle1);
 
         PointAngleMeasurement angle2 = new PointAngleMeasurement(G, A, F);
+        angle2.setName("Angle GAF");
         angle2.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle2);
 
         PointAngleMeasurement angle3 = new PointAngleMeasurement(G, K, B);
+        angle3.setName("Angle GKB");
         angle3.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle3);
 
         PointAngleMeasurement angle4 = new PointAngleMeasurement(B, J, G);
+        angle4.setName("Angle BJG");
         angle4.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle4);
 
@@ -175,15 +192,16 @@ public class BicycleExercise extends FrameExercise {
         handleForceDirection = handleForceDirection.normalize();
 
         FixedAngleMeasurement angle5 = new FixedAngleMeasurement(I, Vector3bd.UNIT_X.negate(), handleForceDirection.toVector3f());
+        angle5.setName("Angle B");
         angle5.createDefaultSchematicRepresentation(0.5f);
         schematic.add(angle5);
 
         Force handleWeight = new Force(I, handleForceDirection, new BigDecimal(20));
-        handleWeight.setName("Handlebar");
+        handleWeight.setName("Handlebar Force");
         handlebarBeam.addObject(handleWeight);
 
         Moment handleMoment = new Moment(I, Vector3bd.UNIT_Z, new BigDecimal(5)); // use symbol here
-        handleMoment.setName("Handlebar");
+        handleMoment.setName("Handlebar Moment");
         handlebarBeam.addObject(handleMoment);
 
         pinA.attachToWorld(handlebarBeam);
@@ -193,8 +211,10 @@ public class BicycleExercise extends FrameExercise {
         // and I apologize for it.
         Connector2ForceMember2d GBatB, JBatB;
         GBatB = new Connector2ForceMember2d(B, bottomBar);
+        GBatB.setName("2FM Connector GBatB");
         JBatB = new Connector2ForceMember2d(B, backBar);
-                
+        GBatB.setName("2FM Connector JBatB");
+        
         rollerB.attachToWorld(jointAtB);
         GBatB.attach(jointAtB, bottomBar);
         JBatB.attach(jointAtB, backBar);

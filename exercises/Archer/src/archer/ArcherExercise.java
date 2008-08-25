@@ -40,7 +40,7 @@ public class ArcherExercise extends SimpleFBDExercise {
     }
 
     @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         ic.setNavigationWindow(new Navigation3DWindow());
         return ic;
@@ -74,23 +74,29 @@ public class ArcherExercise extends SimpleFBDExercise {
         Vector3bd directionUnitBottom = new Vector3bd(".5", "-.866", "0");
         
         Pin2dKnownDirection connectorTop = new Pin2dKnownDirection(bowTop);
+        connectorTop.setName("Pin B");
         connectorTop.setDirection(directionUnitTop);
         connectorTop.attach(bowString, bow);
 
         Pin2dKnownDirection connectorBottom = new Pin2dKnownDirection(bowBottom);
+        connectorBottom.setName("Pin D");
         connectorBottom.setDirection(directionUnitBottom);
         connectorBottom.attach(bowString, bow);
 
         Pin2dKnownDirection connectorFront = new Pin2dKnownDirection(bowFront);
+        connectorFront.setName("Pin C");
         connectorFront.setDirection(Vector3bd.UNIT_X);
         connectorFront.attachToWorld(bow);
         
         Pin2dKnownDirection connectorBack = new Pin2dKnownDirection(stringBack);
+        connectorBack.setName("Pin A");
         connectorBack.setDirection(Vector3bd.UNIT_X.negate());
         connectorBack.attachToWorld(bowString);
         
         AngleMeasurement measureTop = new FixedAngleMeasurement(bowTop, directionUnitTop.negate(), Vector3f.UNIT_X.negate());
+        measureTop.setName("Angle XXX");
         AngleMeasurement measureBottom = new FixedAngleMeasurement(bowBottom, directionUnitBottom.negate(), Vector3f.UNIT_X.negate());
+        measureBottom.setName("Angle YYY");
         
         schematic.add(measureTop);
         schematic.add(measureBottom);

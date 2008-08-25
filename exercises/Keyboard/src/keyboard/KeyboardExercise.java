@@ -55,6 +55,7 @@ public class KeyboardExercise extends FrameExercise {
     Roller2d jointB, jointE;
     Body leftLeg, rightLeg;
     Bar bar;
+
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
@@ -89,20 +90,24 @@ public class KeyboardExercise extends FrameExercise {
         jointE.setDirection(Vector3bd.UNIT_Y);
 
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
+        distance1.setName("Measure AD");
         distance1.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance1);
 
         DistanceMeasurement distance2 = new DistanceMeasurement(C, D);
+        distance2.setName("Measure CD");
         distance2.createDefaultSchematicRepresentation(0.5f);
         distance2.forceVertical();
         schematic.add(distance2);
 
         DistanceMeasurement distance3 = new DistanceMeasurement(C, Q);
+        distance3.setName("Measure CQ");
         distance3.createDefaultSchematicRepresentation(1f);
         distance3.forceVertical();
         schematic.add(distance3);
 
         DistanceMeasurement distance4 = new DistanceMeasurement(B, D);
+        distance4.setName("Measure BD");
         distance4.createDefaultSchematicRepresentation(2.4f);
         schematic.add(distance4);
 
@@ -115,11 +120,16 @@ public class KeyboardExercise extends FrameExercise {
         rightLeg.addObject(keyboardRight);
 
         jointC.attach(leftLeg, rightLeg);
+        jointC.setName("Joint C");
         jointP.attach(leftLeg, bar);
+        jointP.setName("Joint P");
         jointQ.attach(bar, rightLeg);
+        jointQ.setName("Joint Q");
         jointE.attachToWorld(rightLeg);
+        jointE.setName("Joint E");
         jointB.attachToWorld(leftLeg);
-
+        jointB.setName("Joint B");
+        
         A.setName("A");
         B.setName("B");
         C.setName("C");
