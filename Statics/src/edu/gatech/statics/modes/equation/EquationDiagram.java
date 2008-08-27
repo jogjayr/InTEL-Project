@@ -307,9 +307,6 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
         if (StaticsApplication.getApp().getCurrentTool() != null &&
                 StaticsApplication.getApp().getCurrentTool().isActive()) {
-
-
-
             return;
         } // do not select vectors if we have a tool active
 
@@ -392,6 +389,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     @Override
     public SelectionFilter getSelectionFilter() {
         return selector;
+    }
+    
+    /**
+     * This should be called by EquationModePanel when an equation is solved.
+     */
+    public void equationSolved() {
+        clearStateStack();
     }
 
     @Override

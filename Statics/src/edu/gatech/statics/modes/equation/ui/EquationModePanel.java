@@ -119,14 +119,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     public EquationModePanel() {
         super();
 
-        /*momentSelectButton = new BButton("choose\nmoment\npoint", new ActionListener() {
-        
-        public void actionPerformed(ActionEvent event) {
-        selectMomentPoint();
-        }
-        }, "momentSelect");
-        add(momentSelectButton, BorderLayout.WEST);*/
-
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         add(fullEquationContainer, BorderLayout.CENTER);
 
@@ -186,26 +178,12 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             data.equationBar.setLocked();
             setCheckIcon(data.equationBar);
         }
-//        else if (!math.isLocked()) {
-//            data.equationBar.setUnlocked();
-//            unsetCheckIcon(data.equationBar);
-//        }
-
-        // check our bar
-        //check(data.equationBar);
-
+        
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
     }
 
-//    private void unsetCheckIcon(EquationBar bar) {
-//
-//        EquationUIData data = uiMap.get(bar.getMath());
-//        data.checkButton.setEnabled(true);
-//
-//        data.checkButton.setText("check");
-//    }
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData data = uiMap.get(bar.getMath());
@@ -224,6 +202,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
+            getDiagram().equationSolved();
+            
             bar.setLocked();
 
             setCheckIcon(bar);
