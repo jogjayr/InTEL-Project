@@ -69,10 +69,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     }
 
     public void onHover(Load load) {
-        //if (activeEquation == null) {
-        //    return;
-        //}
-        //activeEquation.highlightVector(load == null ? null : load.getVector());
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
         }
@@ -89,19 +85,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
-    /**
-     * This lets the equation bars know that the moment point is changed or set.
-     * Right now it is called only by EquationDiagram when the diagram's moment point is set.
-     * @param momentPoint
-     */
-    /*public void setMomentPoint(Point momentPoint) {
-    for (EquationUIData data : uiMap.values()) {
-    if (data.equationBar.getMath() instanceof EquationMathMoments) {
-    ((EquationMathMoments) data.equationBar.getMath()).setObservationPoint(momentPoint);
-    data.equationBar.setMomentCenter(momentPoint);
-    }
-    }
-    }*/
     public EquationBar getActiveEquation() {
         return activeEquation;
     }

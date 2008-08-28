@@ -89,23 +89,12 @@ public class EquationBar extends BContainer {
             BContainer startContainer = makeStartContainer();
             add(startContainer);
 
-            // go through the terms and add boxes for them.
-            //for (Map.Entry<AnchoredVector, String> entry : math.getState().getTerms().entrySet()) {
-            //    addBox(entry.getKey(), entry.getValue());
-            //}
-
             // add = 0 icon
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
-            //equationContainer.add(new BLabel(" = 0"));
             add(new BLabel(icon));
 
-        // lock this if the math is solved
-        // this is handled outside
-        //if(math.isLocked())
-        //    setLocked();
-
         } catch (IOException e) {
-            // ??
+            // this is here in case there is a problem with loading the icon.
             e.printStackTrace();
         }
     }
@@ -181,14 +170,15 @@ public class EquationBar extends BContainer {
             } else {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
-            coefficient = new BTextField(coefficientText) {
+            coefficient = new BTextField(
+                    coefficientText) {
 
                 @Override
                 protected void lostFocus() {
                     super.lostFocus();
                     // if the box has lost focus, post a change term event.
                     // but do not post if the box has been removed.
-                    if(isAdded()) {
+                    if (isAdded()) {
                         ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
                         parent.getDiagram().performAction(changeTermEvent);
                     }
@@ -301,6 +291,13 @@ public class EquationBar extends BContainer {
      */
     protected void stateChanged() {
 
+        // update the moment point button
+        if(momentButton != null) {
+            Point momentPoint = parent.getDiagram().getMomentPoint();
+            String momentName = momentPoint == null ? "?" : momentPoint.getName();
+            momentButton.setText(momentName);
+        }
+        
         // go through terms that are present in the UI and mark the ones to remove
         List<TermBox> toRemove = new ArrayList<TermBox>();
 
@@ -328,21 +325,6 @@ public class EquationBar extends BContainer {
         }
     }
 
-    public void setMomentCenter(Point point) {
-        momentButton.setText(point.getLabelText());
-    //sumOperand.setText("M[" + point.getLabelText() + "]");
-    }
-
-    /*private void update() {
-    for (Term term : math.allTerms()) {
-    TermBox box = terms.get(term.getSource());
-    if (box == null) {
-    continue;
-    }
-    
-    term.setCoefficientText(box.coefficient.getText());
-    }
-    }*/    // placement information???
     private void addBox(AnchoredVector load, String coefficient) {
         // add plus icon unless first box
         if (terms.size() > 0) {
