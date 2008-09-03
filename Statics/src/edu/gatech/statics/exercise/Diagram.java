@@ -405,6 +405,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void activate() {
         Logger.getLogger("Statics").info("diagram activated (" + this + ")");
+        Logger.getLogger("Statics").info("  state is: "+getCurrentState().toString());
         //setSelectableFilterDefault();
         clearStateStack();
         invalidateNodes();

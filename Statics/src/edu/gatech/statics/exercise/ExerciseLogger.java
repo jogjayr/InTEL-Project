@@ -27,6 +27,8 @@ import java.util.logging.StreamHandler;
  * @author Calvin Ashmore
  */
 public class ExerciseLogger {
+    
+    private static final String rootPage = "http://intel.gatech.edu/";
 
     private ByteArrayOutputStream bout;
     private StreamHandler streamHandler;
@@ -97,7 +99,7 @@ public class ExerciseLogger {
         // first send out our log messages
         try {
             String targetPage = loggerAddress;
-            URL url = new URL(targetPage);
+            URL url = new URL(rootPage+targetPage);
 
             URLConnection connection = url.openConnection();
             connection.setDoOutput(true);

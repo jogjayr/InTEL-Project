@@ -201,7 +201,8 @@ public abstract class Exercise {
 
         // go through all diagram types and pick out the best one.
         for (DiagramType type : DiagramType.allTypes()) {
-            if (type.getPriority() > maxPriority && state.getDiagram(key, type) != null) {
+            if (type.getPriority() > maxPriority && 
+                    state.getDiagram(key, type) != null) {
                 maxDiagram = state.getDiagram(key, type);
                 maxPriority = type.getPriority();
             }
