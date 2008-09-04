@@ -77,25 +77,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public Point getMomentPoint() {
         return getCurrentState().getMomentPoint();
     }
-
+    
     /**
-     * This method attempts to make sure that the underlying state is valid
-     * with respect to the loads from the FreeBodyDiagram that this is based on.
-     * This method will be called when the diagram is loaded, but is intended to handle
-     * the case when the underlying diagram might have changed.
+     * This attempts to find the in-diagram Load object that corresponds to the
+     * given AnchoredVector.
+     * @param vector
+     * @return
      */
-    //protected void updateEquations() {
-    //    stateChanged();
-    //}
-
-    //public EquationMath getChecker() {
-    //    return new EquationMath(this);
-    //}
-    // IMPORTANT NOTE HERE
-    // if the vector is symbolic and has been reversed,
-    // then it will no longer be *equal* to the value stored as a key
-    // in vectorMap. So, we need to use another approach to pull out the vector.
-    // This is why we do not use a hashmap
     public Load getLoad(AnchoredVector vector) {
         if (vector == null) {
             return null;
@@ -115,13 +103,19 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return null;
     }
 
-    public Load getLoad(String symbolName) {
+    /**
+     * Returns an AnchoredVector that matches the symbol name. This looks in the
+     * list of loads from the underlying FBD.
+     * @param symbolName
+     * @return
+     */
+    public AnchoredVector getAnchoredVectorFromSymbol(String symbolName) {
         if (symbolName == null) {
             return null;
         }
         for (AnchoredVector vector : getDiagramLoads()) {
             if (symbolName.equals(vector.getSymbolName())) {
-                return getLoad(vector);
+                return vector;//getLoad(vector);
             }
         }
         return null;
@@ -243,24 +237,27 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
                 Point point = connector.getAnchor();
                 List<Vector> reactions = new ArrayList<Vector>();
-                /*for (Quantity q : values.keySet()) {
-                Load load = getLoad(q.getSymbolName());
-                if (load != null && load.getAnchor() == point) {
-                reactions.add(load.getVector());
-                }
-                }*/
 
                 // it's possible that the reactions are not meant for this particular connector
                 // go through all of our solved quantities and see if we can get some matches.
                 for (Vector reaction : connector.getReactions()) {
                     for (Quantity q : values.keySet()) {
-                        Load load = getLoad(q.getSymbolName());
+                        AnchoredVector load = getAnchoredVectorFromSymbol(q.getSymbolName());
                         //AnchoredVector load = Exercise.getExercise().getSymbolManager().getLoad
                         if (load != null && load.getAnchor() == point) {
                             // now test if the direction is okay
                             if (load.getVectorValue().equals(reaction.getVectorValue()) ||
                                     load.getVectorValue().equals(reaction.getVectorValue().negate())) {
-                                reactions.add(load.getVector());
+                                
+                                // here we need to put a solved reaction into the reactions list
+                                // first we need to make a clone of the vector, and then assign
+                                // the solved value to it.
+                                AnchoredVector solvedReaction = new AnchoredVector(load);
+                                BigDecimal value = new BigDecimal(values.get(q));
+                                solvedReaction.getVector().setDiagramValue(value);
+                                solvedReaction.setKnown(true);
+                                reactions.add(solvedReaction.getVector());
+                                
                             }
                         }
                     }
