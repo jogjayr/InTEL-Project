@@ -4,6 +4,8 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.objects.SimulationObject;
 import java.beans.XMLDecoder;
 import java.io.InputStream;
 
@@ -23,6 +25,18 @@ public class StaticsXMLDecoder extends XMLDecoder {
      */
     @Override
     public Object readObject() {
-        return super.readObject();
+        Object obj = super.readObject();
+        if (obj instanceof NameContainer) {
+            NameContainer nameContainer = (NameContainer) obj;
+            if (SimulationObject.class.isAssignableFrom(nameContainer.getTargetClass())) {
+                // object is a SimulationObject
+                // fetch it from the Exercise.
+                return Exercise.getExercise().getSchematic().getByName(nameContainer.getName());
+            }
+
+            // we cannot resolve the NameContainer!
+            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
+        }
+        return obj;
     }
 }

@@ -24,7 +24,11 @@ public class StaticsXMLEncoder extends XMLEncoder {
      */
     @Override
     public void writeObject(Object o) {
-        super.writeObject(o);
+        if (o instanceof ResolvableByName) {
+            ResolvableByName resolvable = (ResolvableByName) o;
+            super.writeObject(new NameContainer(resolvable.getName(), o.getClass()));
+        } else {
+            super.writeObject(o);
+        }
     }
-    
 }
