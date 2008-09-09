@@ -1,0 +1,11 @@
+table, input, textarea, select, li {
+	font: 100% Arial, Helvetica, Sans-Serif;
+	line-height: 160%;
+	color: #333;
+}
+.odd {
+ background-color: #ddd;
+}
+.even {
+ background-color: #fff;
+}
