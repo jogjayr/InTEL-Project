@@ -74,6 +74,7 @@ function getAssignmentByClassOwner($uuid){
   WHERE app_class.owner_user_id={$user['id']} 
   AND app_assignment.class_id=app_class.id 
   AND app_assignment.problem_id=app_problem.id 
+  AND app_assignment.is_active=1
   ORDER BY app_assignment.open_date DESC";
     
   $results = aquery($query, $db);
@@ -203,4 +204,19 @@ function updateAssignment($assignmentId, $problemId, $classId, $openDate, $close
 
 }
 
+function deleteAssignment($assignmentId){
+	//sets an assignment is_active=0
+	//if successful, returns true
+	
+	global $db;
+	
+	$query = "UPDATE app_assignment 
+  SET is_active=0 
+  WHERE id={$assignmentId}";
+  
+	query($query, $db);
+  
+	return true;	
+
+}
 ?>

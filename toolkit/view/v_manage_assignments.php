@@ -29,6 +29,14 @@
   
 	if (count($assignments) > 0) {
 ?>
+  <script type="text/javascript">
+    function confirm_delete(dest){
+      var r=confirm("Are you sure you want to delete this assignment?");
+      if (r==true){
+        window.location = dest;
+      }
+    }
+  </script>
   <script type="text/javascript" src="js/sortable.js"></script>
 	</div>
 	<div id="center_region">
@@ -61,7 +69,7 @@
 				echo '<td>' . t2h($openDate) . '</td>';
         echo '<td>' . t2h($closeDate) . '</td>';
         echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-        echo '<td><a href="' . $urlDelete . '">delete</a></td>';
+        echo '<td><a href="#" onclick="confirm_delete(\''.$urlDelete.'\')">delete</a></td>';
 			echo '</tr>';
 		}
 
