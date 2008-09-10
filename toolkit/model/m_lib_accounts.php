@@ -178,17 +178,11 @@ function updateAccount($uuid, $firstName, $lastName, $email, $gtPrismId, $err) {
   $q_email = t2sql($email);
   $q_gt_prism_id = t2sql($gtPrismId);
 	
-	$query = "UPDATE app_user SET first_name='{$q_firstName}' WHERE uuid='{$q_uuid}'";
-	query($query, $db);
-  
-  $query = "UPDATE app_user SET last_name='{$q_lastName}' WHERE uuid='{$q_uuid}'";
-	query($query, $db);
-  
-  $query = "UPDATE app_user SET email='{$q_email}' WHERE uuid='{$q_uuid}'";
-	query($query, $db);
+	$query = "UPDATE app_user 
+  SET first_name='{$q_firstName}', last_name='{$q_lastName}', email='{$q_email}', gt_prism_id='{$q_gt_prism_id}' 
+  WHERE uuid='{$q_uuid}'";
 	
-  $query = "UPDATE app_user SET gt_prism_id='{$q_gt_prism_id}' WHERE uuid='{$q_uuid}'";
-	query($query, $db);
+  query($query, $db);
   
 	$_SESSION['user_first_name'] = $firstName;
   $_SESSION['user_last_name'] = $lastName;

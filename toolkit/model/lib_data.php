@@ -26,8 +26,101 @@ function getAssignments($uuid) {
 	return $results;
 }
 
+function getAssignmentById($id){
+  //returns an assignment by its id
+    
+  global $db;
+  
+  $query = "SELECT * 
+  FROM app_assignment 
+  WHERE app_assignment.id={$id}";
+    
+  $results = aquery($query, $db);
+	
+  if (count($results) > 0) {
+		return $results[0];
+	} else {
+		return false;
+	}
+}
+
+function getClassById($id){
+  //returns an assignment by its id
+    
+  global $db;
+  
+  $query = "SELECT * 
+  FROM app_class 
+  WHERE app_class.id={$id}";
+    
+  $results = aquery($query, $db);
+	
+  if (count($results) > 0) {
+		return $results[0];
+	} else {
+		return false;
+	}
+}
+
+function getAssignmentByClassOwner($uuid){
+  //retrieves assignments that belong to a class owned by this user
+  
+  global $db;
+  
+  $user = getUserByUUID($uuid);
+  
+  $query = "SELECT app_assignment.id, app_assignment.class_id, app_problem.name, app_problem.description, app_assignment.open_date, app_assignment.close_date 
+  FROM app_problem, app_assignment, app_class 
+  WHERE app_class.owner_user_id={$user['id']} 
+  AND app_assignment.class_id=app_class.id 
+  AND app_assignment.problem_id=app_problem.id 
+  ORDER BY app_assignment.open_date DESC";
+    
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
+function getAllAssignments(){
+  //retrieves all assignments for use by admin
+  
+  global $db;
+  
+  $query = "SELECT app_assignment.id, app_problem.name, app_problem.description, app_assignment.open_date, app_assignment.close_date 
+  FROM app_problem, app_assignment 
+  WHERE app_assignment.is_active=1 
+  AND app_assignment.problem_id=app_problem.id 
+  ORDER BY name DESC";
+  
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
+function isAssignmentOwner($uuid, $assignmentId){
+  //verifies that user owns this assignment
+  
+  global $db;
+  
+  $user = getUserByUUID($uuid);
+  
+  $query = "SELECT * 
+  FROM app_assignment, app_class 
+  WHERE app_assignment.id={$assignmentId} 
+  AND app_class.owner_user_id={$user['id']} 
+  AND app_assignment.is_active=1"; 
+    
+  $results = aquery($query, $db);
+	
+  if (count($results) > 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function getClasses(){
-  //retrieves problem_id for current user, or all active for anaymous
+  //retrieves all classes
   
   global $db;
   
@@ -60,6 +153,54 @@ function retrieveProblem($problemId) {
 	} else {
 		return '';
 	}
+}
+
+function getAllProblems(){
+  //retrieves all active problems
+  
+  global $db;
+  
+  $query = "SELECT * FROM app_problem WHERE is_active=1";
+  $results = aquery($query, $db);
+  
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
+function getClassByOwner($uuid){
+  //retrieves classes owned by user
+  
+  global $db;
+  
+  $user = getUserByUUID($uuid);
+  
+  $query = "SELECT * 
+  FROM app_class 
+  WHERE is_active=1
+  AND owner_user_id={$user['id']}
+  ORDER BY description DESC";
+
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
+function updateAssignment($assignmentId, $problemId, $classId, $openDate, $closeDate){
+
+	//updates an assignment
+	//if successful, returns true
+	
+	global $db;
+	
+	$query = "UPDATE app_assignment 
+  SET problem_id={$problemId}, class_id={$classId}, open_date={$openDate}, close_date={$closeDate} 
+  WHERE id={$assignmentId}";
+  
+	query($query, $db);
+  
+	return true;	
+
 }
 
 ?>

@@ -27,7 +27,7 @@
   ?>
     <li><a href="manageAssignments.php">Manage Assignments</a></li>
     <li><a href="viewSubmissions.php">View Submissions</a></li>
-    <li><a href="addClass.php">Add a Class</a></li>
+    <li><a href="manageClasses.php">Add a Class</a></li>
   <?php
     } //end if	
     if (isAdmin()){
