@@ -2,7 +2,7 @@
  
 	$title = 'Account';
 	require_once('header.php');
-  require_once('controller/c_account.php')
+  require_once('controller/c_account.php');
 	
 ?>
 <form method="post" action="">
