@@ -38,8 +38,8 @@
     }
   </script>
   <script type="text/javascript" src="js/sortable.js"></script>
-	</div>
 	<div id="center_region">
+  <p><a href="addAssignment.php">Add Assignment</a></p>
 	<table class="sortable" id="sortabletable">
 		<tr>
       <th class="startsort">Class</th>
@@ -74,7 +74,7 @@
 		}
 
 ?>
-	</table></div><div>
+	</table></div>
 <?php
 	}  else {
 		para('No Assignments available.');

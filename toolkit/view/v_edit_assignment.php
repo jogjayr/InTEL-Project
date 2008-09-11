@@ -33,8 +33,8 @@
     //$assignmentId = $assignment['id'];
     $classId = $assignment['class_id'];
     $problemId = $assignment['problem_id'];
-    $openDate = date("m.d.y", $assignment['open_date']);
-    $closeDate = date("m.d.y",$assignment['close_date']);
+    $openDate = date("m/d/y", $assignment['open_date']);
+    $closeDate = date("m/d/y",$assignment['close_date']);
   }else{
     echo "Assignment not found."; //FIX
   }
@@ -50,6 +50,9 @@
     if($openDate && $closeDate){
   		if (updateAssignment($assignmentId, $problemId, $classId, $openDate, $closeDate)) {
   			$success = true;
+        //reformat for display
+        $openDate = date("m/d/y",$openDate);
+        $closeDate = date("m/d/y",$closeDate);
   		}
     }else{
       $err = 'Please enter a date in the format mm/dd/yyyy.';
@@ -59,7 +62,11 @@
   //get all problems for form
   $problems = getAllProblems();
   //get all classes that belong to this user for form
-  $classes = getClassByOwner($_SESSION['uuid']);
+  if (isAdmin()){
+    $classes = getClasses();
+  }else{
+    $classes = getClassByOwner($_SESSION['uuid']);
+  }
   
 	$title = 'Edit Assignment';
 	require_once('header.php');

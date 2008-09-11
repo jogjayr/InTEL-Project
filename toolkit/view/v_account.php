@@ -5,6 +5,7 @@
   require_once('controller/c_account.php');
 	
 ?>
+<div id="center_region">
 <form method="post" action="">
 <?php
 	$user = getUserByUUID($_SESSION['uuid']);
@@ -13,10 +14,10 @@
   <p>Last Name: <input type="text" name="last_name" value="<?php echo $_SESSION['user_last_name']; ?>" /></p>
   <p>Email Address: <input type="text" name="email" value="<?php echo $user['email']; ?>" /></p>
   <p>GT Prism ID: <input type="text" name="gt_prism_id" value="<?php echo $user['gt_prism_id']; ?>" /></p>
-
 	<p><input type="submit" name="submit" value="Update" /></p>
 </form>
 <p><a href="changePassword.php">Change Your Password</a></p>
+</div>
 <?php
 	
 	require_once('footer.php') 

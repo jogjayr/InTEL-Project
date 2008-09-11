@@ -11,7 +11,8 @@
 
 <body>
 <div id="header">
-	<h1>Interactive Toolkit for Engineering Learning</h1>
+  <img src="resources/logo.gif" alt = "InTEL" /><br />
+	<h1>Statics Toolkit</h1>
 </div>
 
 <div id="main_nav">
@@ -26,13 +27,14 @@
     if (isInstructor()){
   ?>
     <li><a href="manageAssignments.php">Manage Assignments</a></li>
+    <li><a href="manageClasses.php">Manage Classes</a></li>
     <li><a href="viewSubmissions.php">View Submissions</a></li>
-    <li><a href="manageClasses.php">Add a Class</a></li>
   <?php
     } //end if	
     if (isAdmin()){
   ?>
     <li><a href="myAssignments.php">My Assignments</a></li>
+    <li><a href="manageClasses.php">Manage Classes</a></li>
     <li><a href="manageAssignments.php">Manage Assignments</a></li>
     <li><a href="viewSubmissions.php">View Submissions</a></li>
 	<?php 

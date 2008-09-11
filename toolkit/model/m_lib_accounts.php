@@ -99,6 +99,23 @@ function getUserByUUID($uuid) {
 
 }
 
+function getOwners(){
+  //returns users that are admins or instructors
+	
+	global $db;
+	
+	$query = "SELECT * FROM app_user 
+  WHERE user_type_id=3 
+  OR user_type_id=4";
+	$results = aquery($query, $db);
+	
+	if (count($results) > 0) {
+		return $results;
+	} else {
+		return false;
+	}
+}
+
 function getUserType($uuid) {
   //returns the user type (i.e. admin, instructor, student)
   
