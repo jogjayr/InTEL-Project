@@ -1,5 +1,5 @@
 <?php
-require "null";
+//require "null";
 
 $title = 'Launch Problem';
 require_once('header.php');
