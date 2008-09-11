@@ -47,6 +47,15 @@ foreach($jars as $jar) {
 
 $resWidth = 1100; // 900;
 $resHeight = 768; // 675;
+
+// these variables need to be defined.
+if($exerciseId == null) $exerciseId = '';
+if($user == null) $userId = '';
+else $userId = $user['id'];
+$problemName = $problem['name'];
+
+$preHash = "$userId:$exerciseId:$problemName";
+$verifierKey = substr(md5($preHash),0,8);
 ?>
 
 <applet
@@ -56,6 +65,10 @@ $resHeight = 768; // 675;
     <param name="exercise" value="<?php echo $exerciseClass;?>"/>
     <param name="width" value="<?php echo $resWidth; ?>"/>
     <param name="height" value="<?php echo $resHeight ?>"/>
+    <param name="exerciseID" value="<?php echo $exerciseId ?>"/>
+    <param name="userID" value="<?php echo $userId ?>"/>
+    <param name="problemName" value="<?php echo $problemName ?>"/>
+    <param name="verifierKey" value="<?php echo $verifierKey ?>"/>
     Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
 </applet>
 
