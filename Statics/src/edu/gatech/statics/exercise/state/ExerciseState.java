@@ -24,18 +24,18 @@ public class ExerciseState implements State {
     private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();    // these are used in keeping track of exercise used with the web based
     // applet deployment
     private int userID;
-    private int exerciseID;
+    private int assignmentID;
 
-    public int getExerciseID() {
-        return exerciseID;
+    public int getAssignmentID() {
+        return assignmentID;
     }
 
     public int getUserID() {
         return userID;
     }
 
-    public void setExerciseID(int exerciseID) {
-        this.exerciseID = exerciseID;
+    public void setAssignmentID(int exerciseID) {
+        this.assignmentID = exerciseID;
     }
 
     public void setUserID(int userID) {

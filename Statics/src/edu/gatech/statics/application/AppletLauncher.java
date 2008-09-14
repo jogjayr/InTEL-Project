@@ -56,11 +56,11 @@ public class AppletLauncher extends StaticsApplet {
     private void configureAppletData(Exercise exercise) {
 
         String userIDString = getParameter("userID");
-        String exerciseIDString = getParameter("exerciseID");
+        String assignmentIDString = getParameter("assignmentID");
         String problemIDString = getParameter("problemID");
         String problemName = getParameter("problemName");
 
-        if (userIDString == null || exerciseIDString == null) {
+        if (userIDString == null || assignmentIDString == null) {
             Logger.getLogger("Statics").info("Applet loaded, but user ID not recorded. Continuing anonymously.");
             return;
         }
@@ -71,24 +71,24 @@ public class AppletLauncher extends StaticsApplet {
             Logger.getLogger("Statics").info("Verifier key does not check!! This is a problem. Continuing anonymously.");
         }
 
-        int exerciseID = Integer.valueOf(exerciseIDString);
+        int exerciseID = Integer.valueOf(assignmentIDString);
         int userID = Integer.valueOf(userIDString);
         int problemID = Integer.valueOf(problemIDString);
 
         exercise.setAppletExerciseName(problemName);
         exercise.setProblemID(problemID);
-        exercise.getState().setExerciseID(exerciseID);
+        exercise.getState().setAssignmentID(exerciseID);
         exercise.getState().setUserID(userID);
     }
 
     private boolean checkVerifierKey() {
         String userIDString = getParameter("userID");
-        String exerciseIDString = getParameter("exerciseID");
+        String assignmentIDString = getParameter("assignmentID");
         String problemIDString = getParameter("problemID");
         String problemName = getParameter("problemName");
         String givenVerifierKey = getParameter("verifierKey");
 
-        String preHash = userIDString + ":" + problemIDString + ":" + exerciseIDString + ":" + problemName;
+        String preHash = userIDString + ":" + problemIDString + ":" + assignmentIDString + ":" + problemName;
 
         // use MD5 to generate our key
         MessageDigest md5;
