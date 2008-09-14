@@ -12,15 +12,22 @@
 		mysql_close($db_link);
 	}
 	
-	//use for UPDATE, INSERT, DELETE
+  /**
+   * @param query string The MySQL query to be executed. Should be either UPDATE, INSERT, or DELETE.
+   * @param db_link resource The database to use. Should be the global $db.
+   * @return null
+   */
 	function query($query, $db_link) {
-	
 		$result = mysql_query($query, $db_link)
 		or die(mysql_error());
 		return $result;
 	}
-	
-	//use for SELECT
+
+  /**
+   * @param query string The MySQL query to be executed. Should be a SELECT query.
+   * @param db_link resource The database to use. Should be the global $db.
+   * @return array Returns an associative array.
+   */
 	function aquery($query, $db_link) {
 		$result = mysql_query($query, $db_link)
 		or die(mysql_error());

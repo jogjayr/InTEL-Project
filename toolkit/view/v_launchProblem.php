@@ -10,11 +10,11 @@ if(isset($_SESSION['uuid'])) {}
 $user = getUserByUUID($_SESSION['uuid']);
 
 $problemId = addslashes($_GET['problem_id']);
-$exerciseId = addslashes($_GET['exercise_id']);
+$assignmentId = addslashes($_GET['exercise_id']);
 
 if($problemId != null) {
     $problem = retrieveProblem($problemId);
-} else if($exerciseId != null)  {
+} else if($assignmentId != null)  {
     // How should we do this?
     //$problem = retrieveProblemByAssignmentId($exerciseId);
 }
@@ -51,12 +51,12 @@ $resWidth = 1100; // 900;
 $resHeight = 768; // 675;
 
 // these variables need to be defined.
-if($exerciseId == null) $exerciseId = '';
+if($assignmentId == null) $assignmentId = '';
 if($user == null) $userId = '';
 else $userId = $user['id'];
 $problemName = $problem['name'];
 
-$preHash = "$userId:$problemId:$exerciseId:$problemName";
+$preHash = "$userId:$problemId:$assignmentId:$problemName";
 $verifierKey = substr(md5($preHash),0,8);
 ?>
 
@@ -68,7 +68,7 @@ $verifierKey = substr(md5($preHash),0,8);
     <param name="width" value="<?php echo $resWidth; ?>"/>
     <param name="height" value="<?php echo $resHeight ?>"/>
     <param name="problemID" value="<?php echo $problemId ?>"/>
-    <param name="exerciseID" value="<?php echo $exerciseId ?>"/>
+    <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
     <param name="userID" value="<?php echo $userId ?>"/>
     <param name="problemName" value="<?php echo $problemName ?>"/>
     <param name="verifierKey" value="<?php echo $verifierKey ?>"/>
