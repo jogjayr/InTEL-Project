@@ -5,6 +5,8 @@ $title = 'Launch Problem';
 require_once('header.php');
 require_once('model/lib_data.php');
 
+if(isset($_SESSION['uuid'])) {}
+
 $user = getUserByUUID($_SESSION['uuid']);
 
 $problemId = addslashes($_GET['problem_id']);
@@ -54,7 +56,7 @@ if($user == null) $userId = '';
 else $userId = $user['id'];
 $problemName = $problem['name'];
 
-$preHash = "$userId:$exerciseId:$problemName";
+$preHash = "$userId:$problemId:$exerciseId:$problemName";
 $verifierKey = substr(md5($preHash),0,8);
 ?>
 
@@ -65,6 +67,7 @@ $verifierKey = substr(md5($preHash),0,8);
     <param name="exercise" value="<?php echo $exerciseClass;?>"/>
     <param name="width" value="<?php echo $resWidth; ?>"/>
     <param name="height" value="<?php echo $resHeight ?>"/>
+    <param name="problemID" value="<?php echo $problemId ?>"/>
     <param name="exerciseID" value="<?php echo $exerciseId ?>"/>
     <param name="userID" value="<?php echo $userId ?>"/>
     <param name="problemName" value="<?php echo $problemName ?>"/>

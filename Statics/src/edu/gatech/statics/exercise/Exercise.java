@@ -18,6 +18,7 @@ import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -29,6 +30,20 @@ public abstract class Exercise {
     private DisplayConstants displayConstants;
     //private SymbolManager symbolManager;
     private ExerciseState state;
+
+    public ExerciseState getState() {
+        return state;
+    }
+    /**
+     * The exercise session is used for logging. The session is not part of the state,
+     * and lives in this class. It should be generated when the exercise is constructed,
+     * according to the system time and a random number.
+     */
+    final private long sessionID;
+
+    public long getSessionID() {
+        return sessionID;
+    }
 
     public static Exercise getExercise() {
         return currentExercise;
@@ -83,6 +98,28 @@ public abstract class Exercise {
         taskListeners.remove(listener);
     }
     private String name = "Exercise";
+    private String appletExerciseName = "";
+    private int problemID;
+
+    /**
+     * This method sets a name that is recorded specifically for web recording.
+     * @param problemName
+     */
+    public void setAppletExerciseName(String problemName) {
+        this.appletExerciseName = problemName;
+    }
+
+    public String getAppletExerciseName() {
+        return appletExerciseName;
+    }
+
+    public int getProblemID() {
+        return problemID;
+    }
+
+    public void setProblemID(int problemID) {
+        this.problemID = problemID;
+    }
 
     public String getName() {
         return name;
@@ -146,6 +183,10 @@ public abstract class Exercise {
         displayConstants = new DisplayConstants();
 
         state = new ExerciseState();
+
+        long tempSessionID = System.currentTimeMillis();
+        tempSessionID = tempSessionID ^ (new Random().nextInt() << 32);
+        this.sessionID = tempSessionID;
     }
 
     /**
@@ -168,7 +209,7 @@ public abstract class Exercise {
         state.storeDiagram(diagram);
         return diagram;
     }
-    
+
     /**
      * Returns true if the exercise can support a mode for the type of diagram provided.
      * This method is useful as a test case.
@@ -201,7 +242,7 @@ public abstract class Exercise {
 
         // go through all diagram types and pick out the best one.
         for (DiagramType type : DiagramType.allTypes()) {
-            if (type.getPriority() > maxPriority && 
+            if (type.getPriority() > maxPriority &&
                     state.getDiagram(key, type) != null) {
                 maxDiagram = state.getDiagram(key, type);
                 maxPriority = type.getPriority();

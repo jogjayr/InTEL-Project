@@ -16,13 +16,31 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 public class ExerciseState implements State {
-
     // satisfied tasks
     // solved loads (symbol manager)
     // solved connectors
     // diagrams?
     private SymbolManager symbolManager;
-    private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();
+    private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();    // these are used in keeping track of exercise used with the web based
+    // applet deployment
+    private int userID;
+    private int exerciseID;
+
+    public int getExerciseID() {
+        return exerciseID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setExerciseID(int exerciseID) {
+        this.exerciseID = exerciseID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public SymbolManager getSymbolManager() {
         return symbolManager;

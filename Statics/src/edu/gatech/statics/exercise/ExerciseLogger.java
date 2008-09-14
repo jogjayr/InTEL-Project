@@ -28,17 +28,16 @@ import java.util.logging.StreamHandler;
  */
 public class ExerciseLogger {
     
-    private static final String rootPage = "http://intel.gatech.edu/";
+    private static final String loggerAddress = "http://intel.gatech.edu/loggerPost.php";
 
     private ByteArrayOutputStream bout;
     private StreamHandler streamHandler;
     private int instance; // used for uniqueness of logger data
     private ScheduledExecutorService loggerService;
-    private String loggerAddress;
 
-    public ExerciseLogger(String loggerAddress) {
+    public ExerciseLogger(/*String loggerAddress*/) {
 
-        this.loggerAddress = loggerAddress;
+        //this.loggerAddress = loggerAddress;
 
         bout = new ByteArrayOutputStream();
         streamHandler = new StreamHandler(bout, new SimpleFormatter());
@@ -98,8 +97,7 @@ public class ExerciseLogger {
         // ***
         // first send out our log messages
         try {
-            String targetPage = loggerAddress;
-            URL url = new URL(rootPage+targetPage);
+            URL url = new URL(loggerAddress);
 
             URLConnection connection = url.openConnection();
             connection.setDoOutput(true);
