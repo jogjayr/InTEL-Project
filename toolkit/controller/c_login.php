@@ -13,6 +13,9 @@
 			
 			//redirect page to the url before the login
 			$rURL = $_SESSION['r_login_url'];
+      if (isStudent()){
+        $rURL = 'myAssignments.php';
+      }
 			unset($_SESSION['r_login_url']);
 						
 			//redirect user to referring url, unless the referring url is the registration complete page

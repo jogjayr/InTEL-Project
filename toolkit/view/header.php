@@ -1,5 +1,9 @@
 <?php require_once('admin/initvars.php'); 
   $isAnonymous = isAnonymous();
+  if ($title == 'Problems' && !$isAnonymous){
+    //quick title fix  This can be changed in the future.
+    $title = 'My Assignments';
+  }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,48 +20,47 @@
 </div>
 
 <div id="main_nav">
-<ul>
-	<li><a href="about.php">About</a></li>
+	<div class='nav_button'><a href="about.php">About</a></div>
   <?php
     if (isStudent()){
   ?>
-    <li><a href="myAssignments.php">My Assignments</a></li>
+    <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
   <?php
     } //end if	
     if (isInstructor()){
   ?>
-    <li><a href="manageAssignments.php">Manage Assignments</a></li>
-    <li><a href="manageClasses.php">Manage Classes</a></li>
-    <li><a href="viewSubmissions.php">View Submissions</a></li>
+    <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
+    <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
+    <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
   <?php
     } //end if	
     if (isAdmin()){
   ?>
-    <li><a href="myAssignments.php">My Assignments</a></li>
-    <li><a href="manageClasses.php">Manage Classes</a></li>
-    <li><a href="manageAssignments.php">Manage Assignments</a></li>
-    <li><a href="viewSubmissions.php">View Submissions</a></li>
+    <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
+    <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
+    <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
+    <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
 	<?php 
     } //end if	
 		if ($isAnonymous) {
 	?>
-    <li><a href="myAssignments.php">View Problems</a></li>
+    <div class='nav_button'><a href="myAssignments.php">View Problems</a></div>
 	<?php 
     } //end if	
 		if (isLoggedIn()) {
 	?>
-		<li><a href="logout.php">Logout</a></li>
-    <li><a href="account.php">Account</a></li>
+		<div class='nav_button'><a href="logout.php">Logout</a></div>
+    <div class='nav_button'><a href="account.php">Account</a></div>
 	<?php
 		} else {
 	?>
-		<li><a href="register.php">Register</a></li>
-		<li><a href="login.php">Login</a></li>
+		<div class='nav_button'><a href="register.php">Register</a></div>
+		<div class='nav_button'><a href="login.php">Login</a></div>
 	<?php
 		} //end if		
 	?>
-  <li><a href="help.php">Instructions</a></li>
-  <li><a href="mailto:dupton3@gatech.edu">Contact</a></li>
+  <div class='nav_button'><a href="help.php">Instructions</a></div>
+  <div class='nav_button'><a href="mailto:dupton3@gatech.edu">Contact</a></div>
 </ul>
 </div>
 <div id="content">

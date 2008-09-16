@@ -6,9 +6,9 @@
 ?>
 <form method="post" action="">
 	<?php paraErr($err); ?>
-	<p>Email Address: <input type="text" name="email" /></p>
+	<p>Email Address: <input type="text" style = "width:300px" name="email" /></p>
 	<p>Password: <input type="password" name="password" /></p>
-	<p><input type="submit" name="submit" value="Login" /> <a href="forgot_password.php">Forgot your password?</a></p>
+	<p><input type="submit" name="submit" value="Login" /> <a href="help.php">Forgot your password?</a></p>
 </form>
 
 <?php 

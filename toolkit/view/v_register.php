@@ -12,6 +12,7 @@
   	<?php paraErr($err);
     	if (count($classes) > 0) {
   ?>
+    <p>Class you belong to:</p>
   	<table class="sortable" id="sortabletable">
   		<tr>
         <th>Select</th>
@@ -39,7 +40,7 @@
   	}//end if
   ?>
     
-  	<p>Email Address: <input type="text" name="email" value="<?php echo $emailAddress; ?>" /></p>
+  	<p>Email Address: <input type="text" name="email" style = "width:300px" value="<?php echo $emailAddress; ?>" /><span class="info">(Please use your school email address.)</span></p>
   	<p>Password: <input type="password" name="password" /></p>
   	<p>Password (again): <input type="password" name="password2" /></p>
     <p>First Name: <input type="text" name="first_name" value="<?php echo $firstName; ?>" /></p>
@@ -50,7 +51,7 @@
 <?php
 	} else {	
 ?>
-	<p>Thank you for registering.</p>
+	<p>Thank you for registering. Go to the <a href='login.php'>login</a> page to log in to the system.</p>
 <?php
 	}
 ?>

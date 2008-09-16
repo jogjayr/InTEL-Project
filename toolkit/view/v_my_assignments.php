@@ -1,6 +1,6 @@
 <?php
 
-  $title = 'Assignments';
+  $title = 'Problems';
 
 	require_once('header.php');
   
@@ -26,7 +26,7 @@
 <?php
 		foreach($assignments as $app) {
 			
-      $url = 'launchProblem.php?'.$app['id']; //fix this
+      $url = 'launchProblem.php?id='.$app['id']; //fix this
 			$name = $app['name'];
       $description = $app['description'];
       $status = 'n/a';
