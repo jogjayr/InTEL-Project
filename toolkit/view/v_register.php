@@ -8,7 +8,6 @@
 	if ($success == false) { 
 ?>
 <script type="text/javascript" src="js/sortable.js"></script>
-<div id="center_region">
   <form method="post" action="">
   	<?php paraErr($err);
     	if (count($classes) > 0) {
@@ -48,7 +47,6 @@
     <p>GT Prism ID: <input type="text" name="gt_prism_id" value="<?php echo $gtPrismId; ?>" /></p>
   	<p><input type="submit" name="submit" value="Register" />
   </form>
-</div>
 <?php
 	} else {	
 ?>

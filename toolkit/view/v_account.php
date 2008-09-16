@@ -5,7 +5,6 @@
   require_once('controller/c_account.php');
 	
 ?>
-<div id="center_region">
 <form method="post" action="">
 <?php
 	$user = getUserByUUID($_SESSION['uuid']);
@@ -17,7 +16,6 @@
 	<p><input type="submit" name="submit" value="Update" /></p>
 </form>
 <p><a href="changePassword.php">Change Your Password</a></p>
-</div>
 <?php
 	
 	require_once('footer.php') 

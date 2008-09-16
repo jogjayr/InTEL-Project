@@ -57,7 +57,7 @@
 		} //end if		
 	?>
   <li><a href="help.php">Instructions</a></li>
-  <li><a href="contact.php">Contact</a></li>
+  <li><a href="mailto:dupton3@gatech.edu">Contact</a></li>
 </ul>
 </div>
 <div id="content">

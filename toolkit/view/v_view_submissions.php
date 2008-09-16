@@ -34,8 +34,6 @@
 	if (count($submissions) > 0) {
 ?>
   <script type="text/javascript" src="js/sortable.js"></script>
-	</div>
-	<div id="center_region">
 	<table class="sortable" id="sortabletable">
 		<tr>
       <th>First</th>
@@ -70,7 +68,7 @@
 		}
 
 ?>
-	</table></div><div>
+	</table>
 <?php
 	}  else {
 		para('No submissions available.');

@@ -47,8 +47,6 @@
   if (!$success) {
     $owners = getOwners();
 ?>
-</div>
-<div id="center_region">
 <form method="post" action="">
   <p>Owner:
     <select name="owner_user_id">

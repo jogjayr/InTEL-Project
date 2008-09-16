@@ -61,8 +61,6 @@
 <?php paraErr($err);  
   if (!$success) {
 ?>
-</div>
-<div id="center_region">
 <form method="post" action="">
 	<p>Problem:
     <select name="problem_id">

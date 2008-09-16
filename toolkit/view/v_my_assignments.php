@@ -16,8 +16,6 @@
 	if (count($assignments) > 0) {
 ?>
   <script type="text/javascript" src="js/sortable.js"></script>
-	</div>
-	<div id="center_region">
 	<table class="sortable" id="sortabletable">
 		<tr>
       <th>Problem</th>
@@ -45,7 +43,7 @@
 		}
 
 ?>
-	</table></div><div>
+	</table>
 <?php
 	}  else {
 		para('No problems available.');

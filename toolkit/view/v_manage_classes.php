@@ -37,7 +37,6 @@
     }
   </script>
   <script type="text/javascript" src="js/sortable.js"></script>
-	<div id="center_region">
   <p><a href="addClass.php">Add Class</a></p>
 	<table class="sortable" id="sortabletable">
 		<tr>
@@ -63,7 +62,7 @@
 		}
 
 ?>
-	</table></div>
+	</table>
 <?php
 	}  else {
 		para('No Classes available.');
