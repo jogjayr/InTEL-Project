@@ -12,23 +12,24 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+require_once("admin/initvars.php");
 require_once("model/m_auto_posting.php");
 
 // here is our data:
-$problemId =  addslashes($_GET["problem_id"]);
-$sessionId =  addslashes($_GET["session_id"]);
-$javaClass =  addslashes($_GET["java_class"]);
-$javaMethod = addslashes($_GET["java_method"]);
-$message =    addslashes($_GET["message"]);
-$timestamp =  addslashes($_GET["timestamp"]);
+$problemId =  addslashes($_POST["problem_id"]);
+$sessionId =  addslashes($_POST["session_id"]);
+$javaClass =  addslashes($_POST["java_class"]);
+$javaMethod = addslashes($_POST["java_method"]);
+$message =    addslashes($_POST["message"]);
+$timestamp =  addslashes($_POST["timestamp"]);
 
 $success = post_logger($problemId, $sessionId, $javaClass, $javaMethod, $message, $timestamp);
 
 // report back
 if($success) {
-  echo "post successful";
+  echo "log post successful";
 }else{
-  echo "post failed!";
+  echo "log post failed!";
 }
 
 ?>

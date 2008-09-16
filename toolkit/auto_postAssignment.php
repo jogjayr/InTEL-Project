@@ -10,23 +10,24 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+require_once("admin/initvars.php");
 require_once("model/m_auto_posting.php");
 
 // here is our data:
-$assignmentId =   addslashes($_GET["assignment_id"]);
-$userId =         addslashes($_GET["user_id"]);
-$exerciseStatus = addslashes($_GET["exercise_status"]);
-$stateData =      addslashes($_GET["state_data"]);
-$verifierKey =    addslashes($_GET["verifier_key"]);
-$timestamp =      addslashes($_GET["timestamp"]);
+$assignmentId =   addslashes($_POST["assignment_id"]);
+$userId =         addslashes($_POST["user_id"]);
+$exerciseStatus = addslashes($_POST["exercise_status"]);
+$stateData =      addslashes($_POST["state_data"]);
+$verifierKey =    addslashes($_POST["verifier_key"]);
+$timestamp =      addslashes($_POST["timestamp"]);
 
 $success = post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $verifierKey, $timestamp);
 
 // report back
 if($success) {
-  echo "post successful";
+  echo "assignment post successful";
 }else{
-  echo "post failed!";
+  echo "assignment post failed!";
 }
 
 ?>
