@@ -91,7 +91,7 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         //this.addedLoads = addedLoads;
         }
 
-        public boolean isSolved() {
+        public boolean getSolved() {
             return solved;
         }
 

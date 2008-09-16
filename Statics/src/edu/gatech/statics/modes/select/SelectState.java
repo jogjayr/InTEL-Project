@@ -64,7 +64,10 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         public void clear() {
             currentlySelected.clear();
         }
-
+        
+        //isn't needed, but the xml (de)encryptor might need it to do its job
+        public void setCurrentlySelected() {}
+        
         public List<SimulationObject> getCurrentlySelected() {
             return currentlySelected;
         }

@@ -33,7 +33,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
 
     private EquationState(Builder builder) {
         this.equationStates = Collections.unmodifiableMap(builder.getEquationStates());
-        this.locked = builder.isLocked();
+        this.locked = builder.getLocked();
         this.momentPoint = builder.getMomentPoint();
     }
 
@@ -57,7 +57,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         //this.equationStates = equationStates;
         }
 
-        public boolean isLocked() {
+        public boolean getLocked() {
             return locked;
         }
 

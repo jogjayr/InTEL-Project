@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.objects;
 
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-abstract public class Body extends SimulationObject {
+abstract public class Body extends SimulationObject implements ResolvableByName{
 
     //private float weight = 0;
     private Point centerOfMassPoint;
