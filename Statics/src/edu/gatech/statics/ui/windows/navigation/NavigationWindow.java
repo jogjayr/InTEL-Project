@@ -17,7 +17,7 @@ public class NavigationWindow extends BWindow {
 
     private CameraControl cameraControl;
 
-    protected CameraControl getCameraControl() {
+    public CameraControl getCameraControl() {
         return cameraControl;
     }
 

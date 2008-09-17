@@ -26,7 +26,8 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
@@ -46,11 +47,24 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
-        AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        //AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        // ideally, we shouldn't need to create a subclass here.
+        // we should just be able to modify the camera control directly, but so it goes.
+        AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
+
+            @Override
+            public void setupCameraControl(CameraControl cameraControl) {
+                super.setupCameraControl(cameraControl);
+                cameraControl.setMovementSpeed(.2f, .02f, .05f);
+            }
+            
+        };
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-1, 1, 0, 3);
         vc.setZoomConstraints(0.5f, 0.8f);
         ic.setViewConstraints(vc);
+        // this throws a null pointer
+        //ic.getNavigationWindow().getCameraControl().setMovementSpeed(.2f, .02f, .05f);
         return ic;
     }
     

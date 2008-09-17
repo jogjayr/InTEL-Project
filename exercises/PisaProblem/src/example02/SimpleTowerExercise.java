@@ -62,7 +62,7 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
     public void loadExercise() {
         Schematic world = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .5f, 1.0f, 1.0f));
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 24.0f, 100.0f));
 

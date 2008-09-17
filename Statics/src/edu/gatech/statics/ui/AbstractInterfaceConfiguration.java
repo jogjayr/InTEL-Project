@@ -26,7 +26,7 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
     private CoordinateSystemWindow coordinateSystemWindow;
     private ViewConstraints viewConstraints;
     private DiagramDisplayCalculator diagramDisplayCalculator;
-
+    
     public void setCoordinateSystemWindow(CoordinateSystemWindow coordinateSystemWindow) {
         this.coordinateSystemWindow = coordinateSystemWindow;
     }
