@@ -37,7 +37,7 @@ public class Poster {
         this.url = url;
         this.fieldNames = Collections.unmodifiableList(Arrays.asList(fieldNames));
 
-        System.out.println("(poster) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
+        //System.out.println("(poster) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
         executor = Executors.newCachedThreadPool();
     }
 
@@ -60,10 +60,7 @@ public class Poster {
      * @param data
      */
     public void post(Map<String, String> data) {
-        
-        System.out.println("****************");
-        System.out.println(Thread.currentThread().getThreadGroup().isDestroyed());
-        System.out.println(Thread.currentThread().getThreadGroup());
+
         executor.execute(new PosterWorker(data));
     }
 

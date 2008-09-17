@@ -52,7 +52,7 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
   // now check to see if we are updating, or inserting
   $query = "SELECT id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
   $result = aquery($query, $db);
-
+  
   if(sizeof($result) == 0) {
     // new entry, we insert
     $query =
@@ -62,7 +62,7 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
 
   } else {
     // update
-    $id = $result['id'];
+    $id = $result[0]['id'];
 
     $query =
     "UPDATE app_user_assignment SET

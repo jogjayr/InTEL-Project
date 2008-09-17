@@ -36,6 +36,7 @@ public class PostAssignment extends Poster {
 
         postMap.put("assignment_id", assignmentId);
         postMap.put("user_id", userId);
+        postMap.put("state_data", stateData);
         postMap.put("exercise_status", exerciseStatus);
         postMap.put("verifier_key", verifierKey);
         postMap.put("timestamp", timestamp);

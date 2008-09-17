@@ -18,7 +18,7 @@ if(isset($_GET['exercise_id'])) {
 }
 
 if($problemId != null) {
-    $problem = retrieveProblem($problemId);
+  $problem = retrieveProblem($problemId);
 } else {
   // hopefully this will never happen
 }
@@ -29,7 +29,7 @@ $launcher = "edu.gatech.statics.application.AppletLauncher";
 $exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
 
 $jars = Array(
-    $exerciseJar,
+  $exerciseJar,
         "Statics.jar",
         "BUI.jar",
         "JavaMonkeyEngine.jar",
@@ -45,9 +45,9 @@ $jars = Array(
 
 $archiveString = "";
 foreach($jars as $jar) {
-    if(strlen($archiveString) == 0)
-    $archiveString .= $jarPath.$jar;
-    else	$archiveString .= ", ".$jarPath.$jar;
+  if(strlen($archiveString) == 0)
+  $archiveString .= $jarPath.$jar;
+  else	$archiveString .= ", ".$jarPath.$jar;
 }
 
 $resWidth = 1100; // 900;
@@ -62,19 +62,23 @@ $preHash = "$userId:$problemId:$assignmentId:$problemName";
 $verifierKey = substr(md5($preHash),0,8);
 ?>
 
+<?php if($userId == 0) { ?>
+  <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+<?php } ?>
+
 <applet
-    archive="<?php echo $archiveString; ?>"
-    code="<?php echo $launcher; ?>"
-    width="<?php echo $resWidth; ?>" height="<?php echo $resHeight; ?>">
-    <param name="exercise" value="<?php echo $exerciseClass;?>"/>
-    <param name="width" value="<?php echo $resWidth; ?>"/>
-    <param name="height" value="<?php echo $resHeight ?>"/>
-    <param name="problemID" value="<?php echo $problemId ?>"/>
-    <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
-    <param name="userID" value="<?php echo $userId ?>"/>
-    <param name="problemName" value="<?php echo $problemName ?>"/>
-    <param name="verifierKey" value="<?php echo $verifierKey ?>"/>
-    Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
+  archive="<?php echo $archiveString; ?>"
+  code="<?php echo $launcher; ?>"
+  width="<?php echo $resWidth; ?>" height="<?php echo $resHeight; ?>">
+  <param name="exercise" value="<?php echo $exerciseClass;?>"/>
+  <param name="width" value="<?php echo $resWidth; ?>"/>
+  <param name="height" value="<?php echo $resHeight ?>"/>
+  <param name="problemID" value="<?php echo $problemId ?>"/>
+  <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
+  <param name="userID" value="<?php echo $userId ?>"/>
+  <param name="problemName" value="<?php echo $problemName ?>"/>
+  <param name="verifierKey" value="<?php echo $verifierKey ?>"/>
+  Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
 </applet>
 
 <?php 
