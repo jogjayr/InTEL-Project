@@ -21,9 +21,6 @@ $stateData =      addslashes($_POST["state_data"]);
 $verifierKey =    addslashes($_POST["verifier_key"]);
 $timestamp =      addslashes($_POST["timestamp"]);
 
-print_r($_POST);
-echo "\n";
-
 $success = post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $verifierKey, $timestamp);
 
 // report back
