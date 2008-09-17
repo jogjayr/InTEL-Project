@@ -66,7 +66,7 @@ public class TowerExercise extends OrdinaryExercise {
     public void loadExercise() {
         Schematic world = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .0f, .0f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.0f, .5f, 1.0f, 1.0f));
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 24.0f, 100.0f));
 
@@ -115,9 +115,9 @@ public class TowerExercise extends OrdinaryExercise {
         rep.setSynchronizeTranslation(false);
 
         tower.addRepresentation(rep);
-
         rep = modelNode.getRemainder(world.getBackground());
         rep.setLocalScale(scale);
+        
         world.getBackground().addRepresentation(rep);
 
     }

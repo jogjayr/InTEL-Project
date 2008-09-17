@@ -33,7 +33,7 @@ import java.math.BigDecimal;
 public class SimpleTowerExercise extends SimpleFBDExercise {
 
     @Override
-    public InterfaceConfiguration createInterfaceConfiguration() {
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         return interfaceConfiguration;

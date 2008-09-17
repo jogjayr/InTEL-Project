@@ -8,6 +8,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.exercise.SimpleFBDExercise;
@@ -24,6 +25,9 @@ import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.tasks.CompleteFBDTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
 /**
@@ -41,9 +45,19 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
     }
 
     @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-1, 1, 0, 3);
+        vc.setZoomConstraints(-1, 1);
+        ic.setViewConstraints(vc);
+        return ic;
+    }
+    
+    @Override
     public void loadExercise() {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .6f, .6f, 1.0f));
-
+        StaticsApplication.getApp().getCamera().setLocation(new Vector3f(200.0f, 0.0f, 65.0f));
         Schematic schematic = getSchematic();
 
         Point end1 = new Point("-2.5", "0", "0");
