@@ -49,7 +49,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-1, 1, 0, 3);
-        vc.setZoomConstraints(-1, 1);
+        vc.setZoomConstraints(0.5f, 0.8f);
         ic.setViewConstraints(vc);
         return ic;
     }
@@ -57,7 +57,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
     @Override
     public void loadExercise() {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .6f, .6f, 1.0f));
-        StaticsApplication.getApp().getCamera().setLocation(new Vector3f(200.0f, 0.0f, 65.0f));
+        StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 0.8f));
         Schematic schematic = getSchematic();
 
         Point end1 = new Point("-2.5", "0", "0");
@@ -135,6 +135,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelOffset);
+        modelRotation.fromAngleAxis((float)Math.PI/2.1f, Vector3f.UNIT_Y);
         rep.setModelRotation(modelRotation);
         schematic.getBackground().addRepresentation(rep);
         
