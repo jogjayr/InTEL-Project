@@ -29,6 +29,8 @@ public class AppletLauncher extends StaticsApplet {
     public void init() {
 
         try {
+            getApplication().setGraded(true);
+            
             String exerciseName = getExercise();
             Class exerciseClass = Class.forName(exerciseName);
             final Exercise exercise = (Exercise) exerciseClass.newInstance();

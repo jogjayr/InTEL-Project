@@ -8,7 +8,10 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SymbolManager;
+import edu.gatech.statics.tasks.Task;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +28,17 @@ public class ExerciseState implements State {
     // applet deployment
     private int userID;
     private int assignmentID;
+    private List<Task> satisfiedTasks = new ArrayList<Task>();
+
+    public void satisfyTask(Task satisfiedTask) {
+        if (!satisfiedTasks.contains(satisfiedTask)) {
+            satisfiedTasks.add(satisfiedTask);
+        }
+    }
+
+    public boolean isSatisfied(Task task) {
+        return satisfiedTasks.contains(task);
+    }
 
     public int getAssignmentID() {
         return assignmentID;

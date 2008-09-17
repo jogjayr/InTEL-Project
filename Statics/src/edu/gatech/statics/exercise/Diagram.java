@@ -107,6 +107,8 @@ public abstract class Diagram<StateType extends DiagramState> {
     protected void stateChanged() {
         ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
         modePanel.stateChanged();
+        
+        StaticsApplication.getApp().stateChanged();
     }
 
     /**

@@ -41,11 +41,19 @@ public class PurseExercise extends FrameExercise {
         setName("Holding a Purse");
         StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
 
+        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+
         setDescription(
-                "Here is a simplified version of the human arm. " +
-                "Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
-                "The weight of the forearm is 9 N and its center of mass is at G. " +
-                "The weight of the purse is 19.6 N.");
+                "Here is a simplified model of the human arm. " +
+                "Please solve for the reactions at each of the points: B, C, and E. " +
+                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
+                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
+                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+                //"Here is a simplified version of the human arm. " +
+                //"Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
+                //"The weight of the forearm is 9 N and its center of mass is at G. " +
+                //"The weight of the purse is 19.6 N.");
 
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");

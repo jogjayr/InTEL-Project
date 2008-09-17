@@ -71,7 +71,7 @@ public class TopMenuBar extends AppWindow {
 
         public ExerciseMenu() {
             super("EXERCISE", TopMenuBar.this);
-            addMenuItem("submit");
+            //addMenuItem("submit");
             //addMenuItem("load");
             //addMenuItem("save");
         }
@@ -80,9 +80,9 @@ public class TopMenuBar extends AppWindow {
         protected void onAction(String action) {
             //System.out.println(action);
             
-            if("submit".equals(action)) {
-                Exercise.getExercise().onSubmit();
-            }
+            //if("submit".equals(action)) {
+            //    Exercise.getExercise().onSubmit();
+            //}
         }
     }
 

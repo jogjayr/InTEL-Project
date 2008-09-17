@@ -22,7 +22,6 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.math.BigDecimal;
 
@@ -34,7 +33,7 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
-        AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        AbstractInterfaceConfiguration interfaceConfiguration = super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         return interfaceConfiguration;
     }
@@ -103,7 +102,7 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
 
         ModelRepresentation rep = modelNode.extractElement(tower, "VisualSceneNode/group27");
         //rep.setModelOffset(new Vector3f(0, 0, -22.0f / scale));
-        
+
         Matrix3f rotation = new Matrix3f();
         rotation.fromAngleAxis(-.24f, Vector3f.UNIT_Z);
         rep.setModelRotation(rotation);

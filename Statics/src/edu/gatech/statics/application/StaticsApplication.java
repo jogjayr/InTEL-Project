@@ -30,6 +30,8 @@ import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
+import edu.gatech.statics.exercise.submitting.PostAssignment;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
@@ -67,6 +69,16 @@ public class StaticsApplication {
     private List<LabelRepresentation> activeLabels = new ArrayList<LabelRepresentation>();
     private List<SolveListener> solveListeners = new ArrayList<SolveListener>();
     private List<DiagramListener> diagramListeners = new ArrayList<DiagramListener>();
+    private boolean graded;
+    private PostAssignment postAssignment;
+
+    public void setGraded(boolean graded) {
+        this.graded = graded;
+    }
+
+    public boolean isGraded() {
+        return graded;
+    }
 
     public void addSolveListener(SolveListener listener) {
         solveListeners.add(listener);
@@ -187,6 +199,11 @@ public class StaticsApplication {
     protected int stencilBits = 1;
     protected int samples = 0;
     private DisplaySystem display;
+    private boolean stateChanged;
+
+    public void stateChanged() {
+        stateChanged = true;
+    }
 
     public void setExercise(Exercise exercise) {
         this.currentExercise = exercise;
@@ -278,6 +295,11 @@ public class StaticsApplication {
         }
 
         labelNode.updateGeometricState(0, true);
+
+        if (stateChanged && graded) {
+            postAssignment.postState();
+            stateChanged = false;
+        }
     }
 
     private void clearHighlights() {
@@ -392,6 +414,10 @@ public class StaticsApplication {
 
         // get rid of some obnoxious log messages in com.jme.scene.Node
         Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
+
+        if (graded) {
+            DatabaseLogHandler.initialize();
+        }
 
         // initialization of the exercise
         getExercise().initExercise();

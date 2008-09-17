@@ -12,6 +12,7 @@ import com.jme.image.Texture;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.CoordinateSystem;
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
@@ -30,6 +31,28 @@ public abstract class Exercise {
     private DisplayConstants displayConstants;
     //private SymbolManager symbolManager;
     private ExerciseState state;
+
+    public int getCompletionStatus() {
+        // 1: not started
+        // 2: started
+        // 3: partially completed
+        // 4: solved
+
+        int totalTasks = getTasks().size();
+        int completedTasks = 0;
+        for (Task task : getTasks()) {
+            if (getState().isSatisfied(task)) {
+                completedTasks++;
+            }
+        }
+        if (completedTasks == totalTasks) {
+            return 4;
+        } else if (completedTasks > 1) {
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 
     public ExerciseState getState() {
         return state;
@@ -64,7 +87,6 @@ public abstract class Exercise {
     //abstract public UnitUtils getUnitUtils();
     abstract public InterfaceConfiguration createInterfaceConfiguration();
     private List<Task> tasks = new ArrayList<Task>();
-    private List<Task> satisfiedTasks = new ArrayList<Task>();
 
     public void addTask(Task task) {
         tasks.add(task);
@@ -91,9 +113,8 @@ public abstract class Exercise {
      * This method is called when the user tries to submit the exercise.
      * Do nothing here, it should be overridden.
      */
-    public void onSubmit() {
-    }
-
+    //public void onSubmit() {
+    //}
     public void removeTaskListener(TaskStatusListener listener) {
         taskListeners.remove(listener);
     }
@@ -288,8 +309,9 @@ public abstract class Exercise {
         for (Task task : tasks) {
             if (!task.isSatisfied()) {
                 satisfied = false;
-            } else if (!satisfiedTasks.contains(task)) {
-                satisfiedTasks.add(task);
+            } else if (!getState().isSatisfied(task)) {
+                getState().satisfyTask(task);
+                StaticsApplication.getApp().stateChanged();
                 for (TaskStatusListener listener : taskListeners) {
                     listener.taskSatisfied(task);
                 }
@@ -311,6 +333,8 @@ public abstract class Exercise {
 
     protected void finishExercise() {
         finished = true;
+
+        ExerciseUtilities.showCompletionPopup();
     }
 
     /**
