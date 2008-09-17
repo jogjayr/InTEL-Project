@@ -5,8 +5,11 @@
 package edu.gatech.statics.exercise;
 
 import com.jme.system.DisplaySystem;
+import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
@@ -109,34 +112,24 @@ public class ExerciseUtilities {
 
         popup.add(textContainer, BorderLayout.CENTER);
 
-        /*class MyActionListener implements ActionListener {
-        
-        boolean navigate = false;
-        
-        public void actionPerformed(ActionEvent event) {
-        if (event.getAction().equals("submit")) {
-        navigate = true;
-        } else {
-        popup.dismiss();
-        }
-        }
+        class MyActionListener implements ActionListener {
+
+            public void actionPerformed(ActionEvent event) {
+                popup.dismiss();
+            }
         }
         MyActionListener actionListener = new MyActionListener();
-        
+
         BContainer buttonContainer = new BContainer(new BorderLayout());
-        
-        BButton submitButton = new BButton("Submit", actionListener, "submit");
+
+        BButton submitButton = new BButton("OK", actionListener, "ok");
         buttonContainer.add(submitButton, BorderLayout.CENTER);
-        
-        BButton returnButton = new BButton("Go Back", actionListener, "return");
-        buttonContainer.add(returnButton, BorderLayout.WEST);
-        
-        popup.add(buttonContainer, BorderLayout.SOUTH);*/
+
+
+        popup.add(buttonContainer, BorderLayout.SOUTH);
 
         Dimension dim = new Dimension(300, 0);
         popup.popup((DisplaySystem.getDisplaySystem().getWidth() - dim.width) / 2, (DisplaySystem.getDisplaySystem().getHeight() - dim.height) / 2, true);
-
-    //return actionListener.navigate;
     }
     /*
     public static void navigateAway(String destinationPage) {
