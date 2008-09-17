@@ -3,7 +3,6 @@
 
 $title = 'Launch Problem';
 require_once('header.php');
-require_once('model/lib_data.php');
 
 if(isset($_SESSION['uuid'])) {}
 

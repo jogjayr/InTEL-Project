@@ -26,7 +26,7 @@
 <?php
 		foreach($assignments as $app) {
 			
-      $url = 'launchProblem.php?id='.$app['id']; //fix this
+      $url = 'launchProblem.php?problem_id='.$app['problem_id'].'&exercise_id='.$app['id']; 
 			$name = $app['name'];
       $description = $app['description'];
       $status = 'n/a';
