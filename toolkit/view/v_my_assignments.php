@@ -26,11 +26,14 @@
 <?php
 		foreach($assignments as $app) {
 			
-      $url = 'launchProblem.php?problem_id='.$app['problem_id'].'&exercise_id='.$app['id']; 
+      $url = 'launchProblem.php?problem_id='.$app['problem_id'];
+      if ($uuid != '') {
+        $url .= '&exercise_id='.$app['id'];
+      }
 			$name = $app['name'];
       $description = $app['description'];
       $status = 'n/a';
-      if ($uuid!=''){
+      if ($uuid != ''){
         $status = $app['status'];
       }
       

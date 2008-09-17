@@ -16,17 +16,6 @@ import java.util.logging.Logger;
  */
 public class DatabaseLogHandler extends Handler {
 
-    private static boolean initialized = false;
-
-    /**
-     * This should be the default way of setting up logging.
-     */
-    public static void initialize() {
-        if (!initialized) {
-            Logger.getLogger("Statics").addHandler(new DatabaseLogHandler());
-            initialized = true;
-        }
-    }
     private PostLogger poster = new PostLogger();
 
     @Override

@@ -6,7 +6,7 @@ function getAssignments($uuid) {
   global $db;
   
   if (isAnonymous()) {
-    $query = "SELECT id, name, description FROM app_problem WHERE is_active=1 ORDER BY name DESC";
+    $query = "SELECT id AS problem_id, name, description FROM app_problem WHERE is_active=1 ORDER BY name DESC";
   }
   else{
     $dateTime = mktime();

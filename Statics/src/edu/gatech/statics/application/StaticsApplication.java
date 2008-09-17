@@ -70,7 +70,8 @@ public class StaticsApplication {
     private List<SolveListener> solveListeners = new ArrayList<SolveListener>();
     private List<DiagramListener> diagramListeners = new ArrayList<DiagramListener>();
     private boolean graded;
-    private PostAssignment postAssignment;
+    private PostAssignment postAssignment = new PostAssignment();
+    private DatabaseLogHandler logHandler;
 
     public void setGraded(boolean graded) {
         this.graded = graded;
@@ -416,7 +417,8 @@ public class StaticsApplication {
         Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
 
         if (graded) {
-            DatabaseLogHandler.initialize();
+            logHandler = new DatabaseLogHandler();
+            Logger.getLogger("Statics").addHandler(logHandler);
         }
 
         // initialization of the exercise
@@ -495,6 +497,9 @@ public class StaticsApplication {
         MouseInput.destroyIfInitalized();
         JoystickInput.destroyIfInitalized();
 
+        if (logHandler != null) {
+            Logger.getLogger("Statics").removeHandler(logHandler);
+        }
         display.close();
     }
     // necessary!

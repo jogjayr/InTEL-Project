@@ -4,20 +4,24 @@
 $title = 'Launch Problem';
 require_once('header.php');
 
-if(isset($_SESSION['uuid'])) {}
+$uuid = '';
+if(isset($_SESSION['uuid'])) {
+  $uuid = $_SESSION['uuid'];
+}
 
-$user = getUserByUUID($_SESSION['uuid']);
+$user = getUserByUUID($uuid);
 
 $problemId = addslashes($_GET['problem_id']);
-$assignmentId = addslashes($_GET['exercise_id']);
+$assignmentId = 0;
+if(isset($_GET['exercise_id'])) {
+  $assignmentId = addslashes($_GET['exercise_id']);
+}
 
 if($problemId != null) {
     $problem = retrieveProblem($problemId);
-} else if($assignmentId != null)  {
-    // How should we do this?
-    //$problem = retrieveProblemByAssignmentId($exerciseId);
+} else {
+  // hopefully this will never happen
 }
-
 
 $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
 $jarPath = "../applet/";
@@ -50,8 +54,7 @@ $resWidth = 1100; // 900;
 $resHeight = 768; // 675;
 
 // these variables need to be defined.
-if($assignmentId == null) $assignmentId = '';
-if($user == null) $userId = '';
+if($user == null) $userId = 0;
 else $userId = $user['id'];
 $problemName = $problem['name'];
 

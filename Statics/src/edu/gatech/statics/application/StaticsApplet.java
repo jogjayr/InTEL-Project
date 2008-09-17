@@ -98,12 +98,14 @@ public class StaticsApplet extends Applet {
     
     @Override
     public void destroy() {
+        System.out.println("(destroy) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
         showTextures();
         application.finish();
         application = null;
         super.destroy();
         alive = false;
         Logger.getLogger("Statics").info("Applet: destroy()");
+        System.out.println("(destroy) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
     }
 
     @Override
@@ -120,6 +122,8 @@ public class StaticsApplet extends Applet {
     
     @Override
     public void init() {
+        super.init();
+        System.out.println("(init) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
         
         if(canvasHeight == 0 || canvasWidth == 0) {
             String width = getParameter("width");

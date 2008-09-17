@@ -37,6 +37,7 @@ public class Poster {
         this.url = url;
         this.fieldNames = Collections.unmodifiableList(Arrays.asList(fieldNames));
 
+        System.out.println("(poster) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
         executor = Executors.newCachedThreadPool();
     }
 
@@ -55,10 +56,14 @@ public class Poster {
 
     /**
      * This posts the data to the web form.
-     * Actually, this schedules a process to post it.
+     * Actually, this schedules a thread to post it.
      * @param data
      */
     public void post(Map<String, String> data) {
+        
+        System.out.println("****************");
+        System.out.println(Thread.currentThread().getThreadGroup().isDestroyed());
+        System.out.println(Thread.currentThread().getThreadGroup());
         executor.execute(new PosterWorker(data));
     }
 
