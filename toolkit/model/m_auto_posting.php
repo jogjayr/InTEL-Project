@@ -50,7 +50,7 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
   }
 
   // now check to see if we are updating, or inserting
-  $query = "SELECT id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
+  $query = "SELECT id, submission_status_id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
   $result = aquery($query, $db);
   
   if(sizeof($result) == 0) {
@@ -64,6 +64,12 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
     // update
     $id = $result[0]['id'];
 
+    $previousStatus = $result[0]['submission_status_id'];
+    if($previousStatus > $exerciseStatus) {
+      // do not overwrite their old successful score
+      return true;
+    }
+    
     $query =
     "UPDATE app_user_assignment SET
       submission_status_id={$exerciseStatus}, state='$stateData' WHERE id=$id";
