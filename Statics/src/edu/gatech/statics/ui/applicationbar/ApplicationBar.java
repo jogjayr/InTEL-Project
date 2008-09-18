@@ -18,7 +18,14 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
+import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
+import edu.gatech.statics.modes.fbd.FBDState;
+import edu.gatech.statics.modes.fbd.FBDStatePersistenceDelegate;
 import edu.gatech.statics.ui.InterfaceRoot;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +43,7 @@ public class ApplicationBar extends BWindow {
     private BContainer diagramBox;
     private HTMLView adviceBox;
     private ApplicationModePanel modePanel;
-    private BButton undoButton,  redoButton;
+    private BButton undoButton,  redoButton,  saveButton,  loadButton;
 
     // ***
     // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???
@@ -125,6 +132,9 @@ public class ApplicationBar extends BWindow {
         BContainer undoRedoBox = createUndoRedoBox();
         sideBox.add(undoRedoBox, BorderLayout.CENTER);
 
+        BContainer saveLoadBox = createSaveLoadBox();
+        sideBox.add(saveLoadBox, BorderLayout.WEST);
+
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);
 
@@ -141,10 +151,10 @@ public class ApplicationBar extends BWindow {
     }
 
     private BContainer createUndoRedoBox() {
-        
+
         BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
         //outer.add(inner, BorderLayout.CENTER);
-        
+
         ActionListener undoRedoListener = new UndoRedoListener();
         undoButton = new BButton("Undo", undoRedoListener, "undo");
         redoButton = new BButton("Redo", undoRedoListener, "redo");
@@ -152,6 +162,44 @@ public class ApplicationBar extends BWindow {
         inner.add(redoButton);
 
         return inner;
+    }
+
+    private BContainer createSaveLoadBox() {
+        BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+        //outer.add(inner, BorderLayout.CENTER);
+
+        ActionListener saveLoadListener = new SaveLoadListener();
+        saveButton = new BButton("Save", saveLoadListener, "save");
+        loadButton = new BButton("Load", saveLoadListener, "load");
+        inner.add(saveButton);
+        inner.add(loadButton);
+
+        return inner;
+    }
+
+    private final class SaveLoadListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent event) {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            if (getModePanel() == null || getModePanel().getDiagram() == null) {
+                return;
+            }
+            if (event.getAction().equals("save")) {
+                StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
+//                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
+
+                encoder.setPersistenceDelegate(FBDState.class, new FBDStatePersistenceDelegate());
+                //encoder.setPersistenceDelegate(FancyObject.class, new FancyObjectPersistenceDelegate(world));
+
+                encoder.writeObject(getModePanel().getDiagram().getCurrentState());
+                encoder.close();
+
+            } else if (event.getAction().equals("load")) {
+                String outString = output.toString();
+                StaticsXMLDecoder decoder = new StaticsXMLDecoder(new ByteArrayInputStream(outString.getBytes()));
+                FBDState state2 = (FBDState) decoder.readObject();
+            }
+        }
     }
 
     void updateUndoRedoState() {
@@ -172,7 +220,7 @@ public class ApplicationBar extends BWindow {
             }
             if (event.getAction().equals("undo")) {
                 getModePanel().getDiagram().undo();
-            } else if(event.getAction().equals("redo")) {
+            } else if (event.getAction().equals("redo")) {
                 getModePanel().getDiagram().redo();
             }
         }
