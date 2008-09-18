@@ -9,6 +9,7 @@
 package edu.gatech.statics.objects;
 
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.representations.PointRepresentation;
@@ -17,7 +18,7 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class Point extends SimulationObject {
+public class Point extends SimulationObject implements ResolvableByName {
     // location, etc, already built into SimulationObject
     private Vector3bd point;
 
@@ -68,7 +69,6 @@ public class Point extends SimulationObject {
     //public String getDescription() {
     //    return "Point: " + getName();
     //}
-
     /**
      * This is true if both points are the same type of point, and both have the same position.
      * @param obj

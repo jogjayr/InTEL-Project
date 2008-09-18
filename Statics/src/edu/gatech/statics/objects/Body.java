@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-abstract public class Body extends SimulationObject implements ResolvableByName{
+abstract public class Body extends SimulationObject implements ResolvableByName {
 
     //private float weight = 0;
     private Point centerOfMassPoint;
@@ -53,7 +53,7 @@ abstract public class Body extends SimulationObject implements ResolvableByName{
     public Quantity getWeight() {
         return weight;
     }
-    
+
     public void setCenterOfMassPoint(Point p) {
         this.centerOfMassPoint = p;
         addObject(p);
@@ -62,11 +62,10 @@ abstract public class Body extends SimulationObject implements ResolvableByName{
     public Point getCenterOfMassPoint() {
         return centerOfMassPoint;
     }
-    
     private List<SimulationObject> attachedObjects = new ArrayList();
 
     public void addObject(SimulationObject obj) {
-    
+
         if (!attachedObjects.contains(obj)) {
             attachedObjects.add(obj);
         }
@@ -91,9 +90,7 @@ abstract public class Body extends SimulationObject implements ResolvableByName{
 
     /** Creates a new instance of SimBody */
     public Body() {
-    }
-
-    //@Override
+    }    //@Override
     //public String getDescription() {
     //    return "Body: " + getName() + "<br>" +
     //            "Weight: " + getWeight() + " kg";

@@ -297,8 +297,14 @@ public class StaticsApplication {
 
         labelNode.updateGeometricState(0, true);
 
-        if (stateChanged && graded) {
-            postAssignment.postState();
+        // this is called whenever the state gets changed
+        if (stateChanged) {
+            if (graded) {
+                // if the assignment is graded, send the state and status
+                // to our assignment post page
+                postAssignment.postState();
+            }
+            
             stateChanged = false;
         }
     }
