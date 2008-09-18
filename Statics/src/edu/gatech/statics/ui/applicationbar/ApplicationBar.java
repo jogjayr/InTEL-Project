@@ -18,10 +18,11 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.DiagramStatePersistenceDelegate;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
+import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.modes.fbd.FBDState;
-import edu.gatech.statics.modes.fbd.FBDStatePersistenceDelegate;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -188,11 +189,16 @@ public class ApplicationBar extends BWindow {
                 StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
 //                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
 
-                encoder.setPersistenceDelegate(FBDState.class, new FBDStatePersistenceDelegate());
+                encoder.setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
+                encoder.setPersistenceDelegate(FBDState.class, new DiagramStatePersistenceDelegate());
                 //encoder.setPersistenceDelegate(FancyObject.class, new FancyObjectPersistenceDelegate(world));
 
                 encoder.writeObject(getModePanel().getDiagram().getCurrentState());
                 encoder.close();
+
+                System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));
+                
+                System.out.println(new String(output.toByteArray()));
 
             } else if (event.getAction().equals("load")) {
                 String outString = output.toString();
