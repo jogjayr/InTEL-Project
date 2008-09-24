@@ -15,12 +15,11 @@
 
 <body>
 <div id="header">
-  <img src="resources/logo.gif" alt = "InTEL" /><br />
+  <a href="http://intel.gatech.edu"><img src="resources/logo.gif" alt = "InTEL" /></a><br />
 	<h1>Statics Toolkit</h1>
 </div>
 
 <div id="main_nav">
-	<div class='nav_button'><a href="about.php">About</a></div>
   <?php
     if (isStudent()){
   ?>
