@@ -1,5 +1,5 @@
 <?php
-
+  require_once('admin/initvars.php');
   $title = 'View Submissions';
     
   requireLogin(); 

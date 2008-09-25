@@ -1,5 +1,6 @@
 <?php
  	require_once('admin/initvars.php');
+
 	requireLogin(); 
   
   //ensure that user is admin or instructor

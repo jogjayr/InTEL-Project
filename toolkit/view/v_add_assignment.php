@@ -1,4 +1,5 @@
-<?php 
+<?php
+  require_once('admin/initvars.php');
 
 	$title = 'Add Assignment';
 
