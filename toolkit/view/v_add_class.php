@@ -2,14 +2,14 @@
 
 	$title = 'Add Class';
 
-	require_once('header.php');
-
   requireLogin();
   
   //verify that user is instructor or admin
   if (!isInstructor() && !isAdmin()) {
 		redirectRel('index.php');
 	}
+
+	require_once('header.php');
   
   //retrieve uuid
   $uuid = '';
