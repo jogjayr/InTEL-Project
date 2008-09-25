@@ -241,10 +241,11 @@ function addClass($ownerId, $description){
   $q_created_on = mktime();
   $q_updated_on = $q_created_on;
   $q_description = t2sql($description);
-  
+  $user = getUserById($ownerId);
+  $name = $user['first_name'].' '.$user['last_name'];
   //add assignment
-	$query2 = "INSERT INTO app_class (owner_user_id, description, created_on, updated_on) 
-  VALUES ({$ownerId}, '{$q_description}', '{$q_created_on}', '{$q_updated_on}')";
+	$query2 = "INSERT INTO app_class (owner_user_id, teacher, description, created_on, updated_on) 
+  VALUES ({$ownerId}, '{$name}', '{$q_description}', '{$q_created_on}', '{$q_updated_on}')";
 	query($query2, $db);
 
   return true;

@@ -26,7 +26,7 @@
     $classes = getClasses();
   }
   
-	if (count($classes) > 0) {
+
 ?>
   <script type="text/javascript">
     function confirm_delete(dest){
@@ -38,6 +38,9 @@
   </script>
   <script type="text/javascript" src="js/sortable.js"></script>
   <p><a href="addClass.php">Add Class</a></p>
+  <?php
+ if (count($classes) > 0) {
+  ?>
 	<table class="sortable" id="sortabletable">
 		<tr>
       <th class="startsort">Class</th>

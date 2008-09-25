@@ -45,7 +45,7 @@
   	<p>Password (again): <input type="password" name="password2" /></p>
     <p>First Name: <input type="text" name="first_name" value="<?php echo $firstName; ?>" /></p>
   	<p>Last Name: <input type="text" name="last_name" value="<?php echo $lastName; ?>" /></p>
-    <p>GT Prism ID: <input type="text" name="gt_prism_id" value="<?php echo $gtPrismId; ?>" /></p>
+    <p>University ID: <input type="text" name="gt_prism_id" value="<?php echo $gtPrismId; ?>" /><span class="info">(Do not enter your student number.)</span></p>
   	<p><input type="submit" name="submit" value="Register" />
   </form>
 <?php

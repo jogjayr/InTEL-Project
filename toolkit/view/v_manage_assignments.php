@@ -27,7 +27,7 @@
   }
   
   
-	if (count($assignments) > 0) {
+
 ?>
   <script type="text/javascript">
     function confirm_delete(dest){
@@ -39,6 +39,9 @@
   </script>
   <script type="text/javascript" src="js/sortable.js"></script>
   <p><a href="addAssignment.php">Add Assignment</a></p>
+<?php
+	if (count($assignments) > 0) {
+?>
 	<table class="sortable" id="sortabletable">
 		<tr>
       <th class="startsort">Class</th>
