@@ -190,7 +190,7 @@ public class ApplicationBar extends BWindow {
 //                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
 
                 encoder.setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
-                encoder.setPersistenceDelegate(FBDState.class, new DiagramStatePersistenceDelegate());
+                //encoder.setPersistenceDelegate(FBDState.class, new DiagramStatePersistenceDelegate());
                 //encoder.setPersistenceDelegate(FancyObject.class, new FancyObjectPersistenceDelegate(world));
 
                 encoder.writeObject(getModePanel().getDiagram().getCurrentState());

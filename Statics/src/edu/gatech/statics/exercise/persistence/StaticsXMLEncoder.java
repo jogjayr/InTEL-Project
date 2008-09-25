@@ -4,6 +4,8 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
+import edu.gatech.statics.exercise.state.DiagramState;
+import java.beans.PersistenceDelegate;
 import java.beans.XMLEncoder;
 import java.io.OutputStream;
 
@@ -30,5 +32,20 @@ public class StaticsXMLEncoder extends XMLEncoder {
         } else {
             super.writeObject(o);
         }
+    }
+
+    /**
+     * Here we force instances of DiagramState to use the DiagramStatePersistenceDelegate.
+     * The reason why is because DiagramState is an interface, and cannot be used to determine a regular
+     * persistence delgate. This still requires the DiagramStatePersistenceDelegate to be set, though.
+     * @param type
+     * @return
+     */
+    @Override
+    public PersistenceDelegate getPersistenceDelegate(Class<?> type) {
+        if (DiagramState.class.isAssignableFrom(type) && type != DiagramState.class) {
+            return getPersistenceDelegate(DiagramState.class);
+        }
+        return super.getPersistenceDelegate(type);
     }
 }
