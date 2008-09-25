@@ -1,5 +1,4 @@
 <?php
-require "null";
 
 require_once('admin/initvars.php');
 $title = 'Logger Data';
