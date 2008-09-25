@@ -5,7 +5,6 @@
   //ensure that user is admin or instructor
   if (!isInstructor() && !isAdmin()) {
 		redirectRel('index.php');
-    die();
 	}
   
 	$success = false;
@@ -21,7 +20,6 @@
     else{
       //user shouldn't be here
       redirectRel('index.php');
-      die();
     }
   }
   
