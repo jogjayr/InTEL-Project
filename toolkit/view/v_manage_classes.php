@@ -7,6 +7,7 @@
   //verify that user is instructor or admin
   if (!isInstructor() && !isAdmin()) {
 		redirectRel('index.php');
+    die();
 	}
   
 	require_once('header.php');

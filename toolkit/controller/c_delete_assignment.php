@@ -5,6 +5,7 @@
   //verify rights
   if (!isInstructor() && !isAdmin()) {
 		redirectRel('index.php');
+    die();
 	}
   
   //if get data set the assignment id
