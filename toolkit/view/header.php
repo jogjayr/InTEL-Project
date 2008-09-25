@@ -39,6 +39,7 @@
     <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
     <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
     <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
+    <div class='nav_button'><a href="viewLoggerData.php">LoggerData</a></div>
 	<?php 
     } //end if	
 		if ($isAnonymous) {

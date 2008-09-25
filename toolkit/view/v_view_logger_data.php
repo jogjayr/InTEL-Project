@@ -17,9 +17,10 @@ require_once('header.php');
 // function declarations
 
 function getSessionTime($sessionId) {
+  global $db;
   $sessionTimeResult = aquery("SELECT MAX(created_on)-MIN(created_on) as time FROM app_problem_usage_log WHERE java_problem_session_id=$sessionId", $db);
-  $sessionTime = $sessionTimeResult['time'];
-  return $sessionTime;  
+  $sessionTime = $sessionTimeResult[0]['time'];
+  return $sessionTime;
 }
 
 
@@ -30,10 +31,11 @@ if (isset($_SESSION['uuid'])){
 }
 
 $sessionId = '';
-if(isset($_GET['session']))
-$sessionId = addslashes($_GET['session']);
+if(isset($_GET['session'])) {
+  $sessionId = addslashes($_GET['session']);
+}
 
-if(sessionId=='') {
+if($sessionId == '') {
 
   // following is index of sessions
   $sessionResults = aquery("SELECT DISTINCT java_problem_session_id FROM app_problem_usage_log", $db);
@@ -45,11 +47,11 @@ if(sessionId=='') {
     <th>Session ID</th>
     <th>Time spent</th>
   </tr>
-  <?php 
-  foreach($result as $sessionResults) {
+  <?php
+  foreach($sessionResults as $result) {
     $sessionId = $result['java_problem_session_id'];
     $sessionTime = getSessionTime($sessionId);
-    
+
     echo "<tr>";
     echo "<td><a href=\"viewLoggerData.php?session=$sessionId\">$sessionId</a></td>";
     echo "<td>$sessionTime</td>";
@@ -71,8 +73,8 @@ if(sessionId=='') {
     <th>Method</th>
     <th>Message</th>
   </tr>
-  <?php 
-  foreach($result as $results) {
+  <?php
+  foreach($results as $result) {
     echo "<tr>";
     echo "<td>{$result['java_class']}</td>";
     echo "<td>{$result['java_method']}</td>";
