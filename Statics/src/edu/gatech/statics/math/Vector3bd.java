@@ -202,13 +202,13 @@ public class Vector3bd {
             return false;
         }
         final Vector3bd other = (Vector3bd) obj;
-        if (this.x != other.x && (this.x == null || this.x.compareTo(other.x) != 0)) {
+        if (this.x != other.x && (this.x == null || other.x == null || this.x.compareTo(other.x) != 0)) {
             return false;
         }
-        if (this.y != other.y && (this.y == null || this.y.compareTo(other.y) != 0)) {
+        if (this.y != other.y && (this.y == null || other.y == null || this.y.compareTo(other.y) != 0)) {
             return false;
         }
-        if (this.z != other.z && (this.z == null || this.z.compareTo(other.z) != 0)) {
+        if (this.z != other.z && (this.z == null || other.z == null || this.z.compareTo(other.z) != 0)) {
             return false;
         }
         return true;

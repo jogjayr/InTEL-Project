@@ -7,6 +7,7 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -29,12 +30,20 @@ public class StaticsXMLEncoder extends XMLEncoder {
 
         setPersistenceDelegate(AnchoredVector.class, new DefaultPersistenceDelegate(new String[]{"anchor", "vector"}));
         setPersistenceDelegate(Vector.class, new DefaultPersistenceDelegate(new String[]{"unit", "vectorValue", "diagramValue"}));
+        setPersistenceDelegate(Vector3bd.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                Vector3bd v = (Vector3bd) oldInstance;
+                return new Expression(Vector3bd.class, "new", new Object[]{v.getX(), v.getY(), v.getZ()});
+            }
+        });
         setPersistenceDelegate(BigDecimal.class, new DefaultPersistenceDelegate() {
 
             @Override
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 BigDecimal bd = (BigDecimal) oldInstance;
-                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{bd.toString()});
+                return new Expression(oldInstance.getClass(), "new", new Object[]{bd.toString()});
             }
 
             @Override
