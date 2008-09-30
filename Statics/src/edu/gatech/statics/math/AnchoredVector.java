@@ -16,7 +16,7 @@ public class AnchoredVector implements Quantified {
 
     private Point anchor;
     private Vector vector;
-
+    
     public AnchoredVector(Point anchor, Vector vector) {
         //setAnchor(anchor);
         //setVector(vector);

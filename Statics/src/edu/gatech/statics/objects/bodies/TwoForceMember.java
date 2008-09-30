@@ -40,6 +40,14 @@ abstract public class TwoForceMember extends LongBody {
         return connector2;
     }
 
+    /**
+     * Do not use this constructor, it is for serialziation purposes only.
+     * @deprecated
+     */
+    @Deprecated
+    public TwoForceMember() {
+    }
+
     public TwoForceMember(Point end1, Point end2) {
         super(end1, end2);
     }

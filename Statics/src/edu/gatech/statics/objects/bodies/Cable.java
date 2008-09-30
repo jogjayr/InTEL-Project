@@ -26,14 +26,13 @@ public class Cable extends TwoForceMember {
         addRepresentation(rep);
     }
     
-    /** Creates a new instance of Cable */
-    /*public Cable() {
+    /**
+     * Do not use this constructor
+     */
+    @Deprecated
+    public Cable() {
         super();
     }
-    
-    public Cable(Vector3f end1, Vector3f end2) {
-        super(end1, end2);
-    }*/
     
     public Cable(Point end1, Point end2) {
         super(end1, end2);
