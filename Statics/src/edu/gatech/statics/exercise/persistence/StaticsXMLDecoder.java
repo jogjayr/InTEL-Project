@@ -26,16 +26,22 @@ public class StaticsXMLDecoder extends XMLDecoder {
     @Override
     public Object readObject() {
         Object obj = super.readObject();
-        if (obj instanceof NameContainer) {
-            NameContainer nameContainer = (NameContainer) obj;
-            if (SimulationObject.class.isAssignableFrom(nameContainer.getTargetClass())) {
-                // object is a SimulationObject
-                // fetch it from the Exercise.
-                return Exercise.getExercise().getSchematic().getByName(nameContainer.getName());
+//        if (obj instanceof NameContainer) {
+//            NameContainer nameContainer = (NameContainer) obj;
+//            if (SimulationObject.class.isAssignableFrom(nameContainer.getTargetClass())) {
+//                // object is a SimulationObject
+//                // fetch it from the Exercise.
+//                return Exercise.getExercise().getSchematic().getByName(nameContainer.getName());
+//            }
+//
+//            // we cannot resolve the NameContainer!
+//            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
+//        }
+        if (obj instanceof ResolvableByName) {
+            String name = ((ResolvableByName) obj).getName();
+            if (obj instanceof SimulationObject) {
+                return Exercise.getExercise().getSchematic().getByName(name);
             }
-
-            // we cannot resolve the NameContainer!
-            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
         }
         return obj;
     }

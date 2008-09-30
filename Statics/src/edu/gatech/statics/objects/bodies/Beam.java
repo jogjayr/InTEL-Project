@@ -10,8 +10,6 @@
 package edu.gatech.statics.objects.bodies;
 
 import edu.gatech.statics.Representation;
-import com.jme.math.Vector3f;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
 
@@ -38,6 +36,8 @@ public class Beam extends LongBody {
     public Beam(Vector3f end1, Vector3f end2) {
         super(end1, end2);
     }*/
+    
+    public Beam() {}
     
     public Beam(Point end1, Point end2) {
         super(end1, end2);

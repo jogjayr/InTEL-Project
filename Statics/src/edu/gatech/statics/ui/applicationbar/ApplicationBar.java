@@ -18,12 +18,11 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.exercise.persistence.DiagramStatePersistenceDelegate;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
-import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.ui.InterfaceRoot;
+import java.beans.ExceptionListener;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -188,10 +187,13 @@ public class ApplicationBar extends BWindow {
             if (event.getAction().equals("save")) {
                 StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
 //                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
+                encoder.setExceptionListener(new ExceptionListener() {
 
-                encoder.setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
-                //encoder.setPersistenceDelegate(FBDState.class, new DiagramStatePersistenceDelegate());
-                //encoder.setPersistenceDelegate(FancyObject.class, new FancyObjectPersistenceDelegate(world));
+                    public void exceptionThrown(Exception e) {
+                        System.out.println("got exception!!:");
+                        e.printStackTrace();
+                    }
+                });
 
                 encoder.writeObject(getModePanel().getDiagram().getCurrentState());
                 encoder.close();

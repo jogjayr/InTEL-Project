@@ -5,6 +5,7 @@
 package edu.gatech.statics.exercise.persistence;
 
 import edu.gatech.statics.exercise.state.DiagramState;
+import java.beans.DefaultPersistenceDelegate;
 import java.beans.PersistenceDelegate;
 import java.beans.XMLEncoder;
 import java.io.OutputStream;
@@ -17,6 +18,9 @@ public class StaticsXMLEncoder extends XMLEncoder {
 
     public StaticsXMLEncoder(OutputStream out) {
         super(out);
+
+        setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
+        setPersistenceDelegate(NameContainer.class, new DefaultPersistenceDelegate(new String[]{"name", "targetClass"}));
     }
 
     /**
@@ -26,12 +30,15 @@ public class StaticsXMLEncoder extends XMLEncoder {
      */
     @Override
     public void writeObject(Object o) {
-        if (o instanceof ResolvableByName) {
-            ResolvableByName resolvable = (ResolvableByName) o;
-            super.writeObject(new NameContainer(resolvable.getName(), o.getClass()));
-        } else {
-            super.writeObject(o);
-        }
+        //if (o == null) {
+        //    super.writeObject(o);
+        //} else if (o instanceof ResolvableByName) {
+        //    ResolvableByName resolvable = (ResolvableByName) o;
+        //    super.writeObject(new NameContainer(resolvable.getName(), o.getClass()));
+        //} else {
+        //    super.writeObject(o);
+        //}
+        super.writeObject(o);
     }
 
     /**
@@ -43,6 +50,9 @@ public class StaticsXMLEncoder extends XMLEncoder {
      */
     @Override
     public PersistenceDelegate getPersistenceDelegate(Class<?> type) {
+        if (type == null) {
+            return super.getPersistenceDelegate(type);
+        }
         if (DiagramState.class.isAssignableFrom(type) && type != DiagramState.class) {
             return getPersistenceDelegate(DiagramState.class);
         }

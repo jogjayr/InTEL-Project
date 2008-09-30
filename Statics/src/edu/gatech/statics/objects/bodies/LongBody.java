@@ -23,7 +23,7 @@ abstract public class LongBody extends Body {
 
     private Vector3bd end1;
     private Vector3bd end2;
-  
+
     public Vector3bd getEndpoint1() {
         return end1;
     }
@@ -31,8 +31,8 @@ abstract public class LongBody extends Body {
     public Vector3bd getEndpoint2() {
         return end2;
     }
-    
-        public LongBody() {
+
+    public LongBody() {
         this(Vector3bd.ZERO, Vector3bd.UNIT_Y);
     }
 

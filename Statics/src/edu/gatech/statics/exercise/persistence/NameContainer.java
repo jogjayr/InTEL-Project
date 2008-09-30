@@ -10,7 +10,7 @@ package edu.gatech.statics.exercise.persistence;
  * not be serialized. 
  * @author Calvin Ashmore
  */
-class NameContainer {
+public class NameContainer {
 
     private String name;
     private Class targetClass;

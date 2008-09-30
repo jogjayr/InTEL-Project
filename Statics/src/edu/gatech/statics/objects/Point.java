@@ -27,6 +27,11 @@ public class Point extends SimulationObject implements ResolvableByName {
         updateTranslation();
     }
 
+    public Point() {
+        this.point = new Vector3bd();
+        updateTranslation();
+    }
+
     public Point(Vector3bd point) {
         this.point = point;
         updateTranslation();
