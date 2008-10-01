@@ -6,6 +6,7 @@
 package edu.gatech.statics.exercise.state;
 
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 
 /**
@@ -15,7 +16,7 @@ import edu.gatech.statics.util.Builder;
  * @author Calvin Ashmore
  * @param <T> The type of diagram this state describes
  */
-public interface DiagramState<T extends Diagram> extends State {
+public interface DiagramState<T extends Diagram> extends State, Buildable<DiagramState<T>> {
     
     boolean isLocked();
     

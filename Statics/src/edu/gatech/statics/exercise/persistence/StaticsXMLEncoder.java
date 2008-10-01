@@ -4,10 +4,11 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
-import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.util.Buildable;
+import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -25,7 +26,22 @@ public class StaticsXMLEncoder extends XMLEncoder {
     public StaticsXMLEncoder(OutputStream out) {
         super(out);
 
-        setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
+        //setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
+        setPersistenceDelegate(Buildable.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                // casts the object into a buildable
+                Buildable<?> buildable = (Buildable<?>) oldInstance;
+
+                // fetch the builder
+                Builder<?> builder = buildable.getBuilder();
+
+                // encode the builder itself.
+                Expression expression = new Expression(oldInstance, builder, "build", new String[]{});
+                return expression;
+            }
+        });
 
         setPersistenceDelegate(AnchoredVector.class, new DefaultPersistenceDelegate() {
 
@@ -101,8 +117,8 @@ public class StaticsXMLEncoder extends XMLEncoder {
         if (type == null) {
             return super.getPersistenceDelegate(type);
         }
-        if (DiagramState.class.isAssignableFrom(type) && type != DiagramState.class) {
-            return getPersistenceDelegate(DiagramState.class);
+        if (Buildable.class.isAssignableFrom(type) && type != Buildable.class) {
+            return getPersistenceDelegate(Buildable.class);
         }
         return super.getPersistenceDelegate(type);
     }

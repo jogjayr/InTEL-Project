@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.util.Buildable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  * 
  * @author Calvin Ashmore
  */
-final public class EquationMathState {
+final public class EquationMathState implements Buildable<EquationMathState> {
 
     final private String name;
     final private Map<AnchoredVector, String> terms;
@@ -42,6 +43,14 @@ final public class EquationMathState {
         private String name;
         private boolean locked;
         private Map<AnchoredVector, String> terms = new HashMap<AnchoredVector, String>();
+
+        /**
+         * For persistence, do not use
+         * @deprecated
+         */
+        @Deprecated
+        public Builder() {
+        }
 
         public Builder(String name) {
             this.name = name;
@@ -75,6 +84,12 @@ final public class EquationMathState {
             return name;
         }
 
+        /**
+         * For persistence, do not use.
+         * @param name
+         * @deprecated
+         */
+        @Deprecated
         public void setName(String name) {
             this.name = name;
         }
@@ -117,5 +132,9 @@ final public class EquationMathState {
     @Override
     public String toString() {
         return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + "}";
+    }
+
+    public Builder getBuilder() {
+        return new Builder(this);
     }
 }
