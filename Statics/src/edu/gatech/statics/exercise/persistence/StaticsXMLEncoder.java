@@ -26,16 +26,33 @@ public class StaticsXMLEncoder extends XMLEncoder {
         super(out);
 
         setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
-        //setPersistenceDelegate(NameContainer.class, new DefaultPersistenceDelegate(new String[]{"name", "targetClass"}));
 
-        setPersistenceDelegate(AnchoredVector.class, new DefaultPersistenceDelegate(new String[]{"anchor", "vector"}));
-        setPersistenceDelegate(Vector.class, new DefaultPersistenceDelegate(new String[]{"unit", "vectorValue", "diagramValue"}));
+        setPersistenceDelegate(AnchoredVector.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                AnchoredVector v = (AnchoredVector) oldInstance;
+                return new Expression(oldInstance, AnchoredVector.class, "new", new Object[]{v.getAnchor(), v.getVector()});
+            }
+        });
+        setPersistenceDelegate(Vector.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                Vector v = (Vector) oldInstance;
+                if (v.isSymbol()) {
+                    return new Expression(oldInstance, Vector.class, "new", new Object[]{v.getUnit(), v.getVectorValue(), v.getSymbolName()});
+                } else {
+                    return new Expression(oldInstance, Vector.class, "new", new Object[]{v.getUnit(), v.getVectorValue(), v.getDiagramValue()});
+                }
+            }
+        });
         setPersistenceDelegate(Vector3bd.class, new DefaultPersistenceDelegate() {
 
             @Override
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 Vector3bd v = (Vector3bd) oldInstance;
-                return new Expression(Vector3bd.class, "new", new Object[]{v.getX(), v.getY(), v.getZ()});
+                return new Expression(oldInstance, Vector3bd.class, "new", new Object[]{v.getX(), v.getY(), v.getZ()});
             }
         });
         setPersistenceDelegate(BigDecimal.class, new DefaultPersistenceDelegate() {
@@ -43,7 +60,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             @Override
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 BigDecimal bd = (BigDecimal) oldInstance;
-                return new Expression(oldInstance.getClass(), "new", new Object[]{bd.toString()});
+                return new Expression(oldInstance, BigDecimal.class, "new", new Object[]{bd.toString()});
             }
 
             @Override

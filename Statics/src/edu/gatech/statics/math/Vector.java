@@ -86,19 +86,16 @@ public class Vector implements Quantified {
     /** Creates a new instance of Vector */
     public Vector(Unit unit, Vector3bd value, BigDecimal magnitude) {
         this.magnitude = new Quantity(unit, magnitude);
-        //setVectorValue(value);
         this.value = value.normalize();
     }
 
     public Vector(Unit unit, Vector3bd value, String symbolName) {
         magnitude = new Quantity(unit, symbolName);
-        //setVectorValue(value);
         this.value = value.normalize();
     }
 
     public Vector(Vector vector) {
         magnitude = new Quantity(vector.getQuantity());
-        //setVectorValue(vector.getVectorValue());
         this.value = vector.getVectorValue();
     }
 
