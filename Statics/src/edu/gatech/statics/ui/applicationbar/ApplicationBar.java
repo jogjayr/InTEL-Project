@@ -20,12 +20,16 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
+import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.beans.ExceptionListener;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,32 +184,39 @@ public class ApplicationBar extends BWindow {
     private final class SaveLoadListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            if (getModePanel() == null || getModePanel().getDiagram() == null) {
-                return;
-            }
-            if (event.getAction().equals("save")) {
-                StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
+            try {
+                FileOutputStream output = new FileOutputStream("Test.xml");
+                if (getModePanel() == null || getModePanel().getDiagram() == null) {
+                    return;
+                }
+                if (event.getAction().equals("save")) {
+                    StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
 //                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
-                encoder.setExceptionListener(new ExceptionListener() {
+                    encoder.setExceptionListener(new ExceptionListener() {
 
-                    public void exceptionThrown(Exception e) {
-                        System.out.println("got exception!!:");
-                        e.printStackTrace();
-                    }
-                });
+                        public void exceptionThrown(Exception e) {
+                            System.out.println("got exception!!:");
+                            e.printStackTrace();
+                        }
+                    });
 
-                encoder.writeObject(getModePanel().getDiagram().getCurrentState());
-                encoder.close();
+                    encoder.writeObject(getModePanel().getDiagram().getCurrentState());
+                    encoder.close();
 
-                System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));
-                
-                System.out.println(new String(output.toByteArray()));
+                    System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));
 
-            } else if (event.getAction().equals("load")) {
-                String outString = output.toString();
-                StaticsXMLDecoder decoder = new StaticsXMLDecoder(new ByteArrayInputStream(outString.getBytes()));
-                FBDState state2 = (FBDState) decoder.readObject();
+                    System.out.println(new String(output.toString()));
+                } else if (event.getAction().equals("load")) {
+
+                    StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
+                    DiagramState fbdTest = (DiagramState) decoder.readObject();
+                    //FileInputStream input = new FileInputStream("Test.xml");
+//                    String outString = decoder.toString();
+//                    System.out.println(outString);
+//                    System.out.println(outString);
+                    //StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(input));
+                }
+            } catch (Exception e) {
             }
         }
     }
