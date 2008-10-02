@@ -185,11 +185,11 @@ public class ApplicationBar extends BWindow {
 
         public void actionPerformed(ActionEvent event) {
             try {
-                FileOutputStream output = new FileOutputStream("Test.xml");
-                if (getModePanel() == null || getModePanel().getDiagram() == null) {
-                    return;
-                }
                 if (event.getAction().equals("save")) {
+                    FileOutputStream output = new FileOutputStream("Test.xml");
+                    if (getModePanel() == null || getModePanel().getDiagram() == null) {
+                        return;
+                    }
                     StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
 //                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
                     encoder.setExceptionListener(new ExceptionListener() {
@@ -209,12 +209,19 @@ public class ApplicationBar extends BWindow {
                 } else if (event.getAction().equals("load")) {
 
                     StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
-                    DiagramState fbdTest = (DiagramState) decoder.readObject();
-                    //FileInputStream input = new FileInputStream("Test.xml");
+                    DiagramState stateTest = (DiagramState) decoder.readObject();
+                    DiagramState stateCheck = getModePanel().getDiagram().getCurrentState();
+                    
+                    System.out.println("old: "+stateCheck);
+                    System.out.println("new: "+stateTest);
+                    
+                    System.out.println(stateTest.equals(stateCheck));
+                    
+                //FileInputStream input = new FileInputStream("Test.xml");
 //                    String outString = decoder.toString();
 //                    System.out.println(outString);
 //                    System.out.println(outString);
-                    //StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(input));
+                //StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(input));
                 }
             } catch (Exception e) {
             }
