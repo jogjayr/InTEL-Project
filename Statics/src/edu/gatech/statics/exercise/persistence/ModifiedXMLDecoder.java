@@ -231,6 +231,10 @@ public class ModifiedXMLDecoder {
 	return owner; 
     }
 
+    public void setHandler(ModifiedObjectHandler handler) {
+        this.handler = handler;
+    }
+    
     /**
      * Returns the object handler for input stream.
      * The object handler is created if necessary.

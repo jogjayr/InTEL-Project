@@ -183,7 +183,7 @@ class ModifiedObjectHandler extends HandlerBase {
         expStack.add(e);
     }
 
-    private Object getValue(Expression exp) {
+    public Object getValue(Expression exp) {
         try {
             return exp.getValue();
         } catch (Exception e) {
