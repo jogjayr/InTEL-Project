@@ -26,8 +26,6 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
      */
     @Override
     public Object readObject() {
-        Object obj = super.readObject();
-        
         //Setting up a special case ModifiedObjectHandler
         ModifiedObjectHandler mOH = new ModifiedObjectHandler() {
             @Override
@@ -45,6 +43,8 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
         
         //Sets the XMLDecoder's Handler equal to our ModifiedObjectHandler
         setHandler(mOH);
+        
+        Object obj = super.readObject();
         
         //We run the decoder as usual except now it is using the ModifiedObjectHandler
         if (obj instanceof ResolvableByName) {

@@ -224,6 +224,7 @@ public class ApplicationBar extends BWindow {
                 //StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(input));
                 }
             } catch (Exception e) {
+                System.out.println(e);
             }
         }
     }
