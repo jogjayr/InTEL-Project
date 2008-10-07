@@ -18,6 +18,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.ModifiedXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
 import edu.gatech.statics.exercise.state.DiagramState;
@@ -216,6 +217,15 @@ public class ApplicationBar extends BWindow {
                     System.out.println("new: "+stateTest);
                     
                     System.out.println(stateTest.equals(stateCheck));
+                    
+//                    ModifiedXMLDecoder mDecoder = new ModifiedXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
+//                    DiagramState mstateTest = (DiagramState) mDecoder.readObject();
+//                    DiagramState mstateCheck = getModePanel().getDiagram().getCurrentState();
+//                    
+//                    System.out.println("old: "+mstateCheck);
+//                    System.out.println("new: "+mstateTest);
+//                    
+//                    System.out.println(mstateTest.equals(mstateCheck));
                     
                 //FileInputStream input = new FileInputStream("Test.xml");
 //                    String outString = decoder.toString();

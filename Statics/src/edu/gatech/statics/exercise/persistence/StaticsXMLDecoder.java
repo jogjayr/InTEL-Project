@@ -16,6 +16,8 @@ import java.io.InputStream;
  */
 public class StaticsXMLDecoder extends ModifiedXMLDecoder {
 
+    ModifiedObjectHandler mOH = null;
+    
     public StaticsXMLDecoder(InputStream in) {
         super(in);
     }
@@ -27,7 +29,7 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
     @Override
     public Object readObject() {
         //Setting up a special case ModifiedObjectHandler
-        ModifiedObjectHandler mOH = new ModifiedObjectHandler() {
+        mOH = new ModifiedObjectHandler(this, getClassLoader()) {
             @Override
             public Object getValue(Expression exp) {
                 Object result = super.getValue(exp);
@@ -40,9 +42,6 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                 return result;
             }
         };
-        
-        //Sets the XMLDecoder's Handler equal to our ModifiedObjectHandler
-        setHandler(mOH);
         
         Object obj = super.readObject();
         
@@ -66,4 +65,9 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
 //            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
 //        }
     }
+    @Override
+    public ModifiedObjectHandler createObjectHandler(){
+        return mOH;
+    }
+    
 }

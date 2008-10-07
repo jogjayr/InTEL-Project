@@ -142,7 +142,7 @@ public class ModifiedXMLDecoder {
      * 
      * @return the class loader used to instantiate objects 
      */ 
-    private ClassLoader getClassLoader() { 
+    public ClassLoader getClassLoader() { 
         if (clref != null) {
             return (ClassLoader)clref.get();
         }
@@ -231,8 +231,8 @@ public class ModifiedXMLDecoder {
 	return owner; 
     }
 
-    public void setHandler(ModifiedObjectHandler handler) {
-        this.handler = handler;
+    public ModifiedObjectHandler createObjectHandler(){
+        return new ModifiedObjectHandler(this, getClassLoader());
     }
     
     /**
@@ -246,7 +246,8 @@ public class ModifiedXMLDecoder {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             try {
                 SAXParser parser = factory.newSAXParser();
-                handler = new ModifiedObjectHandler( this, getClassLoader() );
+                handler = createObjectHandler();
+//                        new ModifiedObjectHandler( this, getClassLoader() );
                 parser.parse( in, handler );
             }
             catch ( ParserConfigurationException e ) {
