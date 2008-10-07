@@ -4,6 +4,9 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
+import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -16,6 +19,7 @@ import java.beans.PersistenceDelegate;
 import java.beans.XMLEncoder;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /**
  *
@@ -84,6 +88,26 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 return oldInstance.equals(newInstance);
             }
         });
+
+        setPersistenceDelegate(DiagramType.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                DiagramType type = (DiagramType) oldInstance;
+                return new Expression(oldInstance, DiagramType.class, "getType", new Object[]{type.getName()});
+            }
+        });
+
+        setPersistenceDelegate(BodySubset.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                BodySubset bodySubset = (BodySubset) oldInstance;
+                return new Expression(oldInstance, BodySubset.class, "new", new Object[]{new ArrayList(bodySubset.getBodies())});
+            }
+        });
+
+        setPersistenceDelegate(ExerciseState.class, new ExerciseStatePersistenceDelegate());
     }
 
     /**

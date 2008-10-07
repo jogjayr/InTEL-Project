@@ -226,6 +226,10 @@ public abstract class Exercise {
      * @return
      */
     public final Diagram createNewDiagram(DiagramKey key, DiagramType type) {
+        Diagram oldDiagram = state.getDiagram(key, type);
+        if(oldDiagram != null)
+            return oldDiagram;
+        
         Diagram diagram = createNewDiagramImpl(key, type);
         state.storeDiagram(diagram);
         return diagram;

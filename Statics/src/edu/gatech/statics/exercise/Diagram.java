@@ -163,7 +163,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * Does nothing if the state cannot be pushed.
      * @param state
      */
-    final protected void pushState(StateType state) {
+    final public void pushState(StateType state) {
         Logger.getLogger("Statics").info("state changed");
         Logger.getLogger("Statics").info("  " + state);
         states.push(state);
@@ -175,7 +175,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * This should only be used when the undo history needs to be cleared,
      * or if the diagram is just activated.
      */
-    final protected void clearStateStack() {
+    final public void clearStateStack() {
         states.clear();
     }
 

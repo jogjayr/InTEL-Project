@@ -13,7 +13,7 @@ import edu.gatech.statics.objects.bodies.TwoForceMember;
  */
 public class Solve2FMTask extends SolveConnectorTask {
 
-    TwoForceMember tfm;
+    private TwoForceMember tfm;
 
     public Solve2FMTask(TwoForceMember tfm, Connector connector) {
         super(connector);

@@ -10,6 +10,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SymbolManager;
 import edu.gatech.statics.tasks.Task;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,11 @@ public class ExerciseState implements State {
         // store if we have not stored it already.
         typeMap.put(diagram.getType(), diagram);
     }
+
+    public Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams() {
+        return Collections.unmodifiableMap(allDiagrams);
+    }
+    
 
     /**
      * Restores this exercise state as loaded.

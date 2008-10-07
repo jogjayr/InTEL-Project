@@ -5,7 +5,6 @@
 package edu.gatech.statics.tasks;
 
 import edu.gatech.statics.exercise.BodySubset;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;

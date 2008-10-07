@@ -103,21 +103,6 @@ public class SymbolManager {
         return null;
     }
 
-    /*public AnchoredVector getLoad2FM(TwoForceMember tfm, AnchoredVector AnchoredVector) {
-    for (AnchoredVector toCheck : symbolicLoads) {
-    if (tfm.containsPoints(toCheck.getAnchor(), AnchoredVector.getAnchor()) &&
-    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue()) ||
-    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-    
-    return toCheck;
-    }
-    }
-    return null;
-    }*/
-    public List<AnchoredVector> allLoads() {
-        return Collections.unmodifiableList(symbolicLoads);
-    }
-
     /**
      * Returns the symbolic quantity for the specified AnchoredVector. This method is used for verifying that
      * the AnchoredVector given is the same as one which has been stored in the symbol manager. 
@@ -136,15 +121,4 @@ public class SymbolManager {
         }
         return null;
     }
-    /*public Quantity getSymbol2FM(TwoForceMember tfm, AnchoredVector AnchoredVector) {
-    for (AnchoredVector toCheck : symbolicLoads) {
-    if (tfm.containsPoints(toCheck.getAnchor(), AnchoredVector.getAnchor()) &&
-    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue()) ||
-    (AnchoredVector.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-    
-    return toCheck.getVector().getQuantity();
-    }
-    }
-    return null;
-    }*/
 }
