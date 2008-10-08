@@ -7,7 +7,6 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
 import java.beans.Expression;
-import java.beans.XMLDecoder;
 import java.io.InputStream;
 
 /**
@@ -16,8 +15,7 @@ import java.io.InputStream;
  */
 public class StaticsXMLDecoder extends ModifiedXMLDecoder {
 
-    ModifiedObjectHandler mOH = null;
-    
+    //ModifiedObjectHandler mOH = null;
     public StaticsXMLDecoder(InputStream in) {
         super(in);
     }
@@ -28,23 +26,9 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
      */
     @Override
     public Object readObject() {
-        //Setting up a special case ModifiedObjectHandler
-        mOH = new ModifiedObjectHandler(this, getClassLoader()) {
-            @Override
-            public Object getValue(Expression exp) {
-                Object result = super.getValue(exp);
-                if (result instanceof ResolvableByName) {
-                    String name = ((ResolvableByName) result).getName();
-                    if (result instanceof SimulationObject) {
-                        return Exercise.getExercise().getSchematic().getByName(name);
-                    }
-                }
-                return result;
-            }
-        };
-        
+
         Object obj = super.readObject();
-        
+
         //We run the decoder as usual except now it is using the ModifiedObjectHandler
         if (obj instanceof ResolvableByName) {
             String name = ((ResolvableByName) obj).getName();
@@ -65,9 +49,22 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
 //            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
 //        }
     }
+
     @Override
-    public ModifiedObjectHandler createObjectHandler(){
-        return mOH;
+    ModifiedObjectHandler createObjectHandler() {
+        return new ModifiedObjectHandler(this, getClassLoader()) {
+
+            @Override
+            public Object getValue(Expression exp) {
+                Object result = super.getValue(exp);
+                if (result instanceof ResolvableByName) {
+                    String name = ((ResolvableByName) result).getName();
+                    if (result instanceof SimulationObject) {
+                        return Exercise.getExercise().getSchematic().getByName(name);
+                    }
+                }
+                return result;
+            }
+        };
     }
-    
 }

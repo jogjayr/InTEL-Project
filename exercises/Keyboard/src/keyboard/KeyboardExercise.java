@@ -23,6 +23,7 @@ import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import java.math.BigDecimal;
 
 /**
@@ -36,7 +37,8 @@ public class KeyboardExercise extends FrameExercise {
         setName("Keyboard Stand");
 
         setDescription(
-                "This is a keyboard stand!");
+                "This is a keyboard stand supported by two beams and a cross bar, PQ. " +
+                "Find the force in PQ and define whether it is in tension or compression.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
@@ -188,5 +190,7 @@ public class KeyboardExercise extends FrameExercise {
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        
+        addTask(new Solve2FMTask(bar, jointP));
     }
 }

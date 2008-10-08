@@ -489,6 +489,14 @@ class MutableExpression extends Expression {
     }
 
     public Object getValue() throws Exception {
+        try{
         return super.getValue();
+        } catch(NoSuchMethodException ex) {
+            System.out.println("**** "+getTarget());
+            for (Object object : getArguments()) {
+                System.out.println("**** "+object);
+            }
+            throw ex;
+        }
     }
 }

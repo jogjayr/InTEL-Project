@@ -7,7 +7,9 @@ package edu.gatech.statics.exercise.state;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SymbolManager;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.tasks.Task;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,9 +26,11 @@ public class ExerciseState implements State {
     // solved loads (symbol manager)
     // solved connectors
     // diagrams?
+
     private SymbolManager symbolManager;
     private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();    // these are used in keeping track of exercise used with the web based
     // applet deployment
+
     private int userID;
     private int assignmentID;
     private List<Task> satisfiedTasks = new ArrayList<Task>();
@@ -101,17 +105,42 @@ public class ExerciseState implements State {
     public Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams() {
         return Collections.unmodifiableMap(allDiagrams);
     }
-    
 
     /**
-     * Restores this exercise state as loaded.
-     * When the state is loaded, the diagrams will not exist, but their types will?
-     * Will have set of digram state and diagram?
-     * Diagram thus needs some zero or 1-arg (for the key) constructor,
-     * and can just be assigned state automatically.
-     * Must ALSO be able to recognize and instantiate modified types of diagrams, 
-     * so can't just make everything into a FBD, may need to be a DistributedFBD, etc.
+     * This sets the encoding flag for persistence of the state. 
+     * This should ONLY be called by ExerciseStatePersistenceDelegate.
+     * @param encoding
      */
-    void restore() {
+    public void setEncoding(boolean encoding) {
+        this.encoding = encoding;
+    }
+    private boolean encoding;
+    
+    /**
+     * This is for persistence and deserialization. This should never be called directly!
+     * @param loads
+     */
+    @Deprecated
+    public void setupSymbolManager(List<AnchoredVector> loads) {
+        if(encoding)
+            return;
+        for (AnchoredVector load : loads) {
+            getSymbolManager().addSymbol(load);
+        }
+    }
+
+    /**
+     * This is for persistence and deserialization. This should never be called directly!
+     * @param key
+     * @param type
+     * @param state
+     */
+    @Deprecated
+    public void setupDiagram(DiagramKey key, DiagramType type, DiagramState state) {
+        if(encoding)
+            return;
+        Diagram diagram = Exercise.getExercise().createNewDiagram(key, type);
+        diagram.pushState(state);
+        diagram.clearStateStack();
     }
 }

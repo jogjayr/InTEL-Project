@@ -57,8 +57,8 @@ public class ModifiedXMLDecoder {
     
     static ExceptionListener defaultExceptionListener = new ExceptionListener() {
         public void exceptionThrown(Exception e) {
-            System.err.println(e);
-            // e.printStackTrace();
+            //System.err.println(e);
+            e.printStackTrace();
             System.err.println("Continuing ...");
         }
     };
@@ -231,7 +231,7 @@ public class ModifiedXMLDecoder {
 	return owner; 
     }
 
-    public ModifiedObjectHandler createObjectHandler(){
+    ModifiedObjectHandler createObjectHandler(){
         return new ModifiedObjectHandler(this, getClassLoader());
     }
     
