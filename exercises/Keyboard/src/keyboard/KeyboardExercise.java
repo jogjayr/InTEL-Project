@@ -65,21 +65,17 @@ public class KeyboardExercise extends FrameExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
-        A = new Point("0", "6", "0");
-        D = new Point("8", "6", "0");
-        B = new Point("8", "0", "0");
-        E = new Point("0", "0", "0");
-        C = new Point("4", "3", "0");
-        P = new Point("2.7", "4", "0");
-        Q = new Point("5.3", "4", "0");
+        A = new Point("A", "0", "6", "0");
+        D = new Point("D", "8", "6", "0");
+        B = new Point("B", "8", "0", "0");
+        E = new Point("E", "0", "0", "0");
+        C = new Point("C", "4", "3", "0");
+        P = new Point("P", "2.7", "4", "0");
+        Q = new Point("Q", "5.3", "4", "0");
 
-        leftLeg = new Beam(B, A);
-        bar = new Bar(P, Q);
-        rightLeg = new Beam(E, D);
-
-        leftLeg.setName("Left Leg");
-        bar.setName("Bar");
-        rightLeg.setName("Right Leg");
+        leftLeg = new Beam("Left Leg", B, A);
+        bar = new Bar("Bar", P, Q);
+        rightLeg = new Beam("Right Leg", E, D);
 
         jointC = new Pin2d(C);
         jointP = new Connector2ForceMember2d(P, bar);  //Pin2d(P);
@@ -131,14 +127,6 @@ public class KeyboardExercise extends FrameExercise {
         jointE.setName("Joint E");
         jointB.attachToWorld(leftLeg);
         jointB.setName("Joint B");
-        
-        A.setName("A");
-        B.setName("B");
-        C.setName("C");
-        D.setName("D");
-        E.setName("E");
-        P.setName("P");
-        Q.setName("Q");
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
@@ -190,7 +178,7 @@ public class KeyboardExercise extends FrameExercise {
         rep.setModelOffset(new Vector3f(14f, 0, 0));
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         addTask(new Solve2FMTask(bar, jointP));
     }
 }

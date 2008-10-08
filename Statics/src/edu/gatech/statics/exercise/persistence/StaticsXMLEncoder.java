@@ -15,6 +15,9 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.bodies.Cable;
+import edu.gatech.statics.objects.bodies.Plate;
+import edu.gatech.statics.objects.bodies.Potato;
+import edu.gatech.statics.objects.bodies.Pulley;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
@@ -128,7 +131,9 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Beam.class, namedPersistenceDelegate);
         setPersistenceDelegate(Cable.class, namedPersistenceDelegate);
         setPersistenceDelegate(Bar.class, namedPersistenceDelegate);
-
+        setPersistenceDelegate(Pulley.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Potato.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Plate.class, namedPersistenceDelegate);
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 
