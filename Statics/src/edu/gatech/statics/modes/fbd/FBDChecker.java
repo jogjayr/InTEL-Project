@@ -333,7 +333,7 @@ public class FBDChecker {
                     // make sure the directions are pointing the correct way:
                     if (reaction.getVectorValue().equals(loadFromSymbolManager.getVectorValue().negate())) {
                         loadFromSymbolManager = new AnchoredVector(loadFromSymbolManager);
-                        loadFromSymbolManager.getVectorValue().negate();
+                        loadFromSymbolManager.getVectorValue().negateLocal();
                     }
 
                     // of the user AnchoredVectors, only check those which point in maybe the right direction
