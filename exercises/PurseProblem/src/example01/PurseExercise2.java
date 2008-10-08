@@ -82,13 +82,13 @@ public class PurseExercise2 extends OrdinaryExercise {
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         
-        A = new Point("" + handPoint, "-10", "0", "A");
+        A = new Point("A", "" + handPoint, "-10", "0");
         
-        C = new Point("18", "-10", "0", "C");
-        B = new UnknownPoint(new Point("13", "-10", "0", "B"), 
+        C = new Point("C", "18", "-10", "0");
+        B = new UnknownPoint(new Point("B", "13", "-10", "0"), 
                 C, Vector3bd.UNIT_X.negate());
         
-        Body forearm = new Beam(C, A, "Forearm");
+        Body forearm = new Beam("Forearm", C, A);
         
 //        forearm.setName("Forearm");
         
@@ -96,7 +96,7 @@ public class PurseExercise2 extends OrdinaryExercise {
         
         jointC.attachToWorld(forearm);
 
-        G = new Point("" + (centerGravityOffset + 3), "-10", "0", "G");
+        G = new Point("G", "" + (centerGravityOffset + 3), "-10", "0");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.createDefaultSchematicRepresentation(6f);

@@ -10,6 +10,11 @@ import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.bodies.Bar;
+import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
@@ -106,6 +111,26 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 return new Expression(oldInstance, BodySubset.class, "new", new Object[]{new ArrayList(bodySubset.getBodies())});
             }
         });
+
+        PersistenceDelegate namedPersistenceDelegate = new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                ResolvableByName resolvable = (ResolvableByName) oldInstance;
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{resolvable.getName()});
+            }
+        };
+        
+        setPersistenceDelegate(Point.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Body.class, namedPersistenceDelegate);
+        
+        // we should have some general approach so that this nonsense is not necessary
+        setPersistenceDelegate(Beam.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Cable.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Bar.class, namedPersistenceDelegate);
+
+        //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
+        //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 
         setPersistenceDelegate(ExerciseState.class, new ExerciseStatePersistenceDelegate());
     }

@@ -15,7 +15,7 @@ import edu.gatech.statics.objects.Body;
 public class Potato extends Body {
 
     public Potato(String name) {
-        setName(name);
+        super(name);
     }
     
     @Override

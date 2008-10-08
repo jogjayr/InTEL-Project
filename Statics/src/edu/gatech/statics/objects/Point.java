@@ -22,9 +22,9 @@ public class Point extends SimulationObject implements ResolvableByName {
     // location, etc, already built into SimulationObject
     private Vector3bd point;
 
-    public Point(Point other, String name) {
+    public Point(Point other) {
         this.point = new Vector3bd(other.point);
-        setName(name);
+        setName(other.getName());
         updateTranslation();
     }
 
@@ -34,19 +34,19 @@ public class Point extends SimulationObject implements ResolvableByName {
         updateTranslation();
     }
 
-    public Point(Vector3bd point, String name) {
+    public Point(String name, Vector3bd point) {
         this.point = point;
         setName(name);
         updateTranslation();
     }
 
-    public Point(String x, String y, String z, String name) {
+    public Point(String name, String x, String y, String z) {
         this.point = new Vector3bd(x, y, z);
         setName(name);
         updateTranslation();
     }
 
-    public Point(String formattedString, String name) {
+    public Point(String name, String formattedString) {
         this.point = new Vector3bd(formattedString);
         setName(name);
         updateTranslation();

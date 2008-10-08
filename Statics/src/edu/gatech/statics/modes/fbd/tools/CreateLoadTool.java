@@ -71,7 +71,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     public CreateLoadTool(FreeBodyDiagram diagram) {
         this.diagram = diagram;
-        loadAnchor = new Point(new Vector3bd(), "default");
+        loadAnchor = new Point("default", new Vector3bd());
         loads = createLoads(loadAnchor);
 
         for (Load load : loads) {

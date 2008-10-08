@@ -32,7 +32,7 @@ public class UnknownPoint extends Point {
      * @param direction direction will be normalized if it is not already
      */
     public UnknownPoint(Point estimate, Point referencePoint, Vector3bd direction) {
-        super(estimate, "default");
+        super(estimate);
         this.referencePoint = referencePoint;
         this.direction = direction.normalize();
 
@@ -46,7 +46,7 @@ public class UnknownPoint extends Point {
      * @param base
      */
     public UnknownPoint(Point base) {
-        super(base, "default");
+        super(base);
         if (base instanceof UnknownPoint) {
             UnknownPoint unknownBase = (UnknownPoint) base;
             this.referencePoint = unknownBase.referencePoint;

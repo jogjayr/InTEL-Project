@@ -20,7 +20,7 @@ public class FixedAngleMeasurement extends AngleMeasurement {
     public FixedAngleMeasurement(Point anchor, Vector3bd sideVector, Vector3f axis, String name) {
         super(anchor);
         
-        side = new Point(anchor.getPosition().add(sideVector), name);
+        side = new Point(name, anchor.getPosition().add(sideVector));
         addPoint(side);
         this.axis = axis;
         update();

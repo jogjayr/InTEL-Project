@@ -20,7 +20,7 @@ public class Pulley extends Body {
     
     /** Creates a new instance of Pulley */
     public Pulley(String name) {
-        setName(name);
+        super(name);
     }
 
     public void createDefaultSchematicRepresentation() {

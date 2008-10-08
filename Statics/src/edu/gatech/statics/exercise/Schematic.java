@@ -55,7 +55,7 @@ public class Schematic {
 
     /** Creates a new instance of ExercizeWorld */
     public Schematic() {
-        background = new Background("Background");
+        background = new Background();
         allObjects.add(background);
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();

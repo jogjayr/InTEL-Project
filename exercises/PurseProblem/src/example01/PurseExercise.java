@@ -50,10 +50,10 @@ public class PurseExercise extends FrameExercise {
                 "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
                 "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
                 "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
-                //"Here is a simplified version of the human arm. " +
-                //"Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
-                //"The weight of the forearm is 9 N and its center of mass is at G. " +
-                //"The weight of the purse is 19.6 N.");
+        //"Here is a simplified version of the human arm. " +
+        //"Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
+        //"The weight of the forearm is 9 N and its center of mass is at G. " +
+        //"The weight of the purse is 19.6 N.");
 
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");
@@ -88,15 +88,15 @@ public class PurseExercise extends FrameExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
-        A = new Point("" + handPoint, "-10", "0", "A");
-        B = new Point("" + tendonAnchorB, "-10", "0", "B");
-        C = new Point("18", "-10", "0", "C");
-        D = new Point("18", "" + (tendonAnchorD + 6), "0", "D");
-        E = new Point("18", "" + (shoulderHeight + 6), "0", "E");
+        A = new Point("A", "" + handPoint, "-10", "0");
+        B = new Point("B", "" + tendonAnchorB, "-10", "0");
+        C = new Point("C", "18", "-10", "0");
+        D = new Point("D", "18", "" + (tendonAnchorD + 6), "0");
+        E = new Point("E", "18", "" + (shoulderHeight + 6), "0");
 
-        upperArm = new Beam(E, C, "Upper Arm");
-        forearm = new Beam(C, A, "Forearm");
-        tendon = new Cable(D, B, "Bicep Muscle");
+        upperArm = new Beam("Upper Arm", E, C);
+        forearm = new Beam("Forearm", C, A);
+        tendon = new Cable("Bicep Muscle", D, B);
 
 //        upperArm.setName("Upper Arm");
 //        forearm.setName("Forearm");
@@ -106,13 +106,13 @@ public class PurseExercise extends FrameExercise {
         jointD = new Connector2ForceMember2d(D, tendon);
         jointC = new Pin2d(C);
         jointE = new Pin2d(E);
-        
+
         jointB.setName("connector B");
         jointD.setName("connector D");
         jointC.setName("pin C");
         jointE.setName("pin E");
 
-        G = new Point("" + (centerGravityOffset + 3), "-10", "0", "G");
+        G = new Point("G", "" + (centerGravityOffset + 3), "-10", "0");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.setName("measure AC");

@@ -19,7 +19,7 @@ public class Plate extends Body {
     
     /** Creates a new instance of Plate */
     public Plate(String name) {
-        setName(name);
+        super(name);
     }
 
     public void createDefaultSchematicRepresentation() {

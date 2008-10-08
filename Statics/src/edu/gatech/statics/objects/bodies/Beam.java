@@ -37,9 +37,11 @@ public class Beam extends LongBody {
         super(end1, end2);
     }*/
     
-    public Beam() {}
+    public Beam(String name) {
+        super(name);
+    }
     
-    public Beam(Point end1, Point end2, String name) {
-        super(end1, end2, name);
+    public Beam(String name, Point end1, Point end2) {
+        super(name, end1, end2);
     }
 }

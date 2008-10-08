@@ -56,10 +56,10 @@ public class DistanceMeasurement extends Measurement {
         this.v1 = v1;
         this.v2 = v2;
         if (isVertical() == true) {
-            Point p1 = new Point(new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())), "default");
+            Point p1 = new Point("default", new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
             updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
         } else if (isHorizontal() == true) {
-            Point p1 = new Point(new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())), "default");
+            Point p1 = new Point("default", new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
             updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
         } else {
             updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));
@@ -70,10 +70,10 @@ public class DistanceMeasurement extends Measurement {
     public void update() {
         super.update();
         if (isVertical() == true) {
-            Point p1 = new Point(new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())), "default");
+            Point p1 = new Point("default", new Vector3bd(Float.toString(v2.getTranslation().getX()), Float.toString(v1.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
             updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
         } else if (isHorizontal() == true) {
-            Point p1 = new Point(new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())), "default");
+            Point p1 = new Point("default", new Vector3bd(Float.toString(v1.getTranslation().getX()), Float.toString(v2.getTranslation().getY()), Float.toString(v1.getTranslation().getZ())));
             updateQuantityValue(new BigDecimal(p1.getPosition().distance(v2.getPosition())));
         } else {
             updateQuantityValue(new BigDecimal(v1.getPosition().distance(v2.getPosition())));

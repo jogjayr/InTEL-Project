@@ -88,8 +88,6 @@ abstract public class Body extends SimulationObject implements ResolvableByName 
         return getName();
     }
 
-    @Deprecated
-    public Body(){}
     /** Creates a new instance of SimBody */
     public Body(String name) {
         setName(name);
