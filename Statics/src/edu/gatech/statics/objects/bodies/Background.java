@@ -14,8 +14,8 @@ import edu.gatech.statics.objects.Body;
  */
 public class Background extends Body{
 
-    public Background() {
-        setName("Background");
+    public Background(String name) {
+        setName(name);
     }
     
     /**

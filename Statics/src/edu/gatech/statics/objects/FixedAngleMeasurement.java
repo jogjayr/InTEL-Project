@@ -17,10 +17,10 @@ public class FixedAngleMeasurement extends AngleMeasurement {
     private Vector3f axis;
     private Point side;
 
-    public FixedAngleMeasurement(Point anchor, Vector3bd sideVector, Vector3f axis) {
+    public FixedAngleMeasurement(Point anchor, Vector3bd sideVector, Vector3f axis, String name) {
         super(anchor);
         
-        side = new Point(anchor.getPosition().add(sideVector));
+        side = new Point(anchor.getPosition().add(sideVector), name);
         addPoint(side);
         this.axis = axis;
         update();

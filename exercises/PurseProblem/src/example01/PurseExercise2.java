@@ -82,21 +82,21 @@ public class PurseExercise2 extends OrdinaryExercise {
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
         
-        A = new Point("" + handPoint, "-10", "0");
+        A = new Point("" + handPoint, "-10", "0", "A");
         
-        C = new Point("18", "-10", "0");
-        B = new UnknownPoint(new Point("13", "-10", "0"), 
+        C = new Point("18", "-10", "0", "C");
+        B = new UnknownPoint(new Point("13", "-10", "0", "B"), 
                 C, Vector3bd.UNIT_X.negate());
         
-        Body forearm = new Beam(C, A);
+        Body forearm = new Beam(C, A, "Forearm");
         
-        forearm.setName("Forearm");
+//        forearm.setName("Forearm");
         
         jointC = new Pin2d(C);
         
         jointC.attachToWorld(forearm);
 
-        G = new Point("" + (centerGravityOffset + 3), "-10", "0");
+        G = new Point("" + (centerGravityOffset + 3), "-10", "0", "G");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.createDefaultSchematicRepresentation(6f);
@@ -130,10 +130,10 @@ public class PurseExercise2 extends OrdinaryExercise {
         forearm.addObject(tendonForce);
         forearm.addObject(B);
 
-        C.setName("C");
-        B.setName("B");
-        A.setName("A");
-        G.setName("G");
+//        C.setName("C");
+//        B.setName("B");
+//        A.setName("A");
+//        G.setName("G");
 
         C.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();

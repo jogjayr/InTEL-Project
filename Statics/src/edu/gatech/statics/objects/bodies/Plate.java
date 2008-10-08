@@ -18,7 +18,8 @@ import edu.gatech.statics.objects.Body;
 public class Plate extends Body {
     
     /** Creates a new instance of Plate */
-    public Plate() {
+    public Plate(String name) {
+        setName(name);
     }
 
     public void createDefaultSchematicRepresentation() {

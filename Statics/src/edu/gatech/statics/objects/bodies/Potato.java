@@ -14,6 +14,10 @@ import edu.gatech.statics.objects.Body;
  */
 public class Potato extends Body {
 
+    public Potato(String name) {
+        setName(name);
+    }
+    
     @Override
     public void createDefaultSchematicRepresentation() {
     }

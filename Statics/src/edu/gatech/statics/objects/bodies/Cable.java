@@ -30,12 +30,12 @@ public class Cable extends TwoForceMember {
      * Do not use this constructor
      */
     @Deprecated
-    public Cable() {
-        super();
+    public Cable(String name) {
+        super(name);
     }
     
-    public Cable(Point end1, Point end2) {
-        super(end1, end2);
+    public Cable(Point end1, Point end2, String name) {
+        super(end1, end2, name);
     }
 
     public boolean canCompress() {return false;}

@@ -22,8 +22,9 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
 public class PointBody extends Body {
 
     private Point myPoint;
-    public PointBody(Point myPoint) {
+    public PointBody(Point myPoint, String name) {
         this.myPoint = myPoint;
+        setName(name);
         addObject(myPoint);
         //for(Representation rep : myPoint.getRepresentation(RepresentationLayer.points))
         //    addRepresentation(rep);

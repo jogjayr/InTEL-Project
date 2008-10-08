@@ -22,28 +22,33 @@ public class Point extends SimulationObject implements ResolvableByName {
     // location, etc, already built into SimulationObject
     private Vector3bd point;
 
-    public Point(Point other) {
+    public Point(Point other, String name) {
         this.point = new Vector3bd(other.point);
+        setName(name);
         updateTranslation();
     }
 
-    public Point() {
+    public Point(String name) {
         this.point = new Vector3bd();
+        setName(name);
         updateTranslation();
     }
 
-    public Point(Vector3bd point) {
+    public Point(Vector3bd point, String name) {
         this.point = point;
+        setName(name);
         updateTranslation();
     }
 
-    public Point(String x, String y, String z) {
+    public Point(String x, String y, String z, String name) {
         this.point = new Vector3bd(x, y, z);
+        setName(name);
         updateTranslation();
     }
 
-    public Point(String formattedString) {
+    public Point(String formattedString, String name) {
         this.point = new Vector3bd(formattedString);
+        setName(name);
         updateTranslation();
     }
 

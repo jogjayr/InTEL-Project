@@ -88,19 +88,19 @@ public class PurseExercise extends FrameExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
-        A = new Point("" + handPoint, "-10", "0");
-        B = new Point("" + tendonAnchorB, "-10", "0");
-        C = new Point("18", "-10", "0");
-        D = new Point("18", "" + (tendonAnchorD + 6), "0");
-        E = new Point("18", "" + (shoulderHeight + 6), "0");
+        A = new Point("" + handPoint, "-10", "0", "A");
+        B = new Point("" + tendonAnchorB, "-10", "0", "B");
+        C = new Point("18", "-10", "0", "C");
+        D = new Point("18", "" + (tendonAnchorD + 6), "0", "D");
+        E = new Point("18", "" + (shoulderHeight + 6), "0", "E");
 
-        upperArm = new Beam(E, C);
-        forearm = new Beam(C, A);
-        tendon = new Cable(D, B);
+        upperArm = new Beam(E, C, "Upper Arm");
+        forearm = new Beam(C, A, "Forearm");
+        tendon = new Cable(D, B, "Bicep Muscle");
 
-        upperArm.setName("Upper Arm");
-        forearm.setName("Forearm");
-        tendon.setName("Bicep Muscle");
+//        upperArm.setName("Upper Arm");
+//        forearm.setName("Forearm");
+//        tendon.setName("Bicep Muscle");
 
         jointB = new Connector2ForceMember2d(B, tendon);
         jointD = new Connector2ForceMember2d(D, tendon);
@@ -112,7 +112,7 @@ public class PurseExercise extends FrameExercise {
         jointC.setName("pin C");
         jointE.setName("pin E");
 
-        G = new Point("" + (centerGravityOffset + 3), "-10", "0");
+        G = new Point("" + (centerGravityOffset + 3), "-10", "0", "G");
 
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.setName("measure AC");
@@ -170,12 +170,12 @@ public class PurseExercise extends FrameExercise {
         //jointC.createDefaultSchematicRepresentation();
         //jointE.createDefaultSchematicRepresentation();
 
-        E.setName("E");
-        D.setName("D");
-        C.setName("C");
-        B.setName("B");
-        A.setName("A");
-        G.setName("G");
+//        E.setName("E");
+//        D.setName("D");
+//        C.setName("C");
+//        B.setName("B");
+//        A.setName("A");
+//        G.setName("G");
 
         E.createDefaultSchematicRepresentation();
         D.createDefaultSchematicRepresentation();

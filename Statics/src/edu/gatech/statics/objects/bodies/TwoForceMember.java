@@ -45,11 +45,11 @@ abstract public class TwoForceMember extends LongBody {
      * @deprecated
      */
     @Deprecated
-    public TwoForceMember() {
+    public TwoForceMember(String name) {
     }
 
-    public TwoForceMember(Point end1, Point end2) {
-        super(end1, end2);
+    public TwoForceMember(Point end1, Point end2, String name) {
+        super(end1, end2, name);
     }
 
     abstract public boolean canCompress();

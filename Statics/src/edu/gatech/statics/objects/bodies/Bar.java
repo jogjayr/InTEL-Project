@@ -38,8 +38,8 @@ public class Bar extends TwoForceMember {
         super(end1, end2);
     }*/
     
-    public Bar(Point end1, Point end2) {
-        super(end1, end2);
+    public Bar(Point end1, Point end2, String name) {
+        super(end1, end2, name);
     }
     
     public boolean canCompress() {return true;}

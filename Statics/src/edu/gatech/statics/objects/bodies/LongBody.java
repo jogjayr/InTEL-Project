@@ -31,16 +31,21 @@ abstract public class LongBody extends Body {
     public Vector3bd getEndpoint2() {
         return end2;
     }
-
-    public LongBody() {
-        this(Vector3bd.ZERO, Vector3bd.UNIT_Y);
+    
+    @Deprecated
+    public LongBody(){}
+    
+    public LongBody(String name) {
+        this(Vector3bd.ZERO, Vector3bd.UNIT_Y, name);
     }
 
-    public LongBody(Vector3bd end1, Vector3bd end2) {
+    public LongBody(Vector3bd end1, Vector3bd end2, String name) {
+        setName(name);
         setByEndpoints(end1, end2);
     }
 
-    public LongBody(Point end1, Point end2) {
+    public LongBody(Point end1, Point end2, String name) {
+        setName(name);
         setByEndpoints(end1.getPosition(), end2.getPosition());
         addObject(end1);
         addObject(end2);

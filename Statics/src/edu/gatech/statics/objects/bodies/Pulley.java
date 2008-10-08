@@ -19,7 +19,8 @@ import edu.gatech.statics.objects.Body;
 public class Pulley extends Body {
     
     /** Creates a new instance of Pulley */
-    public Pulley() {
+    public Pulley(String name) {
+        setName(name);
     }
 
     public void createDefaultSchematicRepresentation() {
