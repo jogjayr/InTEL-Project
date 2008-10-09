@@ -30,8 +30,9 @@ import edu.gatech.statics.ui.components.ModalPopupWindow;
         BLabel title = new BLabel("Two force member");
         add(title, BorderLayout.NORTH);
         HTMLView text = new HTMLView();
-        text.setContents("Please keep in mind that provided you have solved for its forces in adjacent bodies it is "+ 
-                "possible to solve a two force member. If you have not, however, it is impossible.");
+        text.setContents("Unless you have solved for an adjacent load it is impossible to solve a two force member by itself. " +
+                "Instead, to solve for the two points on the two force member, you should solve them in an adjacent body and through reflection "+
+                "wll be able to determine the opposing load.");
         text.setPreferredSize(300, 100);
 
         add(text, BorderLayout.CENTER);

@@ -24,9 +24,12 @@ import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.equation.actions.LockEquation;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -165,6 +168,20 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             setCheckIcon(data.equationBar);
         }
 
+        if(getDiagram().getBodySubset().getBodies().size() == 1) {
+            for (Body b : getDiagram().getBodySubset().getBodies()) {
+                if (b instanceof TwoForceMember) {
+//                    getDiagram().equationSolved();
+                    
+                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
+                    getDiagram().performAction(lockEquationAction);
+                    
+                    data.equationBar.setLocked();
+                    setCheckIcon(data.equationBar);
+                }
+            }
+        }
+        
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
