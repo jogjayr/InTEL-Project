@@ -24,6 +24,10 @@ import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
 /**
@@ -33,12 +37,35 @@ import java.math.BigDecimal;
 public class KeyboardExercise extends FrameExercise {
 
     @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        //AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        // ideally, we shouldn't need to create a subclass here.
+        // we should just be able to modify the camera control directly, but so it goes.
+        AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
+
+            @Override
+            public void setupCameraControl(CameraControl cameraControl) {
+                super.setupCameraControl(cameraControl);
+                cameraControl.setMovementSpeed(.2f, .02f, .05f);
+            }
+        };
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-2, 2, -1, 4);
+        vc.setZoomConstraints(0.5f, 1.5f);
+        ic.setViewConstraints(vc);
+        // this throws a null pointer
+        //ic.getNavigationWindow().getCameraControl().setMovementSpeed(.2f, .02f, .05f);
+        return ic;
+    }
+
+    @Override
     public void initExercise() {
         setName("Keyboard Stand");
 
         setDescription(
                 "This is a keyboard stand supported by two beams and a cross bar, PQ. " +
-                "Find the force in PQ and define whether it is in tension or compression.");
+                "Find the force in PQ and define whether it is in tension or compression. " +
+                "The supports at B and E are rollers, and the floor is frictionless.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
@@ -79,6 +106,7 @@ public class KeyboardExercise extends FrameExercise {
 
         jointC = new Pin2d(C);
         jointP = new Connector2ForceMember2d(P, bar);  //Pin2d(P);
+
         jointQ = new Connector2ForceMember2d(Q, bar); //new Pin2d(Q);
 
         jointB = new Roller2d(B);

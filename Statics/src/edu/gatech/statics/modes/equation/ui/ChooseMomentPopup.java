@@ -5,7 +5,6 @@
 
 package edu.gatech.statics.modes.equation.ui;
 
-import edu.gatech.statics.modes.fbd.ui.*;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;

@@ -74,12 +74,12 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 0.8f));
         Schematic schematic = getSchematic();
 
-        Point end1 = new Point("-2.5", "0", "0");
-        Point base = new Point("0", "0", "0");
-        Point end2 = new Point("2.5", "0", "0");
+        Point end1 = new Point("end1","-2.5", "0", "0");
+        Point base = new Point("B","0", "0", "0");
+        Point end2 = new Point("end2","2.5", "0", "0");
 
-        UnknownPoint child1Point = new UnknownPoint(new Point("-2.0", "0", "0"), base, Vector3bd.UNIT_X.negate());
-        Point child2Point = new Point("1.75", "0", "0");
+        UnknownPoint child1Point = new UnknownPoint(new Point("A","-2.0", "0", "0"), base, Vector3bd.UNIT_X.negate());
+        Point child2Point = new Point("C","1.75", "0", "0");
 
         Force child1Force = new Force(child1Point, Vector3bd.UNIT_Y.negate(), new BigDecimal(15 * 9.8f));
         Force child2Force = new Force(child2Point, Vector3bd.UNIT_Y.negate(), "W");
@@ -97,16 +97,9 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         schematic.add(measure1);
         schematic.add(measure2);
 
-        base.setName("B");
-        end1.setName("end1");
-        end2.setName("end2");
-        child1Point.setName("A");
-        child2Point.setName("C");
-
         child1Point.setMeasurement(measure1);
 
-        Body seesaw = new Beam(end1, end2);
-        seesaw.setName("See Saw");
+        Body seesaw = new Beam("See Saw",end1, end2);
 
         seesaw.addObject(base);
         seesaw.addObject(child1Force);

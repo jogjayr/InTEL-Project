@@ -70,14 +70,11 @@ public class TowerExercise extends OrdinaryExercise {
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 24.0f, 100.0f));
 
-        Point A = new Point("0", "0", "0");
-        Point B = new Point("2.5", "55", "0");
-        Point G = new Point(A.getPosition().add(B.getPosition()).mult(new BigDecimal(".5")));
-        A.setName("A");
-        B.setName("B");
-        G.setName("G");
+        Point A = new Point("A", "0", "0", "0");
+        Point B = new Point("B", "2.5", "55", "0");
+        Point G = new Point("G", A.getPosition().add(B.getPosition()).mult(new BigDecimal(".5")));
 
-        Point underG = new Point("" + G.getPosition().getX(), "0", "0");
+        Point underG = new Point("underG", "" + G.getPosition().getX(), "0", "0");
 
         DistanceMeasurement horizontalDistance = new DistanceMeasurement(A, underG);
         horizontalDistance.createDefaultSchematicRepresentation();
@@ -89,8 +86,7 @@ public class TowerExercise extends OrdinaryExercise {
         B.createDefaultSchematicRepresentation();
         G.createDefaultSchematicRepresentation();
 
-        Body tower = new Beam(A, B);
-        tower.setName("Tower");
+        Body tower = new Beam("Tower", A, B);
         tower.setCenterOfMassPoint(G);
         tower.createDefaultSchematicRepresentation();
         tower.getWeight().setDiagramValue(new BigDecimal("14700"));
@@ -117,7 +113,7 @@ public class TowerExercise extends OrdinaryExercise {
         tower.addRepresentation(rep);
         rep = modelNode.getRemainder(world.getBackground());
         rep.setLocalScale(scale);
-        
+
         world.getBackground().addRepresentation(rep);
 
     }
