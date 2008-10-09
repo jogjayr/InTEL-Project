@@ -21,7 +21,10 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
     }
 
     public EquationState performAction(EquationState oldState) {
-        EquationState.Builder builder = new EquationState.Builder(oldState);
+        EquationState.Builder builder = new EquationState.Builder(oldState);// cannot modify the state if the equation is locked
+        if (oldState.isLocked()) {
+            return oldState;
+        }
         builder.setMomentPoint(momentPoint);
         return builder.build();
     }

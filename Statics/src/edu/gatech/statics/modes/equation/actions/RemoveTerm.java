@@ -26,6 +26,10 @@ public class RemoveTerm implements DiagramAction<EquationState> {
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);
+        // cannot modify the state if the equation is locked
+        if (mathState.isLocked()) {
+            return oldState;
+        }
         EquationMathState.Builder mathBuilder = new EquationMathState.Builder(mathState);
         mathBuilder.getTerms().remove(load);
         builder.putEquationState(mathBuilder.build());

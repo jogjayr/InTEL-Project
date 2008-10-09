@@ -22,13 +22,10 @@ import edu.gatech.statics.exercise.persistence.ModifiedXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.beans.ExceptionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -201,7 +198,8 @@ public class ApplicationBar extends BWindow {
                         }
                     });
 
-                    encoder.writeObject(getModePanel().getDiagram().getCurrentState());
+                    encoder.writeObject(Exercise.getExercise().getState());
+                    //encoder.writeObject(getModePanel().getDiagram().getCurrentState());
                     encoder.close();
 
                     System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));

@@ -60,9 +60,12 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         if (activeEquation == null || load == null) {
             return;
         }
-        activeEquation.performAddTerm(load.getAnchoredVector());
-        //activeEquation.addTerm(load);
-        //activeEquation.highlightVector(load.getVector());
+        // add the term if the equation is not locked
+        if (!activeEquation.isLocked()) {
+            activeEquation.performAddTerm(load.getAnchoredVector());
+        }
+
+        // highlight the load in the equations
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
         }
@@ -161,7 +164,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             data.equationBar.setLocked();
             setCheckIcon(data.equationBar);
         }
-        
+
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
@@ -186,7 +189,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         boolean success = bar.getMath().check();
         if (success) {
             getDiagram().equationSolved();
-            
+
             bar.setLocked();
 
             setCheckIcon(bar);
@@ -299,7 +302,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     @Override
     public void activate() {
         super.activate();
-        
+
         if (!uiMap.isEmpty()) {
             clear();
         }
@@ -311,9 +314,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             EquationMath math = diagram.getWorksheet().getMath(mathName);
             addEquationRow(math);
         }
-        
+
         stateChanged();
-        
+
         refreshRows();
         invalidate();
     }
