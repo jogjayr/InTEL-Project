@@ -118,23 +118,29 @@ public class KeyboardExercise extends FrameExercise {
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.setName("Measure AD");
         distance1.createDefaultSchematicRepresentation(0.5f);
+        distance1.addPoint(E);
+        distance1.addPoint(B);
         schematic.add(distance1);
 
         DistanceMeasurement distance2 = new DistanceMeasurement(C, D);
         distance2.setName("Measure CD");
         distance2.createDefaultSchematicRepresentation(0.5f);
         distance2.forceVertical();
+        distance2.addPoint(A);
         schematic.add(distance2);
 
         DistanceMeasurement distance3 = new DistanceMeasurement(C, Q);
         distance3.setName("Measure CQ");
         distance3.createDefaultSchematicRepresentation(1f);
         distance3.forceVertical();
+        distance3.addPoint(P);
         schematic.add(distance3);
 
         DistanceMeasurement distance4 = new DistanceMeasurement(B, D);
         distance4.setName("Measure BD");
         distance4.createDefaultSchematicRepresentation(2.4f);
+        distance4.addPoint(A);
+        distance4.addPoint(E);
         schematic.add(distance4);
 
         Force keyboardLeft = new Force(A, Vector3bd.UNIT_Y.negate(), new BigDecimal(50));

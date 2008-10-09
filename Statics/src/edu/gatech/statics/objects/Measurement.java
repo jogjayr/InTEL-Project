@@ -93,7 +93,7 @@ abstract public class Measurement extends SimulationObject implements Quantified
         quantity = new Quantity(getUnit(), BigDecimal.ZERO);
     }
 
-    protected void addPoint(Point point) {
+    public void addPoint(Point point) {
         points.add(point);
     }
 }
