@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.distributed;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class DistributedDiagram extends Diagram {
+public class DistributedDiagram extends Diagram<DistributedState> {
 
     private DistributedForce dl;
     private DistanceMeasurement measure;
@@ -70,7 +71,8 @@ public class DistributedDiagram extends Diagram {
         resultant.setDisplayGrayed(true);
 
         //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
-        measure = new DistanceMeasurement(new Point(dl.getSurface().getEndpoint1()), resultant.getAnchor());
+        String pointName = dl.getName()+" pos";
+        measure = new DistanceMeasurement(new Point(pointName, dl.getSurface().getEndpoint1()), resultant.getAnchor());
         measure.setKnown(false);
         measure.setSymbol("pos");
         measure.createDefaultSchematicRepresentation(2f);
@@ -127,10 +129,10 @@ public class DistributedDiagram extends Diagram {
         count++;
         
         measure.setKnown(true);
-        resultant.setKnown(true);
+        //resultant.setKnown(true);
 
         // ??
-        resultant.setSymbol(null);
+        //resultant.setSymbol(null);
 
         // IMPORTANT THINGS TO NOTE:
         // THIS CODE DOES NOT WORK 100% JUST YET
@@ -164,5 +166,20 @@ public class DistributedDiagram extends Diagram {
     @Override
     public Mode getMode() {
         return DistributedMode.instance;
+    }
+
+    @Override
+    public DiagramKey getKey() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected DistributedState createInitialState() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void completed() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

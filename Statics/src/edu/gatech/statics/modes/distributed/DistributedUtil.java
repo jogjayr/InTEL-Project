@@ -18,11 +18,11 @@ class DistributedUtil {
     }
 
     static void grayoutSolvedDistributedObjects() {
-        for (SimulationObject obj : StaticsApplication.getApp().getCurrentDiagram().allObjects()) {
+        /*for (SimulationObject obj : StaticsApplication.getApp().getCurrentDiagram().allObjects()) {
             if (obj instanceof DistributedForce) {
                 DistributedForce dl = (DistributedForce) obj;
                 dl.setDisplayGrayed(dl.isSolved());
             }
-        }
+        }*/
     }
 }

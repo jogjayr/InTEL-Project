@@ -247,13 +247,13 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
         Point resultantAnchor;
         Vector3bd pos = estimateResultantPosition();
         if (position.isSymbolic()) {
-            resultantAnchor = new UnknownPoint(new Point(pos), new Point(getSurface().getEndpoint1()),
-                    getSurface().getDirectionFrom(pos));
+            //resultantAnchor = new UnknownPoint(new Point(pos), new Point(getSurface().getEndpoint1()),
+            //        getSurface().getDirectionFrom(pos));
         } else {
-            resultantAnchor = new Point(pos);
+            //resultantAnchor = new Point(pos);
         }
 
-        resultant = new Force(resultantAnchor, new Vector(Unit.force, getPeak().getVectorValue(), "R"));
+        //resultant = new Force(resultantAnchor, new Vector(Unit.force, getPeak().getVectorValue(), "R"));
     }
 
     /**

@@ -12,6 +12,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -82,11 +83,6 @@ public class DistributedModePanel extends ApplicationModePanel {
     }
 
     @Override
-    public String getPanelName() {
-        return "distributed";
-    }
-
-    @Override
     public void activate() {
         magnitudeField.setText(magnitudeValue);
         positionField.setText(positionValue);
@@ -95,5 +91,10 @@ public class DistributedModePanel extends ApplicationModePanel {
     @Override
     protected ApplicationTab createTab() {
         return new ApplicationTab("Resultant");
+    }
+
+    @Override
+    public DiagramType getDiagramType() {
+        return DiagramType.getType("distributed");
     }
 }
