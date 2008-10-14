@@ -18,7 +18,6 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.exercise.persistence.ModifiedXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
 import edu.gatech.statics.exercise.state.DiagramState;

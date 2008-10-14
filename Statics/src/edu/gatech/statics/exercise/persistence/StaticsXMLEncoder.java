@@ -123,10 +123,10 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{resolvable.getName()});
             }
         };
-        
+
         setPersistenceDelegate(Point.class, namedPersistenceDelegate);
         setPersistenceDelegate(Body.class, namedPersistenceDelegate);
-        
+
         // we should have some general approach so that this nonsense is not necessary
         setPersistenceDelegate(Beam.class, namedPersistenceDelegate);
         setPersistenceDelegate(Cable.class, namedPersistenceDelegate);
@@ -156,6 +156,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         //    super.writeObject(o);
         //}
 
+        System.out.println("writing: " + (o == null ? "" : o.getClass().getSimpleName()) + " " + o);
         super.writeObject(o);
     }
 

@@ -7,14 +7,12 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.exercise.state.ExerciseState;
-import edu.gatech.statics.math.AnchoredVector;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -23,8 +21,8 @@ import java.util.Map;
  */
 public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate {
 
-    private static final ExerciseStatePersistenceHelper helper = new ExerciseStatePersistenceHelper();
-    private static boolean writing = false;
+    //private static final ExerciseStatePersistenceHelper helper = new ExerciseStatePersistenceHelper();
+    //private static boolean writing = false;
 
     //@Override
     //protected Expression instantiate(Object oldInstance, Encoder out) {
@@ -32,7 +30,7 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
     @Override
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
 
-        writing = true;
+        //writing = true;
 
         ExerciseState oldState = (ExerciseState) oldInstance;
         ExerciseState newState = (ExerciseState) newInstance;
@@ -40,11 +38,11 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
 
         // *** This doesn't work:
         // what we need is to put the helper object (or static method) in the exercise state class itself.
-        out.writeStatement(new Statement(ExerciseStatePersistenceHelper.class, "println", new Object[]{"oh noes!"}));
+        //out.writeStatement(new Statement(ExerciseStatePersistenceHelper.class, "println", new Object[]{"oh noes!"}));
 
         // write out the SymbolManager
         //out.writeStatement(new Statement(helper, "setupSymbolManager", new Object[]{oldInstance, state.getSymbolManager().getLoads()}));
-        out.writeStatement(new Statement(oldState, "setupSymbolManager", new Object[]{oldState.getSymbolManager().getLoads()}));
+        out.writeStatement(new Statement(oldState, "setupSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
 
         // write out the diagrams
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {
@@ -63,18 +61,18 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
         super.initialize(type, oldInstance, newInstance, out);
         newState.setEncoding(false);
 
-        writing = false;
+        //writing = false;
     }
 
     /**
      * This class and all its methods are intended to be helper initializer methods
      * to help in the persistence of the ExerciseState.
      */
-    public static class ExerciseStatePersistenceHelper {
+    /*public static class ExerciseStatePersistenceHelper {
 
-        public static void println(String s) {
-            System.out.println(s);
-        }
+        //public static void println(String s) {
+        //    System.out.println(s);
+        //}
 
         public void setupSymbolManager(ExerciseState newState, List<AnchoredVector> symbolManagerLoads) {
             if (writing) {
@@ -93,5 +91,5 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
             diagram.pushState(state);
             diagram.clearStateStack();
         }
-    }
+    }*/
 }
