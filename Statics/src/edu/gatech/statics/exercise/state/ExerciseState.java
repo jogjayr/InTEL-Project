@@ -117,15 +117,27 @@ public class ExerciseState implements State {
     private boolean encoding;
     
     /**
+     * This is used for initializing this state from a loaded state, passed as a parameter.
+     * This should only initialize some basic variables. The diagrams and symbols are
+     * set up directly.
+     * @param state the deserialized state.
+     */
+    public void initState(ExerciseState state) {
+        //this.assignmentID = state.assignmentID;
+        //this.userID = state.userID;
+        this.satisfiedTasks.addAll(state.satisfiedTasks);
+    }
+    
+    /**
      * This is for persistence and deserialization. This should never be called directly!
      * @param loads
      */
     @Deprecated
-    public void setupSymbolManager(List<AnchoredVector> loads) {
+    public void initSymbolManager(List<AnchoredVector> loads) {
         if(encoding)
             return;
         for (AnchoredVector load : loads) {
-            getSymbolManager().addSymbol(load);
+            Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
         }
     }
 
@@ -136,11 +148,30 @@ public class ExerciseState implements State {
      * @param state
      */
     @Deprecated
-    public void setupDiagram(DiagramKey key, DiagramType type, DiagramState state) {
+    public void initDiagram(DiagramKey key, DiagramType type, DiagramState state) {
         if(encoding)
             return;
         Diagram diagram = Exercise.getExercise().createNewDiagram(key, type);
         diagram.pushState(state);
         diagram.clearStateStack();
+    }
+
+    @Override
+    public String toString() {
+        String s = "ExerciseState: {\n";
+        s += "  userId="+userID+", assignmentId="+assignmentID+",\n";
+        s += "  satisfiedTasks="+satisfiedTasks+",\n";
+        s += "  symbolManager="+symbolManager+",\n";
+        for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : allDiagrams.entrySet()) {
+            DiagramKey key = entry.getKey();
+            for (Map.Entry<DiagramType, Diagram> entry1 : entry.getValue().entrySet()) {
+                DiagramType type = entry1.getKey();
+                DiagramState diagramState = entry1.getValue().getCurrentState();
+                s += "  ["+key+", "+type+"] => "+diagramState+",\n";
+            }
+        }
+        s += "}";
+        
+        return s;
     }
 }

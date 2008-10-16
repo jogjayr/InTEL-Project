@@ -20,7 +20,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
 import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
-import edu.gatech.statics.exercise.state.DiagramState;
+import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.beans.ExceptionListener;
 import java.io.BufferedInputStream;
@@ -207,8 +207,10 @@ public class ApplicationBar extends BWindow {
                 } else if (event.getAction().equals("load")) {
 
                     StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
-                    DiagramState stateTest = (DiagramState) decoder.readObject();
-                    DiagramState stateCheck = getModePanel().getDiagram().getCurrentState();
+                    ExerciseState stateTest = (ExerciseState) decoder.readObject();
+                    ExerciseState stateCheck = Exercise.getExercise().getState();
+                    //DiagramState stateTest = (DiagramState) decoder.readObject();
+                    //DiagramState stateCheck = getModePanel().getDiagram().getCurrentState();
                     
                     System.out.println("old: "+stateCheck);
                     System.out.println("new: "+stateTest);

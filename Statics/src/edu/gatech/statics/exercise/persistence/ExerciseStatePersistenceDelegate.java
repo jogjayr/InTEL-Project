@@ -42,7 +42,7 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
 
         // write out the SymbolManager
         //out.writeStatement(new Statement(helper, "setupSymbolManager", new Object[]{oldInstance, state.getSymbolManager().getLoads()}));
-        out.writeStatement(new Statement(oldState, "setupSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
+        out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
 
         // write out the diagrams
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {
@@ -54,7 +54,7 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
                 DiagramState diagramState = diagram.getCurrentState();
 
                 //out.writeStatement(new Statement(helper, "makeDiagram", new Object[]{oldInstance, diagramKey, diagramType, diagramState}));
-                out.writeStatement(new Statement(oldState, "setupDiagram", new Object[]{diagramKey, diagramType, diagramState}));
+                out.writeStatement(new Statement(oldState, "initDiagram", new Object[]{diagramKey, diagramType, diagramState}));
             }
         }
 

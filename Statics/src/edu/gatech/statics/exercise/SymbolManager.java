@@ -22,6 +22,11 @@ public class SymbolManager {
     private List<String> symbols = new ArrayList<String>();
     private List<AnchoredVector> symbolicLoads = new ArrayList<AnchoredVector>();
 
+    @Override
+    public String toString() {
+        return "SymbolManager: {symbols="+symbols+", symbolicLoads="+symbolicLoads+"}";
+    }
+
     public List<AnchoredVector> getLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
