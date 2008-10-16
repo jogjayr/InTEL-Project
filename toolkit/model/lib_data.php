@@ -306,6 +306,18 @@ function retrieveAssignments($classId) {
 	return $results;
 }
 
+function retrieveNewAssignmentByClass($classId) {
+ 
+  global $db;
+  
+  $query = "SELECT * FROM app_assignment 
+  WHERE class_id={$classId}
+  ORDER BY id DESC";
+  $results = aquery($query, $db);
+  
+	return $results[0];
+}
+
 function retrieveProblem($problemId) {
  
   global $db;
@@ -359,11 +371,22 @@ function addAssignment($problemId, $classId, $openDate, $closeDate){
   $q_created_on = mktime();
   $q_updated_on = $q_created_on;
   
-  //add assignment
+  //add assignment to app_assignment table
 	$query2 = "INSERT INTO app_assignment (problem_id, class_id, open_date, close_date, created_on, updated_on) 
   VALUES ({$problemId}, {$classId}, '{$openDate}', '{$closeDate}', '{$q_created_on}', '{$q_updated_on}')";
 	query($query2, $db);
 
+  //loop through all existing users and add assignments for each
+  $users = getUsersbyClass($classId);
+  $assignmentId = retrieveNewAssignmentByClass($classId);
+  
+  foreach ($users as $user){
+    echo($user['user_id']);
+    $query2 = "INSERT INTO app_user_assignment (user_id, assignment_id, submission_status_id, created_on, updated_on) 
+    VALUES ({$user['user_id']}, {$assignmentId['id']}, '1', '{$q_created_on}', '{$q_updated_on}')";
+  	query($query2, $db);
+  }
+  
   return true;
 }
 
@@ -383,5 +406,21 @@ function deleteAssignment($assignmentId){
   
 	return true;	
 
+}
+
+function getUsersbyClass($classId){
+  //retrieves users owned by class
+  
+  global $db;
+  
+  $query = "SELECT user_id 
+  FROM app_user_class 
+  WHERE is_active=1
+  AND class_id={$classId}
+  ORDER BY user_id DESC";
+
+  $results = aquery($query, $db);
+	
+	return $results;
 }
 ?>
