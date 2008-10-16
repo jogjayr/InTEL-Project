@@ -252,6 +252,9 @@ class ModifiedObjectHandler extends HandlerBase {
     }
 
     public void startElement(String name, AttributeList attrs) throws SAXException {
+        // ********
+        //System.err.println("startElement: "+name+" "+attrsToString(attrs));
+        
         name = name.intern(); // Xerces parser does not supply unique tag names.
         if (this.isString) {
             parseCharCode(name, getAttributes(attrs));
@@ -489,14 +492,27 @@ class MutableExpression extends Expression {
     }
 
     public Object getValue() throws Exception {
-        try{
-        return super.getValue();
-        } catch(NoSuchMethodException ex) {
-            System.out.println("**** "+getTarget());
-            for (Object object : getArguments()) {
-                System.out.println("**** "+object);
+        try {
+            return super.getValue();
+        } catch (Exception ex) {
+            System.err.println("Got exception: "+ex);
+            System.err.println("method: "+getMethodName());
+            System.err.println("target: "+getTarget());
+            String argString = "";
+            for (int i=0;i<getArguments().length;i++) {
+                if(i>0)
+                    argString += ", ";
+                argString += getArguments()[i];
             }
+            System.err.println("arguments: ["+argString+"]");
             throw ex;
         }
+    /*catch(NoSuchMethodException ex) {
+    System.out.println("**** "+getTarget());
+    for (Object object : getArguments()) {
+    System.out.println("**** "+object);
+    }
+    throw ex;
+    }*/
     }
 }

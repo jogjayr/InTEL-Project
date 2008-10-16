@@ -9,6 +9,11 @@
 package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
+import edu.gatech.statics.exercise.state.ExerciseState;
+import edu.gatech.statics.util.Base64;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,7 +35,7 @@ public class AppletLauncher extends StaticsApplet {
 
         try {
             getApplication().setGraded(true);
-            
+
             String exerciseName = getExercise();
             Class exerciseClass = Class.forName(exerciseName);
             final Exercise exercise = (Exercise) exerciseClass.newInstance();
@@ -42,6 +47,7 @@ public class AppletLauncher extends StaticsApplet {
             super.init();
             getApplication().setExercise(exercise);
 
+
         } catch (NullPointerException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch (ClassNotFoundException ex) {
@@ -52,6 +58,16 @@ public class AppletLauncher extends StaticsApplet {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch (InstantiationException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+        }
+    }
+
+    @Override
+    protected void setupState() {
+        super.setupState();
+
+        String exerciseState = getParameter("exerciseState");
+        if (exerciseState != null) {
+            loadState(Base64.decode(exerciseState));
         }
     }
 
@@ -81,6 +97,18 @@ public class AppletLauncher extends StaticsApplet {
         exercise.setProblemID(problemID);
         exercise.getState().setAssignmentID(exerciseID);
         exercise.getState().setUserID(userID);
+
+    }
+
+    private void loadState(byte stateData[]) {
+        Logger.getLogger("Statics").info("State data:");
+        System.out.println(new String(stateData));
+        Logger.getLogger("Statics").info("Loading state...");
+        StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new ByteArrayInputStream(stateData)));
+        ExerciseState state = (ExerciseState) decoder.readObject();
+        System.out.println(state);
+        Logger.getLogger("Statics").info("Finished loading state!");
+    //ExerciseState stateTest = (ExerciseState) decoder.readObject();
     }
 
     private boolean checkVerifierKey() {

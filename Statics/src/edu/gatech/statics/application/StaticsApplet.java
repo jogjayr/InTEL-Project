@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.application;
 
 import com.jme.input.InputSystem;
@@ -32,62 +31,67 @@ import java.util.logging.Logger;
  * @author Calvin Ashmore
  */
 public class StaticsApplet extends Applet {
-    
+
     private static final String INIT_LOCK = "INIT_LOCK";
-    
     private int canvasWidth;// = 1100;//900;
     private int canvasHeight;// = 768;//675;
     private static final int defaultWidth = 1100;
     private static final int defaultHeight = 768;
-    
     private static StaticsApplet instance;
-    public static StaticsApplet getInstance() {return instance;}
-    
+
+    public static StaticsApplet getInstance() {
+        return instance;
+    }
     private Canvas glCanvas;
     private CanvasImplementor impl;
     private boolean alive;
-    
     private StaticsApplication application;
     private DisplaySystem display;
-    
     private String exercise;
-    public void setExercise(String exercise) {this.exercise = exercise;}
+
+    public void setExercise(String exercise) {
+        this.exercise = exercise;
+    }
+
     public String getExercise() {
-        if(exercise != null)
+        if (exercise != null) {
             return exercise;
+        }
         return getParameter("exercise");
     }
-    
+
     public void setResolution(int width, int height) {
         canvasWidth = width;
         canvasHeight = height;
     }
-    
+
     /** Creates a new instance of StaticsApplet */
     public StaticsApplet() {
         //try {
-            //LoggingSystem.setLogToFile(null);
+        //LoggingSystem.setLogToFile(null);
         //} catch(IllegalStateException e) {
-            // do nothing, the illegal state exception is thrown by
-            // LoggingSystem.setLogToFile(null); if the logging system
-            // has already been created, ie, if the applet has been refreshed
+        // do nothing, the illegal state exception is thrown by
+        // LoggingSystem.setLogToFile(null); if the logging system
+        // has already been created, ie, if the applet has been refreshed
         //}
-        
+
         instance = this;
         application = new StaticsApplication();
         alive = true;
         Logger.getLogger("Statics").info("Applet: StaticsApplet()");
     }
-    
-    public StaticsApplication getApplication() {return application;}
+
+    public StaticsApplication getApplication() {
+        return application;
+    }
 
     private void showTextures() {
         Logger.getLogger("Statics").info("Textures...");
         java.lang.reflect.Field[] fields = TextureManager.class.getDeclaredFields();
-        for(java.lang.reflect.Field field : fields) {
+        for (java.lang.reflect.Field field : fields) {
             try {
                 field.setAccessible(true);
-                Logger.getLogger("Statics").info(field.getName()+": "+field.get(null));
+                Logger.getLogger("Statics").info(field.getName() + ": " + field.get(null));
             } catch (IllegalArgumentException ex) {
                 //System.out.println(ex);
             } catch (IllegalAccessException ex) {
@@ -95,17 +99,17 @@ public class StaticsApplet extends Applet {
             }
         }
     }
-    
+
     @Override
     public void destroy() {
-        System.out.println("(destroy) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
+        System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
         showTextures();
         application.finish();
         application = null;
         super.destroy();
         alive = false;
         Logger.getLogger("Statics").info("Applet: destroy()");
-        System.out.println("(destroy) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
+        System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
     }
 
     @Override
@@ -119,50 +123,53 @@ public class StaticsApplet extends Applet {
         super.stop();
         Logger.getLogger("Statics").info("Applet: stop()");
     }
-    
+
     @Override
     public void init() {
         super.init();
-        System.out.println("(init) I am destroyed: "+Thread.currentThread().getThreadGroup().isDestroyed());
-        
-        if(canvasHeight == 0 || canvasWidth == 0) {
+        System.out.println("(init) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
+
+        if (canvasHeight == 0 || canvasWidth == 0) {
             String width = getParameter("width");
             String height = getParameter("height");
 
-            if(width != null)
+            if (width != null) {
                 canvasWidth = Integer.valueOf(width);
-            else
+            } else {
                 canvasWidth = defaultWidth;
-            if(height != null)
+            }
+            if (height != null) {
                 canvasHeight = Integer.valueOf(height);
-            else
+            } else {
                 canvasHeight = defaultHeight;
+            }
         }
-        
+
         showTextures();
         Logger.getLogger("Statics").info("Applet: init()");
         synchronized (INIT_LOCK) {
 
             KeyInput.destroyIfInitalized();
             MouseInput.destroyIfInitalized();
-        
+
             try {
                 DisplaySystem.getSystemProvider().installLibs();
             } catch (Exception le) {
                 le.printStackTrace();
             }
-            
+
             display = application.initDisplay();
-            
+
             glCanvas = DisplaySystem.getDisplaySystem().createCanvas(canvasWidth, canvasHeight);
             impl = new CanvasImplementor();
-            
+
             ((JMECanvas) glCanvas).setImplementor(impl);
             setLayout(new BorderLayout());
             add(glCanvas, BorderLayout.CENTER);
 
-            if (!KeyInput.isInited())
+            if (!KeyInput.isInited()) {
                 KeyInput.setProvider(InputSystem.INPUT_SYSTEM_AWT);
+            }
             ((AWTKeyInput) KeyInput.get()).setEnabled(false);
             KeyListener kl = (KeyListener) KeyInput.get();
 
@@ -171,19 +178,23 @@ public class StaticsApplet extends Applet {
             //if(!MouseInput.isInited())
             //    AWTMouseInput.setup(glCanvas, false);
             //((AWTMouseInput) MouseInput.get()).setEnabled(false);
-            
-            if(!MouseInput.isInited())
+
+            if (!MouseInput.isInited()) {
                 AppletMouse.setup(glCanvas, false);
+            }
             ((AppletMouse) MouseInput.get()).setEnabled(false);
-            
+
             glCanvas.addMouseMotionListener(new MouseMotionAdapter() {
+
                 @Override
                 public void mouseMoved(java.awt.event.MouseEvent e) {
-                    if (!glCanvas.hasFocus())
+                    if (!glCanvas.hasFocus()) {
                         glCanvas.requestFocus();
-                };
+                    }
+                }
+                ;
             });
-            
+
             // focus listening
             glCanvas.setFocusable(true);
             glCanvas.addFocusListener(new FocusListener() {
@@ -191,38 +202,49 @@ public class StaticsApplet extends Applet {
                 public void focusGained(FocusEvent arg0) {
                     ((AWTKeyInput) KeyInput.get()).setEnabled(true);
                     ((AppletMouse) MouseInput.get()).setEnabled(true);
-                    //((AWTMouseInput) MouseInput.get()).setEnabled(true);
+                //((AWTMouseInput) MouseInput.get()).setEnabled(true);
                 }
 
                 public void focusLost(FocusEvent arg0) {
                     ((AWTKeyInput) KeyInput.get()).setEnabled(false);
                     ((AppletMouse) MouseInput.get()).setEnabled(false);
-                    //((AWTMouseInput) MouseInput.get()).setEnabled(false);
+                //((AWTMouseInput) MouseInput.get()).setEnabled(false);
                 }
             });
-            
+
             // We are going to use jme's Input systems, so enable updating.
             ((JMECanvas) glCanvas).setUpdateInput(true);
             new Thread() {
-                {   setName("Applet repaint thread");
+
+                {
+                    setName("Applet repaint thread");
                     setDaemon(true);
                 }
 
                 @Override
                 public void run() {
                     while (alive) {
-                        if (isVisible())
+                        if (isVisible()) {
                             glCanvas.repaint();
+                        }
                         try {
                             Thread.sleep(20);
-                        } catch (InterruptedException e) { }
+                        } catch (InterruptedException e) {
+                        }
                     }
                 }
             }.start();
         }
-        
     }
-    
+
+    /**
+     * This method is called after the StaticsApplication has finished loading.
+     * Anything in the applet that first requires the application to be initialized
+     * should go in this method. Here's looking at you, state loading!
+     */
+    protected void setupState() {
+    }
+
     private class CanvasImplementor extends JMECanvasImplementor {
 
         @Override
@@ -237,29 +259,32 @@ public class StaticsApplet extends Applet {
             display.getCurrentContext().setupRecords(renderer);
             Logger.getLogger("Statics").info("updating display...");
             DisplaySystem.updateStates(renderer);
-            
+
             Logger.getLogger("Statics").info("calling StaticsApplication.init()...");
             application.init();
+
+            setupState();
         }
-        
+
         public void doUpdate() {
-            if(!alive)
+            if (!alive) {
                 return;
-            
+            }
             application.update();
-            
+
             float timePerFrame = application.getTimePerFrame();
             timePerFrame = Math.min(timePerFrame, 1 / 60f);
 
             try {
-                Thread.sleep( (int)(1000 * timePerFrame));
-            } catch(InterruptedException e) {}
+                Thread.sleep((int) (1000 * timePerFrame));
+            } catch (InterruptedException e) {
+            }
         }
 
         public void doRender() {
-            if(!alive)
+            if (!alive) {
                 return;
-            
+            }
             application.render();
             renderer.displayBackBuffer();
         }

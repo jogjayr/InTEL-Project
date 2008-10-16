@@ -56,7 +56,11 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
 
             @Override
             public Object getValue(Expression exp) {
+                // *******
+                //System.err.println("getValue: (" + exp + ") target:" + exp.getTarget());
                 Object result = super.getValue(exp);
+                //System.err.println("getValue result: " + result + (result == null ? "" : "(" + result.getClass() + ")"));
+
                 if (result instanceof ResolvableByName) {
                     String name = ((ResolvableByName) result).getName();
                     if (result instanceof SimulationObject) {

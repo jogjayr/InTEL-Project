@@ -22,23 +22,22 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 public class ExerciseState implements State {
-    // satisfied tasks
-    // solved loads (symbol manager)
-    // solved connectors
-    // diagrams?
-
-    private SymbolManager symbolManager;
-    private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();    // these are used in keeping track of exercise used with the web based
+    // these are used in keeping track of exercise used with the web based
     // applet deployment
-
     private int userID;
     private int assignmentID;
+    private SymbolManager symbolManager;
+    private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();
 
     public void satisfyTask(Task satisfiedTask) {
         if (!satisfiedTasks.contains(satisfiedTask)) {
             satisfiedTasks.add(satisfiedTask);
         }
+    }
+
+    public List<Task> getSatisfiedTasks() {
+        return Collections.unmodifiableList(satisfiedTasks);
     }
 
     public boolean isSatisfied(Task task) {
@@ -115,27 +114,31 @@ public class ExerciseState implements State {
         this.encoding = encoding;
     }
     private boolean encoding;
-    
+
     /**
-     * This is used for initializing this state from a loaded state, passed as a parameter.
-     * This should only initialize some basic variables. The diagrams and symbols are
-     * set up directly.
-     * @param state the deserialized state.
+     * This is for persistence and deserialization. This should never be called directly!
+     * @param state
+     * @deprecated
      */
-    public void initState(ExerciseState state) {
-        //this.assignmentID = state.assignmentID;
-        //this.userID = state.userID;
-        this.satisfiedTasks.addAll(state.satisfiedTasks);
+    @Deprecated
+    public void initTasks(List<Task> tasks) {
+        if (encoding) {
+            return;
+        }
+        for (Task task : tasks) {
+            satisfyTask(task);
+        }
     }
-    
+
     /**
      * This is for persistence and deserialization. This should never be called directly!
      * @param loads
      */
     @Deprecated
     public void initSymbolManager(List<AnchoredVector> loads) {
-        if(encoding)
+        if (encoding) {
             return;
+        }
         for (AnchoredVector load : loads) {
             Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
         }
@@ -149,8 +152,9 @@ public class ExerciseState implements State {
      */
     @Deprecated
     public void initDiagram(DiagramKey key, DiagramType type, DiagramState state) {
-        if(encoding)
+        if (encoding) {
             return;
+        }
         Diagram diagram = Exercise.getExercise().createNewDiagram(key, type);
         diagram.pushState(state);
         diagram.clearStateStack();
@@ -159,19 +163,19 @@ public class ExerciseState implements State {
     @Override
     public String toString() {
         String s = "ExerciseState: {\n";
-        s += "  userId="+userID+", assignmentId="+assignmentID+",\n";
-        s += "  satisfiedTasks="+satisfiedTasks+",\n";
-        s += "  symbolManager="+symbolManager+",\n";
+        s += "  userId=" + userID + ", assignmentId=" + assignmentID + ",\n";
+        s += "  satisfiedTasks=" + satisfiedTasks + ",\n";
+        s += "  symbolManager=" + symbolManager + ",\n";
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : allDiagrams.entrySet()) {
             DiagramKey key = entry.getKey();
             for (Map.Entry<DiagramType, Diagram> entry1 : entry.getValue().entrySet()) {
                 DiagramType type = entry1.getKey();
                 DiagramState diagramState = entry1.getValue().getCurrentState();
-                s += "  ["+key+", "+type+"] => "+diagramState+",\n";
+                s += "  [" + key + ", " + type + "] => " + diagramState + ",\n";
             }
         }
         s += "}";
-        
+
         return s;
     }
 }

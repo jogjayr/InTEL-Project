@@ -426,6 +426,7 @@ public class StaticsApplication {
             logHandler = new DatabaseLogHandler();
             Logger.getLogger("Statics").addHandler(logHandler);
         }
+        Logger.getLogger("Statics").info("Application init");
 
         // initialization of the exercise
         getExercise().initExercise();
@@ -487,6 +488,8 @@ public class StaticsApplication {
         getExercise().loadStartingMode();
 
         getExercise().postLoadExercise();
+        
+        Logger.getLogger("Statics").info("Finished application init");
     }
 
     public BRootNode getLabelNode() {
