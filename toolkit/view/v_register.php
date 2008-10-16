@@ -1,5 +1,6 @@
 <?php 
-
+  //ini_set("display_errors","2");
+  //ERROR_REPORTING(E_ALL);
 	$title = 'Register';
   require_once('controller/c_register.php');
 	require_once('header.php');
@@ -45,13 +46,12 @@
   	<p>Password (again): <input type="password" name="password2" /></p>
     <p>First Name: <input type="text" name="first_name" value="<?php echo $firstName; ?>" /></p>
   	<p>Last Name: <input type="text" name="last_name" value="<?php echo $lastName; ?>" /></p>
-    <p>University ID: <input type="text" name="gt_prism_id" value="<?php echo $gtPrismId; ?>" /><span class="info">(Do not enter your student number.)</span></p>
   	<p><input type="submit" name="submit" value="Register" />
   </form>
 <?php
 	} else {	
 ?>
-	<p>Thank you for registering. Go to the <a href='login.php'>login</a> page to log in to the system.</p>
+	<p>Thank you for registering. Go to the <a href='myAssignments.php'>My Assignments</a> page to see you assigned problems.</p>
 <?php
 	}
 ?>

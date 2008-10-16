@@ -11,7 +11,7 @@
   $emailAddress = '';
   $firstName = '';
   $lastName = '';
-  $gtPrismId = '';
+  //$gtPrismId = '';
   $password = '';
   $classId = 0;
   
@@ -23,7 +23,7 @@
 		$password2 = $_POST['password2'];
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
-    $gtPrismId = $_POST['gt_prism_id'];
+    //$gtPrismId = $_POST['gt_prism_id']; removed
     if (isset($_POST['class_id'])){
       $classId = $_POST['class_id'];
     }
@@ -34,9 +34,37 @@
         //check if passwords match
   			if ($password == $password2) {
           //check that the fields are not empty
-  				if ($password != '' && $firstName != '' && $lastName != '' && $gtPrismId != '') {
-  					if (registerUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $classId)) {
+  				if ($password != '' && $firstName != '' && $lastName != '') {
+  					if (registerUser($emailAddress, $password, $firstName, $lastName, $classId)) {
   						$success = true;
+              //login the newly regitered user and redirect them
+              //run login function
+          		if (login(trim($emailAddress), $password)) {
+          			
+          			//redirect page to the url before the login
+          			$rURL = $_SESSION['r_login_url'];
+                if (isStudent()){
+                  $rURL = 'myAssignments.php';
+                }
+          			unset($_SESSION['r_login_url']);
+          						
+          			//redirect user to referring url, unless the referring url is the registration complete page
+          			
+          			//para($rURL);
+          			
+          			if (strstr($rURL, 'register_complete.php') || strstr($rURL, 'change_password.php')) {
+          				
+          				//para('from register complete');
+          				
+          				redirectURL($base_address);
+          			} else {
+          				
+          				//para('not from register complete');
+          				
+          				redirectURL($rURL);			
+          			}
+                //end login
+          		}
   					} else {
   						$err = 'Please enter another email address.';
   					}

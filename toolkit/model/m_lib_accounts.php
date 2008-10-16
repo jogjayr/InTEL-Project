@@ -13,7 +13,7 @@ function getUsers() {
 
 }
 
-function addUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $classId) {
+function addUser($emailAddress, $password, $firstName, $lastName, $classId) {
 	
 	// takes a email address, password, and profile name
 	// returns true if user was added, else returns false
@@ -25,7 +25,6 @@ function addUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $c
 	
   //make fields sql friendly
 	$q_uuid = md5(uniqid());
-	$q_gtPrismId = t2sql($gtPrismId);
 	$q_emailAddress = t2sql($emailAddress);
 	$q_password = ($password2);
 	$q_passwordSalt = ($password_salt);
@@ -42,7 +41,7 @@ function addUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $c
 		return false; //user already in database
 	}
   //add user
-	$query2 = "INSERT INTO app_user (uuid, gt_prism_id, email, password, password_salt, first_name, last_name, user_type_id, created_on, updated_on) VALUES ('{$q_uuid}', '{$q_gtPrismId}', '{$q_emailAddress}', '{$q_password}', '{$q_passwordSalt}', '{$q_firstName}', '{$q_lastName}', '{$q_userTypeId}', '{$q_created_on}', '{$q_updated_on}')";
+	$query2 = "INSERT INTO app_user (uuid, email, password, password_salt, first_name, last_name, user_type_id, created_on, updated_on) VALUES ('{$q_uuid}', '{$q_emailAddress}', '{$q_password}', '{$q_passwordSalt}', '{$q_firstName}', '{$q_lastName}', '{$q_userTypeId}', '{$q_created_on}', '{$q_updated_on}')";
 	query($query2, $db);
   
   // add selected class

@@ -11,8 +11,18 @@ html {
   position: relative;
   float: left;
   text-align: left;
-  width: 250px;
+  width: 230px;
   height: 400px;
+  border-bottom: solid 2px #F1F1F1;
+  border-right: solid 2px #F1F1F1;
+  background-color: #AEC3FF;
+}
+#compact_nav{
+  position: relative;
+  float: left;
+  text-align: left;
+  width: 100%;
+  height: 36px;
   border-bottom: solid 2px #F1F1F1;
   border-right: solid 2px #F1F1F1;
   background-color: #AEC3FF;
@@ -27,7 +37,7 @@ font-size: 10px;
   position: relative;
   float: left;
   text-align: left;
-  width: 240px;
+  width: 220px;
   height: 25px;
   padding: 4px 0px 0px 5px;
   background-color: #AEC3FF;

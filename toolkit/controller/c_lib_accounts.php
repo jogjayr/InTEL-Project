@@ -1,7 +1,7 @@
 <?php
 
-function registerUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $classId) {
-	if (addUser($emailAddress, $password, $gtPrismId, $firstName, $lastName, $classId)) {
+function registerUser($emailAddress, $password, $firstName, $lastName, $classId) {
+	if (addUser($emailAddress, $password, $firstName, $lastName, $classId)) {
 		//sendRegistrationEmail($emailAddress);
 		return true;
 	} else {

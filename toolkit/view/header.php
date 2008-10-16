@@ -1,8 +1,18 @@
 <?php require_once('admin/initvars.php'); 
+  //ini_set("display_errors","2");
+  //ERROR_REPORTING(E_ALL);
+  
   $isAnonymous = isAnonymous();
   if ($title == 'Problems' && !$isAnonymous){
     //quick title fix  This can be changed in the future.
     $title = 'My Assignments';
+  }
+  //compact nav test for launch app window
+  $navId = 'main_nav';
+  if(isset($type)){
+    if ($type = 'compact'){
+      $navId = 'compact_nav';
+    }
   }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,7 +29,7 @@
 	<h1>Statics Toolkit</h1>
 </div>
 
-<div id="main_nav">
+<div id="<?php echo $navId ?>">
   <?php
     if (isStudent()){
   ?>

@@ -2,6 +2,7 @@
 //require "null";
 
 $title = 'Launch Problem';
+$type = 'compact';
 require_once('header.php');
 
 $uuid = '';
