@@ -156,7 +156,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         //    super.writeObject(o);
         //}
 
-        System.out.println("writing: " + (o == null ? "" : o.getClass().getSimpleName()) + " " + o);
+        //System.out.println("writing: " + (o == null ? "" : o.getClass().getSimpleName()) + " " + o);
         super.writeObject(o);
     }
 
