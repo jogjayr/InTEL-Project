@@ -13,11 +13,22 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
  *
  * @author Calvin Ashmore
  */
-public class CompleteFBDTask implements Task {
+public class CompleteFBDTask extends Task {
 
     private BodySubset bodies;
 
-    public CompleteFBDTask(BodySubset bodies) {
+    /**
+     * For persistence, do not use.
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public CompleteFBDTask(String name) {
+        super(name);
+    }
+
+    public CompleteFBDTask(String name, BodySubset bodies) {
+        super(name);
         this.bodies = bodies;
     }
 
@@ -31,6 +42,10 @@ public class CompleteFBDTask implements Task {
             return false;
         }
         return fbd.isSolved();
+    }
+
+    public BodySubset getBodies() {
+        return bodies;
     }
 
     public String getDescription() {

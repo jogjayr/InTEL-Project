@@ -41,7 +41,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
     public void initExercise() {
         setName("See Saw");
         setDescription("Two children are on a see saw. Build a free body diagram of the see saw.");
-        
+
         Unit.setPrecision(Unit.distance, 2);
     }
 
@@ -57,7 +57,6 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
                 super.setupCameraControl(cameraControl);
                 cameraControl.setMovementSpeed(.2f, .02f, .05f);
             }
-            
         };
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-1, 1, 0, 3);
@@ -67,30 +66,30 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         //ic.getNavigationWindow().getCameraControl().setMovementSpeed(.2f, .02f, .05f);
         return ic;
     }
-    
+
     @Override
     public void loadExercise() {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .6f, .6f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 0.8f));
         Schematic schematic = getSchematic();
 
-        Point end1 = new Point("end1","-2.5", "0", "0");
-        Point base = new Point("B","0", "0", "0");
-        Point end2 = new Point("end2","2.5", "0", "0");
+        Point end1 = new Point("end1", "-2.5", "0", "0");
+        Point base = new Point("B", "0", "0", "0");
+        Point end2 = new Point("end2", "2.5", "0", "0");
 
-        UnknownPoint child1Point = new UnknownPoint(new Point("A","-2.0", "0", "0"), base, Vector3bd.UNIT_X.negate());
-        Point child2Point = new Point("C","1.75", "0", "0");
+        UnknownPoint child1Point = new UnknownPoint(new Point("A", "-2.0", "0", "0"), base, Vector3bd.UNIT_X.negate());
+        Point child2Point = new Point("C", "1.75", "0", "0");
 
         Force child1Force = new Force(child1Point, Vector3bd.UNIT_Y.negate(), new BigDecimal(15 * 9.8f));
         Force child2Force = new Force(child2Point, Vector3bd.UNIT_Y.negate(), "W");
         child1Force.setName("girl");
-        
+
         DistanceMeasurement measure1 = new DistanceMeasurement(child1Point, base);
         DistanceMeasurement measure2 = new DistanceMeasurement(base, child2Point);
 
         measure1.setKnown(false);
         measure1.setSymbol("X");
-        
+
         measure1.setName("measure AB");
         measure2.setName("measure BC");
 
@@ -99,7 +98,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
         child1Point.setMeasurement(measure1);
 
-        Body seesaw = new Beam("See Saw",end1, end2);
+        Body seesaw = new Beam("See Saw", end1, end2);
 
         seesaw.addObject(base);
         seesaw.addObject(child1Force);
@@ -126,7 +125,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
         Vector3f modelOffset = new Vector3f(0, -1.25f, 0);
         Matrix3f modelRotation = new Matrix3f();
-        modelRotation.fromAngleAxis((float)Math.PI/2, Vector3f.UNIT_Y);
+        modelRotation.fromAngleAxis((float) Math.PI / 2, Vector3f.UNIT_Y);
 
         ModelRepresentation rep;
         ModelNode modelNode = ModelNode.load("seesaw/assets", "seesaw/assets/seesaw.dae");
@@ -142,10 +141,10 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelOffset);
-        modelRotation.fromAngleAxis((float)Math.PI/2.1f, Vector3f.UNIT_Y);
+        modelRotation.fromAngleAxis((float) Math.PI / 2.1f, Vector3f.UNIT_Y);
         rep.setModelRotation(modelRotation);
         schematic.getBackground().addRepresentation(rep);
-        
-        addTask(new CompleteFBDTask(new BodySubset(seesaw)));
+
+        addTask(new CompleteFBDTask("FBD seesaw", new BodySubset(seesaw)));
     }
 }

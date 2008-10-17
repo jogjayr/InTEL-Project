@@ -213,6 +213,6 @@ public class KeyboardExercise extends FrameExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-        addTask(new Solve2FMTask(bar, jointP));
+        addTask(new Solve2FMTask("Solve PQ", bar, jointP));
     }
 }

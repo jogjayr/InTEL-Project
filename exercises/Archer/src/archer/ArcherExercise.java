@@ -140,8 +140,8 @@ public class ArcherExercise extends SimpleFBDExercise {
         rep.setModelOffset(modelOffset);
         schematic.getBackground().addRepresentation(rep);
 
-        addTask(new CompleteFBDTask(new BodySubset(bow)));
-        addTask(new CompleteFBDTask(new BodySubset(bowString)));
-        addTask(new CompleteFBDTask(new BodySubset(bow, bowString)));
+        addTask(new CompleteFBDTask("FBD bow", new BodySubset(bow)));
+        addTask(new CompleteFBDTask("FBD bowString", new BodySubset(bowString)));
+        addTask(new CompleteFBDTask("FBD both", new BodySubset(bow, bowString)));
     }
 }

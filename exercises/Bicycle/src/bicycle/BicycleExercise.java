@@ -64,7 +64,7 @@ public class BicycleExercise extends FrameExercise {
     Pin2d pinA;
     Connector2ForceMember2d twoForceF, twoForceH, twoForceJH, twoForceJB, twoForceGF, twoForceGB;
     Bar topBar, frontBar, backBar, bottomBar;
-    
+
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
@@ -72,36 +72,28 @@ public class BicycleExercise extends FrameExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .7f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
-        A = new Point("0", "0", "0");
-        I = new Point("4", "7", "0");
-        H = new Point("3", "5.26", "0");
-        J = new Point("9", "5.26", "0");
-        G = new Point("6", "0", "0");
-        F = new Point("2.2", "3.8", "0");
-        B = new Point("12", "0", "0");
-        K = new Point("10", "7", "0");
+        A = new Point("A", "0", "0", "0");
+        I = new Point("I", "4", "7", "0");
+        H = new Point("H", "3", "5.26", "0");
+        J = new Point("J", "9", "5.26", "0");
+        G = new Point("G", "6", "0", "0");
+        F = new Point("F", "2.2", "3.8", "0");
+        B = new Point("B", "12", "0", "0");
+        K = new Point("K", "10", "7", "0");
 
-        Body handlebarBeam = new Beam(I, A);
-        topBar = new Bar(J, H);
-        Body seatPoleBeam = new Beam(K, G);
-        frontBar = new Bar(F, G);
-        backBar = new Bar(J, B);
-        bottomBar = new Bar(B, G);
-        Body jointAtB = new PointBody(B);
-
-        handlebarBeam.setName("Handle Bar");
-        topBar.setName("Top Bar");
-        seatPoleBeam.setName("Seat Pole");
-        frontBar.setName("Front Bar");
-        backBar.setName("Back Bar");
-        bottomBar.setName("Bottom Bar");
-        jointAtB.setName("Joint B");
+        Body handlebarBeam = new Beam("Handle Bar", I, A);
+        topBar = new Bar("Top Bar", J, H);
+        Body seatPoleBeam = new Beam("Seat Pole", K, G);
+        frontBar = new Bar("Front Bar", F, G);
+        backBar = new Bar("Back Bar", J, B);
+        bottomBar = new Bar("Bottom Bar", B, G);
+        Body jointAtB = new PointBody("Joint B", B);
 
         pinA = new Pin2d(A);
         pinA.setName("Pin A");
         rollerB = new Roller2d(B);
         rollerB.setName("Roller B");
-        
+
         twoForceF = new Connector2ForceMember2d(F, frontBar);
         twoForceF.setName("2FM Connector F");
         twoForceGF = new Connector2ForceMember2d(G, frontBar);
@@ -114,7 +106,7 @@ public class BicycleExercise extends FrameExercise {
         twoForceJB.setName("2FM Connector JB");
         twoForceGB = new Connector2ForceMember2d(G, bottomBar);
         twoForceGB.setName("2FM Connector GB");
-        
+
         //rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerB.setDirection(Vector3bd.UNIT_Y);
 
@@ -145,7 +137,7 @@ public class BicycleExercise extends FrameExercise {
         distance5.setName("Measure BG");
         distance5.createDefaultSchematicRepresentation(0.5f);
         schematic.add(distance5);
-        
+
         /*DistanceMeasurement distance6 = new DistanceMeasurement(I, H);
         distance6.forceVertical();
         distance6.createDefaultSchematicRepresentation(0.5f);
@@ -206,7 +198,7 @@ public class BicycleExercise extends FrameExercise {
 
         pinA.attachToWorld(handlebarBeam);
         //rollerB.attach(backBar, bottomBar);
-        
+
         // this is terrible in terms of naming conventino
         // and I apologize for it.
         Connector2ForceMember2d GBatB, JBatB;
@@ -214,7 +206,7 @@ public class BicycleExercise extends FrameExercise {
         GBatB.setName("2FM Connector GBatB");
         JBatB = new Connector2ForceMember2d(B, backBar);
         GBatB.setName("2FM Connector JBatB");
-        
+
         rollerB.attachToWorld(jointAtB);
         GBatB.attach(jointAtB, bottomBar);
         JBatB.attach(jointAtB, backBar);
@@ -225,14 +217,6 @@ public class BicycleExercise extends FrameExercise {
         twoForceJB.attach(backBar, seatPoleBeam);
         twoForceGF.attach(frontBar, seatPoleBeam);
         twoForceGB.attach(bottomBar, seatPoleBeam);
-        A.setName("A");
-        I.setName("I");
-        H.setName("H");
-        J.setName("J");
-        G.setName("G");
-        F.setName("F");
-        B.setName("B");
-        K.setName("K");
 
         A.createDefaultSchematicRepresentation();
         I.createDefaultSchematicRepresentation();
@@ -259,7 +243,7 @@ public class BicycleExercise extends FrameExercise {
         schematic.add(backBar);
         schematic.add(bottomBar);
         schematic.add(jointAtB);
-        
+
         float scale = 1.0f;
         Vector3f modelTranslation = new Vector3f(4.25f, -3.5f, 0);
 

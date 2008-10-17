@@ -429,6 +429,7 @@ public class StaticsApplication {
         Logger.getLogger("Statics").info("Application init");
 
         // initialization of the exercise
+        getExercise().initParameters();
         getExercise().initExercise();
 
         input = new InputHandler();
@@ -483,6 +484,7 @@ public class StaticsApplication {
         // load exercise here
         getExercise().loadExercise();
         getExercise().lockSchematic();
+        getExercise().applyParameters();
 
         iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
         getExercise().loadStartingMode();

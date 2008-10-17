@@ -202,7 +202,7 @@ public class FBDChecker {
             // build a list of the AnchoredVectors at this point
             List<AnchoredVector> userAnchoredVectorsAtConnector = new ArrayList<AnchoredVector>();
             for (AnchoredVector AnchoredVector : addedLoads) {
-                if (AnchoredVector.getAnchor().equals(connector.getAnchor())) {
+                if (AnchoredVector.getAnchor().pointEquals(connector.getAnchor())) {
                     userAnchoredVectorsAtConnector.add(AnchoredVector);
                 }
             }
@@ -747,7 +747,7 @@ public class FBDChecker {
         List<AnchoredVector> loads = new ArrayList<AnchoredVector>();
         //for (SimulationObject obj : allObjects) {
         for (AnchoredVector load : diagram.getCurrentState().getAddedLoads()) {
-            if (load.getAnchor().equals(point)) {
+            if (load.getAnchor().pointEquals(point)) {
                 loads.add(load);
             }
         }
@@ -772,7 +772,7 @@ public class FBDChecker {
                 continue;
             }
             // make sure the anchor is the same
-            if (!AnchoredVector.getAnchor().equals(target.getAnchor())) {
+            if (!AnchoredVector.getAnchor().pointEquals(target.getAnchor())) {
                 continue;
             }
             // add if direction is the same, or is opposite and the testOpposites flag is set

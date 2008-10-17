@@ -18,6 +18,9 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.Plate;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.bodies.Pulley;
+import edu.gatech.statics.tasks.CompleteFBDTask;
+import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
@@ -136,6 +139,11 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Plate.class, namedPersistenceDelegate);
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
+
+        // set up the delegates for tasks.
+        setPersistenceDelegate(CompleteFBDTask.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Solve2FMTask.class, namedPersistenceDelegate);
+        setPersistenceDelegate(SolveConnectorTask.class, namedPersistenceDelegate);
 
         setPersistenceDelegate(ExerciseState.class, new ExerciseStatePersistenceDelegate());
     }

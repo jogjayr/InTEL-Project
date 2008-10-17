@@ -47,7 +47,6 @@ public class AppletLauncher extends StaticsApplet {
             super.init();
             getApplication().setExercise(exercise);
 
-
         } catch (NullPointerException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
         } catch (ClassNotFoundException ex) {
@@ -101,12 +100,12 @@ public class AppletLauncher extends StaticsApplet {
     }
 
     private void loadState(byte stateData[]) {
-        Logger.getLogger("Statics").info("State data:");
-        System.out.println(new String(stateData));
+        //Logger.getLogger("Statics").info("State data:");
+        //System.out.println(new String(stateData));
         Logger.getLogger("Statics").info("Loading state...");
         StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new ByteArrayInputStream(stateData)));
         ExerciseState state = (ExerciseState) decoder.readObject();
-        System.out.println(state);
+        //System.out.println(state);
         Logger.getLogger("Statics").info("Finished loading state!");
     //ExerciseState stateTest = (ExerciseState) decoder.readObject();
     }

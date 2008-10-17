@@ -46,7 +46,7 @@ class VectorOverlapDetector implements VectorListener {
             }
 
             VectorObject v = (VectorObject) simObject;
-            if (!v.getAnchor().equals(myVector.getAnchor())) {
+            if (!v.getAnchor().pointEquals(myVector.getAnchor())) {
                 continue;
             }
 

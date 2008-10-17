@@ -11,12 +11,8 @@ package example01;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveConnectorTask;
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.Random;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.StreamHandler;
 
 /**
  *
@@ -24,35 +20,28 @@ import java.util.logging.StreamHandler;
  */
 public class PurseExerciseGraded extends PurseExercise {
 
-    private String studentName = "No Name";
-    //private StreamHandler streamHandler;
-    ByteArrayOutputStream bout;
-    StreamHandler streamHandler;
-    private int instance; // used for uniqueness of logger data
-
     public PurseExerciseGraded() {
+    }
 
+    @Override
+    public void initParameters() {
         Random rand = new Random();
 
-        handPoint = -17 + (float) rand.nextInt(20) / 10 - 1;
-        tendonAnchorB = 13 + (float) rand.nextInt(20) / 10;
-        tendonAnchorD = 13 + (float) rand.nextInt(20) / 10 - 1;
-        shoulderHeight = 16 + -(float) rand.nextInt(10) / 10;
-        forearmWeight = 9 + (float) rand.nextInt(20) / 10 - 1;
-        purseWeight = 19.6f + (float) rand.nextInt(20) / 10 - 1;
-        centerGravityOffset = (float) rand.nextInt(10) / 10 - .5f;
-
-        instance = rand.nextInt();
-
-        bout = new ByteArrayOutputStream();
-        streamHandler = new StreamHandler(bout, new SimpleFormatter());
-        Logger.getLogger("").addHandler(streamHandler);
-
+        getState().setParameter("handPoint", -17 + (float) rand.nextInt(20) / 10 - 1);
+        getState().setParameter("tendonAnchorB", 13 + (float) rand.nextInt(20) / 10);
+        getState().setParameter("tendonAnchorD", 13 + (float) rand.nextInt(20) / 10 - 1);
+        getState().setParameter("shoulderHeight", 16 + -(float) rand.nextInt(10) / 10);
+        getState().setParameter("forearmWeight", 9 + (float) rand.nextInt(20) / 10 - 1);
+        getState().setParameter("purseWeight", 19.6f + (float) rand.nextInt(20) / 10 - 1);
+        getState().setParameter("centerGravityOffset", (float) rand.nextInt(10) / 10 - .5f);
     }
 
     @Override
     public void initExercise() {
         super.initExercise();
+        
+        float forearmWeight = (Float)getState().getParameter("forearmWeight");
+        float purseWeight = (Float)getState().getParameter("purseWeight");
 
         BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
@@ -70,8 +59,8 @@ public class PurseExerciseGraded extends PurseExercise {
         super.loadExercise();
 
         //addTask(new SolveJointTask(jointB));
-        addTask(new SolveConnectorTask(jointC));
-        addTask(new SolveConnectorTask(jointE));
-        addTask(new Solve2FMTask(tendon, jointB));
+        addTask(new SolveConnectorTask("Solve C",jointC));
+        addTask(new SolveConnectorTask("Solve E",jointE));
+        addTask(new Solve2FMTask("Solve BD",tendon, jointB));
     }
 }

@@ -15,9 +15,23 @@ public class Solve2FMTask extends SolveConnectorTask {
 
     private TwoForceMember tfm;
 
-    public Solve2FMTask(TwoForceMember tfm, Connector connector) {
-        super(connector);
+    /**
+     * For persistence, do not use.
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Solve2FMTask(String name) {
+        super(name);
+    }
+
+    public Solve2FMTask(String name, TwoForceMember tfm, Connector connector) {
+        super(name, connector);
         this.tfm = tfm;
+    }
+
+    public TwoForceMember getMember() {
+        return tfm;
     }
 
     @Override

@@ -26,10 +26,10 @@ import java.util.List;
 public class Connector2ForceMember2d extends Connector {
 
     private TwoForceMember member;
-    private Vector3bd direction;
+    //private Vector3bd direction;
 
     public Vector3bd getDirection() {
-        return direction;
+        return member.getDirectionFrom(getAnchor()).negate();
     }
     //public void setDirection(Vector3f direction) {this.direction = direction.normalize();}
     // we really want negatable to only be true IF our connector is a beam instead of a cable
@@ -44,7 +44,7 @@ public class Connector2ForceMember2d extends Connector {
     public Connector2ForceMember2d(Point point, TwoForceMember member) {
         super(point);
         this.member = member;
-        this.direction = member.getDirectionFrom(point).negate();
+        //this.direction = member.getDirectionFrom(getAnchor()).negate();
     }
 
     /**
@@ -68,6 +68,7 @@ public class Connector2ForceMember2d extends Connector {
     }
 
     public List<Vector> getReactions() {
+        Vector3bd direction = member.getDirectionFrom(getAnchor()).negate();
         return Arrays.asList(
                 new Vector(Unit.force, direction, ""));
     }

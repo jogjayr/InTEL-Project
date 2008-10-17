@@ -29,6 +29,19 @@ public class ExerciseState implements State {
     private SymbolManager symbolManager;
     private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();
+    private Map<String, Object> exerciseParameters = new HashMap<String, Object>();
+
+    public Object getParameter(String name) {
+        return exerciseParameters.get(name);
+    }
+
+    public void setParameter(String name, Object value) {
+        exerciseParameters.put(name, value);
+    }
+
+    public Map<String, Object> getParameters() {
+        return Collections.unmodifiableMap(exerciseParameters);
+    }
 
     public void satisfyTask(Task satisfiedTask) {
         if (!satisfiedTasks.contains(satisfiedTask)) {
@@ -114,6 +127,20 @@ public class ExerciseState implements State {
         this.encoding = encoding;
     }
     private boolean encoding;
+
+    /**
+     * This is for persistence and deserialization. This should never be called directly!
+     * @param state
+     * @deprecated
+     */
+    @Deprecated
+    public void initParameters(Map<String, Object> parameters) {
+        if (encoding) {
+            return;
+        }
+        Exercise.getExercise().getState().exerciseParameters.putAll(parameters);
+        Exercise.getExercise().applyParameters();
+    }
 
     /**
      * This is for persistence and deserialization. This should never be called directly!

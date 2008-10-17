@@ -56,8 +56,9 @@ public class Point extends SimulationObject implements ResolvableByName {
         setTranslation(point.toVector3f());
     }
 
-    protected void setPoint(Vector3bd point) {
+    public void setPoint(Vector3bd point) {
         this.point = point;
+        updateTranslation();
     }
 
     public Vector3bd getPosition() {
@@ -75,16 +76,7 @@ public class Point extends SimulationObject implements ResolvableByName {
         addRepresentation(rep2);
     }
 
-    //@Override
-    //public String getDescription() {
-    //    return "Point: " + getName();
-    //}
-    /**
-     * This is true if both points are the same type of point, and both have the same position.
-     * @param obj
-     * @return
-     */
-    @Override
+    /*@Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -96,13 +88,33 @@ public class Point extends SimulationObject implements ResolvableByName {
         if (this.point != other.point && (this.point == null || !this.point.equals(other.point))) {
             return false;
         }
+        if (this.getName() != other.getName() && (this.getName() == null || !this.getName().equals(other.getName()))) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + (this.point != null ? this.point.hashCode() : 0);
+        int hash = 7;
+        hash = 97 * hash + (this.point != null ? this.point.hashCode() : 0);
+        hash = 97 * hash + (this.getName() != null ? this.getName().hashCode() : 0);
         return hash;
+    }*/
+    
+    public boolean pointEquals(Point other) {
+        return this.point.equals(other.point);
     }
+
+    //@Override
+    //public String getDescription() {
+    //    return "Point: " + getName();
+    //}
+    /**
+     * This is true if both points are the same type of point, and both have the same position.
+     * @param obj
+     * @return
+     */
+    
+    
 }

@@ -95,6 +95,15 @@ public abstract class Exercise {
     public List<Task> getTasks() {
         return tasks;
     }
+
+    public Task getTask(String name) {
+        for (Task task : tasks) {
+            if (task.getName().equals(name)) {
+                return task;
+            }
+        }
+        return null;
+    }
     private List<TaskStatusListener> taskListeners = new ArrayList<TaskStatusListener>();
 
     public void addTaskListener(TaskStatusListener listener) {
@@ -227,9 +236,9 @@ public abstract class Exercise {
      */
     public final Diagram createNewDiagram(DiagramKey key, DiagramType type) {
         Diagram oldDiagram = state.getDiagram(key, type);
-        if(oldDiagram != null)
+        if (oldDiagram != null) {
             return oldDiagram;
-        
+        }
         Diagram diagram = createNewDiagramImpl(key, type);
         state.storeDiagram(diagram);
         return diagram;
@@ -275,6 +284,22 @@ public abstract class Exercise {
         }
 
         return maxDiagram;
+    }
+
+    /**
+     * Initializes the parameters used by the exercise. Parameters are randomized
+     * and other variables that change when the applet is run. This should call
+     * getState().setParameter() to actually set its values. This method should
+     * not actually affect the schematic itself. That should be done in applyParameters().
+     */
+    public void initParameters() {
+    }
+
+    /**
+     * Applies the parameters from the given state. This must take the parameters
+     * from the exercise state and apply them to the schematic of the problem.
+     */
+    public void applyParameters() {
     }
 
     /**

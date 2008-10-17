@@ -105,7 +105,7 @@ public class AnchoredVector implements Quantified {
             return false;
         }
         final AnchoredVector other = (AnchoredVector) obj;
-        if (this.anchor != other.anchor && (this.anchor == null || !this.anchor.equals(other.anchor))) {
+        if (this.anchor != other.anchor && (this.anchor == null || !this.anchor.pointEquals(other.anchor))) {
             return false;
         }
         if (this.vector != other.vector && (this.vector == null || !this.vector.equals(other.vector))) {

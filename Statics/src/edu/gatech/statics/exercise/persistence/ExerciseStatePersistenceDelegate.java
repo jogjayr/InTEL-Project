@@ -13,6 +13,7 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +47,9 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
 
         // write out the satisfied tasks
         out.writeStatement(new Statement(oldState, "initTasks", new Object[]{new ArrayList(oldState.getSatisfiedTasks())}));
-        
+
+        // write out the exerciseParameters
+        out.writeStatement(new Statement(oldState, "initParameters", new Object[]{new HashMap(oldState.getParameters())}));        
         
         // write out the diagrams
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {

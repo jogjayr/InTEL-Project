@@ -475,7 +475,7 @@ public abstract class Diagram<StateType extends DiagramState> {
         for (SimulationObject obj : allObjects) {
             if (obj instanceof Connector) {
                 Connector connector = (Connector) obj;
-                if (connector.getAnchor().equals(point)) {
+                if (connector.getAnchor().pointEquals(point)) {
                     connectors.add(connector);
                 }
             }

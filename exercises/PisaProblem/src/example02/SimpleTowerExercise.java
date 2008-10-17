@@ -112,6 +112,6 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         rep.setLocalScale(scale);
         world.getBackground().addRepresentation(rep);
 
-        addTask(new CompleteFBDTask(new BodySubset(tower)));
+        addTask(new CompleteFBDTask("FBD tower", new BodySubset(tower)));
     }
 }

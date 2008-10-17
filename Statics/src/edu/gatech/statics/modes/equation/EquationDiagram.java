@@ -329,7 +329,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     public void activate() {
+        // make sure the FBD is set before doing anything else
+        // occasionally, when loaded from persistence, the FBD is assigned to null.
+        this.fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
+        
+        // okay, now actually perform the activation.
         super.activate();
+        
         for (SimulationObject obj : allObjects()) {
             obj.setSelectable(true);
         }

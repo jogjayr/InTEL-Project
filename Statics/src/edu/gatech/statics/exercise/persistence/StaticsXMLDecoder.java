@@ -6,6 +6,7 @@ package edu.gatech.statics.exercise.persistence;
 
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.tasks.Task;
 import java.beans.Expression;
 import java.io.InputStream;
 
@@ -65,6 +66,8 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                     String name = ((ResolvableByName) result).getName();
                     if (result instanceof SimulationObject) {
                         return Exercise.getExercise().getSchematic().getByName(name);
+                    } else if(result instanceof Task) {
+                        return Exercise.getExercise().getTask(name);
                     }
                 }
                 return result;
