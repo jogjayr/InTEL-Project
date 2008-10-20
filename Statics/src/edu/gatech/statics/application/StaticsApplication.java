@@ -220,6 +220,11 @@ public class StaticsApplication {
         if (diagram instanceof SubDiagram) {
             Logger.getLogger("Statics").info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
         }
+        
+        if(diagram == null) {
+            throw new IllegalArgumentException("Cannot give set the application to a null diagram!");
+        }
+        
         if (currentDiagram != null) {
             if (currentDiagram.getInputHandler() != null) {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
