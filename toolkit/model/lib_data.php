@@ -19,6 +19,7 @@ function getAssignments($uuid) {
     AND app_user_assignment.assignment_id=app_assignment.id 
     AND app_assignment.problem_id=app_problem.id 
     AND app_user_assignment.submission_status_id=app_submission_status.id
+    AND app_assignment.is_active=1
     ORDER BY app_assignment.open_date DESC";
   }
   $results = aquery($query, $db);
