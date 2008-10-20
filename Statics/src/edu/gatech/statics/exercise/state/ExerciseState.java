@@ -10,6 +10,8 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SymbolManager;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.tasks.Task;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +29,7 @@ public class ExerciseState implements State {
     private int userID;
     private int assignmentID;
     private SymbolManager symbolManager;
+    private Map<String, List<Vector>> solvedReactions = new HashMap<String, List<Vector>>();
     private Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams = new HashMap<DiagramKey, Map<DiagramType, Diagram>>();
     private List<Task> satisfiedTasks = new ArrayList<Task>();
     private Map<String, Object> exerciseParameters = new HashMap<String, Object>();
@@ -43,6 +46,10 @@ public class ExerciseState implements State {
         return Collections.unmodifiableMap(exerciseParameters);
     }
 
+    public Map<String, List<Vector>> getSolvedReactions() {
+        return Collections.unmodifiableMap(solvedReactions);
+    }
+    
     public void satisfyTask(Task satisfiedTask) {
         if (!satisfiedTasks.contains(satisfiedTask)) {
             satisfiedTasks.add(satisfiedTask);
@@ -117,6 +124,16 @@ public class ExerciseState implements State {
     public Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams() {
         return Collections.unmodifiableMap(allDiagrams);
     }
+    
+    /**
+     * Adds the reactions of the given connector to the exercise statate.
+     * @param connector
+     */
+    public void addReactions(Connector connector) {
+        if(!connector.isSolved())
+            return;
+        solvedReactions.put(connector.getName(), connector.getReactions(connector.getBody1()));
+    }
 
     /**
      * This sets the encoding flag for persistence of the state. 
@@ -128,6 +145,25 @@ public class ExerciseState implements State {
     }
     private boolean encoding;
 
+    /**
+     * This is for persistence and deserialization. This should never be called directly!
+     * @param reactions
+     * @deprecated
+     */
+    @Deprecated
+    public void initReactions(Map<String, List<Vector>> reactions) {
+        if (encoding) {
+            return;
+        }
+        this.solvedReactions.putAll(reactions);
+        for (Map.Entry<String, List<Vector>> entry : reactions.entrySet()) {
+            String connectorName = entry.getKey();
+            List<Vector> connectorReactions = entry.getValue();
+            Connector connector = (Connector) Exercise.getExercise().getSchematic().getByName(connectorName);
+            connector.solveReaction(connector.getBody1(), connectorReactions);
+        }
+    }
+    
     /**
      * This is for persistence and deserialization. This should never be called directly!
      * @param state
@@ -155,6 +191,7 @@ public class ExerciseState implements State {
         for (Task task : tasks) {
             satisfyTask(task);
         }
+        Exercise.getExercise().testTasks();
     }
 
     /**
@@ -169,6 +206,13 @@ public class ExerciseState implements State {
         for (AnchoredVector load : loads) {
             Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
         }
+
+        /*for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
+            // ******
+            // This is really not the best way of doing this
+            // *** FIXME FIXME
+            listener.onLoadSolved(null);
+        }*/
     }
 
     /**

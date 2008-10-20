@@ -27,6 +27,7 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
+import java.beans.Statement;
 import java.beans.XMLEncoder;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -76,6 +77,17 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 } else {
                     return new Expression(oldInstance, Vector.class, "new", new Object[]{v.getUnit(), v.getVectorValue(), v.getDiagramValue()});
                 }
+            }
+
+            @Override
+            protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
+                Vector v = (Vector) oldInstance;
+                if (v.isSymbol()) {
+                    out.writeStatement(new Statement(v, "setSymbol", new Object[]{v.getSymbolName()}));
+                }
+                out.writeStatement(new Statement(v, "setDiagramValue", new Object[]{v.getDiagramValue()}));
+            //out.writeStatement(oldStm)
+            //super.initialize(type, oldInstance, newInstance, out);
             }
         });
         setPersistenceDelegate(Vector3bd.class, new DefaultPersistenceDelegate() {

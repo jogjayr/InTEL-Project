@@ -9,6 +9,7 @@ import com.jmex.bui.text.HTMLView;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
@@ -41,7 +42,6 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     public KnownLoadsWindow() {
         super(new BorderLayout(), "Known Loads");
 
-
         view = new HTMLView() {
 
             @Override
@@ -68,6 +68,11 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
         // first go through objects
         Exercise exercise = StaticsApplication.getApp().getExercise();
+
+        //for (AnchoredVector anchoredVector : exercise.getSymbolManager().getLoads()) {
+        //    writeReaction(anchoredVector.getVector(), anchoredVector.getAnchor(), contents);
+        //}
+
         for (SimulationObject obj : exercise.getSchematic().allObjects()) {
 
             // look at joints, specifically
@@ -141,6 +146,12 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
+
+        AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction));
+        if (reaction1 != null) {
+            reaction = reaction1.getVector();
+        }
+
         contents.append(" <font color=\"#ff0000\"><b>" + reaction.getSymbolName() + "</b></font>");
 
         contents.append("</td><td>");
@@ -156,15 +167,26 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     }
 
     private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
+
+        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+        if (load1 != null) {
+            load = load1.getVector();
+        }
+
         writeReaction(load, applicationPoint, contents, load.getSymbolName());
     }
 
     private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
+
+        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+        if (load1 != null) {
+            load = load1.getVector();
+        }
+
         if (load.isSymbol() && !load.isKnown()) {
             return;
         }
 
-        //String forceType = force instanceof Force ? "Force" : "Moment";
         String forceType = load.getUnit().name();
         contents.append("<tr><td>");
         contents.append(forceType + " ");

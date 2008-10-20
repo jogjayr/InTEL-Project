@@ -108,7 +108,7 @@ public class Schematic {
         // build up the list of names.
         for (SimulationObject obj : allObjects) {
             String name = obj.getName();
-            if (name == null) {
+            if (name == null || name.equals("")) {
                 // complain when name does not exist
                 throw new IllegalStateException("SimulationObject " + obj + " has no name!");
             }

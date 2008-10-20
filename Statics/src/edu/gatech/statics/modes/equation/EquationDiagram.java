@@ -33,6 +33,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FBDMode;
+import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
@@ -47,6 +48,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -77,7 +79,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public Point getMomentPoint() {
         return getCurrentState().getMomentPoint();
     }
-    
+
     /**
      * This attempts to find the in-diagram Load object that corresponds to the
      * given AnchoredVector.
@@ -166,12 +168,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * @param values
      */
     public void performSolve(Map<Quantity, Float> values) {
-
+        Logger.getLogger("Statics").info("Performing the solve (updating other diagrams with the solution)");
+        
         // first, lock the diagram:
-        EquationState.Builder builder = new EquationState.Builder(getCurrentState());
-        builder.setLocked(true);
-        pushState(builder.build());
-        clearStateStack();
+        EquationState.Builder eqBuilder = new EquationState.Builder(getCurrentState());
+        eqBuilder.setLocked(true);
+
+        FBDState.Builder fbdBuilder = fbd.getCurrentState().getBuilder();
 
         // FIRST BATCH
         // this first batch of updates updates basic values, vectors and measurements
@@ -183,28 +186,45 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Load) {
                 Load vObj = (Load) obj;
-                Vector v = vObj.getVector();
-                if (v.isSymbol() && !v.isKnown()) {
+                //Vector v = vObj.getVector();
+                if (vObj.isSymbol() && !vObj.getVector().isKnown()) {
                     // v is a symbolic force, but is not yet solved.
-                    float value = values.get(v.getQuantity());
+                    float value = values.get(vObj.getVector().getQuantity());
                     //v.setValue(v.getValueNormalized().mult( value ));
-                    vObj.getAnchoredVector().setDiagramValue(new BigDecimal(value));
-                    vObj.getAnchoredVector().setKnown(true);
+                    //vObj.getAnchoredVector().setDiagramValue(new BigDecimal(value));
+                    //vObj.getAnchoredVector().setKnown(true);
+
+                    AnchoredVector oldLoad = vObj.getAnchoredVector();
 
                     // attempt to make sure the vector value is updated in the symbol manager
-                    AnchoredVector symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad(vObj.getAnchoredVector());
+                    AnchoredVector newLoad = Exercise.getExercise().getSymbolManager().getLoad(oldLoad);
 
-                    /*if (symbolManagerLoad == null) {
-                    symbolManagerLoad = Exercise.getExercise().getSymbolManager().getLoad2FM(vObj.getAnchor().getMember(), vObj);
-                    }*/
+                    newLoad.setDiagramValue(new BigDecimal(value));
+                    newLoad.setKnown(true);
 
-                    if (symbolManagerLoad != vObj.getAnchoredVector()) {
-                        symbolManagerLoad.setDiagramValue(new BigDecimal(value));
-                        symbolManagerLoad.setKnown(true);
+                    // *****
+                    // instead of trying to set the value on the load in the diagram, what we are doing
+                    // instead is forcing a change in the FBD itself.
+                    // We rewrite the FBD to use the new solved load...
+                    fbdBuilder.removeLoad(vObj.getAnchoredVector());
+                    fbdBuilder.addLoad(newLoad);
+
+                    // and then force the coefficients to update
+                    for (EquationMathState equationMathState : eqBuilder.getEquationStates().values()) {
+                        EquationMathState.Builder mathBuilder = equationMathState.getBuilder();
+                        Map<AnchoredVector, String> terms = mathBuilder.getTerms();
+                        String coefficient = terms.remove(oldLoad);
+                        if (coefficient == null) {
+                            continue;
+                        }
+                        terms.put(newLoad, coefficient);
+                        eqBuilder.getEquationStates().put(equationMathState.getName(), mathBuilder.build());
                     }
                 }
             }
 
+            // this section will need to be updated 
+            // solved measures should be stored in the symbol manager.
             if (obj instanceof Measurement) {
                 Measurement measure = (Measurement) obj;
                 // ignore if the measurement is already known
@@ -222,6 +242,15 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             }
         }
 
+        // update the diagrams
+        fbd.pushState(fbdBuilder.build());
+        fbd.clearStateStack();
+
+        pushState(eqBuilder.build());
+        activate();
+        InterfaceRoot.getInstance().getModePanel(getMode().getModeName()).activate();
+        clearStateStack();
+
         // SECOND BATCH
         // this depends on the first batch to be updated before it will work
 
@@ -230,55 +259,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // also go through unknown points...
         for (SimulationObject obj : allObjects()) {
             if (obj instanceof Connector) {
-                Connector connector = (Connector) obj;
-                if (connector.isSolved()) {
-                    continue;
-                }
-
-                Point point = connector.getAnchor();
-                List<Vector> reactions = new ArrayList<Vector>();
-
-                // it's possible that the reactions are not meant for this particular connector
-                // go through all of our solved quantities and see if we can get some matches.
-                for (Vector reaction : connector.getReactions()) {
-                    for (Quantity q : values.keySet()) {
-                        AnchoredVector load = getAnchoredVectorFromSymbol(q.getSymbolName());
-                        //AnchoredVector load = Exercise.getExercise().getSymbolManager().getLoad
-                        if (load != null && load.getAnchor() == point) {
-                            // now test if the direction is okay
-                            if (load.getVectorValue().equals(reaction.getVectorValue()) ||
-                                    load.getVectorValue().equals(reaction.getVectorValue().negate())) {
-                                
-                                // here we need to put a solved reaction into the reactions list
-                                // first we need to make a clone of the vector, and then assign
-                                // the solved value to it.
-                                AnchoredVector solvedReaction = new AnchoredVector(load);
-                                BigDecimal value = new BigDecimal(values.get(q));
-                                solvedReaction.getVector().setDiagramValue(value);
-                                solvedReaction.setKnown(true);
-                                reactions.add(solvedReaction.getVector());
-                                
-                            }
-                        }
-                    }
-                }
-
-                if (reactions.isEmpty()) {
-                    continue;
-                }
-
-                // hopefully this should be accurate...
-                Body solveBody = null;
-
-                for (Body body : allBodies()) {
-                    if (body.getAttachedObjects().contains(connector)) {
-                        solveBody = body;
-                    }
-                }
-
-                // we want to say that we have solved this joint from the perspective
-                // of the current body in question. 
-                connector.solveReaction(solveBody, reactions);
+                solveConnector(obj, values);
             }
 
             if (obj instanceof UnknownPoint) {
@@ -332,10 +313,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // make sure the FBD is set before doing anything else
         // occasionally, when loaded from persistence, the FBD is assigned to null.
         this.fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
-        
+
         // okay, now actually perform the activation.
         super.activate();
-        
+
         for (SimulationObject obj : allObjects()) {
             obj.setSelectable(true);
         }
@@ -393,7 +374,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public SelectionFilter getSelectionFilter() {
         return selector;
     }
-    
+
     /**
      * This should be called by EquationModePanel when an equation is solved.
      */
@@ -548,5 +529,55 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     public void completed() {
+    }
+
+    private void solveConnector(SimulationObject obj, Map<Quantity, Float> values) {
+        Connector connector = (Connector) obj;
+        if (connector.isSolved()) {
+            return;
+        }
+
+        Point point = connector.getAnchor();
+        List<Vector> reactions = new ArrayList<Vector>();
+
+        // it's possible that the reactions are not meant for this particular connector
+        // go through all of our solved quantities and see if we can get some matches.
+        for (Vector reaction : connector.getReactions()) {
+            for (Quantity q : values.keySet()) {
+                AnchoredVector load = getAnchoredVectorFromSymbol(q.getSymbolName());
+                //AnchoredVector load = Exercise.getExercise().getSymbolManager().getLoad
+                if (load != null && load.getAnchor() == point) {
+                    // now test if the direction is okay
+                    if (load.getVectorValue().equals(reaction.getVectorValue()) || load.getVectorValue().equals(reaction.getVectorValue().negate())) {
+
+                        // here we need to put a solved reaction into the reactions list
+                        // first we need to make a clone of the vector, and then assign
+                        // the solved value to it.
+                        AnchoredVector solvedReaction = new AnchoredVector(load);
+                        BigDecimal value = new BigDecimal(Math.abs(values.get(q)));
+                        solvedReaction.getVector().setDiagramValue(value);
+                        solvedReaction.setKnown(true);
+                        reactions.add(solvedReaction.getVector());
+                    }
+                }
+            }
+        }
+
+        if (reactions.isEmpty()) {
+            return;
+        }
+
+        // hopefully this should be accurate...
+        Body solveBody = null;
+
+        for (Body body : allBodies()) {
+            if (body.getAttachedObjects().contains(connector)) {
+                solveBody = body;
+            }
+        }
+
+        // we want to say that we have solved this joint from the perspective
+        // of the current body in question.
+        connector.solveReaction(solveBody, reactions);
     }
 }

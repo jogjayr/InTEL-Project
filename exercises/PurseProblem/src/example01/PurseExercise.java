@@ -204,6 +204,7 @@ public class PurseExercise extends FrameExercise {
         forearm.addObject(purse);
 
         Moment shoulder = new Moment(E, Vector3bd.UNIT_Z.negate(), "M shoulder"); // use symbol here
+        shoulder.setName("M Shoulder");
 
         shoulder.getAnchoredVector().setSymbol("Shoulder");
         upperArm.addObject(shoulder);

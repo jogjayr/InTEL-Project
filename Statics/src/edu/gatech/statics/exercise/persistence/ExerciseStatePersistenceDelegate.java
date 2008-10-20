@@ -9,11 +9,13 @@ import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.exercise.state.ExerciseState;
+import edu.gatech.statics.math.Vector;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,11 +47,19 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
         //out.writeStatement(new Statement(helper, "setupSymbolManager", new Object[]{oldInstance, state.getSymbolManager().getLoads()}));
         out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
 
-        // write out the satisfied tasks
-        out.writeStatement(new Statement(oldState, "initTasks", new Object[]{new ArrayList(oldState.getSatisfiedTasks())}));
+        // write out the satisfied tasks ??
+        //out.writeStatement(new Statement(oldState, "initTasks", new Object[]{new ArrayList(oldState.getSatisfiedTasks())}));
 
         // write out the exerciseParameters
-        out.writeStatement(new Statement(oldState, "initParameters", new Object[]{new HashMap(oldState.getParameters())}));        
+        out.writeStatement(new Statement(oldState, "initParameters", new Object[]{new HashMap(oldState.getParameters())}));
+
+        // write out the solved reactions
+        Map<String, List<Vector>> solvedReactions = oldState.getSolvedReactions();
+        Map<String, List<Vector>> solvedReactionsCopy = new HashMap<String, List<Vector>>();
+        for (Map.Entry<String, List<Vector>> entry : solvedReactions.entrySet()) {
+            solvedReactionsCopy.put(entry.getKey(), new ArrayList<Vector>(entry.getValue()));
+        }
+        out.writeStatement(new Statement(oldState, "initReactions", new Object[]{new HashMap(solvedReactionsCopy)}));
         
         // write out the diagrams
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {

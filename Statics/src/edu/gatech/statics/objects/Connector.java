@@ -11,6 +11,8 @@ package edu.gatech.statics.objects;
 import edu.gatech.statics.math.Vector;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.util.SolveListener;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +22,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-abstract public class Connector extends SimulationObject {
+abstract public class Connector extends SimulationObject implements ResolvableByName {
 
     private Point anchor;
     private Body body1,  body2;
@@ -55,6 +57,8 @@ abstract public class Connector extends SimulationObject {
         }
 
         isSolved = true;
+        
+        Exercise.getExercise().getState().addReactions(this);
 
         for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
             listener.onJointSolved(this);

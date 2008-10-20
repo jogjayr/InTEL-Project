@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -259,6 +260,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         boolean firstTime = !diagram.getCurrentState().isLocked();
         //!diagram.getWorksheet().isSolved();
+        Logger.getLogger("Statics").info("Attempting to solve the equations...");
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 
@@ -269,6 +271,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 diagram.performSolve(solution);
             }
 
+            solutionContainer.removeAll();
             for (Map.Entry<Quantity, Float> entry : solution.entrySet()) {
                 Quantity q = entry.getKey();
                 q = new Quantity(q);
@@ -333,6 +336,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
 
         stateChanged();
+        performSolve();
 
         refreshRows();
         invalidate();
