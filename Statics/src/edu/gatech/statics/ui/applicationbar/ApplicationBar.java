@@ -209,14 +209,17 @@ public class ApplicationBar extends BWindow {
                     StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
                     ExerciseState stateTest = (ExerciseState) decoder.readObject();
                     ExerciseState stateCheck = Exercise.getExercise().getState();
+
+                    Exercise.getExercise().initExercise();
+
                     //DiagramState stateTest = (DiagramState) decoder.readObject();
                     //DiagramState stateCheck = getModePanel().getDiagram().getCurrentState();
-                    
-                    System.out.println("old: "+stateCheck);
-                    System.out.println("new: "+stateTest);
-                    
+
+                    System.out.println("old: " + stateCheck);
+                    System.out.println("new: " + stateTest);
+
                     System.out.println(stateTest.equals(stateCheck));
-                    
+
 //                    ModifiedXMLDecoder mDecoder = new ModifiedXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
 //                    DiagramState mstateTest = (DiagramState) mDecoder.readObject();
 //                    DiagramState mstateCheck = getModePanel().getDiagram().getCurrentState();
@@ -225,7 +228,7 @@ public class ApplicationBar extends BWindow {
 //                    System.out.println("new: "+mstateTest);
 //                    
 //                    System.out.println(mstateTest.equals(mstateCheck));
-                    
+
                 //FileInputStream input = new FileInputStream("Test.xml");
 //                    String outString = decoder.toString();
 //                    System.out.println(outString);

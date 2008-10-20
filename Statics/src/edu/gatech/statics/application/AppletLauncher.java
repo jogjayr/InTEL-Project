@@ -105,6 +105,8 @@ public class AppletLauncher extends StaticsApplet {
         Logger.getLogger("Statics").info("Loading state...");
         StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new ByteArrayInputStream(stateData)));
         ExerciseState state = (ExerciseState) decoder.readObject();
+        Exercise.getExercise().initExercise();
+        
         //System.out.println(state);
         Logger.getLogger("Statics").info("Finished loading state!");
     //ExerciseState stateTest = (ExerciseState) decoder.readObject();
