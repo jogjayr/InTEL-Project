@@ -4,6 +4,9 @@
  */
 package viewer;
 
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,5 +100,15 @@ public class ViewerExercise extends Exercise {
             }
         };
         return ic;
+    }
+
+    @Override
+    protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
+        return new ViewerDiagram();
+    }
+
+    @Override
+    public boolean supportsType(DiagramType type) {
+        return type == DiagramType.getType("viewer");
     }
 }

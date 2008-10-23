@@ -7,6 +7,7 @@ package viewer;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 
 /**
  *
@@ -17,13 +18,13 @@ public class ViewerMode extends Mode {
     public static final ViewerMode instance = new ViewerMode();
 
     @Override
-    public String getModeName() {
-        return "viewer";
-    }
-
-    @Override
     protected Diagram getDiagram(DiagramKey key) {
 
         return ((ViewerExercise) getExercise()).getDiagram();
+    }
+
+    @Override
+    protected DiagramType createDiagramType() {
+        return DiagramType.create("viewer", 1);
     }
 }

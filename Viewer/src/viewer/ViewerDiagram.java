@@ -6,6 +6,7 @@ package viewer;
 
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class ViewerDiagram extends Diagram {
+public class ViewerDiagram extends Diagram<ViewerState> {
 
     @Override
     public Mode getMode() {
@@ -32,5 +33,19 @@ public class ViewerDiagram extends Diagram {
     }
 
     public ViewerDiagram() {
+    }
+
+    @Override
+    public DiagramKey getKey() {
+        return null;
+    }
+
+    @Override
+    protected ViewerState createInitialState() {
+        return new ViewerState();
+    }
+
+    @Override
+    public void completed() {
     }
 }

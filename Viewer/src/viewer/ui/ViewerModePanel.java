@@ -11,6 +11,7 @@ import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -22,17 +23,13 @@ import viewer.ui.heirarchy.HeirarchyFrame;
  */
 public class ViewerModePanel extends ApplicationModePanel {
 
-    @Override
-    public String getPanelName() {
-        return "viewer";
-    }
     private BContainer itemContainer;
     private HeirarchyFrame heirarchyFrame;
 
     public void setModel(ModelRepresentation rep) {
         heirarchyFrame.setRoot(rep);
     }
-    
+
     public ViewerModePanel() {
 
         getTitleLabel().setText("Viewer");
@@ -56,18 +53,18 @@ public class ViewerModePanel extends ApplicationModePanel {
         //Node modelNode = (Node) diagram.getModel().getChild(0);
 
         //listNode(modelNode, 0);
-        
+
         heirarchyFrame = new HeirarchyFrame();
         //frame.setRoot(modelNode);
         heirarchyFrame.pack();
         heirarchyFrame.setVisible(true);
-        
-        /*JFrame frame = new JFrame();
-        frame.add(new JLabel("EEK!"));
-        frame.pack();
-        frame.setVisible(true);*/
+
+    /*JFrame frame = new JFrame();
+    frame.add(new JLabel("EEK!"));
+    frame.pack();
+    frame.setVisible(true);*/
     }
-    
+
     private String makeSpacerString(int spaces) {
         char[] str = new char[spaces];
         for (int i = 0; i < str.length; i++) {
@@ -90,5 +87,10 @@ public class ViewerModePanel extends ApplicationModePanel {
     @Override
     protected ApplicationTab createTab() {
         return new ApplicationTab("Viewer");
+    }
+
+    @Override
+    public DiagramType getDiagramType() {
+        return DiagramType.getType("viewer");
     }
 }

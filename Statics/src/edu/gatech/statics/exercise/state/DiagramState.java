@@ -28,14 +28,6 @@ public interface DiagramState<T extends Diagram> extends State, Buildable<Diagra
     Builder<? extends DiagramState<T>> getBuilder();
     
     /**
-     * Creates a diagram state from a deserialized copy.
-     * It is assumed that this object is the deserialized copy, which is updated, but
-     * may not include the correct in-world references.
-     * @return
-     */
-    DiagramState<T> restore();
-    
-    /**
      * Implementors of DiagramState should implement equals, so to help how states
      * may be compared and used in the state stack. If a state implements equals,
      * then accidental duplicates that are added to the stack will not go together.
