@@ -11,7 +11,7 @@ function getAssignments($uuid) {
   else{
     $dateTime = mktime();
     $user = getUserByUUID($uuid);
-    $query = "SELECT app_assignment.id, app_assignment.problem_id, app_problem.name, app_problem.description, app_submission_status.status 
+    $query = "SELECT app_assignment.id, app_assignment.problem_id, app_problem.name, app_problem.description, app_submission_status.status, app_user_assignment.state 
     FROM app_problem, app_user_assignment, app_assignment, app_submission_status 
     WHERE app_user_assignment.user_id={$user['id']} 
     AND app_assignment.open_date<={$dateTime} 
