@@ -7,7 +7,6 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.util.Base64;
-import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
@@ -82,7 +81,7 @@ public class StateIO {
 
         // 3) Decode and activate the state
         ByteArrayInputStream bin = new ByteArrayInputStream(xmlData);
-        XMLDecoder decoder = new XMLDecoder(bin);
+        StaticsXMLDecoder decoder = new StaticsXMLDecoder(bin);
         ExerciseState state = (ExerciseState) decoder.readObject();
 
         // init the exercise so that everything is kosher.

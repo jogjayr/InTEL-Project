@@ -31,12 +31,12 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
         Object obj = super.readObject();
 
         //We run the decoder as usual except now it is using the ModifiedObjectHandler
-        if (obj instanceof ResolvableByName) {
+        /*if (obj instanceof ResolvableByName) {
             String name = ((ResolvableByName) obj).getName();
             if (obj instanceof SimulationObject) {
                 return Exercise.getExercise().getSchematic().getByName(name);
             }
-        }
+        }*/
         return obj;
 //        if (obj instanceof NameContainer) {
 //            NameContainer nameContainer = (NameContainer) obj;
@@ -60,7 +60,7 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                 // *******
                 //System.err.println("getValue: (" + exp + ") target:" + exp.getTarget());
                 Object result = super.getValue(exp);
-                //System.err.println("getValue result: " + result + (result == null ? "" : "(" + result.getClass() + ")"));
+                //System.err.println("*** getValue result: " + result + (result == null ? "" : "(" + result.getClass() + ")"));
 
                 if (result instanceof ResolvableByName) {
                     String name = ((ResolvableByName) result).getName();
