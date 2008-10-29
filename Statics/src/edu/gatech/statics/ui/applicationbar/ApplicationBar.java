@@ -18,13 +18,11 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.StateIO;
 import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
-import edu.gatech.statics.exercise.persistence.StaticsXMLEncoder;
 import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.ui.InterfaceRoot;
-import java.beans.ExceptionListener;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -187,26 +185,41 @@ public class ApplicationBar extends BWindow {
                     if (getModePanel() == null || getModePanel().getDiagram() == null) {
                         return;
                     }
-                    StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
-//                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
-                    encoder.setExceptionListener(new ExceptionListener() {
-
-                        public void exceptionThrown(Exception e) {
-                            System.out.println("got exception!!:");
-                            e.printStackTrace();
-                        }
-                    });
-
-                    encoder.writeObject(Exercise.getExercise().getState());
-                    //encoder.writeObject(getModePanel().getDiagram().getCurrentState());
-                    encoder.close();
-
-                    System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));
-
-                    System.out.println(new String(output.toString()));
+                    
+                    String saveState = StateIO.saveState();
+                    output.write( saveState.getBytes() );
+                    System.out.println("State Data:");
+                    System.out.println(saveState);
+                    
+                /*                  StaticsXMLEncoder encoder = new StaticsXMLEncoder(new BufferedOutputStream(output));
+                //                  XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(output));
+                //                  encoder.setExceptionListener(new ExceptionListener() {
+                
+                public void exceptionThrown(Exception e) {
+                System.out.println("got exception!!:");
+                e.printStackTrace();
+                }
+                });
+                
+                encoder.writeObject(Exercise.getExercise().getState());
+                //encoder.writeObject(getModePanel().getDiagram().getCurrentState());
+                encoder.close();
+                
+                System.out.println(encoder.getPersistenceDelegate(getModePanel().getDiagram().getCurrentState().getClass()));
+                
+                System.out.println(new String(output.toString()));
+                 */
                 } else if (event.getAction().equals("load")) {
 
-                    StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
+                    FileInputStream fileInput = new FileInputStream("Test.xml");
+                    byte data[] = new byte[10*1024];
+                    int read = fileInput.read(data);
+                    String s = new String(data, 0, read);
+                    
+                    
+                    StateIO.loadState(s);
+                    
+                    /*StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
                     ExerciseState stateTest = (ExerciseState) decoder.readObject();
                     ExerciseState stateCheck = Exercise.getExercise().getState();
 
@@ -218,7 +231,7 @@ public class ApplicationBar extends BWindow {
                     System.out.println("old: " + stateCheck);
                     System.out.println("new: " + stateTest);
 
-                    System.out.println(stateTest.equals(stateCheck));
+                    System.out.println(stateTest.equals(stateCheck));*/
 
 //                    ModifiedXMLDecoder mDecoder = new ModifiedXMLDecoder(new BufferedInputStream(new FileInputStream("Test.xml")));
 //                    DiagramState mstateTest = (DiagramState) mDecoder.readObject();

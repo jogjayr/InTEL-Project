@@ -9,11 +9,7 @@
 package edu.gatech.statics.application;
 
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.exercise.persistence.StaticsXMLDecoder;
-import edu.gatech.statics.exercise.state.ExerciseState;
-import edu.gatech.statics.util.Base64;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
+import edu.gatech.statics.exercise.persistence.StateIO;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -66,7 +62,9 @@ public class AppletLauncher extends StaticsApplet {
 
         String exerciseState = getParameter("exerciseState");
         if (exerciseState != null) {
-            loadState(Base64.decode(exerciseState));
+            Logger.getLogger("Statics").info("Loading state...");
+            StateIO.loadState(exerciseState);
+            Logger.getLogger("Statics").info("Finished loading state!");
         }
     }
 
@@ -97,19 +95,6 @@ public class AppletLauncher extends StaticsApplet {
         exercise.getState().setAssignmentID(exerciseID);
         exercise.getState().setUserID(userID);
 
-    }
-
-    private void loadState(byte stateData[]) {
-        //Logger.getLogger("Statics").info("State data:");
-        //System.out.println(new String(stateData));
-        Logger.getLogger("Statics").info("Loading state...");
-        StaticsXMLDecoder decoder = new StaticsXMLDecoder(new BufferedInputStream(new ByteArrayInputStream(stateData)));
-        ExerciseState state = (ExerciseState) decoder.readObject();
-        Exercise.getExercise().initExercise();
-        
-        //System.out.println(state);
-        Logger.getLogger("Statics").info("Finished loading state!");
-    //ExerciseState stateTest = (ExerciseState) decoder.readObject();
     }
 
     private boolean checkVerifierKey() {

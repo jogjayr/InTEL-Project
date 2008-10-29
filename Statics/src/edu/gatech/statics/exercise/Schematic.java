@@ -110,7 +110,7 @@ public class Schematic {
             String name = obj.getName();
             if (name == null || name.equals("")) {
                 // complain when name does not exist
-                throw new IllegalStateException("SimulationObject " + obj + " has no name!");
+                throw new IllegalStateException("SimulationObject " + obj + "("+obj.getClass()+") has no name!");
             }
             if (objectsByName.containsKey(name)) {
                 // complain when something else has this name

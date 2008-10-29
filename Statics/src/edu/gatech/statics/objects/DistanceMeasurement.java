@@ -53,6 +53,8 @@ public class DistanceMeasurement extends Measurement {
     /** Creates a new instance of DistanceMeasurement */
     public DistanceMeasurement(Point v1, Point v2) {
         super(v1, v2);
+        setName("Distance: " + v1.getName() + ", " + v2.getName());
+
         this.v1 = v1;
         this.v2 = v2;
         if (isVertical() == true) {

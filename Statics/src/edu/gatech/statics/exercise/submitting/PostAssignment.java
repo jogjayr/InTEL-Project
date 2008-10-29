@@ -5,6 +5,7 @@
 package edu.gatech.statics.exercise.submitting;
 
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.StateIO;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,7 +31,7 @@ public class PostAssignment extends Poster {
         String assignmentId = "" + Exercise.getExercise().getState().getAssignmentID();
         String userId = "" + Exercise.getExercise().getState().getUserID();
         String exerciseStatus = "" + Exercise.getExercise().getCompletionStatus();
-        String stateData = "no state data yet";
+        String stateData = StateIO.saveState();
         String timestamp = "" + System.currentTimeMillis();
         String verifierKey = generateVerfierKey(userId, assignmentId, exerciseStatus, stateData);
 
