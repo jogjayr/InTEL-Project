@@ -50,8 +50,12 @@ public class DescriptionWindow extends TitledDraggablePopupWindow implements Tas
         StaticsApplication.getApp().getExercise().removeTaskListener(this);
     }
     
-    public void taskSatisfied(Task task) {
+    public void update() {
         description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
+    }
+    
+    public void taskSatisfied(Task task) {
+        update();
     }
     
 }

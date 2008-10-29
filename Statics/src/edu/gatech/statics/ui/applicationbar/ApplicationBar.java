@@ -128,8 +128,8 @@ public class ApplicationBar extends BWindow {
         BContainer undoRedoBox = createUndoRedoBox();
         sideBox.add(undoRedoBox, BorderLayout.CENTER);
 
-        //BContainer saveLoadBox = createSaveLoadBox();
-        //sideBox.add(saveLoadBox, BorderLayout.WEST);
+        BContainer saveLoadBox = createSaveLoadBox();
+        sideBox.add(saveLoadBox, BorderLayout.WEST);
 
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);

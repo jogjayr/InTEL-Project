@@ -6,6 +6,10 @@ package edu.gatech.statics.exercise.persistence;
 
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.state.ExerciseState;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
+import edu.gatech.statics.ui.windows.description.DescriptionWindow;
+import edu.gatech.statics.ui.windows.knownforces.KnownLoadsWindow;
 import edu.gatech.statics.util.Base64;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -86,5 +90,16 @@ public class StateIO {
 
         // init the exercise so that everything is kosher.
         Exercise.getExercise().initExercise();
+
+        // now update UI elements
+        for (TitledDraggablePopupWindow popup : InterfaceRoot.getInstance().getAllPopupWindows()) {
+            if (popup instanceof DescriptionWindow) {
+                ((DescriptionWindow) popup).update();
+            }
+            if (popup instanceof KnownLoadsWindow) {
+                ((KnownLoadsWindow) popup).update();
+            }
+        }
+
     }
 }

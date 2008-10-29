@@ -208,6 +208,10 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         pack(150, -1);
     }
 
+    public void update() {
+        onSolve();
+    }
+    
     public void onLoadSolved(Load load) {
         onSolve();
     }
