@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.objects.bodies;
 
 import com.jme.math.Vector3f;
@@ -22,31 +21,41 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
 public class PointBody extends Body {
 
     private Point myPoint;
+
     public PointBody(String name, Point myPoint) {
         super(name);
         this.myPoint = myPoint;
         addObject(myPoint);
-        //for(Representation rep : myPoint.getRepresentation(RepresentationLayer.points))
-        //    addRepresentation(rep);
     }
 
-    public void setTranslation(Vector3f translation) {myPoint.setTranslation(translation);}
-    public Vector3f getTranslation() {return myPoint.getTranslation();}
-    
+    public Point getAnchor() {
+        return myPoint;
+    }
+
+    @Override
+    public void setTranslation(Vector3f translation) {
+        myPoint.setTranslation(translation);
+    }
+
+    @Override
+    public Vector3f getTranslation() {
+        return myPoint.getTranslation();
+    }
+
     /**
      * The point body connects to others by forming joints between each
      */
-    public void connectToTwoForceMembers(TwoForceMember ... members) {
+    public void connectToTwoForceMembers(TwoForceMember... members) {
         for (TwoForceMember member : members) {
             Connector2ForceMember2d connector = new Connector2ForceMember2d(myPoint, member);
             connector.attach(this, member);
             //connector.setDirection(member.getDirectionFrom(myPoint));
-            
+
             member.addObject(connector);
             addObject(connector);
-            
-            //if(member instanceof Beam)
-            //    connector.setDirectionNegatable(true);
+
+        //if(member instanceof Beam)
+        //    connector.setDirectionNegatable(true);
         }
     }
 
@@ -55,5 +64,4 @@ public class PointBody extends Body {
         //rep.setLocalScale(1.5f);
         addRepresentation(rep);
     }
-
 }

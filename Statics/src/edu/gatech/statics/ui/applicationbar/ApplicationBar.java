@@ -20,7 +20,6 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.StateIO;
 import edu.gatech.statics.ui.InterfaceRoot;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,8 +127,8 @@ public class ApplicationBar extends BWindow {
         BContainer undoRedoBox = createUndoRedoBox();
         sideBox.add(undoRedoBox, BorderLayout.CENTER);
 
-        BContainer saveLoadBox = createSaveLoadBox();
-        sideBox.add(saveLoadBox, BorderLayout.WEST);
+        //BContainer saveLoadBox = createSaveLoadBox();
+        //sideBox.add(saveLoadBox, BorderLayout.WEST);
 
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);
@@ -178,24 +177,12 @@ public class ApplicationBar extends BWindow {
         public void actionPerformed(ActionEvent event) {
             try {
                 if (event.getAction().equals("save")) {
-                    FileOutputStream output = new FileOutputStream("Test.xml");
                     if (getModePanel() == null || getModePanel().getDiagram() == null) {
                         return;
                     }
-
-                    String saveState = StateIO.saveState();
-                    output.write(saveState.getBytes());
-                    System.out.println("State Data:");
-                    System.out.println(saveState);
-
+                    StateIO.saveToFile("Save.statics");
                 } else if (event.getAction().equals("load")) {
-
-                    FileInputStream fileInput = new FileInputStream("Test.xml");
-                    byte data[] = new byte[10 * 1024];
-                    int read = fileInput.read(data);
-                    String s = new String(data, 0, read);
-
-                    StateIO.loadState(s);
+                    StateIO.loadFromFile("Save.statics");
                 }
             } catch (Exception e) {
                 System.out.println(e);

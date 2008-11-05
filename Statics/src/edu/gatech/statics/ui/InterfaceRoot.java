@@ -5,7 +5,11 @@
 package edu.gatech.statics.ui;
 
 import com.jme.input.InputHandler;
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.input.action.InputAction;
+import com.jme.input.action.InputActionEvent;
 import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
@@ -13,7 +17,9 @@ import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.persistence.StateIO;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
@@ -50,20 +56,15 @@ public class InterfaceRoot {
     private CoordinateSystemWindow coordinatesWindow;
     private Timer timer;
     private InputHandler input;
-    
     private ModalPopupWindow modalWindow;
-    
     private CameraControl cameraControl;
-    
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, TitledDraggablePopupWindow> popupWindows = new HashMap<String, TitledDraggablePopupWindow>();
     private List<TitledDraggablePopupWindow> allPopupWindows = new ArrayList<TitledDraggablePopupWindow>();
-
     private InterfaceConfiguration configuration;
-    
     private Camera camera;
-    
+
     public InputHandler getInput() {
         return input;
     }
@@ -101,21 +102,22 @@ public class InterfaceRoot {
     }
 
     public void setDiagram(Diagram diagram) {
-        
+
         DiagramDisplayCalculator calculator = configuration.getDisplayCalculator();
         ViewDiagramState viewFrame = calculator.calculate(diagram);
-        if(viewFrame != null)
+        if (viewFrame != null) {
             cameraControl.interpolate(viewFrame);
+        }
     }
 
     public void setModalWindow(ModalPopupWindow window) {
         this.modalWindow = window;
     }
-    
+
     public ModalPopupWindow getModalWindow() {
         return modalWindow;
     }
-    
+
     public CameraControl getCameraControl() {
         return cameraControl;
     }
@@ -127,7 +129,7 @@ public class InterfaceRoot {
     public void activateModePanel(String panelName) {
         applicationBar.setModePanel(modePanels.get(panelName));
     }
-    
+
     /**
      * Returns the mode panel corresponding to the name given.
      * @param panelName
@@ -144,7 +146,7 @@ public class InterfaceRoot {
     public void setAdvice(String advice) {
         applicationBar.setAdvice(advice);
     }
-    
+
     /**
      * Constructs a new InterfaceRoot, also initializes the buiNode, and adds some windows.
      * After construction, the buiNode must be added to the rootNode heirarchy.
@@ -171,14 +173,41 @@ public class InterfaceRoot {
             System.exit(-1);
         }
 
+        if (!StaticsApplication.getApp().isGraded()) {
+            setupSaveLoad();
+        }
+
         // create base windows that will stick around.
         createWindows();
     }
-    
-    
+
+    /**
+     * This method enables saving and loading of state to and from a file.
+     * This should be used primarily as a debugging tool.
+     */
+    private void setupSaveLoad() {
+        //KeyBindingManager.getKeyBindingManager().add(command, keyCode);
+        
+        InputAction save = new InputAction() {
+            public void performAction(InputActionEvent evt) {
+                StateIO.saveToFile("Save.statics");
+            }
+        };
+        
+        InputAction load = new InputAction() {
+            public void performAction(InputActionEvent evt) {
+                StateIO.loadFromFile("Save.statics");
+            }
+        };
+        
+        input.addAction(save, "Save", KeyInput.KEY_F9, false);
+        input.addAction(load, "Load", KeyInput.KEY_F10, false);
+    }
+
     public void loadConfiguration(InterfaceConfiguration configuration) {
-        if(this.configuration != null)
+        if (this.configuration != null) {
             throw new IllegalStateException("Attempting to load a configuration while existing configuration is loaded");
+        }
         this.configuration = configuration;
 
         // LOAD POPUP WINDOWS
@@ -188,14 +217,14 @@ public class InterfaceRoot {
             popupWindows.put(popup.getName(), popup);
             windowNames.add(popup.getName());
         }
-        
+
         // LOAD MENU
         menuBar.setWindowList(windowNames);
         menuBar.setDisplayList(configuration.getDisplayNames());
-        
+
         // LOAD APPLICATION BAR
         allModePanels.addAll(configuration.getModePanels());
-        for(ApplicationModePanel panel : allModePanels) {
+        for (ApplicationModePanel panel : allModePanels) {
             modePanels.put(panel.getPanelName(), panel);
         }
         applicationBar.setTabs(allModePanels);
@@ -207,47 +236,46 @@ public class InterfaceRoot {
         buiNode.addWindow(navWindow);
         navWindow.pack();
         navWindow.setLocation(
-                DisplaySystem.getDisplaySystem().getWidth()-navWindow.getPreferredSize(-1, -1).width - 5,
+                DisplaySystem.getDisplaySystem().getWidth() - navWindow.getPreferredSize(-1, -1).width - 5,
                 ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
 
         cameraControl = new CameraControl(camera, configuration.getViewConstraints());
         configuration.setupCameraControl(cameraControl);
         navWindow.setCameraControl(cameraControl);
         cameraControl.updateCamera();
-        
+
         // LOAD COORDINATES WINDOW
         coordinatesWindow = configuration.getCoordinateSystemWindow();
         buiNode.addWindow(coordinatesWindow);
         coordinatesWindow.pack();
-        coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT
-                + navWindow.getPreferredSize(-1, -1).height + 10);
+        coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + navWindow.getPreferredSize(-1, -1).height + 10);
     }
-    
+
     public void unloadConfiguration() {
-        
+
         // CLEAR POPUPS
         for (DraggablePopupWindow popup : allPopupWindows) {
             popup.dismiss();
         }
         popupWindows.clear();
         allPopupWindows.clear();
-        
+
         // CLEAR MENU
         menuBar.removeWindows();
         menuBar.removeDisplays();
-        
+
         // CLEAR APPLICATION BAR
         applicationBar.setModePanel(null);
         applicationBar.removeTabs();
         modePanels.clear();
         allModePanels.clear();
-        
+
         // CLEAR NAVIGATION AND COORDINATES
         buiNode.removeWindow(navWindow);
         buiNode.removeWindow(coordinatesWindow);
-        
+
         cameraControl = null;
-        
+
         this.configuration = null;
     }
 
@@ -255,7 +283,6 @@ public class InterfaceRoot {
         BPopupWindow popup = popupWindows.get(windowName);
         popup.setVisible(!popup.isVisible());
     }
-
 
     protected void createWindows() {
         // CREATE MENU BAR
@@ -295,16 +322,18 @@ public class InterfaceRoot {
             }
         }
     }
-    
+
     public boolean hasMouse() {
-        if(modalWindow != null)
+        if (modalWindow != null) {
             return true;
-        
+        }
         int x = MouseInput.get().getXAbsolute();
         int y = MouseInput.get().getYAbsolute();
-        for(BWindow window : buiNode.getWindows())
-            if(window.getHitComponent(x, y) != null || window.isModal())
+        for (BWindow window : buiNode.getWindows()) {
+            if (window.getHitComponent(x, y) != null || window.isModal()) {
                 return true;
+            }
+        }
         return false;
     }
 

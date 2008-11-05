@@ -16,6 +16,7 @@ import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.Plate;
+import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.bodies.Pulley;
 import edu.gatech.statics.tasks.CompleteFBDTask;
@@ -138,6 +139,15 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{resolvable.getName()});
             }
         };
+
+        setPersistenceDelegate(PointBody.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                PointBody pb = (PointBody) oldInstance;
+                return new Expression(oldInstance, PointBody.class, "new", new Object[]{pb.getName(), pb.getAnchor()});
+            }
+        });
 
         setPersistenceDelegate(Point.class, namedPersistenceDelegate);
         setPersistenceDelegate(Body.class, namedPersistenceDelegate);

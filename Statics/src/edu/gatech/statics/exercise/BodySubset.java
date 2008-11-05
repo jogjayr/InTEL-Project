@@ -21,6 +21,7 @@ import java.util.Set;
 public class BodySubset implements DiagramKey {
 
     private Set<Body> bodies;
+    private String specialName;
 
     public BodySubset(Body... bodies) {
         this(Arrays.asList(bodies));
@@ -31,6 +32,14 @@ public class BodySubset implements DiagramKey {
         if (bodies.size() == 0) {
             throw new UnsupportedOperationException("There must be at least one body in a body subset");
         }
+    }
+
+    public String getSpecialName() {
+        return specialName;
+    }
+
+    public void setSpecialName(String specialName) {
+        this.specialName = specialName;
     }
 
     public Set<Body> getBodies() {
@@ -77,6 +86,9 @@ public class BodySubset implements DiagramKey {
 
         String bodyString = "";
 
+        if (specialName != null) {
+            return specialName;
+        }
         if (bodies.size() == 0) {
             throw new AssertionError();
         } else if (bodies.size() == 1) {

@@ -44,6 +44,8 @@ public class Connector2ForceMember2d extends Connector {
     public Connector2ForceMember2d(Point point, TwoForceMember member) {
         super(point);
         this.member = member;
+        
+        setName("Connector "+ member.getName() + " at "+point.getName());
         //this.direction = member.getDirectionFrom(getAnchor()).negate();
     }
 

@@ -15,23 +15,6 @@ public class FrameSelectModePanel extends SelectModePanel {
         super();
 
         add(makeTools(), BorderLayout.CENTER);
-//            // THIS IMPLEMENTATION IS UGLY, IT SHOULD BE FIXED!!!
-//            BComponent nextButton = getComponent(2);
-//            remove(2); // remove the next button
-//
-//            BContainer buttonContainer = new BContainer(new BorderLayout());
-//            buttonContainer.add(nextButton, BorderLayout.CENTER);
-//
-//            BButton selectAllButton = new BButton("Frame", new ActionListener() {
-//
-//                public void actionPerformed(ActionEvent event) {
-//                    performSelectAll();
-//                }
-//            }, "selectall");
-//            selectAllButton.setStyleClass("circle_button");
-//            buttonContainer.add(selectAllButton, BorderLayout.SOUTH);
-//
-//            add(buttonContainer, BorderLayout.EAST);
     }
 
     /**

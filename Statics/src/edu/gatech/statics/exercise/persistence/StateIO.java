@@ -13,6 +13,9 @@ import edu.gatech.statics.ui.windows.knownforces.KnownLoadsWindow;
 import edu.gatech.statics.util.Base64;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -24,6 +27,32 @@ import java.util.zip.Inflater;
 public class StateIO {
 
     private StateIO() {
+    }
+
+    public static void saveToFile(String filename) {
+        try {
+            FileOutputStream output = new FileOutputStream("Test.xml");
+            String saveState = StateIO.saveState();
+            output.write(saveState.getBytes());
+            //System.out.println("State Data:");
+            //System.out.println(saveState);
+            System.out.println("State saved...");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void loadFromFile(String filename) {
+        try {
+            FileInputStream fileInput = new FileInputStream("Test.xml");
+            byte data[] = new byte[10 * 1024];
+            int read = fileInput.read(data);
+            String s = new String(data, 0, read);
+
+            loadState(s);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**

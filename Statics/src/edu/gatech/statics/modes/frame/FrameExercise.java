@@ -5,9 +5,15 @@
 package edu.gatech.statics.modes.frame;
 
 import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Background;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
+import edu.gatech.statics.util.SelectionFilter;
 import java.util.List;
 
 /**
@@ -35,5 +41,24 @@ public class FrameExercise extends OrdinaryExercise {
         modePanels.add(0, new FrameSelectModePanel());
 
         return ic;
+    }
+    private static final SelectionFilter selectDiagramFilter = new SelectionFilter() {
+
+        public boolean canSelect(SimulationObject obj) {
+            return obj instanceof Body && !(obj instanceof Background) && !(obj instanceof TwoForceMember);
+        }
+    };
+
+    @Override
+    protected SelectDiagram createSelectDiagram() {
+        return new SelectDiagram() {
+
+            @Override
+            public SelectionFilter getSelectionFilter() {
+                return selectDiagramFilter;
+            }
+        };
+
+
     }
 }
