@@ -71,8 +71,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         resultant.setDisplayGrayed(true);
 
         //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
-        String pointName = dl.getName()+" pos";
-        measure = new DistanceMeasurement(new Point(pointName, dl.getSurface().getEndpoint1()), resultant.getAnchor());
+        //String pointName = dl.getName()+" pos";
+        measure = new DistanceMeasurement(
+                new Point(dl.getName()+" end1", dl.getSurface().getEndpoint1()), resultant.getAnchor());
         measure.setKnown(false);
         measure.setSymbol("pos");
         measure.createDefaultSchematicRepresentation(2f);
@@ -105,7 +106,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
     
     // THIS IS A TEMPORARY SOLUTION
-    private static int count = 1;
+    //private static int count = 1;
 
     /**
      * This should be called after the user's values for the resultant have been checked.
@@ -124,9 +125,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         AffineQuantity resultantPosition = dl.getResultantPosition();
 
         // set names for the resultant and its anchor?
-        resultant.setName("Resultant "+count);
-        resultant.getAnchor().setName("pos "+count);
-        count++;
+        //resultant.setName("Resultant "+count);
+        //resultant.getAnchor().setName("pos "+count);
+        //count++;
         
         measure.setKnown(true);
         //resultant.setKnown(true);
@@ -170,16 +171,17 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     @Override
     public DiagramKey getKey() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return dl;
     }
 
     @Override
     protected DistributedState createInitialState() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        DistributedState.Builder builder = new DistributedState.Builder();
+        return builder.build();
     }
 
     @Override
     public void completed() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // do nothing yet
     }
 }

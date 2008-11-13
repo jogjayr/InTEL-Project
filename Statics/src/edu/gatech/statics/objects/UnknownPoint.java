@@ -35,7 +35,6 @@ public class UnknownPoint extends Point {
         super(estimate);
         this.referencePoint = referencePoint;
         this.direction = direction.normalize();
-
     }
 
     /**

@@ -488,7 +488,7 @@ public class StaticsApplication {
 
         // load exercise here
         getExercise().loadExercise();
-        getExercise().lockSchematic();
+        //getExercise().lockSchematic();
         getExercise().applyParameters();
 
         iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());

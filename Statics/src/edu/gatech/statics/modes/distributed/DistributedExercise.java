@@ -30,6 +30,7 @@ public class DistributedExercise extends OrdinaryExercise {
     }
 
     public DistributedExercise() {
+        
     }
 
     public DistributedExercise(Schematic schematic) {

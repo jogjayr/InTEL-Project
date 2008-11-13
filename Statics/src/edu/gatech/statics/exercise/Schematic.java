@@ -42,17 +42,15 @@ public class Schematic {
     public Background getBackground() {
         return background;
     }
-    private boolean locked = false;
-
+    //private boolean locked = false;
     /**
      * The schematic now is locked after Exercises's loadExercise method. 
      * When the schematic is locked, no changes may be made to it.
      * @return
      */
-    public boolean isLocked() {
-        return locked;
-    }
-
+    /*public boolean isLocked() {
+    return locked;
+    }*/
     /** Creates a new instance of ExercizeWorld */
     public Schematic() {
         background = new Background();
@@ -71,18 +69,28 @@ public class Schematic {
     }
 
     public void remove(SimulationObject obj) {
-        if (locked) {
-            throw new IllegalStateException("Objects may not be removed from the Schematic after it has been locked.");
-        }
+        //if (locked) {
+        //    throw new IllegalStateException("Objects may not be removed from the Schematic after it has been locked.");
+        //}
         allObjects.remove(obj);
     }
 
     public void add(SimulationObject obj) {
-        if (locked) {
-            throw new IllegalStateException("Objects may not be added to the Schematic after it has been locked.");
+        //if (locked) {
+        //    throw new IllegalStateException("Objects may not be added to the Schematic after it has been locked.");
         //obj.setGiven(true);
-        }
+        //}
+
         if (!allObjects.contains(obj)) {
+
+            if (obj.getName() == null || obj.getName().equals("")) {
+                // complain when name does not exist
+                throw new IllegalStateException("SimulationObject " + obj + "(" + obj.getClass() + ") has no name!");
+            } else if (objectsByName.containsKey(obj.getName())) {
+                // complain when something else has this name
+                throw new IllegalStateException("SimulationObject " + obj + " shares a name with " + objectsByName.get(obj.getName()));
+            }
+
             allObjects.add(obj);
         }
 
@@ -103,25 +111,24 @@ public class Schematic {
      * Specifically, all objects must have unique names.
      * @throws IllegalStateException when naming invariants are invalid.
      */
-    void lock() {
-
-        // build up the list of names.
-        for (SimulationObject obj : allObjects) {
-            String name = obj.getName();
-            if (name == null || name.equals("")) {
-                // complain when name does not exist
-                throw new IllegalStateException("SimulationObject " + obj + "("+obj.getClass()+") has no name!");
-            }
-            if (objectsByName.containsKey(name)) {
-                // complain when something else has this name
-                throw new IllegalStateException("SimulationObject " + obj + " shares a name with " + objectsByName.get(name));
-            }
-            objectsByName.put(name, obj);
-        }
-
-        locked = true;
+    /*void lock() {
+    
+    // build up the list of names.
+    for (SimulationObject obj : allObjects) {
+    String name = obj.getName();
+    if (name == null || name.equals("")) {
+    // complain when name does not exist
+    throw new IllegalStateException("SimulationObject " + obj + "("+obj.getClass()+") has no name!");
     }
-
+    if (objectsByName.containsKey(name)) {
+    // complain when something else has this name
+    throw new IllegalStateException("SimulationObject " + obj + " shares a name with " + objectsByName.get(name));
+    }
+    objectsByName.put(name, obj);
+    }
+    
+    locked = true;
+    }*/
     /**
      * Schematic maintains a map of all of the objects by name. This will return
      * a stored simulation object according to its name. This method only works

@@ -256,7 +256,7 @@ public class BicycleExercise extends FrameExercise {
         Matrix3f matrix = new Matrix3f();
         matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_X.negate());
 
-        rep = modelNode.extractElement(CD_backBar, "VisualSceneNode/model/bike/beam3");
+        rep = modelNode.extractElement(CD_backBar, "VisualSceneNode/model/bike/bar_CD");
         CD_backBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -264,7 +264,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(DE_bottomBar, "VisualSceneNode/model/bike/beam4");
+        rep = modelNode.extractElement(DE_bottomBar, "VisualSceneNode/model/bike/bar_ED");
         DE_bottomBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -272,7 +272,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(FA_handlebarBeam, "VisualSceneNode/model/bike/beam6");
+        rep = modelNode.extractElement(FA_handlebarBeam, "VisualSceneNode/model/bike/beam_AGBF");
         FA_handlebarBeam.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -280,7 +280,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(GE_frontBar, "VisualSceneNode/model/bike/beam1");
+        rep = modelNode.extractElement(GE_frontBar, "VisualSceneNode/model/bike/bar_GE");
         GE_frontBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -288,7 +288,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(CE_seatPoleBar, "VisualSceneNode/model/bike/beam5");
+        rep = modelNode.extractElement(CE_seatPoleBar, "VisualSceneNode/model/bike/bar_CE");
         CE_seatPoleBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -296,15 +296,15 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(CE_seatPoleBar, "VisualSceneNode/model/bike/seat");
+        /*rep = modelNode.extractElement(CE_seatPoleBar, "VisualSceneNode/model/bike/seat");
         CE_seatPoleBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);
+        rep.setModelOffset(modelTranslation);*/
 
-        rep = modelNode.extractElement(CB_topBar, "VisualSceneNode/model/bike/beam2");
+        rep = modelNode.extractElement(CB_topBar, "VisualSceneNode/model/bike/bar_BC");
         CB_topBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -312,7 +312,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(BE_middleBar, "VisualSceneNode/model/bike/beam7");
+        rep = modelNode.extractElement(BE_middleBar, "VisualSceneNode/model/bike/bar_BE");
         BE_middleBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);

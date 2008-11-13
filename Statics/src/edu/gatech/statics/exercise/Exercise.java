@@ -114,9 +114,9 @@ public abstract class Exercise {
      * This is meant to be called only once by StaticsApplication, after the exercise is loaded.
      * This method locks the schematic.
      */
-    public void lockSchematic() {
-        schematic.lock();
-    }
+    //public void lockSchematic() {
+    //    schematic.lock();
+    //}
 
     /**
      * This method is called when the user tries to submit the exercise.

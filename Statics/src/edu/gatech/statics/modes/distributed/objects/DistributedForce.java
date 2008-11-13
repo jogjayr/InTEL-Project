@@ -8,6 +8,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.math.AffineQuantity;
+import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -33,6 +34,7 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * This will be null until the user has entered DistributedMode to create it.
      */
     private Force resultant;
+    private Point resultantAnchor;
     /**
      * peak indicates both the magnitude and unit of the force, as well as the direction.
      * The magnitude corresponds to the value of the distribution at its maximum.
@@ -213,6 +215,13 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
         return resultant;
     }
 
+    public Point getResultantAnchor() {
+        if (resultant == null) {
+            createResultant();
+        }
+        return resultantAnchor;
+    }
+
     public Point getStartPoint() {
         return startPoint;
     }
@@ -244,16 +253,20 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
         }
         AffineQuantity position = getResultantPosition();
 
-        Point resultantAnchor;
+        //Point resultantAnchor;
         Vector3bd pos = estimateResultantPosition();
         if (position.isSymbolic()) {
+            // TODO: IMPLEMENT THIS
+            // Requires figuring out unknown distances.
             //resultantAnchor = new UnknownPoint(new Point(pos), new Point(getSurface().getEndpoint1()),
             //        getSurface().getDirectionFrom(pos));
         } else {
-            //resultantAnchor = new Point(pos);
+            resultantAnchor = new Point(getName() + " anchor", pos);
         }
 
-        //resultant = new Force(resultantAnchor, new Vector(Unit.force, getPeak().getVectorValue(), "R"));
+        AnchoredVector resultantVector = new AnchoredVector(resultantAnchor, new Vector(Unit.force, getPeak().getVectorValue(), "R"));
+        resultant = new Force(resultantVector);
+        resultant.setName(getName() + " resultant");
     }
 
     /**

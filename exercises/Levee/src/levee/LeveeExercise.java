@@ -22,7 +22,6 @@ import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.math.BigDecimal;
 
@@ -67,20 +66,18 @@ public class LeveeExercise extends DistributedExercise {
         
         Schematic schematic = getSchematic();
 
-        Point A = new Point("0", "0", "0");
-        Point B = new Point("0", "12", "0");
+        Point A = new Point("A","0", "0", "0");
+        Point B = new Point("B","0", "12", "0");
 
-        Beam levee = new Beam(A, B);
+        Beam levee = new Beam("Levee",A, B);
 
         
         DistributedForce waterForce = new TriangularDistributedForce(levee, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, new BigDecimal("748.8")));
+        waterForce.setName("water");
 
         levee.addObject(waterForce);
         
-        A.setName("A");
-        B.setName("B");
-        levee.setName("Levee");
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         levee.createDefaultSchematicRepresentation();

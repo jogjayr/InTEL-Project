@@ -18,41 +18,25 @@ import java.util.List;
 public class DistributedState implements DiagramState<DistributedDiagram> {
 
     final private boolean solved;
-    final private List<AnchoredVector> addedLoads;// = new ArrayList<AnchoredVector>();
+    private String magnitude;
+    private String position;
 
     public boolean isLocked() {
         return solved;
     }
 
-    public List<AnchoredVector> getAddedLoads() {
-        return addedLoads;
-    }
-
     private DistributedState(Builder builder) {
-        this.addedLoads = Collections.unmodifiableList(builder.addedLoads);
         this.solved = builder.solved;
     }
 
     public static class Builder implements edu.gatech.statics.util.Builder<DistributedState> {
 
-        private List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>();
         private boolean solved;
+        private String magnitude;
+        private String position;
 
         public Builder(DistributedState state) {
             // make mutable copies for the builder
-            for (AnchoredVector load : state.getAddedLoads()) {
-                addedLoads.add(new AnchoredVector(load));
-            }
-        }
-
-        public List<AnchoredVector> getAddedLoads() {
-            return addedLoads;
-        }
-
-        public void setAddedLoads(List<AnchoredVector> addedLoads) {
-            this.addedLoads.clear();
-            this.addedLoads.addAll(addedLoads);
-        //this.addedLoads = addedLoads;
         }
 
         public boolean isSolved() {
@@ -60,11 +44,11 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
         }
 
         public void setMagnitude(String magnitudeValue) {
-            throw new UnsupportedOperationException("Not yet implemented");
+            this.magnitude = magnitudeValue;
         }
 
         public void setPosition(String positionValue) {
-            throw new UnsupportedOperationException("Not yet implemented");
+            this.position = positionValue;
         }
 
         public void setSolved(boolean solved) {
@@ -77,12 +61,6 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
         public DistributedState build() {
             return new DistributedState(this);
         }
-    }
-
-    public DiagramState<DistributedDiagram> restore() {
-        // here we need to restore the anchor points on the vectors
-        // or does that happen autmoatically?
-        return this;
     }
 
     public Builder getBuilder() {

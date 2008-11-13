@@ -14,6 +14,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
+import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 
@@ -72,11 +73,11 @@ public class DistributedModePanel extends ApplicationModePanel {
 
     protected void performCheck() {
         DistributedDiagram diagram = (DistributedDiagram) getDiagram();
-        if(diagram.check(positionField.getText(), magnitudeField.getText())) {
+        if (diagram.check(positionField.getText(), magnitudeField.getText())) {
             System.out.println("OK!");
-            
+
             diagram.updateResultant();
-            
+
         } else {
             System.out.println("Oh noes!");
         }
@@ -95,6 +96,6 @@ public class DistributedModePanel extends ApplicationModePanel {
 
     @Override
     public DiagramType getDiagramType() {
-        return DiagramType.getType("distributed");
+        return DistributedMode.instance.getDiagramType();
     }
 }
