@@ -320,6 +320,30 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
+        rep = modelNode.extractElement(E, "VisualSceneNode/model/bike/chainAndPedals/pedals");
+        E.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
+        rep.setLocalScale(scale);
+        rep.setModelOffset(modelTranslation);
+
+        rep = modelNode.extractElement(C, "VisualSceneNode/model/bike/seat");
+        C.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
+        rep.setLocalScale(scale);
+        rep.setModelOffset(modelTranslation);
+
+        rep = modelNode.extractElement(D, "VisualSceneNode/model/bike/chainAndPedals/backWheelGear");
+        D.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelRotation(matrix);
+        rep.setLocalScale(scale);
+        rep.setModelOffset(modelTranslation);
+        
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
         rep.setModelRotation(matrix);
