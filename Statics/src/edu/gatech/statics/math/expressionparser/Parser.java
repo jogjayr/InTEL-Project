@@ -42,7 +42,7 @@ public class Parser {
         if (expression.equals("")) {
             return new AffineQuantity(BigDecimal.ONE, BigDecimal.ZERO, null);
         }
-        
+
         Parser parser = new Parser();
         Node topNode;
         SymbolNode symbol;
@@ -363,6 +363,12 @@ public class Parser {
 
     private Node createNode(String token) {
         token = token.trim();
+
+        if ("".equals(token)) {
+            // in the case that our token is empty, just return null
+            // the parser should skip this token and move onto the next
+            return null;
+        }
         if (token.equals("+")) {
             return new BinaryNode(BinaryNode.Operation.add);
         }

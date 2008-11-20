@@ -53,7 +53,7 @@ public class BicycleExercise extends FrameExercise {
         getDisplayConstants().setForceLabelDistance(1);
     }
     private Point A,  B,  C,  D,  E,  F,  G;
-    private Pin2d rollerA;
+    private Roller2d rollerA;
     private Roller2d rollerD;
     //private Connector2ForceMember2d twoForceMiddleB,  twoForceTopB,  twoForceBackC,  twoForceTopC,  twoForceSeatC,  twoForceBottomE,  twoForceFrontE,  twoForceSeatE,  twoForceFrontG;
     private Bar CB_topBar,  CD_backBar,  DE_bottomBar,  GE_frontBar,  BE_middleBar,  CE_seatPoleBar;
@@ -183,9 +183,9 @@ public class BicycleExercise extends FrameExercise {
         c2fm_CB_B.attach(CB_topBar, FA_handlebarBeam);
 
         //rollerA = new Roller2d(A);
-        rollerA = new Pin2d(A);
+        rollerA = new Roller2d(A);
         rollerA.attachToWorld(FA_handlebarBeam);
-        //rollerA.setDirection(Vector3bd.UNIT_Y);
+        rollerA.setDirection(Vector3bd.UNIT_Y);
         rollerA.setName("Roller A");
 
         // *** all connectors that attach to C
@@ -320,7 +320,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        rep = modelNode.extractElement(E, "VisualSceneNode/model/bike/chainAndPedals/pedals");
+        /*rep = modelNode.extractElement(E, "VisualSceneNode/model/bike/chainAndPedals/pedals");
         E.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -342,7 +342,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setSynchronizeTranslation(false);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);
+        rep.setModelOffset(modelTranslation);*/
         
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
