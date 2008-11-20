@@ -9,6 +9,7 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.tasks.Task;
 import java.beans.Expression;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,28 +28,8 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
      */
     @Override
     public Object readObject() {
-
         Object obj = super.readObject();
-
-        //We run the decoder as usual except now it is using the ModifiedObjectHandler
-        /*if (obj instanceof ResolvableByName) {
-            String name = ((ResolvableByName) obj).getName();
-            if (obj instanceof SimulationObject) {
-                return Exercise.getExercise().getSchematic().getByName(name);
-            }
-        }*/
         return obj;
-//        if (obj instanceof NameContainer) {
-//            NameContainer nameContainer = (NameContainer) obj;
-//            if (SimulationObject.class.isAssignableFrom(nameContainer.getTargetClass())) {
-//                // object is a SimulationObject
-//                // fetch it from the Exercise.
-//                return Exercise.getExercise().getSchematic().getByName(nameContainer.getName());
-//            }
-//
-//            // we cannot resolve the NameContainer!
-//            throw new IllegalStateException("Cannot resolve the name container: " + nameContainer.getName() + ", " + nameContainer.getTargetClass());
-//        }
     }
 
     @Override
@@ -65,7 +46,11 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                 if (result instanceof ResolvableByName) {
                     String name = ((ResolvableByName) result).getName();
                     if (result instanceof SimulationObject) {
-                        return Exercise.getExercise().getSchematic().getByName(name);
+                        SimulationObject obj = Exercise.getExercise().getSchematic().getByName(name);
+                        if(obj == null) {
+                            Logger.getLogger("Statics").warning("Could not find an object by name: \""+name+"\"");
+                        }
+                        return obj;
                     } else if(result instanceof Task) {
                         return Exercise.getExercise().getTask(name);
                     }

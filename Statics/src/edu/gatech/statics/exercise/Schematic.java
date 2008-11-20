@@ -91,6 +91,7 @@ public class Schematic {
                 throw new IllegalStateException("SimulationObject " + obj + " shares a name with " + objectsByName.get(obj.getName()));
             }
 
+            objectsByName.put(obj.getName(), obj);
             allObjects.add(obj);
         }
 
