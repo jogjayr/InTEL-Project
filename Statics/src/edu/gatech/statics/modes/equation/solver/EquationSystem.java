@@ -147,6 +147,7 @@ public class EquationSystem {
                         } else {
                             // both are numeric, find the proportion
                             multipleSoFar = true;
+                            multipleYet = true;
                             multiple = eq1value / eq2value;
                         }
                     }
