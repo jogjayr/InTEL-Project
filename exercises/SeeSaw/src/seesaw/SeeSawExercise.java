@@ -83,7 +83,9 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         Force child1Force = new Force(child1Point, Vector3bd.UNIT_Y.negate(), new BigDecimal(15 * 9.8f));
         Force child2Force = new Force(child2Point, Vector3bd.UNIT_Y.negate(), "W");
         child1Force.setName("girl");
-
+        //this set is needed even though the name should be set in the constructor
+        child2Force.setName("W");
+        
         DistanceMeasurement measure1 = new DistanceMeasurement(child1Point, base);
         DistanceMeasurement measure2 = new DistanceMeasurement(base, child2Point);
 

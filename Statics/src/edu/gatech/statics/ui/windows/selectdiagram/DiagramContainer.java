@@ -13,6 +13,8 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.SubDiagram;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.util.DiagramListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +32,8 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
         addItem(null);
         StaticsApplication.getApp().addDiagramListener(this);
     }
-
     private Map<String, BodySubset> actionMap = new HashMap<String, BodySubset>();
+    ////private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
     private ActionListener listener = new ActionListener() {
 
         public void actionPerformed(ActionEvent event) {
@@ -53,6 +55,19 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
             }
         }
 
+        //somewhat inelegant way of getting the total number of bodies in the
+        //exercise to compare against the list of currently selected bodies
+        //if the values are equal then the user has selected the entire frame
+        int totalBodies = 0;
+//        if (currentDiagram != null) {
+//            for (Body body : currentDiagram.allBodies()) {
+//                if (body instanceof Background) {
+//                    continue;
+//                }
+//                totalBodies++;
+//            }
+//        }
+
         // adds a new button corresponding to the new diagram
         // If the set of bodies is null, we assign it to create a new diagram
         // If the set of bodies exists, the label is formatted and the action
@@ -62,7 +77,12 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
         if (bodies == null) {
             action = "new";
             item = new BButton("new", listener, action);
-        } else {
+        } 
+//        else if(bodies.getBodies().size() == totalBodies) {
+//            action = Integer.toHexString(bodies.hashCode());
+//            item = new BButton("Whole Frame", listener, action);
+//        }
+        else {
             action = Integer.toHexString(bodies.hashCode());
             String buttonString = bodies.toString().replaceAll(",", ",\n");
             item = new BButton(buttonString, listener, action);
@@ -76,9 +96,9 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
     abstract protected void placeItem(BButton item);
 
     public void onDiagramCreated(Diagram diagram) {
-        if(diagram instanceof SubDiagram)
-            addItem( ((SubDiagram)diagram).getBodySubset() );
+        if (diagram instanceof SubDiagram) {
+            addItem(((SubDiagram) diagram).getBodySubset());
+        }
         getWindow().pack();
     }
-    
 }

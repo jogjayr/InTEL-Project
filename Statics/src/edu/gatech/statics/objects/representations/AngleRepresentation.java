@@ -190,7 +190,7 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
         float worldRatio = lineLength / screenLength;
         float textWorldLength = textScreenSize * worldRatio;
         
-        if(textWorldLength + 8*margin*worldRatio > lineLength) {
+//        if(textWorldLength + 8*margin*worldRatio > lineLength) {
         //if(false) {
             //float totalOffset = textWorldLength;
             
@@ -209,31 +209,30 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
             
             //CurveUtil.renderLine(r, color, arrow1, arrow2);
             
-        } else {
-            // display text normally...
-            //labelCenter = pCenter;
-            labelCenter.set(pCenter);
-            midVector.set(p1);
-            midVector.subtractLocal(p2);
-            midVector.normalizeLocal();
-            //midVector.crossLocal(pDifference);
-            midVector.multLocal(textWorldLength/2 + worldRatio*margin);
-            midVector1.set(pCenter);
-            midVector2.set(pCenter);
-            midVector1.addLocal(midVector);
-            midVector2.subtractLocal(midVector);
-            midVector1.normalizeLocal();
-            midVector2.normalizeLocal();
-            
-            // draw lines:
-            CurveUtil.renderArc(r, color, anchor, offset, axis1, midVector1);
-            CurveUtil.renderArc(r, color, anchor, offset, midVector2, axis2); 
-            
-            //CurveUtil.renderLine(r, color, arrow1, midVector1);
-            //CurveUtil.renderLine(r, color, arrow2, midVector2);
-        }
-        
-        
+            //by removing this I seem to have fixed the issues regarding the representation of angles upon zooming
+//        } else {
+//            // display text normally...
+//            //labelCenter = pCenter;
+//            labelCenter.set(pCenter);
+//            midVector.set(p1);
+//            midVector.subtractLocal(p2);
+//            midVector.normalizeLocal();
+//            //midVector.crossLocal(pDifference);
+//            midVector.multLocal(textWorldLength/2 + worldRatio*margin);
+//            midVector1.set(pCenter);
+//            midVector2.set(pCenter);
+//            midVector1.addLocal(midVector);
+//            midVector2.subtractLocal(midVector);
+//            midVector1.normalizeLocal();
+//            midVector2.normalizeLocal();
+//            
+//            // draw lines:
+//            CurveUtil.renderArc(r, color, anchor, offset, axis1, midVector1);
+//            CurveUtil.renderArc(r, color, anchor, offset, midVector2, axis2); 
+//            
+//            //CurveUtil.renderLine(r, color, arrow1, midVector1);
+//            //CurveUtil.renderLine(r, color, arrow2, midVector2);
+//        }
     }
     
 }

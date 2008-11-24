@@ -73,13 +73,13 @@ public class PurseExercise extends FrameExercise {
 
     @Override
     public void initParameters() {
-        getState().setParameter("handPoint", -17);
-        getState().setParameter("tendonAnchorB", 13);
-        getState().setParameter("tendonAnchorD", 13);
-        getState().setParameter("shoulderHeight", 16);
-        getState().setParameter("forearmWeight", 9);
+        getState().setParameter("handPoint", -17f);
+        getState().setParameter("tendonAnchorB", 13f);
+        getState().setParameter("tendonAnchorD", 13f);
+        getState().setParameter("shoulderHeight", 16f);
+        getState().setParameter("forearmWeight", 9f);
         getState().setParameter("purseWeight", 19.6f);
-        getState().setParameter("centerGravityOffset", 0);
+        getState().setParameter("centerGravityOffset", 0f);
     }
 
     @Override

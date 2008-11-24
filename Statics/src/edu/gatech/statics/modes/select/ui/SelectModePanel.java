@@ -18,6 +18,7 @@ import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     }
 
     public void updateSelection() {
-
+        
         // refine list to only bodies.
         List<Body> selection = new ArrayList<Body>();
         for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
@@ -102,7 +103,19 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
                 selection.add((Body) obj);
             }
         }
-
+  
+        //somewhat inelegant way of getting the total number of bodies in the
+        //exercise to compare against the list of currently selected bodies
+        //if the values are equal then the user has selected the entire frame
+        //Needs to be the count rather than the list because the lists can become incongruent
+        int totalBodies = 0;
+        for (Body body : getDiagram().allBodies()) {
+            if (body instanceof Background) {
+                continue;
+            }
+            totalBodies++;
+        }
+        
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
@@ -112,6 +125,18 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
             InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
 
+        } else if (selection.size() == totalBodies) {
+            //this block creates the default 'whole frame' report. remove to restore former functionality
+            getTitleLabel().setText("Currently Selected:");
+
+            String contents = "<font size=\"5\" color=\"white\">";
+            contents += "Whole Frame</font>";
+            selectionList.setContents(contents);
+
+            nextButton.setEnabled(true);
+            StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection2");
+
+            InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
         } else {
             getTitleLabel().setText("Currently Selected:");
 

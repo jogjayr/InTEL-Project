@@ -15,7 +15,8 @@ import edu.gatech.statics.util.DiagramListener;
 abstract public class SubDiagram<StateType extends DiagramState> extends Diagram<StateType> {
 
     private BodySubset bodies;
-
+    private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
+    
     public BodySubset getBodySubset() {
         return bodies;
     }
@@ -30,7 +31,7 @@ abstract public class SubDiagram<StateType extends DiagramState> extends Diagram
 
         assert bodies != null : "Bodies cannot be null in constructing FBD!";
         assert !bodies.getBodies().isEmpty() : "Bodies cannot be empty in constructing FBD!";
-
+        
         for (DiagramListener listener : StaticsApplication.getApp().getDiagramListeners()) {
             listener.onDiagramCreated(this);
         }
