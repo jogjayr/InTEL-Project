@@ -33,7 +33,6 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
         StaticsApplication.getApp().addDiagramListener(this);
     }
     private Map<String, BodySubset> actionMap = new HashMap<String, BodySubset>();
-    ////private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
     private ActionListener listener = new ActionListener() {
 
         public void actionPerformed(ActionEvent event) {
@@ -55,19 +54,6 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
             }
         }
 
-        //somewhat inelegant way of getting the total number of bodies in the
-        //exercise to compare against the list of currently selected bodies
-        //if the values are equal then the user has selected the entire frame
-        int totalBodies = 0;
-//        if (currentDiagram != null) {
-//            for (Body body : currentDiagram.allBodies()) {
-//                if (body instanceof Background) {
-//                    continue;
-//                }
-//                totalBodies++;
-//            }
-//        }
-
         // adds a new button corresponding to the new diagram
         // If the set of bodies is null, we assign it to create a new diagram
         // If the set of bodies exists, the label is formatted and the action
@@ -78,10 +64,10 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
             action = "new";
             item = new BButton("new", listener, action);
         } 
-//        else if(bodies.getBodies().size() == totalBodies) {
-//            action = Integer.toHexString(bodies.hashCode());
-//            item = new BButton("Whole Frame", listener, action);
-//        }
+        else if(bodies.getSpecialName() != null) {
+            action = Integer.toHexString(bodies.hashCode());
+            item = new BButton(bodies.getSpecialName(), listener, action);
+        }
         else {
             action = Integer.toHexString(bodies.hashCode());
             String buttonString = bodies.toString().replaceAll(",", ",\n");
