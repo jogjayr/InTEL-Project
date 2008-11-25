@@ -12,7 +12,7 @@ public class DisplayConstants {
 
     private static DisplayConstants instance;
     private float jointSize;
-    private float measurementSize;
+    private float measurementBarSize;
     private float momentLabelDistance;
     private float forceLabelDistance;
     private float cylinderRadius;
@@ -35,7 +35,7 @@ public class DisplayConstants {
         setCylinderRadius(0.2f);
         setForceLabelDistance(1f);
         setMomentLabelDistance(0f);
-        setMeasurementSize(0.1f);
+        setMeasurementBarSize(0.1f);
     }
 
     public void setDrawScale(float value) {
@@ -44,7 +44,7 @@ public class DisplayConstants {
         forceSize = value;
         pointSize = value;
         momentSize = value;
-        measurementSize = value;
+        measurementBarSize = value;
         momentLabelDistance = value;
         jointSize = value;
     }
@@ -97,12 +97,12 @@ public class DisplayConstants {
         return momentLabelDistance;
     }
 
-    public void setMeasurementSize(float value) {
-        measurementSize = value;
+    public void setMeasurementBarSize(float value) {
+        measurementBarSize = value;
     }
 
-    public float getMeasurementSize() {
-        return measurementSize;
+    public float getMeasurementBarSize() {
+        return measurementBarSize;
     }
 
     public void setJointSize(float value) {

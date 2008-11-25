@@ -208,7 +208,7 @@ public class CurveUtil {
         private float radius;
         public void setCoords(Vector3f center, Vector3f axis1, Vector3f axis2, float radius) {
             this.center = new Vector3f(center);
-            this.radius = 1.5f*radius; // this fixed number is a hack. We'll need to fix it later.
+            this.radius = radius; // this fixed number is a hack. We'll need to fix it later.
             
             this.axis1 = axis1;
             this.axis2 = axis2;

@@ -22,7 +22,7 @@ import edu.gatech.statics.objects.DistanceMeasurement;
  */
 public class DistanceRepresentation extends Representation<DistanceMeasurement> {
 
-    private float edgeWidth = .5f; // world units- should fix
+    //private float edgeWidth = .5f; // world units- should fix
     private float margin = 4f; // pixels
     private float arrowsize = 6f; // pixels
     private float offset;
@@ -204,8 +204,8 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
 
         barOffset1.set(offsetDirection);
         barOffset2.set(offsetDirection);
-        barOffset1.multLocal(offset + DisplayConstants.getInstance().getMeasurementSize() / 2);
-        barOffset2.multLocal(offset - DisplayConstants.getInstance().getMeasurementSize() / 2);
+        barOffset1.multLocal(offset + DisplayConstants.getInstance().getMeasurementBarSize() / 2);
+        barOffset2.multLocal(offset - DisplayConstants.getInstance().getMeasurementBarSize() / 2);
         if (drawLeftBar) {
             if (getTarget().isVertical() == true) {
                 bar1.set(new Vector3f(getTarget().getPoint2().getTranslation().x,

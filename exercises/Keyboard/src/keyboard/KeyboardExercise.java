@@ -76,7 +76,7 @@ public class KeyboardExercise extends FrameExercise {
         getDisplayConstants().setCylinderRadius(0.5f);
         getDisplayConstants().setForceLabelDistance(1f);
         getDisplayConstants().setMomentLabelDistance(0f);
-        getDisplayConstants().setMeasurementSize(0.1f);
+        getDisplayConstants().setMeasurementBarSize(0.1f);
     }
     Point A, B, C, D, E, P, Q;
     Pin2d jointC;

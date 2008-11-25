@@ -51,6 +51,7 @@ public class BicycleExercise extends FrameExercise {
 
         getDisplayConstants().setDrawScale(.5f);
         getDisplayConstants().setForceLabelDistance(1);
+        getDisplayConstants().setMeasurementBarSize(.25f);
     }
     private Point A,  B,  C,  D,  E,  F,  G;
     private Roller2d rollerA;
