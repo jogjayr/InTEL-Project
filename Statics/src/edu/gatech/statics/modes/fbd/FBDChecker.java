@@ -217,28 +217,6 @@ public class FBDChecker {
                 return false;
             }
 
-//            //this is trying to make sure two force members have the same values at either end
-//            if (body instanceof TwoForceMember) {
-//                List<AnchoredVector> userAnchoredVectorsAtOtherConnector = new ArrayList<AnchoredVector>();
-//                Connector con;
-//                if (((TwoForceMember) body).getConnector1() == connector) {
-//                    con = ((TwoForceMember) body).getConnector2();
-//                } else {
-//                    con = ((TwoForceMember) body).getConnector1();
-//                }
-//                for (AnchoredVector AnchoredVector : addedAnchoredVectors) {
-//                    if (AnchoredVector.getAnchor().equals(con.getAnchor())) {
-//                        userAnchoredVectorsAtOtherConnector.add(AnchoredVector);
-//                    }
-//                }
-//                if (!userAnchoredVectorsAtConnector.get(0).getLabelText().equalsIgnoreCase(userAnchoredVectorsAtOtherConnector.get(0).getLabelText())) {
-//                    logInfo("check: the user has given a 2ForceMember's AnchoredVectors different values");
-//                    logInfo("check: FAILED");
-//                    setAdviceKey("fbd_feedback_check_fail_2force_not_same");
-//                    return false;                
-//                }
-//            }
-
             ConnectorCheckResult connectorResult = checkConnector(userAnchoredVectorsAtConnector, connector, body);
 
             switch (connectorResult) {
@@ -289,6 +267,12 @@ public class FBDChecker {
 
                     logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
                     logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
+
+                    if (connector instanceof Connector2ForceMember2d) {
+                        logInfo("check: user missing a load at " + connector.getAnchor().getLabelText());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_missing_at_2fm", connector.getAnchor().getLabelText());
+                    }
 
                     // check if this is mistaken for a pin
                     if (!connector.connectorName().equals("pin")) {
@@ -678,14 +662,30 @@ public class FBDChecker {
         //if we passed, which we usually want, this means that the AnchoredVectors' labels
         //do not match, which is bad
         if (result == NameCheckResult.passed) {
-            for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
-                if (!(obj instanceof Load)) {
-                    continue;
-                }
-                if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
-                    return NameCheckResult.shouldMatch2FM;
+            // what we want to do here is to check and see if a symbolic load exists
+            // on the opposite end of the connector.
+            // if it does exist, it should be in the symbol manager
+            AnchoredVector toCheck = Exercise.getExercise().getSymbolManager().getLoad(candidate);
+            if (toCheck != null) {
+                if (!toCheck.isKnown() && toCheck.isSymbol()) {
+                    if (!toCheck.getSymbolName().equals(candidate.getSymbolName())) {
+                        return NameCheckResult.shouldMatch2FM;
+                    }
                 }
             }
+
+        /*for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
+        if (!(obj instanceof Load)) {
+        continue;
+        }
+        // ******
+        // THERE IS A PROBLEM HERE
+        // This check is testing if there is ANY load present at this other point. It does not check
+        // to see if it is the joint, or if it is a relevant point!!
+        if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
+        return NameCheckResult.shouldMatch2FM;
+        }
+        }*/
         }
 
         // if the result of the standard check is anything but "there is a duplicate in this diagram"
@@ -932,11 +932,11 @@ public class FBDChecker {
         List<AnchoredVector> loads = new ArrayList<AnchoredVector>();
         for (Vector vector : reactions) {
             loads.add(new AnchoredVector(connector.getAnchor(), vector));
-            /*if (vector.getUnit() == Unit.force) {
-                AnchoredVectors.add(new Force(joint.getAnchor(), vector));
-            } else if (vector.getUnit() == Unit.moment) {
-                AnchoredVectors.add(new Moment(joint.getAnchor(), vector));
-            }*/
+        /*if (vector.getUnit() == Unit.force) {
+        AnchoredVectors.add(new Force(joint.getAnchor(), vector));
+        } else if (vector.getUnit() == Unit.moment) {
+        AnchoredVectors.add(new Moment(joint.getAnchor(), vector));
+        }*/
         }
         return loads;
     }

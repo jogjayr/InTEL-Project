@@ -24,7 +24,7 @@ public class SymbolManager {
 
     @Override
     public String toString() {
-        return "SymbolManager: {symbols="+symbols+", symbolicLoads="+symbolicLoads+"}";
+        return "SymbolManager: {symbols=" + symbols + ", symbolicLoads=" + symbolicLoads + "}";
     }
 
     public List<AnchoredVector> getLoads() {
@@ -83,6 +83,9 @@ public class SymbolManager {
         for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
             if (obj instanceof Connector2ForceMember2d) {
                 Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) obj;
+                if (connector2fm.getAnchor() != load.getAnchor()) {
+                    continue;
+                }
                 if (connector2fm.getDirection().equals(load.getVectorValue()) || connector2fm.getDirection().equals(load.getVectorValue().negate())) {
 
                     // this one lines up with the connector2fm
@@ -96,8 +99,11 @@ public class SymbolManager {
                     // perform the main check again
                     for (AnchoredVector toCheck : symbolicLoads) {
                         if (opposite.getAnchor() == toCheck.getAnchor() &&
-                                (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                                (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+                                (connector2fm.getDirection().equals(toCheck.getVectorValue()) ||
+                                connector2fm.getDirection().equals(toCheck.getVectorValue().negate()))) {
+                            //&&
+                            //(load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                            //(load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
                             return toCheck;
                         }
                     }

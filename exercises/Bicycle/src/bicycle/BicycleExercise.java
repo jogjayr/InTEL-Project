@@ -74,13 +74,13 @@ public class BicycleExercise extends FrameExercise {
         F = new Point("F", "4", "6.928", "0");
         G = new Point("G", "1.5", "2.598", "0");
 
-        FA_handlebarBeam = new Beam("Handle Bar", F, A);
-        CE_seatPoleBar = new Bar("Seat Pole", C, E);
-        CB_topBar = new Bar("Top Bar", C, B);
-        CD_backBar = new Bar("Back Bar", C, D);
-        DE_bottomBar = new Bar("Bottom Bar", D, E);
-        GE_frontBar = new Bar("Front Bar", G, E);
-        BE_middleBar = new Bar("Middle Bar", B, E);
+        FA_handlebarBeam = new Beam("Beam FBGA", F, A);
+        CE_seatPoleBar = new Bar("Bar CE", C, E);
+        CB_topBar = new Bar("Bar CB", C, B);
+        CD_backBar = new Bar("Bar CD", C, D);
+        DE_bottomBar = new Bar("Bar DE", D, E);
+        GE_frontBar = new Bar("Bar GE", G, E);
+        BE_middleBar = new Bar("Bar BE", B, E);
         jointAtD = new PointBody("Joint D", D);
         jointAtC = new PointBody("Joint C", C);
         jointAtE = new PointBody("Joint E", E);
@@ -150,15 +150,15 @@ public class BicycleExercise extends FrameExercise {
 
         Force seatWeight = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(500));
         seatWeight.setName("Seat");
-        CE_seatPoleBar.addObject(seatWeight);
+        jointAtC.addObject(seatWeight);
 
         Force pedalWeight = new Force(E, Vector3bd.UNIT_Y.negate(), new BigDecimal(150));
         pedalWeight.setName("Pedals");
-        CE_seatPoleBar.addObject(pedalWeight);
+        jointAtE.addObject(pedalWeight);
 
         Force wedgeForce = new Force(C, Vector3bd.UNIT_X, new BigDecimal(17.3205));
-        wedgeForce.setName("Wedge Force");
-        CE_seatPoleBar.addObject(wedgeForce);
+        wedgeForce.setName("Seat Horizontal");
+        jointAtC.addObject(wedgeForce);
 
         Vector3bd handleForceDirection = new Vector3bd(
                 new BigDecimal(-Math.cos(Math.PI / 6)),
