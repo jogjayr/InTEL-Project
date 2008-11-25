@@ -116,5 +116,9 @@ public class RepresentationLayer {
         lightState.attach( light );
         addRenderState(lightState);
     }
-    
+
+    @Override
+    public String toString() {
+        return "RepresentationLayer: "+name;
+    }
 }

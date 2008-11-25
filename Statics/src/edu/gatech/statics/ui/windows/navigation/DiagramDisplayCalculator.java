@@ -53,6 +53,7 @@ public class DiagramDisplayCalculator {
     protected BoundingVolume createViewVolume(Diagram diagram) {
         Node schematicNode = diagram.getNode(RepresentationLayer.schematicBodies);
         Node modelNode = diagram.getNode(RepresentationLayer.modelBodies);
+        Node pointNode = diagram.getNode(RepresentationLayer.points);
 
         if (schematicNode == null || modelNode == null) {
             return null;
@@ -60,8 +61,9 @@ public class DiagramDisplayCalculator {
 
         BoundingVolume volume = new BoundingBox();
 
-        // first merge with the schematic node
+        // first merge with the schematic nodes
         volume.mergeLocal(schematicNode.getWorldBound());
+        volume.mergeLocal(pointNode.getWorldBound());
 
         if(modelNode.getChildren() == null)
             return volume;

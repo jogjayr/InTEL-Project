@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.exercise;
 
+import com.jme.bounding.OrientedBoundingBox;
 import com.jme.input.InputHandler;
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.objects.SimulationObject;
@@ -345,6 +346,7 @@ public abstract class Diagram<StateType extends DiagramState> {
 
             node.updateWorldVectors();
             node.updateGeometricState(0f, true);
+            //node.setModelBound(new OrientedBoundingBox());
             node.updateModelBound();
             node.updateWorldBound();
         }
