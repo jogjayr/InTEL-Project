@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.exercise;
 
+import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Measurement;
@@ -43,6 +44,7 @@ public class Schematic {
         return background;
     }
     //private boolean locked = false;
+
     /**
      * The schematic now is locked after Exercises's loadExercise method. 
      * When the schematic is locked, no changes may be made to it.
@@ -171,6 +173,11 @@ public class Schematic {
             // the bodies
             if (containsTwo(bodyPoints, measurement.getPoints())) {
                 r.add(measurement);
+            } else if (measurement instanceof AngleMeasurement) {
+                AngleMeasurement angleMeasurement = (AngleMeasurement) measurement;
+                if (bodyPoints.contains(angleMeasurement.getAnchor())) {
+                    r.add(measurement);
+                }
             }
         }
 
