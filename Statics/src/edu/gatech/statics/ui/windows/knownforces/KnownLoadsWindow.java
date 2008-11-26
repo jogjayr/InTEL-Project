@@ -178,9 +178,11 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
     private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
 
-        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
-        if (load1 != null) {
-            load = load1.getVector();
+        if (!isGivenLoad(load)) {
+            AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+            if (load1 != null) {
+                load = load1.getVector();
+            }
         }
 
         if (load.isSymbol() && !load.isKnown()) {
@@ -203,6 +205,17 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td></tr>");
     }
 
+    boolean isGivenLoad(Vector load) {
+        for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
+            for (SimulationObject obj : body.getAttachedObjects()) {
+                if (obj instanceof Load && ((Load) obj).getVector().equals(load)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void onSolve() {
         updateView();
         pack(150, -1);
@@ -211,7 +224,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     public void update() {
         onSolve();
     }
-    
+
     public void onLoadSolved(Load load) {
         onSolve();
     }

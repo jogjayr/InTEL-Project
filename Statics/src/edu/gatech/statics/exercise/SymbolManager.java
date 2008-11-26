@@ -58,6 +58,23 @@ public class SymbolManager {
     }
 
     /**
+     * This serves a similar function to getLoad, but it does not check for the case of
+     * two force members.
+     * @param load
+     * @return
+     */
+    public AnchoredVector getLoadDirect(AnchoredVector load) {
+        for (AnchoredVector toCheck : symbolicLoads) {
+            if (load.getAnchor() == toCheck.getAnchor() &&
+                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
+                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+                return toCheck;
+            }
+        }
+        return null;
+    }
+
+    /**
      * This attempts to find a stored symbolic AnchoredVector for the provided AnchoredVector.
      * The direction of the symbolic AnchoredVector should not be taken as meaningful, as its opposite may
      * be the one of interest depending on the circumstance.
@@ -66,12 +83,9 @@ public class SymbolManager {
      * @return
      */
     public AnchoredVector getLoad(AnchoredVector load) {
-        for (AnchoredVector toCheck : symbolicLoads) {
-            if (load.getAnchor() == toCheck.getAnchor() &&
-                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-                return toCheck;
-            }
+        AnchoredVector directLoad = getLoadDirect(load);
+        if (directLoad != null) {
+            return directLoad;
         }
 
         // okay, here we try to check for the 2fm case

@@ -105,7 +105,7 @@ public class FBDChecker {
                         Load given = (Load) obj;
 
                         // attempt to find an equivalent that might have been stored in the symbol manager.
-                        AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoad(given.getAnchoredVector());
+                        AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoadDirect(given.getAnchoredVector());
                         if (symbolEquivalent != null) {
                             givenLoads.add(symbolEquivalent);
                         } else {

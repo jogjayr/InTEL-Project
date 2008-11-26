@@ -149,7 +149,7 @@ public class BicycleExercise extends FrameExercise {
         schematic.add(angle8);
 
         Force seatWeight = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(500));
-        seatWeight.setName("Seat");
+        seatWeight.setName("Seat Y");
         jointAtC.addObject(seatWeight);
 
         Force pedalWeight = new Force(E, Vector3bd.UNIT_Y.negate(), new BigDecimal(150));
@@ -157,7 +157,7 @@ public class BicycleExercise extends FrameExercise {
         jointAtE.addObject(pedalWeight);
 
         Force wedgeForce = new Force(C, Vector3bd.UNIT_X, new BigDecimal(17.3205));
-        wedgeForce.setName("Seat Horizontal");
+        wedgeForce.setName("Seat X");
         jointAtC.addObject(wedgeForce);
 
         Vector3bd handleForceDirection = new Vector3bd(
