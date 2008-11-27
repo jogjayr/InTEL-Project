@@ -157,7 +157,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td><td>");
 
         String tensionOrCompression;
-        if (connector.getDirection().equals(reaction.getVectorValue())) {
+        if (connector.inTension()) {
             tensionOrCompression = "tension";
         } else {
             tensionOrCompression = "compression";

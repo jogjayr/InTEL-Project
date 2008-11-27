@@ -541,7 +541,7 @@ public class FBDChecker {
             case shouldNotBeSymbol:
                 logInfo("check: force should not be symbol: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_symbol", candidate.getUnit().toString(), candidate.getAnchor().getLabelText(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_symbol", candidate.getUnit().toString(), candidate.getSymbolName(), candidate.getAnchor().getName());
                 return;
             case wrongNumericValue:
                 logInfo("check: numeric values do not match: " + candidate);

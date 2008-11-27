@@ -23,10 +23,10 @@ import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
-import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import java.math.BigDecimal;
 
 /**
@@ -43,11 +43,14 @@ public class BicycleExercise extends FrameExercise {
         setName("Bicycle");
 
         setDescription(
-                "Someone pushing against a wedge on a bike!");
+                "This is a model of a bicycle. The body FBGA is a beam, but the " +
+                "rest of the members are bars. You can select the joints D, C, and E by clicking on them. " +
+                "Try solving the frame and the beam first, and then use the method of joints to complete the exercise.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
         Unit.setDisplayScale(Unit.distance, new BigDecimal("10"));
+        Unit.setPrecision(Unit.distance, 2);
 
         getDisplayConstants().setDrawScale(.5f);
         getDisplayConstants().setForceLabelDistance(1);
@@ -87,9 +90,16 @@ public class BicycleExercise extends FrameExercise {
 
         DistanceMeasurement distance1 = new DistanceMeasurement(F, A);
         distance1.setName("Measure FA");
-        distance1.createDefaultSchematicRepresentation(0.5f);
+        distance1.createDefaultSchematicRepresentation(1.0f);
         distance1.forceVertical();
         schematic.add(distance1);
+
+        DistanceMeasurement distance1a = new DistanceMeasurement(F, B);
+        distance1a.setName("Measure FB");
+        distance1a.createDefaultSchematicRepresentation(4.5f);
+        distance1a.forceVertical();
+        schematic.add(distance1a);
+
 
         DistanceMeasurement distance2 = new DistanceMeasurement(A, E);
         distance2.setName("Measure AE");
@@ -112,6 +122,12 @@ public class BicycleExercise extends FrameExercise {
         distance5.createDefaultSchematicRepresentation(0.5f);
         distance5.forceHorizontal();
         schematic.add(distance5);
+
+        DistanceMeasurement distance6 = new DistanceMeasurement(F, G);
+        distance6.setName("Measure AG");
+        distance6.createDefaultSchematicRepresentation(1.0f);
+        distance6.forceHorizontal();
+        schematic.add(distance6);
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(B, G, E);
         angle1.setName("Angle GBE");
@@ -297,14 +313,6 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        /*rep = modelNode.extractElement(CE_seatPoleBar, "VisualSceneNode/model/bike/seat");
-        CE_seatPoleBar.addRepresentation(rep);
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
-        rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);*/
-
         rep = modelNode.extractElement(CB_topBar, "VisualSceneNode/model/bike/bar_BC");
         CB_topBar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
@@ -321,34 +329,18 @@ public class BicycleExercise extends FrameExercise {
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
 
-        /*rep = modelNode.extractElement(E, "VisualSceneNode/model/bike/chainAndPedals/pedals");
-        E.addRepresentation(rep);
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
-        rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);
-
-        rep = modelNode.extractElement(C, "VisualSceneNode/model/bike/seat");
-        C.addRepresentation(rep);
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
-        rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);
-
-        rep = modelNode.extractElement(D, "VisualSceneNode/model/bike/chainAndPedals/backWheelGear");
-        D.addRepresentation(rep);
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-        rep.setModelRotation(matrix);
-        rep.setLocalScale(scale);
-        rep.setModelOffset(modelTranslation);*/
-        
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
+
+        //addTask(new CompleteFBDTask("Solve FBGA", new BodySubset(FA_handlebarBeam)));
+        addTask(new Solve2FMTask("Solve BE", BE_middleBar, c2fm_BE_B));
+        addTask(new Solve2FMTask("Solve CB", CB_topBar, c2fm_CB_B));
+        addTask(new Solve2FMTask("Solve CD", CD_backBar, c2fm_CD_C));
+        addTask(new Solve2FMTask("Solve CE", CE_seatPoleBar, c2fm_CE_C));
+        addTask(new Solve2FMTask("Solve DE", DE_bottomBar, c2fm_DE_D));
+        addTask(new Solve2FMTask("Solve GE", GE_frontBar, c2fm_GE_E));
     }
 }

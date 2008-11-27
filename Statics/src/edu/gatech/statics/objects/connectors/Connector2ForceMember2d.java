@@ -50,6 +50,19 @@ public class Connector2ForceMember2d extends Connector {
     }
 
     /**
+     * When the connector is solved, a return value of true indicates that the 2-force member
+     * is in tension. A false value indicates that the member is in compression.
+     * @return
+     */
+    public boolean inTension() {
+        if(!isSolved()) {
+            throw new IllegalStateException("Attempting to check if a two-force member is in tension when it has not yet been solved!");
+        }
+        Vector solvedReaction = getReactions(getMember()).get(0);
+        return solvedReaction.getVectorValue().equals(getDirection());
+    }
+
+    /**
      * attach is overridden to automatically make sure that the 2fm is the first body
      * @param body1
      * @param body2
