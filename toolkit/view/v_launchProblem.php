@@ -63,13 +63,15 @@ $problemName = $problem['name'];
 $assignments = getAssignments($uuid);
 $thisAssignment = null;
 foreach($assignments as $assignment) {
-    if($assignment['id'] == $assignmentId){
-        $thisAssignment = $assignment;
+    if(isset($assignment['id'])){
+        if($assignment['id'] == $assignmentId){
+            $thisAssignment = $assignment;
+        }
     }
 }
 
 $state = "";
-if($thisAssignment != null) {
+if($thisAssignment != null && isset($thisAssignment['state'])) {
     $state = $thisAssignment['state'];
 }
 
