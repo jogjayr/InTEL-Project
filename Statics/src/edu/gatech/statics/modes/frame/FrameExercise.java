@@ -5,7 +5,10 @@
 package edu.gatech.statics.modes.frame;
 
 import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.modes.select.SelectAction;
 import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.modes.select.SelectState;
+import edu.gatech.statics.modes.select.SelectState.Builder;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
@@ -56,6 +59,30 @@ public class FrameExercise extends OrdinaryExercise {
             @Override
             public SelectionFilter getSelectionFilter() {
                 return selectDiagramFilter;
+            }
+
+            /**
+             * Returns a special select action for frame problems.
+             * This prevents the user from selecting multiple bodies. If the are
+             * to select multiple bodies, we force them to use the "Select All" button.
+             */
+            @Override
+            protected SelectAction createSelectAction(SimulationObject obj) {
+                return new SelectAction(obj) {
+
+                    @Override
+                    public SelectState performAction(SelectState oldState) {
+                        Builder builder = oldState.getBuilder();
+
+                        boolean removed = builder.getCurrentlySelected().remove(getClicked());
+                        builder.clear();
+                        if (!removed) {
+                            builder.toggle(getClicked());
+                        }
+
+                        return builder.build();
+                    }
+                };
             }
         };
 

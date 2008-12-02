@@ -33,7 +33,8 @@ public class FrameSelectModePanel extends SelectModePanel {
             if (body instanceof Background) {
                 continue;
             }
-            getDiagram().onClick(body);
+            getDiagram().selectAll();
+            //getDiagram().onClick(body);
         }
     }
 }

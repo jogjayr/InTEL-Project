@@ -26,6 +26,10 @@ public class SelectAction implements DiagramAction<SelectState> {
         this.clicked = clicked;
     }
 
+    protected SimulationObject getClicked() {
+        return clicked;
+    }
+
     public SelectState performAction(SelectState oldState) {
         Builder builder = oldState.getBuilder();
 

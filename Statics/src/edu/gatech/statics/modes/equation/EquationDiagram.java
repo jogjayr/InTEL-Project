@@ -189,6 +189,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 //Vector v = vObj.getVector();
                 if (vObj.isSymbol() && !vObj.getVector().isKnown()) {
                     // v is a symbolic force, but is not yet solved.
+                    if(values.get(vObj.getVector().getQuantity()) == null)
+                        continue;
+
                     float value = values.get(vObj.getVector().getQuantity());
                     //v.setValue(v.getValueNormalized().mult( value ));
                     //vObj.getAnchoredVector().setDiagramValue(new BigDecimal(value));

@@ -103,6 +103,22 @@ public class SelectDiagram extends Diagram<SelectState> {
         return new SelectAction(obj);
     }
 
+    protected SelectAllAction createSelectAllAction(List<SimulationObject> objects) {
+        return new SelectAllAction(objects);
+    }
+
+    public void selectAll() {
+        List<SimulationObject> objects = new ArrayList<SimulationObject>();
+        for(Body body : allBodies()) {
+            if(body instanceof Background)
+                continue;
+            objects.add(body);
+        }
+
+        SelectAllAction selectAll = createSelectAllAction(objects);
+        performAction(selectAll);
+    }
+
     @Override
     public void onClick(SimulationObject clicked) {
 
