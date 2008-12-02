@@ -9,6 +9,7 @@ import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.util.DiagramListener;
+import java.util.List;
 
 /**
  *
@@ -17,7 +18,8 @@ import edu.gatech.statics.util.DiagramListener;
 abstract public class SubDiagram<StateType extends DiagramState> extends Diagram<StateType> {
 
     private BodySubset bodies;
-    private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
+    //private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
+    private List<Body> currentDiagram = Exercise.getExercise().getSchematic().allBodies();
     private int totalBodies;
 
     public BodySubset getBodySubset() {
@@ -37,7 +39,7 @@ abstract public class SubDiagram<StateType extends DiagramState> extends Diagram
         assert !bodies.getBodies().isEmpty() : "Bodies cannot be empty in constructing FBD!";
 
         //determine if all bodies have been selected
-        for (Body body : currentDiagram.allBodies()) {
+        for (Body body : currentDiagram) {
             if (body instanceof Background) {
                 continue;
             }

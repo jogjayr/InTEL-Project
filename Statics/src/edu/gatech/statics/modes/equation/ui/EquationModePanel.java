@@ -328,7 +328,12 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
 
         EquationDiagram diagram = (EquationDiagram) getDiagram();
-        getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
+        
+        if (diagram.getBodySubset().getSpecialName() != null) {
+            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
+        } else {
+            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
+        }
 
         for (String mathName : diagram.getWorksheet().getEquationNames()) {
             EquationMath math = diagram.getWorksheet().getMath(mathName);

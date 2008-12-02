@@ -14,6 +14,7 @@ import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
@@ -109,7 +110,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
         //if the values are equal then the user has selected the entire frame
         //Needs to be the count rather than the list because the lists can become incongruent
         int totalBodies = 0;
-        for (Body body : getDiagram().allBodies()) {
+        for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
             if (body instanceof Background) {
                 continue;
             }
