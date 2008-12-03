@@ -135,9 +135,9 @@ public class PurseExercise extends FrameExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
-        A = new Point("A", "" + 0, "-10", "0");
-        B = new Point("B", "" + 0, "-10", "0");
-        C = new Point("C", "18", "-10", "0");
+        A = new Point("A", "" + 0, "-16", "0");
+        B = new Point("B", "" + 0, "-16", "0");
+        C = new Point("C", "18", "-16", "0");
         D = new Point("D", "18", "" + (0 + 6), "0");
         E = new Point("E", "18", "" + (0 + 6), "0");
 
@@ -159,7 +159,7 @@ public class PurseExercise extends FrameExercise {
         jointC.setName("pin C");
         jointE.setName("pin E");
 
-        G = new Point("G", "" + (0 + 3), "-10", "0");
+        G = new Point("G", "" + (0 + 3), "-16", "0");
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.setName("measure AC");
         distance1.createDefaultSchematicRepresentation(6f);
