@@ -170,9 +170,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public void performSolve(Map<Quantity, Float> values) {
         Logger.getLogger("Statics").info("Performing the solve (updating other diagrams with the solution)");
         
-        // first, lock the diagram:
+        // first, get the builder
+        // we do not lock the diagram here.
         EquationState.Builder eqBuilder = new EquationState.Builder(getCurrentState());
-        eqBuilder.setLocked(true);
+        //eqBuilder.setLocked(true);
 
         FBDState.Builder fbdBuilder = fbd.getCurrentState().getBuilder();
 
@@ -566,7 +567,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             }
         }
 
-        if (reactions.isEmpty()) {
+        if (reactions.isEmpty() || reactions.size() != connector.getReactions().size()) {
             return;
         }
 

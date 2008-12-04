@@ -105,12 +105,22 @@ public class FBDChecker {
                         Load given = (Load) obj;
 
                         // attempt to find an equivalent that might have been stored in the symbol manager.
-                        AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoadDirect(given.getAnchoredVector());
-                        if (symbolEquivalent != null) {
-                            givenLoads.add(symbolEquivalent);
+                        // only do this if the load is symbolic.
+                        if (given.isSymbol()) {
+                            AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoadDirect(given.getAnchoredVector());
+
+                            if (symbolEquivalent != null) {
+                                // treat the given as a symbolic load.
+                                givenLoads.add(symbolEquivalent);
+                            } else {
+                                // the load is symbolic but has not yet been put in the symbol manager
+                                givenLoads.add(given.getAnchoredVector());
+                            }
                         } else {
+                            // the load is not symbolic, so we just treat it normally.
                             givenLoads.add(given.getAnchoredVector());
                         }
+
                     }
                 }
             }

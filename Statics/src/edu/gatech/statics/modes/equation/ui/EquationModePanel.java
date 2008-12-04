@@ -224,7 +224,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
             if (numberSolved >= getNumberUnknowns()) {
                 //if (allSolved) {
-                performSolve();
+                performSolve(true);
             }
         }
     }
@@ -256,18 +256,16 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         return symbols.size();
     }
 
-    private void performSolve() {
+    private void performSolve(boolean updateDiagram) {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
-        boolean firstTime = !diagram.getCurrentState().isLocked();
+        //boolean firstTime = !diagram.getCurrentState().isLocked();
         //!diagram.getWorksheet().isSolved();
         Logger.getLogger("Statics").info("Attempting to solve the equations...");
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 
-            //this might be broken now because it can get in on non first time
-            //should the equation set had been initially unsolvable
-            if (firstTime) {
-                // this is our first time solving the system.
+            // attempt to update the diagram if the flag is passed
+            if(updateDiagram) {
                 diagram.performSolve(solution);
             }
 
@@ -341,7 +339,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
 
         stateChanged();
-        performSolve();
+        performSolve(false);
 
         refreshRows();
         invalidate();
