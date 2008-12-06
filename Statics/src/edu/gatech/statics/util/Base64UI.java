@@ -5,11 +5,11 @@
 package edu.gatech.statics.util;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,22 +48,29 @@ public class Base64UI extends JFrame {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.add(splitPane, BorderLayout.CENTER);
 
-        JButton button = new JButton("Decode");
-        button.addActionListener(new ActionListener() {
+        JButton decodeButton = new JButton("Decode");
+        decodeButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 decode();
             }
         });
+        JButton encodeButton = new JButton("Encode");
+        encodeButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                encode();
+            }
+        });
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(button);
+        buttonPanel.add(decodeButton);
+        buttonPanel.add(encodeButton);
         contentPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         getContentPane().add(contentPanel);
     }
 
     private void decode() {
-
         String text = sourceArea.getText();
         byte[] compressedData = Base64.decode(text);
 
@@ -78,11 +85,34 @@ public class Base64UI extends JFrame {
                 zout.write(partialData, 0, dataDecompressed);
             }
         } catch (DataFormatException ex) {
-            throw new IllegalArgumentException("State data did not include a valid state ");
+            throw new IllegalArgumentException("State data did not include a valid state");
         }
         byte[] xmlData = zout.toByteArray();
 
-
         targetArea.setText(new String(xmlData));
+    }
+
+    private void encode() {
+        String text = sourceArea.getText();
+
+        byte[] xmlData = text.getBytes();
+
+        // Zip it
+        Deflater deflater = new Deflater();
+        deflater.setInput(xmlData);
+        deflater.finish();
+
+        ByteArrayOutputStream zout = new ByteArrayOutputStream();
+        byte[] partialData = new byte[1024];
+        int dataCompressed;
+        while ((dataCompressed = deflater.deflate(partialData)) != 0) {
+            zout.write(partialData, 0, dataCompressed);
+        }
+
+        byte[] compressedData = zout.toByteArray();
+        deflater.deflate(compressedData);
+
+        String encodedData = Base64.encodeBytes(compressedData);
+        targetArea.setText(encodedData);
     }
 }

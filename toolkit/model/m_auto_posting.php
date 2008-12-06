@@ -44,14 +44,21 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
   $preHash = "$userId:$assignmentId:$exerciseStatus:$stateData";
   $verifierKeyCheck = substr(md5($preHash),0,8);
 
+  //echo "checking verifier...\n";
+
   if($verifierKeyCheck != $verifierKey) {
     // the verifier test failed!
     return false;
   }
 
+  //echo "verifier ok!\n";
+
   // now check to see if we are updating, or inserting
   $query = "SELECT id, submission_status_id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
   $result = aquery($query, $db);
+
+  //echo "checking if we have a result:\n";
+  //echo "error: "+mysql_error();
   
   if(sizeof($result) == 0) {
     // new entry, we insert
@@ -60,6 +67,9 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
       VALUES ({$problemId}, {$assignmentId}, {$exerciseStatus}, '{$stateData}', {$timestamp}, {$timestamp})";
     query($query, $db);
 
+    echo "inserting new record\n";
+    //echo "error: " +mysql_error();
+
   } else {
     // update
     $id = $result[0]['id'];
@@ -67,6 +77,8 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
     $previousStatus = $result[0]['submission_status_id'];
     if($previousStatus > $exerciseStatus) {
       // do not overwrite their old successful score
+      echo "exercise has been previously saved at a higher point of progress\n";
+      echo "no update\n";
       return true;
     }
     
@@ -74,6 +86,9 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
     "UPDATE app_user_assignment SET
       submission_status_id={$exerciseStatus}, state='$stateData' WHERE id=$id";
     query($query, $db);
+
+    echo "updating record\n";
+    //echo "error: " +mysql_error();
   }
   
   return true;

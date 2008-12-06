@@ -356,7 +356,7 @@ public class FBDChecker {
                     // this AnchoredVector is new, so it requires a name check.
 
                     // let's find a AnchoredVector that seems to match the expected reaction.
-                    AnchoredVector candidate = null;
+                    /*AnchoredVector candidate = null;
                     for (AnchoredVector possibleCandidate : userAnchoredVectorsAtConnector) {
                         // we know that these all are at the right anchor, so only test direction.
                         // direction may also be negated, since these are new symbols.
@@ -364,6 +364,20 @@ public class FBDChecker {
                                 possibleCandidate.getVectorValue().equals(reaction.getVectorValue().negate())) {
                             candidate = possibleCandidate;
                         }
+                    }*/
+
+                    Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(
+                            userAnchoredVectorsAtConnector, reaction);
+                    AnchoredVector candidate = result.getLeft();
+
+                    // this AnchoredVector has been solved for already. Now we can check against it.
+                    if (result.getRight() == AnchoredVectorCheckResult.passed) {
+                        // check is OK, we can remove the AnchoredVector from our addedAnchoredVectors.
+                        //addedLoads.remove(candidate);
+                        // do nothing
+                    } else {
+                        complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                        return false;
                     }
 
                     // candidate should not be null at this point since the main test passed.
