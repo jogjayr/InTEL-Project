@@ -877,7 +877,15 @@ public class FBDChecker {
                 // candidate is not symbolic, so complain
                 return AnchoredVectorCheckResult.shouldNotBeNumeric;
             }
-            if (!candidate.getSymbolName().equalsIgnoreCase(target.getSymbolName())) {
+
+            if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+                // pointing the wrong way
+                return AnchoredVectorCheckResult.wrongDirection;
+            }
+
+            // candidate has the wrong symbol if its symbol name does not match the symbol name of target
+            // the symbol for target also not be empty
+            if (!candidate.getSymbolName().equalsIgnoreCase(target.getSymbolName()) && !"".equals(target.getSymbolName())) {
                 // candidate has the wrong symbol name
                 return AnchoredVectorCheckResult.wrongSymbol;
             }

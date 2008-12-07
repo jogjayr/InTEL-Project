@@ -66,8 +66,11 @@ public class Vector implements Quantified {
     }
 
     public Vector negate() {
-        Vector r = new Vector(getUnit(), value.negate(), magnitude.getDiagramValue());
+        Vector r = new Vector(this);
+        r.setVectorValue(r.getVectorValue().negate());
+        /*Vector r = new Vector(getUnit(), value.negate(), magnitude.getDiagramValue());
         r.setKnown(isKnown());
+        r.setSymbol(symbolName);*/
         return r;
     }
 
