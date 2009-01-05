@@ -142,6 +142,21 @@ function isAssignmentOwner($uuid, $assignmentId){
 	}
 }
 
+function getClasses(){
+  //retrieves all active classes
+  
+  global $db;
+  
+  $query = "SELECT *  
+  FROM app_class 
+  WHERE is_active=1 
+  ORDER BY description DESC";
+
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
 function isClassOwner($uuid, $classId){
   //verifies that user owns this assignment
   
@@ -164,16 +179,12 @@ function isClassOwner($uuid, $classId){
 	}
 }
 
-function getClasses(){
-  //retrieves all active classes
+function getProblems(){
+  //retrieves all active status entries
   
   global $db;
   
-  $query = "SELECT *  
-  FROM app_class 
-  WHERE is_active=1 
-  ORDER BY description DESC";
-
+  $query = "SELECT * FROM app_problem WHERE is_active=1";
   $results = aquery($query, $db);
 	
 	return $results;
@@ -250,6 +261,17 @@ function addClass($ownerId, $description){
 	query($query2, $db);
 
   return true;
+}
+
+function getStatus(){
+  //retrieves all active status entries
+  
+  global $db;
+  
+  $query = "SELECT * FROM app_submission_status WHERE is_active=1";
+  $results = aquery($query, $db);
+	
+	return $results;
 }
 
 function getSubmissions(){
@@ -340,8 +362,6 @@ function getAllProblems(){
   
   $query = "SELECT * FROM app_problem WHERE is_active=1";
   $results = aquery($query, $db);
-  
-  $results = aquery($query, $db);
 	
 	return $results;
 }
@@ -420,6 +440,17 @@ function getUsersbyClass($classId){
   AND class_id={$classId}
   ORDER BY user_id DESC";
 
+  $results = aquery($query, $db);
+	
+	return $results;
+}
+
+function getStatus(){
+  //retrieves all active status entries
+  
+  global $db;
+  
+  $query = "SELECT * FROM app_submission_status WHERE is_active=1";
   $results = aquery($query, $db);
 	
 	return $results;
