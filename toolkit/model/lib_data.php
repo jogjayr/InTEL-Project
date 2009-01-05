@@ -179,17 +179,6 @@ function isClassOwner($uuid, $classId){
 	}
 }
 
-function getProblems(){
-  //retrieves all active status entries
-  
-  global $db;
-  
-  $query = "SELECT * FROM app_problem WHERE is_active=1";
-  $results = aquery($query, $db);
-	
-	return $results;
-}
-
 
 function getClassByOwner($uuid){
   //retrieves classes owned by user
@@ -445,14 +434,4 @@ function getUsersbyClass($classId){
 	return $results;
 }
 
-function getStatus(){
-  //retrieves all active status entries
-  
-  global $db;
-  
-  $query = "SELECT * FROM app_submission_status WHERE is_active=1";
-  $results = aquery($query, $db);
-	
-	return $results;
-}
 ?>

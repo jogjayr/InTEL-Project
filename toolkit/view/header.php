@@ -8,7 +8,8 @@
     $title = 'My Assignments';
   }
   //compact nav test for launch app window
-  $navId = 'main_nav';
+  //$navId = 'main_nav'; //change this to get a side bar when the app is not running
+  $navId = 'compact_nav';
   if(isset($type)){
     if ($type = 'compact'){
       $navId = 'compact_nav';

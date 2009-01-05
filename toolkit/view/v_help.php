@@ -2,7 +2,7 @@
 	$title = 'Help';
 	require_once('header.php'); 
 ?>
-<div id="content_type">
+<div id="content_text">
 <p>If you are having trouble accessing the system please contact <a href='mailto:dupton3@gatech.edu'>InTEL support</a>.
 </p>
 <p>
