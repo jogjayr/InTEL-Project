@@ -107,7 +107,7 @@ public class Worksheet {
                         }
                     }
                 }
-                
+
                 // increment our row count.
                 row++;
             }
@@ -118,13 +118,21 @@ public class Worksheet {
             if (!equationSystem.isSolvable()) {
                 solution = null;
             } else {
-                solved = true;
                 //solution = equationSystem.solve();
                 Map<String, Float> nameSolution = equationSystem.solve();
-                solution = new HashMap<Quantity, Float>();
 
-                for (Map.Entry<String, Float> entry : nameSolution.entrySet()) {
-                    solution.put(vectorNames.get(entry.getKey()), entry.getValue());
+                if (nameSolution.size() < diagram.getNumberUnknowns()) {
+                    // if this is the case, then the solution is incomplete. The user may have been able
+                    // to solve for one or two terms, but not all the unknowns. To prevent problems
+                    // with partial solutions, we reject a solution in this case, even if it could be solved
+                    return null;
+                } else {
+                    // if we get here, then all the unknowns are solved for. 
+                    solved = true;
+                    solution = new HashMap<Quantity, Float>();
+                    for (Map.Entry<String, Float> entry : nameSolution.entrySet()) {
+                        solution.put(vectorNames.get(entry.getKey()), entry.getValue());
+                    }
                 }
             }
         }

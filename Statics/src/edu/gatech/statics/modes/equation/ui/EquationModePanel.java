@@ -169,20 +169,20 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             setCheckIcon(data.equationBar);
         }
 
-        if(getDiagram().getBodySubset().getBodies().size() == 1) {
+        if (getDiagram().getBodySubset().getBodies().size() == 1) {
             for (Body b : getDiagram().getBodySubset().getBodies()) {
                 if (b instanceof TwoForceMember) {
 //                    getDiagram().equationSolved();
-                    
+
                     LockEquation lockEquationAction = new LockEquation(math.getName(), true);
                     getDiagram().performAction(lockEquationAction);
-                    
+
                     data.equationBar.setLocked();
                     setCheckIcon(data.equationBar);
                 }
             }
         }
-        
+
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
@@ -222,38 +222,11 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 }
             }
 
-            if (numberSolved >= getNumberUnknowns()) {
+            if (numberSolved >= getDiagram().getNumberUnknowns()) {
                 //if (allSolved) {
                 performSolve(true);
             }
         }
-    }
-
-    /**
-     * find the number of unknowns for use in determining whether the user
-     * has solved enough equations
-     * @return
-     */
-    private int getNumberUnknowns() {
-        EquationDiagram diagram = (EquationDiagram) getDiagram();
-        List<String> symbols = new ArrayList<String>();
-        for (SimulationObject obj : diagram.allObjects()) {
-            Quantified q = null;
-
-            if (obj instanceof Load) {
-                q = ((Load) obj).getVector();
-            } else if (obj instanceof Quantified) {
-                q = (Quantified) obj;
-            }
-
-            if (q != null && q.isSymbol() && !q.isKnown()) {
-                String symbol = q.getSymbolName();
-                if (!symbols.contains(symbol)) {
-                    symbols.add(symbol);
-                }
-            }
-        }
-        return symbols.size();
     }
 
     private void performSolve(boolean updateDiagram) {
@@ -265,7 +238,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         if (solution != null) {
 
             // attempt to update the diagram if the flag is passed
-            if(updateDiagram) {
+            if (updateDiagram) {
                 diagram.performSolve(solution);
             }
 
@@ -326,7 +299,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
 
         EquationDiagram diagram = (EquationDiagram) getDiagram();
-        
+
         if (diagram.getBodySubset().getSpecialName() != null) {
             getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
         } else {

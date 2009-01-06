@@ -21,6 +21,7 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
@@ -310,6 +311,32 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         } else {
             highlightVector(load.getAnchoredVector());
         }
+    }
+
+    /**
+     * find the number of unknowns for use in determining whether the user
+     * has solved enough equations
+     * @return
+     */
+    public int getNumberUnknowns() {
+        List<String> symbols = new ArrayList<String>();
+        for (SimulationObject obj : this.allObjects()) {
+            Quantified q = null;
+
+            if (obj instanceof Load) {
+                q = ((Load) obj).getVector();
+            } else if (obj instanceof Quantified) {
+                q = (Quantified) obj;
+            }
+
+            if (q != null && q.isSymbol() && !q.isKnown()) {
+                String symbol = q.getSymbolName();
+                if (!symbols.contains(symbol)) {
+                    symbols.add(symbol);
+                }
+            }
+        }
+        return symbols.size();
     }
 
     @Override
