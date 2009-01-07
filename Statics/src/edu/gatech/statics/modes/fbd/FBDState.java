@@ -32,7 +32,13 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
     }
 
     private FBDState(Builder builder) {
-        this.addedLoads = Collections.unmodifiableList(builder.addedLoads);
+        //this.addedLoads = Collections.unmodifiableList(builder.addedLoads);
+        List<AnchoredVector> _addedLoads = new ArrayList<AnchoredVector>();
+        for (AnchoredVector load : builder.addedLoads) {
+            _addedLoads.add(load.getUnmodifiableAnchoredVector());
+        }
+        this.addedLoads = Collections.unmodifiableList(_addedLoads);
+
         this.solved = builder.solved;
     }
 

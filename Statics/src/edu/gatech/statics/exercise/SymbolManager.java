@@ -5,13 +5,13 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,18 +42,35 @@ public class SymbolManager {
      * unexpected consequences.
      * @param quantified
      */
-    public void addSymbol(Quantified quantified) {
-        if (quantified.isSymbol()) {
-            if (!symbols.contains(quantified.getSymbolName())) {
-                symbols.add(quantified.getSymbolName());
-                if (quantified instanceof AnchoredVector) {
-                    //symbolicLoads.add(((AnchoredVector) quantified).clone());
-                    symbolicLoads.add(new AnchoredVector((AnchoredVector) quantified));
+    public void addSymbol(AnchoredVector load) {
+        if (load.isSymbol()) {
+            String name = load.getSymbolName();
+
+            // remove the old load
+            if (symbols.contains(name)) {
+                symbols.remove(name);
+                AnchoredVector old = null;
+                for (AnchoredVector test : symbolicLoads) {
+                    if (test.getSymbolName().equals(name)) {
+                        old = test;
+                    }
                 }
+                symbolicLoads.remove(old);
             }
+
+            Logger.getLogger("Statics").info("Adding to SymbolManager: "+load);
+
+            // add the new load
+            symbols.add(load.getSymbolName());
+            //if (load instanceof AnchoredVector) {
+            //symbolicLoads.add(((AnchoredVector) quantified).clone());
+            // make a defensive copy
+            symbolicLoads.add(new AnchoredVector((AnchoredVector) load));
+        //}
+
         } else {
             throw new UnsupportedOperationException(
-                    "Cannot add a symbol to the symbol manager for the non-symbolic quantified object \"" + quantified + "\"");
+                    "Cannot add a symbol to the symbol manager for the non-symbolic quantified object \"" + load + "\"");
         }
     }
 
@@ -68,7 +85,9 @@ public class SymbolManager {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     (load.getVectorValue().equals(toCheck.getVectorValue()) ||
                     (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-                return toCheck;
+                // return defensive copy
+                //return new AnchoredVector(toCheck);
+                return toCheck.getUnmodifiableAnchoredVector();
             }
         }
         return null;
@@ -118,7 +137,9 @@ public class SymbolManager {
                             //&&
                             //(load.getVectorValue().equals(toCheck.getVectorValue()) ||
                             //(load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
-                            return toCheck;
+                            // return defensive copy
+                            //return new AnchoredVector(toCheck);
+                            return toCheck.getUnmodifiableAnchoredVector();
                         }
                     }
                 }

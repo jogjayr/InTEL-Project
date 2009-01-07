@@ -358,12 +358,12 @@ public class FBDChecker {
                     // let's find a AnchoredVector that seems to match the expected reaction.
                     /*AnchoredVector candidate = null;
                     for (AnchoredVector possibleCandidate : userAnchoredVectorsAtConnector) {
-                        // we know that these all are at the right anchor, so only test direction.
-                        // direction may also be negated, since these are new symbols.
-                        if (possibleCandidate.getVectorValue().equals(reaction.getVectorValue()) ||
-                                possibleCandidate.getVectorValue().equals(reaction.getVectorValue().negate())) {
-                            candidate = possibleCandidate;
-                        }
+                    // we know that these all are at the right anchor, so only test direction.
+                    // direction may also be negated, since these are new symbols.
+                    if (possibleCandidate.getVectorValue().equals(reaction.getVectorValue()) ||
+                    possibleCandidate.getVectorValue().equals(reaction.getVectorValue().negate())) {
+                    candidate = possibleCandidate;
+                    }
                     }*/
 
                     Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(
@@ -792,9 +792,13 @@ public class FBDChecker {
         List<AnchoredVector> candidates = new ArrayList<AnchoredVector>();
         for (AnchoredVector AnchoredVector : searchPool) {
             // make sure types are the same
-            if (AnchoredVector.getClass() != target.getClass()) {
+            //if (AnchoredVector.getClass() != target.getClass()) {
+            //    continue;
+            //}
+            if (AnchoredVector.getVector().getUnit() != target.getVector().getUnit()) {
                 continue;
             }
+
             // make sure the anchor is the same
             if (!AnchoredVector.getAnchor().pointEquals(target.getAnchor())) {
                 continue;

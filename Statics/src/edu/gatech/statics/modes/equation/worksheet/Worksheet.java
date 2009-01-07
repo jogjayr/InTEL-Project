@@ -138,8 +138,12 @@ public class Worksheet {
         }
 
         // do a little check here for submission.
-        Logger.getLogger("Statics").info("system solved: PASSED!");
-        StaticsApplication.getApp().setAdviceKey("equation_system_solved");
+        if (solution == null) {
+            Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
+        } else {
+            Logger.getLogger("Statics").info("system solve: PASSED!");
+            StaticsApplication.getApp().setAdviceKey("equation_system_solved");
+        }
 
         return solution;
     }

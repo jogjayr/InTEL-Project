@@ -101,7 +101,7 @@ public class AnchoredVector implements Quantified {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof AnchoredVector)) {
             return false;
         }
         final AnchoredVector other = (AnchoredVector) obj;

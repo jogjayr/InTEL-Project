@@ -100,7 +100,7 @@ public class Vector implements Quantified {
 
     public Vector(Vector vector) {
         magnitude = new Quantity(vector.getQuantity());
-        this.value = vector.getVectorValue();
+        this.value = new Vector3bd(vector.getVectorValue());
     }
 
     @Override
@@ -108,7 +108,7 @@ public class Vector implements Quantified {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Vector)) {
             return false;
         }
         final Vector other = (Vector) obj;

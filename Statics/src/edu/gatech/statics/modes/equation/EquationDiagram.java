@@ -201,11 +201,17 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
                     AnchoredVector oldLoad = vObj.getAnchoredVector();
 
-                    // attempt to make sure the vector value is updated in the symbol manager
+                    // retrieve the load from the symbol manager
                     AnchoredVector newLoad = Exercise.getExercise().getSymbolManager().getLoad(oldLoad);
+
+                    // make a copy of it
+                    newLoad = new AnchoredVector(newLoad);
 
                     newLoad.setDiagramValue(new BigDecimal(value));
                     newLoad.setKnown(true);
+
+                    // update the load in the symbol manager
+                    Exercise.getExercise().getSymbolManager().addSymbol(newLoad);
 
                     // *****
                     // instead of trying to set the value on the load in the diagram, what we are doing
