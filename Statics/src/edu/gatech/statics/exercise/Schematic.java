@@ -143,6 +143,10 @@ public class Schematic {
         return objectsByName.get(name);
     }
 
+    public Map<String, SimulationObject> getAllObjectsByName() {
+        return Collections.unmodifiableMap(objectsByName);
+    }
+
     /**
      * This method fetches all the measurements that apply to the specified bodies
      * This is done by checking to see that at least two of the points of the measurement

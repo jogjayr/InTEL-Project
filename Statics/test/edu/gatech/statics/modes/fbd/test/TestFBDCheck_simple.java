@@ -20,8 +20,11 @@ import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Beam;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,16 +32,15 @@ import static org.junit.Assert.*;
  *
  * @author Calvin Ashmore
  */
-public class TestFBDChecker {
+public class TestFBDCheck_simple {
 
-    
     /**
      * The exercise creates a simple beam which has a force acting on it.
      * The resulting diagram is not in static equilibrium, but that does not make a difference
      * for the purposes of creating a free body diagram.
      * @return
      */
-    private Exercise createExercise() {
+    private Exercise createSimpleExercise() {
         return new FrameExercise() {
 
             @Override
@@ -67,29 +69,27 @@ public class TestFBDChecker {
      */
     @Test
     public void testSimpleFBDCorrect() {
-        // create the application and the exercise
-        new StaticsApplication();
-        Exercise exercise = createExercise();
+        // create the exercise
+        Exercise exercise = createSimpleExercise();
 
-        StaticsApplication.getApp().setExercise(exercise);
-        StaticsApplication.getApp().init();
+        // build the provider that will construct the state
+        FBDStateProvider provider = new FBDStateProvider() {
 
-        // retrieve relevant information from the schematic
-        Body body = (Body) exercise.getSchematic().getByName("test");
-        Point B = (Point) exercise.getSchematic().getByName("B");
+            public FBDState createState(Map<String, SimulationObject> objects, Builder builder) {
 
-        // Construct a FreeBodyDiagram. This is the diagram that we are going to test with the checker.
-        FreeBodyDiagram diagram = (FreeBodyDiagram) exercise.createNewDiagram(new BodySubset(body), FBDMode.instance.getDiagramType());
+                // get the objects needed for the state
+                Point B = (Point) objects.get("B");
 
-        // get the diagram state. We will modify this state to be the equivalent of what a user would add in working on the diagram.
-        FBDState diagramState = diagram.getCurrentState();
-        Builder stateBuilder = diagramState.getBuilder();
-        stateBuilder.addLoad(new AnchoredVector(B, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
-        diagram.pushState(stateBuilder.build());
+                // add the loads to the state
+                builder.addLoad(new AnchoredVector(B, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
+
+                // build the state
+                return builder.build();
+            }
+        };
 
         // perform the actual check
-        FBDChecker check = diagram.getChecker();
-        boolean result = check.checkDiagram();
+        boolean result = FBDCheckTestUtil.evaluateCheckOnFirstBody(exercise, provider);
 
         // make sure that the result is what it is supposed to be.
         // for each test, we will want to make sure that the reason for the result is appropriate
@@ -105,29 +105,27 @@ public class TestFBDChecker {
      */
     @Test
     public void testSimpleFBDIncorrect_forceWrongDirection() {
-        // create the application and the exercise
-        new StaticsApplication();
-        Exercise exercise = createExercise();
+        // create the exercise
+        Exercise exercise = createSimpleExercise();
 
-        StaticsApplication.getApp().setExercise(exercise);
-        StaticsApplication.getApp().init();
+        // build the provider that will construct the state
+        FBDStateProvider provider = new FBDStateProvider() {
 
-        // retrieve relevant information from the schematic
-        Body body = (Body) exercise.getSchematic().getByName("test");
-        Point B = (Point) exercise.getSchematic().getByName("B");
+            public FBDState createState(Map<String, SimulationObject> objects, Builder builder) {
 
-        // Construct a FreeBodyDiagram. This is the diagram that we are going to test with the checker.
-        FreeBodyDiagram diagram = (FreeBodyDiagram) exercise.createNewDiagram(new BodySubset(body), FBDMode.instance.getDiagramType());
+                // get the objects needed for the state
+                Point B = (Point) objects.get("B");
 
-        // get the diagram state. We will modify this state to be the equivalent of what a user would add in working on the diagram.
-        FBDState diagramState = diagram.getCurrentState();
-        Builder stateBuilder = diagramState.getBuilder();
-        stateBuilder.addLoad(new AnchoredVector(B, new Vector(Unit.force, new Vector3bd("[1,1,0]"), new BigDecimal(5))));
-        diagram.pushState(stateBuilder.build());
+                // add the loads to the state
+                builder.addLoad(new AnchoredVector(B, new Vector(Unit.force, new Vector3bd("[1,1,0]"), new BigDecimal(5))));
+
+                // build the state
+                return builder.build();
+            }
+        };
 
         // perform the actual check
-        FBDChecker check = diagram.getChecker();
-        boolean result = check.checkDiagram();
+        boolean result = FBDCheckTestUtil.evaluateCheckOnFirstBody(exercise, provider);
 
         // make sure that the result is what it is supposed to be.
         // for each test, we will want to make sure that the reason for the result is appropriate
