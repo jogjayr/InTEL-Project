@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.modes.fbd.tools;
 
 import com.jmex.bui.event.MouseListener;
@@ -32,46 +31,52 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
 
     //private boolean labelingEnabled = true;
     private Load myLoad;
-    
+
     public LabelManipulator(Load vectorObject) {
         myLoad = vectorObject;
-        
-        for(Representation rep : vectorObject.getRepresentation(RepresentationLayer.labels))
-            if(rep instanceof LabelRepresentation)
-                labelRepresentation = (LabelRepresentation)rep;
-        
+
+        for (Representation rep : vectorObject.getRepresentation(RepresentationLayer.labels)) {
+            if (rep instanceof LabelRepresentation) {
+                labelRepresentation = (LabelRepresentation) rep;
+            }
+        }
+
         clickListener = new LabelClickListener();
-        labelRepresentation.getLabel().addListener(clickListener);
+        if (labelRepresentation.getLabel() != null) {
+            labelRepresentation.getLabel().addListener(clickListener);
+        }
     }
-    
+
     protected void performSingleClick() {
-        if(InterfaceRoot.getInstance().hasMouse())
+        if (InterfaceRoot.getInstance().hasMouse()) {
             return;
-        
+        }
+
         StaticsApplication.getApp().getCurrentDiagram().onClick(myLoad);
     }
-    
+
     protected void performDoubleClick() {
-        if(InterfaceRoot.getInstance().hasMouse())
+        if (InterfaceRoot.getInstance().hasMouse()) {
             return;
-        
+        }
+
         StaticsApplication.getApp().getCurrentDiagram().onClick(null);
-        
+
         Diagram diagram = StaticsApplication.getApp().getCurrentDiagram();
-        if(diagram instanceof FreeBodyDiagram)
-            ((FreeBodyDiagram)diagram).onLabel(myLoad);
-        
+        if (diagram instanceof FreeBodyDiagram) {
+            ((FreeBodyDiagram) diagram).onLabel(myLoad);
+        }
+
     }
-    
+
     protected class LabelClickListener implements MouseListener {
-        
+
         protected static final int clickThreshold = 200;
         protected static final int doubleClickThreshold = 600;
-        
         long lastPress;
         long lastClick;
         boolean hasClicked;
-        
+
         protected void reset() {
             lastPress = 0;
             lastClick = 0;
@@ -83,8 +88,8 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
         }
 
         public void mouseReleased(com.jmex.bui.event.MouseEvent event) {
-            if(event.getWhen() - lastPress <= clickThreshold) {
-                if(hasClicked && event.getWhen() - lastClick <= doubleClickThreshold) {
+            if (event.getWhen() - lastPress <= clickThreshold) {
+                if (hasClicked && event.getWhen() - lastClick <= doubleClickThreshold) {
                     performDoubleClick();
                     reset();
                 } else {
@@ -97,7 +102,10 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
             }
         }
 
-        public void mouseEntered(com.jmex.bui.event.MouseEvent event) {}
-        public void mouseExited(com.jmex.bui.event.MouseEvent event) {}
+        public void mouseEntered(com.jmex.bui.event.MouseEvent event) {
+        }
+
+        public void mouseExited(com.jmex.bui.event.MouseEvent event) {
+        }
     }
 }

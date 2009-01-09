@@ -106,9 +106,13 @@ public abstract class Diagram<StateType extends DiagramState> {
      * that change display, UI, or other elements in response to state.
      */
     protected void stateChanged() {
-        ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
-        modePanel.stateChanged();
-        
+        if (InterfaceRoot.getInstance() != null) {
+            // we do not update the UI when testing, so perform a check to only
+            // update the UI if the UI exists.
+            ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
+            modePanel.stateChanged();
+        }
+
         StaticsApplication.getApp().stateChanged();
     }
 
@@ -195,6 +199,7 @@ public abstract class Diagram<StateType extends DiagramState> {
     }
     private List<SimulationObject> allObjects = new ArrayList<SimulationObject>();
     //private List<SimulationObject> userObjects = new ArrayList<SimulationObject>();
+
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
@@ -409,7 +414,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void activate() {
         Logger.getLogger("Statics").info("diagram activated (" + this + ")");
-        Logger.getLogger("Statics").info("  state is: "+getCurrentState().toString());
+        Logger.getLogger("Statics").info("  state is: " + getCurrentState().toString());
         //setSelectableFilterDefault();
         clearStateStack();
         invalidateNodes();

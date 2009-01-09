@@ -206,6 +206,12 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         relativeNode = new Node();
         attachChild(relativeNode);
 
+        if (DisplaySystem.getDisplaySystem().getRenderer() == null) {
+            // we have no display system. This case can occur in tests or other
+            // cases where we only want the logical system without the display.
+            return;
+        }
+
         materialState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
         materialState.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
         setRenderState(materialState);
@@ -288,6 +294,12 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
 
     private void updateMaterial() {
+
+        // this can occur when the application is run with no display
+        // this is an admittedly weak way of doing this, but it should work OK for now.
+        if (materialState == null) {
+            return;
+        }
 
         if (selected) {
             //materialState.setEmissive(selectEmissive);

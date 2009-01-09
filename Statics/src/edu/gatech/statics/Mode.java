@@ -63,9 +63,9 @@ public abstract class Mode {
      */
     public final void load(DiagramKey key) {
         // load the diagram
-        
+
         Diagram diagram = getDiagram(key);
-        if(diagram == null) {
+        if (diagram == null) {
             // create the diagram if it does not exist
             Exercise.getExercise().createNewDiagram(key, diagramType);
             diagram = getDiagram(key);
@@ -75,7 +75,9 @@ public abstract class Mode {
         preLoad(key);
         // loading the ModePanel occurs after the diagram.
         // the ModePanel may depend on the diagram for labeling, etc
-        InterfaceRoot.getInstance().activateModePanel(getModeName());
+        if (InterfaceRoot.getInstance() != null) {
+            InterfaceRoot.getInstance().activateModePanel(getModeName());
+        }
         postLoad(key);
     }
 

@@ -159,7 +159,9 @@ public class StaticsApplication {
             advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
         Logger.getLogger("Statics").info("Setting advice: " + advice);
-        iRoot.setAdvice(advice);
+        if (iRoot != null) {
+            iRoot.setAdvice(advice);
+        }
     }
 
     public void setAdvice(String advice) {
@@ -220,11 +222,11 @@ public class StaticsApplication {
         if (diagram instanceof SubDiagram) {
             Logger.getLogger("Statics").info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
         }
-        
-        if(diagram == null) {
+
+        if (diagram == null) {
             throw new IllegalArgumentException("Cannot give set the application to a null diagram!");
         }
-        
+
         if (currentDiagram != null) {
             if (currentDiagram.getInputHandler() != null) {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
@@ -240,7 +242,10 @@ public class StaticsApplication {
         }
 
         diagram.update();
-        iRoot.setDiagram(diagram);
+        
+        if (iRoot != null) {
+            iRoot.setDiagram(diagram);
+        }
     }
 
     public Diagram getCurrentDiagram() {
@@ -309,7 +314,7 @@ public class StaticsApplication {
                 // to our assignment post page
                 postAssignment.postState();
             }
-            
+
             stateChanged = false;
         }
     }
@@ -437,6 +442,34 @@ public class StaticsApplication {
         getExercise().initParameters();
         getExercise().initExercise();
 
+        // if the application is being run without display, such as in unit tests,
+        // then do not initialize the input
+        if (display != null) {
+            initInput();
+        }
+
+        // load exercise here
+        getExercise().loadExercise();
+        getExercise().applyParameters();
+
+        // initialize the exercise's specific interface configuration.
+        // do not do this if the interface has not been initialized, of course.
+        if (display != null) {
+            iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
+        }
+
+        // get the exercise ready to run.
+        getExercise().loadStartingMode();
+        getExercise().postLoadExercise();
+
+        Logger.getLogger("Statics").info("Finished application init");
+    }
+
+    /**
+     * This initializes all of the input. This creates the camera, interface root, the selector, and undo and redo handlers.
+     */
+    private void initInput() {
+
         input = new InputHandler();
 
         timer = Timer.getTimer();
@@ -485,18 +518,6 @@ public class StaticsApplication {
         input.addAction(undoRedoAction, "redo", KeyInput.KEY_Y, false);
 
         iRoot = new InterfaceRoot(timer, input, camera);
-
-        // load exercise here
-        getExercise().loadExercise();
-        //getExercise().lockSchematic();
-        getExercise().applyParameters();
-
-        iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
-        getExercise().loadStartingMode();
-
-        getExercise().postLoadExercise();
-        
-        Logger.getLogger("Statics").info("Finished application init");
     }
 
     public BRootNode getLabelNode() {

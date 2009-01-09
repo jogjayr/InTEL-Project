@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.objects.representations;
 
 import com.jme.math.Vector3f;
@@ -24,75 +23,86 @@ import edu.gatech.statics.ui.InterfaceRoot;
  * @author Calvin Ashmore
  */
 public class LabelRepresentation extends Representation {
-    
+
     private BWindow bWindow;
     private BLabel label;
-    
     private Vector3f offset = new Vector3f();
-    
+
     //public Text getText() {return text;}
-    public float getWidth() {return bWindow.getWidth();}
-    public float getHeight() {return bWindow.getHeight();}
-    
+    public float getWidth() {
+        return bWindow.getWidth();
+    }
+
+    public float getHeight() {
+        return bWindow.getHeight();
+    }
+
     public void setOffset(float xOffset, float yOffset) {
         offset = new Vector3f(xOffset, yOffset, 0);
     }
-    
-    public BLabel getLabel() {return label;}
-    
+
+    public BLabel getLabel() {
+        return label;
+    }
+
     public void addToInterface() {
         StaticsApplication.getApp().getLabelNode().addWindow(bWindow);
         bWindow.pack();
     }
-    
+
     public void removeFromInterface() {
         StaticsApplication.getApp().getLabelNode().removeWindow(bWindow);
     }
-    
+
     /** Creates a new instance of LabelRepresentation */
     public LabelRepresentation(SimulationObject target, String style) {
         super(target);
         setLayer(RepresentationLayer.labels);
-        
+
+        // the interface root may be null if the application is running without
+        // a display. Simply do not initialize the representation in this case.
+        if (InterfaceRoot.getInstance() == null) {
+            return;
+        }
+
         bWindow = new BWindow(
                 InterfaceRoot.getInstance().getStyle(),
                 //StaticsApplication.getApp().getBuiStyle(),
                 new BorderLayout());
-        
+
         label = new BLabel("");
         label.setText(target.getLabelText());
         //label.configureStyle(StaticsApplication.getApp().getBuiStyle());
         label.configureStyle(InterfaceRoot.getInstance().getStyle());
-        
+
         bWindow.setStyleClass(style);
         label.setStyleClass(style);
-        
+
         //label.addListener(new LabelClickListener());
-        
+
         bWindow.add(label, BorderLayout.CENTER);
-        
+
         setUseWorldScale(false);
-        
+
         setSynchronizeRotation(false);
         setSynchronizeTranslation(false);
-        
+
         updateRenderState();
         update();
     }
-    
+
     protected Vector3f getDisplayCenter() {
         return getTarget().getDisplayCenter();
     }
-    
     private Vector3f pos2d;
-    
     private String labelText = null;
+
     @Override
     public void update() {
-        
+
         String newLabelText = getTarget().getLabelText();
 
-        if(!newLabelText.equals(labelText)) {
+        if (!newLabelText.equals(labelText)) {
 
             labelText = newLabelText;
             label.setText(labelText);
@@ -100,11 +110,11 @@ public class LabelRepresentation extends Representation {
         }
 
         StaticsApplication app = StaticsApplication.getApp();
-        pos2d = app.getCamera().getScreenCoordinates( getDisplayCenter() );
-        pos2d.addLocal( -getWidth()/2, -getHeight()/2, 0 );
-        pos2d.addLocal( offset );
+        pos2d = app.getCamera().getScreenCoordinates(getDisplayCenter());
+        pos2d.addLocal(-getWidth() / 2, -getHeight() / 2, 0);
+        pos2d.addLocal(offset);
         pos2d.z = 0;
 
-        bWindow.setLocation((int)pos2d.x, (int)pos2d.y);
+        bWindow.setLocation((int) pos2d.x, (int) pos2d.y);
     }
 }
