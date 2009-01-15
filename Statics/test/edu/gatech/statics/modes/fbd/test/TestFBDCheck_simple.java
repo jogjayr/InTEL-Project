@@ -4,18 +4,13 @@
  */
 package edu.gatech.statics.modes.fbd.test;
 
-import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.modes.fbd.FBDChecker;
-import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FBDState.Builder;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Force;
@@ -23,7 +18,6 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Beam;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
