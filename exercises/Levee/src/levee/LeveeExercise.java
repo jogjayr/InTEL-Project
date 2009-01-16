@@ -72,9 +72,8 @@ public class LeveeExercise extends DistributedExercise {
         Beam levee = new Beam("Levee",A, B);
 
         
-        DistributedForce waterForce = new TriangularDistributedForce(levee, A, B,
+        DistributedForce waterForce = new TriangularDistributedForce("water", levee, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, new BigDecimal("748.8")));
-        waterForce.setName("water");
 
         levee.addObject(waterForce);
         

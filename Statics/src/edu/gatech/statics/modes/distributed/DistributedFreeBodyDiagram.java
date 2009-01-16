@@ -34,8 +34,10 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
     }
     private SelectionFilter filter = new SelectionFilter() {
 
+        private SelectionFilter superFilter = DistributedFreeBodyDiagram.super.getSelectionFilter();
+
         public boolean canSelect(SimulationObject obj) {
-            return DistributedFreeBodyDiagram.super.getSelectionFilter().canSelect(obj) || obj instanceof DistributedForce;
+            return superFilter.canSelect(obj) || obj instanceof DistributedForce;
         }
     };
 

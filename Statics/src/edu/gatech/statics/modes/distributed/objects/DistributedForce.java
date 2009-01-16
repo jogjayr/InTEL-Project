@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.distributed.objects;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
@@ -23,7 +24,7 @@ import java.math.BigDecimal;
  *
  * @author Calvin Ashmore
  */
-abstract public class DistributedForce extends SimulationObject implements DiagramKey {
+abstract public class DistributedForce extends SimulationObject implements DiagramKey, ResolvableByName {
 
     private Beam surface;
     private Point startPoint;
@@ -45,6 +46,12 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
 
     @Override
     public Vector3f getTranslation() {
+
+        // this will occur during persistence
+        if (getStartPoint() == null || getEndPoint() == null) {
+            return new Vector3f();
+        }
+
         return startPoint.getTranslation().add(endPoint.getTranslation()).mult(.5f);
     }
 
@@ -59,6 +66,11 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
     @Override
     public Matrix3f getRotation() {
         //return surface.getRotation();
+
+        // this will occur during persistence
+        if (getStartPoint() == null || getEndPoint() == null) {
+            return new Matrix3f();
+        }
 
         Vector3f direction;
         direction = getEndPoint().getTranslation().subtract(getStartPoint().getTranslation());
@@ -77,6 +89,13 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
     }
 
     /**
+     * @deprecated for persistence. Do not use!
+     */
+    public DistributedForce(String name) {
+        setName(name);
+    }
+
+    /**
      * Right now, DistributedForce requires the endpoints of the beam that makes up the surface to be known.
      * We cannot handle instances of UnknownPoint at this stage.
      * @param surface
@@ -84,7 +103,8 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * @param endPoint
      * @param peak
      */
-    public DistributedForce(Beam surface, Point startPoint, Point endPoint, Vector peak) {
+    public DistributedForce(String name, Beam surface, Point startPoint, Point endPoint, Vector peak) {
+        setName(name);
         this.surface = surface;
         this.startPoint = startPoint;
         this.endPoint = endPoint;

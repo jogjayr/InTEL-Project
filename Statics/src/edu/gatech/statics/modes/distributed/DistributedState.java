@@ -5,11 +5,7 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.util.Builder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  *

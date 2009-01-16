@@ -5,6 +5,9 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
@@ -13,8 +16,6 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -22,28 +23,30 @@ import java.util.Map;
  */
 public class DistributedExercise extends OrdinaryExercise {
 
-    private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
-
+    //private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new DistributedInterfaceConfiguration();
     }
 
     public DistributedExercise() {
-        
     }
 
     public DistributedExercise(Schematic schematic) {
         super(schematic);
     }
 
-    public DistributedDiagram getDiagram(DistributedForce dl) {
-        DistributedDiagram diagram = diagramMap.get(dl);
-        if (diagram == null) {
-            diagram = new DistributedDiagram(dl);
-            diagramMap.put(dl, diagram);
+    @Override
+    protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
+        if (type == DistributedMode.instance.getDiagramType()) {
+            return createDistributedDiagram((DistributedForce) key);
         }
-        return diagram;
+
+        return super.createNewDiagramImpl(key, type);
+    }
+
+    protected DistributedDiagram createDistributedDiagram(DistributedForce dl) {
+        return new DistributedDiagram(dl);
     }
 
     @Override

@@ -10,6 +10,9 @@ import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
@@ -26,6 +29,7 @@ import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
+import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import java.beans.Statement;
@@ -33,6 +37,8 @@ import java.beans.XMLEncoder;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -87,8 +93,6 @@ public class StaticsXMLEncoder extends XMLEncoder {
                     out.writeStatement(new Statement(v, "setSymbol", new Object[]{v.getSymbolName()}));
                 }
                 out.writeStatement(new Statement(v, "setDiagramValue", new Object[]{v.getDiagramValue()}));
-            //out.writeStatement(oldStm)
-            //super.initialize(type, oldInstance, newInstance, out);
             }
         });
         setPersistenceDelegate(Vector3bd.class, new DefaultPersistenceDelegate() {
@@ -162,12 +166,25 @@ public class StaticsXMLEncoder extends XMLEncoder {
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 
+        setPersistenceDelegate(ConstantDistributedForce.class, namedPersistenceDelegate);
+        setPersistenceDelegate(QuarterEllipseDistributedForce.class, namedPersistenceDelegate);
+        setPersistenceDelegate(TriangularDistributedForce.class, namedPersistenceDelegate);
+
         // set up the delegates for tasks.
         setPersistenceDelegate(CompleteFBDTask.class, namedPersistenceDelegate);
         setPersistenceDelegate(Solve2FMTask.class, namedPersistenceDelegate);
         setPersistenceDelegate(SolveConnectorTask.class, namedPersistenceDelegate);
 
         setPersistenceDelegate(ExerciseState.class, new ExerciseStatePersistenceDelegate());
+
+
+        // set up an exception listener
+        setExceptionListener(new ExceptionListener() {
+
+            public void exceptionThrown(Exception e) {
+                Logger.getLogger("Statics").log(Level.WARNING, "Persistence failed!", e);
+            }
+        });
     }
 
     /**
@@ -177,16 +194,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
      */
     @Override
     public void writeObject(Object o) {
-        //if (o == null) {
-        //    super.writeObject(o);
-        //} else if (o instanceof ResolvableByName) {
-        //    ResolvableByName resolvable = (ResolvableByName) o;
-        //    super.writeObject(new NameContainer(resolvable.getName(), o.getClass()));
-        //} else {
-        //    super.writeObject(o);
-        //}
 
-        //System.out.println("writing: " + (o == null ? "" : o.getClass().getSimpleName()) + " " + o);
         super.writeObject(o);
     }
 

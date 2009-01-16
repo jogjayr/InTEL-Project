@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.modes.distributed.objects;
 
 import edu.gatech.statics.math.Vector;
@@ -18,6 +17,13 @@ import java.math.BigDecimal;
 public class TriangularDistributedForce extends DistributedForce {
 
     /**
+     * @deprecated for persistence. Do not use!
+     */
+    public TriangularDistributedForce(String name) {
+        super(name);
+    }
+
+    /**
      * Start point is the point of the peak.
      * So points must be provided in reverse order to get the slope in the other direction
      * @param surface
@@ -25,8 +31,8 @@ public class TriangularDistributedForce extends DistributedForce {
      * @param endPoint
      * @param peak
      */
-    public TriangularDistributedForce(Beam surface, Point startPoint, Point endPoint, Vector peak) {
-        super(surface, startPoint, endPoint, peak);
+    public TriangularDistributedForce(String name, Beam surface, Point startPoint, Point endPoint, Vector peak) {
+        super(name, surface, startPoint, endPoint, peak);
     }
 
     @Override
@@ -34,27 +40,26 @@ public class TriangularDistributedForce extends DistributedForce {
         // only one sample is necessary here.
         createDefaultSchematicRepresentation(1, 10);
     }
-    
+
     public void createDefaultSchematicRepresentation(float displayScale, int arrows) {
         addRepresentation(new DistributedForceRepresentation(this, 1, displayScale, arrows));
-        
+
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
         addRepresentation(label);
     }
 
     @Override
     float getCurveValue(float x) {
-        return 1-x;
+        return 1 - x;
     }
 
     @Override
     protected BigDecimal getPositionMultiplier() {
-        return new BigDecimal(1.0/3);
+        return new BigDecimal(1.0 / 3);
     }
 
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         return new BigDecimal(.5);
     }
-
 }

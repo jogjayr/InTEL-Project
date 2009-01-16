@@ -17,6 +17,13 @@ import java.math.BigDecimal;
 public class QuarterEllipseDistributedForce extends DistributedForce {
 
     /**
+     * @deprecated for persistence. Do not use!
+     */
+    public QuarterEllipseDistributedForce(String name) {
+        super(name);
+    }
+
+    /**
      * Start point is the point of the peak.
      * So points must be provided in reverse order to get the slope in the other direction
      * @param surface
@@ -24,10 +31,10 @@ public class QuarterEllipseDistributedForce extends DistributedForce {
      * @param endPoint
      * @param peak
      */
-    public QuarterEllipseDistributedForce(Beam surface, Point startPoint, Point endPoint, Vector peak) {
-        super(surface, startPoint, endPoint, peak);
+    public QuarterEllipseDistributedForce(String name, Beam surface, Point startPoint, Point endPoint, Vector peak) {
+        super(name, surface, startPoint, endPoint, peak);
     }
-    
+
     @Override
     public void createDefaultSchematicRepresentation() {
         // only one sample is necessary here.
@@ -36,23 +43,23 @@ public class QuarterEllipseDistributedForce extends DistributedForce {
 
     public void createDefaultSchematicRepresentation(float displayScale, int arrows) {
         addRepresentation(new DistributedForceRepresentation(this, 30, displayScale, arrows));
-        
+
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
         addRepresentation(label);
     }
 
     @Override
-    float getCurveValue( float x) {
+    float getCurveValue(float x) {
         return (float) Math.sqrt(1 - x * x);
     }
 
     @Override
     protected BigDecimal getPositionMultiplier() {
-        return new BigDecimal(4/(3*Math.PI));
+        return new BigDecimal(4 / (3 * Math.PI));
     }
 
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
-        return new BigDecimal(Math.PI/4);
+        return new BigDecimal(Math.PI / 4);
     }
 }
