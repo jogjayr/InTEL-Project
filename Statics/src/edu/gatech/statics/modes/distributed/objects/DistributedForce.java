@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.distributed.objects;
 
 import edu.gatech.statics.exercise.DiagramKey;
-import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -19,7 +18,7 @@ import java.math.RoundingMode;
  *
  * @author Calvin Ashmore
  */
-abstract public class DistributedForce implements DiagramKey, ResolvableByName {
+abstract public class DistributedForce implements DiagramKey {
 
     private Beam surface;
     private Point startPoint;
@@ -159,4 +158,44 @@ abstract public class DistributedForce implements DiagramKey, ResolvableByName {
      * @return
      */
     abstract float getCurveValue(float x);
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DistributedForce other = (DistributedForce) obj;
+        if (this.surface != other.surface && (this.surface == null || !this.surface.equals(other.surface))) {
+            return false;
+        }
+        if (this.startPoint != other.startPoint && (this.startPoint == null || !this.startPoint.equals(other.startPoint))) {
+            return false;
+        }
+        if (this.endPoint != other.endPoint && (this.endPoint == null || !this.endPoint.equals(other.endPoint))) {
+            return false;
+        }
+        if (this.peak != other.peak && (this.peak == null || !this.peak.equals(other.peak))) {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + (this.surface != null ? this.surface.hashCode() : 0);
+        hash = 59 * hash + (this.startPoint != null ? this.startPoint.hashCode() : 0);
+        hash = 59 * hash + (this.endPoint != null ? this.endPoint.hashCode() : 0);
+        hash = 59 * hash + (this.peak != null ? this.peak.hashCode() : 0);
+        hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+
+
 }

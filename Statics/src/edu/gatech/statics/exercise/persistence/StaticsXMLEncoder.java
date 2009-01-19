@@ -11,6 +11,7 @@ import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.Body;
@@ -166,9 +167,20 @@ public class StaticsXMLEncoder extends XMLEncoder {
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 
-        setPersistenceDelegate(ConstantDistributedForce.class, namedPersistenceDelegate);
-        setPersistenceDelegate(QuarterEllipseDistributedForce.class, namedPersistenceDelegate);
-        setPersistenceDelegate(TriangularDistributedForce.class, namedPersistenceDelegate);
+        PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                DistributedForce dl = (DistributedForce) oldInstance;
+                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
+                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak()});
+            }
+        };
+
+        setPersistenceDelegate(ConstantDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(QuarterEllipseDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(TriangularDistributedForce.class, distributedForcePersistenceDelegate);
 
         // set up the delegates for tasks.
         setPersistenceDelegate(CompleteFBDTask.class, namedPersistenceDelegate);

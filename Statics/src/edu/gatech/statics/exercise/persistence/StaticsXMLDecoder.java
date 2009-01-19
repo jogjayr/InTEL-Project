@@ -53,6 +53,8 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                         return obj;
                     } else if(result instanceof Task) {
                         return Exercise.getExercise().getTask(name);
+                    } else {
+                        Logger.getLogger("Statics").warning("Could not find an object by name: \""+name+"\"");
                     }
                 }
                 return result;

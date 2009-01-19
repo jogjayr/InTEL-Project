@@ -9,7 +9,6 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.math.expressionparser.Parser;
-import edu.gatech.statics.modes.distributed.DistributedState.Builder;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -19,6 +18,8 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SolveListener;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.distributed.actions.SetMagnitudeValue;
+import edu.gatech.statics.modes.distributed.actions.SetPositionValue;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,15 +47,13 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     public void setPosition(String text) {
-        Builder builder = getCurrentState().getBuilder();
-        builder.setPosition(text);
-        pushState(builder.build());
+        SetPositionValue action = new SetPositionValue(text);
+        performAction(action);
     }
 
     public void setMagnitude(String text) {
-        Builder builder = getCurrentState().getBuilder();
-        builder.setMagnitude(text);
-        pushState(builder.build());
+        SetMagnitudeValue action = new SetMagnitudeValue(text);
+        performAction(action);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
             if (obj instanceof DistributedForceObject) {
                 DistributedForceObject dlObjTest = (DistributedForceObject) obj;
-                if (dlObjTest.getDistributedForce() == dl) {
+                if (dlObjTest.getDistributedForce().equals(dl)) {
                     dlObj = dlObjTest;
                 }
             }
