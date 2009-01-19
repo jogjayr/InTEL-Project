@@ -36,19 +36,6 @@ public class QuarterEllipseDistributedForce extends DistributedForce {
     }
 
     @Override
-    public void createDefaultSchematicRepresentation() {
-        // only one sample is necessary here.
-        createDefaultSchematicRepresentation(1, 10);
-    }
-
-    public void createDefaultSchematicRepresentation(float displayScale, int arrows) {
-        addRepresentation(new DistributedForceRepresentation(this, 30, displayScale, arrows));
-
-        LabelRepresentation label = new LabelRepresentation(this, "label_force");
-        addRepresentation(label);
-    }
-
-    @Override
     float getCurveValue(float x) {
         return (float) Math.sqrt(1 - x * x);
     }

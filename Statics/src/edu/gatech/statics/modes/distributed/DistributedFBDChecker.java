@@ -5,7 +5,9 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.objects.SimulationObject;
 import java.util.logging.Logger;
@@ -27,9 +29,13 @@ public class DistributedFBDChecker extends FBDChecker {
             return false;        // if that succeeds, move on to checks specific to distributed forces.
         }
         for (SimulationObject obj : getDiagram().allObjects()) {
-            if (obj instanceof DistributedForce) {
-                DistributedForce dl = (DistributedForce) obj;
-                if (!dl.isSolved()) {
+            if (obj instanceof DistributedForceObject) {
+                DistributedForceObject dlObj = (DistributedForceObject) obj;
+                DistributedForce dl = dlObj.getDistributedForce();
+
+                // here we make sure that the distributed diagram associated with this load has been solved.
+                DistributedDiagram distributedDiagram = (DistributedDiagram) Exercise.getExercise().getDiagram(dl, DistributedMode.instance.getDiagramType());
+                if (distributedDiagram == null || !distributedDiagram.getCurrentState().isLocked()) {
 
                     Logger.getLogger("Statics").info("check: not all Distributed loads are solved");
                     Logger.getLogger("Statics").info("check: FAILED");

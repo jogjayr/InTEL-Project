@@ -7,7 +7,6 @@ package edu.gatech.statics.modes.distributed.objects;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
-import edu.gatech.statics.objects.representations.LabelRepresentation;
 import java.math.BigDecimal;
 
 /**
@@ -33,19 +32,6 @@ public class TriangularDistributedForce extends DistributedForce {
      */
     public TriangularDistributedForce(String name, Beam surface, Point startPoint, Point endPoint, Vector peak) {
         super(name, surface, startPoint, endPoint, peak);
-    }
-
-    @Override
-    public void createDefaultSchematicRepresentation() {
-        // only one sample is necessary here.
-        createDefaultSchematicRepresentation(1, 10);
-    }
-
-    public void createDefaultSchematicRepresentation(float displayScale, int arrows) {
-        addRepresentation(new DistributedForceRepresentation(this, 1, displayScale, arrows));
-
-        LabelRepresentation label = new LabelRepresentation(this, "label_force");
-        addRepresentation(label);
     }
 
     @Override

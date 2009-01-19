@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.exercise.state.DiagramState;
+import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.util.Builder;
 
 /**
@@ -14,8 +15,8 @@ import edu.gatech.statics.util.Builder;
 public class DistributedState implements DiagramState<DistributedDiagram> {
 
     final private boolean solved;
-    private String magnitude;
-    private String position;
+    final private String magnitude;
+    final private String position;
 
     public boolean isLocked() {
         return solved;
@@ -23,6 +24,16 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
 
     private DistributedState(Builder builder) {
         this.solved = builder.solved;
+        this.magnitude = builder.magnitude;
+        this.position = builder.position;
+    }
+
+    public String getMagnitude() {
+        return magnitude;
+    }
+
+    public String getPosition() {
+        return position;
     }
 
     public static class Builder implements edu.gatech.statics.util.Builder<DistributedState> {
@@ -33,6 +44,9 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
 
         public Builder(DistributedState state) {
             // make mutable copies for the builder
+            this.solved = state.solved;
+            this.magnitude = state.magnitude;
+            this.position = state.position;
         }
 
         public boolean isSolved() {
@@ -49,6 +63,14 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
 
         public void setSolved(boolean solved) {
             this.solved = solved;
+        }
+
+        public String getMagnitude() {
+            return magnitude;
+        }
+
+        public String getPosition() {
+            return position;
         }
 
         public Builder() {

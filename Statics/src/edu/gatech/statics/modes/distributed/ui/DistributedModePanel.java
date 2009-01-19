@@ -15,6 +15,7 @@ import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
 import edu.gatech.statics.modes.distributed.DistributedMode;
+import edu.gatech.statics.modes.distributed.DistributedState;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 
@@ -27,8 +28,8 @@ public class DistributedModePanel extends ApplicationModePanel {
     private BTextField positionField;
     private BTextField magnitudeField;
     private BButton checkButton;
-    private String positionValue;
-    private String magnitudeValue;
+    //private String positionValue;
+    //private String magnitudeValue;
 
     public DistributedModePanel() {
 
@@ -60,33 +61,57 @@ public class DistributedModePanel extends ApplicationModePanel {
         positionContainer.add(new BLabel("Position: "), BorderLayout.WEST);
         magnitudeContainer.add(new BLabel("Magnitude: "), BorderLayout.WEST);
 
-        positionField = new BTextField();
+        positionField = new BTextField() {
+
+            @Override
+            protected void lostFocus() {
+                super.lostFocus();
+                DistributedDiagram diagram = (DistributedDiagram) getDiagram();
+                diagram.setPosition(getText());
+            }
+        };
         positionContainer.add(positionField, BorderLayout.CENTER);
         positionField.setPreferredWidth(200);
         positionField.setStyleClass("textfield_appbar");
 
-        magnitudeField = new BTextField();
+        magnitudeField = new BTextField() {
+
+            @Override
+            protected void lostFocus() {
+                super.lostFocus();
+                DistributedDiagram diagram = (DistributedDiagram) getDiagram();
+                diagram.setMagnitude(getText());
+            }
+        };
         magnitudeContainer.add(magnitudeField, BorderLayout.CENTER);
         magnitudeField.setPreferredWidth(200);
         magnitudeField.setStyleClass("textfield_appbar");
+
+
     }
 
     protected void performCheck() {
         DistributedDiagram diagram = (DistributedDiagram) getDiagram();
         if (diagram.check(positionField.getText(), magnitudeField.getText())) {
-            System.out.println("OK!");
+            //System.out.println("OK!");
+
+            // ****
+            // HERE WE NEED TO SET THE DIAGRAM TO LOCKED/!?!?!
+            // How is this done in the other diagram checks/locks?
 
             diagram.updateResultant();
 
         } else {
-            System.out.println("Oh noes!");
+            //System.out.println("Oh noes!");
         }
     }
 
     @Override
     public void activate() {
-        magnitudeField.setText(magnitudeValue);
-        positionField.setText(positionValue);
+        DistributedState state = (DistributedState) getDiagram().getCurrentState();
+
+        magnitudeField.setText(state.getMagnitude());
+        positionField.setText(state.getPosition());
     }
 
     @Override

@@ -99,7 +99,9 @@ public class Schematic {
 
         if (obj instanceof Body) {
             Body body = (Body) obj;
-            allBodies.add(body);
+            if (!allBodies.contains(body)) {
+                allBodies.add(body);
+            }
 
             // is this okay?
             for (SimulationObject obj1 : body.getAttachedObjects()) {

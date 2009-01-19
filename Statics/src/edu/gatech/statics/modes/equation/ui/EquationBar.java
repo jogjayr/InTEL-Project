@@ -170,8 +170,7 @@ public class EquationBar extends BContainer {
             } else {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
-            coefficient = new BTextField(
-                    coefficientText) {
+            coefficient = new BTextField(coefficientText) {
 
                 @Override
                 protected void lostFocus() {
@@ -205,6 +204,7 @@ public class EquationBar extends BContainer {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
+
                 boolean destroyOK = false;
 
                 public void keyReleased(KeyEvent event) {
@@ -292,12 +292,12 @@ public class EquationBar extends BContainer {
     protected void stateChanged() {
 
         // update the moment point button
-        if(momentButton != null) {
+        if (momentButton != null) {
             Point momentPoint = parent.getDiagram().getMomentPoint();
             String momentName = momentPoint == null ? "?" : momentPoint.getName();
             momentButton.setText(momentName);
         }
-        
+
         // go through terms that are present in the UI and mark the ones to remove
         List<TermBox> toRemove = new ArrayList<TermBox>();
 

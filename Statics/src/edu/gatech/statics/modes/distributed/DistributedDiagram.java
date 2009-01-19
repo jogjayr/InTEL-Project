@@ -8,8 +8,8 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
-import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.expressionparser.Parser;
+import edu.gatech.statics.modes.distributed.DistributedState.Builder;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -18,6 +18,9 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SolveListener;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,27 +30,43 @@ import java.util.List;
  */
 public class DistributedDiagram extends Diagram<DistributedState> {
 
+    private static final float TOLERANCE = .01f;
     private DistributedForce dl;
+    private DistributedForceObject dlObj;
     private DistanceMeasurement measure;
+
+    public boolean isSolved() {
+        return getCurrentState().isLocked();
+    }
 
     @Override
     public void activate() {
         super.activate();
-        if (dl.isSolved()) {
-            dl.setDisplayGrayed(true);
-        }
+        updateResultant();
+    }
+
+    public void setPosition(String text) {
+        Builder builder = getCurrentState().getBuilder();
+        builder.setPosition(text);
+        pushState(builder.build());
+    }
+
+    public void setMagnitude(String text) {
+        Builder builder = getCurrentState().getBuilder();
+        builder.setMagnitude(text);
+        pushState(builder.build());
     }
 
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
 
-        baseObjects.add(dl);
+        baseObjects.add(dlObj);
         baseObjects.add(dl.getSurface());
         baseObjects.add(dl.getEndPoint());
         baseObjects.add(dl.getStartPoint());
 
-        Force resultant = dl.getResultant();
+        Force resultant = dlObj.getResultantForce();
 
         baseObjects.add(resultant);
         baseObjects.add(resultant.getAnchor());
@@ -64,99 +83,117 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     public DistributedDiagram(DistributedForce dl) {
         this.dl = dl;
 
-        Force resultant = dl.getResultant();
-        resultant.createDefaultSchematicRepresentation();
-        resultant.getAnchor().createDefaultSchematicRepresentation();
+        // pick out the actual distributed load object from the schematic
+        for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
+            if (obj instanceof DistributedForceObject) {
+                DistributedForceObject dlObjTest = (DistributedForceObject) obj;
+                if (dlObjTest.getDistributedForce() == dl) {
+                    dlObj = dlObjTest;
+                }
+            }
+        }
 
-        resultant.setDisplayGrayed(true);
+        Force resultant = dlObj.getResultantForce();
 
         //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
         //String pointName = dl.getName()+" pos";
         measure = new DistanceMeasurement(
-                new Point(dl.getName()+" end1", dl.getSurface().getEndpoint1()), resultant.getAnchor());
+                new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultant.getAnchor());
         measure.setKnown(false);
         measure.setSymbol("pos");
         measure.createDefaultSchematicRepresentation(2f);
     }
 
+    @Override
+    protected void stateChanged() {
+        super.stateChanged();
+        updateResultant();
+    }
+
     public boolean check(String positionValue, String magnitudeValue) {
 
-        AffineQuantity userMagnitude = Parser.evaluateSymbol(magnitudeValue);
-        AffineQuantity userPosition = Parser.evaluateSymbol(positionValue);
+        //AffineQuantity userMagnitude = Parser.evaluateSymbol(magnitudeValue);
+        //AffineQuantity userPosition = Parser.evaluateSymbol(positionValue);
 
-        System.out.println("user pos: \"" + positionValue + "\" " + userPosition);
-        System.out.println("user mag: \"" + magnitudeValue + "\" " + userMagnitude);
-
+        BigDecimal userMagnitude = Parser.evaluate(magnitudeValue);
+        BigDecimal userPosition = Parser.evaluate(positionValue);
         if (userMagnitude == null || userPosition == null) {
             return false;
         }
 
         DistributedForce force = getForce();
-        AffineQuantity resultantMagnitude = force.getResultantMagnitude();
-        AffineQuantity resultantPosition = force.getResultantPosition();
+        BigDecimal resultantMagnitude = force.getResultantMagnitude();
+        BigDecimal resultantOffset = force.getResultantOffset(); // need to get the distance somehow
 
-        System.out.println("pos: " + resultantPosition);
+        // debugging messages
+        System.out.println("user pos: \"" + positionValue + "\" " + userPosition);
+        System.out.println("user mag: \"" + magnitudeValue + "\" " + userMagnitude);
+        System.out.println("pos: " + resultantOffset);
         System.out.println("mag: " + resultantMagnitude);
 
         boolean success = true;
 
-        success &= resultantMagnitude.equalsWithinTolerance(userMagnitude, .1f);
-        success &= resultantPosition.equalsWithinTolerance(userPosition, .1f);
+        success &= resultantMagnitude.subtract(userMagnitude).floatValue() < TOLERANCE;
+        success &= resultantOffset.subtract(userPosition).floatValue() < TOLERANCE;
+
         return success;
     }
-    
-    // THIS IS A TEMPORARY SOLUTION
-    //private static int count = 1;
 
     /**
-     * This should be called after the user's values for the resultant have been checked.
-     * The method adds the resultant (and its supporting objects) to the schematic.
+     * This method should be called after the diagram is checked, and also when an exercise is loaded.
+     * This will make sure that the Force from the DistributedForceObject and its Point anchor both are
+     * correctly placed in the diagram.
+     *
+     * This is somewhat dangerous because the anchor must be added to the underlying beam, ordinarily breaking
+     * the structure of the exercise data. The exercise data is not persisted because it is common to the
+     * exercise itself, and should not be changed. However we do need to change it in order to work with the distributed loads
+     * properly. The solution is to have this method called during these sorts of state changes so that the changes
+     * to exercise data happen consistently and in the background.
      */
     public void updateResultant() {
 
-        Force resultant = dl.getResultant();
-        dl.setDisplayGrayed(true);
-        resultant.setDisplayGrayed(false);
-        dl.getSurface().addObject(resultant);
+        Force resultant = dlObj.getResultantForce();
+        if (isSolved()) {
+            dlObj.setDisplayGrayed(true);
+            resultant.setDisplayGrayed(false);
 
-        dl.setSolved(true);
+            // ************ NON STATE CHANGE
+            dl.getSurface().addObject(resultant);
 
-        AffineQuantity resultantMagnitude = dl.getResultantMagnitude();
-        AffineQuantity resultantPosition = dl.getResultantPosition();
+            //dl.setSolved(true);
 
-        // set names for the resultant and its anchor?
-        //resultant.setName("Resultant "+count);
-        //resultant.getAnchor().setName("pos "+count);
-        //count++;
-        
-        measure.setKnown(true);
-        //resultant.setKnown(true);
+            //AffineQuantity resultantMagnitude = dl.getResultantMagnitude();
+            //AffineQuantity resultantPosition = dl.getResultantPosition();
 
-        // ??
-        //resultant.setSymbol(null);
+            //resultant.setKnown(true);
 
-        // IMPORTANT THINGS TO NOTE:
-        // THIS CODE DOES NOT WORK 100% JUST YET
-        // The following things remain to be done:
-        // 1) accomodate what happens when the affine value for the resultantMagnitude is symbolic.
-        // 2) accomodate what happens when the affine value for the resultantPosition is symbolic.
+            // IMPORTANT THINGS TO NOTE:
+            // THIS CODE DOES NOT WORK 100% JUST YET
+            // The following things remain to be done:
+            // 1) accomodate what happens when the affine value for the resultantMagnitude is symbolic.
+            // 2) accomodate what happens when the affine value for the resultantPosition is symbolic.
 
-        if (resultantMagnitude.isSymbolic() || resultantPosition.isSymbolic()) {
-            throw new UnsupportedOperationException("Symbolic values not supported yet in the resultant");
-        }
+            //if (resultantMagnitude.isSymbolic() || resultantPosition.isSymbolic()) {
+            //    throw new UnsupportedOperationException("Symbolic values not supported yet in the resultant");
+            //}
 
-        resultant.getVector().setDiagramValue(resultantMagnitude.getConstant());
+            measure.setKnown(true);
+            resultant.getVector().setDiagramValue(dl.getResultantMagnitude());
 
-        getSchematic().add(resultant);
-        getSchematic().add(resultant.getAnchor());
-        getSchematic().add(measure);
-        dl.getSurface().addObject(resultant);
-        dl.getSurface().addObject(resultant.getAnchor());
+            getSchematic().add(resultant);
+            getSchematic().add(resultant.getAnchor());
+            getSchematic().add(measure);
+            dl.getSurface().addObject(resultant);
+            dl.getSurface().addObject(resultant.getAnchor());
 
-        // update our UI view now that the resultants are found
+            // update our UI view now that the resultants are found
 
-        for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
-            listener.onLoadSolved(resultant);
+            for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
+                listener.onLoadSolved(resultant);
+            }
+        } else {
+            dlObj.setDisplayGrayed(false);
+            resultant.setDisplayGrayed(true);
         }
     }
 

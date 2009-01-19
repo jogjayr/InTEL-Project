@@ -4,38 +4,26 @@
  */
 package edu.gatech.statics.modes.distributed.objects;
 
-import com.jme.math.Matrix3f;
-import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
-import edu.gatech.statics.math.AffineQuantity;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.bodies.Beam;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  *
  * @author Calvin Ashmore
  */
-abstract public class DistributedForce extends SimulationObject implements DiagramKey, ResolvableByName {
+abstract public class DistributedForce implements DiagramKey, ResolvableByName {
 
     private Beam surface;
     private Point startPoint;
     private Point endPoint;
-    private boolean solved;
-    /**
-     * the resultant force that is equivalent to this.
-     * This will be null until the user has entered DistributedMode to create it.
-     */
-    private Force resultant;
-    private Point resultantAnchor;
     /**
      * peak indicates both the magnitude and unit of the force, as well as the direction.
      * The magnitude corresponds to the value of the distribution at its maximum.
@@ -43,56 +31,17 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * just the value of a constant distribution.
      */
     private Vector peak;
+    private String name;
 
-    @Override
-    public Vector3f getTranslation() {
-
-        // this will occur during persistence
-        if (getStartPoint() == null || getEndPoint() == null) {
-            return new Vector3f();
-        }
-
-        return startPoint.getTranslation().add(endPoint.getTranslation()).mult(.5f);
-    }
-
-    public boolean isSolved() {
-        return solved;
-    }
-
-    public void setSolved(boolean solved) {
-        this.solved = solved;
-    }
-
-    @Override
-    public Matrix3f getRotation() {
-        //return surface.getRotation();
-
-        // this will occur during persistence
-        if (getStartPoint() == null || getEndPoint() == null) {
-            return new Matrix3f();
-        }
-
-        Vector3f direction;
-        direction = getEndPoint().getTranslation().subtract(getStartPoint().getTranslation());
-        direction.normalizeLocal();
-
-        Vector3f unitPeak = getPeak().getVectorValue().toVector3f().normalize();
-        unitPeak.negateLocal();
-        Vector3f myZ = direction.cross(unitPeak);
-
-        Matrix3f mat = new Matrix3f();
-        mat.setColumn(0, direction);
-        mat.setColumn(1, unitPeak);
-        mat.setColumn(2, myZ);
-
-        return mat;
+    public String getName() {
+        return name;
     }
 
     /**
      * @deprecated for persistence. Do not use!
      */
     public DistributedForce(String name) {
-        setName(name);
+        this.name = name;
     }
 
     /**
@@ -104,7 +53,7 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * @param peak
      */
     public DistributedForce(String name, Beam surface, Point startPoint, Point endPoint, Vector peak) {
-        setName(name);
+        this.name = name;
         this.surface = surface;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -128,31 +77,23 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
     abstract protected BigDecimal getMagnitudeMultiplier();
 
     /**
-     * This is an AffineQuantity, starting from the first endpoint of the beam,
-     * that denotes the position of the resultant. This method is intended to be
-     * used for the checking process.
+     * Returns the distance that should be the value of the measurement between
+     * the start point and the actual resultant position.
      * @return
      */
-    public AffineQuantity getResultantPosition() {
+    public BigDecimal getResultantOffset() {
 
-        // get the direction of the surface
-        Vector3bd direction = getSurface().getEndpoint2().subtract(getSurface().getEndpoint1());
-        direction = direction.normalize();
+        Vector3bd start = getStartPoint().getPosition();
+        Vector3bd end = getEndPoint().getPosition();
 
-        // develop an affine vector and then dot it with the beam direction
-        UnknownPoint start = new UnknownPoint(getStartPoint());
-        UnknownPoint end = new UnknownPoint(getEndPoint());
-        AffineQuantity startPosition = start.getDirectionalContribution(direction, getSurface().getEndpoint1());
-        AffineQuantity endPosition = end.getDirectionalContribution(direction, getSurface().getEndpoint1());
-
-        // construct an average:
         BigDecimal alpha = getPositionMultiplier();
-        BigDecimal oneMinusAlpha = BigDecimal.ONE.subtract(alpha);
 
-        AffineQuantity position =
-                startPosition.multiply(oneMinusAlpha).add(
-                endPosition.multiply(alpha));
-        return position;
+        MathContext mc = new MathContext(Unit.getPrecision(), RoundingMode.HALF_UP);
+
+        BigDecimal length = new BigDecimal(start.distance(end), mc);
+        BigDecimal result = new BigDecimal(length.multiply(alpha).doubleValue(), mc);
+
+        return result;
     }
 
     /**
@@ -160,53 +101,28 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * The method is to be used for the checking process.
      * @return
      */
-    public AffineQuantity getResultantMagnitude() {
-        // get the direction of the surface
-        Vector3bd direction = getSurface().getEndpoint2().subtract(getSurface().getEndpoint1());
-        direction = direction.normalize();
+    public BigDecimal getResultantMagnitude() {
+        BigDecimal peakMagnitude = getPeak().getDiagramValue();
+        BigDecimal magnitudeMultiplier = getMagnitudeMultiplier();
 
-        // develop an affine vector and then dot it with the beam direction
-        UnknownPoint start = new UnknownPoint(getStartPoint());
-        UnknownPoint end = new UnknownPoint(getEndPoint());
-        AffineQuantity startPosition = start.getDirectionalContribution(direction, getSurface().getEndpoint1());
-        AffineQuantity endPosition = end.getDirectionalContribution(direction, getSurface().getEndpoint1());
+        MathContext mc = new MathContext(Unit.getPrecision(), RoundingMode.HALF_UP);
 
-        AffineQuantity length = endPosition.subtract(startPosition);
+        Vector3bd start = getStartPoint().getPosition();
+        Vector3bd end = getEndPoint().getPosition();
+        double length = start.distance(end);
+        BigDecimal lengthbd = new BigDecimal(length, mc);
+        BigDecimal result = peakMagnitude.multiply(magnitudeMultiplier).multiply(lengthbd);
 
-        // FIXME, I do not think that this is mathematically correct...
-        // the affine quantity should have the absolute value to represent the length here,
-        // but there is some ambiguity in terms of the values.
-        length = new AffineQuantity(length.getConstant().abs(), length.getMultiplier(), length.getSymbolName());
+        result = new BigDecimal(result.doubleValue(), mc);
 
-        //double magnitude = Math.PI / 4;
-        BigDecimal multiplier = getMagnitudeMultiplier();
-
-        Vector peakVector = getPeak();
-        if (peakVector.isSymbol() && !peakVector.isKnown()) {
-
-            if (length.isSymbolic()) {
-                // uh oh, both the peak vector and the span length are affine quantities.
-                // this is not permitted, so we throw a generic exception.
-                throw new UnsupportedOperationException("Both peak vector and span length are symbolic quantities!");
-            }
-            BigDecimal lengthValue = length.getConstant();
-
-
-            AffineQuantity result = new AffineQuantity(
-                    BigDecimal.ZERO, lengthValue.multiply(multiplier), peakVector.getSymbolName());
-            return result;
-        } else {
-            AffineQuantity result = length.multiply(peakVector.getDiagramValue().multiply(multiplier));
-            return result;
-        }
+        return result;
     }
 
     /**
-     * this works like getResultantPosition, but should return a point in 3d space
-     * that is the estimate of the actual position of the resultant.
+     * Returns the point that should designate the resultant anchor.
      * @return
      */
-    Vector3bd estimateResultantPosition() {
+    public Vector3bd getResultantPosition() {
 
         Vector3bd start = getStartPoint().getPosition();
         Vector3bd end = getEndPoint().getPosition();
@@ -228,65 +144,12 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
         return peak;
     }
 
-    public Force getResultant() {
-        if (resultant == null) {
-            createResultant();
-        }
-        return resultant;
-    }
-
-    public Point getResultantAnchor() {
-        if (resultant == null) {
-            createResultant();
-        }
-        return resultantAnchor;
-    }
-
     public Point getStartPoint() {
         return startPoint;
     }
 
     public Beam getSurface() {
         return surface;
-    }
-
-    @Override
-    public Vector3f getDisplayCenter() {
-        Vector3f endpoint = getStartPoint().getDisplayCenter();
-
-        // the vectors point into the body as opposed to from the body,
-        // so the offset generated by the peak will be negative.
-        Vector3f peakValue = getPeak().getVectorValue().toVector3f().negate();
-
-        // **** FIXME THIS USES A FIXED VALUE
-        return endpoint.add(peakValue.mult(5));
-    }
-
-    @Override
-    public String getLabelText() {
-        return getPeak().getPrettyName();
-    }
-
-    private void createResultant() {
-        if (resultant != null) {
-            return;
-        }
-        AffineQuantity position = getResultantPosition();
-
-        //Point resultantAnchor;
-        Vector3bd pos = estimateResultantPosition();
-        if (position.isSymbolic()) {
-            // TODO: IMPLEMENT THIS
-            // Requires figuring out unknown distances.
-            //resultantAnchor = new UnknownPoint(new Point(pos), new Point(getSurface().getEndpoint1()),
-            //        getSurface().getDirectionFrom(pos));
-        } else {
-            resultantAnchor = new Point(getName() + " anchor", pos);
-        }
-
-        AnchoredVector resultantVector = new AnchoredVector(resultantAnchor, new Vector(Unit.force, getPeak().getVectorValue(), "R"));
-        resultant = new Force(resultantVector);
-        resultant.setName(getName() + " resultant");
     }
 
     /**
@@ -296,6 +159,4 @@ abstract public class DistributedForce extends SimulationObject implements Diagr
      * @return
      */
     abstract float getCurveValue(float x);
-
-    abstract public void createDefaultSchematicRepresentation(float displayScale, int arrows);
 }

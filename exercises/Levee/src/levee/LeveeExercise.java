@@ -13,6 +13,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -49,7 +50,7 @@ public class LeveeExercise extends DistributedExercise {
         Unit.setSuffix(Unit.moment, " kip*ft");
         Unit.setSuffix(Unit.force, " kip");
         Unit.setSuffix(Unit.forceOverDistance, " kip/ft");
-        
+
         getDisplayConstants().setMomentSize(0.5f);
         getDisplayConstants().setForceSize(0.5f);
         getDisplayConstants().setPointSize(0.5f);
@@ -61,31 +62,32 @@ public class LeveeExercise extends DistributedExercise {
 
     @Override
     public void loadExercise() {
-        
+
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
-        
+
         Schematic schematic = getSchematic();
 
-        Point A = new Point("A","0", "0", "0");
-        Point B = new Point("B","0", "12", "0");
+        Point A = new Point("A", "0", "0", "0");
+        Point B = new Point("B", "0", "12", "0");
 
-        Beam levee = new Beam("Levee",A, B);
+        Beam levee = new Beam("Levee", A, B);
 
-        
+
         DistributedForce waterForce = new TriangularDistributedForce("water", levee, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, new BigDecimal("748.8")));
+        DistributedForceObject waterForceObject = new DistributedForceObject(waterForce);
 
-        levee.addObject(waterForce);
-        
+        levee.addObject(waterForceObject);
+
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         levee.createDefaultSchematicRepresentation();
-        waterForce.createDefaultSchematicRepresentation();
+        waterForceObject.createDefaultSchematicRepresentation();
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
         measure.createDefaultSchematicRepresentation();
         schematic.add(measure);
-        
+
         schematic.add(levee);
 
         Connector base = new Fix2d(A);
@@ -95,7 +97,7 @@ public class LeveeExercise extends DistributedExercise {
         modelNode.extractLights();
 
         Vector3f modelTranslation = new Vector3f(7, 0, 0);
-        
+
         ModelRepresentation rep = modelNode.extractElement(levee, "VisualSceneNode/levee_Earth/levee");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);

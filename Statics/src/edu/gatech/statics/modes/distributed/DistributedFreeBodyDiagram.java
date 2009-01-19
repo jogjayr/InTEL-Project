@@ -8,6 +8,7 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 
@@ -37,7 +38,7 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
         private SelectionFilter superFilter = DistributedFreeBodyDiagram.super.getSelectionFilter();
 
         public boolean canSelect(SimulationObject obj) {
-            return superFilter.canSelect(obj) || obj instanceof DistributedForce;
+            return superFilter.canSelect(obj) || obj instanceof DistributedForceObject;
         }
     };
 
@@ -49,7 +50,7 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
     @Override
     public void onHover(SimulationObject obj) {
 
-        if (obj instanceof DistributedForce) {
+        if (obj instanceof DistributedForceObject) {
             return;
         }
         super.onHover(obj);
@@ -58,8 +59,9 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
     @Override
     public void onClick(SimulationObject obj) {
 
-        if (obj instanceof DistributedForce) {
-            DistributedMode.instance.load((DistributedForce) obj);
+        if (obj instanceof DistributedForceObject) {
+            DistributedForceObject dlObj = (DistributedForceObject) obj;
+            DistributedMode.instance.load(dlObj.getDistributedForce());
             return;
         }
 

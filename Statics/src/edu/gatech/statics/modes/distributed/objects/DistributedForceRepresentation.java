@@ -28,12 +28,12 @@ import java.nio.IntBuffer;
  *
  * @author Calvin Ashmore
  */
-public class DistributedForceRepresentation extends Representation<DistributedForce> {
+public class DistributedForceRepresentation extends Representation<DistributedForceObject> {
 
     private TriMesh surface;
     private Line border;
     
-    public DistributedForceRepresentation(DistributedForce target, int samples, float displayScale, int arrows) {
+    public DistributedForceRepresentation(DistributedForceObject target, int samples, float displayScale, int arrows) {
         super(target);
 
         surface = createSurface(samples);
@@ -120,7 +120,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         arrow.setLocalRotation(matrix);
         arrow.setSize(.2f, .5f, .075f);
         
-        float height = displayScale*getTarget().getCurveValue(pos);
+        float height = displayScale*getTarget().getDistributedForce().getCurveValue(pos);
         arrow.setLength(height);
 
         arrow.setLocalTranslation(spanSize*(pos-.5f), height, 0);
@@ -152,7 +152,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
             vertices.put(2 * x - 1).put(0).put(0);
 
             // second point, the elevated value
-            vertices.put(2 * x - 1).put(getTarget().getCurveValue(x)).put(0);
+            vertices.put(2 * x - 1).put(getTarget().getDistributedForce().getCurveValue(x)).put(0);
 
             // y
             // ^13
@@ -188,7 +188,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         for (int i = 0; i <= samples; i++) {
 
             float x = (float) i / samples;
-            float y = getTarget().getCurveValue(x);
+            float y = getTarget().getDistributedForce().getCurveValue(x);
             
             points.put(2 * x - 1).put(y).put(0);
             // add a point again if the point is in the body of the line
