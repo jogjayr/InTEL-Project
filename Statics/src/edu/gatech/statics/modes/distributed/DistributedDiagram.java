@@ -132,8 +132,18 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
         boolean success = true;
 
-        success &= resultantMagnitude.subtract(userMagnitude).floatValue() < TOLERANCE;
-        success &= resultantOffset.subtract(userPosition).floatValue() < TOLERANCE;
+        // we want to estimate the accuracy of the result, but if the scale is large, we do not want a very very close solution
+        // to be cut out due to rounding errors. So, we form the tolerance as a float value, which may stretch if the values are large.
+        float magnitudeTolerance = TOLERANCE * Math.max(1, Math.abs(resultantMagnitude.floatValue()));
+        float positionTolerance = TOLERANCE * Math.max(1, Math.abs(resultantOffset.floatValue()));
+
+        //System.out.println("mag tolerance: "+magnitudeTolerance);
+        //System.out.println("pos tolerance: "+positionTolerance);
+
+        success &= Math.abs(resultantMagnitude.subtract(userMagnitude).floatValue()) < magnitudeTolerance;
+        success &= Math.abs(resultantOffset.subtract(userPosition).floatValue()) < positionTolerance;
+
+        System.out.println("success: " + success);
 
         return success;
     }
