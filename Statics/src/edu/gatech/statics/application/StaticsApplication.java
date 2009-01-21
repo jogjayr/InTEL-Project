@@ -242,7 +242,7 @@ public class StaticsApplication {
         }
 
         diagram.update();
-        
+
         if (iRoot != null) {
             iRoot.setDiagram(diagram);
         }
@@ -445,7 +445,10 @@ public class StaticsApplication {
         // if the application is being run without display, such as in unit tests,
         // then do not initialize the input
         if (display != null) {
+            Logger.getLogger("Statics").info("Application init: input");
             initInput();
+        } else {
+            Logger.getLogger("Statics").info("Application init: no display, forgoing input");
         }
 
         // load exercise here
