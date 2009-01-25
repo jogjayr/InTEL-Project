@@ -25,8 +25,6 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
-import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
@@ -38,17 +36,22 @@ public class KeyboardExercise extends FrameExercise {
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+
+        AbstractInterfaceConfiguration ic = super.createInterfaceConfiguration();
+        ic.setCameraSpeed(.2f, 0.02f, .05f);
+
+
         //AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         // ideally, we shouldn't need to create a subclass here.
         // we should just be able to modify the camera control directly, but so it goes.
-        AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
+        /*AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
 
-            @Override
-            public void setupCameraControl(CameraControl cameraControl) {
-                super.setupCameraControl(cameraControl);
-                cameraControl.setMovementSpeed(.2f, .02f, .05f);
-            }
-        };
+        @Override
+        public void setupCameraControl(CameraControl cameraControl) {
+        super.setupCameraControl(cameraControl);
+        cameraControl.setMovementSpeed(.2f, .02f, .05f);
+        }
+        };*/
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-2, 2, -1, 4);
         vc.setZoomConstraints(0.5f, 1.5f);

@@ -34,6 +34,10 @@ import java.util.logging.Logger;
  */
 public class FBDChecker {
 
+    /**
+     * This is the debugging flag. Set this to true while debugging to get extra information.
+     */
+    private static final boolean DEBUGGING = false;
     private FreeBodyDiagram diagram;
     //private Joint nextJoint;
     //private boolean done = false;
@@ -128,10 +132,94 @@ public class FBDChecker {
         return givenLoads;
     }
 
+    private void debugInfo(String info) {
+        if (DEBUGGING) {
+            System.out.println(info);
+        }
+    }
+
     private void logInfo(String info) {
         if (verbose) {
             Logger.getLogger("Statics").info(info);
         }
+    }
+
+    private boolean reportConnectorResult(ConnectorCheckResult connectorResult, Connector connector, List<AnchoredVector> userAnchoredVectorsAtConnector, Body body) {
+        switch (connectorResult) {
+            case passed:
+                // okay, the check passed without complaint.
+                // The AnchoredVectors may still not be correct, but that will be tested afterwards.
+                // for now, continue normally.
+                break;
+            case inappropriateDirection:
+                // check for special case of 2FM:
+                logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
+                logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
+                if (connector instanceof Connector2ForceMember2d) {
+                    Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
+                    if (connector2fm.getMember() instanceof Cable) {
+                        // special message for cables:
+                        logInfo("check: user created a cable in compression at point " + connector.getAnchor().getName());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_joint_cable", connector.getAnchor().getName(), connector2fm.getMember());
+                        return false;
+                    }
+                } else {
+                    // one of the directions is the wrong way, and it's not a cable this time
+                    // it is probably a roller or something.
+                    logInfo("check: AnchoredVectors have wrong direction at point " + connector.getAnchor().getName());
+                    logInfo("check: FAILED");
+                    setAdviceKey("fbd_feedback_check_fail_some_reverse", connector.getAnchor().getName());
+                    return false;
+                }
+            case somethingExtra:
+                // this particular check could be fine
+                // in some problems there are multiple connectors at one point (notably in frame problems)
+                // and this means that extra AnchoredVectors are okay. We check to see if multiple connectors are present,
+                // and if so, continue gracefully, as inapporpriate extra things will be checked at the end
+                // otherwise the check will continue to the next step, "missingSomething" where other conditions
+                // will be tested.
+                if (diagram.getConnectorsAtPoint(connector.getAnchor()).size() > 1) {
+                    // continue on.
+                    break;
+                }
+            case missingSomething:
+                // okay, if we are here then either something is missing, or something is extra.
+                // check against pins or rollers and see what happens.
+                logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
+                logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
+                if (connector instanceof Connector2ForceMember2d) {
+                    logInfo("check: user missing a load at " + connector.getAnchor().getLabelText());
+                    logInfo("check: FAILED");
+                    setAdviceKey("fbd_feedback_check_fail_missing_at_2fm", connector.getAnchor().getLabelText());
+                }
+                // check if this is mistaken for a pin
+                if (!connector.connectorName().equals("pin")) {
+                    Pin2d testPin = new Pin2d(connector.getAnchor());
+                    if (checkConnector(userAnchoredVectorsAtConnector, testPin, null) == ConnectorCheckResult.passed) {
+                        logInfo("check: user wrongly created a pin at point " + connector.getAnchor().getLabelText());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "pin", connector.connectorName());
+                        return false;
+                    }
+                }
+                // check if this is mistaken for a fix
+                if (!connector.connectorName().equals("fix")) {
+                    Fix2d testFix = new Fix2d(connector.getAnchor());
+                    if (checkConnector(userAnchoredVectorsAtConnector, testFix, null) == ConnectorCheckResult.passed) {
+                        logInfo("check: user wrongly created a fix at point " + connector.getAnchor().getLabelText());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "fix", connector.connectorName());
+                        return false;
+                    }
+                }
+                // otherwise, the user did something strange.
+                logInfo("check: user simply added reactions to a joint that don't make sense to point " + connector.getAnchor().getLabelText());
+                logInfo("check: FAILED");
+                setAdviceKey("fbd_feedback_check_fail_joint_wrong", connector.connectorName(), connector.getAnchor().getLabelText());
+                return false;
+        }
+        return true;
     }
 
     private void setAdviceKey(String key, Object... parameters) {
@@ -149,22 +237,34 @@ public class FBDChecker {
 
         logInfo("check: user added AnchoredVectors: " + addedLoads);
 
+        debugInfo("STEP 1: is diagram empty?");
+
         if (addedLoads.size() <= 0) {
             logInfo("check: diagram does not contain any AnchoredVectors");
             logInfo("check: FAILED");
 
             setAdviceKey("fbd_feedback_check_fail_add");
+            debugInfo("STEP 1: FAILED");
             return false;
         }
+
+        debugInfo("STEP 1: PASSED");
+        debugInfo("STEP 2: Given loads added?");
 
         // step 2: for vectors that we can click on and add, ie, given added forces,
         // make sure that the user has added all of them.
         for (AnchoredVector given : getGivenLoads()) {
+            debugInfo("  Checking given load: " + given);
             boolean ok = performGivenCheck(addedLoads, given);
             if (!ok) {
+                debugInfo("STEP 2: FAILED");
                 return false;
             }
         }
+
+        debugInfo("STEP 2: PASSED");
+        debugInfo("  user loads after givens removed: " + addedLoads);
+        debugInfo("STEP 3: Weights added?");
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
         for (Body body : diagram.getBodySubset().getBodies()) {
@@ -176,11 +276,17 @@ public class FBDChecker {
                     new Vector(Unit.force, Vector3bd.UNIT_Y.negate(),
                     new BigDecimal(body.getWeight().doubleValue())));
 
+            debugInfo("  Checking weight: " + weight);
             boolean ok = performWeightCheck(addedLoads, weight, body);
             if (!ok) {
+                debugInfo("STEP 3: FAILED");
                 return false;
             }
         }
+
+        debugInfo("STEP 3: PASSED");
+        debugInfo("  user loads after weights removed: " + addedLoads);
+        debugInfo("STEP 4: Connectors have reactions?");
 
         // Step 4: go through all the border connectors connecting this FBD to the external world,
         // and check each AnchoredVector implied by the connector.
@@ -209,6 +315,12 @@ public class FBDChecker {
                 continue;
             }
 
+            debugInfo("*** CONNECTOR TEST BEGIN ***");
+            debugInfo("  Checking connector: " + connector);
+            debugInfo("  body1: " + connector.getBody1() + " body2: " + connector.getBody2());
+            debugInfo("  solved: " + connector.isSolved() + " negatable: " + connector.isForceDirectionNegatable());
+            debugInfo("  body (our perspective): " + body);
+
             // build a list of the AnchoredVectors at this point
             List<AnchoredVector> userAnchoredVectorsAtConnector = new ArrayList<AnchoredVector>();
             for (AnchoredVector AnchoredVector : addedLoads) {
@@ -217,6 +329,8 @@ public class FBDChecker {
                 }
             }
 
+            debugInfo("  user added loads: " + userAnchoredVectorsAtConnector);
+
             logInfo("check: testing connector: " + connector);
 
             // special case, userAnchoredVectorsAtConnector is empty:
@@ -224,94 +338,17 @@ public class FBDChecker {
                 logInfo("check: have any forces been added");
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_joint_reaction", connector.connectorName(), connector.getAnchor().getLabelText());
+                debugInfo("STEP 4: FAILED");
                 return false;
             }
 
+            debugInfo("  performing connector check...");
             ConnectorCheckResult connectorResult = checkConnector(userAnchoredVectorsAtConnector, connector, body);
-
-            switch (connectorResult) {
-                case passed:
-                    // okay, the check passed without complaint. 
-                    // The AnchoredVectors may still not be correct, but that will be tested afterwards.
-                    // for now, continue normally.
-                    break;
-                case inappropriateDirection:
-                    // check for special case of 2FM:
-                    logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
-                    logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
-
-                    if (connector instanceof Connector2ForceMember2d) {
-                        Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
-                        if (connector2fm.getMember() instanceof Cable) {
-                            // special message for cables:
-                            logInfo("check: user created a cable in compression at point " + connector.getAnchor().getName());
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_joint_cable",
-                                    connector.getAnchor().getName(),
-                                    connector2fm.getMember());
-                            return false;
-                        }
-                    } else {
-                        // one of the directions is the wrong way, and it's not a cable this time
-                        // it is probably a roller or something.
-                        logInfo("check: AnchoredVectors have wrong direction at point " + connector.getAnchor().getName());
-                        logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_some_reverse", connector.getAnchor().getName());
-                        return false;
-                    }
-                case somethingExtra:
-                    // this particular check could be fine
-                    // in some problems there are multiple connectors at one point (notably in frame problems)
-                    // and this means that extra AnchoredVectors are okay. We check to see if multiple connectors are present,
-                    // and if so, continue gracefully, as inapporpriate extra things will be checked at the end
-                    // otherwise the check will continue to the next step, "missingSomething" where other conditions
-                    // will be tested.
-
-                    if (diagram.getConnectorsAtPoint(connector.getAnchor()).size() > 1) {
-                        // continue on.
-                        break;
-                    }
-                case missingSomething:
-                    // okay, if we are here then either something is missing, or something is extra.
-                    // check against pins or rollers and see what happens.
-
-                    logInfo("check: User added AnchoredVectors at " + connector.getAnchor().getName() + ": " + userAnchoredVectorsAtConnector);
-                    logInfo("check: Was expecting: " + getReactionAnchoredVectors(connector, connector.getReactions(body)));
-
-                    if (connector instanceof Connector2ForceMember2d) {
-                        logInfo("check: user missing a load at " + connector.getAnchor().getLabelText());
-                        logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_missing_at_2fm", connector.getAnchor().getLabelText());
-                    }
-
-                    // check if this is mistaken for a pin
-                    if (!connector.connectorName().equals("pin")) {
-                        Pin2d testPin = new Pin2d(connector.getAnchor());
-                        if (checkConnector(userAnchoredVectorsAtConnector, testPin, null) == ConnectorCheckResult.passed) {
-                            logInfo("check: user wrongly created a pin at point " + connector.getAnchor().getLabelText());
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "pin", connector.connectorName());
-                            return false;
-                        }
-                    }
-
-                    // check if this is mistaken for a fix
-                    if (!connector.connectorName().equals("fix")) {
-                        Fix2d testFix = new Fix2d(connector.getAnchor());
-                        if (checkConnector(userAnchoredVectorsAtConnector, testFix, null) == ConnectorCheckResult.passed) {
-                            logInfo("check: user wrongly created a fix at point " + connector.getAnchor().getLabelText());
-                            logInfo("check: FAILED");
-                            setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "fix", connector.connectorName());
-                            return false;
-                        }
-                    }
-
-                    // otherwise, the user did something strange.
-                    logInfo("check: user simply added reactions to a joint that don't make sense to point " + connector.getAnchor().getLabelText());
-                    logInfo("check: FAILED");
-                    setAdviceKey("fbd_feedback_check_fail_joint_wrong", connector.connectorName(), connector.getAnchor().getLabelText());
-                    return false;
+            if (!reportConnectorResult(connectorResult, connector, userAnchoredVectorsAtConnector, body)) {
+                debugInfo("STEP 4: FAILED");
+                return false;
             }
+            debugInfo("  connector check passed! " + connectorResult);
 
             // okay, now the connector test has passed.
             // We know now that the AnchoredVectors present in the diagram satisfy the reactions for the connector.
@@ -319,15 +356,22 @@ public class FBDChecker {
             // they will be present in the symbol manager.
 
             List<AnchoredVector> expectedReactions = getReactionAnchoredVectors(connector, connector.getReactions(body));
+            debugInfo("  testing the expected reactions: " + expectedReactions);
             for (AnchoredVector reaction : expectedReactions) {
+
+                debugInfo("    testing reaction: " + reaction);
                 // get a AnchoredVector and result corresponding to this check.
                 AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
 
                 if (loadFromSymbolManager != null) {
+                    debugInfo("    has symbolic equivalent: " + loadFromSymbolManager);
+
                     // make sure the directions are pointing the correct way:
                     if (reaction.getVectorValue().equals(loadFromSymbolManager.getVectorValue().negate())) {
                         loadFromSymbolManager = new AnchoredVector(loadFromSymbolManager);
                         loadFromSymbolManager.getVectorValue().negateLocal();
+
+                        debugInfo("    the symbolic equivalent is opposite the reaction, so we reverse it: " + loadFromSymbolManager);
                     }
 
                     // of the user AnchoredVectors, only check those which point in maybe the right direction
@@ -339,35 +383,33 @@ public class FBDChecker {
                         }
                     }
 
+                    debugInfo("    checking to make sure there is a user load valid against the reaction...");
+                    boolean canCheckOpposite = connector.isForceDirectionNegatable() && !loadFromSymbolManager.isKnown();
                     Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(
-                            userAnchoredVectorsAtConnectorInDirection, loadFromSymbolManager);
+                            userAnchoredVectorsAtConnectorInDirection, loadFromSymbolManager, canCheckOpposite);
                     AnchoredVector candidate = result.getLeft();
+
+                    debugInfo("    there is: " + candidate);
 
                     // this AnchoredVector has been solved for already. Now we can check against it.
                     if (result.getRight() == AnchoredVectorCheckResult.passed) {
                         // check is OK, we can remove the AnchoredVector from our addedAnchoredVectors.
                         addedLoads.remove(candidate);
+                        debugInfo("    candidate is OK! Removing it.");
                     } else {
                         complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                        debugInfo("STEP 4: FAILED");
                         return false;
                     }
 
                 } else {
+                    debugInfo("    has no symbolic equivalent, so requires a name check");
                     // this AnchoredVector is new, so it requires a name check.
 
-                    // let's find a AnchoredVector that seems to match the expected reaction.
-                    /*AnchoredVector candidate = null;
-                    for (AnchoredVector possibleCandidate : userAnchoredVectorsAtConnector) {
-                    // we know that these all are at the right anchor, so only test direction.
-                    // direction may also be negated, since these are new symbols.
-                    if (possibleCandidate.getVectorValue().equals(reaction.getVectorValue()) ||
-                    possibleCandidate.getVectorValue().equals(reaction.getVectorValue().negate())) {
-                    candidate = possibleCandidate;
-                    }
-                    }*/
-
+                    debugInfo("    checking to make sure there is a user load valid against the reaction...");
+                    boolean canCheckOpposite = connector.isForceDirectionNegatable() && !reaction.isKnown();
                     Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(
-                            userAnchoredVectorsAtConnector, reaction);
+                            userAnchoredVectorsAtConnector, reaction, canCheckOpposite);
                     AnchoredVector candidate = result.getLeft();
 
                     // this AnchoredVector has been solved for already. Now we can check against it.
@@ -377,36 +419,54 @@ public class FBDChecker {
                         // do nothing
                     } else {
                         complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                        debugInfo("STEP 4: FAILED");
                         return false;
                     }
 
                     // candidate should not be null at this point since the main test passed.
-
+                    debugInfo("    there is: " + candidate);
+                    debugInfo("    checking to see if its name is OK...");
                     NameCheckResult nameResult;
                     if (connector instanceof Connector2ForceMember2d) {
                         nameResult = checkAnchoredVectorName2FM(candidate, (Connector2ForceMember2d) connector);
+                        debugInfo("    doing a 2FM name check. Result: " + nameResult);
                     } else {
                         nameResult = checkLoadName(candidate);
+                        debugInfo("    doing a normal name check. Result: " + nameResult);
                     }
+
                     if (nameResult == NameCheckResult.passed) {
                         // we're okay!!
                         addedLoads.remove(candidate);
+                        debugInfo("    candidate is OK! Removing it.");
                     } else {
                         complainAboutName(nameResult, candidate);
+                        debugInfo("STEP 4: FAILED");
                         return false;
                     }
                 }
             }
+
+            debugInfo("*** CONNECTOR TEST DONE!!! ***");
+            debugInfo("  user loads after reactions removed: " + addedLoads);
+
         }
+
+        debugInfo("STEP 4: PASSED!");
+        debugInfo("STEP 5: Are any loads remaining?");
 
         // Step 5: Make sure we've used all the user added forces.
         if (!addedLoads.isEmpty()) {
+            debugInfo("  There are: " + addedLoads + " remaining!");
+            debugInfo("STEP 5: FAILED");
+
             logInfo("check: user added more forces than necessary: " + addedLoads);
             logInfo("check: FAILED");
 
             setAdviceKey("fbd_feedback_check_fail_additional", addedLoads.get(0).getAnchor().getName());
             return false;
         }
+        debugInfo("STEP 5: PASSED");
 
         // Step 6: Verify labels
         // verify that all unknowns are symbols
@@ -427,11 +487,13 @@ public class FBDChecker {
      * @return
      */
     protected boolean performGivenCheck(List<AnchoredVector> addedAnchoredVectors, AnchoredVector given) {
-        List<AnchoredVector> candidates = getCandidates(addedAnchoredVectors, given, given.isSymbol() && !given.isKnown());
+
+        boolean isUnknownSymbol = given.isSymbol() && !given.isKnown();
+        List<AnchoredVector> candidates = getCandidates(addedAnchoredVectors, given, isUnknownSymbol);
 
         // try all candidates
         // realistically there should only be one, but this check tries to be secure.
-        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, given);
+        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, given, isUnknownSymbol);
 
         // we have no candidates, so terminate.
         if (result.getRight() == null) {
@@ -500,7 +562,7 @@ public class FBDChecker {
 
         // try all candidates
         // realistically there should only be one, but this check tries to be secure.
-        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, weight);
+        Pair<AnchoredVector, AnchoredVectorCheckResult> result = checkAllCandidatesAgainstTarget(candidates, weight, false);
 
         // we have no candidates, so terminate.
         if (result.getRight() == null) {
@@ -573,6 +635,7 @@ public class FBDChecker {
                 setAdviceKey("fbd_feedback_check_fail_not_same_number", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
                 return;
             case wrongDirection:
+            case opposite:
                 logInfo("check: AnchoredVector is pointing the wrong direction: " + candidate);
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_reverse", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
@@ -819,6 +882,7 @@ public class FBDChecker {
     protected enum AnchoredVectorCheckResult {
 
         passed, //check passes
+        opposite, // occurs when solved value is in wrong direction
         wrongDirection, // occurs when solved value is in wrong direction
         wrongSymbol, // symbol is stored, this should change its symbol
         wrongNumericValue, // number is stored, user put in wrong value
@@ -831,18 +895,26 @@ public class FBDChecker {
      * target. However, this method checks against a collection of candidates, rather than just one.
      * @param candidates
      * @param target
+     * @param oppositeOK whether it is OK to pass a candidate that is the
      * @return
      */
-    protected Pair<AnchoredVector, AnchoredVectorCheckResult> checkAllCandidatesAgainstTarget(List<AnchoredVector> candidates, AnchoredVector target) {
+    protected Pair<AnchoredVector, AnchoredVectorCheckResult> checkAllCandidatesAgainstTarget(List<AnchoredVector> candidates, AnchoredVector target, boolean oppositeOK) {
         AnchoredVectorCheckResult result = null;
         AnchoredVector lastCandidate = null;
+        debugInfo("  Checking against target: " + target + " pool: " + candidates + " oppositeOK: " + oppositeOK);
         for (AnchoredVector candidate : candidates) {
             lastCandidate = candidate;
             result = checkAnchoredVectorAgainstTarget(candidate, target);
+            debugInfo("  Checking individual: candidate: " + candidate + " target: " + target + " result: " + result);
             if (result == AnchoredVectorCheckResult.passed) {
+                debugInfo("  Check passed: " + candidate);
                 return new Pair<AnchoredVector, AnchoredVectorCheckResult>(candidate, result);
+            } else if (result == AnchoredVectorCheckResult.opposite && oppositeOK) {
+                debugInfo("  Check passed: " + candidate + " (opposite)");
+                return new Pair<AnchoredVector, AnchoredVectorCheckResult>(candidate, AnchoredVectorCheckResult.passed);
             }
         }
+        debugInfo("  Check failed: " + result);
         return new Pair<AnchoredVector, AnchoredVectorCheckResult>(lastCandidate, result);
     }
 
@@ -870,6 +942,10 @@ public class FBDChecker {
             }
             if (!candidate.getVectorValue().equals(target.getVectorValue())) {
                 // pointing the wrong way
+                if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                    return AnchoredVectorCheckResult.opposite;
+                }
+
                 return AnchoredVectorCheckResult.wrongDirection;
             }
             // this is sufficient for the AnchoredVector to be correct
@@ -882,16 +958,19 @@ public class FBDChecker {
                 return AnchoredVectorCheckResult.shouldNotBeNumeric;
             }
 
-            if (!candidate.getVectorValue().equals(target.getVectorValue())) {
-                // pointing the wrong way
-                return AnchoredVectorCheckResult.wrongDirection;
-            }
-
             // candidate has the wrong symbol if its symbol name does not match the symbol name of target
             // the symbol for target also not be empty
             if (!candidate.getSymbolName().equalsIgnoreCase(target.getSymbolName()) && !"".equals(target.getSymbolName())) {
                 // candidate has the wrong symbol name
                 return AnchoredVectorCheckResult.wrongSymbol;
+            }
+
+            if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+                // pointing the wrong way
+                if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                    return AnchoredVectorCheckResult.opposite;
+                }
+                return AnchoredVectorCheckResult.wrongDirection;
             }
             // we should be okay now.
             return AnchoredVectorCheckResult.passed;

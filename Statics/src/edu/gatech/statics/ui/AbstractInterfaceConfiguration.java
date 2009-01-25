@@ -26,7 +26,28 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
     private CoordinateSystemWindow coordinateSystemWindow;
     private ViewConstraints viewConstraints;
     private DiagramDisplayCalculator diagramDisplayCalculator;
-    
+    private float panSpeed = .7f;
+    private float rotateSpeed = .05f;
+    private float zoomSpeed = .02f;
+
+    public float getPanSpeed() {
+        return panSpeed;
+    }
+
+    public float getRotateSpeed() {
+        return rotateSpeed;
+    }
+
+    public float getZoomSpeed() {
+        return zoomSpeed;
+    }
+
+    public void setCameraSpeed(float panSpeed, float zoomSpeed, float rotateSpeed) {
+        this.panSpeed = panSpeed;
+        this.zoomSpeed = zoomSpeed;
+        this.rotateSpeed = rotateSpeed;
+    }
+
     public void setCoordinateSystemWindow(CoordinateSystemWindow coordinateSystemWindow) {
         this.coordinateSystemWindow = coordinateSystemWindow;
     }

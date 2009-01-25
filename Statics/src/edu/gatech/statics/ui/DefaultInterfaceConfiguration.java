@@ -124,6 +124,7 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         cameraControl.getViewDiagramState().setCameraFrame(
                 new Vector3f(0, 0, 30),
                 new Vector3f(0, 0, 0));
+        cameraControl.setMovementSpeed(getPanSpeed(), getZoomSpeed(), getRotateSpeed());
     }
 
     public DiagramDisplayCalculator createDisplayCalculator() {
