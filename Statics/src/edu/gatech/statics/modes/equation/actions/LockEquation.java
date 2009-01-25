@@ -29,15 +29,15 @@ public class LockEquation implements DiagramAction<EquationState> {
         mathBuilder.setLocked(locked);
         builder.putEquationState(mathBuilder.build());
 
-        boolean allLocked = true;
-        for(EquationMathState state : builder.getEquationStates().values()) {
-            if(!state.isLocked())
-                allLocked = false;
-        }
+        //boolean allLocked = true;
+        //for(EquationMathState state : builder.getEquationStates().values()) {
+        //    if(!state.isLocked())
+        //        allLocked = false;
+        //}
         // if all equations are locked, we lock the diagram.
-        if(allLocked) {
-            builder.setLocked(true);
-        }
+        //if(allLocked) {
+        //    builder.setLocked(true);
+        //}
 
         return builder.build();
     }

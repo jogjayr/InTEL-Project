@@ -172,9 +172,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         Logger.getLogger("Statics").info("Performing the solve (updating other diagrams with the solution)");
         
         // first, get the builder
-        // we do not lock the diagram here.
+        // lock the diagram
         EquationState.Builder eqBuilder = new EquationState.Builder(getCurrentState());
-        //eqBuilder.setLocked(true);
+        eqBuilder.setLocked(true);
 
         FBDState.Builder fbdBuilder = fbd.getCurrentState().getBuilder();
 
