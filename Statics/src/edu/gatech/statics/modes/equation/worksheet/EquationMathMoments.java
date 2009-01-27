@@ -106,6 +106,7 @@ public class EquationMathMoments extends EquationMath {
     /**
      * This method compares values for moment terms, but checks for moment
      * special cases, specifically the inclination check.
+     * EDIT: commented out the inclination case.
      * @param coefficient
      * @param targetValue
      * @param distanceValue
@@ -146,13 +147,14 @@ public class EquationMathMoments extends EquationMath {
         BigDecimal coefficientValue = affineCoefficient.getConstant();
 
         TermError error = compareValues(coefficientValue, targetValue);
-        if (error == TermError.incorrect) {
-            // if coefficient is not correct, and is equal to the distance for a force, then the inclination of
-            // the force is missing, and we inform the user
-            if (Math.abs(coefficientValue.floatValue()) - distanceValue.floatValue() < EquationMath.TEST_ACCURACY) {
-                return TermError.missingInclination;
-            }
-        }
+        // eliminate the inclination case, as it is confusing
+//        if (error == TermError.incorrect) {
+//            // if coefficient is not correct, and is equal to the distance for a force, then the inclination of
+//            // the force is missing, and we inform the user
+//            if (Math.abs(coefficientValue.floatValue()) - distanceValue.floatValue() < EquationMath.TEST_ACCURACY) {
+//                return TermError.missingInclination;
+//            }
+//        }
         return error;
     }
 
