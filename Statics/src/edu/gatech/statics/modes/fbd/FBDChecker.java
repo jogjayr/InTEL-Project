@@ -397,7 +397,7 @@ public class FBDChecker {
                         addedLoads.remove(candidate);
                         debugInfo("    candidate is OK! Removing it.");
                     } else {
-                        complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                        complainAboutAnchoredVectorCheck(result.getRight(), candidate, loadFromSymbolManager);
                         debugInfo("STEP 4: FAILED");
                         return false;
                     }
@@ -418,7 +418,7 @@ public class FBDChecker {
                         //addedLoads.remove(candidate);
                         // do nothing
                     } else {
-                        complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                        complainAboutAnchoredVectorCheck(result.getRight(), candidate, reaction);
                         debugInfo("STEP 4: FAILED");
                         return false;
                     }
@@ -533,7 +533,7 @@ public class FBDChecker {
                     break;
                 }
             default:
-                complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                complainAboutAnchoredVectorCheck(result.getRight(), candidate, given);
                 return false;
         }
 
@@ -602,7 +602,7 @@ public class FBDChecker {
                 setAdviceKey("fbd_feedback_check_fail_weight_value", body.getName());
                 return false;
             default:
-                complainAboutAnchoredVectorCheck(result.getRight(), candidate);
+                complainAboutAnchoredVectorCheck(result.getRight(), candidate, weight);
                 return false;
         }
 
@@ -617,7 +617,7 @@ public class FBDChecker {
         return true;
     }
 
-    private void complainAboutAnchoredVectorCheck(AnchoredVectorCheckResult result, AnchoredVector candidate) {
+    private void complainAboutAnchoredVectorCheck(AnchoredVectorCheckResult result, AnchoredVector candidate, AnchoredVector target) {
         switch (result) {
             case shouldNotBeNumeric:
                 logInfo("check: force should not be numeric: " + candidate);
@@ -644,7 +644,7 @@ public class FBDChecker {
                 //the student has created a AnchoredVector with a name that doesn't match its opposing force
                 logInfo("check: AnchoredVector should equal its opposite: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName());
+                setAdviceKey("fbd_feedback_check_fail_not_same_symbol", candidate.getUnit().toString(), candidate.getQuantity().toString(), candidate.getAnchor().getName(), target.getSymbolName());
                 return;
         }
     }

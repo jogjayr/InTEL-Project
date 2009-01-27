@@ -178,7 +178,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
 
     private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
 
-        if (!isGivenLoad(load)) {
+        if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
             if (load1 != null) {
                 load = load1.getVector();

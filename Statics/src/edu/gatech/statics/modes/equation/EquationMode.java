@@ -69,15 +69,19 @@ public class EquationMode extends Mode {
         // okay, the check fails, now we clear check flags and
         // load up the fbd mode.
         if (!eq.isLocked() && !fbdChecker.checkDiagram()) {
+
+            boolean fbdWasSolved = fbd.isSolved();
+            //System.out.println("*** wasSolved: " + fbdWasSolved);
+
             fbd.setSolved(false);
-            //eq.getWorksheet().resetSolve();
-            //eq.stateChanged();
             eq.resetSolve();
             FBDMode.instance.load(key);
 
-            FBDRedirectPopup popup = new FBDRedirectPopup(key);
-            popup.popup(0, 0, true);
-            popup.center();
+            if (fbdWasSolved) {
+                FBDRedirectPopup popup = new FBDRedirectPopup(key);
+                popup.popup(0, 0, true);
+                popup.center();
+            }
         }
         //warning that gets displayed if the user gets to the equation mode
         //of a 2FM. Maybe this should be shown only once?

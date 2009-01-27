@@ -49,6 +49,7 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
 
         public Builder(FBDState state) {
             // make mutable copies for the builder
+            this.solved = state.solved;
             for (AnchoredVector load : state.getAddedLoads()) {
                 addedLoads.add(new AnchoredVector(load));
             }
@@ -97,7 +98,7 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         //this.addedLoads = addedLoads;
         }
 
-        public boolean getSolved() {
+        public boolean isSolved() {
             return solved;
         }
 

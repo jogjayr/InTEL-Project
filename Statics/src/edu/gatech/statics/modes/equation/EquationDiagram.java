@@ -207,8 +207,27 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     // make a copy of it
                     newLoad = new AnchoredVector(newLoad);
 
+                    // the new load will be the load stored in the symbol manager.
+                    // This is a load which was created in another diagram, but not solved for yet.
+                    // We want to make sure that it has the correct direction for this diagram, though.
+                    // This is because if *value* is negated, it is in reverse of the direction
+                    // specified by the user in oldLoad.
+                    // Thus, we check to see if they have the same direction, and reverse it otherwise.
+                    if(newLoad.getVectorValue().dot(oldLoad.getVectorValue()).floatValue() < 0) {
+                        // the dot product checks to see if they are pointing the same way.
+                        newLoad.getVectorValue().negateLocal();
+                    }
+
                     newLoad.setDiagramValue(new BigDecimal(value));
                     newLoad.setKnown(true);
+
+                    // if the load from the symbol manager is due to the other end of a 2FM,
+                    // then newLoad will be be located at the opposite point, and pointing in the wrong direction.
+                    // so we perform a check and move its location and reverse it in this case.
+                    if(!newLoad.getAnchor().equals(oldLoad.getAnchor())) {
+                        // the only circumstance when the points will be different is if the stored load is due to a 2FM
+                        newLoad.setAnchor(oldLoad.getAnchor());
+                    }
 
                     // update the load in the symbol manager
                     Exercise.getExercise().getSymbolManager().addSymbol(newLoad);

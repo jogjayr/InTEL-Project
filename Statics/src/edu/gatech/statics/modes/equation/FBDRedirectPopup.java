@@ -14,7 +14,6 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
-import edu.gatech.statics.modes.fbd.FBDMode;
 
 /**
  * this popup is displayed when the user needs to make modifications to the
@@ -34,8 +33,8 @@ public class FBDRedirectPopup extends ModalPopupWindow {
         BLabel title = new BLabel("Revise Diagram");
         add(title, BorderLayout.NORTH);
         HTMLView text = new HTMLView();
-        text.setContents("There have been changes to adjacent free body diagrams," +
-                "so you need to revise your free body diagram for these bodies.");
+        text.setContents("There have been changes to an adjacent free body diagram. " +
+                "you need to revise this free body diagram to include the changes.");
         text.setPreferredSize(300, 100);
 
         add(text, BorderLayout.CENTER);
