@@ -36,6 +36,11 @@ abstract public class DistributedForce implements DiagramKey {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     /**
      * @deprecated for persistence. Do not use!
      */
@@ -196,6 +201,4 @@ abstract public class DistributedForce implements DiagramKey {
         hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
     }
-
-
 }

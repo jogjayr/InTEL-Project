@@ -4,7 +4,9 @@
  */
 package edu.gatech.statics.modes.frame;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectAction;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectState;
@@ -51,6 +53,18 @@ public class FrameExercise extends OrdinaryExercise {
             return obj instanceof Body && !(obj instanceof Background) && !(obj instanceof TwoForceMember);
         }
     };
+
+    @Override
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodies) {
+
+        // set up the special name for the whole frame, in frame problems
+        int numberAllBodies = getSchematic().allBodies().size();
+        if (bodies.getBodies().size() == numberAllBodies) {
+            bodies.setSpecialName("Whole Frame");
+        }
+
+        return super.createFreeBodyDiagram(bodies);
+    }
 
     @Override
     protected SelectDiagram createSelectDiagram() {

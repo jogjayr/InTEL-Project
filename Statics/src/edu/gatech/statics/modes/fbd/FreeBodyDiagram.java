@@ -282,8 +282,6 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     /** Creates a new instance of FBDWorld */
     public FreeBodyDiagram(BodySubset bodies) {
         super(bodies);
-
-
         fbdInput = new FBDInput(this);
     }
 

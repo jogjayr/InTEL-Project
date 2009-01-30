@@ -8,7 +8,6 @@
  */
 package edu.gatech.statics.exercise;
 
-import com.jme.bounding.OrientedBoundingBox;
 import com.jme.input.InputHandler;
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.objects.SimulationObject;
@@ -31,6 +30,7 @@ import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
+import edu.gatech.statics.util.DiagramListener;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +47,8 @@ import java.util.logging.Logger;
  */
 public abstract class Diagram<StateType extends DiagramState> {
 
+    private final DiagramKey key;
+
     /**
      * Returns the type of this diagram. Together, the type and the key should
      * make a unique identifier for this diagram.
@@ -60,7 +62,9 @@ public abstract class Diagram<StateType extends DiagramState> {
      * Returns the diagram key for this particular diagram.
      * @return
      */
-    abstract public DiagramKey getKey();
+    final public DiagramKey getKey() {
+        return key;
+    }
     /**
      * The state stack representing the current state and history of this diagram.
      */
@@ -288,9 +292,16 @@ public abstract class Diagram<StateType extends DiagramState> {
     }
 
     /** Creates a new instance of World */
-    public Diagram() {
+    public Diagram(DiagramKey key) {
+        this.key = key;
+
         states = new StateStack<StateType>(createInitialState());
-    //setSelectableFilterDefault();
+        Logger.getLogger("Statics").info("Diagram created: " + this + " state: " + getCurrentState());
+        //setSelectableFilterDefault();
+
+        for (DiagramListener listener : StaticsApplication.getApp().getDiagramListeners()) {
+            listener.onDiagramCreated(this);
+        }
     }
     private boolean nodesUpdated = false;
 

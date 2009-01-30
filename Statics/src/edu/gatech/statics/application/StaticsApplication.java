@@ -9,7 +9,6 @@
 package edu.gatech.statics.application;
 
 import com.jme.input.action.InputActionEvent;
-import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
 import com.jme.input.AbsoluteMouse;
@@ -29,6 +28,7 @@ import com.jmex.bui.BRootNode;
 import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
@@ -101,15 +101,15 @@ public class StaticsApplication {
      * This method loads the most finished diagram with the specified bodies.
      * @param bodies
      */
-    public void selectBodies(BodySubset bodies) {
-        Diagram diagram = currentExercise.getRecentDiagram(bodies);
+    public void selectDiagramKey(DiagramKey key) {
+        Diagram diagram = currentExercise.getRecentDiagram(key);
         if (diagram == null) {
             // this is an exceptional condition?
-            Logger.getLogger("Statics").info("bodies do not have a diagram? " + bodies);
+            Logger.getLogger("Statics").info("key does not have a diagram? " + key);
         } else {
             setCurrentDiagram(diagram);
             Mode newMode = diagram.getMode();
-            newMode.load(bodies);
+            newMode.load(key);
         }
     }
 

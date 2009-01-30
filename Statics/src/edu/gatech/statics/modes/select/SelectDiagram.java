@@ -9,7 +9,6 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.objects.Body;
@@ -35,6 +34,7 @@ public class SelectDiagram extends Diagram<SelectState> {
     }
 
     public SelectDiagram() {
+        super(null);
     }
     private static final SelectionFilter filter = new SelectionFilter() {
 
@@ -57,11 +57,11 @@ public class SelectDiagram extends Diagram<SelectState> {
     @Override
     public void activate() {
         super.activate();
-        
+
         // reset to the initial state
         pushState(createInitialState());
         clearStateStack();
-        
+
         currentHighlight = null;
 
         setDiffuseHighlights(true);
@@ -109,9 +109,10 @@ public class SelectDiagram extends Diagram<SelectState> {
 
     public void selectAll() {
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
-        for(Body body : allBodies()) {
-            if(body instanceof Background)
+        for (Body body : allBodies()) {
+            if (body instanceof Background) {
                 continue;
+            }
             objects.add(body);
         }
 
@@ -140,8 +141,8 @@ public class SelectDiagram extends Diagram<SelectState> {
             obj.setDisplaySelected(getCurrentlySelected().contains(obj));
         }
 
-        //SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        //modePanel.updateSelection();
+    //SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+    //modePanel.updateSelection();
     }
 
     @Override
@@ -178,15 +179,6 @@ public class SelectDiagram extends Diagram<SelectState> {
                 }
             }
         }
-    }
-
-    /**
-     * The select diagram has no key, so it returns null.
-     * @return
-     */
-    @Override
-    public DiagramKey getKey() {
-        return null;
     }
 
     @Override

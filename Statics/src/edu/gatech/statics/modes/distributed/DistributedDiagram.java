@@ -7,7 +7,6 @@ package edu.gatech.statics.modes.distributed;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.distributed.DistributedState.Builder;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
@@ -34,7 +33,7 @@ import java.util.logging.Logger;
 public class DistributedDiagram extends Diagram<DistributedState> {
 
     private static final float TOLERANCE = .01f;
-    private DistributedForce dl;
+    //private DistributedForce dl;
     private DistributedForceObject dlObj;
     private DistanceMeasurement measure;
 
@@ -71,9 +70,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
 
         baseObjects.add(dlObj);
-        baseObjects.add(dl.getSurface());
-        baseObjects.add(dl.getEndPoint());
-        baseObjects.add(dl.getStartPoint());
+        baseObjects.add(getDistributedForce().getSurface());
+        baseObjects.add(getDistributedForce().getEndPoint());
+        baseObjects.add(getDistributedForce().getStartPoint());
 
         Force resultant = dlObj.getResultantForce();
 
@@ -82,7 +81,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
         baseObjects.add(measure);
 
-        for (Measurement measurement : getSchematic().getMeasurements(new BodySubset(dl.getSurface()))) {
+        for (Measurement measurement : getSchematic().getMeasurements(new BodySubset(getDistributedForce().getSurface()))) {
             baseObjects.add(measurement);
         }
 
@@ -90,7 +89,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     public DistributedDiagram(DistributedForce dl) {
-        this.dl = dl;
+        super(dl);
 
         // pick out the actual distributed load object from the schematic
         for (SimulationObject obj : Exercise.getExercise().getSchematic().allObjects()) {
@@ -130,7 +129,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             return false;
         }
 
-        DistributedForce force = getForce();
+        DistributedForce force = getDistributedForce();
         BigDecimal resultantMagnitude = force.getResultantMagnitude();
         BigDecimal resultantOffset = force.getResultantOffset(); // need to get the distance somehow
 
@@ -179,7 +178,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             Logger.getLogger("Statics").info("Setting the resultant to solved");
 
             // ************ NON STATE CHANGE
-            dl.getSurface().addObject(resultant);
+            getDistributedForce().getSurface().addObject(resultant);
 
             //dl.setSolved(true);
 
@@ -199,13 +198,13 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             //}
 
             measure.setKnown(true);
-            resultant.getVector().setDiagramValue(dl.getResultantMagnitude());
+            resultant.getVector().setDiagramValue(getDistributedForce().getResultantMagnitude());
 
             getSchematic().add(resultant);
             getSchematic().add(resultant.getAnchor());
             getSchematic().add(measure);
-            dl.getSurface().addObject(resultant);
-            dl.getSurface().addObject(resultant.getAnchor());
+            getDistributedForce().getSurface().addObject(resultant);
+            getDistributedForce().getSurface().addObject(resultant.getAnchor());
 
             // update our UI view now that the resultants are found
 
@@ -219,18 +218,13 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         }
     }
 
-    protected DistributedForce getForce() {
-        return dl;
+    protected DistributedForce getDistributedForce() {
+        return (DistributedForce) getKey();
     }
 
     @Override
     public Mode getMode() {
         return DistributedMode.instance;
-    }
-
-    @Override
-    public DiagramKey getKey() {
-        return dl;
     }
 
     @Override

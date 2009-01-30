@@ -12,9 +12,7 @@ import com.jmex.bui.layout.BLayoutManager;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.SubDiagram;
-import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.objects.bodies.Background;
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.util.DiagramListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,59 +30,69 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
         addItem(null);
         StaticsApplication.getApp().addDiagramListener(this);
     }
-    private Map<String, BodySubset> actionMap = new HashMap<String, BodySubset>();
+    private Map<String, DiagramKey> actionMap = new HashMap<String, DiagramKey>();
     private ActionListener listener = new ActionListener() {
 
         public void actionPerformed(ActionEvent event) {
-            BodySubset bodies = actionMap.get(event.getAction());
-            //onSelect(bodies);
-            StaticsApplication.getApp().selectBodies(bodies);
+            DiagramKey key = actionMap.get(event.getAction());
+            StaticsApplication.getApp().selectDiagramKey(key);
         }
     };
 
-    public void addItem(BodySubset bodies) {
-
-        // check already added items, and ignore if we've added this before.
-        for (BodySubset existingSubset : actionMap.values()) {
-            if (bodies == null && existingSubset == null) {
-                return;
-            }
-            if (bodies != null && bodies.equals(existingSubset)) {
-                return;
-            }
+    public void addItem(DiagramKey diagramKey) {
+        if (actionMap.containsValue(diagramKey)) {
+            // we've already added this, return.
+            return;
         }
 
+        BButton button = null;
+
+        if (diagramKey == null) {
+            button = createNewButton();
+        } else if (diagramKey instanceof BodySubset) {
+            button = createBodySubsetButton((BodySubset) diagramKey);
+        } else {
+            button = createGenericButton(diagramKey);
+        }
+
+        if (button != null) {
+            button.setPreferredSize(140, -1);
+            actionMap.put(button.getAction(), diagramKey);
+            placeItem(button);
+        }
+    }
+
+    private BButton createGenericButton(DiagramKey diagramKey) {
+        String action = diagramKey.toString();
+        BButton item = new BButton(action, listener, action);
+        return item;
+    }
+
+    private BButton createNewButton() {
+        String action = "new";
+        BButton item = new BButton(action, listener, action);
+        return item;
+    }
+
+    public BButton createBodySubsetButton(BodySubset bodies) {
         // adds a new button corresponding to the new diagram
-        // If the set of bodies is null, we assign it to create a new diagram
         // If the set of bodies exists, the label is formatted and the action
         // set to a simple hash code referencing the collection
         BButton item;
-        String action;
-        if (bodies == null) {
-            action = "new";
-            item = new BButton("new", listener, action);
-        } 
-        else if(bodies.getSpecialName() != null) {
-            action = Integer.toHexString(bodies.hashCode());
+        String action = bodies.toString();
+        if (bodies.getSpecialName() != null) {
             item = new BButton(bodies.getSpecialName(), listener, action);
-        }
-        else {
-            action = Integer.toHexString(bodies.hashCode());
+        } else {
             String buttonString = bodies.toString().replaceAll(",", ",\n");
             item = new BButton(buttonString, listener, action);
         }
-        item.setPreferredSize(140, -1);
-
-        actionMap.put(action, bodies);
-        placeItem(item);
+        return item;
     }
 
     abstract protected void placeItem(BButton item);
 
     public void onDiagramCreated(Diagram diagram) {
-        if (diagram instanceof SubDiagram) {
-            addItem(((SubDiagram) diagram).getBodySubset());
-        }
+        addItem(diagram.getKey());
         getWindow().pack();
     }
 }
