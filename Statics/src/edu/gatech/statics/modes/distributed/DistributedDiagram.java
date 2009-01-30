@@ -9,6 +9,7 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.math.expressionparser.Parser;
+import edu.gatech.statics.modes.distributed.DistributedState.Builder;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -24,6 +25,7 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -54,6 +56,14 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     public void setMagnitude(String text) {
         SetMagnitudeValue action = new SetMagnitudeValue(text);
         performAction(action);
+    }
+
+    public void setSolved() {
+        //updateResultant();
+        Builder builder = getCurrentState().getBuilder();
+        builder.setSolved(true);
+        pushState(builder.build());
+        clearStateStack();
     }
 
     @Override
@@ -166,6 +176,8 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             dlObj.setDisplayGrayed(true);
             resultant.setDisplayGrayed(false);
 
+            Logger.getLogger("Statics").info("Setting the resultant to solved");
+
             // ************ NON STATE CHANGE
             dl.getSurface().addObject(resultant);
 
@@ -200,6 +212,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
                 listener.onLoadSolved(resultant);
             }
+            Logger.getLogger("Statics").info("Setting the resultant to solved: done");
         } else {
             dlObj.setDisplayGrayed(false);
             resultant.setDisplayGrayed(true);

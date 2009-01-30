@@ -19,7 +19,7 @@ import edu.gatech.statics.objects.representations.PointRepresentation;
  * @author Calvin Ashmore
  */
 public class Point extends SimulationObject implements ResolvableByName {
-    // location, etc, already built into SimulationObject
+
     private Vector3bd point;
 
     public Point(Point other) {
@@ -64,9 +64,7 @@ public class Point extends SimulationObject implements ResolvableByName {
     public Vector3bd getPosition() {
         return point;
     }
-    //public Point(Vector3f position) {
-    //    setTranslation(position);
-    //}
+
     public void createDefaultSchematicRepresentation() {
         Representation rep1 = new PointRepresentation(this);
         LabelRepresentation rep2 = new LabelRepresentation(this, "label_point");
@@ -76,45 +74,7 @@ public class Point extends SimulationObject implements ResolvableByName {
         addRepresentation(rep2);
     }
 
-    /*@Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Point other = (Point) obj;
-        if (this.point != other.point && (this.point == null || !this.point.equals(other.point))) {
-            return false;
-        }
-        if (this.getName() != other.getName() && (this.getName() == null || !this.getName().equals(other.getName()))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (this.point != null ? this.point.hashCode() : 0);
-        hash = 97 * hash + (this.getName() != null ? this.getName().hashCode() : 0);
-        return hash;
-    }*/
-    
     public boolean pointEquals(Point other) {
         return this.point.equals(other.point);
     }
-
-    //@Override
-    //public String getDescription() {
-    //    return "Point: " + getName();
-    //}
-    /**
-     * This is true if both points are the same type of point, and both have the same position.
-     * @param obj
-     * @return
-     */
-    
-    
 }

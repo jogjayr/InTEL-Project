@@ -12,6 +12,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
 import edu.gatech.statics.modes.distributed.DistributedMode;
@@ -92,17 +93,28 @@ public class DistributedModePanel extends ApplicationModePanel {
 
     protected void performCheck() {
         DistributedDiagram diagram = (DistributedDiagram) getDiagram();
+        // check to see if the distributed check succeeds
         if (diagram.check(positionField.getText(), magnitudeField.getText())) {
-            //System.out.println("OK!");
-
-            // ****
-            // HERE WE NEED TO SET THE DIAGRAM TO LOCKED/!?!?!
-            // How is this done in the other diagram checks/locks?
-
-            diagram.updateResultant();
-
+            // distributed check is successful!
+            StaticsApplication.getApp().setAdviceKey("distributed_feedback_check_success");
+            diagram.setSolved();
         } else {
-            //System.out.println("Oh noes!");
+            // should we give any more detailed feedback?
+            StaticsApplication.getApp().setAdviceKey("distributed_feedback_check_fail");
+        }
+    }
+
+    @Override
+    public void stateChanged() {
+        super.stateChanged();
+
+        // lock the input fields if the diagram is locked
+        if (getDiagram().isLocked()) {
+            magnitudeField.setEnabled(false);
+            positionField.setEnabled(false);
+        } else {
+            magnitudeField.setEnabled(true);
+            positionField.setEnabled(true);
         }
     }
 

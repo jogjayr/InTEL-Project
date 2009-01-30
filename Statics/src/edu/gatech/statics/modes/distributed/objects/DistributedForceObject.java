@@ -28,7 +28,8 @@ public class DistributedForceObject extends SimulationObject {
 
         // create the force and anchor
         resultantAnchor = new Point(dl.getName() + " anchor", dl.getResultantPosition());
-        resultantForce = new Force(resultantAnchor, dl.getPeak().getVectorValue(), dl.getName() + " resultant");
+        resultantForce = new Force(resultantAnchor, dl.getPeak().getVectorValue(), "R");
+        resultantForce.setName(dl.getName() + " resultant");
 
         resultantForce.createDefaultSchematicRepresentation();
         resultantAnchor.createDefaultSchematicRepresentation();
