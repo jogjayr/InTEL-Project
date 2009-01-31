@@ -48,7 +48,7 @@ public class BookshelfExercise extends DistributedExercise {
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setSuffix(Unit.force, " N");
         Unit.setSuffix(Unit.mass, " kg");
-        Unit.setSuffix(Unit.forceOverDistance, " N/m");
+        Unit.setSuffix(Unit.forceOverDistance, " N/mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".01"));
 
         getDisplayConstants().setMomentSize(0.5f);

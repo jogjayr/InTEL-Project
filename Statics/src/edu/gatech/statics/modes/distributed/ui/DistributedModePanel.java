@@ -124,6 +124,8 @@ public class DistributedModePanel extends ApplicationModePanel {
 
         magnitudeField.setText(state.getMagnitude());
         positionField.setText(state.getPosition());
+
+        stateChanged();
     }
 
     @Override

@@ -88,19 +88,19 @@ abstract public class DistributedForce implements DiagramKey {
      */
     public BigDecimal getResultantOffset() {
 
-        Vector3bd start = getStartPoint().getPosition();
-        Vector3bd end = getEndPoint().getPosition();
+        Vector3bd start = getSurface().getEndpoint1();
+        Vector3bd end = getResultantPosition();
 
-        BigDecimal alpha = getPositionMultiplier();
+        //BigDecimal alpha = getPositionMultiplier();
 
         MathContext mc = new MathContext(Unit.getPrecision(), RoundingMode.HALF_UP);
 
         BigDecimal length = new BigDecimal(start.distance(end), mc);
-        BigDecimal result = new BigDecimal(length.multiply(alpha).doubleValue(), mc);
+        //BigDecimal result = new BigDecimal(length.multiply(alpha).doubleValue(), mc);
 
-        result = result.divide(Unit.distance.getDisplayScale(), mc);
+        length = length.divide(Unit.distance.getDisplayScale(), mc);
 
-        return result;
+        return length;
     }
 
     /**
