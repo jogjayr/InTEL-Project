@@ -15,4 +15,9 @@ public class DistributedInterfaceConfiguration extends DefaultInterfaceConfigura
     public DistributedInterfaceConfiguration() {
         getModePanels().add(new DistributedModePanel());
     }
+
+//    @Override
+//    protected KnownLoadsWindow createKnownLoadsWindow() {
+//        return new DistributedKnownLoadsWindow();
+//    }
 }

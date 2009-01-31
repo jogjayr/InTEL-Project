@@ -199,6 +199,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
             measure.setKnown(true);
             resultant.getVector().setDiagramValue(getDistributedForce().getResultantMagnitude());
+            resultant.getVector().setKnown(true);
 
             getSchematic().add(resultant);
             getSchematic().add(resultant.getAnchor());

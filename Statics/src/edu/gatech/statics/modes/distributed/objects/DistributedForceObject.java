@@ -6,6 +6,9 @@ package edu.gatech.statics.modes.distributed.objects;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -43,6 +46,14 @@ public class DistributedForceObject extends SimulationObject {
 
         resultantForce.createDefaultSchematicRepresentation();
         resultantAnchor.createDefaultSchematicRepresentation();
+    }
+
+    public boolean isSolved() {
+        Diagram diagram = Exercise.getExercise().getDiagram(dl, DistributedMode.instance.getDiagramType());
+        if (diagram == null) {
+            return false;
+        }
+        return diagram.isLocked();
     }
 
     public DistributedForce getDistributedForce() {

@@ -58,6 +58,21 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         updateView();
     }
 
+    protected void handleConnector(Connector connector, List<Connector2ForceMember2d> handledConnectors, StringBuffer contents) {
+        // iterate through reactions at joint
+        if (connector instanceof Connector2ForceMember2d) {
+            Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
+            if (!handledConnectors.contains(connector2fm.getOpposite())) {
+                writeReaction2FM(connector2fm, contents);
+                handledConnectors.add(connector2fm);
+            }
+        } else {
+            for (Vector force : connector.getReactions(connector.getBody1())) {
+                writeReaction(force, connector.getAnchor(), contents);
+            }
+        }
+    }
+
     private void updateView() {
         StringBuffer contents = new StringBuffer();
         //contents.append("<html><body>");
@@ -74,36 +89,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         //}
 
         for (SimulationObject obj : exercise.getSchematic().allObjects()) {
-
-            // look at joints, specifically
-            if (obj instanceof Connector) {
-                Connector connector = (Connector) obj;
-                if (connector.isSolved()) {
-                    // iterate through reactions at joint
-                    if (connector instanceof Connector2ForceMember2d) {
-                        Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
-                        if (!handledConnectors.contains(connector2fm.getOpposite())) {
-                            writeReaction2FM(connector2fm, contents);
-                            handledConnectors.add(connector2fm);
-                        }
-                    } else {
-                        for (Vector force : connector.getReactions(connector.getBody1())) {
-                            writeReaction(force, connector.getAnchor(), contents);
-                        }
-                    }
-                }
-            }
-
-            // look at free vectors
-            if (obj instanceof Load) {
-                Load vObj = (Load) obj;
-                writeReaction(vObj.getVector(), vObj.getAnchor(), contents, vObj.getName());
-            }
-
-            if (obj instanceof Body) {
-                Body body = (Body) obj;
-                writeWeightReaction(body, contents);
-            }
+            checkObject(obj, contents, handledConnectors);
         }
 
         contents.append("</table>");
@@ -112,7 +98,29 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         view.setContents(contents.toString());
     }
 
-    private void writeWeightReaction(Body body, StringBuffer contents) {
+    protected void checkObject(SimulationObject obj, StringBuffer contents, List<Connector2ForceMember2d> handledConnectors) {
+
+        // look at joints, specifically
+        if (obj instanceof Connector) {
+            Connector connector = (Connector) obj;
+            if (connector.isSolved()) {
+                handleConnector(connector, handledConnectors, contents);
+            }
+        }
+
+        // look at free vectors
+        if (obj instanceof Load) {
+            Load vObj = (Load) obj;
+            writeReaction(vObj.getVector(), vObj.getAnchor(), contents, vObj.getName());
+        }
+
+        if (obj instanceof Body) {
+            Body body = (Body) obj;
+            writeWeightReaction(body, contents);
+        }
+    }
+
+    protected void writeWeightReaction(Body body, StringBuffer contents) {
         if (body.getWeight().doubleValue() == 0) {
             return;
         }
@@ -127,7 +135,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td></tr>");
     }
 
-    private void writeReaction2FM(Connector2ForceMember2d connector, StringBuffer contents) {
+    protected void writeReaction2FM(Connector2ForceMember2d connector, StringBuffer contents) {
 
         contents.append("<tr><td>");
 
@@ -166,7 +174,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         contents.append("</td></tr>");
     }
 
-    private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
+    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
 
         AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
         if (load1 != null) {
@@ -176,7 +184,7 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
         writeReaction(load, applicationPoint, contents, load.getSymbolName());
     }
 
-    private void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
+    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
 
         if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));

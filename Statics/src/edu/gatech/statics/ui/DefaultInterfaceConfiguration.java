@@ -55,7 +55,7 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         descriptionWindow.setLocation(displayWidth - dim.width - 10, displayHeight - dim.height - 70);
         popups.add(descriptionWindow);
 
-        KnownLoadsWindow knownLoadsWindow = new KnownLoadsWindow();
+        KnownLoadsWindow knownLoadsWindow = createKnownLoadsWindow();
         knownLoadsWindow.popup(0, 0, true);
         dim = knownLoadsWindow.getPreferredSize(-1, -1);
         //popupWindows.put(knownForcesWindow.getName(), knownForcesWindow);
@@ -129,5 +129,9 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
 
     public DiagramDisplayCalculator createDisplayCalculator() {
         return new DiagramDisplayCalculator();
+    }
+
+    protected KnownLoadsWindow createKnownLoadsWindow() {
+        return new KnownLoadsWindow();
     }
 }
