@@ -48,7 +48,8 @@ public class DistributedForceObject extends SimulationObject {
 
 
         measure = new DistanceMeasurement(
-                new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
+                //new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
+                dl.getSurface().getEnd1(), resultantAnchor);
         measure.setKnown(false);
         measure.setSymbol("pos");
     }

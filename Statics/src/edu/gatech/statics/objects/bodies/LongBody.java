@@ -23,6 +23,8 @@ abstract public class LongBody extends Body {
 
     private Vector3bd end1;
     private Vector3bd end2;
+    private Point end1Obj;
+    private Point end2Obj;
 
     public Vector3bd getEndpoint1() {
         return end1;
@@ -30,6 +32,14 @@ abstract public class LongBody extends Body {
 
     public Vector3bd getEndpoint2() {
         return end2;
+    }
+
+    public Point getEnd1() {
+        return end1Obj;
+    }
+
+    public Point getEnd2() {
+        return end2Obj;
     }
 
     public LongBody(String name) {
@@ -46,6 +56,8 @@ abstract public class LongBody extends Body {
         setByEndpoints(end1.getPosition(), end2.getPosition());
         addObject(end1);
         addObject(end2);
+        this.end1Obj = end1;
+        this.end2Obj = end2;
     }
 
     public void setByEndpoints(Vector3bd end1, Vector3bd end2) {
