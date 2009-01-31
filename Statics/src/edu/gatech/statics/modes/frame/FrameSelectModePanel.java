@@ -1,9 +1,11 @@
 package edu.gatech.statics.modes.frame;
 
 import com.jmex.bui.layout.BorderLayout;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.bodies.Background;
+import java.util.List;
 
 /**
  * The UI class for the buttons for selection mode.
@@ -34,7 +36,19 @@ public class FrameSelectModePanel extends SelectModePanel {
                 continue;
             }
             getDiagram().selectAll();
-            //getDiagram().onClick(body);
+        //getDiagram().onClick(body);
         }
+    }
+
+    @Override
+    protected String getContents(List<Body> selection) {
+        // return a special bit of text if the selection represents the whole frame
+        if (selection.size() == Exercise.getExercise().getSchematic().allBodies().size()) {
+            String contents = "<font size=\"5\" color=\"white\">";
+            contents += "Whole Frame</font>";
+            return contents;
+        }
+
+        return super.getContents(selection);
     }
 }
