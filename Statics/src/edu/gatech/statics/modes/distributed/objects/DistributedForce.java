@@ -83,6 +83,7 @@ abstract public class DistributedForce implements DiagramKey {
     /**
      * Returns the distance that should be the value of the measurement between
      * the start point and the actual resultant position.
+     * Result is given in world units.
      * @return
      */
     public BigDecimal getResultantOffset() {
@@ -96,6 +97,8 @@ abstract public class DistributedForce implements DiagramKey {
 
         BigDecimal length = new BigDecimal(start.distance(end), mc);
         BigDecimal result = new BigDecimal(length.multiply(alpha).doubleValue(), mc);
+
+        result = result.divide(Unit.distance.getDisplayScale(), mc);
 
         return result;
     }
@@ -113,7 +116,7 @@ abstract public class DistributedForce implements DiagramKey {
 
         Vector3bd start = getStartPoint().getPosition();
         Vector3bd end = getEndPoint().getPosition();
-        double length = start.distance(end);
+        double length = start.distance(end) / Unit.distance.getDisplayScale().floatValue();
         BigDecimal lengthbd = new BigDecimal(length, mc);
         BigDecimal result = peakMagnitude.multiply(magnitudeMultiplier).multiply(lengthbd);
 

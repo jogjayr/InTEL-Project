@@ -75,14 +75,14 @@ public class LeveeExercise extends DistributedExercise {
 
         DistributedForce waterForce = new TriangularDistributedForce("water", levee, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, new BigDecimal("748.8")));
-        DistributedForceObject waterForceObject = new DistributedForceObject(waterForce);
+        DistributedForceObject waterForceObject = new DistributedForceObject(waterForce, "");
 
         levee.addObject(waterForceObject);
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         levee.createDefaultSchematicRepresentation();
-        waterForceObject.createDefaultSchematicRepresentation();
+        waterForceObject.createDefaultSchematicRepresentation(5, 15);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
         measure.createDefaultSchematicRepresentation();

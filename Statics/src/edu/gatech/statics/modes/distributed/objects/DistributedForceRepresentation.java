@@ -118,7 +118,8 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         Matrix3f matrix = new Matrix3f();
         matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_Y.negate());
         arrow.setLocalRotation(matrix);
-        arrow.setSize(.2f, .5f, .075f);
+        arrow.setSize(.2f, 0.5f, .075f);
+        //arrow.setSize(.1f, 0.5f, .05f);
         
         float height = displayScale*getTarget().getDistributedForce().getCurveValue(pos);
         arrow.setLength(height);

@@ -6,7 +6,6 @@ package viewer;
 
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
@@ -33,11 +32,7 @@ public class ViewerDiagram extends Diagram<ViewerState> {
     }
 
     public ViewerDiagram() {
-    }
-
-    @Override
-    public DiagramKey getKey() {
-        return null;
+        super(null);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ConstantDistributedForce extends DistributedForce {
 
     @Override
     protected BigDecimal getPositionMultiplier() {
-        return new BigDecimal(1.0 / 5);
+        return new BigDecimal(".5");
     }
 
     @Override
