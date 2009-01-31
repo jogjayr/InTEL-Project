@@ -100,12 +100,12 @@ public class BookshelfExercise extends DistributedExercise {
         bookshelf.createDefaultSchematicRepresentation();
         
         int arrowDensity = 2;
-        dlObjectBooks1.createDefaultSchematicRepresentation(20f / 6, 2 * arrowDensity);
-        dlObjectBooks2.createDefaultSchematicRepresentation(30f / 6, 4 * arrowDensity);
-        dlObjectBooks3.createDefaultSchematicRepresentation(15f / 6, 3 * arrowDensity);
+        dlObjectBooks1.createDefaultSchematicRepresentation(20f / 6, 2 * arrowDensity, 1.75f);
+        dlObjectBooks2.createDefaultSchematicRepresentation(30f / 6, 4 * arrowDensity, 2.0f);
+        dlObjectBooks3.createDefaultSchematicRepresentation(15f / 6, 3 * arrowDensity, 2.25f);
 
         DistanceMeasurement measureFull = new DistanceMeasurement(A, B);
-        measureFull.createDefaultSchematicRepresentation(2);
+        measureFull.createDefaultSchematicRepresentation(3);
         schematic.add(measureFull);
 
         DistanceMeasurement measure1 = new DistanceMeasurement(A, mid1);

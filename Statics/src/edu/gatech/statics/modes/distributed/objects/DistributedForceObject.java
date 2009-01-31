@@ -9,6 +9,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.distributed.DistributedMode;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
@@ -23,6 +24,7 @@ public class DistributedForceObject extends SimulationObject {
 
     private Force resultantForce;
     private Point resultantAnchor;
+    private DistanceMeasurement measure;
     private DistributedForce dl;
 
     /**
@@ -44,8 +46,15 @@ public class DistributedForceObject extends SimulationObject {
         resultantForce.setName(loadName);
         //resultantForce.setName(dl.getName() + " resultant");
 
-        resultantForce.createDefaultSchematicRepresentation();
-        resultantAnchor.createDefaultSchematicRepresentation();
+
+        measure = new DistanceMeasurement(
+                new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
+        measure.setKnown(false);
+        measure.setSymbol("pos");
+    }
+
+    public DistanceMeasurement getMeasure() {
+        return measure;
     }
 
     public boolean isSolved() {
@@ -142,13 +151,17 @@ public class DistributedForceObject extends SimulationObject {
     @Override
     public void createDefaultSchematicRepresentation() {
         // only one sample is necessary here.
-        createDefaultSchematicRepresentation(5, 10);
+        createDefaultSchematicRepresentation(5, 10, 2f);
     }
 
-    public void createDefaultSchematicRepresentation(float displayScale, int arrows) {
+    public void createDefaultSchematicRepresentation(float displayScale, int arrows, float measureDistance) {
         addRepresentation(new DistributedForceRepresentation(this, 30, displayScale, arrows));
 
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
         addRepresentation(label);
+
+        resultantForce.createDefaultSchematicRepresentation();
+        resultantAnchor.createDefaultSchematicRepresentation();
+        measure.createDefaultSchematicRepresentation(measureDistance);
     }
 }

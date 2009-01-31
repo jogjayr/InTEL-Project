@@ -13,7 +13,6 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Measurement;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SolveListener;
 import edu.gatech.statics.application.StaticsApplication;
@@ -35,7 +34,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     private static final float TOLERANCE = .01f;
     //private DistributedForce dl;
     private DistributedForceObject dlObj;
-    private DistanceMeasurement measure;
+    //private DistanceMeasurement measure;
 
     public boolean isSolved() {
         return getCurrentState().isLocked();
@@ -79,7 +78,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         baseObjects.add(resultant);
         baseObjects.add(resultant.getAnchor());
 
-        baseObjects.add(measure);
+        baseObjects.add(dlObj.getMeasure());
 
         for (Measurement measurement : getSchematic().getMeasurements(new BodySubset(getDistributedForce().getSurface()))) {
             baseObjects.add(measurement);
@@ -101,15 +100,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             }
         }
 
-        Force resultant = dlObj.getResultantForce();
-
-        //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
-        //String pointName = dl.getName()+" pos";
-        measure = new DistanceMeasurement(
-                new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultant.getAnchor());
-        measure.setKnown(false);
-        measure.setSymbol("pos");
-        measure.createDefaultSchematicRepresentation(2f);
+    //Force resultant = dlObj.getResultantForce();
+    //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
+    //String pointName = dl.getName()+" pos";
     }
 
     @Override
@@ -179,24 +172,20 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
             // ************ NON STATE CHANGE
             getDistributedForce().getSurface().addObject(resultant);
-
             //dl.setSolved(true);
-
             //AffineQuantity resultantMagnitude = dl.getResultantMagnitude();
             //AffineQuantity resultantPosition = dl.getResultantPosition();
-
             //resultant.setKnown(true);
-
             // IMPORTANT THINGS TO NOTE:
             // THIS CODE DOES NOT WORK 100% JUST YET
             // The following things remain to be done:
             // 1) accomodate what happens when the affine value for the resultantMagnitude is symbolic.
             // 2) accomodate what happens when the affine value for the resultantPosition is symbolic.
-
             //if (resultantMagnitude.isSymbolic() || resultantPosition.isSymbolic()) {
             //    throw new UnsupportedOperationException("Symbolic values not supported yet in the resultant");
             //}
 
+            DistanceMeasurement measure = dlObj.getMeasure();
             measure.setKnown(true);
             resultant.getVector().setDiagramValue(getDistributedForce().getResultantMagnitude());
             resultant.getVector().setKnown(true);

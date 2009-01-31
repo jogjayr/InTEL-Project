@@ -82,7 +82,7 @@ public class LeveeExercise extends DistributedExercise {
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         levee.createDefaultSchematicRepresentation();
-        waterForceObject.createDefaultSchematicRepresentation(5, 15);
+        waterForceObject.createDefaultSchematicRepresentation(5, 15, 2f);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
         measure.createDefaultSchematicRepresentation();
