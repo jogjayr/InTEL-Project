@@ -5,8 +5,9 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.SimulationObject;
+import java.util.List;
 
 /**
  *
@@ -18,11 +19,12 @@ class DistributedUtil {
     }
 
     static void grayoutSolvedDistributedObjects() {
-        /*for (SimulationObject obj : StaticsApplication.getApp().getCurrentDiagram().allObjects()) {
-            if (obj instanceof DistributedForce) {
-                DistributedForce dl = (DistributedForce) obj;
-                dl.setDisplayGrayed(dl.isSolved());
+        List<SimulationObject> allObjects = StaticsApplication.getApp().getCurrentDiagram().allObjects();
+        for (SimulationObject obj : allObjects) {
+            if (obj instanceof DistributedForceObject) {
+                DistributedForceObject dlObj = (DistributedForceObject) obj;
+                dlObj.setDisplayGrayed(dlObj.isSolved());
             }
-        }*/
+        }
     }
 }
