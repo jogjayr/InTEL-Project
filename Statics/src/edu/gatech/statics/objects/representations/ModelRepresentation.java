@@ -27,6 +27,10 @@ public class ModelRepresentation extends Representation {
         modelNode.setLocalTranslation(offset);
     }
 
+    public void setModelScale(float scale) {
+        modelNode.setLocalScale(scale);
+    }
+
     public void setModelRotation(Matrix3f rotation) {
         modelNode.setLocalRotation(rotation);
     }

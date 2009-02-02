@@ -63,10 +63,12 @@ public class OpeningPanel extends JPanel {
     private void showOpenDialog() {
         JFileChooser chooser;
         if (lastPath == null) {
-            chooser = new JFileChooser();
-        } else {
-            chooser = new JFileChooser(lastPath);
+            lastPath = new File(System.getProperty("user.dir"));
+            lastPath = lastPath.getParentFile();
+            lastPath = new File(lastPath, "exercises");
         }
+        chooser = new JFileChooser(lastPath);
+
         chooser.setFileFilter(new FileNameExtensionFilter("COLLADA files (*.dae)", "dae"));
         chooser.showOpenDialog(this);
 

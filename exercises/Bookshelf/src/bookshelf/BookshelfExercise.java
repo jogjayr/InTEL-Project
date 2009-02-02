@@ -4,6 +4,7 @@
  */
 package bookshelf;
 
+import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.exercise.Schematic;
@@ -17,6 +18,9 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.Roller2d;
+import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.math.BigDecimal;
@@ -97,8 +101,8 @@ public class BookshelfExercise extends DistributedExercise {
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
-        bookshelf.createDefaultSchematicRepresentation();
-        
+        //bookshelf.createDefaultSchematicRepresentation();
+
         int arrowDensity = 2;
         dlObjectBooks1.createDefaultSchematicRepresentation(20f / 6, 2 * arrowDensity, 1.75f);
         dlObjectBooks2.createDefaultSchematicRepresentation(30f / 6, 4 * arrowDensity, 2.0f);
@@ -121,5 +125,32 @@ public class BookshelfExercise extends DistributedExercise {
         schematic.add(measure3);
 
         schematic.add(bookshelf);
+
+        Roller2d end1 = new Roller2d(A);
+        end1.setDirection(Vector3bd.UNIT_Y);
+        end1.attachToWorld(bookshelf);
+
+        Roller2d end2 = new Roller2d(B);
+        end2.setDirection(Vector3bd.UNIT_Y);
+        end2.attachToWorld(bookshelf);
+
+        ModelNode modelNode = ModelNode.load("bookshelf/assets/", "bookshelf/assets/bookshelf.dae");
+        modelNode.extractLights();
+
+        Vector3f modelTranslation = new Vector3f(0, 0, 0);
+        float modelScale = .4f;
+
+        ModelRepresentation rep = modelNode.extractElement(bookshelf, "VisualSceneNode/polySurface75/bookshelf2");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelScale(modelScale);
+        rep.setModelOffset(modelTranslation);
+        bookshelf.addRepresentation(rep);
+
+        rep = modelNode.getRemainder(schematic.getBackground());
+        rep.setModelOffset(modelTranslation);
+        rep.setModelScale(modelScale);
+        schematic.getBackground().addRepresentation(rep);
+
     }
 }
