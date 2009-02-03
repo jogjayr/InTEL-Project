@@ -14,6 +14,8 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,17 +47,31 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
         }
         out.writeStatement(new Statement(oldState, "initReactions", new Object[]{new HashMap(solvedReactionsCopy)}));
 
-        // write out the diagrams
+        // build a list of all of the diagrams.
+        List<Diagram> allDiagrams = new ArrayList<Diagram>();
+        
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {
-            DiagramKey diagramKey = entry.getKey();
             Map<DiagramType, Diagram> map = entry.getValue();
             for (Map.Entry<DiagramType, Diagram> entry1 : map.entrySet()) {
-                DiagramType diagramType = entry1.getKey();
                 Diagram diagram = entry1.getValue();
-                DiagramState diagramState = diagram.getCurrentState();
-
-                out.writeStatement(new Statement(oldState, "initDiagram", new Object[]{diagramKey, diagramType, diagramState}));
+                
+                allDiagrams.add(diagram);
             }
+        }
+
+        // sort the list
+        Collections.sort(allDiagrams, new Comparator<Diagram>() {
+            public int compare(Diagram o1, Diagram o2) {
+                return o1.getType().getPriority() - o2.getType().getPriority();
+            }
+        });
+        
+        // write out the diagrams
+        for (Diagram diagram : allDiagrams) {
+            DiagramKey diagramKey = diagram.getKey();
+            DiagramType diagramType = diagram.getType();
+            DiagramState diagramState = diagram.getCurrentState();
+            out.writeStatement(new Statement(oldState, "initDiagram", new Object[]{diagramKey, diagramType, diagramState}));
         }
 
         super.initialize(type, oldInstance, newInstance, out);

@@ -77,6 +77,13 @@ public class Schematic {
         allObjects.remove(obj);
     }
 
+    /**
+     * This adds an object to the schematic. You must be VERY careful when adding objects after the
+     * exercise has been loaded. If this is done within a diagram, for instance, DistributedDiagram,
+     * then that diagram type must have a lower priority than other diagrams which may require any added
+     * objects. Be sure to verify that the objects are instantiated correctly in the stateChanged method.
+     * @param obj
+     */
     public void add(SimulationObject obj) {
         //if (locked) {
         //    throw new IllegalStateException("Objects may not be added to the Schematic after it has been locked.");

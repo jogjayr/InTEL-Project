@@ -124,15 +124,17 @@ public class BookshelfExercise extends DistributedExercise {
         measure3.createDefaultSchematicRepresentation();
         schematic.add(measure3);
 
-        schematic.add(bookshelf);
-
         Roller2d end1 = new Roller2d(A);
         end1.setDirection(Vector3bd.UNIT_Y);
         end1.attachToWorld(bookshelf);
+        end1.setName("support A");
 
         Roller2d end2 = new Roller2d(B);
         end2.setDirection(Vector3bd.UNIT_Y);
         end2.attachToWorld(bookshelf);
+        end2.setName("support B");
+
+        schematic.add(bookshelf);
 
         ModelNode modelNode = ModelNode.load("bookshelf/assets/", "bookshelf/assets/bookshelf.dae");
         modelNode.extractLights();

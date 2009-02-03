@@ -88,10 +88,11 @@ public class LeveeExercise extends DistributedExercise {
         measure.createDefaultSchematicRepresentation();
         schematic.add(measure);
 
-        schematic.add(levee);
-
         Connector base = new Fix2d(A);
         base.attachToWorld(levee);
+        base.setName("fix A");
+
+        schematic.add(levee);
 
         ModelNode modelNode = ModelNode.load("levee/assets/", "levee/assets/levee.dae");
         modelNode.extractLights();
