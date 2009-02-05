@@ -64,7 +64,7 @@ function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $ver
     // new entry, we insert
     $query =
       "INSERT INTO app_user_assignment (user_id, assignment_id, submission_status_id, state, created_on, updated_on)
-      VALUES ({$userId}, {$assignmentId}, {$exerciseStatus}, '{$stateData}', {$timestamp}, {$timestamp})";
+      VALUES ({$problemId}, {$assignmentId}, {$exerciseStatus}, '{$stateData}', {$timestamp}, {$timestamp})";
     query($query, $db);
 
     echo "inserting new record\n";

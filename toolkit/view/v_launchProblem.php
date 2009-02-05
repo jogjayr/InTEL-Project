@@ -53,6 +53,8 @@ foreach($jars as $jar) {
 
 $resWidth = 1100; // 900;
 $resHeight = 768; // 675;
+//$resWidth = 900;
+//$resHeight = 675;
 
 // these variables need to be defined.
 if($user == null) $userId = 0;
