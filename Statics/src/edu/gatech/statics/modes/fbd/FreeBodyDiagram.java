@@ -29,6 +29,8 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -62,7 +64,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.add(load);
         temporaryLoads.add(load);
         updateDiagram();
-        //System.out.println("****** ADDING TEMPORARY LOAD");
+    //System.out.println("****** ADDING TEMPORARY LOAD");
     }
 
     /**
@@ -73,7 +75,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.remove(load);
         temporaryLoads.remove(load);
         updateDiagram();
-        //System.out.println("****** REMOVING TEMPORARY LOAD");
+    //System.out.println("****** REMOVING TEMPORARY LOAD");
     }
 
     /**
@@ -165,6 +167,20 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         }
 
         updateDiagram();
+
+        // check for an invalid state:
+        // this may occur when corrupted states are saved via persistence. The
+        // cause of this problem should be identified in the future, but for now we
+        // should aim on preventing invalid states from being set
+        // this checks for the particular case where the diagram is marked as solved, but has no
+        // loads present in it whatsoever.
+        if (getCurrentState().isLocked() && getCurrentState().getAddedLoads().isEmpty()) {
+            // we have a problem.
+            // there is nothing at all entered in the state itself, so we commit a new empty state.
+            Logger.getLogger("Statics").log(Level.SEVERE, "Encountered push for invalid state in the fbd state");
+            pushState(createInitialState());
+            clearStateStack();
+        }
     }
 
     /**

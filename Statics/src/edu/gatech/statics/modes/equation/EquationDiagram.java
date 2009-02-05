@@ -49,6 +49,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -127,6 +128,27 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     @Override
     protected void stateChanged() {
         super.stateChanged();
+
+        // check for an invalid state:
+        // currently, these only occur with invalid states becoming persisted.
+        // it will become necessary to find out what is wrong that is causing those errors to occur
+        // in the first place, but this checks and solves for the particular case when no
+        // data is present at all in the state, and the state is marked as solved.
+        if (getCurrentState().isLocked()) {
+            boolean anythingEntered = false;
+            for (EquationMathState equationMathState : getCurrentState().getEquationStates().values()) {
+                // if the state has any terms, set anythingEntered to true.
+                anythingEntered |= !equationMathState.getTerms().isEmpty();
+            }
+
+            if (!anythingEntered) {
+                // we have a problem.
+                // there is nothing at all entered in the state itself, so we commit a new empty state.
+                Logger.getLogger("Statics").log(Level.SEVERE, "Encountered push for invalid state in the equation state");
+                pushState(createInitialState());
+                clearStateStack();
+            }
+        }
     }
 
     /**
@@ -170,7 +192,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      */
     public void performSolve(Map<Quantity, Float> values) {
         Logger.getLogger("Statics").info("Performing the solve (updating other diagrams with the solution)");
-        
+
         // first, get the builder
         // lock the diagram
         EquationState.Builder eqBuilder = new EquationState.Builder(getCurrentState());
@@ -191,8 +213,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 //Vector v = vObj.getVector();
                 if (vObj.isSymbol() && !vObj.getVector().isKnown()) {
                     // v is a symbolic force, but is not yet solved.
-                    if(values.get(vObj.getVector().getQuantity()) == null)
+                    if (values.get(vObj.getVector().getQuantity()) == null) {
                         continue;
+                    }
 
                     float value = values.get(vObj.getVector().getQuantity());
                     //v.setValue(v.getValueNormalized().mult( value ));
@@ -213,7 +236,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     // This is because if *value* is negated, it is in reverse of the direction
                     // specified by the user in oldLoad.
                     // Thus, we check to see if they have the same direction, and reverse it otherwise.
-                    if(newLoad.getVectorValue().dot(oldLoad.getVectorValue()).floatValue() < 0) {
+                    if (newLoad.getVectorValue().dot(oldLoad.getVectorValue()).floatValue() < 0) {
                         // the dot product checks to see if they are pointing the same way.
                         newLoad.getVectorValue().negateLocal();
                     }
@@ -224,7 +247,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     // if the load from the symbol manager is due to the other end of a 2FM,
                     // then newLoad will be be located at the opposite point, and pointing in the wrong direction.
                     // so we perform a check and move its location and reverse it in this case.
-                    if(!newLoad.getAnchor().equals(oldLoad.getAnchor())) {
+                    if (!newLoad.getAnchor().equals(oldLoad.getAnchor())) {
                         // the only circumstance when the points will be different is if the stored load is due to a 2FM
                         newLoad.setAnchor(oldLoad.getAnchor());
                     }

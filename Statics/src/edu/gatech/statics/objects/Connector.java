@@ -17,6 +17,7 @@ import edu.gatech.statics.util.SolveListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,6 +37,8 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
             return;
         }
 
+        Logger.getLogger("Statics").info("Solving the reactions in " + this + ": " + reactions + " from " + solveBody);
+
         //solvedReactions = reactions;
         List<Vector> negatedReactions = new ArrayList<Vector>();
         for (Vector v : reactions) {
@@ -43,21 +46,21 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
 
             negatedReactions.add(v1);
         }
-        
-        if(solveBody == body1) {
+
+        if (solveBody == body1) {
             solvedReactions = reactions;
             solvedReactionsNegated = negatedReactions;
-        } else if(solveBody == body2) {
+        } else if (solveBody == body2) {
             solvedReactions = negatedReactions;
             solvedReactionsNegated = reactions;
         } else {
             throw new UnsupportedOperationException(
-                    "Attempting to solve a connector from the wrong body: "+solveBody+
-                    " my bodies are "+body1+" and "+body2);
+                    "Attempting to solve a connector from the wrong body: " + solveBody +
+                    " my bodies are " + body1 + " and " + body2);
         }
 
         isSolved = true;
-        
+
         Exercise.getExercise().getState().addReactions(this);
 
         for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
@@ -158,6 +161,6 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
     public String toString() {
         return getClass().getSimpleName() + " @ " + getAnchor().getName();
     }
-    
+
     abstract public String connectorName();
 }

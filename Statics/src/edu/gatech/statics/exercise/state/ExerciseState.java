@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +28,7 @@ import java.util.Map;
 public class ExerciseState implements State {
     // these are used in keeping track of exercise used with the web based
     // applet deployment
+
     private int userID;
     private int assignmentID;
     private SymbolManager symbolManager;
@@ -49,7 +52,7 @@ public class ExerciseState implements State {
     public Map<String, List<Vector>> getSolvedReactions() {
         return Collections.unmodifiableMap(solvedReactions);
     }
-    
+
     public void satisfyTask(Task satisfiedTask) {
         if (!satisfiedTasks.contains(satisfiedTask)) {
             satisfiedTasks.add(satisfiedTask);
@@ -124,14 +127,15 @@ public class ExerciseState implements State {
     public Map<DiagramKey, Map<DiagramType, Diagram>> allDiagrams() {
         return Collections.unmodifiableMap(allDiagrams);
     }
-    
+
     /**
      * Adds the reactions of the given connector to the exercise statate.
      * @param connector
      */
     public void addReactions(Connector connector) {
-        if(!connector.isSolved())
+        if (!connector.isSolved()) {
             return;
+        }
         solvedReactions.put(connector.getName(), connector.getReactions(connector.getBody1()));
     }
 
@@ -159,11 +163,18 @@ public class ExerciseState implements State {
         for (Map.Entry<String, List<Vector>> entry : reactions.entrySet()) {
             String connectorName = entry.getKey();
             List<Vector> connectorReactions = entry.getValue();
-            Connector connector = (Connector) Exercise.getExercise().getSchematic().getByName(connectorName);
-            connector.solveReaction(connector.getBody1(), connectorReactions);
+
+            if (connectorReactions.isEmpty()) {
+                Exception ex = new IllegalArgumentException("attempting to call initReactions with an empty list!");
+                Logger.getLogger("Statics").log(Level.SEVERE, "Reactions for connector " + connectorName + " are empty!", ex);
+            // allow program to continue, but do not attempt to add the reaction.
+            } else {
+                Connector connector = (Connector) Exercise.getExercise().getSchematic().getByName(connectorName);
+                connector.solveReaction(connector.getBody1(), connectorReactions);
+            }
         }
     }
-    
+
     /**
      * This is for persistence and deserialization. This should never be called directly!
      * @param state
@@ -174,6 +185,8 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
+
+        Logger.getLogger("Statics").info("initParameters: setting parameters: " + parameters);
         Exercise.getExercise().getState().exerciseParameters.putAll(parameters);
         Exercise.getExercise().applyParameters();
     }
@@ -188,6 +201,7 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
+        Logger.getLogger("Statics").info("initTasks: setting tasks: " + tasks);
         for (Task task : tasks) {
             satisfyTask(task);
         }
@@ -203,16 +217,10 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
+        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + loads);
         for (AnchoredVector load : loads) {
             Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
         }
-
-        /*for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
-            // ******
-            // This is really not the best way of doing this
-            // *** FIXME FIXME
-            listener.onLoadSolved(null);
-        }*/
     }
 
     /**
@@ -226,6 +234,7 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
+        Logger.getLogger("Statics").info("initDiagram: key: " + key + " type: " + type + " state: " + state);
         Diagram diagram = Exercise.getExercise().createNewDiagram(key, type);
         diagram.pushState(state);
         diagram.clearStateStack();
