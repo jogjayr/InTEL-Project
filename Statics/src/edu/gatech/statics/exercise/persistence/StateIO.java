@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -50,8 +52,8 @@ public class StateIO {
             String s = new String(data, 0, read);
 
             loadState(s);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger("Statics").log(Level.SEVERE, "Exception in loading state", ex);
         }
     }
 

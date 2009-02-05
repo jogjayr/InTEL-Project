@@ -56,15 +56,24 @@ public class AppletLauncher extends StaticsApplet {
         }
     }
 
+    /**
+     * Attempts to load the state specified by the parameters of the applet. If the
+     * state does not exist, then the applet continues normally. If there is an error in loading the state,
+     * the applet will continue normally as well and report an exception in the log.
+     */
     @Override
     protected void setupState() {
         super.setupState();
 
         String exerciseState = getParameter("exerciseState");
-        if (exerciseState != null) {
+        if (exerciseState != null || !exerciseState.trim().equals("")) {
             Logger.getLogger("Statics").info("Loading state...");
-            StateIO.loadState(exerciseState);
-            Logger.getLogger("Statics").info("Finished loading state!");
+            try {
+                StateIO.loadState(exerciseState);
+                Logger.getLogger("Statics").info("Finished loading state!");
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger("Statics").log(Level.SEVERE, "Loading state failed. Continuing...", ex);
+            }
         }
     }
 
