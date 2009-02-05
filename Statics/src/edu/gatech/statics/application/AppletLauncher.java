@@ -71,7 +71,7 @@ public class AppletLauncher extends StaticsApplet {
             try {
                 StateIO.loadState(exerciseState);
                 Logger.getLogger("Statics").info("Finished loading state!");
-            } catch (IllegalArgumentException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger("Statics").log(Level.SEVERE, "Loading state failed. Continuing...", ex);
             }
         }
