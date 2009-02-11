@@ -66,7 +66,7 @@ public class AppletLauncher extends StaticsApplet {
         super.setupState();
 
         String exerciseState = getParameter("exerciseState");
-        if (exerciseState != null || !exerciseState.trim().equals("")) {
+        if (exerciseState != null && !exerciseState.trim().equals("")) {
             Logger.getLogger("Statics").info("Loading state...");
             try {
                 StateIO.loadState(exerciseState);
