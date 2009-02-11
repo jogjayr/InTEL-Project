@@ -142,7 +142,7 @@ public class BookshelfExercise extends DistributedExercise {
         Vector3f modelTranslation = new Vector3f(0, 0, 0);
         float modelScale = .4f;
 
-        ModelRepresentation rep = modelNode.extractElement(bookshelf, "VisualSceneNode/polySurface75/bookshelf2");
+        ModelRepresentation rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
