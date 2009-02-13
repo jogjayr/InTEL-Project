@@ -59,8 +59,8 @@ public class DistributedModePanel extends ApplicationModePanel {
         equationContainer.add(positionContainer);
         equationContainer.add(magnitudeContainer);
 
-        positionContainer.add(new BLabel("Position: "), BorderLayout.WEST);
-        magnitudeContainer.add(new BLabel("Magnitude: "), BorderLayout.WEST);
+        positionContainer.add(new BLabel("Centroid Position: "), BorderLayout.WEST);
+        magnitudeContainer.add(new BLabel("Resultant Magnitude: "), BorderLayout.WEST);
 
         positionField = new BTextField() {
 
