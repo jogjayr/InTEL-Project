@@ -18,6 +18,7 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
@@ -124,15 +125,17 @@ public class BookshelfExercise extends DistributedExercise {
         measure3.createDefaultSchematicRepresentation();
         schematic.add(measure3);
 
-        Roller2d end1 = new Roller2d(A);
-        end1.setDirection(Vector3bd.UNIT_Y);
+        Pin2d end1 = new Pin2d(A);
+        //end1.setDirection(Vector3bd.UNIT_Y);
         end1.attachToWorld(bookshelf);
         end1.setName("support A");
+        end1.createDefaultSchematicRepresentation();
 
         Roller2d end2 = new Roller2d(B);
         end2.setDirection(Vector3bd.UNIT_Y);
         end2.attachToWorld(bookshelf);
         end2.setName("support B");
+        end2.createDefaultSchematicRepresentation();
 
         schematic.add(bookshelf);
 
