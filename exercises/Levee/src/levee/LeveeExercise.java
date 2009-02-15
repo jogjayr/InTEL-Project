@@ -7,6 +7,8 @@ package levee;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.Representation;
+import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.math.Unit;
@@ -44,7 +46,19 @@ public class LeveeExercise extends DistributedExercise {
         setName("Levee");
 
         setDescription(
-                "What is the loading at the base of the levee?");
+                "<p>In 2005, hurricane Katrina hit New Orleans, which caused enormous loss. " +
+                "New Oleans sits between the Mississippi river and Lake Pontchartrain. " +
+                "It is below water level, and needs dikes or levees for protection. " +
+                "A day after Katrina hit the city, the levee system broke in three canals.</p>" +
+                "<p>This shows a cross section of a levee. " +
+                "Its height is 12ft, and its width (horizontal length) is 1ft. " +
+                "Assume that the ground can resist up to 10,400 lb*ft of moment and " +
+                "an infinite horizontal force (i.e. the ground has no maximum resistance to a horizontal force). " +
+                "The pressure distribution is linear with respect to depth and the equation is p(h) = d*g*h, where</p>" +
+                "<b>*</b> d*g = 62.4 lb/ft^3 (specific weight of water) and<br>" +
+                "<b>*</b> h is the height of the water (water level) below the water surface." +
+                "<p>How much moment should the ground be able to safely exert on the levee " +
+                "if the water level increases to its maximum 12ft height?</p>");
 
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " kip*ft");
@@ -67,22 +81,30 @@ public class LeveeExercise extends DistributedExercise {
 
         Schematic schematic = getSchematic();
 
+        String waterLevel = "12";
+
         Point A = new Point("A", "0", "0", "0");
-        Point B = new Point("B", "0", "12", "0");
+        Point B = new Point("B", "0", waterLevel, "0");
 
         Beam levee = new Beam("Levee", A, B);
 
+        BigDecimal waterDensity = new BigDecimal("62.4");
+        BigDecimal peakAmount = new BigDecimal(waterLevel).multiply(waterDensity);
 
         DistributedForce waterForce = new TriangularDistributedForce("water", levee, A, B,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, new BigDecimal("748.8")));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_X, peakAmount));
         DistributedForceObject waterForceObject = new DistributedForceObject(waterForce, "");
 
         levee.addObject(waterForceObject);
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
-        levee.createDefaultSchematicRepresentation();
+        //levee.createDefaultSchematicRepresentation();
         waterForceObject.createDefaultSchematicRepresentation(5, 15, 2f);
+
+        // remove the label on the water force
+        Representation labelRep = waterForceObject.getRepresentation(RepresentationLayer.labels).get(0);
+        waterForceObject.removeRepresentation(labelRep);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
         measure.createDefaultSchematicRepresentation();
@@ -97,13 +119,19 @@ public class LeveeExercise extends DistributedExercise {
         ModelNode modelNode = ModelNode.load("levee/assets/", "levee/assets/levee.dae");
         modelNode.extractLights();
 
-        Vector3f modelTranslation = new Vector3f(7, 0, 0);
+        Vector3f modelTranslation = new Vector3f(0f, 0, 0);
 
-        ModelRepresentation rep = modelNode.extractElement(levee, "VisualSceneNode/levee_Earth/levee");
+        ModelRepresentation rep = modelNode.extractElement(levee, "VisualSceneNode/half_wall");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         levee.addRepresentation(rep);
+
+        rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelOffset(modelTranslation);
+        waterForceObject.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
