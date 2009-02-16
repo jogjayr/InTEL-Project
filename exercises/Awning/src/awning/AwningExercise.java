@@ -56,6 +56,7 @@ public class AwningExercise extends DistributedExercise {
         getDisplayConstants().setForceLabelDistance(5f);
         getDisplayConstants().setMomentLabelDistance(10f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
+        getDisplayConstants().setDrawScale(.2f);
     }
 
     @Override
@@ -65,9 +66,8 @@ public class AwningExercise extends DistributedExercise {
 
         Schematic schematic = getSchematic();
 
-
         Point A = new Point("A", "0", "0", "0");
-        Point B = new Point("B", "5", "0", "0");
+        Point B = new Point("B", "1.5", "0", "0");
 
         Beam awning = new Beam("Awning", A, B);
 
@@ -79,9 +79,8 @@ public class AwningExercise extends DistributedExercise {
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
-        awning.createDefaultSchematicRepresentation();
-        snowForceObject.createDefaultSchematicRepresentation(5, 15, 2f);
-
+        //awning.createDefaultSchematicRepresentation();
+        snowForceObject.createDefaultSchematicRepresentation(1, 5, 2f);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
         measure.createDefaultSchematicRepresentation();
@@ -91,20 +90,24 @@ public class AwningExercise extends DistributedExercise {
         base.attachToWorld(awning);
         base.setName("fix A");
 
+        schematic.add(awning);
 
         ModelNode modelNode = ModelNode.load("awning/assets/", "awning/assets/awning.dae");
         modelNode.extractLights();
 
         Vector3f modelTranslation = new Vector3f(0f, 0, 0);
+        float modelScale = .1f;
 
         ModelRepresentation rep = modelNode.extractElement(awning, "VisualSceneNode/scene/building/awning");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
+        rep.setModelScale(modelScale);
         awning.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
+        rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
     }
 }
