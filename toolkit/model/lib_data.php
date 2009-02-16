@@ -1,7 +1,7 @@
 <?php
 
 function getAssignments($uuid) {
-  //retrieves problem_id for current user, or all active for anaymous
+  //retrieves problem_id for current users current class, or all active for anaymous
   
   global $db;
   
@@ -9,17 +9,20 @@ function getAssignments($uuid) {
     $query = "SELECT id AS problem_id, name, description FROM app_problem WHERE is_active=1 ORDER BY name DESC";
   }
   else{
+    $class = getClassByUUID($uuid);
     $dateTime = mktime();
     $user = getUserByUUID($uuid);
-    $query = "SELECT app_assignment.id, app_assignment.problem_id, app_problem.name, app_problem.description, app_submission_status.status, app_user_assignment.state 
-    FROM app_problem, app_user_assignment, app_assignment, app_submission_status 
+    $query = "SELECT app_assignment.id, app_assignment.problem_id, app_problem.name, app_problem.description, app_submission_status.status, app_user_assignment.state, app_assignment_type.type
+    FROM app_problem, app_user_assignment, app_assignment, app_submission_status, app_assignment_type 
     WHERE app_user_assignment.user_id={$user['id']} 
     AND app_assignment.open_date<={$dateTime} 
     AND app_assignment.close_date>={$dateTime} 
     AND app_user_assignment.assignment_id=app_assignment.id 
     AND app_assignment.problem_id=app_problem.id 
     AND app_user_assignment.submission_status_id=app_submission_status.id
+    AND app_assignment.assignment_type_id=app_assignment_type.id
     AND app_assignment.is_active=1
+    AND app_assignment.class_id={$class['class_id']}
     ORDER BY app_assignment.open_date DESC";
   }
   $results = aquery($query, $db);
@@ -63,6 +66,26 @@ function getClassById($id){
 	}
 }
 
+function getClassByUUID($uuid){
+  //returns a users class id
+  global $db;
+  
+  $user = getUserByUUID($uuid);
+  
+  $query = "SELECT * 
+  FROM app_user_class 
+  WHERE app_user_class.user_id={$user['id']} 
+  AND is_active=1";
+    
+  $results = aquery($query, $db);
+	
+  if (count($results) > 0) {
+		return $results[0];
+	} else {
+		return false;
+	}
+}
+
 function getClassesByOwner($uuid){
   //returns classes belonging to an owner
     
@@ -91,11 +114,12 @@ function getAssignmentByClassOwner($uuid){
   
   $user = getUserByUUID($uuid);
   
-  $query = "SELECT app_assignment.id, app_assignment.class_id, app_problem.name, app_problem.description, app_assignment.open_date, app_assignment.close_date 
-  FROM app_problem, app_assignment, app_class 
+  $query = "SELECT app_assignment.id, app_assignment.class_id, app_problem.name, app_problem.description, app_assignment_type.type, app_assignment.open_date, app_assignment.close_date 
+  FROM app_problem, app_assignment, app_class, app_assignment_type 
   WHERE app_class.owner_user_id={$user['id']} 
   AND app_assignment.class_id=app_class.id 
   AND app_assignment.problem_id=app_problem.id 
+  AND app_assignment.assignment_type_id=app_assignment_type.id
   AND app_assignment.is_active=1
   ORDER BY app_assignment.open_date DESC";
     
@@ -109,9 +133,10 @@ function getAllAssignments(){
   
   global $db;
   
-  $query = "SELECT app_assignment.id, app_assignment.class_id, app_problem.name, app_problem.description, app_assignment.open_date, app_assignment.close_date 
-  FROM app_problem, app_assignment 
+  $query = "SELECT app_assignment.id, app_assignment.class_id, app_problem.name, app_problem.description, app_assignment_type.type, app_assignment.open_date, app_assignment.close_date 
+  FROM app_problem, app_assignment, app_assignment_type 
   WHERE app_assignment.is_active=1 
+  AND app_assignment.assignment_type_id=app_assignment_type.id
   AND app_assignment.problem_id=app_problem.id 
   ORDER BY name DESC";
   
@@ -355,7 +380,7 @@ function getAllProblems(){
 	return $results;
 }
 
-function updateAssignment($assignmentId, $problemId, $classId, $openDate, $closeDate){
+function updateAssignment($assignmentId, $problemId, $classId, $typeId, $openDate, $closeDate){
 
 	//updates an assignment
 	//if successful, returns true
@@ -365,7 +390,7 @@ function updateAssignment($assignmentId, $problemId, $classId, $openDate, $close
   $date = mktime();
   
 	$query = "UPDATE app_assignment 
-  SET problem_id={$problemId}, class_id={$classId}, open_date={$openDate}, close_date={$closeDate}, updated_on='{$date}' 
+  SET problem_id={$problemId}, class_id={$classId}, assignment_type_id={$typeId}, open_date={$openDate}, close_date={$closeDate}, updated_on='{$date}' 
   WHERE id={$assignmentId}";
   
 	query($query, $db);
@@ -374,7 +399,7 @@ function updateAssignment($assignmentId, $problemId, $classId, $openDate, $close
 
 }
 
-function addAssignment($problemId, $classId, $openDate, $closeDate){
+function addAssignment($problemId, $classId, $typeId, $openDate, $closeDate){
 
   global $db;
   
@@ -382,8 +407,8 @@ function addAssignment($problemId, $classId, $openDate, $closeDate){
   $q_updated_on = $q_created_on;
   
   //add assignment to app_assignment table
-	$query2 = "INSERT INTO app_assignment (problem_id, class_id, open_date, close_date, created_on, updated_on) 
-  VALUES ({$problemId}, {$classId}, '{$openDate}', '{$closeDate}', '{$q_created_on}', '{$q_updated_on}')";
+	$query2 = "INSERT INTO app_assignment (problem_id, class_id, assignment_type_id, open_date, close_date, created_on, updated_on) 
+  VALUES ({$problemId}, {$classId},  {$typeId}, '{$openDate}', '{$closeDate}', '{$q_created_on}', '{$q_updated_on}')";
 	query($query2, $db);
 
   //loop through all existing users and add assignments for each
@@ -416,6 +441,19 @@ function deleteAssignment($assignmentId){
   
 	return true;	
 
+}
+
+function getAssignmentTypes(){
+  //retrieves assignment types
+  global $db;
+  
+  $query = "SELECT * 
+  FROM app_assignment_type 
+  WHERE is_active=1";
+
+  $results = aquery($query, $db);
+	
+	return $results;
 }
 
 function getUsersbyClass($classId){

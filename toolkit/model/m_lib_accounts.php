@@ -64,6 +64,47 @@ function addUser($emailAddress, $password, $firstName, $lastName, $classId) {
 	return true;
 }
 
+function addUncreatedAssignmentsForUser($uuid){
+	global $db;
+  //get the user
+  $user = getUserByUUID($uuid);
+  //get the class
+  $userClass = getClassByUUID($uuid);
+  //get class assignments
+  $class_assignments = retrieveAssignments($userClass['class_id']);
+  //get the existing user assignments
+  $user_assignments = getAssignments($uuid);
+  //record the time
+  $q_created_on = mktime();
+  $q_updated_on = $q_created_on;
+  
+  //add assignments to user IF THEY DO NOT EXIST YET
+  foreach($class_assignments as $assignment) {
+    if (!userHasAssignment($uuid,$assignment['id'])){
+      $query2 = "INSERT INTO app_user_assignment (user_id, assignment_id, submission_status_id, created_on, updated_on) VALUES ('{$user['id']}', '{$assignment['id']}', 1, '{$q_created_on}', '{$q_updated_on}')";
+      query($query2, $db);
+    }
+  }
+}
+
+function userHasAssignment($uuid, $assignment_id){
+  //checks to see if a user has an assignment
+	global $db;
+  //get the user
+  $user = getUserByUUID($uuid);
+	$q_userId = $user['id'];
+	$query = "SELECT * FROM app_user_assignment 
+  WHERE user_id={$q_userId}
+  AND assignment_id={$assignment_id}";
+	$results = aquery($query, $db);
+	
+	if (count($results) > 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function getUserById($userId) {
 	//returns the user associated with userId if they exist, else returns an empty string
 	
@@ -182,7 +223,7 @@ function authenticate($emailAddress, $password) {
 	
 }
 
-function updateAccount($uuid, $firstName, $lastName, $email, $gtPrismId, $err) {
+function updateAccount($uuid, $firstName, $lastName, $email, $gtPrismId, $classId, $err) {
 	//updates a users account information
 	//if successful, returns true, else puts an error message into the err variable and returns false
 	
@@ -193,12 +234,21 @@ function updateAccount($uuid, $firstName, $lastName, $email, $gtPrismId, $err) {
   $q_lastName = t2sql($lastName);
   $q_email = t2sql($email);
   $q_gt_prism_id = t2sql($gtPrismId);
+  $q_classId = $classId;
 	
 	$query = "UPDATE app_user 
   SET first_name='{$q_firstName}', last_name='{$q_lastName}', email='{$q_email}', gt_prism_id='{$q_gt_prism_id}' 
   WHERE uuid='{$q_uuid}'";
 	
   query($query, $db);
+  
+  //update user_class table
+  $user = getUserByUUID($q_uuid);
+	$query2 = "UPDATE app_user_class
+  SET class_id={$q_classId}
+  WHERE user_id={$user['id']}";
+	
+  query($query2, $db);
   
 	$_SESSION['user_first_name'] = $firstName;
   $_SESSION['user_last_name'] = $lastName;

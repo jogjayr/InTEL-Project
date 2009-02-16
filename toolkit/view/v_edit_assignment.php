@@ -28,12 +28,14 @@
   $description = '';
   $openDate = '';
   $closeDate = '';
+  $typeId = '';
   
   if ($assignment){
     //print_r(array_keys($assignment));
     //$assignmentId = $assignment['id'];
     $classId = $assignment['class_id'];
     $problemId = $assignment['problem_id'];
+    $typeId = $assignment['assignment_type_id'];
     $openDate = date("m/d/y", $assignment['open_date']);
     $closeDate = date("m/d/y",$assignment['close_date']);
   }else{
@@ -45,11 +47,12 @@
     $assignmentId = $_POST['assignment_id'];
 		$problemId = $_POST['problem_id'];
     $classId = $_POST['class_id'];
+    $typeId = $_POST['assignment_type_id'];
     $openDate = strtotime($_POST['open_date']);
     $closeDate = strtotime($_POST['close_date']);
     //ensure that the date is formatted correctly
     if($openDate && $closeDate){
-  		if (updateAssignment($assignmentId, $problemId, $classId, $openDate, $closeDate)) {
+  		if (updateAssignment($assignmentId, $problemId, $classId, $typeId, $openDate, $closeDate)) {
   			$success = true;
         //reformat for display
         $openDate = date("m/d/y",$openDate);
@@ -68,6 +71,8 @@
   }else{
     $classes = getClassByOwner($_SESSION['uuid']);
   }
+  //get the assignment types
+  $assignmentTypes = getAssignmentTypes();
   
 	$title = 'Edit Assignment';
 	require_once('header.php');
@@ -102,6 +107,19 @@
           echo '<option value="'.$cls['id'].'" selected="selected">'.$cls['description'].'</option>';
         }else{
           echo '<option value="'.$cls['id'].'">'.$cls['description'].'</option>';
+        }
+      }
+      ?>
+    </select>
+  </p>
+  <p>Assignment Type:
+    <select name="assignment_type_id">
+      <?php
+      foreach ($assignmentTypes as $at){
+        if ($at['id']==$typeId){
+          echo '<option value="'.$at['id'].'" selected="selected">'.$at['type'].'</option>';
+        }else{
+          echo '<option value="'.$at['id'].'">'.$at['type'].'</option>';
         }
       }
       ?>

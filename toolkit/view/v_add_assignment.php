@@ -31,12 +31,15 @@
   }
   //get problems
   $problems = getAllProblems();
+  //get the assignment types
+  $assignmentTypes = getAssignmentTypes();
   
   //initialize post variables
   $success = false;
 	$err = '';
   $problemId = '';
   $classId = '';
+  $typeId = '';
   $openDate = '';
   $closeDate = '';
   
@@ -45,12 +48,13 @@
 		
 		$problemId = $_POST['problem_id'];
 		$classId = $_POST['class_id'];
+    $typeId = $_POST['assignment_type_id'];
 		$openDate = $_POST['open_date'];
     $closeDate = $_POST['close_date'];
     
     //check for valid dates
     if (strtotime($openDate) && strtotime($closeDate)){
-      if (addAssignment($problemId, $classId, strtotime($openDate), strtotime($closeDate))) {
+      if (addAssignment($problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
         $success = true;
       } else {
         $err = 'Your assignment was not added. Please try again later.';
@@ -61,8 +65,9 @@
 	}
 	
 ?>
-<?php paraErr($err);  
+<?php 
   if (!$success) {
+    paraErr($err);  
 ?>
 <form method="post" action="">
 	<p>Problem:
@@ -79,6 +84,19 @@
       <?php
       foreach ($classes as $cls){
           echo '<option value="'.$cls['id'].'">'.$cls['description'].'</option>';
+      }
+      ?>
+    </select>
+  </p>
+  <p>Assignment Type:
+    <select name="assignment_type_id">
+      <?php
+      foreach ($assignmentTypes as $at){
+        if ($at['id']==3){
+          echo '<option value="'.$at['id'].'" selected="selected">'.$at['type'].'</option>';
+        }else{
+          echo '<option value="'.$at['id'].'">'.$at['type'].'</option>';
+        }
       }
       ?>
     </select>

@@ -47,6 +47,7 @@
       <th class="startsort">Class</th>
 			<th>Problem</th>
 			<th>Description</th>
+      <th>Type</th>
       <th>Open Date</th>
       <th>Close Date</th>
       <th class="unsortable"></th>
@@ -58,6 +59,7 @@
       $classDescription = $class['description'];
 			$name = $app['name'];
       $description = $app['description'];
+      $type = $app['type'];
       $openDate = date("m.d.y", $app['open_date']);
       $closeDate = date("m.d.y",$app['close_date']);
       $urlEdit = 'editAssignment.php?id='.$app['id']; 
@@ -68,6 +70,7 @@
         echo '<td>' . t2h($classDescription) . '</td>';
 				echo '<td>' . t2h($name) . '</td>';
 				echo '<td>' . t2h($description) . '</td>';
+        echo '<td>' . t2h($type) . '</td>';
 				echo '<td>' . t2h($openDate) . '</td>';
         echo '<td>' . t2h($closeDate) . '</td>';
         echo '<td><a href="' . $urlEdit . '">edit</a></td>';

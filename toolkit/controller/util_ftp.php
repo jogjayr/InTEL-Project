@@ -39,7 +39,7 @@ function makedir($dirName, $dirPathFromHome="webapps/htdocs/canary/uploads/") {
 	}
 	
 	// try to chmod the directory 
-	if (ftp_chmod($conn_id, 0777, $dirName) !== false) { 		//echo "$file chmoded successfully to 777\n";	} else { 		echo "could not chmod $dirName\n";	}
+	if (ftp_chmod($conn_id, 0777, $dirName) !== false) { 		//echo "$file chmoded successfully to 777\n";	} else { 		echo "could not chmod $dirName\n";	}
 	
 	// close the connection
 	ftp_close($conn_id);

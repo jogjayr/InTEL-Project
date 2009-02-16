@@ -12,7 +12,8 @@
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
     $gtPrismId = $_POST['gt_prism_id'];
-		if (updateAccount($_SESSION['uuid'], $firstName, $lastName, $email, $gtPrismId, $err)) {
+    $classId = $_POST['class_id'];
+		if (updateAccount($_SESSION['uuid'], $firstName, $lastName, $email, $gtPrismId, $classId, $err)) {
 			$success = true;
 		}
 	}
