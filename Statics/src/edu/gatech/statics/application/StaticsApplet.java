@@ -301,7 +301,6 @@ public class StaticsApplet extends Applet {
             Logger.getLogger("Statics").info("updating display...");
             DisplaySystem.updateStates(renderer);
 
-            Logger.getLogger("Statics").info("calling StaticsApplication.init()...");
             application.init();
 
             setupState();

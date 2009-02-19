@@ -19,6 +19,7 @@ import com.jme.input.action.InputActionInterface;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
+import com.jme.scene.shape.Sphere;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -72,6 +73,7 @@ public class StaticsApplication {
     private boolean graded;
     private PostAssignment postAssignment = new PostAssignment();
     private DatabaseLogHandler logHandler;
+    private boolean initialized = false; // this is set after init() completes
 
     public void setGraded(boolean graded) {
         this.graded = graded;
@@ -275,7 +277,11 @@ public class StaticsApplication {
      */
     public void update() {
 
-        if (finished) {
+        if (!initialized && renderedOnce) {
+            initExercise();
+        }
+
+        if (finished || !initialized) {
             return;
         }
 
@@ -347,6 +353,7 @@ public class StaticsApplication {
         }
     }
 
+    private boolean renderedOnce = false;
     /**
      * This is the main render. Our application renders very differently than
      * standard jME games. Namely, display is separated into several layers, which are
@@ -355,6 +362,12 @@ public class StaticsApplication {
      * such as curves.
      */
     public void render() {
+
+        if(!initialized) {
+            renderLoadingScreen();
+            renderedOnce = true;
+            return;
+        }
 
         if (finished) {
             return;
@@ -388,6 +401,17 @@ public class StaticsApplication {
         r.clearQueue();
 
     }
+
+    /**
+     * render something before the screen loads.
+     */
+    private void renderLoadingScreen() {
+        Renderer r = display.getRenderer();
+        Sphere sph = new Sphere("toast", 20, 20, 2);
+        sph.setRandomColors();
+        r.draw(sph);
+    }
+
     private List<ScreenshotListener> screenshotListeners = new ArrayList<ScreenshotListener>();
 
     public void addScreenshotListener(ScreenshotListener listener) {
@@ -451,9 +475,18 @@ public class StaticsApplication {
             Logger.getLogger("Statics").info("Application init: no display, forgoing input");
         }
 
+        //initExercise();
+
+        Logger.getLogger("Statics").info("Finished application init");
+    }
+
+    private void initExercise() {
+
         // load exercise here
+        Logger.getLogger("Statics").info("Application init: loading exercise");
         getExercise().loadExercise();
         getExercise().applyParameters();
+        Logger.getLogger("Statics").info("Application init: finished loading exercise!");
 
         // initialize the exercise's specific interface configuration.
         // do not do this if the interface has not been initialized, of course.
@@ -464,8 +497,9 @@ public class StaticsApplication {
         // get the exercise ready to run.
         getExercise().loadStartingMode();
         getExercise().postLoadExercise();
+        Logger.getLogger("Statics").info("Application init: finished post loading exercise!");
 
-        Logger.getLogger("Statics").info("Finished application init");
+        initialized = true;
     }
 
     /**
