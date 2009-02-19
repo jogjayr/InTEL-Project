@@ -80,7 +80,7 @@ public class TestingBoilerplate {
                 Point B = new Point("B", "[1,0,0]");
                 Force givenForce = new Force(B, new Vector3bd("[0,1,0]"), new BigDecimal(5));
                 givenForce.setName("wombat");
-                Moment givenMoment = new Moment(A, new Vector3bd("[1,0,0]"), new BigDecimal(3));
+                Moment givenMoment = new Moment(A, new Vector3bd("[1,0,0]"), "foo");
                 givenMoment.setName("wombat2");
                 Body body = new Beam("test", A, B);
 

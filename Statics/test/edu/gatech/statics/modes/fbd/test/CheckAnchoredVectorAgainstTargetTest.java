@@ -12,10 +12,12 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -35,26 +37,24 @@ public class CheckAnchoredVectorAgainstTargetTest extends TestingBoilerplate  {
         try {
             // test the protected methods in FBDChecker via reflection
             Method checkAnchoredVectorAgainstTarget = check.getClass().getDeclaredMethod("checkAnchoredVectorAgainstTarget", AnchoredVector.class, AnchoredVector.class);
-            Method anchoredVectorCheckResult = check.getClass().getDeclaredMethod("AnchoredVectorCheckResult");
-
+           
             System.out.println(checkAnchoredVectorAgainstTarget);
 
             checkAnchoredVectorAgainstTarget.setAccessible(true);
-            anchoredVectorCheckResult.setAccessible(true);
-
+            
             // test should pass true: at same point, same direction, same type
             Point point = (Point) objectMap.get("A");
             
             // try checking this with a numeric versus a symbolic load.
             // or a moment, etc.
             
-            AnchoredVector candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "5.0"));
+            AnchoredVector candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
             AnchoredVector targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "bam"));
-            
+
             System.out.println("CheckAnchoredVector invoking....");
             Object result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
-            Object result2 = anchoredVectorCheckResult.invoke(check);
-            //assertFalse(result.equals(result2));
+            Enum resultEnum = (Enum) result;
+            assertEquals("shouldNotBeNumeric", resultEnum.name());
             System.out.println(result);
 
 
@@ -63,7 +63,8 @@ public class CheckAnchoredVectorAgainstTargetTest extends TestingBoilerplate  {
 
             System.out.println("CheckAnchoredVector invoking....");
             result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
-            //assertTrue(((AnchoredVectorCheckResult)result).equals(AnchoredVectorCheckResult.wrongSymbol));
+            resultEnum = (Enum) result;
+            assertEquals("wrongSymbol", resultEnum.name());
             System.out.println(result);
 
 
@@ -72,7 +73,8 @@ public class CheckAnchoredVectorAgainstTargetTest extends TestingBoilerplate  {
 
             System.out.println("CheckAnchoredVector invoking....");
             result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
-            //assertTrue(((AnchoredVectorCheckResult)result).equals(AnchoredVectorCheckResult.opposite));
+            resultEnum = (Enum) result;
+            assertEquals("opposite", resultEnum.name());
             System.out.println(result);
 
 
@@ -81,7 +83,8 @@ public class CheckAnchoredVectorAgainstTargetTest extends TestingBoilerplate  {
 
             System.out.println("CheckAnchoredVector invoking....");
             result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
-            //assertTrue(((AnchoredVectorCheckResult)result).equals(AnchoredVectorCheckResult.wrongDirection));
+            resultEnum = (Enum) result;
+            assertEquals("wrongDirection", resultEnum.name());
             System.out.println(result);
 
             candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "bam"));
@@ -89,7 +92,53 @@ public class CheckAnchoredVectorAgainstTargetTest extends TestingBoilerplate  {
 
             System.out.println("CheckAnchoredVector invoking....");
             result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
-            //assertTrue(((AnchoredVectorCheckResult)result).equals(AnchoredVectorCheckResult.passed));
+            resultEnum = (Enum) result;
+            assertEquals("passed", resultEnum.name());
+            System.out.println(result);
+
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "bam"));
+            targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+
+            System.out.println("CheckAnchoredVector invoking....");
+            result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
+            resultEnum = (Enum) result;
+            assertEquals("shouldNotBeSymbol", resultEnum.name());
+            System.out.println(result);
+
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("7.0")));
+            targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+
+            System.out.println("CheckAnchoredVector invoking....");
+            result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
+            resultEnum = (Enum) result;
+            assertEquals("wrongNumericValue", resultEnum.name());
+            System.out.println(result);
+
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[-1,0,0]"), new BigDecimal("5.0")));
+            targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+
+            System.out.println("CheckAnchoredVector invoking....");
+            result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
+            resultEnum = (Enum) result;
+            assertEquals("opposite", resultEnum.name());
+            System.out.println(result);
+
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,1,0]"), new BigDecimal("5.0")));
+            targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+
+            System.out.println("CheckAnchoredVector invoking....");
+            result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
+            resultEnum = (Enum) result;
+            assertEquals("wrongDirection", resultEnum.name());
+            System.out.println(result);
+
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+            targetVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal("5.0")));
+
+            System.out.println("CheckAnchoredVector invoking....");
+            result = checkAnchoredVectorAgainstTarget.invoke(check, candidateVector, targetVector);
+            resultEnum = (Enum) result;
+            assertEquals("passed", resultEnum.name());
             System.out.println(result);
 
         } catch (IllegalAccessException ex) {

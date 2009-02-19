@@ -696,7 +696,7 @@ public class FBDChecker {
      * @param candidate
      * @return
      */
-    protected NameCheckResult checkLoadName(AnchoredVector candidate) {
+        protected NameCheckResult checkLoadName(AnchoredVector candidate) {
         String name = candidate.getSymbolName();
 
         for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
