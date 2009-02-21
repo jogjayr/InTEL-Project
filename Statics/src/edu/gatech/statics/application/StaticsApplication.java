@@ -18,8 +18,8 @@ import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionInterface;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.renderer.Camera;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.shape.Sphere;
 import com.jme.system.DisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -395,8 +395,6 @@ public class StaticsApplication {
         // Render UI
         r.draw(labelNode);
         r.draw(iRoot.getBuiNode());
-        //r.draw(rootInterface.getBuiNode());
-        //r.draw(currentInterface.getBuiNode());
         r.renderQueue();
         r.clearQueue();
 
@@ -406,10 +404,10 @@ public class StaticsApplication {
      * render something before the screen loads.
      */
     private void renderLoadingScreen() {
+
         Renderer r = display.getRenderer();
-        Sphere sph = new Sphere("toast", 20, 20, 2);
-        sph.setRandomColors();
-        r.draw(sph);
+        r.setBackgroundColor(ColorRGBA.white);
+        r.draw(new LoadingScreen());
     }
 
     private List<ScreenshotListener> screenshotListeners = new ArrayList<ScreenshotListener>();
