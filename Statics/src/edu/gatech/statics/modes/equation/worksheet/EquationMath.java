@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 abstract public class EquationMath {
 
-    protected static final float TEST_ACCURACY = .02f;
+    protected static final float TEST_ACCURACY = .022f;
     private final String name;
     private final Vector3bd observationDirection;
     private final EquationDiagram diagram;
