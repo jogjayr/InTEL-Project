@@ -108,7 +108,7 @@ public class AppletLauncher extends StaticsApplet {
 
     private boolean checkVerifierKey() {
         String userIDString = getParameter("userID");
-        String assignmentIDString = getParameter("assignmentID");
+        //String assignmentIDString = getParameter("assignmentID");
         String problemIDString = getParameter("problemID");
         String problemName = getParameter("problemName");
         String exerciseState = getParameter("exerciseState");
@@ -117,7 +117,7 @@ public class AppletLauncher extends StaticsApplet {
         // change state to empty if it is null.
         exerciseState = exerciseState == null ? "" : exerciseState;
 
-        String preHash = userIDString + ":" + problemIDString + ":" + assignmentIDString + ":" + problemName + ":" + exerciseState;
+        String preHash = userIDString + ":" + problemIDString + /*":" + assignmentIDString +*/ ":" + problemName + ":" + exerciseState;
 
         // use MD5 to generate our key
         MessageDigest md5;

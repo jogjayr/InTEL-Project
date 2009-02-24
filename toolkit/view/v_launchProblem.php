@@ -77,7 +77,8 @@ if($thisAssignment != null && isset($thisAssignment['state'])) {
     $state = $thisAssignment['state'];
 }
 
-$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
+//$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
+$preHash = "$userId:$problemId:$problemName:$state";
 $verifierKey = substr(md5($preHash),0,8);
 ?>
 

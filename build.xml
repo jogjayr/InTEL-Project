@@ -30,12 +30,18 @@
         <subant buildpath="BUI/" target="jar"/>
         
         <echo>*** Building Exercises:</echo>
+        <!-- simple fbd -->
         <subant buildpath="exercises/Archer/" target="jar"/>
+        <subant buildpath="exercises/SeeSaw/" target="jar"/>
+        <subant buildpath="exercises/PisaProblem/" target="jar"/>
+        <!-- frame -->
         <subant buildpath="exercises/Bicycle/" target="jar"/>
         <subant buildpath="exercises/Keyboard/" target="jar"/>
-        <subant buildpath="exercises/PisaProblem/" target="jar"/>
         <subant buildpath="exercises/PurseProblem/" target="jar"/>
-        <subant buildpath="exercises/SeeSaw/" target="jar"/>
+        <!-- distributed -->
+        <subant buildpath="exercises/Awning/" target="jar"/>
+        <subant buildpath="exercises/Bookshelf/" target="jar"/>
+        <subant buildpath="exercises/Levee/" target="jar"/>
         
     </target>
     <target name="clean">
@@ -48,11 +54,17 @@
         <subant buildpath="Statics/" target="clean"/>
         
         <echo>*** Cleaning exercises</echo>
+        <!-- simple fbd -->
         <subant buildpath="exercises/Archer/" target="clean"/>
+        <subant buildpath="exercises/SeeSaw/" target="clean"/>
+        <subant buildpath="exercises/PisaProblem/" target="clean"/>
+        <!-- frame -->
         <subant buildpath="exercises/Bicycle/" target="clean"/>
         <subant buildpath="exercises/Keyboard/" target="clean"/>
-        <subant buildpath="exercises/PisaProblem/" target="clean"/>
         <subant buildpath="exercises/PurseProblem/" target="clean"/>
-        <subant buildpath="exercises/SeeSaw/" target="clean"/>
+        <!-- distributed -->
+        <subant buildpath="exercises/Awning/" target="clean"/>
+        <subant buildpath="exercises/Bookshelf/" target="clean"/>
+        <subant buildpath="exercises/Levee/" target="clean"/>
     </target>
 </project>
