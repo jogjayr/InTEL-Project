@@ -5,12 +5,9 @@
 package edu.gatech.statics.application;
 
 import com.jme.image.Texture;
-import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;

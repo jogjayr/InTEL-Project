@@ -50,6 +50,7 @@ public class TestingBoilerplate {
         new StaticsApplication();
         StaticsApplication.getApp().setExercise(exercise);
         StaticsApplication.getApp().init();
+        StaticsApplication.getApp().initExercise();
 
         // get the first body, and build the FBD out of that.
         List<Body> allBodies = exercise.getSchematic().allBodies();

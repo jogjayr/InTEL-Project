@@ -478,7 +478,10 @@ public class StaticsApplication {
         Logger.getLogger("Statics").info("Finished application init");
     }
 
-    private void initExercise() {
+    /**
+     * This loads the exercise. This is called during the 
+     */
+    public void initExercise() {
 
         // load exercise here
         Logger.getLogger("Statics").info("Application init: loading exercise");
