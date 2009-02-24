@@ -10,6 +10,11 @@
 <project name="Awning" default="default" basedir=".">
     <description>Builds, tests, and runs the project Awning.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="-post-jar">
+        <signjar jar="dist/Awning.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/Awning.jar" dest="../../applet/Awning.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

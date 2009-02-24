@@ -10,6 +10,11 @@
 <project name="Bookshelf" default="default" basedir=".">
     <description>Builds, tests, and runs the project Bookshelf.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="-post-jar">
+        <signjar jar="dist/Bookshelf.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/Bookshelf.jar" dest="../../applet/Bookshelf.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
