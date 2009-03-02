@@ -92,7 +92,6 @@ public void draw() {
     image(body15, pos15, 150);
     image(body20, pos20, 150);
     image(lock, 305, 245);
-    rect(565, 275, 94,61 );
     image(startScreen, 0,0);
     if(mousePressed == true && mouseX >= 565 && mouseX <= 659 && mouseY >= 275 && mouseY <= 331) {
       mousePressed = false;

@@ -99,11 +99,10 @@ public void draw() {
   if(load) {
     image(bar, 83, 285);
     image(base, 0, 270);
-    image(body10, pos10, 150);
-    image(body25, pos25, 150);
+    image(body10, pos10, 160);
+    image(body25, pos25, 162);
     image(body50, pos50, 150);
     image(lock, 305, 245);
-    rect(565, 275, 94,61 );
     image(startScreen, 0,0);
     if(mousePressed == true && mouseX >= 565 && mouseX <= 659 && mouseY >= 275 && mouseY <= 331) {
       mousePressed = false;
@@ -172,8 +171,8 @@ public void draw() {
       }
       float50 = (310-pos50)*-1;
     }
-    image(body10, pos10, 150);
-    image(body25, pos25, 150);
+    image(body10, pos10, 160);
+    image(body25, pos25, 162);
     image(body50, pos50, 150);
     image(lock, 305, 245);
   }
@@ -320,8 +319,8 @@ public void draw() {
     text(float10+" cm", pos10, 145);
     text(float25+" cm", pos25, 145);
     text(float50+" cm", pos50, 145);
-    image(body10, pos10, 150);
-    image(body25, pos25, 150);
+    image(body10, pos10, 160);
+    image(body25, pos25, 162);
     image(body50, pos50, 150);
     image(pass, 305, 245);
     textFont(bigfont, 120);

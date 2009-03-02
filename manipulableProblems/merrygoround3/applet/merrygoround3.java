@@ -50,7 +50,7 @@ public void draw() {
     image(wheel, 100, 100, 500, 500);
     image(arrow, 40, 250, 140, 126);
     image(startScreen, 0, 0, 700, 700);
-    if(mousePressed == true && mouseX >= 580 && mouseX <=690 && mouseY >= 625 && mouseY <= 690) {
+    if(mousePressed == true && mouseX >= 580 && mouseX <=690 && mouseY >= 5 && mouseY <= 70) {
       load = false;
       mousePressed = false;
     }
