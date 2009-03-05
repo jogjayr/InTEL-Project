@@ -23,7 +23,10 @@ import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 
 /**
  *
@@ -35,6 +38,13 @@ public class AwningExercise extends DistributedExercise {
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-1, 1, -1, 2);
+        vc.setZoomConstraints(0.5f, 1.5f);
+        vc.setRotationConstraints(0, 1);
+        interfaceConfiguration.setViewConstraints(vc);
+
         return interfaceConfiguration;
     }
 

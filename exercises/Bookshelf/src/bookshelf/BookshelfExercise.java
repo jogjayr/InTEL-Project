@@ -24,6 +24,7 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
 /**
@@ -36,6 +37,11 @@ public class BookshelfExercise extends DistributedExercise {
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-1f, 1f, -1f, 4f);
+        vc.setZoomConstraints(0.5f, 1.5f);
+        vc.setRotationConstraints(-1, 1);
+        interfaceConfiguration.setViewConstraints(vc);
         return interfaceConfiguration;
     }
 
