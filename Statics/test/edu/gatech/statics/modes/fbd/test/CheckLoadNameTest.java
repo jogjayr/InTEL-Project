@@ -10,6 +10,7 @@ import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.actions.AddLoad;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Force;
@@ -49,17 +50,73 @@ public class CheckLoadNameTest extends TestingBoilerplate {
 
             checkLoadName.setAccessible(true);
 
-            // test should pass true: at same point, same direction, same type
+            // test should pass fail: different point, same name as point
             Point point = (Point) objectMap.get("B");
 
             AnchoredVector candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), "A"));
 
-            System.out.println("CheckConnector invoking....");
+            System.out.println("CheckLoadName invoking....");
             Object result = checkLoadName.invoke(check, candidateVector);
             Enum resultEnum = (Enum) result;
+            assertEquals("matchesPointName", resultEnum.name());
+            System.out.println(result);
+
+            // test should pass fail: same point, same name as point
+            point = (Point) objectMap.get("A");
+            candidateVector = new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), "A"));
+
+            System.out.println("CheckLoadName invoking....");
+            result = checkLoadName.invoke(check, candidateVector);
+            resultEnum = (Enum) result;
+            assertEquals("matchesPointName", resultEnum.name());
+            System.out.println(result);
+
+            // test should pass fail: different point, name matches another load
+            point = (Point) objectMap.get("A");
+            Point point2 = (Point) objectMap.get("B");
+            candidateVector = new AnchoredVector(point2, new Vector(Unit.force, new Vector3bd("[0,1,0]"), "foo"));
+
+            List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>();
+            addedLoads.add(new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[1,0,0]"), "foo")));
+            AddLoad addLoadAction = new AddLoad(addedLoads);
+            diagram.performAction(addLoadAction);
+
+            System.out.println("CheckLoadName invoking....");
+            result = checkLoadName.invoke(check, candidateVector);
+            resultEnum = (Enum) result;
             assertEquals("duplicateInThisDiagram", resultEnum.name());
             System.out.println(result);
 
+            // test should pass fail: same point, name matches another load, loads are not in the same direction
+            point = (Point) objectMap.get("A");
+            candidateVector = new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[1,1,0]"), "foo"));
+
+            System.out.println("CheckLoadName invoking....");
+            result = checkLoadName.invoke(check, candidateVector);
+            resultEnum = (Enum) result;
+            assertEquals("duplicateInThisDiagram", resultEnum.name());
+            System.out.println(result);
+
+            // test should pass true: same point, name matches another load, loads are in the same direction
+            point = (Point) objectMap.get("A");
+            candidateVector = new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[1,0,0]"), "foo"));
+
+            System.out.println("CheckLoadName invoking....");
+            result = checkLoadName.invoke(check, candidateVector);
+            resultEnum = (Enum) result;
+            assertEquals("passed", resultEnum.name());
+            System.out.println(result);
+
+            // test should pass true: different point, name does not match another load
+            point = (Point) objectMap.get("A");
+            point2 = (Point) objectMap.get("B");
+            candidateVector = new AnchoredVector(point2, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "boo"));
+
+            System.out.println("CheckLoadName invoking....");
+            result = checkLoadName.invoke(check, candidateVector);
+            resultEnum = (Enum) result;
+            assertEquals("passed", resultEnum.name());
+            System.out.println(result);
 
         } catch (IllegalAccessException ex) {
             Logger.getLogger(ReflectCheck.class.getName()).log(Level.SEVERE, null, ex);

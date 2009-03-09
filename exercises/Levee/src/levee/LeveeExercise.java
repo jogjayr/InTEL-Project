@@ -140,6 +140,7 @@ public class LeveeExercise extends DistributedExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
         waterForceObject.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());

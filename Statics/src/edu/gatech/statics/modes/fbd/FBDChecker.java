@@ -228,16 +228,17 @@ public class FBDChecker {
         }
     }
 
-    public boolean checkDiagram() {
-
-        //done = false;
-
+    /**
+     * Step 1
+     * Checks to make sure that the student has added any loads to the diagram.
+     * @param addedLoads
+     * @return
+     */
+    protected List<AnchoredVector> checkAddedLoads() {
+        debugInfo("STEP 1: is diagram empty?");
         // step 1: assemble a list of all the forces the user has added.
         List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>(diagram.getCurrentState().getAddedLoads());
-
         logInfo("check: user added AnchoredVectors: " + addedLoads);
-
-        debugInfo("STEP 1: is diagram empty?");
 
         if (addedLoads.size() <= 0) {
             logInfo("check: diagram does not contain any AnchoredVectors");
@@ -245,10 +246,20 @@ public class FBDChecker {
 
             setAdviceKey("fbd_feedback_check_fail_add");
             debugInfo("STEP 1: FAILED");
-            return false;
+            return null;
         }
 
         debugInfo("STEP 1: PASSED");
+        return addedLoads;
+    }
+
+    /**
+     * Step 2
+     * Check that the student has added all the loads that are given by the problem
+     * @param addedLoads
+     * @return
+     */
+    protected boolean checkGivenLoads(List<AnchoredVector> addedLoads) {
         debugInfo("STEP 2: Given loads added?");
 
         // step 2: for vectors that we can click on and add, ie, given added forces,
@@ -264,6 +275,16 @@ public class FBDChecker {
 
         debugInfo("STEP 2: PASSED");
         debugInfo("  user loads after givens removed: " + addedLoads);
+        return true;
+    }
+
+    /**
+     * Step 3
+     * Check that the studend has added all of the weights required by the problem
+     * @param addedLoads
+     * @return
+     */
+    protected boolean checkAddedWeights(List<AnchoredVector> addedLoads) {
         debugInfo("STEP 3: Weights added?");
 
         // step 3: Make sure weights exist, and remove them from our addedForces.
@@ -283,9 +304,19 @@ public class FBDChecker {
                 return false;
             }
         }
-
         debugInfo("STEP 3: PASSED");
         debugInfo("  user loads after weights removed: " + addedLoads);
+
+        return true;
+    }
+
+    /**
+     * Step 4
+     * Check that the student has added all the required loads on connectors across bodies
+     * @param addedLoads
+     * @return
+     */
+    protected boolean checkConnectors(List<AnchoredVector> addedLoads) {
         debugInfo("STEP 4: Connectors have reactions?");
 
         // Step 4: go through all the border connectors connecting this FBD to the external world,
@@ -453,6 +484,16 @@ public class FBDChecker {
         }
 
         debugInfo("STEP 4: PASSED!");
+        return true;
+    }
+
+    /**
+     * Step 5
+     * Ensure there are no extra loads unaccounted for.
+     * @param addedLoads
+     * @return
+     */
+    protected boolean checkRemainingLoads(List<AnchoredVector> addedLoads) {
         debugInfo("STEP 5: Are any loads remaining?");
 
         // Step 5: Make sure we've used all the user added forces.
@@ -467,12 +508,38 @@ public class FBDChecker {
             return false;
         }
         debugInfo("STEP 5: PASSED");
+        return true;
+    }
 
-        // Step 6: Verify labels
-        // verify that all unknowns are symbols
-        // these are reaction forces and moments
-        // knowns should not be symbols: externals, weights
-        // symbols must also not be repeated, unless this is valid somehow? (not yet)
+    public boolean checkDiagram() {
+
+        // step 1: assemble a list of all the forces the user has added.
+        List<AnchoredVector> addedLoads = checkAddedLoads();
+        if (addedLoads == null) {
+            return false;
+        }
+
+        // step 2: for vectors that we can click on and add, ie, given added forces,
+        // make sure that the user has added all of them.
+        if (!checkGivenLoads(addedLoads)) {
+            return false;
+        }
+
+        // step 3: Make sure weights exist, and remove them from our addedForces.
+        if (!checkAddedWeights(addedLoads)) {
+            return false;
+        }
+
+        // Step 4: go through all the border connectors connecting this FBD to the external world,
+        // and check each AnchoredVector implied by the connector.
+        if (!checkConnectors(addedLoads)) {
+            return false;
+        }
+
+        // Step 5: Make sure we've used all the user added forces.
+        if (!checkRemainingLoads(addedLoads)) {
+            return false;
+        }
 
         // Yay, we've passed the test!
         logInfo("check: PASSED!");
@@ -696,7 +763,7 @@ public class FBDChecker {
      * @param candidate
      * @return
      */
-        protected NameCheckResult checkLoadName(AnchoredVector candidate) {
+    protected NameCheckResult checkLoadName(AnchoredVector candidate) {
         String name = candidate.getSymbolName();
 
         for (SimulationObject obj : Diagram.getSchematic().allObjects()) {

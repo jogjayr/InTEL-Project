@@ -16,7 +16,9 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -49,20 +51,57 @@ public class CheckConnectorTest extends TestingBoilerplate{
 
             checkConnector.setAccessible(true);
 
-            // test should pass true: at same point, same direction, same type
-            Point point = (Point) objectMap.get("B");
-            Connector pin2d = new Pin2d(point);
+//            // test should pass true: at same point, two loads, pin2d
+//            Point point = (Point) objectMap.get("B");
+//            Pin2d pin2d = new Pin2d(point);
+//            pin2d.setName("foo");
+//            pin2d.attachToWorld(body);
+//
+//            List<AnchoredVector> candidateVectors = new ArrayList<AnchoredVector>();
+//
+//            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
+//            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), new BigDecimal(5))));
+//
+//            System.out.println("CheckConnector invoking....");
+//            Object result = checkConnector.invoke(check, candidateVectors, pin2d, body);
+//            Enum resultEnum = (Enum) result;
+//            assertEquals("passed", resultEnum.name());
+//            System.out.println(result);
+//
+//            // test should pass true: at same point, one load, roller2d
+//            point = (Point) objectMap.get("A");
+//            Roller2d roller2d = new Roller2d(point);
+//            roller2d.setDirection(Vector3bd.UNIT_Y);
+//            roller2d.setName("foo2");
+//            roller2d.attachToWorld(body);
+//
+//            candidateVectors = new ArrayList<AnchoredVector>();
+//
+//            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
+//
+//            System.out.println("CheckConnector invoking....");
+//            result = checkConnector.invoke(check, candidateVectors, roller2d, body);
+//            resultEnum = (Enum) result;
+//            assertEquals("passed", resultEnum.name());
+//            System.out.println(result);
+
+            // test should pass true: at same point, two loads, one moment, fix2d
+            Point point = (Point) objectMap.get("A");
+            Fix2d fix2d = new Fix2d(point);
+            fix2d.setName("foo3");
+            fix2d.attachToWorld(body);
 
             List<AnchoredVector> candidateVectors = new ArrayList<AnchoredVector>();
 
-            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
+            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "zomg")));
+            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), "zoomj")));
+            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[0,1,0]"), "zebra")));
 
             System.out.println("CheckConnector invoking....");
-            Object result = checkConnector.invoke(check, candidateVectors, pin2d, body);
+            Object result = checkConnector.invoke(check, candidateVectors, fix2d, body);
             Enum resultEnum = (Enum) result;
             assertEquals("passed", resultEnum.name());
             System.out.println(result);
-
 
         } catch (IllegalAccessException ex) {
             Logger.getLogger(ReflectCheck.class.getName()).log(Level.SEVERE, null, ex);
