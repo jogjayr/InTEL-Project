@@ -8,8 +8,11 @@ import edu.gatech.statics.application.AppletLauncher;
 import edu.gatech.statics.application.StaticsApplet;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -26,7 +29,7 @@ public class AppletTester {
         parameters.put("assignmentID", "0");
         parameters.put("problemID", "0");
         parameters.put("problemName", "Arm and Purse");
-        
+
         StaticsApplet myApplet = new AppletLauncher() {
 
             @Override
@@ -60,29 +63,30 @@ public class AppletTester {
         frame.add(applet, BorderLayout.CENTER);
 
 
-//        JButton button = new JButton("Change");
-//        button.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//
-//                applet.stop();
-//                applet.destroy();
-//                frame.remove(applet);
-//                applet = null;
-//
-//                System.gc();
-//                System.out.println("******************");
-//                System.out.println("LOADING NEW APPLET");
-//                System.out.println("******************");
-//
-//                applet = createApplet();
-//                applet.init();
-//                applet.start();
-//                frame.add(applet,BorderLayout.CENTER);
-//                frame.pack();
-//            }
-//        });
-//
-//        frame.add(button, BorderLayout.SOUTH);
+        JButton button = new JButton("Change");
+        button.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                applet.stop();
+                applet.destroy();
+                frame.remove(applet);
+                applet = null;
+
+                System.gc();
+                System.out.println("******************");
+                System.out.println("LOADING NEW APPLET");
+                System.out.println("******************");
+
+                applet = createApplet();
+                applet.init();
+                applet.start();
+                frame.add(applet, BorderLayout.CENTER);
+                frame.pack();
+            }
+        });
+
+        frame.add(button, BorderLayout.SOUTH);
         frame.pack();
     }
 }

@@ -77,12 +77,15 @@ public class StaticsApplet extends Applet {
         //}
 
         instance = this;
-        application = new StaticsApplication();
+        //application = new StaticsApplication();
         alive = true;
         Logger.getLogger("Statics").info("Applet: StaticsApplet()");
     }
 
     public StaticsApplication getApplication() {
+        if(application == null)
+            application = new StaticsApplication();
+
         return application;
     }
 
@@ -109,28 +112,32 @@ public class StaticsApplet extends Applet {
     public void destroy() {
         //System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
         //showTextures();
+        Logger.getLogger("Statics").info("Applet: destroy() called");
         application.finish();
         application = null;
         super.destroy();
         alive = false;
-        Logger.getLogger("Statics").info("Applet: destroy()");
+        Logger.getLogger("Statics").info("Applet: destroy() finished");
     //System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
     }
 
     @Override
     public void start() {
+        Logger.getLogger("Statics").info("Applet: start() called");
         super.start();
-        Logger.getLogger("Statics").info("Applet: start()");
+        Logger.getLogger("Statics").info("Applet: start() finished");
     }
 
     @Override
     public void stop() {
+        Logger.getLogger("Statics").info("Applet: stop() called");
         super.stop();
-        Logger.getLogger("Statics").info("Applet: stop()");
+        Logger.getLogger("Statics").info("Applet: stop() finished");
     }
 
     @Override
     public void init() {
+        Logger.getLogger("Statics").info("Applet: init() called");
         super.init();
         //System.out.println("(init) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
 
@@ -144,6 +151,7 @@ public class StaticsApplet extends Applet {
         loadCanvasThread.start();*/
 
         loadCanvas();
+        Logger.getLogger("Statics").info("Applet: init() finished");
     }
 
     /**
