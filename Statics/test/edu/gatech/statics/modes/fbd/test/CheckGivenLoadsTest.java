@@ -38,7 +38,7 @@ public class CheckGivenLoadsTest extends TestingBoilerplate {
 
         try {
             // test the protected methods in FBDChecker via reflection
-            Method checkGivenLoads = check.getClass().getDeclaredMethod("checkGivenLoadsTest", List.class);
+            Method checkGivenLoads = check.getClass().getDeclaredMethod("checkGivenLoads", List.class);
 
             System.out.println(checkGivenLoads);
 
@@ -91,7 +91,7 @@ public class CheckGivenLoadsTest extends TestingBoilerplate {
 
             System.out.println("CheckGivenLoads invoking....");
             result = checkGivenLoads.invoke(check, addedLoads);
-            assertTrue((Boolean) result);
+            assertFalse((Boolean) result);
             System.out.println(result);
 
             //should pass false, switched points

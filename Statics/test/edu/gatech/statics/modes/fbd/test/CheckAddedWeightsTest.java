@@ -48,19 +48,18 @@ public class CheckAddedWeightsTest extends TestingBoilerplate {
         body.setCenterOfMassPoint(pointA);
 
         try {
-            // test passes null, no loads added
-            Method checkAddedWeights = check.getClass().getDeclaredMethod("checkAddedWeightsTest", List.class);
+            Method checkAddedWeights = check.getClass().getDeclaredMethod("checkAddedWeights", List.class);
 
             System.out.println(checkAddedWeights);
 
             checkAddedWeights.setAccessible(true);
 
-            // test passes false, there are loads in the list
+            // test passes true, there are no loads in the list
             List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>();
-//            addedLoads.add(new AnchoredVector(pointA, new Vector(Unit.moment, new Vector3bd("[1,0,0]"), "foo")));
-//            addedLoads.add(new AnchoredVector(pointB, new Vector(Unit.force, new Vector3bd("[0,1,0]"), new BigDecimal(5))));
+            addedLoads.add(new AnchoredVector(pointB, new Vector(Unit.moment, new Vector3bd("[1,0,0]"), "foo")));
+            addedLoads.add(new AnchoredVector(pointA, new Vector(Unit.force, new Vector3bd("[0,-1,0]"), new BigDecimal("7.8"))));
 
-            System.out.println("CheckAddedLoads invoking....");
+            System.out.println("CheckAddedWeights invoking....");
             Object result = checkAddedWeights.invoke(check, addedLoads);
             assertTrue((Boolean) result);
             System.out.println(result);

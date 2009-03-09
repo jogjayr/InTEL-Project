@@ -94,8 +94,8 @@ public class CheckConnectorTest extends TestingBoilerplate{
             List<AnchoredVector> candidateVectors = new ArrayList<AnchoredVector>();
 
             candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[1,0,0]"), "zomg")));
-            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,1,0]"), "zoomj")));
-            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[0,1,0]"), "zebra")));
+            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.force, new Vector3bd("[0,-1,0]"), "zoomj")));
+            candidateVectors.add(new AnchoredVector(point, new Vector(Unit.moment, new Vector3bd("[0,0,1]"), "zebra")));
 
             System.out.println("CheckConnector invoking....");
             Object result = checkConnector.invoke(check, candidateVectors, fix2d, body);

@@ -511,6 +511,12 @@ public class FBDChecker {
         return true;
     }
 
+    /**
+     * The BIG test. Contains five steps to ensure that the student's FBD has been
+     * correctly created. Has been refactored out into five individual methods
+     * that are located directly above this text.
+     * @return
+     */
     public boolean checkDiagram() {
 
         // step 1: assemble a list of all the forces the user has added.
