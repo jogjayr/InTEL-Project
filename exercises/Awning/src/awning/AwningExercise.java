@@ -63,8 +63,8 @@ public class AwningExercise extends DistributedExercise {
         getDisplayConstants().setForceSize(0.5f);
         getDisplayConstants().setPointSize(0.5f);
         getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(5f);
-        getDisplayConstants().setMomentLabelDistance(10f);
+        getDisplayConstants().setForceLabelDistance(1f);
+        getDisplayConstants().setMomentLabelDistance(2f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
         getDisplayConstants().setDrawScale(.2f);
     }
