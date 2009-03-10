@@ -6,7 +6,7 @@ package simpletruss;
 
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.modes.frame.FrameExercise;
+import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class SimpleTruss1 extends FrameExercise {
+public class SimpleTruss1 extends TrussExercise {
 
     @Override
     public void initExercise() {

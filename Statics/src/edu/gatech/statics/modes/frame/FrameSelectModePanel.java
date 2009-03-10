@@ -43,9 +43,9 @@ public class FrameSelectModePanel extends SelectModePanel {
     @Override
     protected String getContents(List<Body> selection) {
         // return a special bit of text if the selection represents the whole frame
-        if (selection.size() == Exercise.getExercise().getSchematic().allBodies().size()) {
+        if (FrameUtil.isWholeDiagram(selection)) {
             String contents = "<font size=\"5\" color=\"white\">";
-            contents += "Whole Frame</font>";
+            contents += FrameUtil.whatToCallTheWholeDiagram + "</font>";
             return contents;
         }
 

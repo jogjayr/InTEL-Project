@@ -91,4 +91,30 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
     public DiagramDisplayCalculator getDisplayCalculator() {
         return diagramDisplayCalculator;
     }
+
+    /**
+     * This replaces the modepanel denoted by the modePanelClass in this interface configuration with the
+     * replacement provided.
+     * @param modePanelClass
+     * @param replacement
+     * @return true if successful, false otherwise.
+     */
+    public boolean replaceModePanel(Class modePanelClass, ApplicationModePanel replacement) {
+        ApplicationModePanel toRemove = null;
+        for (ApplicationModePanel modePanel : modePanels) {
+            if (modePanel.getClass() == modePanelClass) {
+                toRemove = modePanel;
+            }
+        }
+
+        if (toRemove != null) {
+            int index = modePanels.indexOf(toRemove);
+
+            modePanels.remove(toRemove);
+            modePanels.add(index, replacement);
+
+            return true;
+        }
+        return false;
+    }
 }
