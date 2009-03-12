@@ -6,8 +6,6 @@ package levee;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
-import com.jme.scene.state.AlphaState;
-import com.jme.scene.state.RenderState;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -42,7 +40,7 @@ public class LeveeExercise extends DistributedExercise {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
-        vc.setPositionConstraints(15f, 25f, 4f, 10f);
+        vc.setPositionConstraints(-15f, 15f, 1f, 14f);
         vc.setZoomConstraints(0.35f, 0.8f);
         vc.setRotationConstraints(-1, 1);
         interfaceConfiguration.setViewConstraints(vc);
@@ -86,6 +84,7 @@ public class LeveeExercise extends DistributedExercise {
     public void loadExercise() {
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
+        //StaticsApplication.getApp().getCamera().setLocation(new Vector3f(10.0f, 6, 0f));
 
         Schematic schematic = getSchematic();
 
@@ -136,12 +135,12 @@ public class LeveeExercise extends DistributedExercise {
         rep.setModelOffset(modelTranslation);
         levee.addRepresentation(rep);
 
-        rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water");
+        /*rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
-        waterForceObject.addRepresentation(rep);
+        waterForceObject.addRepresentation(rep);*/
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
