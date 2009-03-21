@@ -10,7 +10,6 @@ import com.jme.input.action.MouseInputAction;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.objects.manipulators.Tool;
 
 /**
@@ -23,16 +22,12 @@ public class SectionTool extends Tool {
     private Vector2f mouseStart = new Vector2f();
     private Vector2f mouseCurrent = new Vector2f();
 
-    public Vector2f getMouseCurrent() {
-        return mouseCurrent;
-    }
-
     public boolean isMouseDown() {
         return mouseDown;
     }
 
-    public Vector2f getMouseStart() {
-        return mouseStart;
+    public SectionCut getSectionCut() {
+        return new SectionCut(mouseStart, mouseCurrent);
     }
 
     public SectionTool() {
@@ -41,7 +36,9 @@ public class SectionTool extends Tool {
 
     @Override
     protected void onKeyEscape() {
-        // do nothing. do not automatically cancel.
+        // do not automatically cancel.
+        TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
+        currentDiagram.onCancel();
     }
 
     @Override
@@ -79,6 +76,6 @@ public class SectionTool extends Tool {
 
     private void onMouseUp() {
         TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
-        currentDiagram.onDrawSection();
+        currentDiagram.onCreateSection(getSectionCut());
     }
 }
