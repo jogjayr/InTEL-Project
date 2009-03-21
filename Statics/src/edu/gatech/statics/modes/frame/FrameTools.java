@@ -17,7 +17,7 @@ public abstract class FrameTools extends BContainer {
     private FrameSelectModePanel modePanel;
     protected FrameSelectModePanel getModePanel() {return modePanel;}
     
-    FrameTools(FrameSelectModePanel modePanel) {
+    protected FrameTools(FrameSelectModePanel modePanel) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         
         this.modePanel = modePanel;

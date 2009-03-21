@@ -14,14 +14,14 @@ import com.jmex.bui.event.ActionListener;
  */
 public class FrameTools2D extends FrameTools {
 
-    private BButton addForce;
+    private BButton selectAll;
 
     public FrameTools2D(FrameSelectModePanel modePanel) {
         super(modePanel);
         ToolListener listener = new ToolListener();
 
-        addForce = new BButton("Select all members", listener, "all");
-        add(addForce);
+        selectAll = new BButton("Select all members", listener, "all");
+        add(selectAll);
     }
 
     private class ToolListener implements ActionListener {

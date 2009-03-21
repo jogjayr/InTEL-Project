@@ -33,6 +33,7 @@ import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
+import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
@@ -104,7 +105,15 @@ public class StaticsApplication {
      * @param bodies
      */
     public void selectDiagramKey(DiagramKey key) {
-        Diagram diagram = currentExercise.getRecentDiagram(key);
+        Diagram diagram;
+
+        // perfom special check. If null is passed, always load the select diagram. Otherwise, simply load the most recent.
+        if (key == null) {
+            diagram = currentExercise.getDiagram(key, SelectMode.instance.getDiagramType());
+        } else {
+            diagram = currentExercise.getRecentDiagram(key);
+        }
+
         if (diagram == null) {
             // this is an exceptional condition?
             Logger.getLogger("Statics").info("key does not have a diagram? " + key);
@@ -352,8 +361,8 @@ public class StaticsApplication {
             label.removeFromInterface();
         }
     }
-
     private boolean renderedOnce = false;
+
     /**
      * This is the main render. Our application renders very differently than
      * standard jME games. Namely, display is separated into several layers, which are
@@ -363,7 +372,7 @@ public class StaticsApplication {
      */
     public void render() {
 
-        if(!initialized) {
+        if (!initialized) {
             renderLoadingScreen();
             renderedOnce = true;
             return;
@@ -409,7 +418,6 @@ public class StaticsApplication {
         r.setBackgroundColor(ColorRGBA.white);
         r.draw(new LoadingScreen());
     }
-
     private List<ScreenshotListener> screenshotListeners = new ArrayList<ScreenshotListener>();
 
     public void addScreenshotListener(ScreenshotListener listener) {
