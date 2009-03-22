@@ -37,4 +37,16 @@ public class SectionCut {
     public Vector3f getSectionStart3d() {
         return StaticsApplication.getApp().getCamera().getWorldCoordinates(sectionStart, 0.1f);
     }
+
+    /**
+     * Calculates which side of the cut the given point is on. Returns values of -1, or 1 indicating
+     * which side of the line the point is on. May also return zero if the point is the same.
+     * @return
+     */
+    public int getCutSide(Vector2f point) {
+        Vector2f direction = sectionEnd.subtract(sectionStart);
+        Vector2f perp = new Vector2f(direction.y, -direction.x);
+        float distance = perp.dot(point.subtract(sectionStart));
+        return (int) Math.signum(distance);
+    }
 }

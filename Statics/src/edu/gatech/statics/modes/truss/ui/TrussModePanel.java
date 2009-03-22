@@ -16,6 +16,8 @@ import edu.gatech.statics.ui.applicationbar.ApplicationTab;
  */
 public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 
+    private SectionPopup popup1,  popup2;
+
     public TrussModePanel() {
         getTitleLabel().setText("Create a Section");
     }
@@ -23,6 +25,29 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
     @Override
     public DiagramType getDiagramType() {
         return TrussSectionMode.instance.getDiagramType();
+    }
+
+    public void showSectionBoxes() {
+        popup1.popup(300, 300, true);
+        popup2.popup(600, 300, true);
+    }
+
+    public void hideSectionBoxes() {
+        popup1.dismiss();
+        popup2.dismiss();
+    }
+
+    @Override
+    public void activate() {
+        super.activate();
+
+        if (popup1 == null) {
+            // initialize the popups if they do not exist yet.
+            popup1 = new SectionPopup(this.getWindow(), 1);
+            popup2 = new SectionPopup(this.getWindow(), -1);
+        }
+
+        hideSectionBoxes();
     }
 
     @Override

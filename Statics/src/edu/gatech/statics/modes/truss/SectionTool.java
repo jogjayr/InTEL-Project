@@ -11,6 +11,7 @@ import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.manipulators.Tool;
+import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
  *
@@ -60,11 +61,16 @@ public class SectionTool extends Tool {
             mouseCurrent.set(screenPos.x, screenPos.y);
 
             if (!mouseDown && MouseInput.get().isButtonDown(0)) {
-                mouseDown = true;
-                onMouseDown();
+                // don't do anything if the UI has the mouse.
+                if (!InterfaceRoot.getInstance().hasMouse()) {
+                    mouseDown = true;
+                    onMouseDown();
+                }
             } else if (mouseDown && !MouseInput.get().isButtonDown(0)) {
                 mouseDown = false;
                 onMouseUp();
+            } else {
+                onMouseMove();
             }
         }
     }
@@ -77,5 +83,17 @@ public class SectionTool extends Tool {
     private void onMouseUp() {
         TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
         currentDiagram.onCreateSection(getSectionCut());
+    }
+
+    private void onMouseMove() {
+        // okay, we are just mousing around
+        // if the diagram has a section, let it know what side of the section
+        // the mouse is currently on.
+        TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
+        SectionCut currentCut = currentDiagram.getCurrentCut();
+        if (currentCut != null) {
+            int side = currentCut.getCutSide(mouseCurrent);
+            currentDiagram.setSelectionHover(side);
+        }
     }
 }

@@ -10,11 +10,17 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.fbd.FBDMode;
+import edu.gatech.statics.modes.truss.ui.TrussModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.representations.CurveUtil;
+import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +32,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
     private SectionTool sectionTool;
     private SectionCut currentCut;
+    private int selectionSide;
 
     public SectionCut getCurrentCut() {
         return currentCut;
@@ -34,6 +41,57 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     public TrussSectionDiagram() {
         super(null);
         sectionTool = new SectionTool();
+    }
+
+    /**
+     * This actually selects the side specified.
+     * This will create a new FBD for the side and move to FBD mode.
+     * @param side
+     */
+    public void selectSection(int side) {
+        List<Body> bodiesOnSide = new ArrayList<Body>();
+        for (Body body : allBodies()) {
+
+            if (body instanceof TwoForceMember) {
+                TwoForceMember member = (TwoForceMember) body;
+                Vector3f end1_3d = StaticsApplication.getApp().getCamera().getScreenCoordinates(member.getEndpoint1().toVector3f());
+                Vector3f end2_3d = StaticsApplication.getApp().getCamera().getScreenCoordinates(member.getEndpoint2().toVector3f());
+                Vector2f end1 = new Vector2f(end1_3d.x, end1_3d.y);
+                Vector2f end2 = new Vector2f(end2_3d.x, end2_3d.y);
+                if (lineSegmentIntersection(currentCut.getSectionStart(), currentCut.getSectionEnd(), end1, end2)) {
+                    // reject all bodies on the cut line.
+                    continue;
+                }
+            }
+
+            if (side == getSideOfBody(body)) {
+                bodiesOnSide.add(body);
+            }
+        }
+
+        String specialName = "Section ";
+        //boolean first = true;
+        for (Body body : bodiesOnSide) {
+            if (body instanceof PointBody) {
+                //if (!first) {
+                //    specialName += "";
+                //}
+                specialName += ((PointBody) body).getAnchor().getName();
+
+                //first = false;
+            }
+        }
+
+        BodySubset bodies = new BodySubset(bodiesOnSide);
+        bodies.setSpecialName(specialName);
+
+        // attempt to get the most recent diagram
+        Diagram recentDiagram = Exercise.getExercise().getRecentDiagram(bodies);
+        if (recentDiagram == null) {
+            // try to create a FBD
+            recentDiagram = Exercise.getExercise().createNewDiagram(bodies, FBDMode.instance.getDiagramType());
+        }
+        recentDiagram.getMode().load(bodies);
     }
 
     @Override
@@ -53,7 +111,11 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
     @Override
     protected List<SimulationObject> getBaseObjects() {
-        return getSchematic().allObjects();
+        List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
+        for (Body body : getSchematic().allBodies()) {
+            baseObjects.add(body);
+        }
+        return baseObjects;
     }
 
     @Override
@@ -70,6 +132,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         super.deactivate();
         StaticsApplication.getApp().enableDrag(true);
         sectionTool.cancel();
+
+        TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
+        modePanel.hideSectionBoxes();
+        clearHighlights();
     }
 
     @Override
@@ -97,13 +163,69 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
         List<TwoForceMember> cutMembers = getAllCutMembers(section);
 
+        // first, make sure that the section is valid at all.
+        // if it is, actually make the selection, otherwise
         if (cutMembers.size() > 0) {
             currentCut = section;
+            TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
+            modePanel.showSectionBoxes();
         } else {
             currentCut = null;
+            TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
+            modePanel.hideSectionBoxes();
+            clearHighlights();
         }
     }
 
+    /**
+     * Remove all of the highlights in the bodies.
+     */
+    private void clearHighlights() {
+        for (Body body : allBodies()) {
+            body.setDisplayHighlight(false);
+            body.setDisplayGrayed(false);
+        }
+    }
+
+    /**
+     * This is called when the mouse has moved to one or the other side of the hover.
+     * This method assumes that the section exists and is non null. If it is null, the method returns.
+     * @param side
+     */
+    public void setSelectionHover(int side) {
+        if (selectionSide == side || currentCut == null) {
+            return;
+        }
+
+        List<TwoForceMember> allCutMembers = getAllCutMembers(currentCut);
+
+        // highlight things appropriately
+        for (Body body : allBodies()) {
+            if (getSideOfBody(body) == side && !allCutMembers.contains(body)) {
+                body.setDisplayHighlight(true);
+                body.setDisplayGrayed(false);
+            } else {
+                body.setDisplayHighlight(false);
+                body.setDisplayGrayed(true);
+            }
+        }
+    }
+
+    /**
+     * Returns 1 or -1 depending on what side of the current cut the given body falls on.
+     * @return
+     */
+    private int getSideOfBody(Body body) {
+        Vector3f screenCenter3d = StaticsApplication.getApp().getCamera().getScreenCoordinates(body.getTranslation());
+        Vector2f screenCenter = new Vector2f(screenCenter3d.x, screenCenter3d.y);
+        return currentCut.getCutSide(screenCenter);
+    }
+
+    /**
+     * returns a list of the 2FMs that were cut by the given section.
+     * @param section
+     * @return
+     */
     private List<TwoForceMember> getAllCutMembers(SectionCut section) {
 
         List<TwoForceMember> cutMembers = new ArrayList<TwoForceMember>();
