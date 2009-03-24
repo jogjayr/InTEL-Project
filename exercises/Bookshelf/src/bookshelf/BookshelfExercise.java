@@ -22,6 +22,7 @@ import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -38,7 +39,7 @@ public class BookshelfExercise extends DistributedExercise {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
-        vc.setPositionConstraints(-1f, 1f, -1f, 4f);
+        vc.setPositionConstraints(-5f, 5f, -4f, 6f);
         vc.setZoomConstraints(0.5f, 1.5f);
         vc.setRotationConstraints(-1, 1);
         interfaceConfiguration.setViewConstraints(vc);
@@ -48,7 +49,8 @@ public class BookshelfExercise extends DistributedExercise {
     @Override
     public void initExercise() {
         setName("Bookshelf");
-        setDescription("What is the loading on the supports of the bookshelf?");
+        setDescription("What are the loads on the supports of the bookshelf? " +
+                "Treat A as a pin and B as a roller.");
 
         // *****
         // UNITS ARE ISSUE
@@ -69,6 +71,11 @@ public class BookshelfExercise extends DistributedExercise {
         getDisplayConstants().setForceLabelDistance(5f);
         getDisplayConstants().setMomentLabelDistance(10f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
+
+        Unit.setPrecision(Unit.moment, 2);
+        Unit.setPrecision(Unit.force, 2);
+        Unit.setPrecision(Unit.mass, 2);
+        Unit.setPrecision(Unit.forceOverDistance, 2);
     }
 
     @Override
@@ -88,17 +95,17 @@ public class BookshelfExercise extends DistributedExercise {
         Beam bookshelf = new Beam("Bookshelf", A, B);
 
         DistributedForce dlBooks1 = new ConstantDistributedForce("books1", bookshelf, A, mid1,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("20")));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.20")));
         DistributedForceObject dlObjectBooks1 = new DistributedForceObject(dlBooks1, "1");
         bookshelf.addObject(dlObjectBooks1);
 
         DistributedForce dlBooks2 = new ConstantDistributedForce("books2", bookshelf, mid1, mid2,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("30")));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.30")));
         DistributedForceObject dlObjectBooks2 = new DistributedForceObject(dlBooks2, "2");
         bookshelf.addObject(dlObjectBooks2);
 
         DistributedForce dlBooks3 = new ConstantDistributedForce("books3", bookshelf, mid3, B,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("15")));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.15")));
         DistributedForceObject dlObjectBooks3 = new DistributedForceObject(dlBooks3, "3");
         bookshelf.addObject(dlObjectBooks3);
 
@@ -111,8 +118,8 @@ public class BookshelfExercise extends DistributedExercise {
         //bookshelf.createDefaultSchematicRepresentation();
 
         int arrowDensity = 2;
-        dlObjectBooks1.createDefaultSchematicRepresentation(20f / 6, 2 * arrowDensity, 1.75f);
-        dlObjectBooks2.createDefaultSchematicRepresentation(30f / 6, 4 * arrowDensity, 2.0f);
+        dlObjectBooks1.createDefaultSchematicRepresentation(18f / 6, 2 * arrowDensity, 1.75f);
+        dlObjectBooks2.createDefaultSchematicRepresentation(22f / 6, 4 * arrowDensity, 2.0f);
         dlObjectBooks3.createDefaultSchematicRepresentation(15f / 6, 3 * arrowDensity, 2.25f);
 
         DistanceMeasurement measureFull = new DistanceMeasurement(A, B);
@@ -151,17 +158,40 @@ public class BookshelfExercise extends DistributedExercise {
         Vector3f modelTranslation = new Vector3f(0, 0, 0);
         float modelScale = .4f;
 
-        ModelRepresentation rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2");
+        ModelRepresentation rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2/shelf2");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
         bookshelf.addRepresentation(rep);
 
+        rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2/books2/bookGroup1");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelScale(modelScale);
+        rep.setModelOffset(modelTranslation);
+        dlObjectBooks1.addRepresentation(rep);
+
+        rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2/books2/bookGroup2");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelScale(modelScale);
+        rep.setModelOffset(modelTranslation);
+        dlObjectBooks2.addRepresentation(rep);
+
+        rep = modelNode.extractElement(bookshelf, "VisualSceneNode/scene/bookshelf2/books2/bookGroup3");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelScale(modelScale);
+        rep.setModelOffset(modelTranslation);
+        dlObjectBooks3.addRepresentation(rep);
+
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
         rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
 
+        addTask(new SolveConnectorTask("Solve A", end1));
+        addTask(new SolveConnectorTask("Solve B", end2));
     }
 }
