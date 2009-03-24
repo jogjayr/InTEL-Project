@@ -124,15 +124,15 @@ public class Vector3bd {
 
     public Vector3bd divide(BigDecimal scalar) {
         return new Vector3bd(
-                x.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP),
-                y.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP),
-                z.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP));
+                x.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP),
+                y.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP),
+                z.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP));
     }
 
     public Vector3bd divideLocal(BigDecimal scalar) {
-        x = x.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
-        y = y.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
-        z = z.divide(scalar, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        x = x.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+        y = y.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+        z = z.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
         return this;
     }
 
@@ -229,9 +229,9 @@ public class Vector3bd {
                 Math.pow(y.doubleValue(), 2) +
                 Math.pow(z.doubleValue(), 2));
         BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
-        BigDecimal xn = x.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
-        BigDecimal yn = y.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
-        BigDecimal zn = z.divide(bdMagnitude, Unit.getPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal xn = x.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal yn = y.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+        BigDecimal zn = z.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
 
         return new Vector3bd(xn, yn, zn);
     }

@@ -165,8 +165,8 @@ public class Parser {
                         constant = constant.add(otherValue);
                         break;
                     case divide:
-                        constant = constant.divide(otherValue, Unit.getPrecision(), RoundingMode.HALF_UP);
-                        multiplier = multiplier.divide(otherValue, Unit.getPrecision(), RoundingMode.HALF_UP);
+                        constant = constant.divide(otherValue, Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
+                        multiplier = multiplier.divide(otherValue, Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
                         break;
                     case multiply:
                         constant = constant.multiply(otherValue);
@@ -264,7 +264,7 @@ public class Parser {
             }
             Node node = parse(expression);
             BigDecimal result = node.evaluate();
-            return result.setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+            return result.setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
 
         } catch (UnsupportedOperationException e) {
             return null;

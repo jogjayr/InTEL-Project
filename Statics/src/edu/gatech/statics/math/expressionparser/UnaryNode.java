@@ -55,13 +55,13 @@ class UnaryNode extends Node {
 
         switch (operation) {
             case sin:
-                return new BigDecimal(Math.sin((Math.PI / 180) * resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+                return new BigDecimal(Math.sin((Math.PI / 180) * resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case cos:
-                return new BigDecimal(Math.cos((Math.PI / 180) * resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+                return new BigDecimal(Math.cos((Math.PI / 180) * resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case atan:
-                return new BigDecimal(((180 / Math.PI) * Math.atan(resultFloat))).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+                return new BigDecimal(((180 / Math.PI) * Math.atan(resultFloat))).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case sqrt:
-                return new BigDecimal(Math.sqrt(resultFloat)).setScale(Unit.getPrecision(), RoundingMode.HALF_UP);
+                return new BigDecimal(Math.sqrt(resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case identity:
                 return child.evaluate();
             case negate:

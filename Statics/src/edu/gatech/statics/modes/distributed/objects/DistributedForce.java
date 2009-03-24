@@ -93,7 +93,7 @@ abstract public class DistributedForce implements DiagramKey {
 
         //BigDecimal alpha = getPositionMultiplier();
 
-        MathContext mc = new MathContext(Unit.getPrecision(), RoundingMode.HALF_UP);
+        MathContext mc = new MathContext(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
 
         BigDecimal length = new BigDecimal(start.distance(end), mc);
         //BigDecimal result = new BigDecimal(length.multiply(alpha).doubleValue(), mc);
@@ -112,7 +112,7 @@ abstract public class DistributedForce implements DiagramKey {
         BigDecimal peakMagnitude = getPeak().getDiagramValue();
         BigDecimal magnitudeMultiplier = getMagnitudeMultiplier();
 
-        MathContext mc = new MathContext(Unit.getPrecision(), RoundingMode.HALF_UP);
+        MathContext mc = new MathContext(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
 
         Vector3bd start = getStartPoint().getPosition();
         Vector3bd end = getEndPoint().getPosition();

@@ -65,7 +65,7 @@ class BinaryNode extends Node {
                 return result1.multiply(result2);
             case divide:
                 try {
-                    return result1.divide(result2, Unit.getPrecision(), RoundingMode.HALF_UP);
+                    return result1.divide(result2, Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
                 } catch (ArithmeticException ex) {
                     return null;
                 }
