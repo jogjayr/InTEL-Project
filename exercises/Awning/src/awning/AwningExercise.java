@@ -22,6 +22,7 @@ import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -120,5 +121,7 @@ public class AwningExercise extends DistributedExercise {
         rep.setModelOffset(modelTranslation);
         rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
+
+        addTask(new SolveConnectorTask("Solve Base", base));
     }
 }
