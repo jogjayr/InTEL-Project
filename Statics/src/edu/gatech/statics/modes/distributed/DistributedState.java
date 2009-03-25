@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.distributed;
 
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.util.Builder;
 
 /**
@@ -79,6 +78,11 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
         public DistributedState build() {
             return new DistributedState(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DistributedState: {solved=" + solved + ", magnitude=\"" + magnitude + "\", position=\"" + position + "\"}";
     }
 
     public Builder getBuilder() {

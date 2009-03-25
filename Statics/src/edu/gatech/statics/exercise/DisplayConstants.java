@@ -19,6 +19,8 @@ public class DisplayConstants {
     private float forceSize;
     private float pointSize;
     private float momentSize;
+    private float distributedLabelMultiplier;
+    private float distributedArrowSize;
 
     public static DisplayConstants getInstance() {
         return instance;
@@ -36,6 +38,8 @@ public class DisplayConstants {
         setForceLabelDistance(1f);
         setMomentLabelDistance(0f);
         setMeasurementBarSize(0.1f);
+        setDistributedLabelMultiplier(5);
+        setDistributedArrowSize(1);
     }
 
     public void setDrawScale(float value) {
@@ -47,6 +51,22 @@ public class DisplayConstants {
         measurementBarSize = value;
         momentLabelDistance = value;
         jointSize = value;
+    }
+
+    public float getDistributedArrowSize() {
+        return distributedArrowSize;
+    }
+
+    public void setDistributedArrowSize(float distributedArrowSize) {
+        this.distributedArrowSize = distributedArrowSize;
+    }
+
+    public void setDistributedLabelMultiplier(float distributedLabelMultiplier) {
+        this.distributedLabelMultiplier = distributedLabelMultiplier;
+    }
+
+    public float getDistributedLabelMultiplier() {
+        return distributedLabelMultiplier;
     }
 
     public void setCylinderRadius(float value) {

@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.distributed.objects;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -141,7 +142,7 @@ public class DistributedForceObject extends SimulationObject {
         Vector3f peakValue = dl.getPeak().getVectorValue().toVector3f().negate();
 
         // **** FIXME THIS USES A FIXED VALUE
-        return endpoint.add(peakValue.mult(5));
+        return endpoint.add(peakValue.mult(DisplayConstants.getInstance().getDistributedLabelMultiplier()));
     }
 
     @Override

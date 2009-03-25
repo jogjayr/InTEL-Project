@@ -23,10 +23,9 @@ import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
-import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
+import java.math.BigDecimal;
 
 /**
  *
@@ -63,10 +62,12 @@ public class AwningExercise extends DistributedExercise {
         getDisplayConstants().setForceSize(0.5f);
         getDisplayConstants().setPointSize(0.5f);
         getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(1f);
+        getDisplayConstants().setForceLabelDistance(3f);
         getDisplayConstants().setMomentLabelDistance(2f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
         getDisplayConstants().setDrawScale(.2f);
+        getDisplayConstants().setDistributedLabelMultiplier(1.25f);
+        getDisplayConstants().setDistributedArrowSize(.5f);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class AwningExercise extends DistributedExercise {
         Beam awning = new Beam("Awning", A, B);
 
         DistributedForce snowForce = new TriangularDistributedForce("snow", awning, A, B,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), "10"));
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("10")));
         DistributedForceObject snowForceObject = new DistributedForceObject(snowForce, "");
 
         awning.addObject(snowForceObject);
@@ -90,10 +91,10 @@ public class AwningExercise extends DistributedExercise {
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         //awning.createDefaultSchematicRepresentation();
-        snowForceObject.createDefaultSchematicRepresentation(1, 5, 2f);
+        snowForceObject.createDefaultSchematicRepresentation(.75f, 5, 1.0f);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
-        measure.createDefaultSchematicRepresentation();
+        measure.createDefaultSchematicRepresentation(.5f);
         schematic.add(measure);
 
         Connector base = new Fix2d(A);
