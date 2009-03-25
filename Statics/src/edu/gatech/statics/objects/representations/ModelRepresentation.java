@@ -31,6 +31,10 @@ public class ModelRepresentation extends Representation {
         modelNode.setLocalScale(scale);
     }
 
+    public void setModelScale(float scaleX, float scaleY, float scaleZ) {
+        modelNode.setLocalScale(new Vector3f(scaleX, scaleY, scaleZ));
+    }
+
     public void setModelRotation(Matrix3f rotation) {
         modelNode.setLocalRotation(rotation);
     }

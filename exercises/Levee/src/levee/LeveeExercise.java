@@ -35,6 +35,8 @@ import java.math.BigDecimal;
  */
 public class LeveeExercise extends DistributedExercise {
 
+    protected float waterHeight = 12;
+
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
@@ -57,7 +59,7 @@ public class LeveeExercise extends DistributedExercise {
                 "It is below water level, and needs dikes or levees for protection. " +
                 "A day after Katrina hit the city, the levee system broke in three canals.</p>" +
                 "<p>This shows a cross section of a levee. " +
-                "Its height is 12ft, and its width (horizontal length) is 1ft. " +
+                "The water height is " + waterHeight + " ft, and the cross section width is 1 ft. " +
                 "Assume that the ground can resist up to 10,400 lb*ft of moment and " +
                 "an infinite horizontal force (i.e. the ground has no maximum resistance to a horizontal force). " +
                 "The pressure distribution is linear with respect to depth and the equation is p(h) = d*g*h, where</p>" +
@@ -88,7 +90,7 @@ public class LeveeExercise extends DistributedExercise {
 
         Schematic schematic = getSchematic();
 
-        String waterLevel = "12";
+        String waterLevel = "" + waterHeight;
 
         Point A = new Point("A", "0", "0", "0");
         Point B = new Point("B", "0", waterLevel, "0");
@@ -106,8 +108,9 @@ public class LeveeExercise extends DistributedExercise {
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
-        //levee.createDefaultSchematicRepresentation();
-        waterForceObject.createDefaultSchematicRepresentation(5, 15, 2f);
+
+        int numberArrows = (int) (15 * waterHeight / 12);
+        waterForceObject.createDefaultSchematicRepresentation(5, numberArrows, 2f);
 
         // remove the label on the water force
         Representation labelRep = waterForceObject.getRepresentation(RepresentationLayer.labels).get(0);
@@ -128,19 +131,44 @@ public class LeveeExercise extends DistributedExercise {
 
         Vector3f modelTranslation = new Vector3f(0f, 0, 0);
 
-        ModelRepresentation rep
-                = modelNode.extractElement(levee, "VisualSceneNode/half_wall");
+        ModelRepresentation rep = modelNode.extractElement(levee, "VisualSceneNode/half_wall");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         levee.addRepresentation(rep);
 
-        /*rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water");
+        // don't do anything with this, just extract the element so it is outside of the background.
+        rep = modelNode.extractElement(levee, "VisualSceneNode/arrows");
+
+        float waterScale = waterHeight / 11;
+
+        rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
-        waterForceObject.addRepresentation(rep);*/
+        rep.setModelBound(null);
+        rep.setModelScale(1, waterScale, 1);
+        waterForceObject.addRepresentation(rep);
+
+        rep = modelNode.extractElement(levee, "VisualSceneNode/scene/cut_away_water2");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelOffset(modelTranslation);
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
+        rep.setModelBound(null);
+        rep.setModelScale(1, waterScale, 1);
+        schematic.getBackground().addRepresentation(rep);
+
+
+        rep = modelNode.extractElement(levee, "VisualSceneNode/scene/half_water");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelOffset(modelTranslation);
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
+        rep.setModelBound(null);
+        rep.setModelScale(1, waterScale, 1);
+        schematic.getBackground().addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
