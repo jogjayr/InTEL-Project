@@ -16,6 +16,7 @@ import com.jme.scene.Node;
 import com.jme.scene.shape.Cylinder;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.Moment;
 
 /**
@@ -35,7 +36,6 @@ public class MomentRepresentation extends Representation<Moment> {
     public MomentRepresentation(Moment target) {
         super(target);
         setLayer(RepresentationLayer.vectors);
-        
         Node contents = new Node("");
 
         PartialTorus torus = new PartialTorus("", 16, 6, torusInnerRadius, torusOuterRadius, torusSweep);
@@ -62,5 +62,12 @@ public class MomentRepresentation extends Representation<Moment> {
         update();
         updateModelBound();
         updateRenderState();
+    }
+    @Override
+    public void update() {
+        super.update();
+        if(useWorldScale()){
+            setLocalScale(DisplayConstants.getInstance().getMomentSize());
+        }
     }
 }

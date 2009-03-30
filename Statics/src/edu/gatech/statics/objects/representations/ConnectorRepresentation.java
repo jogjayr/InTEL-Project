@@ -5,6 +5,7 @@
 package edu.gatech.statics.objects.representations;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.objects.SimulationObject;
 
@@ -29,10 +30,9 @@ public class ConnectorRepresentation extends PointRepresentation {
     @Override
     public void update() {
         super.update();
-
         // we should enable the representation if the diagram is a select diagram
         boolean shouldEnable = StaticsApplication.getApp().getCurrentDiagram() instanceof SelectDiagram;
-
+        setLocalScale(DisplayConstants.getInstance().getJointSize());
         // states are consistent, no need to do anything
         if(shouldEnable == enabled)
             return;

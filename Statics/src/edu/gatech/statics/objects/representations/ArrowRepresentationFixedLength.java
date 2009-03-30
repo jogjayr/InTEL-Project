@@ -9,6 +9,7 @@
 
 package edu.gatech.statics.objects.representations;
 
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.VectorObject;
 
 /**
@@ -23,7 +24,6 @@ public class ArrowRepresentationFixedLength extends ArrowRepresentation {
     /** Creates a new instance of ArrowRepresentationFixedLength */
     public ArrowRepresentationFixedLength(VectorObject target) {
         super(target);
-        
         update();
     }
     

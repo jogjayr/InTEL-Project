@@ -11,6 +11,7 @@ package edu.gatech.statics.objects.representations;
 import com.jme.bounding.BoundingBox;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.VectorObject;
 
 /**
@@ -57,6 +58,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
         super.update();
         arrow.setLocalTranslation(0, 0, axisOffset);
         setMagnitude((float) getTarget().getAnchoredVector().doubleValue());
+        setLocalScale(DisplayConstants.getInstance().getForceSize());
     }
 
     protected void setMagnitude(float magnitude) {

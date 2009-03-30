@@ -262,18 +262,18 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
 
     public void update() {
-
-        if (useWorldScale) {
-            if (target instanceof Moment) {
-                setLocalScale(DisplayConstants.getInstance().getMomentSize());
-            } else if (target instanceof Force) {
-                setLocalScale(DisplayConstants.getInstance().getForceSize());
-            } else if (target instanceof Point) {
-                setLocalScale(DisplayConstants.getInstance().getPointSize());
-            } else if (target instanceof Connector) {
-                setLocalScale(DisplayConstants.getInstance().getJointSize());
-            }
-        }
+//  Have all been moved into their specific representations.
+//        if (useWorldScale) {
+//            if (target instanceof Moment) {
+//                setLocalScale(DisplayConstants.getInstance().getMomentSize());
+//            } else if (target instanceof Force) {
+//                setLocalScale(DisplayConstants.getInstance().getForceSize());
+//            } else if (target instanceof Point) {
+//                setLocalScale(DisplayConstants.getInstance().getPointSize());
+//            } else if (target instanceof Connector) {
+//                setLocalScale(DisplayConstants.getInstance().getJointSize());
+//            }
+//        }
         if (synchronizeTranslation) {
             setLocalTranslation(target.getTranslation());
         }

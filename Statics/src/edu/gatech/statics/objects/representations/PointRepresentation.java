@@ -21,6 +21,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.SimulationObject;
 import java.net.URL;
 
@@ -46,6 +47,7 @@ public class PointRepresentation extends Representation/*<Point>*/ {
     
     public PointRepresentation(SimulationObject target) {
         this(target, "rsrc/point.png");
+        setLocalScale(DisplayConstants.getInstance().getPointSize());
     }
     
     /** Creates a new instance of PointRepresentation */
@@ -53,7 +55,6 @@ public class PointRepresentation extends Representation/*<Point>*/ {
     public PointRepresentation(SimulationObject target, String imagePath) {
         super(target);
         setLayer(RepresentationLayer.points);
-        
         ZBufferState bufState = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
         bufState.setFunction(ZBufferState.CF_ALWAYS);
         setRenderState(bufState);
@@ -87,8 +88,12 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         updateModelBound();
         updateRenderState();
     }
-    
+    //was not overridden, seemed wrong.
+    @Override
     public void update() {
         super.update();
+        if(useWorldScale()){
+            setLocalScale(DisplayConstants.getInstance().getPointSize());
+        }
     }
 }
