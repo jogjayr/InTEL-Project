@@ -9,6 +9,10 @@ PImage fail;
 PImage bar_left; 
 PImage bar_right;
 PImage startScreen;
+PImage force10;
+PImage force25;
+PImage force50;
+PImage force85;
 PFont arial;
 PFont bigfont;
 
@@ -43,6 +47,10 @@ void setup() {
   bar_left = loadImage("bar_left.png");
   bar_right = loadImage("bar_right.png");
   startScreen = loadImage("startscreen.png");
+  force10 = loadImage("10kgForce.png");
+  force25 = loadImage("25kgForce.png");
+  force50 = loadImage("50kgForce.png");
+  force85 = loadImage("85kgForce.png");
 }
 
 void mousePressed() {
@@ -300,9 +308,23 @@ void draw() {
     image(bar, 83, 285);
     image(base, 0, 270);
     textFont(arial, 20);
-    text(float10+" cm", pos10, 145);
-    text(float25+" cm", pos25, 145);
-    text(float50+" cm", pos50, 145);
+    text(float10+" cm", (pos10+22+335)/2-30, 135);
+    text(float25+" cm", (pos25+22+335)/2-30, 135);
+    text(float50+" cm", (pos50+23+335)/2-30, 135);
+    
+    line(pos10+22, 140, 333, 140);
+    line(pos10+22, 135, pos10+22, 145);
+    line(333, 135, 333, 145);
+    
+    line(pos25+22, 140, 333, 140);
+    line(pos25+22, 135, pos25+22, 145);
+    
+    line(pos50+23, 135, pos50+23, 145);
+    line(333, 140, pos50+23, 140);
+    image(force10, pos10, 280);
+    image(force25, pos25, 280);
+    image(force50, pos50-1, 280);
+    image(force85, 308, 160);
     image(body10, pos10, 160);
     image(body25, pos25, 162);
     image(body50, pos50, 150);
