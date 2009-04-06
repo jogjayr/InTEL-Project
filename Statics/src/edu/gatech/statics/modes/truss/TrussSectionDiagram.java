@@ -78,7 +78,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
                 //}
                 specialName += ((PointBody) body).getAnchor().getName();
 
-                //first = false;
+            //first = false;
             }
         }
 
@@ -125,6 +125,9 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         StaticsApplication.getApp().setCurrentTool(sectionTool);
         sectionTool.setEnabled(true);
         currentCut = null;
+
+        StaticsApplication.getApp().setDefaultAdvice("Click and drag to create a section");
+        StaticsApplication.getApp().resetAdvice();
     }
 
     @Override
@@ -155,7 +158,22 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     }
 
     private void drawCut(Renderer r, SectionCut sectionCut) {
-        CurveUtil.renderLine(r, ColorRGBA.blue, sectionCut.getSectionStart3d(), sectionCut.getSectionEnd3d());
+        Vector2f sectionStart = sectionCut.getSectionStart();
+        Vector2f sectionEnd = sectionCut.getSectionEnd();
+        float length = sectionStart.subtract(sectionEnd).length();
+        if (length < 1) {
+            return;
+        }
+        // scale the points away so that the line takes up the whole screen.
+        float scaleBy = 2000f / length;
+        //System.out.println("length: " + length + " scaleby: " + scaleBy);
+        Vector2f sectionDifference = sectionEnd.subtract(sectionStart);
+        sectionStart = sectionStart.subtract(sectionDifference.mult(scaleBy / 2));
+        sectionEnd = sectionEnd.add(sectionDifference.mult(scaleBy / 2));
+        Vector3f sectionStart3d = StaticsApplication.getApp().getCamera().getWorldCoordinates(sectionStart, 0.1f);
+        Vector3f sectionEnd3d = StaticsApplication.getApp().getCamera().getWorldCoordinates(sectionEnd, 0.1f);
+
+        CurveUtil.renderLine(r, ColorRGBA.blue, sectionStart3d, sectionEnd3d);
     }
 
     public void onCreateSection(SectionCut section) {
@@ -168,7 +186,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         if (cutMembers.size() > 0) {
             currentCut = section;
             TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
-            modePanel.showSectionBoxes();
+            modePanel.showSectionBoxes(section);
         } else {
             currentCut = null;
             TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
@@ -242,6 +260,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
     /**
      * Checks to see if the section cut intersects the given 2 force member.
+     * This calculates the cut as though the section were a whole line.
      * @param section
      * @return
      */
@@ -252,7 +271,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         Vector2f end1 = new Vector2f(end1_3d.x, end1_3d.y);
         Vector2f end2 = new Vector2f(end2_3d.x, end2_3d.y);
 
-        return lineSegmentIntersection(end1, end2, section.getSectionStart(), section.getSectionEnd()) &&
+        return //lineSegmentIntersection(end1, end2, section.getSectionStart(), section.getSectionEnd()) &&
                 lineSegmentIntersection(section.getSectionStart(), section.getSectionEnd(), end1, end2);
     }
 
