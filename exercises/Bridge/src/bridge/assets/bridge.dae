@@ -328,7 +328,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       </extra>
     </image>
     <image id="file14" name="file14">
-      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/InTEL%20models/BridgeArchive/Maya%20Scene/Reference/schematic.png</init_from>
+      <init_from>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/InTEL%20models/BridgeArchive/Maya%20Scene/Reference/rust.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
