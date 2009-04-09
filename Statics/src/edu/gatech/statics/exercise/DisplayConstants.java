@@ -70,7 +70,8 @@ public class DisplayConstants {
     }
 
     /**
-     * Not sure what this does, need to ask Calvin.
+     * Sets the distance of a label from its origin point.
+     * Used in DistributedForceObject.
      * @param distributedLabelMultiplier
      */
     public void setDistributedLabelMultiplier(float distributedLabelMultiplier) {
@@ -123,8 +124,7 @@ public class DisplayConstants {
 
     /**
      * Sets the scale of Force representations. It is used in
-     * ArrowRepresentationFixedLength and VectorObject. Not sure if it
-     * should be used in ArrowRepresentation.
+     * ArrowRepresentation and VectorObject. 
      * @param value
      */
     public void setForceSize(float value) {
@@ -137,7 +137,7 @@ public class DisplayConstants {
 
     /**
      * Controls the distance a label is drawn on a Vector representation from
-     * its origin. Currently used in Force, not sure if that is correct.
+     * its origin.
      * @param value
      */
     public void setForceLabelDistance(float value) {
