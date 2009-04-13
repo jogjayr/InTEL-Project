@@ -115,6 +115,8 @@ public class AwningExercise extends DistributedExercise {
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         rep.setModelScale(modelScale);
+        rep.setSelectLightColor(new ColorRGBA(1f, 1f, 1f, 1));
+        rep.setHoverLightColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 1));
         awning.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
