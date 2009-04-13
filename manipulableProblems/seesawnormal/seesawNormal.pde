@@ -21,7 +21,7 @@ boolean held20 = false;
 boolean unlocked = false;
 boolean correct = false;
 boolean load = true;
-boolean fbd = true;
+boolean fbd = false;
 int pos15 = 510;
 int pos20 = 60;
 int float15 = 0;
@@ -32,7 +32,7 @@ float tilt = 0;
 void setup() {
   size(670, 400);
   frameRate(60);
-  bigfont = loadFont("AngsanaNew-120.vlw");
+  bigfont = loadFont("Arial-Black-120.vlw");
   arial = loadFont("Arial-Black-20.vlw");
   base = loadImage("base.png");
   body15 = loadImage("body15.png");
@@ -251,11 +251,11 @@ void draw() {
     image(bar, 83, 285);
     if(mousePressed == true && mouseX >= 10 && mouseX <= 106 && mouseY >= 360 && mouseY <= 392) {
       mousePressed = false;
-      if(fbd == false){ 
-        fbd = true; 
+      if(fbd == true){ 
+        fbd = false; 
       }
       else{ 
-        fbd = false;
+        fbd = true;
       }
     }
     if(fbd) {
@@ -277,6 +277,8 @@ void draw() {
       image(fbdCheck, 10, 360);
     } 
     else {
+      textFont(bigfont, 120);
+      text("Success!", 35, 100);
       image(base, 0, 270);
       image(body15, pos15, 150);
       image(body20, pos20, 150);
