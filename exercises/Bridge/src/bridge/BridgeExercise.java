@@ -8,10 +8,14 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
@@ -56,6 +60,8 @@ public class BridgeExercise extends TrussExercise {
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " kip*ft");
         Unit.setSuffix(Unit.force, " kip");
+
+        
     }
 
     @Override
@@ -77,25 +83,40 @@ public class BridgeExercise extends TrussExercise {
         for (int i = 0; i < 14; i++) {
             // upper bars
             setupBar(modelNode, "U", i, "U", i + 1);
-            setupBar(modelNode, "U", 28 - i, "U", 28 - i - 1);
+            //setupBar(modelNode, "U", 28 - i, "U", 28 - i - 1);
             if (i > 0) {
                 // lower bars
                 setupBar(modelNode, "L", i, "L", i + 1);
-                setupBar(modelNode, "L", 28 - i, "L", 28 - i - 1);
+                //setupBar(modelNode, "L", 28 - i, "L", 28 - i - 1);
 
                 // verticals
                 setupBar(modelNode, "U", i, "L", i);
-                setupBar(modelNode, "U", 28 - i, "L", 28 - i);
+            //setupBar(modelNode, "U", 28 - i, "L", 28 - i);
             }
             // cross bars
             String crossPrefix1 = i % 2 == 0 ? "U" : "L";
             String crossPrefix2 = i % 2 == 1 ? "U" : "L";
             setupBar(modelNode, crossPrefix1, i, crossPrefix2, i + 1);
-            setupBar(modelNode, crossPrefix1, 28 - i, crossPrefix2, 28 - i - 1);
+        //setupBar(modelNode, crossPrefix1, 28 - i, crossPrefix2, 28 - i - 1);
         }
         // get that middle bar
         setupBar(modelNode, "U", 14, "L", 14);
 
+        // create the base supports.
+        PointBody pinJoint = (PointBody) getSchematic().getByName("Joint " + getJointName("L", 1));
+        Pin2d pinBase = new Pin2d(pinJoint.getAnchor());
+        pinBase.setName("pin base");
+        pinBase.attachToWorld(pinJoint);
+        getSchematic().add(pinBase);
+        pinBase.createDefaultSchematicRepresentation();
+
+        PointBody rollerJoint = (PointBody) getSchematic().getByName("Joint " + getJointName("L", 8));
+        Roller2d rollerBase = new Roller2d(rollerJoint.getAnchor());
+        rollerBase.setName("roller base");
+        rollerBase.setDirection(Vector3bd.UNIT_Y);
+        rollerBase.attachToWorld(rollerJoint);
+        getSchematic().add(rollerBase);
+        rollerBase.createDefaultSchematicRepresentation();
 
         // extract something that will be discarded from the actual view
         modelNode.extractElement(new Point("discard"), "VisualSceneNode/group36");
@@ -123,6 +144,13 @@ public class BridgeExercise extends TrussExercise {
 
         Bar bar = new Bar("Bar " + joint1Name + "-" + joint2Name, joint1.getAnchor(), joint2.getAnchor());
         //bar.createDefaultSchematicRepresentation();
+
+        Connector2ForceMember2d barconnect1 = new Connector2ForceMember2d(joint1.getAnchor(), bar);
+        barconnect1.attach(bar, joint1);
+
+        Connector2ForceMember2d barconnect2 = new Connector2ForceMember2d(joint2.getAnchor(), bar);
+        barconnect2.attach(bar, joint2);
+
         getSchematic().add(bar);
         setupBarModelRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
     }
@@ -179,7 +207,8 @@ public class BridgeExercise extends TrussExercise {
     }
 
     private void setupJoints(ModelNode modelNode, float[] lowerHeights) {
-        for (int i = 0; i < 29; i++) {
+        //for (int i = 0; i < 29; i++) {
+        for (int i = 0; i <= 14; i++) {
             String name;
             if (i > 14) {
                 name = "" + (28 - i) + "'";
