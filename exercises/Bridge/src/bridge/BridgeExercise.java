@@ -61,7 +61,13 @@ public class BridgeExercise extends TrussExercise {
         Unit.setSuffix(Unit.moment, " kip*ft");
         Unit.setSuffix(Unit.force, " kip");
 
-        
+        getDisplayConstants().setMomentSize(0.5f);
+        getDisplayConstants().setForceSize(0.5f);
+        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setCylinderRadius(0.5f);
+        getDisplayConstants().setForceLabelDistance(5f);
+        getDisplayConstants().setMomentLabelDistance(10f);
+        getDisplayConstants().setMeasurementBarSize(0.2f);
     }
 
     @Override
