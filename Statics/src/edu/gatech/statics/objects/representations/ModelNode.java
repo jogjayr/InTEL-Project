@@ -9,6 +9,8 @@ import com.jme.light.LightNode;
 import com.jme.scene.Node;
 import com.jme.scene.state.LightState;
 import com.jme.util.export.binary.BinaryImporter;
+import com.jme.util.resource.ResourceLocatorTool;
+import com.jme.util.resource.SimpleResourceLocator;
 import com.jmex.model.converters.AseToJme;
 import com.jmex.model.converters.MaxToJme;
 import com.jmex.model.converters.MilkToJme;
@@ -19,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +105,22 @@ public class ModelNode {
                 ModelRepresentation.class.getClassLoader().getResource(textureDirectory),
                 ModelRepresentation.class.getClassLoader().getResource(filename));
     }
+    private static boolean textureLocatorAdded = false;
 
     public static ModelNode load(URL textureUrl, URL fileUrl) {
+
+        // attempt to assign a resource locator for textures.
+        // This should get rid of some of the error messages in the bridge problem.
+        if (!textureLocatorAdded) {
+            textureLocatorAdded = true;
+
+            try {
+                SimpleResourceLocator locator = new SimpleResourceLocator(textureUrl.toURI());
+                ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(ModelNode.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         Node rootNode = null;
         String filename = fileUrl.toString();

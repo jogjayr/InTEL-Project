@@ -151,7 +151,7 @@ abstract public class SimulationObject {
     public void update() {
         for (Representation r : allRepresentations()) {
             r.update();
-            r.updateGeometricState(0, true);
+            //r.updateGeometricState(0, true);
             //r.updateRenderState();
             //r.updateModelBound();
             r.updateWorldBound();
