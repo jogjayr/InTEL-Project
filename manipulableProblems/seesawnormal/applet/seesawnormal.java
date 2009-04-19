@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import java.applet.*; 
+import java.awt.*; 
+import java.awt.image.*; 
+import java.awt.event.*; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class seesawnormal extends PApplet {
+
 PImage base;
 PImage body15;
 PImage body20;
@@ -29,7 +45,7 @@ int float20 = 0;
 
 float tilt = 0;
 
-void setup() {
+public void setup() {
   size(670, 400);
   frameRate(60);
   bigfont = loadFont("Arial-Black-120.vlw");
@@ -51,7 +67,7 @@ void setup() {
   fbdUncheck = loadImage("noFBD.png");
 }
 
-void mousePressed() {
+public void mousePressed() {
   if(mouseX>pos15 && mouseX<pos15+body15.width){
     held15 = true;
   }
@@ -62,7 +78,7 @@ void mousePressed() {
 
   if(mouseX>305 && mouseX<365 && mouseY>245 && mouseY<305 && !load)
   {
-    if((20*9.8)*float20 == (15*9.8)*float15) {
+    if((20*9.8f)*float20 == (15*9.8f)*float15) {
       unlocked = true;
       correct = true;   
     } 
@@ -72,12 +88,12 @@ void mousePressed() {
   }
 }
 
-void mouseReleased() {
+public void mouseReleased() {
   held15 = false;
   held20 = false;
 }
 
-void draw() {
+public void draw() {
   background(0, 219, 219);
   textFont(arial, 20);
 
@@ -144,7 +160,7 @@ void draw() {
   }
 
   if (unlocked && !correct && !load) {
-    if((20*9.8)*float20 > (15*9.8)*float15) {
+    if((20*9.8f)*float20 > (15*9.8f)*float15) {
       background(0, 219, 219);
 
       float theta = (float)tilt/width * PI;
@@ -193,7 +209,7 @@ void draw() {
         tilt--;
       }
     }
-    else if((20*9.8)*float20 < (15*9.8)*float15) {
+    else if((20*9.8f)*float20 < (15*9.8f)*float15) {
       background(0, 219, 219);
 
       float theta = (float)tilt/width * PI;
@@ -263,9 +279,9 @@ void draw() {
       text(float15+" cm", (pos15+23+335)/2-30, 215);
       text(float20+" cm", (pos20+22+335)/2-30, 215);
       text("Success!", 10, 25);
-      text("ΣF[X] = 0", 10, 50);
-      text("ΣF[Y] = -196N - 147N + 343N = 0", 10, 75);
-      text("ΣM[B] = 196N * " + float20 + "cm" + " - 147N * " + float15 + "cm", 10, 100);
+      text("\u03a3F[X] = 0", 10, 50);
+      text("\u03a3F[Y] = -196N - 147N + 343N = 0", 10, 75);
+      text("\u03a3M[B] = 196N * " + float20 + "cm" + " - 147N * " + float15 + "cm", 10, 100);
       image(force15, pos15-14, 264);
       image(force20, pos20-12, 264);
       image(force35, 245, 189);
@@ -291,3 +307,8 @@ void draw() {
   }
 }
 
+
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#f0f0f0", "seesawnormal" });
+  }
+}

@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import java.applet.*; 
+import java.awt.*; 
+import java.awt.image.*; 
+import java.awt.event.*; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class seesawMultiple extends PApplet {
+
 PImage base;
 PImage body10;
 PImage body25;
@@ -34,7 +50,7 @@ int float50 = 0;
 
 float tilt = 0;
 
-void setup() {
+public void setup() {
   size(670, 400);
   frameRate(60);
   bigfont = loadFont("Arial-Black-120.vlw");
@@ -58,7 +74,7 @@ void setup() {
   fbdUncheck = loadImage("noFBD.png");
 }
 
-void mousePressed() {
+public void mousePressed() {
   if(mouseX>pos10 && mouseX<pos10+body10.width){
     held10 = true;
   }
@@ -73,7 +89,7 @@ void mousePressed() {
 
   if(mouseX>305 && mouseX<365 && mouseY>245 && mouseY<305 && !load)
   {
-    if((25*9.8)*float25 + (10*9.8)*float10 == (50*9.8)*float50) {
+    if((25*9.8f)*float25 + (10*9.8f)*float10 == (50*9.8f)*float50) {
       unlocked = true;
       correct = true;   
     } 
@@ -83,13 +99,13 @@ void mousePressed() {
   }
 }
 
-void mouseReleased() {
+public void mouseReleased() {
   held10 = false;
   held25 = false;
   held50 = false;
 }
 
-void draw() {
+public void draw() {
   background(0, 219, 219);
   textFont(arial, 20);
 
@@ -175,7 +191,7 @@ void draw() {
   }
 
   if (unlocked && !correct && !load) {
-    if((25*9.8)*float25 + (10*9.8)*float10 > (50*9.8)*float50) {
+    if((25*9.8f)*float25 + (10*9.8f)*float10 > (50*9.8f)*float50) {
       background(0, 219, 219);
 
       float theta = (float)tilt/width * PI;
@@ -240,7 +256,7 @@ void draw() {
         tilt--;
       }
     }
-    else if((25*9.8)*float25 + (10*9.8)*float10 < (50*9.8)*float50) {
+    else if((25*9.8f)*float25 + (10*9.8f)*float10 < (50*9.8f)*float50) {
       background(0, 219, 219);
 
       float theta = (float)tilt/width * PI;
@@ -324,9 +340,9 @@ void draw() {
           //    image(base, 0, 270);
         textFont(arial, 20);
         text("Success!", 10, 25);
-        text("ΣF[X] = 0", 10, 50);
-        text("ΣF[Y] = -245N - 98N - 490N + 833N = 0", 10, 75);
-        text("ΣM[C] = 245N * " + float25 + "cm" + " + 98N * " + float10 + "cm" + " - 490N * " + float50 + "cm = 0", 10, 100);
+        text("\u03a3F[X] = 0", 10, 50);
+        text("\u03a3F[Y] = -245N - 98N - 490N + 833N = 0", 10, 75);
+        text("\u03a3M[C] = 245N * " + float25 + "cm" + " + 98N * " + float10 + "cm" + " - 490N * " + float50 + "cm = 0", 10, 100);
         
         image(force10, pos10-10, 264);
         image(force25, pos25-10, 264);
@@ -364,3 +380,8 @@ void draw() {
 
 
 
+
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#f0f0f0", "seesawMultiple" });
+  }
+}
