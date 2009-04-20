@@ -59,6 +59,8 @@ public class ArrowRepresentation extends Representation<VectorObject> {
         arrow.setLocalTranslation(0, 0, axisOffset);
         setMagnitude((float) getTarget().getAnchoredVector().doubleValue());
         setLocalScale(DisplayConstants.getInstance().getForceSize());
+
+        updateGeometricState(0, true);
     }
 
     protected void setMagnitude(float magnitude) {
