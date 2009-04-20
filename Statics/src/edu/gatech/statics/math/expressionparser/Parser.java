@@ -256,9 +256,13 @@ public class Parser {
             // automatically handle a single minus sign as a negation
             if (expression.trim().equals("-")) {
                 return BigDecimal.ONE.negate();
+            }
+
+            if (expression.trim().equals("+")) {
+                return BigDecimal.ONE;
+            }
 
             // shave off a * multiplier if the user has added one
-            }
             if (expression.endsWith("*")) {
                 expression = expression.substring(0, expression.length() - 1);
             }
@@ -370,6 +374,9 @@ public class Parser {
             return null;
         }
         if (token.equals("+")) {
+            if (currentNode instanceof UnaryNode && ((UnaryNode) currentNode).getChild() == null) {
+                return new UnaryNode(UnaryNode.Operation.identity);
+            }
             return new BinaryNode(BinaryNode.Operation.add);
         }
         if (token.equals("*")) {

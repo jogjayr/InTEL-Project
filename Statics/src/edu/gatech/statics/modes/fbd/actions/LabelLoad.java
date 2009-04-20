@@ -33,7 +33,8 @@ public class LabelLoad implements DiagramAction<FBDState> {
 
         if (Character.isDigit(label.charAt(0)) ||
                 label.charAt(0) == '.' ||
-                label.charAt(0) == '-') {
+                label.charAt(0) == '-' ||
+                label.charAt(0) == '+') {
             // numerical, try to lop off tail end
             String[] split = label.split(" ");
             value = new BigDecimal(split[0]);
