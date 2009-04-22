@@ -154,7 +154,6 @@ abstract public class SimulationObject {
             //r.updateGeometricState(0, true);
             //r.updateRenderState();
             //r.updateModelBound();
-            r.updateWorldBound();
         }
     }
 

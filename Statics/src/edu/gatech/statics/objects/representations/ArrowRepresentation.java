@@ -60,7 +60,8 @@ public class ArrowRepresentation extends Representation<VectorObject> {
         setMagnitude((float) getTarget().getAnchoredVector().doubleValue());
         setLocalScale(DisplayConstants.getInstance().getForceSize());
 
-        updateGeometricState(0, true);
+        super.updateRepresentationBounds();
+        //updateGeometricState(0, true);
     }
 
     protected void setMagnitude(float magnitude) {

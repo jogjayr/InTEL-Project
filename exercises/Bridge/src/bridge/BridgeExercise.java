@@ -10,6 +10,7 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.truss.TrussExercise;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
@@ -21,6 +22,7 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
+import java.math.BigDecimal;
 
 /**
  *
@@ -85,28 +87,8 @@ public class BridgeExercise extends TrussExercise {
         // first joints
         setupJoints(modelNode, lowerHeights);
 
-        // then bars
-        for (int i = 0; i < 14; i++) {
-            // upper bars
-            setupBar(modelNode, "U", i, "U", i + 1);
-            //setupBar(modelNode, "U", 28 - i, "U", 28 - i - 1);
-            if (i > 0) {
-                // lower bars
-                setupBar(modelNode, "L", i, "L", i + 1);
-                //setupBar(modelNode, "L", 28 - i, "L", 28 - i - 1);
-
-                // verticals
-                setupBar(modelNode, "U", i, "L", i);
-            //setupBar(modelNode, "U", 28 - i, "L", 28 - i);
-            }
-            // cross bars
-            String crossPrefix1 = i % 2 == 0 ? "U" : "L";
-            String crossPrefix2 = i % 2 == 1 ? "U" : "L";
-            setupBar(modelNode, crossPrefix1, i, crossPrefix2, i + 1);
-        //setupBar(modelNode, crossPrefix1, 28 - i, crossPrefix2, 28 - i - 1);
-        }
-        // get that middle bar
-        setupBar(modelNode, "U", 14, "L", 14);
+        // setup all of the bars
+        setupBars(modelNode);
 
         // create the base supports.
         PointBody pinJoint = (PointBody) getSchematic().getByName("Joint " + getJointName("L", 1));
@@ -189,27 +171,53 @@ public class BridgeExercise extends TrussExercise {
         return prefix + index + (prime ? "'" : "");
     }
 
-    private void createJoint(String prefix, String name, float x, float y, float z, ModelNode modelNode, int index) {
+    private PointBody createJoint(String prefix, String name, float x, float y, float z, ModelNode modelNode, int index) {
         Point lowerPoint = new Point(prefix + name, "" + x, "" + y, "" + z);
         lowerPoint.createDefaultSchematicRepresentation();
         getSchematic().add(lowerPoint);
 
-        PointBody lowerPointBody = new PointBody("Joint " + lowerPoint.getName(), lowerPoint);
-        lowerPointBody.createDefaultSchematicRepresentation();
-        getSchematic().add(lowerPointBody);
+        PointBody pointBody = new PointBody("Joint " + lowerPoint.getName(), lowerPoint);
+        pointBody.createDefaultSchematicRepresentation();
+        getSchematic().add(pointBody);
 
         int location = index > 14 ? 28 - index : index;
         String side = (index <= 14 ? "left" : "right");
         String modelPath = trussFront + "/trussFront_" + side +
                 "/trussFront_" + side + "_joints" +
                 "/trussFront_" + side + "_joints_" + prefix.toLowerCase() + location;
-        ModelRepresentation rep = modelNode.extractElement(lowerPointBody, modelPath);
+        ModelRepresentation rep = modelNode.extractElement(pointBody, modelPath);
         rep.setModelOffset(modelTranslation);
         rep.setModelRotation(modelRotation);
         rep.setModelScale(modelScale);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        lowerPointBody.addRepresentation(rep);
+        pointBody.addRepresentation(rep);
+
+        return pointBody;
+    }
+
+    private void setupBars(ModelNode modelNode) {
+        // then bars
+        for (int i = 0; i < 14; i++) {
+            // upper bars
+            setupBar(modelNode, "U", i, "U", i + 1);
+            //setupBar(modelNode, "U", 28 - i, "U", 28 - i - 1);
+            if (i > 0) {
+                // lower bars
+                setupBar(modelNode, "L", i, "L", i + 1);
+                //setupBar(modelNode, "L", 28 - i, "L", 28 - i - 1);
+                // verticals
+                setupBar(modelNode, "U", i, "L", i);
+            //setupBar(modelNode, "U", 28 - i, "L", 28 - i);
+            }
+            // cross bars
+            String crossPrefix1 = i % 2 == 0 ? "U" : "L";
+            String crossPrefix2 = i % 2 == 1 ? "U" : "L";
+            setupBar(modelNode, crossPrefix1, i, crossPrefix2, i + 1);
+        //setupBar(modelNode, crossPrefix1, 28 - i, crossPrefix2, 28 - i - 1);
+        }
+        // get that middle bar
+        setupBar(modelNode, "U", 14, "L", 14);
     }
 
     private void setupJoints(ModelNode modelNode, float[] lowerHeights) {
@@ -225,7 +233,14 @@ public class BridgeExercise extends TrussExercise {
             float yPosition = 13.3f;
             float zPosition = 3.8f;
             // create upper point
-            createJoint("U", name, xPosition, yPosition, zPosition, modelNode, i);
+            PointBody upperJoint = createJoint("U", name, xPosition, yPosition, zPosition, modelNode, i);
+
+            Force force = new Force(upperJoint.getAnchor(), Vector3bd.UNIT_Y.negate(), new BigDecimal(600));
+            force.createDefaultSchematicRepresentation();
+            force.setName("load-U"+name);
+            upperJoint.addObject(force);
+            getSchematic().add(force);
+
             if (i > 0 && i < 28) {
                 // create lower point
                 int lowerIndex = i <= 14 ? i - 1 : 28 - i - 1;

@@ -47,4 +47,12 @@ public class ModelRepresentation extends Representation {
         getRelativeNode().attachChild(modelNode);
         updateRenderState();
     }
+
+    @Override
+    protected void updateRepresentationBounds() {
+        //super.updateRepresentationBounds();
+        // do not propagate bounds for model representations
+    }
+
+
 }
