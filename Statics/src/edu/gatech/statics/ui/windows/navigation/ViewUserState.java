@@ -16,6 +16,12 @@ public class ViewUserState {
     private float yaw,  pitch; // yaw corresponds to horizontal rotation, pitch to vertical
     private float zoom = 1;
 
+    @Override
+    public String toString() {
+        //return super.toString();
+        return "ViewUserState: {xPos=" + xPos + ", yPos=" + yPos + ", yaw=" + yaw + ", pitch=" + pitch + ", zoom=" + zoom + "}";
+    }
+
     public ViewUserState() {
     }
 
