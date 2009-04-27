@@ -24,38 +24,6 @@ if($problemId != null) {
     // hopefully this will never happen
 }
 
-$exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
-$jarPath = "../applet/";
-$launcher = "edu.gatech.statics.application.AppletLauncher";
-$exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
-
-$jars = Array(
-    $exerciseJar,
-        "Statics.jar",
-        "BUI.jar",
-        "JavaMonkeyEngine.jar",
-        "lwjgl_applet.jar",
-        "lwjgl_util_applet.jar",
-        "lwjgl.jar",
-        "lwjgl_util.jar",
-        "lwjgl_fmod3.jar",
-        "lwjgl_devil.jar",
-        "natives.jar",
-        "jinput.jar"
-);
-
-$archiveString = "";
-foreach($jars as $jar) {
-    if(strlen($archiveString) == 0)
-    $archiveString .= $jarPath.$jar;
-    else	$archiveString .= ", ".$jarPath.$jar;
-}
-
-$resWidth = 1100; // 900;
-$resHeight = 768; // 675;
-//$resWidth = 900;
-//$resHeight = 675;
-
 // these variables need to be defined.
 if($user == null) $userId = 0;
 else $userId = $user['id'];
@@ -72,36 +40,177 @@ foreach($assignments as $assignment) {
     }
 }
 
-$state = "";
-if($thisAssignment != null && isset($thisAssignment['state'])) {
-    $state = $thisAssignment['state'];
+//main java apps
+if ($problem["type"]=="java"){
+  $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
+  $jarPath = "../applet/";
+  $launcher = "edu.gatech.statics.application.AppletLauncher";
+  $exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
+
+  $jars = Array(
+      $exerciseJar,
+          "Statics.jar",
+          "BUI.jar",
+          "JavaMonkeyEngine.jar",
+          "lwjgl_applet.jar",
+          "lwjgl_util_applet.jar",
+          "lwjgl.jar",
+          "lwjgl_util.jar",
+          "lwjgl_fmod3.jar",
+          "lwjgl_devil.jar",
+          "natives.jar",
+          "jinput.jar"
+  );
+
+  $archiveString = "";
+  foreach($jars as $jar) {
+      if(strlen($archiveString) == 0)
+      $archiveString .= $jarPath.$jar;
+      else	$archiveString .= ", ".$jarPath.$jar;
+  }
+
+  $resWidth = $problem["width"]; // 1100;
+  $resHeight = $problem["height"]; // 768;
+
+  $state = "";
+  if($thisAssignment != null && isset($thisAssignment['state'])) {
+      $state = $thisAssignment['state'];
+  }
+
+  //$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
+  $preHash = "$userId:$problemId:$problemName:$state";
+  $verifierKey = substr(md5($preHash),0,8);
+  ?>
+
+  <?php if($userId == 0) { ?>
+  <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+  <?php } ?>
+
+  <applet
+      archive="<?php echo $archiveString; ?>"
+      code="<?php echo $launcher; ?>"
+      width="<?php echo $resWidth; ?>" height="<?php echo $resHeight; ?>">
+      <param name="exercise" value="<?php echo $exerciseClass;?>"/>
+      <param name="width" value="<?php echo $resWidth; ?>"/>
+      <param name="height" value="<?php echo $resHeight ?>"/>
+      <param name="problemID" value="<?php echo $problemId ?>"/>
+      <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
+      <param name="userID" value="<?php echo $userId ?>"/>
+      <param name="problemName" value="<?php echo $problemName ?>"/>
+      <param name="exerciseState" value="<?php echo $state; ?>">
+      <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
+      Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
+  </applet>
+  
+<?
 }
+//simple java apps (for processing apps)
+if ($problem["type"]=="simplejava"){
+  $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
+  $jarPath = "../simpleapplet/";
+  $exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
 
-//$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
-$preHash = "$userId:$problemId:$problemName:$state";
-$verifierKey = substr(md5($preHash),0,8);
-?>
+  $resWidth = $problem["width"]; // 1100;
+  $resHeight = $problem["height"]; // 768;
+  ?>
 
-<?php if($userId == 0) { ?>
-<em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
-<?php } ?>
-
-<applet
-    archive="<?php echo $archiveString; ?>"
-    code="<?php echo $launcher; ?>"
-    width="<?php echo $resWidth; ?>" height="<?php echo $resHeight; ?>">
-    <param name="exercise" value="<?php echo $exerciseClass;?>"/>
-    <param name="width" value="<?php echo $resWidth; ?>"/>
-    <param name="height" value="<?php echo $resHeight ?>"/>
-    <param name="problemID" value="<?php echo $problemId ?>"/>
-    <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
-    <param name="userID" value="<?php echo $userId ?>"/>
-    <param name="problemName" value="<?php echo $problemName ?>"/>
-    <param name="exerciseState" value="<?php echo $state; ?>">
-    <param name="verifierKey" value="<?php echo $verifierKey ?>"/>
-    Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
-</applet>
-
-<?php 
+  <?php if($userId == 0) { ?>
+  <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+  <?php } ?>
+  
+<!--[if !IE]> -->
+				<object classid="java:<?php echo $exerciseClass;?>.class"
+            			type="application/x-java-applet"
+            			archive="<? echo $exerciseJar; ?>.jar"
+            			width="<?php echo $resWidth; ?>" height="<?php echo $resHeight ?>"
+            			standby="Loading..." >
+            			
+					<param name="archive" value="<? echo $jarPath.$exerciseJar; ?>.jar" />
+					<param name="mayscript" value="true" />
+					<param name="scriptable" value="true" />
+          <param name="image" value="loading.gif" />
+					<param name="boxmessage" value="Loading..." />
+					<param name="boxbgcolor" value="#FFFFFF" />
+					<param name="test_string" value="outer" />
+			<!--<![endif]-->
+				<object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
+						codebase="http://java.sun.com/update/1.4.2/jinstall-1_4_2_12-windows-i586.cab"
+						width="<?php echo $resWidth; ?>" height="<?php echo $resHeight ?>"
+						standby="Loading..."  >
+					<param name="code" value="<? echo $exerciseJar; ?>" />
+					<param name="archive" value="<? echo $jarPath.$exerciseJar; ?>.jar" />
+					<param name="mayscript" value="true" />
+					<param name="scriptable" value="true" />
+					<param name="boxmessage" value="Loading..." />
+					<param name="boxbgcolor" value="#FFFFFF" />
+					<param name="test_string" value="inner" />
+					<p>
+						<strong>
+							This browser does not have a Java Plug-in.
+							<br />
+							<a href="http://java.sun.com/products/plugin/downloads/index.html" rel="external" title="Download Java Plug-in">
+								Get the latest Java Plug-in here.
+							</a>
+						</strong>
+					</p>
+				
+				</object>
+				
+			<!--[if !IE]> -->
+				</object>
+			<!--<![endif]-->
+  <div id="spacer" style="height:25px;"></div>
+  <?php 
+}
+if ($problem["type"]=="flash"){
+  $exerciseSwf = $problem["java_jar_name"];//"Matchingas3_v2";
+  $swfPath = "../flash/";
+  $swfString = $swfPath.$exerciseSwf;
+  $resWidth = $problem["width"]; // 550;
+  $resHeight = $problem["height"]; // 400;
+  
+  if($userId == 0) { ?>
+  <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+  <?php }?>
+  <script language="javascript">AC_FL_RunContent = 0;</script>
+  <script src="<?echo $swfPath;?>AC_RunActiveContent.js" language="javascript"></script>
+  <script language="javascript">
+    if (AC_FL_RunContent == 0) {
+      alert("This page requires AC_RunActiveContent.js.");
+    } else {
+      AC_FL_RunContent(
+        'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+        'width', '<?echo $resWidth;?>',
+        'height', '<?echo $resHeight;?>',
+        'src', '<?echo $swfString;?>',
+        'quality', 'high',
+        'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+        'align', 'middle',
+        'play', 'true',
+        'loop', 'true',
+        'scale', 'showall',
+        'wmode', 'window',
+        'devicefont', 'false',
+        'id', '<?echo $exerciseSwf;?>',
+        'bgcolor', '#ffffff',
+        'name', '<?echo $exerciseSwf;?>',
+        'menu', 'true',
+        'allowFullScreen', 'false',
+        'allowScriptAccess','sameDomain',
+        'movie', '<?echo $swfString;?>',
+        'salign', ''
+        ); //end AC code
+    }
+  </script>
+  <noscript>
+    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="<?echo $resWidth;?>" height="<?echo $resHeight;?>" id="<?echo $exerciseSwf;?>" align="middle">
+    <param name="allowScriptAccess" value="sameDomain" />
+    <param name="allowFullScreen" value="false" />
+    <param name="movie" value="<?echo $swfString;?>.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="<?echo $swfString;?>.swf" quality="high" bgcolor="#ffffff" width="550" height="400" name="<?echo $exerciseSwf;?>" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+    </object>
+  </noscript>
+  <div id="spacer" style="height:25px;"></div>
+<?
+}
 require_once('footer.php'); 
 ?>
