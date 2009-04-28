@@ -55,19 +55,36 @@ public class LeveeExercise extends DistributedExercise {
         setName("Levee");
 
         setDescription(
-                "<p>In 2005, hurricane Katrina hit New Orleans, which caused enormous loss. " +
-                "New Oleans sits between the Mississippi river and Lake Pontchartrain. " +
-                "It is below water level, and needs dikes or levees for protection. " +
-                "A day after Katrina hit the city, the levee system broke in three canals.</p>" +
-                "<p>This shows a cross section of a levee. " +
-                "The water height is " + waterHeight + " ft, and the cross section width is 1 ft. " +
-                "Assume that the ground can resist up to 10,400 lb*ft of moment and " +
-                "an infinite horizontal force (i.e. the ground has no maximum resistance to a horizontal force). " +
-                "The pressure distribution is linear with respect to depth and the equation is p(h) = d*g*h, where</p>" +
-                "<b>*</b> d*g = 62.4 lb/ft^3 (specific weight of water) and<br>" +
-                "<b>*</b> h is the height of the water (water level) below the water surface." +
-                "<p>How much moment should the ground be able to safely exert on the levee " +
-                "if the water level increases to its maximum 12ft height?</p>");
+                "<p>In 2005, hurricane Katrina devastated New Orleans. New Orleans is " +
+                "below sea level, between the Mississippi river and Lake Pontchartrain, " +
+                "and relies on levees for protection. A day after Katrina hit the city, " +
+                "the levee system broke in three places.<br><br></p>" +
+
+                "<p>This shows a levee under strained conditions, where the height of the " +
+                "water is 12 ft. Assume that the ground can resist up to 10,400 lb*ft " +
+                "of moment and that it has unlimited resistance to a horizontal force. " +
+                "Examining a 1 foot cross section, solve for the actual loading of the " +
+                "water on the ground at the base of the levee (represented by the fixed " +
+                "support A). Will the ground be able to support the levee?<br><br></p>" +
+
+                "<p>To calculate the resultant, the distributed force of the water is " +
+                "given by a linear pressure distribution p(h) = d*g*h, where h represents depth. The quantity d*g " +
+                "is 62.4 lb/ft^3, the specific weight of water.</p>");
+
+//        setDescription(
+//                "<p>In 2005, hurricane Katrina hit New Orleans, which caused enormous loss. " +
+//                "New Oleans sits between the Mississippi river and Lake Pontchartrain. " +
+//                "It is below water level, and needs dikes or levees for protection. " +
+//                "A day after Katrina hit the city, the levee system broke in three canals.</p>" +
+//                "<p>This shows a cross section of a levee. " +
+//                "The water height is " + waterHeight + " ft, and the cross section width is 1 ft. " +
+//                "Assume that the ground can resist up to 10,400 lb*ft of moment and " +
+//                "an infinite horizontal force (i.e. the ground has no maximum resistance to a horizontal force). " +
+//                "The pressure distribution is linear with respect to depth and the equation is p(h) = d*g*h, where</p>" +
+//                "<b>*</b> d*g = 62.4 lb/ft^3 (specific weight of water) and<br>" +
+//                "<b>*</b> h is the height of the water (water level) below the water surface." +
+//                "<p>How much moment should the ground be able to safely exert on the levee " +
+//                "if the water level increases to its maximum 12ft height?</p>");
 
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " kip*ft");
