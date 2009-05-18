@@ -265,7 +265,7 @@ void draw() {
       text("Success!", 10, 25);
       text("ΣF[X] = 0", 10, 50);
       text("ΣF[Y] = -196N - 147N + 343N = 0", 10, 75);
-      text("ΣM[B] = 196N * " + float20 + "cm" + " - 147N * " + float15 + "cm", 10, 100);
+      text("ΣM[B] = 196N * " + float20 + "cm" + " - 147N * " + float15 + "cm = 0", 10, 100);
       image(force15, pos15-14, 264);
       image(force20, pos20-12, 264);
       image(force35, 245, 189);
