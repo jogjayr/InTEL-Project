@@ -5,6 +5,7 @@ PImage wheelArrowFail;
 PImage wheelArrowReverse;
 PImage bgrnd;
 PImage startScreen;
+PImage restartButton;
 PFont arial;
 PFont bigfont;
 
@@ -26,6 +27,7 @@ void setup() {
   wheelArrowFail = loadImage("wheel3.png");
   wheelArrowReverse = loadImage("wheel4.png");
   startScreen = loadImage("startscreen.png");
+  restartButton = loadImage("restartbutton.png");
 }
 
 void draw() {
@@ -149,6 +151,14 @@ void draw() {
     }
     degrees+=5;
     popMatrix();
+    image(restartButton, 0, 0, 700, 700);
+    if(mousePressed == true && mouseX >= 580 && mouseX <=690 && mouseY >= 5 && mouseY <= 70) {
+      //load = true;
+      state = false;
+      fun = 0;
+      direction = 0;
+      mousePressed = false;
+    }
   }
   textFont(arial, 34);
   text(round(fun)+"% \n fun", 325, 340);
