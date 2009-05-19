@@ -71,6 +71,11 @@ public class EquationMathForces extends EquationMath {
     }
 
     @Override
+    protected float valueComparePrecision() {
+        return 0.22f;
+    }
+
+    @Override
     protected void reportError(TermError error, AnchoredVector load, String coefficient) {
 
         if (error == TermError.doesNotBelong && load.getUnit() == Unit.moment) {

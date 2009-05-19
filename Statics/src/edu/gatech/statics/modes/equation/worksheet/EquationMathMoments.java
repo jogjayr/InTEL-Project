@@ -116,7 +116,7 @@ public class EquationMathMoments extends EquationMath {
 
         // check whether the load belongs in the equation or not
         if (coefficient == null) {
-            if (Math.abs(targetValue.floatValue()) < EquationMath.TEST_ACCURACY) {
+            if (Math.abs(targetValue.floatValue()) < valueComparePrecision()) {
                 // this is okay, the value is supposed to be null
                 return TermError.none;
             } else {
@@ -124,7 +124,7 @@ public class EquationMathMoments extends EquationMath {
                 return TermError.missedALoad;
             }
         } else {
-            if (Math.abs(targetValue.floatValue()) < EquationMath.TEST_ACCURACY) {
+            if (Math.abs(targetValue.floatValue()) < valueComparePrecision()) {
                 // coefficient is not null, but should be
                 return TermError.doesNotBelong;
             }
@@ -156,6 +156,11 @@ public class EquationMathMoments extends EquationMath {
 //            }
 //        }
         return error;
+    }
+
+    @Override
+    protected float valueComparePrecision() {
+        return (float) (.6 * Math.pow(10, -Unit.distance.getDecimalPrecision()));
     }
 
     @Override
@@ -290,14 +295,14 @@ public class EquationMathMoments extends EquationMath {
         }
 
         // actually check the values
-        if (Math.abs(coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < EquationMath.TEST_ACCURACY &&
-                Math.abs(coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < EquationMath.TEST_ACCURACY) {
+        if (Math.abs(coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
+                Math.abs(coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
             // hooray, our values are correct!
             return TermError.none;
         } else {
             // do negation check
-            if (Math.abs(-coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < EquationMath.TEST_ACCURACY &&
-                    Math.abs(-coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < EquationMath.TEST_ACCURACY) {
+            if (Math.abs(-coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
+                    Math.abs(-coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
                 return TermError.badSign;
             }
 

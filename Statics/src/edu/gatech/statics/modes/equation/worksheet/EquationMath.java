@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 abstract public class EquationMath {
 
-    protected static final float TEST_ACCURACY = .022f;
+    //protected static final float TEST_ACCURACY = .022f;
     private final String name;
     private final Vector3bd observationDirection;
     private final EquationDiagram diagram;
@@ -115,6 +115,14 @@ abstract public class EquationMath {
     }
 
     /**
+     * This yields the precision to be used in value comparisons. Moments equations
+     * must compare values with respect to the precision of distance. Non moment equations
+     * may use a fixed value.
+     * @return
+     */
+    abstract protected float valueComparePrecision();
+
+    /**
      * Compares the two values and returns: TermError.none if the values are equal,
      * TermError.badSign if the sign is wrong, or TermError.incorrect if the value is
      * incorrect but not anything else.
@@ -124,12 +132,12 @@ abstract public class EquationMath {
      */
     protected TermError compareValues(BigDecimal userValue, BigDecimal targetValue) {
 
-        if (Math.abs(userValue.floatValue() - targetValue.floatValue()) < TEST_ACCURACY) {
+        if (Math.abs(userValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
             // value is okay, return positive
             return TermError.none;
         } else {
             // check to see if the negated value is correct instead
-            if (Math.abs(-1 * userValue.floatValue() - targetValue.floatValue()) < TEST_ACCURACY) {
+            if (Math.abs(-1 * userValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
                 return TermError.badSign;
             }
 
@@ -216,7 +224,7 @@ abstract public class EquationMath {
      * @return
      */
     protected boolean isLoadAligned(AnchoredVector load) {
-        return Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) > TEST_ACCURACY;
+        return Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) > valueComparePrecision();
     }
 
     /**
