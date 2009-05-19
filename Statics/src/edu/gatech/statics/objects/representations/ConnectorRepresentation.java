@@ -5,7 +5,6 @@
 package edu.gatech.statics.objects.representations;
 
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.objects.SimulationObject;
 
@@ -18,6 +17,8 @@ import edu.gatech.statics.objects.SimulationObject;
  */
 public class ConnectorRepresentation extends PointRepresentation {
 
+    private boolean enabled = false;
+
     public ConnectorRepresentation(SimulationObject target, String imagePath) {
         super(target, imagePath);
     }
@@ -25,24 +26,32 @@ public class ConnectorRepresentation extends PointRepresentation {
     public ConnectorRepresentation(SimulationObject target) {
         super(target);
     }
-    private boolean enabled = true;
 
     @Override
     public void update() {
-        super.update();
         // we should enable the representation if the diagram is a select diagram
         boolean shouldEnable = StaticsApplication.getApp().getCurrentDiagram() instanceof SelectDiagram;
-        setLocalScale(DisplayConstants.getInstance().getJointSize());
+        //setLocalScale(DisplayConstants.getInstance().getJointSize());
         // states are consistent, no need to do anything
-        if(shouldEnable == enabled)
-            return;
-        
+        //if (shouldEnable == enabled) {
+        //    return;
+        //}
+
         enabled = shouldEnable;
-        
+
         if (enabled) {
-            getRelativeNode().attachChild(getQuad());
+                setHidden(false);
+            //if (!getRelativeNode().hasChild(getQuad())) {
+                //getRelativeNode().attachChild(getQuad());
+                //getQuad().setCullMode(CULL_NEVER);
+            //}
         } else {
-            getRelativeNode().detachChild(getQuad());
+                setHidden(true);
+            //if (getRelativeNode().hasChild(getQuad())) {
+                //getRelativeNode().detachChild(getQuad());
+                //getQuad().setCullMode(CULL_ALWAYS);
+            //}
         }
+        super.update();
     }
 }

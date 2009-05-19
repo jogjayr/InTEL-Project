@@ -13,10 +13,12 @@ import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.objects.SimulationObject;
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState;
+import com.jme.util.geom.Debugger;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -399,10 +401,13 @@ public abstract class Diagram<StateType extends DiagramState> {
      * object representations.
      */
     public void update() {
-        updateNodes();
+        // first update all of the objects
         for (SimulationObject obj : allObjects) {
             obj.update();
         }
+        // then update the nodes.
+        // this is called AFTER objects are updated, in case some objects are made hidden or unhidden.
+        updateNodes();
     }
 
     /**
@@ -466,16 +471,18 @@ public abstract class Diagram<StateType extends DiagramState> {
                 r.draw(getNode(layer));
                 r.renderQueue();
 
-            // This is a little bit of code that may be uncommented to 
-            // view the bounding volumes
-                /*if (layer == RepresentationLayer.vectors) {
-            Debugger.setBoundsColor(ColorRGBA.pink);
-            } else if (layer == RepresentationLayer.schematicBodies) {
-            Debugger.setBoundsColor(ColorRGBA.white);
-            } else {
-            Debugger.setBoundsColor(ColorRGBA.green);
-            }
-            Debugger.drawBounds(getNode(layer), r, true);*/
+                // This is a little bit of code that may be uncommented to
+                // view the bounding volumes
+//                if (layer == RepresentationLayer.vectors) {
+//                    Debugger.setBoundsColor(ColorRGBA.pink);
+//                } else if (layer == RepresentationLayer.schematicBodies) {
+//                    Debugger.setBoundsColor(ColorRGBA.white);
+//                } else if (layer == RepresentationLayer.points) {
+//                    Debugger.setBoundsColor(ColorRGBA.magenta);
+//                } else {
+//                    Debugger.setBoundsColor(ColorRGBA.green);
+//                }
+//                Debugger.drawBounds(getNode(layer), r, true);
             }
             r.clearZBuffer();
         }
