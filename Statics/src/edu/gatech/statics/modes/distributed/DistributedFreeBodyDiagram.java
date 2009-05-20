@@ -38,7 +38,16 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
         private SelectionFilter superFilter = DistributedFreeBodyDiagram.super.getSelectionFilter();
 
         public boolean canSelect(SimulationObject obj) {
-            return superFilter.canSelect(obj) || obj instanceof DistributedForceObject;
+            if (superFilter.canSelect(obj)) {
+                return true;
+            }
+            if (obj instanceof DistributedForceObject) {
+                // we can select the object if it is not solved yet.
+                if (!((DistributedForceObject) obj).isSolved()) {
+                    return true;
+                }
+            }
+            return false;
         }
     };
 
@@ -61,8 +70,10 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
 
         if (obj instanceof DistributedForceObject) {
             DistributedForceObject dlObj = (DistributedForceObject) obj;
-            DistributedMode.instance.load(dlObj.getDistributedForce());
-            return;
+            if (!dlObj.isSolved()) {
+                DistributedMode.instance.load(dlObj.getDistributedForce());
+                return;
+            }
         }
 
         super.onClick(obj);
