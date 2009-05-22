@@ -18,6 +18,7 @@ import com.jme.renderer.Renderer;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
@@ -471,7 +472,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
         if (getCurrentState().getMomentPoint() != null) {
             CurveUtil.renderCircle(r, ColorRGBA.blue, getCurrentState().getMomentPoint().getTranslation(),
-                    2, r.getCamera().getDirection());
+                    DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
         }
     }
     private SimulationObject currentHover;

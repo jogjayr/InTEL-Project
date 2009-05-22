@@ -59,16 +59,18 @@ public class AwningExercise extends DistributedExercise {
 
         setDescription("What is the loading at the base of the awning?");
 
-        getDisplayConstants().setMomentSize(0.5f);
-        getDisplayConstants().setForceSize(0.5f);
-        getDisplayConstants().setPointSize(0.5f);
-        getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(3f);
-        getDisplayConstants().setMomentLabelDistance(2f);
-        getDisplayConstants().setMeasurementBarSize(0.2f);
-        getDisplayConstants().setDrawScale(.2f);
+//        getDisplayConstants().setMomentSize(0.5f);
+//        getDisplayConstants().setForceSize(0.5f);
+//        getDisplayConstants().setPointSize(0.5f);
+//        getDisplayConstants().setCylinderRadius(0.5f);
+//        getDisplayConstants().setForceLabelDistance(3f);
+//        getDisplayConstants().setMomentLabelDistance(2f);
+//        getDisplayConstants().setMeasurementBarSize(0.2f);
+//        //getDisplayConstants().setDrawScale(.2f);
+//        //getDisplayConstants().setJointSize(.2f);
         getDisplayConstants().setDistributedLabelMultiplier(1.25f);
         getDisplayConstants().setDistributedArrowSize(.5f);
+        getDisplayConstants().setMomentCircleRadius(.75f);
     }
 
     @Override

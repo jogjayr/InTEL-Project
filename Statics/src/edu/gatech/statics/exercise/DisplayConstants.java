@@ -13,16 +13,17 @@ package edu.gatech.statics.exercise;
 public class DisplayConstants {
 
     private static DisplayConstants instance;
-    private float jointSize;
-    private float measurementBarSize;
-    private float momentLabelDistance;
-    private float forceLabelDistance;
-    private float cylinderRadius;
-    private float forceSize;
-    private float pointSize;
-    private float momentSize;
-    private float distributedLabelMultiplier;
-    private float distributedArrowSize;
+    //private float jointSize = 0.2f; // use pointSize instead
+    private float measurementBarSize = 0.1f;
+    private float momentLabelDistance = 0f;
+    private float forceLabelDistance = 1f;
+    private float cylinderRadius = 0.2f;
+    private float forceSize = 0.2f;
+    private float pointSize = 0.2f;
+    private float momentSize = 0.2f;
+    private float distributedLabelMultiplier = 5f;
+    private float distributedArrowSize = 1f;
+    private float momentCircleRadius = 2f;
 
     public static DisplayConstants getInstance() {
         return instance;
@@ -33,18 +34,9 @@ public class DisplayConstants {
     }
 
     public DisplayConstants() {
-        setMomentSize(0.2f);
-        setForceSize(0.2f);
-        setPointSize(0.2f);
-        setCylinderRadius(0.2f);
-        setForceLabelDistance(1f);
-        setMomentLabelDistance(0f);
-        setMeasurementBarSize(0.1f);
-        setDistributedLabelMultiplier(5);
-        setDistributedArrowSize(1);
     }
 
-    public void setDrawScale(float value) {
+    /*public void setDrawScale(float value) {
         forceLabelDistance = value;
         cylinderRadius = value;
         forceSize = value;
@@ -53,6 +45,19 @@ public class DisplayConstants {
         measurementBarSize = value;
         momentLabelDistance = value;
         jointSize = value;
+    }*/
+
+    public float getMomentCircleRadius() {
+        return momentCircleRadius;
+    }
+
+    /**
+     * Assigns the size of the blue moment circle that appears in the equation mode.
+     * This has a default value of 2.
+     * @param momentCircleRadius
+     */
+    public void setMomentCircleRadius(float momentCircleRadius) {
+        this.momentCircleRadius = momentCircleRadius;
     }
 
     /**
@@ -178,11 +183,11 @@ public class DisplayConstants {
      * Sets the scale of a Connector's representation. Used in ConnectorRepresentation.
      * @param value
      */
-    public void setJointSize(float value) {
+    /*public void setJointSize(float value) {
         jointSize = value;
     }
 
     public float getJointSize() {
         return jointSize;
-    }
+    }*/
 }

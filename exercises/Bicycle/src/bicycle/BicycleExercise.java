@@ -52,8 +52,11 @@ public class BicycleExercise extends FrameExercise {
         Unit.setDisplayScale(Unit.distance, new BigDecimal("10"));
         Unit.setPrecision(Unit.distance, 2);
 
-        getDisplayConstants().setDrawScale(.5f);
-        getDisplayConstants().setForceLabelDistance(1);
+        getDisplayConstants().setPointSize(.5f);
+        getDisplayConstants().setMomentSize(.5f);
+        getDisplayConstants().setForceSize(.5f);
+        //getDisplayConstants().setDrawScale(.5f);
+        //getDisplayConstants().setForceLabelDistance(1);
         getDisplayConstants().setMeasurementBarSize(.25f);
     }
     private Point A,  B,  C,  D,  E,  F,  G;

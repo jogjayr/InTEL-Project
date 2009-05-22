@@ -59,7 +59,12 @@ public class TowerExercise extends OrdinaryExercise {
         Unit.setSuffix(Unit.force, " ton");
         Unit.setSuffix(Unit.moment, " ton*ft");
 
-        getDisplayConstants().setDrawScale(3.5f);
+        //getDisplayConstants().setDrawScale(3.5f);
+        getDisplayConstants().setPointSize(3.5f);
+        getDisplayConstants().setForceSize(3.5f);
+        getDisplayConstants().setMomentSize(3.5f);
+        getDisplayConstants().setCylinderRadius(3.5f);
+        getDisplayConstants().setMeasurementBarSize(3.5f);
     }
 
     @Override
