@@ -93,10 +93,10 @@ public class LeveeExercise extends DistributedExercise {
 
         getDisplayConstants().setMomentSize(0.5f);
         getDisplayConstants().setForceSize(0.5f);
-        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setPointSize(0.75f);
         getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(5f);
-        getDisplayConstants().setMomentLabelDistance(10f);
+        //getDisplayConstants().setForceLabelDistance(40f);
+        //getDisplayConstants().setMomentLabelDistance(15f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
     }
 
