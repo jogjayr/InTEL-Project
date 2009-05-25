@@ -59,15 +59,32 @@ public class DiagramDisplayCalculator {
             return null;
         }
 
-        BoundingVolume volume = new BoundingBox();
+        //BoundingVolume volume = new BoundingBox();
+        BoundingVolume volume = null;
+        if (schematicNode.getWorldBound() != null) {
+            volume = schematicNode.getWorldBound();
+        }
+
+        if (pointNode.getWorldBound() != null) {
+            if (volume != null) {
+                volume.mergeLocal(pointNode.getWorldBound());
+            } else {
+                volume = pointNode.getWorldBound();
+            }
+        }
+
+        if (volume == null) {
+            volume = new BoundingBox();
+        }
 
         // first merge with the schematic nodes
-        volume.mergeLocal(schematicNode.getWorldBound());
-        volume.mergeLocal(pointNode.getWorldBound());
+        //volume.mergeLocal(schematicNode.getWorldBound());
+        //volume.mergeLocal(pointNode.getWorldBound());
 
-        if(modelNode.getChildren() == null)
+        if (modelNode.getChildren() == null) {
             return volume;
-        
+        }
+
         // then merge with appropriate model bodies
         for (Spatial spatial : modelNode.getChildren()) {
             if (spatial instanceof Representation) {

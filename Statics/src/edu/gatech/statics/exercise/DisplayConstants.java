@@ -11,7 +11,6 @@ package edu.gatech.statics.exercise;
  * @author Jimmy Truesdell
  */
 public class DisplayConstants {
-
     private static DisplayConstants instance;
     //private float jointSize = 0.2f; // use pointSize instead
     private float measurementBarSize = 0.1f;
@@ -25,6 +24,8 @@ public class DisplayConstants {
     private float distributedArrowSize = 1f;
     private float momentCircleRadius = 2f;
 
+    private boolean showBoundingVolumes = false;
+
     public static DisplayConstants getInstance() {
         return instance;
     }
@@ -35,6 +36,7 @@ public class DisplayConstants {
 
     public DisplayConstants() {
     }
+
 
     /*public void setDrawScale(float value) {
         forceLabelDistance = value;
@@ -47,6 +49,18 @@ public class DisplayConstants {
         jointSize = value;
     }*/
 
+    public boolean getShowBoundingVolumes() {
+        return showBoundingVolumes;
+    }
+
+    /**
+     * whether to show the bounding volumes around objects, this is used in Diagram
+     * @return
+     */
+    public void setShowBoundingVolumes(boolean showBoundingVolumes) {
+        this.showBoundingVolumes = showBoundingVolumes;
+    }
+    
     public float getMomentCircleRadius() {
         return momentCircleRadius;
     }

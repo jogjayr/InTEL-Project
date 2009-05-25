@@ -473,16 +473,18 @@ public abstract class Diagram<StateType extends DiagramState> {
 
                 // This is a little bit of code that may be uncommented to
                 // view the bounding volumes
-//                if (layer == RepresentationLayer.vectors) {
-//                    Debugger.setBoundsColor(ColorRGBA.pink);
-//                } else if (layer == RepresentationLayer.schematicBodies) {
-//                    Debugger.setBoundsColor(ColorRGBA.white);
-//                } else if (layer == RepresentationLayer.points) {
-//                    Debugger.setBoundsColor(ColorRGBA.magenta);
-//                } else {
-//                    Debugger.setBoundsColor(ColorRGBA.green);
-//                }
-//                Debugger.drawBounds(getNode(layer), r, true);
+                if (DisplayConstants.getInstance().getShowBoundingVolumes()) {
+                    if (layer == RepresentationLayer.vectors) {
+                        Debugger.setBoundsColor(ColorRGBA.pink);
+                    } else if (layer == RepresentationLayer.schematicBodies) {
+                        Debugger.setBoundsColor(ColorRGBA.white);
+                    } else if (layer == RepresentationLayer.points) {
+                        Debugger.setBoundsColor(ColorRGBA.magenta);
+                    } else {
+                        Debugger.setBoundsColor(ColorRGBA.green);
+                    }
+                    Debugger.drawBounds(getNode(layer), r, true);
+                }
             }
             r.clearZBuffer();
         }
