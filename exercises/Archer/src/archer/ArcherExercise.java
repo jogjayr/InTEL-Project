@@ -35,7 +35,10 @@ public class ArcherExercise extends SimpleFBDExercise {
         setName("Archer");
         setDescription("An olympic archer is holding a bow. Build free body diagrams of the bow, the bowstring, and the two together.");
 
-        getDisplayConstants().setDrawScale(1);
+        //getDisplayConstants().setDrawScale(1);
+        getDisplayConstants().setForceSize(1);
+        getDisplayConstants().setMomentSize(1);
+        getDisplayConstants().setPointSize(1);
     }
 
     @Override
