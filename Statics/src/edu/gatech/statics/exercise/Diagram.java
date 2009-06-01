@@ -337,7 +337,7 @@ public abstract class Diagram<StateType extends DiagramState> {
 
             Node node = representationNodes.get(layer); //new Node();
             if (node == null) {
-                node = new Node();
+                node = new Node("Node " + layer.getName());
                 representationNodes.put(layer, node);
             }
             node.detachAllChildren();
@@ -349,9 +349,9 @@ public abstract class Diagram<StateType extends DiagramState> {
                     node.attachChild(r);
                     addLabels(r);
                 }
-                if (!r.getRenderUpdated()) {
+                if (r.getRenderStateChanged()) {
                     updateRenderState = true;
-                    r.setRenderUpdated();
+                    r.setRenderStateChanged(false);
                 }
             }
 

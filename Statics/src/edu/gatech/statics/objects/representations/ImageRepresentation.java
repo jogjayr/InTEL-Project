@@ -71,9 +71,6 @@ public class ImageRepresentation extends Representation {
         setSynchronizeRotation(false);
         setUseWorldScale(false);
         
-        //quad.setLightCombineMode(LightState.OFF);
-        //setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-        
         updateRenderState();
         quad.updateRenderState();
         quad.updateGeometricState(0, true);

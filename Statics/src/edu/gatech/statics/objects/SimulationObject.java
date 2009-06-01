@@ -22,25 +22,19 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 abstract public class SimulationObject {
-    //private World world;
-    //public World getWorld() {return world;}
-    // given objects appearr in the ExerciseWorld, and are assumed to be common
+    // given objects appear in the ExerciseWorld, and are assumed to be common
     // in other words, they are not constructed by the student.
     // Exercise world automatically sets given to true when added, so if a student
     // constructs something in an FBD, given defaults to false.
     //private boolean given = false;
 
-    //public boolean isGiven() {return given;}
-    //public void setGiven(boolean given) {this.given = given;}
     private String name = "";
-    //private String notes = null;
     private Vector3f translation = new Vector3f();
     private Matrix3f rotation = new Matrix3f();
     private Vector3f selectionHandle = new Vector3f();
     private float selectRadius;
     private List<Representation> representations = new ArrayList();
     private Map<RepresentationLayer, List<Representation>> representationMap = new HashMap<RepresentationLayer, List<Representation>>();
-    //private List<Manipulator> manipulators = new ArrayList();
     public String getName() {
         return name;
     }
@@ -48,8 +42,6 @@ abstract public class SimulationObject {
     public void setName(String name) {
         this.name = name;
     }
-    //public String getNotes() {return notes;}
-    //public void setNotes(String notes) {this.notes = notes;}
     /**
      * Sometimes we want to get the logical center of the object, rather than the origin of its coordinate system
      * epecially in the case of vectors. This is useful for finding the point at which to apply a label.
@@ -90,10 +82,6 @@ abstract public class SimulationObject {
         return selectRadius;
     }
 
-    /*private List<SelectionListener> selectionListeners = new ArrayList();
-    public void addSellectionListener(SelectionListener listener) {selectionListeners.add(listener);}
-    public void removeSellectionListener(SelectionListener listener) {selectionListeners.remove(listener);}
-    public void removeAllSellectionListeners() {selectionListeners.clear();}*/
     public void addRepresentation(Representation r) {
         representations.add(r);
         List<Representation> reps = representationMap.get(r.getLayer());
@@ -122,30 +110,10 @@ abstract public class SimulationObject {
             return Collections.emptyList();
         }
         return reps;
-    // quick and dirty way, would like to use a map, but may be impractical
-        /*List<Representation> allType = new ArrayList();
-    for(Representation r : representations)
-    if(r.getLayer() == layer)
-    allType.add(r);
-    return allType;*/
     }
 
-    /*public void addManipulator(Manipulator m) {manipulators.add(m);}
-    public void removeManipulator(Manipulator m) {
-    manipulators.remove(m);
-    m.setEnabledGlobally(false);
-    }
-    public List<Manipulator> allManipulators() {return Collections.unmodifiableList(manipulators);}
-    
-    public Manipulator getManipulator(Class manipulatorClass) {
-    for(Manipulator m : allManipulators())
-    if(manipulatorClass.isAssignableFrom(m.getClass()))
-    return m;
-    return null;
-    }*/
     /** Creates a new instance of SimulationObject */
-    public SimulationObject(/*World world*/) {
-        //this.world = world;
+    public SimulationObject() {
     }
 
     public void update() {
@@ -226,14 +194,8 @@ abstract public class SimulationObject {
 
     public void destroy() {
         // destroys and detaches all parts of this object.
-        //enableManipulators(false);
         representations.clear();
-    //manipulators.clear();
     }
-
-    //public String getDescription() {
-    //    return "SimulationObject";
-    //}
 
     public String getLabelText() {
         return getName();

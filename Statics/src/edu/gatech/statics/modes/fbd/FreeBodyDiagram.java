@@ -21,6 +21,7 @@ import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
@@ -85,6 +86,12 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     @Override
     public List<Load> getUserObjects() {
         return loadObjects;
+    }
+
+    @Override
+    public List<Body> allBodies() {
+        //return super.allBodies();
+        return new ArrayList<Body>(getBodySubset().getBodies());
     }
 
     /**
@@ -277,6 +284,27 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         EquationMode.instance.load(getBodySubset());
     }
 
+    /**
+     * Get bodies that are adjacent to this free body diagram.
+     * @return
+     */
+    public List<Body> getAdjacentBodies() {
+        List<Body> adjacentBodies = new ArrayList<Body>();
+        for (Body body : getSchematic().allBodies()) {
+            for (SimulationObject obj : body.getAttachedObjects()) {
+                if (obj instanceof Connector) {
+                    Connector connector = (Connector) obj;
+                    if ((getBodySubset().getBodies().contains(connector.getBody1()) ||
+                            getBodySubset().getBodies().contains(connector.getBody2())) &&
+                            !getBodySubset().getBodies().contains(body)) {
+                        adjacentBodies.add(body);
+                    }
+                }
+            }
+        }
+        return adjacentBodies;
+    }
+
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
@@ -288,6 +316,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 }
             }
         }
+
+        // adjacent body initial test
+        objects.addAll(getAdjacentBodies());
 
         for (Measurement measurement : getSchematic().getMeasurements(getBodySubset())) {
             objects.add(measurement);
@@ -408,6 +439,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     @Override
     public void activate() {
         super.activate();
+
+        for (Body body : getAdjacentBodies()) {
+            body.setDisplayGrayed(true);
+        }
 
         StaticsApplication.getApp().setDefaultAdvice(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));

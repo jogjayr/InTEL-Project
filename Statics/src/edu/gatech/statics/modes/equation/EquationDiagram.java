@@ -164,7 +164,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     protected List<SimulationObject> getBaseObjects() {
         //FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
         //Diagram fbd = Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
-        return fbd.allObjects();
+        List<SimulationObject> objects =  new ArrayList<SimulationObject>(fbd.allObjects());
+        objects.removeAll(fbd.getAdjacentBodies());
+        return objects;
     }
 
     /** Creates a new instance of EquationWorld */
