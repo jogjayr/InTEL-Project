@@ -59,6 +59,13 @@ public class ModelRepresentation extends Representation {
         recordRenderStates(modelNode);
     }
 
+    /**
+     * This stores the render states that might be changed when the model representation needs to appear differently.
+     * Right now, this records the material and texture states, and this is used for whenever the representation needs to appear
+     * grayed.
+     * This is called in the constructor, so it should not be overridden.
+     * @param node
+     */
     private void recordRenderStates(Node node) {
         if (node.getChildren() == null) {
             return;
@@ -70,19 +77,26 @@ public class ModelRepresentation extends Representation {
             if (renderState != null) {
                 originalMaterialStates.add(new Pair<SceneElement, RenderState>(child, renderState));
             }
+            renderState = child.getRenderState(RenderState.RS_TEXTURE);
+            if (renderState != null) {
+                originalMaterialStates.add(new Pair<SceneElement, RenderState>(child, renderState));
+            }
 
             if (child instanceof Node) {
                 // traverse children
                 recordRenderStates((Node) child);
             }
-            if(child instanceof Geometry) {
+            if (child instanceof Geometry) {
                 Geometry geom = (Geometry) child;
-                for (int i=0;i<geom.getBatchCount();i++) {
+                for (int i = 0; i < geom.getBatchCount(); i++) {
                     GeomBatch batch = geom.getBatch(i);
 
-                    // geom batch is not spatial!!!!
-
+                    // record geometry batches
                     renderState = batch.getRenderState(RenderState.RS_MATERIAL);
+                    if (renderState != null) {
+                        originalMaterialStates.add(new Pair<SceneElement, RenderState>(batch, renderState));
+                    }
+                    renderState = batch.getRenderState(RenderState.RS_TEXTURE);
                     if (renderState != null) {
                         originalMaterialStates.add(new Pair<SceneElement, RenderState>(batch, renderState));
                     }
@@ -93,13 +107,17 @@ public class ModelRepresentation extends Representation {
 
     private void setGrayRenderStates() {
         for (Pair<SceneElement, RenderState> pair : originalMaterialStates) {
+            // clear render states in the pairs, because there may be duplicates, the contents
+            // of this loop might be called several times for the same scene elements
             SceneElement element = pair.getLeft();
             element.clearRenderState(RenderState.RS_MATERIAL);
+            element.clearRenderState(RenderState.RS_TEXTURE);
         }
     }
 
     private void setNormalRenderStates() {
         for (Pair<SceneElement, RenderState> pair : originalMaterialStates) {
+            // add every pair we find
             SceneElement element = pair.getLeft();
             RenderState renderState = pair.getRight();
             element.setRenderState(renderState);
@@ -111,16 +129,20 @@ public class ModelRepresentation extends Representation {
         //super.updateRepresentationBounds();
         // do not propagate bounds for model representations
     }
+    private boolean wasGrayed = false;
 
     @Override
     protected void updateMaterial() {
         super.updateMaterial();
 
-        if (getDisplayGrayed()) {
-            setGrayRenderStates();
-        } else {
-            setNormalRenderStates();
+        if (wasGrayed != getDisplayGrayed()) {
+            wasGrayed = getDisplayGrayed();
+            if (getDisplayGrayed()) {
+                setGrayRenderStates();
+            } else {
+                setNormalRenderStates();
+            }
+            setRenderStateChanged(true);
         }
-        setRenderStateChanged(true);
     }
 }
