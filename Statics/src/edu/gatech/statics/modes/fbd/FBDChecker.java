@@ -321,8 +321,8 @@ public class FBDChecker {
 
         // Step 4: go through all the border connectors connecting this FBD to the external world,
         // and check each AnchoredVector implied by the connector.
-        for (int i = 0; i < diagram.allObjects().size(); i++) {
-            SimulationObject obj = diagram.allObjects().get(i);
+        for (int i = 0; i < diagram.getCentralObjects().size(); i++) {
+            SimulationObject obj = diagram.getCentralObjects().get(i);
             if (!(obj instanceof Connector)) {
                 continue;
             }

@@ -134,7 +134,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     protected void enableDragManipulator() {
 
         List<Point> pointList = new ArrayList();
-        for (SimulationObject obj : diagram.allObjects()) {
+        for (SimulationObject obj : diagram.getCentralObjects()) {
             if (obj instanceof Point) {
                 pointList.add((Point) obj);
             }

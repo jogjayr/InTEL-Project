@@ -26,6 +26,7 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
@@ -288,25 +289,44 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * Get bodies that are adjacent to this free body diagram.
      * @return
      */
-    public List<Body> getAdjacentBodies() {
-        List<Body> adjacentBodies = new ArrayList<Body>();
+    public List<SimulationObject> getAdjacentObjects() {
+        List<SimulationObject> adjacentObjects = new ArrayList<SimulationObject>();
+        List<SimulationObject> centralObjects = getCentralObjects();
+
         for (Body body : getSchematic().allBodies()) {
+            // go through each body in the schematic (not our list!)
             for (SimulationObject obj : body.getAttachedObjects()) {
                 if (obj instanceof Connector) {
+                    // through each connector
                     Connector connector = (Connector) obj;
                     if ((getBodySubset().getBodies().contains(connector.getBody1()) ||
                             getBodySubset().getBodies().contains(connector.getBody2())) &&
-                            !getBodySubset().getBodies().contains(body)) {
-                        adjacentBodies.add(body);
+                            !centralObjects.contains(body) && !adjacentObjects.contains(body)) {
+                        // ok, the body is attached to a body in the diagram,
+                        // but is not a body in the diagram
+
+                        adjacentObjects.add(body);
+
+                        // now we want to add adjacent points, but not points that are already in the diagram.
+                        for (SimulationObject attached : body.getAttachedObjects()) {
+                            if (attached instanceof Point && !centralObjects.contains(attached) && !adjacentObjects.contains(attached)) {
+                                adjacentObjects.add(attached);
+                            }
+                        }
                     }
                 }
             }
         }
-        return adjacentBodies;
+        return adjacentObjects;
     }
 
-    @Override
-    protected List<SimulationObject> getBaseObjects() {
+    /**
+     * These are the objects that are central to the FBD, getBaseObjects contains the central objects,
+     * as well as the adjacent ones. The idea here is central, in contrast to adjacent.
+     * @return
+     */
+    public List<SimulationObject> getCentralObjects() {
+
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
         for (Body body : getBodySubset().getBodies()) {
             objects.add(body);
@@ -316,9 +336,15 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 }
             }
         }
+        return objects;
+    }
+
+    @Override
+    protected List<SimulationObject> getBaseObjects() {
+        List<SimulationObject> objects = getCentralObjects();
 
         // adjacent body initial test
-        objects.addAll(getAdjacentBodies());
+        objects.addAll(getAdjacentObjects());
 
         for (Measurement measurement : getSchematic().getMeasurements(getBodySubset())) {
             objects.add(measurement);
@@ -440,8 +466,8 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     public void activate() {
         super.activate();
 
-        for (Body body : getAdjacentBodies()) {
-            body.setDisplayGrayed(true);
+        for (SimulationObject adjacent : getAdjacentObjects()) {
+            adjacent.setDisplayGrayed(true);
         }
 
         StaticsApplication.getApp().setDefaultAdvice(
