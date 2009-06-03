@@ -51,7 +51,6 @@ public class SelectDiagram extends Diagram<SelectState> {
     @Override
     public void deactivate() {
         super.deactivate();
-        setDiffuseHighlights(false);
     }
 
     @Override
@@ -63,8 +62,6 @@ public class SelectDiagram extends Diagram<SelectState> {
         clearStateStack();
 
         currentHighlight = null;
-
-        setDiffuseHighlights(true);
     }
     private SimulationObject currentHighlight;
 
@@ -148,37 +145,6 @@ public class SelectDiagram extends Diagram<SelectState> {
     @Override
     public Mode getMode() {
         return SelectMode.instance;
-    }
-
-    /**
-     * This turns on diffuse highlighting for objects that need to be selected.
-     * Specifically, if on, it makes unselected objects slightly transparent.
-     * @param active whether to use special diffuse highlighting
-     */
-    private void setDiffuseHighlights(boolean active) {
-        for (Body body : allBodies()) {
-            for (Representation rep : body.allRepresentations()) {
-
-                if (active) {
-                    // copy over regular diffuse to the transparent and hover
-                    // make the regular diffuse somewhat transparent.
-                    ColorRGBA diffuse = rep.getDiffuse();
-                    ColorRGBA diffuseTransparent1 = new ColorRGBA(diffuse);
-                    diffuseTransparent1.a = .5f;
-                    ColorRGBA diffuseTransparent2 = new ColorRGBA(diffuse);
-                    diffuseTransparent2.a = .75f;
-
-                    rep.setDiffuse(diffuseTransparent1);
-                    rep.setHoverDiffuse(diffuseTransparent2);
-                    rep.setSelectDiffuse(diffuse);
-                } else {
-                    // set the diffuse color to the the regular diffuse
-                    // that was stored in selectDiffuse
-                    ColorRGBA diffuse = rep.getSelectDiffuse();
-                    rep.setDiffuse(diffuse);
-                }
-            }
-        }
     }
 
     @Override

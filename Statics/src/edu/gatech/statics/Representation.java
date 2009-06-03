@@ -156,6 +156,11 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         this.hoverDiffuse = hoverDiffuse;
     }
 
+    public void setGrayColors(final ColorRGBA grayColor, final ColorRGBA grayEmissive) {
+        this.grayColor = grayColor;
+        this.grayEmissive = grayEmissive;
+    }
+
     /** Creates a new instance of Representation */
     public Representation(final SimType target) {
         this.target = target;
@@ -243,6 +248,14 @@ abstract public class Representation<SimType extends SimulationObject> extends N
 
     public boolean isHidden() {
         return hidden;
+    }
+
+    public boolean isHover() {
+        return hover;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 
     protected void updateMaterial() {
