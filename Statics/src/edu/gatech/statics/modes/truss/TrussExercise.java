@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.truss;
 
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
@@ -15,6 +16,8 @@ import edu.gatech.statics.modes.frame.FrameSelectDiagram;
 import edu.gatech.statics.modes.frame.FrameUtil;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.truss.ui.TrussInterfaceConfiguration;
+import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
+import edu.gatech.statics.modes.truss.zfm.ZFMMode;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 
 /**
@@ -38,9 +41,19 @@ public class TrussExercise extends OrdinaryExercise {
     }
 
     @Override
+    public Mode loadStartingMode() {
+        //return super.loadStartingMode();
+        ZFMMode.instance.load();
+        return ZFMMode.instance;
+    }
+
+    @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (type == TrussSectionMode.instance.getDiagramType()) {
             return createSectionDiagram();
+        }
+        if (type == ZFMMode.instance.getDiagramType()) {
+            return createZFMDiagram();
         }
 
         return super.createNewDiagramImpl(key, type);
@@ -48,6 +61,10 @@ public class TrussExercise extends OrdinaryExercise {
 
     protected TrussSectionDiagram createSectionDiagram() {
         return new TrussSectionDiagram();
+    }
+
+    protected ZFMDiagram createZFMDiagram() {
+        return new ZFMDiagram();
     }
 
     @Override

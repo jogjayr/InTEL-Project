@@ -2,42 +2,40 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.select.ui;
+package edu.gatech.statics.modes.truss.zfm.ui;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.objects.Body;
-import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.fbd.FBDMode;
-import edu.gatech.statics.modes.select.SelectDiagram;
-import edu.gatech.statics.modes.select.SelectMode;
-import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
+import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
+import edu.gatech.statics.modes.truss.zfm.ZFMMode;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
+public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
 
     BContainer selectionListBox;
     HTMLView selectionList;
     BButton nextButton;
 
-    public SelectModePanel() {
-        super();
+    public ZFMModePanel() {
+        getTitleLabel().setText("Identify Zero Force Members");
 
         selectionListBox = new BContainer(new BorderLayout());
-        nextButton = new BButton("Done", new ButtonListener(), "done");
+        nextButton = new BButton("Check", new ButtonListener(), "check");
         nextButton.setStyleClass("circle_button");
         nextButton.setEnabled(false);
 
@@ -51,18 +49,26 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     }
 
     @Override
-    protected ApplicationTab createTab() {
-        return new ApplicationTab("Select");
-    // Add listeners for select tab here.
-    }
-
-    @Override
     public void activate() {
         super.activate();
 
         getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
-        StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
+        // *********** need special 
+        //StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
+        StaticsApplication.getApp().setAdvice("Please select the Zero Force Members");
+    }
+
+    @Override
+    public DiagramType getDiagramType() {
+        return ZFMMode.instance.getDiagramType();
+    }
+
+    @Override
+    protected ApplicationTab createTab() {
+        ApplicationTab tab = new ApplicationTab("Find ZFMs");
+        tab.setPreferredSize(125, -1);
+        return tab;
     }
 
     @Override
@@ -74,12 +80,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     public void updateSelection() {
 
         // refine list to only bodies.
-        List<Body> selection = new ArrayList<Body>();
-        for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
-            if (obj instanceof Body) {
-                selection.add((Body) obj);
-            }
-        }
+        List<PotentialZFM> selection = getDiagram().getCurrentState().getSelectedZFMs();
 
         if (selection.isEmpty()) {
             getTitleLabel().setText("Nothing Selected");
@@ -103,19 +104,19 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     }
 
     /**
-     * Returns the contents that should be displayed in the mode panel when 
+     * Returns the contents that should be displayed in the mode panel when
      * the given list of bodies is selected.
      * @return
      */
-    protected String getContents(List<Body> selection) {
+    protected String getContents(List<PotentialZFM> selection) {
 
         String contents = "<font size=\"5\" color=\"white\">";
         for (int i = 0; i < selection.size(); i++) {
-            Body body = selection.get(i);
+            PotentialZFM body = selection.get(i);
             if (i > 0) {
                 contents += ",<br>";
             }
-            contents += body.getName();
+            contents += body.getBaseName();
         }
         contents += "</font>";
         return contents;
@@ -125,12 +126,10 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
         public void actionPerformed(ActionEvent event) {
 
-            getDiagram().completed();
+            //getDiagram().completed();
+            if(getDiagram().check()) {
+                getDiagram().setSolved();
+            }
         }
-    }
-
-    @Override
-    public DiagramType getDiagramType() {
-        return SelectMode.instance.getDiagramType();
     }
 }

@@ -7,10 +7,13 @@ package simpletruss;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.truss.TrussExercise;
+import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
@@ -87,10 +90,10 @@ public class SimpleTruss1 extends TrussExercise {
         pointBodyMap.put(H, Hb);
 
         // create members
-        Bar AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH;
+        TwoForceMember AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH;
         AB = new Bar("AB", A, B);
         AC = new Bar("AC", A, C);
-        BC = new Bar("BC", B, C);
+        BC = new ZeroForceMember("BC", B, C);
         BD = new Bar("BD", B, D);
         BE = new Bar("BE", B, E);
         CE = new Bar("CE", C, E);
@@ -98,15 +101,15 @@ public class SimpleTruss1 extends TrussExercise {
         DF = new Bar("DF", D, F);
         EF = new Bar("EF", E, F);
         EG = new Bar("EG", E, G);
-        FG = new Bar("FG", F, G);
+        FG = new ZeroForceMember("FG", F, G);
         FH = new Bar("FH", F, H);
         GH = new Bar("GH", G, H);
 
-        List<Bar> bars = Arrays.asList(
-                new Bar[]{AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH});
+        List<TwoForceMember> bars = Arrays.asList(
+                new TwoForceMember[]{AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH});
 
         // connect the bars of the truss to the joints.
-        for (Bar bar : bars) {
+        for (TwoForceMember bar : bars) {
             Point p1 = bar.getEnd1();
             Point p2 = bar.getEnd2();
             Connector2ForceMember2d c1 = new Connector2ForceMember2d(p1, bar);
@@ -149,9 +152,14 @@ public class SimpleTruss1 extends TrussExercise {
         pinH.attachToWorld(Hb);
         pinH.createDefaultSchematicRepresentation();
 
-        for (Bar bar : bars) {
+        for (TwoForceMember bar : bars) {
             bar.createDefaultSchematicRepresentation();
             getSchematic().add(bar);
+
+            PotentialZFM potential = new PotentialZFM(bar instanceof ZeroForceMember);
+            potential.setBaseName(bar.getName());
+            potential.addRepresentations(bar);
+            getSchematic().add(potential);
         }
 
         for (PointBody pointBody : pointBodies) {

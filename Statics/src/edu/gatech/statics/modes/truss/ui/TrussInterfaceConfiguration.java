@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.truss.ui;
 
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
+import edu.gatech.statics.modes.truss.zfm.ui.ZFMModePanel;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 
 /**
@@ -15,6 +16,7 @@ public class TrussInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
     public TrussInterfaceConfiguration() {
         getModePanels().add(new TrussModePanel());
+        getModePanels().add(new ZFMModePanel());
         replaceModePanel(SelectModePanel.class, new TrussSelectModePanel());
     }
 }

@@ -10,8 +10,6 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.truss.SectionCut;
 import edu.gatech.statics.modes.truss.TrussSectionDiagram;
 import edu.gatech.statics.modes.truss.TrussSectionMode;
-import edu.gatech.statics.ui.InterfaceRoot;
-import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import edu.gatech.statics.util.Pair;

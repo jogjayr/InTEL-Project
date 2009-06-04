@@ -4,9 +4,7 @@
  */
 package edu.gatech.statics.modes.select;
 
-import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Mode;
-import edu.gatech.statics.Representation;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
