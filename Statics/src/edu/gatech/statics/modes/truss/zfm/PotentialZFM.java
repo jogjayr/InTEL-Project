@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.truss.zfm;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import java.util.List;
 

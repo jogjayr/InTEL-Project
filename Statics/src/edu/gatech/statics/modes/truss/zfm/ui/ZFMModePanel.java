@@ -29,20 +29,20 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
 
     BContainer selectionListBox;
     HTMLView selectionList;
-    BButton nextButton;
+    BButton checkButton;
 
     public ZFMModePanel() {
         getTitleLabel().setText("Identify Zero Force Members");
 
         selectionListBox = new BContainer(new BorderLayout());
-        nextButton = new BButton("Check", new ButtonListener(), "check");
-        nextButton.setStyleClass("circle_button");
-        nextButton.setEnabled(false);
+        checkButton = new BButton("Check", new ButtonListener(), "check");
+        checkButton.setStyleClass("circle_button");
+        checkButton.setEnabled(true);
 
         selectionListBox.setPreferredSize(300, -1);
 
         add(selectionListBox, BorderLayout.WEST);
-        add(nextButton, BorderLayout.EAST);
+        add(checkButton, BorderLayout.EAST);
 
         selectionList = new HTMLView();
         selectionListBox.add(selectionList, BorderLayout.CENTER);
@@ -86,7 +86,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
             getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
 
-            nextButton.setEnabled(false);
+            //checkButton.setEnabled(false);
             StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
 
             InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
@@ -96,7 +96,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
 
             selectionList.setContents(getContents(selection));
 
-            nextButton.setEnabled(true);
+            //checkButton.setEnabled(true);
             StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection2");
 
             InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);

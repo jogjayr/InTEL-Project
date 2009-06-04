@@ -75,7 +75,8 @@ public class TrussExercise extends OrdinaryExercise {
             bodies.setSpecialName(FrameUtil.whatToCallTheWholeDiagram);
         }
 
-        return super.createFreeBodyDiagram(bodies);
+        // return a special truss fbd, which handles a few things that are not covered elsewhere.
+        return new TrussFreeBodyDiagram(bodies);
     }
 
     @Override

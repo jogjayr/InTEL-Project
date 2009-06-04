@@ -70,43 +70,51 @@ public class SimpleTruss1 extends TrussExercise {
         PointBody Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb;
         Ab = new PointBody("Joint A", A);
         Bb = new PointBody("Joint B", B);
-        Cb = new PointBody("Joint C", C);
+        //Cb = new PointBody("Joint C", C);
         Db = new PointBody("Joint D", D);
         Eb = new PointBody("Joint E", E);
         Fb = new PointBody("Joint F", F);
-        Gb = new PointBody("Joint G", G);
+        //Gb = new PointBody("Joint G", G);
         Hb = new PointBody("Joint H", H);
 
         List<PointBody> pointBodies = Arrays.asList(
-                new PointBody[]{Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb});
+                //new PointBody[]{Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb});
+                new PointBody[]{Ab, Bb, Db, Eb, Fb, Hb});
         Map<Point, PointBody> pointBodyMap = new HashMap();
         pointBodyMap.put(A, Ab);
         pointBodyMap.put(B, Bb);
-        pointBodyMap.put(C, Cb);
+        //pointBodyMap.put(C, Cb);
         pointBodyMap.put(D, Db);
         pointBodyMap.put(E, Eb);
         pointBodyMap.put(F, Fb);
-        pointBodyMap.put(G, Gb);
+        //pointBodyMap.put(G, Gb);
         pointBodyMap.put(H, Hb);
 
         // create members
         TwoForceMember AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH;
+        TwoForceMember AE, EH;
         AB = new Bar("AB", A, B);
-        AC = new Bar("AC", A, C);
         BC = new ZeroForceMember("BC", B, C);
         BD = new Bar("BD", B, D);
         BE = new Bar("BE", B, E);
-        CE = new Bar("CE", C, E);
         DE = new Bar("DE", D, E);
         DF = new Bar("DF", D, F);
         EF = new Bar("EF", E, F);
-        EG = new Bar("EG", E, G);
         FG = new ZeroForceMember("FG", F, G);
         FH = new Bar("FH", F, H);
+        AE = new Bar("AE", A, E);
+        EH = new Bar("EH", E, H);
+
+        // these ones are redundant, they are covered by AE and EH,
+        // but their representations are used by thep potential ZFMs.
+        // these are not added to the bars list.
+        AC = new Bar("AC", A, C);
+        CE = new Bar("CE", C, E);
+        EG = new Bar("EG", E, G);
         GH = new Bar("GH", G, H);
 
         List<TwoForceMember> bars = Arrays.asList(
-                new TwoForceMember[]{AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH});
+                new TwoForceMember[]{AB, BC, BD, BE, DE, DF, EF, FG, FH, AE, EH});
 
         // connect the bars of the truss to the joints.
         for (TwoForceMember bar : bars) {
@@ -155,11 +163,61 @@ public class SimpleTruss1 extends TrussExercise {
         for (TwoForceMember bar : bars) {
             bar.createDefaultSchematicRepresentation();
             getSchematic().add(bar);
+        }
 
-            PotentialZFM potential = new PotentialZFM(bar instanceof ZeroForceMember);
-            potential.setBaseName(bar.getName());
-            potential.addRepresentations(bar);
-            getSchematic().add(potential);
+        PotentialZFM pAB, pAC, pBC, pBD, pBE, pCE, pDE, pDF, pEF, pEG, pFG, pFH, pGH;
+        pAB = new PotentialZFM(false);
+        pAC = new PotentialZFM(false);
+        pBC = new PotentialZFM(true);
+        pBD = new PotentialZFM(false);
+        pBE = new PotentialZFM(false);
+        pCE = new PotentialZFM(false);
+        pDE = new PotentialZFM(false);
+        pDF = new PotentialZFM(false);
+        pEF = new PotentialZFM(false);
+        pEG = new PotentialZFM(false);
+        pFG = new PotentialZFM(true);
+        pFH = new PotentialZFM(false);
+        pGH = new PotentialZFM(false);
+
+        pAB.setBaseName("AB");
+        pAC.setBaseName("AC");
+        pBC.setBaseName("BC");
+        pBD.setBaseName("BD");
+        pBE.setBaseName("BE");
+        pCE.setBaseName("CE");
+        pDE.setBaseName("DE");
+        pDF.setBaseName("DF");
+        pEF.setBaseName("EF");
+        pEG.setBaseName("EG");
+        pFG.setBaseName("FG");
+        pFH.setBaseName("FH");
+        pGH.setBaseName("GH");
+
+        // create default schematic representations for the redundant bars.
+        AC.createDefaultSchematicRepresentation();
+        CE.createDefaultSchematicRepresentation();
+        EG.createDefaultSchematicRepresentation();
+        GH.createDefaultSchematicRepresentation();
+        pAB.addRepresentations(AB);
+        pAC.addRepresentations(AC);
+        pBC.addRepresentations(BC);
+        pBD.addRepresentations(BD);
+        pBE.addRepresentations(BE);
+        pCE.addRepresentations(CE);
+        pDE.addRepresentations(DE);
+        pDF.addRepresentations(DF);
+        pEF.addRepresentations(EF);
+        pEG.addRepresentations(EG);
+        pFG.addRepresentations(FG);
+        pFH.addRepresentations(FH);
+        pGH.addRepresentations(GH);
+
+        List<PotentialZFM> potentialBars = Arrays.asList(
+                new PotentialZFM[]{pAB, pBC, pBD, pBE, pDE, pDF, pEF, pFG, pFH, pAC, pCE, pEG, pGH});
+        for (PotentialZFM potentialZFM : potentialBars) {
+            // just use defaults, since there are no models in the simple exercises anyway.
+            getSchematic().add(potentialZFM);
         }
 
         for (PointBody pointBody : pointBodies) {
