@@ -6,9 +6,7 @@ package edu.gatech.statics.objects.representations;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.SimulationObject;
@@ -17,6 +15,8 @@ import edu.gatech.statics.objects.SimulationObject;
  * This is a representation that mimics another representation. It actually uses the
  * node of the other representation, but can be set to have its target point to a
  * different SimulationObject. This way an object can share the representation of another.
+ * The application must DEACTIVATE the MimicRepresentation when the original representation
+ * needs to be displayed. This is necessary because JME Nodes can not have a node with multiple parents.
  * @author Calvin Ashmore
  */
 public class MimicRepresentation extends Representation {
@@ -28,6 +28,25 @@ public class MimicRepresentation extends Representation {
         this.base = base;
 
         attachChild(base.getRelativeNode());
+    }
+
+    /**
+     * This enables the mimic representation if it has been disabled.
+     */
+    public void activate() {
+        if (!getChildren().contains(base.getRelativeNode())) {
+            attachChild(base.getRelativeNode());
+        }
+    }
+
+    /**
+     * This disables the mimic representation, allowing the representation to work normally
+     */
+    public void deactivate() {
+        if (getChildren().contains(base.getRelativeNode())) {
+            base.attachChild(base.getRelativeNode());
+            base.setRenderStateChanged(true);
+        }
     }
 
     public Vector3f getWorldTranslation() {

@@ -5,12 +5,14 @@
 package edu.gatech.statics.modes.truss.zfm;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.modes.truss.zfm.ZFMState.Builder;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
+import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,43 @@ public class ZFMDiagram extends Diagram<ZFMState> {
             return obj instanceof PotentialZFM;
         }
     };
+
+    @Override
+    public void activate() {
+        super.activate();
+
+        // activate the mimic representations
+        for (SimulationObject obj : getBaseObjects()) {
+            if (obj instanceof PotentialZFM) {
+                setPotentialZfmActive((PotentialZFM) obj, true);
+            }
+        }
+    }
+
+    @Override
+    public void deactivate() {
+        super.deactivate();
+
+        // deactivate the mimic representations
+        for (SimulationObject obj : getBaseObjects()) {
+            if (obj instanceof PotentialZFM) {
+                setPotentialZfmActive((PotentialZFM) obj, false);
+            }
+        }
+    }
+
+    private void setPotentialZfmActive(PotentialZFM potential, boolean active) {
+        for (Representation representation : potential.allRepresentations()) {
+            if (representation instanceof MimicRepresentation) {
+                MimicRepresentation mimic = (MimicRepresentation) representation;
+                if (active) {
+                    mimic.activate();
+                } else {
+                    mimic.deactivate();
+                }
+            }
+        }
+    }
 
     @Override
     public SelectionFilter getSelectionFilter() {

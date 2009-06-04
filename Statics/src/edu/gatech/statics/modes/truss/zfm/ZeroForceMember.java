@@ -29,6 +29,12 @@ public class ZeroForceMember extends TwoForceMember {
     }
 
     @Override
+    public void setDisplayGrayed(boolean grayed) {
+        // do nothing
+        //super.setDisplayGrayed(grayed);
+    }
+
+    @Override
     public boolean canCompress() {
         return false;
     }
@@ -36,6 +42,7 @@ public class ZeroForceMember extends TwoForceMember {
     @Override
     public void createDefaultSchematicRepresentation() {
         Representation rep = new CylinderRepresentation(this);
+        rep.setDisplayGrayed(true);
         addRepresentation(rep);
     }
 }
