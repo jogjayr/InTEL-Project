@@ -69,6 +69,7 @@ public class ApplicationBar extends BWindow {
     public void setModePanel(ApplicationModePanel modePanel) {
         if (this.modePanel != null) {
             this.modePanel.getTab().setActive(false);
+            this.modePanel.deactivate();
             mainBar.remove(this.modePanel);
         }
         this.modePanel = modePanel;

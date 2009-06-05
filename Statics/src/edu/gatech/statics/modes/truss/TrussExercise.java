@@ -14,11 +14,16 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.frame.FrameSelectDiagram;
 import edu.gatech.statics.modes.frame.FrameUtil;
+import edu.gatech.statics.modes.select.SelectAllAction;
 import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.truss.ui.TrussInterfaceConfiguration;
 import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
 import edu.gatech.statics.modes.truss.zfm.ZFMMode;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -79,8 +84,26 @@ public class TrussExercise extends OrdinaryExercise {
         return new TrussFreeBodyDiagram(bodies);
     }
 
+    /**
+     * Returns a FrameSelectDiagram, but modifies this so that it is not possible for ZFMs to get selected in the select-all call.
+     * @return
+     */
     @Override
     protected SelectDiagram createSelectDiagram() {
-        return new FrameSelectDiagram();
+        return new FrameSelectDiagram() {
+            @Override
+            protected SelectAllAction createSelectAllAction(List<SimulationObject> objects) {
+                List<SimulationObject> objectsWithoutZFMs = new ArrayList<SimulationObject>();
+                for (SimulationObject simulationObject : objects) {
+                    if (simulationObject instanceof ZeroForceMember) {
+                        // pass
+                    } else {
+                        objectsWithoutZFMs.add(simulationObject);
+                    }
+                }
+
+                return super.createSelectAllAction(objectsWithoutZFMs);
+            }
+        };
     }
 }

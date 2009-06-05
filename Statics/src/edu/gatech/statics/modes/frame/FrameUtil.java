@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.frame;
 
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
 import java.util.List;
 
@@ -34,7 +35,15 @@ public class FrameUtil {
      * @return
      */
     public static boolean isWholeDiagram(List<Body> selection) {
-        return selection.size() == Exercise.getExercise().getSchematic().allBodies().size();
+        // this is an awkward way of doing this, and I did not want to reference
+        // the truss package, but it's very quick and should work fine.
+        int numberZFMs = 0;
+        for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
+            if (body instanceof ZeroForceMember) {
+                numberZFMs++;
+            }
+        }
+        return selection.size() == Exercise.getExercise().getSchematic().allBodies().size() - numberZFMs;
     }
 
     /**
@@ -45,6 +54,15 @@ public class FrameUtil {
      * @return
      */
     public static boolean isWholeDiagram(BodySubset selection) {
-        return selection.getBodies().size() == Exercise.getExercise().getSchematic().allBodies().size();
+        // this is an awkward way of doing this, and I did not want to reference
+        // the truss package, but it's very quick and should work fine.
+        int numberZFMs = 0;
+        for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
+            if (body instanceof ZeroForceMember) {
+                numberZFMs++;
+            }
+        }
+
+        return selection.getBodies().size() == Exercise.getExercise().getSchematic().allBodies().size() - numberZFMs;
     }
 }

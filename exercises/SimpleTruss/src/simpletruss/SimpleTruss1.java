@@ -4,13 +4,19 @@
  */
 package simpletruss;
 
+import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
+import edu.gatech.statics.objects.AngleMeasurement;
+import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
@@ -118,6 +124,11 @@ public class SimpleTruss1 extends TrussExercise {
 
         // connect the bars of the truss to the joints.
         for (TwoForceMember bar : bars) {
+
+            if (bar instanceof ZeroForceMember) {
+                continue;
+            }
+
             Point p1 = bar.getEnd1();
             Point p2 = bar.getEnd2();
             Connector2ForceMember2d c1 = new Connector2ForceMember2d(p1, bar);
@@ -163,6 +174,43 @@ public class SimpleTruss1 extends TrussExercise {
         for (TwoForceMember bar : bars) {
             bar.createDefaultSchematicRepresentation();
             getSchematic().add(bar);
+        }
+
+        AngleMeasurement angleBAC, angleDBX, angleXBE, angleFHG, angleDFX, angleXFE;
+        angleBAC = new PointAngleMeasurement(A, B, C);
+        angleDBX = new FixedAngleMeasurement(B, D, Vector3f.UNIT_X);
+        angleXBE = new FixedAngleMeasurement(B, E, Vector3f.UNIT_X);
+        angleFHG = new PointAngleMeasurement(H, F, G);
+        angleDFX = new FixedAngleMeasurement(F, D, Vector3f.UNIT_X.negate());
+        angleXFE = new FixedAngleMeasurement(F, E, Vector3f.UNIT_X.negate());
+        angleBAC.setName("angle bac");
+        angleDBX.setName("angle dbx");
+        angleXBE.setName("angle xbe");
+        angleFHG.setName("angle fhg");
+        angleDFX.setName("angle dfx");
+        angleXFE.setName("angle xfe");
+
+        DistanceMeasurement distanceAC, distanceCE, distanceEG, distanceGH;
+        distanceAC = new DistanceMeasurement(A, C);
+        distanceCE = new DistanceMeasurement(C, E);
+        distanceEG = new DistanceMeasurement(E, G);
+        distanceGH = new DistanceMeasurement(G, H);
+        distanceAC.setName("distance ac");
+        distanceCE.setName("distance ce");
+        distanceEG.setName("distance eg");
+        distanceGH.setName("distance gh");
+
+        AE.addObject(distanceAC);
+        AE.addObject(distanceCE);
+        EH.addObject(distanceEG);
+        EH.addObject(distanceGH);
+
+        List<Measurement> measures = Arrays.asList(new Measurement[]{
+                    angleBAC, angleDBX, angleXBE, angleFHG, angleDFX, angleXFE,
+                    distanceAC, distanceCE, distanceEG, distanceGH});
+        for (Measurement measurement : measures) {
+            measurement.createDefaultSchematicRepresentation();
+            getSchematic().add(measurement);
         }
 
         PotentialZFM pAB, pAC, pBC, pBD, pBE, pCE, pDE, pDF, pEF, pEG, pFG, pFH, pGH;

@@ -110,6 +110,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
             // mark to display as selected if it is in the list of selected objects.
             obj.setDisplaySelected(getCurrentState().getSelectedZFMs().contains(obj));
         }
+
+        if (getCurrentState().isLocked()) {
+            completed();
+        }
     }
 
     @Override
@@ -146,7 +150,7 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         pushState(builder.build());
         clearStateStack();
 
-        completed();
+        //completed();
     }
 
     public boolean check() {

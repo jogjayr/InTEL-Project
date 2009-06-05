@@ -116,7 +116,9 @@ public abstract class Diagram<StateType extends DiagramState> {
             // we do not update the UI when testing, so perform a check to only
             // update the UI if the UI exists.
             ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
-            modePanel.stateChanged();
+            if (modePanel.isActive()) {
+                modePanel.stateChanged();
+            }
         }
 
         StaticsApplication.getApp().stateChanged();

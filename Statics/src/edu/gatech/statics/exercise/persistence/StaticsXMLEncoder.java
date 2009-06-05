@@ -14,6 +14,8 @@ import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
+import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
@@ -164,6 +166,8 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Pulley.class, namedPersistenceDelegate);
         setPersistenceDelegate(Potato.class, namedPersistenceDelegate);
         setPersistenceDelegate(Plate.class, namedPersistenceDelegate);
+        setPersistenceDelegate(ZeroForceMember.class, namedPersistenceDelegate);
+        setPersistenceDelegate(PotentialZFM.class, namedPersistenceDelegate);
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 

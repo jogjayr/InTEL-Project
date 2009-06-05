@@ -6,8 +6,8 @@ package edu.gatech.statics.modes.truss.zfm;
 
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class PotentialZFM extends SimulationObject {
+public class PotentialZFM extends SimulationObject implements ResolvableByName {
 
     /**
      * "absorbs" the representations of the given object. This allows the potentialZFM to 
@@ -44,12 +44,27 @@ public class PotentialZFM extends SimulationObject {
         return baseName;
     }
 
+    /**
+     * For persistence, do not use
+     * @deprecated
+     */
+    @Deprecated
+    public PotentialZFM(String name) {
+        if(name.startsWith("potential")) {
+            setBaseName(name.substring("potential".length()));
+        }
+    }
+
     public PotentialZFM(boolean zfm) {
         this.zfm = zfm;
     }
 
     public boolean isZfm() {
         return zfm;
+    }
+
+    public void setZfm(boolean zfm) {
+        this.zfm = zfm;
     }
 
     public void setBaseName(String baseName) {

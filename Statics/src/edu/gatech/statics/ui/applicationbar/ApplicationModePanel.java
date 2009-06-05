@@ -20,6 +20,7 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 
     private ApplicationTab tab;
     private BLabel titleLabel;
+    private boolean active;
 
     /**
      * Returns the type of diagram that this panel is supposed to represent.
@@ -30,6 +31,10 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 
     public final String getPanelName() {
         return getDiagramType().getName();
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     /**
@@ -56,7 +61,12 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 
     //abstract public void activate();
     public void activate() {
+        active = true;
         stateChanged();
+    }
+
+    public void deactivate() {
+        active = false;
     }
 
     public ApplicationTab getTab() {

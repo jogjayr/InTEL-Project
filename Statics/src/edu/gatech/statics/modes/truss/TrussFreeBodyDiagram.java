@@ -25,6 +25,7 @@ public class TrussFreeBodyDiagram extends FreeBodyDiagram {
 
     public TrussFreeBodyDiagram(BodySubset bodies) {
         super(bodies);
+        stateChanged();
     }
 
     /**
