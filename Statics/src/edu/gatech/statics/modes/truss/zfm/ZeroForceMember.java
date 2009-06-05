@@ -5,7 +5,9 @@
 package edu.gatech.statics.modes.truss.zfm;
 
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.bodies.representations.CylinderRepresentation;
 
@@ -32,6 +34,14 @@ public class ZeroForceMember extends TwoForceMember {
     public void setDisplayGrayed(boolean grayed) {
         // do nothing
         //super.setDisplayGrayed(grayed);
+    }
+
+    @Override
+    public void addObject(SimulationObject obj) {
+        if (obj instanceof Connector) {
+            throw new IllegalArgumentException("Can not attach a connector to a ZFM!");
+        }
+        super.addObject(obj);
     }
 
     @Override
