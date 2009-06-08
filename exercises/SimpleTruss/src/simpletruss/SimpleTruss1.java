@@ -76,29 +76,29 @@ public class SimpleTruss1 extends TrussExercise {
         PointBody Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb;
         Ab = new PointBody("Joint A", A);
         Bb = new PointBody("Joint B", B);
-        //Cb = new PointBody("Joint C", C);
+        Cb = new PointBody("Joint C", C);
         Db = new PointBody("Joint D", D);
         Eb = new PointBody("Joint E", E);
         Fb = new PointBody("Joint F", F);
-        //Gb = new PointBody("Joint G", G);
+        Gb = new PointBody("Joint G", G);
         Hb = new PointBody("Joint H", H);
 
         List<PointBody> pointBodies = Arrays.asList(
-                //new PointBody[]{Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb});
-                new PointBody[]{Ab, Bb, Db, Eb, Fb, Hb});
+                new PointBody[]{Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb});
+                //new PointBody[]{Ab, Bb, Db, Eb, Fb, Hb});
         Map<Point, PointBody> pointBodyMap = new HashMap();
         pointBodyMap.put(A, Ab);
         pointBodyMap.put(B, Bb);
-        //pointBodyMap.put(C, Cb);
+        pointBodyMap.put(C, Cb);
         pointBodyMap.put(D, Db);
         pointBodyMap.put(E, Eb);
         pointBodyMap.put(F, Fb);
-        //pointBodyMap.put(G, Gb);
+        pointBodyMap.put(G, Gb);
         pointBodyMap.put(H, Hb);
 
         // create members
         TwoForceMember AB, AC, BC, BD, BE, CE, DE, DF, EF, EG, FG, FH, GH;
-        TwoForceMember AE, EH;
+        //TwoForceMember AE, EH;
         AB = new Bar("AB", A, B);
         BC = new ZeroForceMember("BC", B, C);
         BD = new Bar("BD", B, D);
@@ -108,8 +108,8 @@ public class SimpleTruss1 extends TrussExercise {
         EF = new Bar("EF", E, F);
         FG = new ZeroForceMember("FG", F, G);
         FH = new Bar("FH", F, H);
-        AE = new Bar("AE", A, E);
-        EH = new Bar("EH", E, H);
+        //AE = new Bar("AE", A, E);
+        //EH = new Bar("EH", E, H);
 
         // these ones are redundant, they are covered by AE and EH,
         // but their representations are used by thep potential ZFMs.
@@ -120,7 +120,7 @@ public class SimpleTruss1 extends TrussExercise {
         GH = new Bar("GH", G, H);
 
         List<TwoForceMember> bars = Arrays.asList(
-                new TwoForceMember[]{AB, BC, BD, BE, DE, DF, EF, FG, FH, AE, EH});
+                new TwoForceMember[]{AB, BC, BD, BE, DE, DF, EF, FG, FH, AC, CE, EG, GH});
 
         // connect the bars of the truss to the joints.
         for (TwoForceMember bar : bars) {
@@ -200,10 +200,10 @@ public class SimpleTruss1 extends TrussExercise {
         distanceEG.setName("distance eg");
         distanceGH.setName("distance gh");
 
-        AE.addObject(distanceAC);
-        AE.addObject(distanceCE);
-        EH.addObject(distanceEG);
-        EH.addObject(distanceGH);
+        //AE.addObject(distanceAC);
+        //AE.addObject(distanceCE);
+        //EH.addObject(distanceEG);
+        //EH.addObject(distanceGH);
 
         List<Measurement> measures = Arrays.asList(new Measurement[]{
                     angleBAC, angleDBX, angleXBE, angleFHG, angleDFX, angleXFE,

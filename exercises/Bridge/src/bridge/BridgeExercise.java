@@ -149,10 +149,10 @@ public class BridgeExercise extends TrussExercise {
         }
 
         // calculate whether this is a redundant bar (used to create potentials, but not for use in the diagram)
-        boolean isRedundant = false;
-        if (prefix1.equals("L") && prefix2.equals("L") && index2 == index1 + 1 && !(index1 == 8 || index2 == 8 || index2 == 14)) {
-            isRedundant = true;
-        }
+        //boolean isRedundant = false;
+        //if (prefix1.equals("L") && prefix2.equals("L") && index2 == index1 + 1 && !(index1 == 8 || index2 == 8 || index2 == 14)) {
+        //    isRedundant = true;
+        //}
 
         // calculate whether to create a potential zfm for this member
         boolean createPotential = true;
@@ -167,7 +167,7 @@ public class BridgeExercise extends TrussExercise {
             Point anchor2 = (Point) getSchematic().getByName(joint2Name);
 
             bar = new ZeroForceMember(barName, anchor1, anchor2);
-        } else if (!isRedundant) {
+        } else {
             bar = new Bar(barName, joint1.getAnchor(), joint2.getAnchor());
             //bar.createDefaultSchematicRepresentation();
 
@@ -179,10 +179,10 @@ public class BridgeExercise extends TrussExercise {
 
         }
 
-        if (!isRedundant) {
+        //if (!isRedundant) {
             getSchematic().add(bar);
             setupBarModelRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
-        }
+        //}
 
         if (createPotential) {
             PotentialZFM potential = new PotentialZFM(isZfm);
@@ -208,13 +208,13 @@ public class BridgeExercise extends TrussExercise {
 
     private void setupBarModelRepresentation(TwoForceMember bar, ModelNode modelNode, String prefix1, int index1, String prefix2, int index2) {
 
-        if (index2 - index1 == 2) {
-            // special case for the joined bars.
-            extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2 - 1);
-            extractRepresentation(bar, modelNode, prefix1, index2 - 1, prefix2, index2);
-        } else {
+        //if (index2 - index1 == 2) {
+        //    // special case for the joined bars.
+        //    extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2 - 1);
+        //    extractRepresentation(bar, modelNode, prefix1, index2 - 1, prefix2, index2);
+        //} else {
             extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
-        }
+        //}
     }
 
     private void extractRepresentation(TwoForceMember bar, ModelNode modelNode, String prefix1, int index1, String prefix2, int index2) {
@@ -248,11 +248,11 @@ public class BridgeExercise extends TrussExercise {
         getSchematic().add(lowerPoint);
 
 
-        List<Integer> noPoints = Arrays.asList(new Integer[]{2, 4, 6, 10, 12, 14});
-        if (prefix.equals("L") && noPoints.contains(index)) {
-            // no joints for these.
-            return null;
-        }
+        //List<Integer> noPoints = Arrays.asList(new Integer[]{2, 4, 6, 10, 12, 14});
+        //if (prefix.equals("L") && noPoints.contains(index)) {
+        //    // no joints for these.
+        //    return null;
+        //}
 
         PointBody pointBody = new PointBody("Joint " + lowerPoint.getName(), lowerPoint);
         pointBody.createDefaultSchematicRepresentation();
@@ -277,11 +277,11 @@ public class BridgeExercise extends TrussExercise {
     private void setupBars(ModelNode modelNode) {
 
         // get the wide bars first so that we can load their representations correctly
-        setupBar(modelNode, "L", 1, "L", 3);
-        setupBar(modelNode, "L", 3, "L", 5);
-        setupBar(modelNode, "L", 5, "L", 7);
-        setupBar(modelNode, "L", 9, "L", 11);
-        setupBar(modelNode, "L", 11, "L", 13);
+        //setupBar(modelNode, "L", 1, "L", 3);
+        //setupBar(modelNode, "L", 3, "L", 5);
+        //setupBar(modelNode, "L", 5, "L", 7);
+        //setupBar(modelNode, "L", 9, "L", 11);
+        //setupBar(modelNode, "L", 11, "L", 13);
 
         // then the rest
         for (int i = 0; i < 14; i++) {
