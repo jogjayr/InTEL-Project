@@ -21,6 +21,7 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Fix2d;
+import edu.gatech.statics.objects.connectors.FrictionPoint;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.util.Pair;
 import java.math.BigDecimal;
@@ -210,6 +211,16 @@ public class FBDChecker {
                         logInfo("check: user wrongly created a fix at point " + connector.getAnchor().getLabelText());
                         logInfo("check: FAILED");
                         setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "fix", connector.connectorName());
+                        return false;
+                    }
+                }
+                // check if this is mistaken for a frictionPoint
+                if (!connector.connectorName().equals("frictionPoint")) {
+                    FrictionPoint testPoint = new FrictionPoint(connector.getAnchor());
+                    if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed){
+                        logInfo("check: user wrongly created a frictionPoint at point " + connector.getAnchor().getLabelText());
+                        logInfo("check: FAILED");
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "friction point", connector.connectorName());
                         return false;
                     }
                 }

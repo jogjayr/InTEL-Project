@@ -194,6 +194,8 @@ public class CameraControl {
             long startTime = System.currentTimeMillis();
             long endTime = startTime + (long) (1000 * transitionInSeconds);
 
+            System.out.println("Interpolating from: " +diagramState0 + " to: " + diagramState1);
+
             while (System.currentTimeMillis() < endTime && !terminated) {
                 //t += dt;
                 float t = (float) (System.currentTimeMillis() - startTime) / (1000 * transitionInSeconds);
