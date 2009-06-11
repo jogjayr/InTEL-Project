@@ -20,7 +20,7 @@ class UnaryNode extends Node {
 
     enum Operation {
 
-        sin, cos, sqrt, atan, negate,
+        sin, cos, tan, sqrt, atan, negate,
         identity // identity is for (parentheses)
 
     };
@@ -58,6 +58,8 @@ class UnaryNode extends Node {
                 return new BigDecimal(Math.sin((Math.PI / 180) * resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case cos:
                 return new BigDecimal(Math.cos((Math.PI / 180) * resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
+            case tan:
+                return new BigDecimal(Math.tan((Math.PI / 180) * resultFloat)).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case atan:
                 return new BigDecimal(((180 / Math.PI) * Math.atan(resultFloat))).setScale(Unit.getGlobalPrecision(), RoundingMode.HALF_UP);
             case sqrt:
@@ -85,6 +87,8 @@ class UnaryNode extends Node {
                 return "sin" + child.printout();
             case cos:
                 return "cos" + child.printout();
+            case tan:
+                return "tan" + child.printout();
             case atan:
                 return "atan" + child.printout();
             case sqrt:

@@ -30,9 +30,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -180,8 +178,8 @@ public class BridgeExercise extends TrussExercise {
         }
 
         //if (!isRedundant) {
-            getSchematic().add(bar);
-            setupBarModelRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
+        getSchematic().add(bar);
+        setupBarModelRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
         //}
 
         if (createPotential) {
@@ -213,8 +211,8 @@ public class BridgeExercise extends TrussExercise {
         //    extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2 - 1);
         //    extractRepresentation(bar, modelNode, prefix1, index2 - 1, prefix2, index2);
         //} else {
-            extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
-        //}
+        extractRepresentation(bar, modelNode, prefix1, index1, prefix2, index2);
+    //}
     }
 
     private void extractRepresentation(TwoForceMember bar, ModelNode modelNode, String prefix1, int index1, String prefix2, int index2) {
@@ -248,11 +246,10 @@ public class BridgeExercise extends TrussExercise {
         getSchematic().add(lowerPoint);
 
 
-        //List<Integer> noPoints = Arrays.asList(new Integer[]{2, 4, 6, 10, 12, 14});
-        //if (prefix.equals("L") && noPoints.contains(index)) {
-        //    // no joints for these.
-        //    return null;
-        //}
+        // skip this last joint, it should not actually be included.
+        if (prefix.equals("L") && index == 14) {
+            return null;
+        }
 
         PointBody pointBody = new PointBody("Joint " + lowerPoint.getName(), lowerPoint);
         pointBody.createDefaultSchematicRepresentation();
@@ -275,32 +272,20 @@ public class BridgeExercise extends TrussExercise {
     }
 
     private void setupBars(ModelNode modelNode) {
-
-        // get the wide bars first so that we can load their representations correctly
-        //setupBar(modelNode, "L", 1, "L", 3);
-        //setupBar(modelNode, "L", 3, "L", 5);
-        //setupBar(modelNode, "L", 5, "L", 7);
-        //setupBar(modelNode, "L", 9, "L", 11);
-        //setupBar(modelNode, "L", 11, "L", 13);
-
         // then the rest
         for (int i = 0; i < 14; i++) {
             // upper bars
             setupBar(modelNode, "U", i, "U", i + 1);
-            //setupBar(modelNode, "U", 28 - i, "U", 28 - i - 1);
             if (i > 0) {
                 // lower bars
                 setupBar(modelNode, "L", i, "L", i + 1);
-                //setupBar(modelNode, "L", 28 - i, "L", 28 - i - 1);
                 // verticals
                 setupBar(modelNode, "U", i, "L", i);
-            //setupBar(modelNode, "U", 28 - i, "L", 28 - i);
             }
             // cross bars
             String crossPrefix1 = i % 2 == 0 ? "U" : "L";
             String crossPrefix2 = i % 2 == 1 ? "U" : "L";
             setupBar(modelNode, crossPrefix1, i, crossPrefix2, i + 1);
-        //setupBar(modelNode, crossPrefix1, 28 - i, crossPrefix2, 28 - i - 1);
         }
 
         // get that middle bar
@@ -308,7 +293,6 @@ public class BridgeExercise extends TrussExercise {
     }
 
     private void setupJoints(ModelNode modelNode, float[] lowerHeights) {
-        //for (int i = 0; i < 29; i++) {
         for (int i = 0; i <= 14; i++) {
             String name;
             if (i > 14) {
@@ -348,6 +332,12 @@ public class BridgeExercise extends TrussExercise {
             Point p2 = (Point) getSchematic().getByName(getJointName("U", i));
             DistanceMeasurement measure = new DistanceMeasurement(p1, p2);
             measure.createDefaultSchematicRepresentation();
+            getSchematic().add(measure);
+
+            // get the vertical measures
+            p2 = (Point) getSchematic().getByName(getJointName("L", i + 1));
+            measure = new DistanceMeasurement(p1, p2);
+            measure.createDefaultSchematicRepresentation(.5f);
             getSchematic().add(measure);
         }
 

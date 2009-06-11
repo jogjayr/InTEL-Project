@@ -58,7 +58,7 @@ public class SymbolManager {
                 symbolicLoads.remove(old);
             }
 
-            Logger.getLogger("Statics").info("Adding to SymbolManager: "+load);
+            Logger.getLogger("Statics").info("Adding to SymbolManager: " + load);
 
             // add the new load
             symbols.add(load.getSymbolName());
@@ -81,15 +81,26 @@ public class SymbolManager {
      * @return
      */
     public AnchoredVector getLoadDirect(AnchoredVector load) {
+        // this method checks given loads that are pointing in both directions,
+        // either opposite or same direction. However, this PREFERS loads pointing
+        // in the same direction, so we run two checks. First in same direction, then opposite.
+
         for (AnchoredVector toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
-                    (load.getVectorValue().equals(toCheck.getVectorValue()) ||
-                    (load.getVectorValue().equals(toCheck.getVectorValue().negate())))) {
+                    load.getVectorValue().equals(toCheck.getVectorValue())) {
                 // return defensive copy
-                //return new AnchoredVector(toCheck);
                 return toCheck.getUnmodifiableAnchoredVector();
             }
         }
+
+        for (AnchoredVector toCheck : symbolicLoads) {
+            if (load.getAnchor() == toCheck.getAnchor() &&
+                    load.getVectorValue().equals(toCheck.getVectorValue().negate())) {
+                // return defensive copy
+                return toCheck.getUnmodifiableAnchoredVector();
+            }
+        }
+
         return null;
     }
 

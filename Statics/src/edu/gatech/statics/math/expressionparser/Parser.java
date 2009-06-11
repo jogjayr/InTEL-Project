@@ -394,6 +394,9 @@ public class Parser {
         if (token.toLowerCase().equals("cos")) {
             return new UnaryNode(UnaryNode.Operation.cos);
         }
+        if (token.toLowerCase().equals("tan")) {
+            return new UnaryNode(UnaryNode.Operation.tan);
+        }
         if (token.toLowerCase().equals("atan")) {
             return new UnaryNode(UnaryNode.Operation.atan);
         }
