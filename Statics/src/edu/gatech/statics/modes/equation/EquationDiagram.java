@@ -615,7 +615,14 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     private void solveConnector(SimulationObject obj, Map<Quantity, Float> values) {
         Connector connector = (Connector) obj;
+
+        // do not solve the connector if it is already solved.
         if (connector.isSolved()) {
+            return;
+        }
+
+        // do not solve the connector if it is internal
+        if(!(allBodies().contains(connector.getBody1()) ^ allBodies().contains(connector.getBody2()))) {
             return;
         }
 

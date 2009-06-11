@@ -62,7 +62,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
         // add the term if the equation is not locked
         if (!activeEquation.isLocked()) {
-            activeEquation.performAddTerm(load.getAnchoredVector());
+            // if the term has already been added, select it.
+            if (activeEquation.getMath().getState().getTerms().containsKey(load.getAnchoredVector())) {
+                activeEquation.focusOnTerm(load.getAnchoredVector());
+            } else {
+                // otherwise, add it.
+                activeEquation.performAddTerm(load.getAnchoredVector());
+            }
         }
 
         // highlight the load in the equations

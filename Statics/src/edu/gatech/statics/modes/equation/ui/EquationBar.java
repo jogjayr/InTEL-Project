@@ -340,9 +340,21 @@ public class EquationBar extends BContainer {
         TermBox box = new TermBox(load, coefficient);
         terms.put(load, box);
         add(1, box);
-        box.coefficient.requestFocus();
+        //box.coefficient.requestFocus();
+        focusOnTerm(load);
         invalidate();
         parent.refreshRows();
+    }
+
+    /**
+     * Put the component focus on the load that has been given.
+     * Do nothing if the load has not been added to the equation.
+     */
+    public void focusOnTerm(AnchoredVector load) {
+        TermBox box = terms.get(load);
+        if(box == null)
+            return;
+        box.coefficient.requestFocus();
     }
 
     public void setLocked() {

@@ -25,8 +25,19 @@ public class TrussSectionState implements DiagramState<TrussSectionDiagram> {
         return false;
     }
 
-    public Builder<? extends DiagramState<TrussSectionDiagram>> getBuilder() {
-        // CHANGE THIS?
-        return null;
+    public TrussSectionBuilder getBuilder() {
+        return new TrussSectionBuilder();
+    }
+
+    public static class TrussSectionBuilder implements Builder<TrussSectionState> {
+
+        public TrussSectionState build() {
+            return new TrussSectionState();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "TrussSectionState: {}";
     }
 }
