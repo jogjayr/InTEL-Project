@@ -21,7 +21,7 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Fix2d;
-import edu.gatech.statics.objects.connectors.FrictionPoint;
+import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.util.Pair;
 import java.math.BigDecimal;
@@ -214,13 +214,13 @@ public class FBDChecker {
                         return false;
                     }
                 }
-                // check if this is mistaken for a frictionPoint
-                if (!connector.connectorName().equals("frictionPoint")) {
-                    FrictionPoint testPoint = new FrictionPoint(connector.getAnchor());
+                // check if this is mistaken for a contactPoint
+                if (!connector.connectorName().equals("contactPoint")) {
+                    ContactPoint testPoint = new ContactPoint(connector.getAnchor());
                     if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed){
-                        logInfo("check: user wrongly created a frictionPoint at point " + connector.getAnchor().getLabelText());
+                        logInfo("check: user wrongly created a contactPoint at point " + connector.getAnchor().getLabelText());
                         logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "friction point", connector.connectorName());
+                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "contact point", connector.connectorName());
                         return false;
                     }
                 }
@@ -320,17 +320,67 @@ public class FBDChecker {
 
         return true;
     }
-
+    
     /**
      * Step 4
+     * Check that the Normal force is labeled N and the Friction force is named F.
+     * If the forces are unknown.
+     * @param addedLoads
+     * @return
+     */
+    protected boolean checkContactPoints(List<AnchoredVector> addedLoads) {
+        debugInfo("STEP 4: Contact Points correctly labeled?");
+
+        for (int i = 0; i < diagram.getCentralObjects().size(); i++) {
+            SimulationObject obj = diagram.getCentralObjects().get(i);
+            if (!(obj instanceof ContactPoint)) {
+                continue;
+            }
+
+            ContactPoint cp = (ContactPoint) obj;
+
+            List<AnchoredVector> userAnchoredVectorsAtConnector = new ArrayList<AnchoredVector>();
+            for (AnchoredVector av : addedLoads) {
+                if (av.getAnchor().pointEquals(cp.getAnchor())) {
+                    userAnchoredVectorsAtConnector.add(av);
+                }
+            }
+            
+
+        }
+
+//        for (Body body : diagram.getBodySubset().getBodies()) {
+//            if (body.getWeight().getDiagramValue().floatValue() == 0) {
+//                continue;
+//            }
+//            AnchoredVector weight = new AnchoredVector(
+//                    body.getCenterOfMassPoint(),
+//                    new Vector(Unit.force, Vector3bd.UNIT_Y.negate(),
+//                    new BigDecimal(body.getWeight().doubleValue())));
+//
+//            debugInfo("  Checking weight: " + weight);
+//            boolean ok = performWeightCheck(addedLoads, weight, body);
+//            if (!ok) {
+//                debugInfo("STEP 4: FAILED");
+//                return false;
+//            }
+//        }
+//        debugInfo("STEP 4: PASSED");
+//        debugInfo("  user loads after weights removed: " + addedLoads);
+
+        return true;
+    }
+
+    /**
+     * Step 5
      * Check that the student has added all the required loads on connectors across bodies
      * @param addedLoads
      * @return
      */
     protected boolean checkConnectors(List<AnchoredVector> addedLoads) {
-        debugInfo("STEP 4: Connectors have reactions?");
+        debugInfo("STEP 5: Connectors have reactions?");
 
-        // Step 4: go through all the border connectors connecting this FBD to the external world,
+        // Step 5: go through all the border connectors connecting this FBD to the external world,
         // and check each AnchoredVector implied by the connector.
         for (int i = 0; i < diagram.getCentralObjects().size(); i++) {
             SimulationObject obj = diagram.getCentralObjects().get(i);
@@ -380,14 +430,14 @@ public class FBDChecker {
                 logInfo("check: have any forces been added");
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_joint_reaction", connector.connectorName(), connector.getAnchor().getLabelText());
-                debugInfo("STEP 4: FAILED");
+                debugInfo("STEP 5: FAILED");
                 return false;
             }
 
             debugInfo("  performing connector check...");
             ConnectorCheckResult connectorResult = checkConnector(userAnchoredVectorsAtConnector, connector, body);
             if (!reportConnectorResult(connectorResult, connector, userAnchoredVectorsAtConnector, body)) {
-                debugInfo("STEP 4: FAILED");
+                debugInfo("STEP 5: FAILED");
                 return false;
             }
             debugInfo("  connector check passed! " + connectorResult);
@@ -440,7 +490,7 @@ public class FBDChecker {
                         debugInfo("    candidate is OK! Removing it.");
                     } else {
                         complainAboutAnchoredVectorCheck(result.getRight(), candidate, loadFromSymbolManager);
-                        debugInfo("STEP 4: FAILED");
+                        debugInfo("STEP 5: FAILED");
                         return false;
                     }
 
@@ -461,7 +511,7 @@ public class FBDChecker {
                         // do nothing
                     } else {
                         complainAboutAnchoredVectorCheck(result.getRight(), candidate, reaction);
-                        debugInfo("STEP 4: FAILED");
+                        debugInfo("STEP 5: FAILED");
                         return false;
                     }
 
@@ -483,7 +533,7 @@ public class FBDChecker {
                         debugInfo("    candidate is OK! Removing it.");
                     } else {
                         complainAboutName(nameResult, candidate);
-                        debugInfo("STEP 4: FAILED");
+                        debugInfo("STEP 5: FAILED");
                         return false;
                     }
                 }
@@ -494,23 +544,23 @@ public class FBDChecker {
 
         }
 
-        debugInfo("STEP 4: PASSED!");
+        debugInfo("STEP 5: PASSED!");
         return true;
     }
 
     /**
-     * Step 5
+     * Step 6
      * Ensure there are no extra loads unaccounted for.
      * @param addedLoads
      * @return
      */
     protected boolean checkRemainingLoads(List<AnchoredVector> addedLoads) {
-        debugInfo("STEP 5: Are any loads remaining?");
+        debugInfo("STEP 6: Are any loads remaining?");
 
-        // Step 5: Make sure we've used all the user added forces.
+        // Step 6: Make sure we've used all the user added forces.
         if (!addedLoads.isEmpty()) {
             debugInfo("  There are: " + addedLoads + " remaining!");
-            debugInfo("STEP 5: FAILED");
+            debugInfo("STEP 6: FAILED");
 
             logInfo("check: user added more forces than necessary: " + addedLoads);
             logInfo("check: FAILED");
@@ -518,7 +568,7 @@ public class FBDChecker {
             setAdviceKey("fbd_feedback_check_fail_additional", addedLoads.get(0).getAnchor().getName());
             return false;
         }
-        debugInfo("STEP 5: PASSED");
+        debugInfo("STEP 6: PASSED");
         return true;
     }
 
@@ -546,14 +596,17 @@ public class FBDChecker {
         if (!checkAddedWeights(addedLoads)) {
             return false;
         }
-
-        // Step 4: go through all the border connectors connecting this FBD to the external world,
+        // step 4: Maks sure the contact points are set up properly
+        if(!checkContactPoints(addedLoads)) {
+            return false;
+        }
+        // Step 5: go through all the border connectors connecting this FBD to the external world,
         // and check each AnchoredVector implied by the connector.
         if (!checkConnectors(addedLoads)) {
             return false;
         }
 
-        // Step 5: Make sure we've used all the user added forces.
+        // Step 6: Make sure we've used all the user added forces.
         if (!checkRemainingLoads(addedLoads)) {
             return false;
         }

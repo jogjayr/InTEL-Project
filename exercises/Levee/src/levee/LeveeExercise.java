@@ -9,6 +9,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.math.Unit;
@@ -26,6 +27,8 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveConnectorTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
@@ -105,6 +108,7 @@ public class LeveeExercise extends DistributedExercise {
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
         //StaticsApplication.getApp().getCamera().setLocation(new Vector3f(10.0f, 6, 0f));
+//        StaticsApplication.getApp().getCamera().setDirection(new Vector3f(15, 1, 1).normalize());
 
         Schematic schematic = getSchematic();
 
@@ -194,4 +198,14 @@ public class LeveeExercise extends DistributedExercise {
 
         addTask(new SolveConnectorTask("Solve Base", base));
     }
+
+    @Override
+    public void postLoadExercise() {
+        super.postLoadExercise();
+        StaticsApplication.getApp().getCamera().setDirection(new Vector3f(15, 1, 1).normalize());
+        CameraControl cameraControl = InterfaceRoot.getInstance().getCameraControl();
+        cameraControl.getViewDiagramState().getCameraCenter().addLocal(25, 55, 78);
+        StaticsApplication.getApp().selectDiagramKey(null);
+    }
+
 }
