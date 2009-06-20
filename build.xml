@@ -42,6 +42,9 @@
         <subant buildpath="exercises/Awning/" target="jar"/>
         <subant buildpath="exercises/Bookshelf/" target="jar"/>
         <subant buildpath="exercises/Levee/" target="jar"/>
+        <!-- truss -->
+        <subant buildpath="exercises/SimpleTruss/" target="jar"/>
+        <subant buildpath="exercises/Bridge/" target="jar"/>
         
     </target>
     <target name="clean">
@@ -66,5 +69,8 @@
         <subant buildpath="exercises/Awning/" target="clean"/>
         <subant buildpath="exercises/Bookshelf/" target="clean"/>
         <subant buildpath="exercises/Levee/" target="clean"/>
+        <!-- truss -->
+        <subant buildpath="exercises/SimpleTruss/" target="clean"/>
+        <subant buildpath="exercises/Bridge/" target="clean"/>
     </target>
 </project>

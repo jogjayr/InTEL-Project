@@ -278,7 +278,8 @@ public class PurseExercise extends FrameExercise {
         imageRep = new ImageRepresentation(A, loadTexture("example01/assets/purse.png"));
         imageRep.setScale(repScale * 538f, repScale * 835f);
         imageRep.setTranslation(0, -11.0f, .02f);
-        A.addRepresentation(imageRep);
+        //A.addRepresentation(imageRep);
+        getSchematic().getBackground().addRepresentation(imageRep);
 
         imageRep = new ImageRepresentation(tendon, loadTexture("example01/assets/muscle.png"));
         imageRep.setLayer(bones);
