@@ -83,8 +83,9 @@ public class StaticsApplet extends Applet {
     }
 
     public StaticsApplication getApplication() {
-        if(application == null)
+        if (application == null) {
             application = new StaticsApplication();
+        }
 
         return application;
     }
@@ -193,6 +194,14 @@ public class StaticsApplet extends Applet {
             }
 
             display = application.initDisplay();
+
+            // check against zero values...
+            if (canvasWidth == 0) {
+                canvasWidth = defaultWidth;
+            }
+            if (canvasHeight == 0) {
+                canvasHeight = defaultHeight;
+            }
 
             glCanvas = DisplaySystem.getDisplaySystem().createCanvas(canvasWidth, canvasHeight);
             impl = new CanvasImplementor();
