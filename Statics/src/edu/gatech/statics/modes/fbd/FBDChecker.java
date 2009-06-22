@@ -215,7 +215,7 @@ public class FBDChecker {
                     }
                 }
                 // check if this is mistaken for a contactPoint
-                if (!connector.connectorName().equals("contactPoint")) {
+                if (!connector.connectorName().equals("contact point")) {
                     ContactPoint testPoint = new ContactPoint(connector.getAnchor());
                     if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed) {
                         logInfo("check: user wrongly created a contactPoint at point " + connector.getAnchor().getLabelText());
@@ -352,8 +352,8 @@ public class FBDChecker {
                 //user is missing a load
                 logInfo("check: has the user added enough loads");
                 logInfo("check: FAILED");
-                //setAdviceKey("fbd_feedback_check_fail_too_few", cp.connectorName());
-                setAdviceKey("Note: There are loads missing at %s", cp.connectorName());
+                setAdviceKey("fbd_feedback_check_fail_too_few", cp.getAnchor().getName());
+                //setAdviceKey("Note: There are loads missing at %s", cp.connectorName());
                 debugInfo("STEP 5: FAILED");
                 return false;
             }
@@ -361,8 +361,8 @@ public class FBDChecker {
                 //user has too many loads
                 logInfo("check: has the user added enough loads");
                 logInfo("check: FAILED");
-                //setAdviceKey("fbd_feedback_check_fail_too_many", cp.connectorName());
-                setAdviceKey("Note: There are too many loads at %s", cp.connectorName());
+                setAdviceKey("fbd_feedback_check_fail_too_many", cp.getAnchor().getName());
+                //setAdviceKey("Note: There are too many loads at %s", cp.connectorName());
                 debugInfo("STEP 5: FAILED");
                 return false;
             }
@@ -373,8 +373,8 @@ public class FBDChecker {
                 } else {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
-                    //setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.connectorName());
-                    setAdviceKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
+                    setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
+                    //setAdviceKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
                     debugInfo("STEP 5: FAILED");
                     return false;
                 }
@@ -385,16 +385,16 @@ public class FBDChecker {
                 } else {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
-                    //setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.connectorName());
-                    setAdviceKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
+                    setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
+                    //setAdviceKey("Note: One or more of your loads at %s is improperly named. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
                     debugInfo("STEP 5: FAILED");
                     return false;
                 }
             } else {
                 logInfo("check: has the user added the loads in the right direction");
                 logInfo("check: FAILED");
-                //setAdviceKey("fbd_feedback_check_fail_wrong_direction", cp.connectorName());
-                setAdviceKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
+                setAdviceKey("fbd_feedback_check_fail_wrong_direction", cp.getAnchor().getName());
+                    //setAdviceKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
                 debugInfo("STEP 5: FAILED");
                 return false;
             }

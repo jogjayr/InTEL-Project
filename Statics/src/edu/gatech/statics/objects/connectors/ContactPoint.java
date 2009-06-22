@@ -61,6 +61,6 @@ public class ContactPoint extends Connector {
 
     @Override
     public String connectorName() {
-        return "contactPoint";
+        return "contact point";
     }
 }
