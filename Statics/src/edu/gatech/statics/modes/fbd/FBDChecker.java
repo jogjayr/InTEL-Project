@@ -217,7 +217,7 @@ public class FBDChecker {
                 // check if this is mistaken for a contactPoint
                 if (!connector.connectorName().equals("contactPoint")) {
                     ContactPoint testPoint = new ContactPoint(connector.getAnchor());
-                    if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed){
+                    if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed) {
                         logInfo("check: user wrongly created a contactPoint at point " + connector.getAnchor().getLabelText());
                         logInfo("check: FAILED");
                         setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "contact point", connector.connectorName());
@@ -320,7 +320,7 @@ public class FBDChecker {
 
         return true;
     }
-    
+
     /**
      * Step 4
      * Check that the Normal force is labeled N and the Friction force is named F.
@@ -339,35 +339,66 @@ public class FBDChecker {
 
             ContactPoint cp = (ContactPoint) obj;
 
+            debugInfo("*** CONTACT POINT TEST BEGIN ***");
+            debugInfo("  Checking contact: " + cp);
+
             List<AnchoredVector> userAnchoredVectorsAtConnector = new ArrayList<AnchoredVector>();
             for (AnchoredVector av : addedLoads) {
                 if (av.getAnchor().pointEquals(cp.getAnchor())) {
                     userAnchoredVectorsAtConnector.add(av);
                 }
             }
-            
+            if (userAnchoredVectorsAtConnector.size() < 2) {
+                //user is missing a load
+                logInfo("check: has the user added enough loads");
+                logInfo("check: FAILED");
+                //setAdviceKey("fbd_feedback_check_fail_too_few", cp.connectorName());
+                setAdviceKey("Note: There are loads missing at %s", cp.connectorName());
+                debugInfo("STEP 5: FAILED");
+                return false;
+            }
+            if (userAnchoredVectorsAtConnector.size() > 2) {
+                //user has too many loads
+                logInfo("check: has the user added enough loads");
+                logInfo("check: FAILED");
+                //setAdviceKey("fbd_feedback_check_fail_too_many", cp.connectorName());
+                setAdviceKey("Note: There are too many loads at %s", cp.connectorName());
+                debugInfo("STEP 5: FAILED");
+                return false;
+            }
 
+            if (userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getFrictionDirection())) {
+                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'F') {
+                    continue;
+                } else {
+                    logInfo("check: has the user added loads with the right names");
+                    logInfo("check: FAILED");
+                    //setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.connectorName());
+                    setAdviceKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
+                    debugInfo("STEP 5: FAILED");
+                    return false;
+                }
+
+            } else if (userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getFrictionDirection())) {
+                if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'F') {
+                    continue;
+                } else {
+                    logInfo("check: has the user added loads with the right names");
+                    logInfo("check: FAILED");
+                    //setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.connectorName());
+                    setAdviceKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
+                    debugInfo("STEP 5: FAILED");
+                    return false;
+                }
+            } else {
+                logInfo("check: has the user added the loads in the right direction");
+                logInfo("check: FAILED");
+                //setAdviceKey("fbd_feedback_check_fail_wrong_direction", cp.connectorName());
+                setAdviceKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
+                debugInfo("STEP 5: FAILED");
+                return false;
+            }
         }
-
-//        for (Body body : diagram.getBodySubset().getBodies()) {
-//            if (body.getWeight().getDiagramValue().floatValue() == 0) {
-//                continue;
-//            }
-//            AnchoredVector weight = new AnchoredVector(
-//                    body.getCenterOfMassPoint(),
-//                    new Vector(Unit.force, Vector3bd.UNIT_Y.negate(),
-//                    new BigDecimal(body.getWeight().doubleValue())));
-//
-//            debugInfo("  Checking weight: " + weight);
-//            boolean ok = performWeightCheck(addedLoads, weight, body);
-//            if (!ok) {
-//                debugInfo("STEP 4: FAILED");
-//                return false;
-//            }
-//        }
-//        debugInfo("STEP 4: PASSED");
-//        debugInfo("  user loads after weights removed: " + addedLoads);
-
         return true;
     }
 
@@ -597,7 +628,7 @@ public class FBDChecker {
             return false;
         }
         // step 4: Maks sure the contact points are set up properly
-        if(!checkContactPoints(addedLoads)) {
+        if (!checkContactPoints(addedLoads)) {
             return false;
         }
         // Step 5: go through all the border connectors connecting this FBD to the external world,
