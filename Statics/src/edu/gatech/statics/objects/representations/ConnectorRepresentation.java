@@ -29,6 +29,11 @@ public class ConnectorRepresentation extends PointRepresentation {
 
     @Override
     public void update() {
+
+        // return if the the application is not loaded.
+        if(StaticsApplication.getApp() == null)
+            return;
+
         // we should enable the representation if the diagram is a select diagram
         boolean shouldEnable = StaticsApplication.getApp().getCurrentDiagram() instanceof SelectDiagram;
         //setLocalScale(DisplayConstants.getInstance().getJointSize());

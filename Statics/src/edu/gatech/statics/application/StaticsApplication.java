@@ -48,6 +48,8 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +60,7 @@ import java.util.logging.Logger;
 public class StaticsApplication {
 
     private static StaticsApplication app;
+    private static Lock cleanupLock = new ReentrantLock();
 
     public static StaticsApplication getApp() {
         return app;
@@ -265,7 +268,9 @@ public class StaticsApplication {
 
     /** Creates a new instance of StaticsApplication */
     public StaticsApplication() {
+        cleanupLock.lock();
         app = this;
+        cleanupLock.unlock();
     }
 
     public DisplaySystem initDisplay() {
@@ -459,31 +464,35 @@ public class StaticsApplication {
      */
     public void init() {
 
-        // get rid of some obnoxious log messages in com.jme.scene.Node
-        Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
+        try {
+            // get rid of some obnoxious log messages in com.jme.scene.Node
+            Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
 
-        if (graded) {
-            logHandler = new DatabaseLogHandler();
-            Logger.getLogger("Statics").addHandler(logHandler);
+            if (graded) {
+                logHandler = new DatabaseLogHandler();
+                Logger.getLogger("Statics").addHandler(logHandler);
+            }
+            Logger.getLogger("Statics").info("Application init");
+
+            // initialization of the exercise
+            getExercise().initParameters();
+            getExercise().initExercise();
+
+            // if the application is being run without display, such as in unit tests,
+            // then do not initialize the input
+            if (display != null) {
+                Logger.getLogger("Statics").info("Application init: input");
+                initInput();
+            } else {
+                Logger.getLogger("Statics").info("Application init: no display, forgoing input");
+            }
+
+            //initExercise();
+
+            Logger.getLogger("Statics").info("Finished application init");
+        } catch (Exception ex) {
+            throw new Error("Error in loading the application!", ex);
         }
-        Logger.getLogger("Statics").info("Application init");
-
-        // initialization of the exercise
-        getExercise().initParameters();
-        getExercise().initExercise();
-
-        // if the application is being run without display, such as in unit tests,
-        // then do not initialize the input
-        if (display != null) {
-            Logger.getLogger("Statics").info("Application init: input");
-            initInput();
-        } else {
-            Logger.getLogger("Statics").info("Application init: no display, forgoing input");
-        }
-
-        //initExercise();
-
-        Logger.getLogger("Statics").info("Finished application init");
     }
 
     /**
@@ -491,24 +500,37 @@ public class StaticsApplication {
      */
     public void initExercise() {
 
-        // load exercise here
-        Logger.getLogger("Statics").info("Application init: loading exercise");
-        getExercise().loadExercise();
-        getExercise().applyParameters();
-        Logger.getLogger("Statics").info("Application init: finished loading exercise!");
+        try {
 
-        // initialize the exercise's specific interface configuration.
-        // do not do this if the interface has not been initialized, of course.
-        if (display != null) {
-            iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
+            // load exercise here
+            Logger.getLogger("Statics").info("Application init: loading exercise");
+            getExercise().loadExercise();
+            getExercise().applyParameters();
+            Logger.getLogger("Statics").info("Application init: finished loading exercise!");
+
+            // initialize the exercise's specific interface configuration.
+            // do not do this if the interface has not been initialized, of course.
+            if (display != null) {
+                iRoot.loadConfiguration(getExercise().createInterfaceConfiguration());
+            }
+
+            // get the exercise ready to run.
+            getExercise().loadStartingMode();
+            getExercise().postLoadExercise();
+            Logger.getLogger("Statics").info("Application init: finished post loading exercise!");
+
+            // load the state if this is an applet.
+            if (StaticsApplet.getInstance() != null) {
+                StaticsApplet.getInstance().setupState();
+                //getCurrentDiagram().invalidateNodes();
+                setCurrentDiagram(getCurrentDiagram());
+            }
+
+            initialized = true;
+
+        } catch (Exception ex) {
+            throw new Error("Error in loading the exercise!", ex);
         }
-
-        // get the exercise ready to run.
-        getExercise().loadStartingMode();
-        getExercise().postLoadExercise();
-        Logger.getLogger("Statics").info("Application init: finished post loading exercise!");
-
-        initialized = true;
     }
 
     /**
@@ -589,13 +611,22 @@ public class StaticsApplication {
     private boolean finished = false;
 
     void finish() {
+        cleanupLock.lock();
+
         finished = true;
         currentExercise = null;
         currentDiagram = null;
         //currentInterface = null;
         currentTool = null;
-        cleanup();
-        app = null;
+        try {
+            cleanup();
+        } finally {
+            if (app == this) {
+                // clear the global instance.
+                app = null;
+            }
+            cleanupLock.unlock();
+        }
     }
 
     boolean isFinished() {

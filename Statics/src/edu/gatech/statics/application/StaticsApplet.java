@@ -26,6 +26,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -83,7 +84,7 @@ public class StaticsApplet extends Applet {
     }
 
     public StaticsApplication getApplication() {
-        if (application == null) {
+        if (application == null || application.isFinished()) {
             application = new StaticsApplication();
         }
 
@@ -320,7 +321,7 @@ public class StaticsApplet extends Applet {
 
             application.init();
 
-            setupState();
+            //setupState();
             Logger.getLogger("Statics").info("doSetup complete");
         }
 
@@ -328,7 +329,22 @@ public class StaticsApplet extends Applet {
             if (!alive) {
                 return;
             }
-            application.update();
+            try {
+                application.update();
+            } catch (Error error) {
+
+                // record
+                //error.printStackTrace();
+                Logger.getLogger("Statics").log(Level.SEVERE, "Crash in update()", error);
+                alive = false;
+
+                JOptionPane.showMessageDialog(StaticsApplet.this,
+                        "There has been a problem in the software. " +
+                        "Please try reloading the page, using a different browser or computer. " +
+                        "Please also contact support if the problem is recurring!", "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
 
             float timePerFrame = application.getTimePerFrame();
             timePerFrame = Math.min(timePerFrame, 1 / 60f);

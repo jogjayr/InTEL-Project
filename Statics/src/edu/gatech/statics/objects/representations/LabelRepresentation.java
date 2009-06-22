@@ -110,6 +110,12 @@ public class LabelRepresentation extends Representation {
         }
 
         StaticsApplication app = StaticsApplication.getApp();
+
+        // sometimes occurs if camera is not yet set up.
+        if (app == null || app.getCamera() == null) {
+            return;
+        }
+
         pos2d = app.getCamera().getScreenCoordinates(getDisplayCenter());
         pos2d.addLocal(-getWidth() / 2, -getHeight() / 2, 0);
         pos2d.addLocal(offset);

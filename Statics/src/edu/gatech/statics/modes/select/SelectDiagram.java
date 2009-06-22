@@ -60,6 +60,9 @@ public class SelectDiagram extends Diagram<SelectState> {
         clearStateStack();
 
         currentHighlight = null;
+
+        // simulate an initial empty click
+        onClick(null);
     }
     private SimulationObject currentHighlight;
 

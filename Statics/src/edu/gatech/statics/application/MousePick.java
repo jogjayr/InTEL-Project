@@ -58,6 +58,7 @@ import java.util.logging.Logger;
  * @version
  */
 public class MousePick extends MouseInputAction {
+
     private List<RepresentationLayer> layers;
 
     public MousePick(StaticsApplication app) {
@@ -90,6 +91,11 @@ public class MousePick extends MouseInputAction {
 
         Vector3f screenPos = mouse.getLocalTranslation();
         Vector2f screenPos2 = new Vector2f(screenPos.x, screenPos.y);
+
+        // sanity check: if something isn't loaded correctly, then camera may be null.
+        if (camera == null) {
+            return;
+        }
 
         Vector3f direction = camera.getWorldCoordinates(screenPos2, 0.1f);
         direction.subtractLocal(camera.getLocation());

@@ -116,12 +116,13 @@ public abstract class Diagram<StateType extends DiagramState> {
             // we do not update the UI when testing, so perform a check to only
             // update the UI if the UI exists.
             ApplicationModePanel modePanel = InterfaceRoot.getInstance().getModePanel(getType().getName());
-            if (modePanel.isActive()) {
+            if (modePanel != null && modePanel.isActive()) {
                 modePanel.stateChanged();
             }
         }
 
         StaticsApplication.getApp().stateChanged();
+        invalidateNodes();
     }
 
     /**
@@ -320,7 +321,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      * This method updates all the nodes in the scene graph, making sure that
      * they correctly represent the objects that are present in the diagram.
      * This is automatically called during the display process, and should 
-     * not usually be overridden.
+     * not usually be overridden. This should not be called directly!!
      */
     protected void updateNodes() {
         if (nodesUpdated) {
@@ -403,6 +404,11 @@ public abstract class Diagram<StateType extends DiagramState> {
      * object representations.
      */
     public void update() {
+        
+        // if the application is not loaded for whatever reason, do not update.
+        if(StaticsApplication.getApp() == null)
+            return;
+
         // first update all of the objects
         for (SimulationObject obj : allObjects) {
             obj.update();
