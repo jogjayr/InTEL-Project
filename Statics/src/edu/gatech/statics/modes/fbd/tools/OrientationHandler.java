@@ -13,6 +13,8 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.actions.OrientLoad;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.manipulators.MousePressInputAction;
+import edu.gatech.statics.objects.manipulators.MousePressListener;
 import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
 import edu.gatech.statics.objects.manipulators.OrientationListener;
 import java.math.BigDecimal;
@@ -30,6 +32,12 @@ public class OrientationHandler {
     private Orientation2DSnapManipulator orientationManipulator;
     private AnchoredVector oldVector;
     private boolean enabled;
+
+    // the timestamp of when the handler was created.
+    private long timestamp;
+    private static final long CLICK_TIME = 100; // time in milliseconds; less than this registers a click
+    private boolean firstClick; // set to true if the user did not position the force before releasing the mouse, if the user simply released the mouse afterward
+    private boolean secondClick; // set to true when the mouse has been clicked a second time.
 
     /**
      * Constructs an OrientationHandler. This also activates and enables the OrientationHandler.
@@ -53,6 +61,53 @@ public class OrientationHandler {
 
         StaticsApplication.getApp().enableDrag(false);
         enabled = true;
+
+        timestamp = System.currentTimeMillis();
+        MousePressInputAction clickAction = new MousePressInputAction();
+        clickAction.addListener(new ClickListener());
+        inputHandler.addAction(clickAction);
+    }
+
+    /**
+     * This performs the simple check where 
+     */
+    private class ClickListener implements MousePressListener {
+
+        private boolean releasedOnce;
+        private long downTimestamp;
+
+        public void onMouseDown() {
+            if (releasedOnce) {
+                downTimestamp = System.currentTimeMillis();
+            }
+        }
+
+        public void onMouseUp() {
+            long now;
+            if (releasedOnce) {
+                now = System.currentTimeMillis();
+                if (now - downTimestamp < CLICK_TIME) {
+                    secondClick = true;
+                }
+            }
+            now = System.currentTimeMillis();
+            if(now - timestamp < CLICK_TIME) {
+                firstClick = true;
+            }
+
+            releasedOnce = true;
+        }
+    }
+
+    /**
+     * Returns true if it is allowable to release the orientation listener.
+     * This will return true if the user has simply released the mouse, but not clicked it.
+     * This means, releasing after a sufficient amount of time has passed. Otherwise, it will
+     * release if the user has clicked the mouse a second time.
+     * @return
+     */
+    private boolean canRelease() {
+        return (!firstClick && orientationManipulator.mouseReleased()) || secondClick;
     }
 
     private class MyOrientationListener implements OrientationListener {
@@ -94,10 +149,10 @@ public class OrientationHandler {
             return false;
         }
         // if the user has let up the mouse on the orientation manipulator, 
-        if(!orientationManipulator.mouseReleased()) {
+        if (!canRelease()) {
             return false;
         }
-        
+
         if (orientationManipulator.getCurrentSnap() != null) {
             //System.out.println("releasing manipulator");
 
