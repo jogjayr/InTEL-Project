@@ -36,6 +36,7 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     protected List<Load> createLoads(Point anchor) {
         force = new Force(anchor, new Vector3bd("1.5", "1", "0").normalize(), "F");
         force.createDefaultSchematicRepresentation();
+        new LabelManipulator(force);
         return Collections.singletonList((Load) force);
     }
 

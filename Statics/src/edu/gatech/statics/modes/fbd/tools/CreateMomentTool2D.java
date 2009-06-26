@@ -48,6 +48,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
 
         moment = new Moment(anchor, new Vector3bd("0", "0", "1"), "M");
         moment.createDefaultSchematicRepresentation();
+        new LabelManipulator(moment);
         return Collections.singletonList((Load) moment);
     }
 }
