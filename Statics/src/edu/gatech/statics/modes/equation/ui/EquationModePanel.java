@@ -190,6 +190,19 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+    private void addRowCreator() {
+       final EquationUIData data = new EquationUIData();
+        data.addButton = new BButton("Add new equation...", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                
+            }
+        }, "add");
+        //data.addButton.setStyleClass("smallcircle_button");
+
+        equationButtonContainer.add(data.addButton);
+    }
+
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData data = uiMap.get(bar.getMath());
@@ -274,6 +287,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
         public EquationBar equationBar;
         public BButton checkButton;
+        public BButton addButton;
     }
 
     @Override
@@ -312,6 +326,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             EquationMath math = diagram.getWorksheet().getMath(mathName);
             addEquationRow(math);
         }
+
+        addRowCreator();
 
         stateChanged();
         performSolve(false);

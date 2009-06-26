@@ -368,7 +368,7 @@ public class FBDChecker {
             }
 
             if (userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getFrictionDirection())) {
-                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'F') {
+                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
                     logInfo("check: has the user added loads with the right names");
@@ -380,7 +380,7 @@ public class FBDChecker {
                 }
 
             } else if (userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getFrictionDirection())) {
-                if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'F') {
+                if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
                     logInfo("check: has the user added loads with the right names");
