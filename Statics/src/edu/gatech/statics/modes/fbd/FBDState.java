@@ -69,17 +69,24 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         }
 
         public void setLabel(AnchoredVector load, String symbol) {
-            load = addedLoads.get(addedLoads.indexOf(load));
-            load.setSymbol(symbol);
-            load.setKnown(false);
-            load.setDiagramValue(BigDecimal.ONE);
+            // occasionally it is possible that the load might get moved before the label is set,
+            // but the move may not be reflected in the state yet. This is an unusual circumstance,
+            // so we just ignore the rename for now.
+            if (addedLoads.contains(load)) {
+                load = addedLoads.get(addedLoads.indexOf(load));
+                load.setSymbol(symbol);
+                load.setKnown(false);
+                load.setDiagramValue(BigDecimal.ONE);
+            }
         }
 
         public void setLabel(AnchoredVector load, BigDecimal value) {
-            load = addedLoads.get(addedLoads.indexOf(load));
-            load.setDiagramValue(value);
-            load.setKnown(true);
-            load.setSymbol(null);
+            if (addedLoads.contains(load)) {
+                load = addedLoads.get(addedLoads.indexOf(load));
+                load.setDiagramValue(value);
+                load.setKnown(true);
+                load.setSymbol(null);
+            }
         }
 
         public void removeLoad(AnchoredVector oldLoad) {

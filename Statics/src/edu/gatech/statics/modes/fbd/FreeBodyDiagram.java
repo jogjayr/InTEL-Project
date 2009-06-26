@@ -8,7 +8,6 @@
  */
 package edu.gatech.statics.modes.fbd;
 
-import com.jme.input.InputHandler;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
@@ -367,7 +366,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     }
     }*/
     @Override
-    public InputHandler getInputHandler() {
+    public FBDInput getInputHandler() {
         return fbdInput;
     }
     private static final SelectionFilter filter = new SelectionFilter() {

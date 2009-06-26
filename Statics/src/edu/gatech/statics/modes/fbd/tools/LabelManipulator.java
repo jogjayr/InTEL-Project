@@ -64,7 +64,9 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
 
         Diagram diagram = StaticsApplication.getApp().getCurrentDiagram();
         if (diagram instanceof FreeBodyDiagram) {
-            ((FreeBodyDiagram) diagram).onLabel(myLoad);
+            FreeBodyDiagram fbd =  (FreeBodyDiagram) diagram;
+            fbd.onLabel(myLoad);
+            fbd.getInputHandler().cancelOrientationHandler();
         }
 
     }

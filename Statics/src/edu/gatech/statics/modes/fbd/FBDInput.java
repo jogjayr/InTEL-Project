@@ -38,6 +38,13 @@ public class FBDInput extends InputHandler {
         addAction(action, "backspace", KeyInput.KEY_BACK, false);
     }
 
+    public void cancelOrientationHandler() {
+        if (orientationHandler != null && orientationHandler.isEnabled()) {
+            orientationHandler.stop();
+            orientationHandler = null;
+        }
+    }
+
     private void performDelete() {
         if (diagram.isSolved()) {
             return;
@@ -72,10 +79,7 @@ public class FBDInput extends InputHandler {
     protected void enableOrientationManipulator(Force force) {
         //System.out.println("enabling orientation manipulator: "+force);
 
-        if (orientationHandler != null && orientationHandler.isEnabled()) {
-            orientationHandler.stop();
-            orientationHandler = null;
-        }
+        cancelOrientationHandler();
 
         orientationHandler = new OrientationHandler(diagram, this, force);
         orientationPress = System.currentTimeMillis();
@@ -86,6 +90,7 @@ public class FBDInput extends InputHandler {
     // NOTE: 
     // TODO: this is not a good means for handling releasing the orientation 
     // manipulator. We need something that is slightly more responsive.
+
     @Override
     public void update(float time) {
         super.update(time);
