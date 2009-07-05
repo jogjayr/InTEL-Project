@@ -92,6 +92,11 @@ public abstract class Exercise {
         tasks.add(task);
     }
 
+    /**
+     * Returns the live array with the tasks in it. Accessing this can allow modification
+     * or existing tasks, adding tasks, or removing them.
+     * @return
+     */
     public List<Task> getTasks() {
         return tasks;
     }

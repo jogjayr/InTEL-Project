@@ -26,11 +26,14 @@ import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -129,6 +132,25 @@ public class BridgeExercise extends TrussExercise {
         background.setModelScale(modelScale);
 
         schematic.getBackground().addRepresentation(background);
+
+        setupTasks();
+    }
+
+    private void setupTasks() {
+
+        List<String> toSolve = Arrays.asList(new String[] {
+            "Bar U3-U4",
+            "Bar U3-L3",
+            "Bar L3-L4",
+            "Bar U9-U10",
+            "Bar L9-U10",
+            "Bar L9-L10",
+        });
+        for (String name : toSolve) {
+            TwoForceMember twoForceMember = (TwoForceMember) getSchematic().getAllObjectsByName().get(name);
+            String taskName = "Solve " + twoForceMember.getName();
+            addTask(new Solve2FMTask(taskName, twoForceMember, twoForceMember.getConnector1()));
+        }
     }
 
     private void setupBar(ModelNode modelNode, String prefix1, int index1, String prefix2, int index2) {
@@ -231,7 +253,7 @@ public class BridgeExercise extends TrussExercise {
         modelRepresentations.put(modelPath, rep);
     }
 
-    private String getJointName(String prefix, int index) {
+    protected String getJointName(String prefix, int index) {
         boolean prime = false;
         if (index > 14) {
             index = 28 - index;
@@ -292,6 +314,16 @@ public class BridgeExercise extends TrussExercise {
         setupBar(modelNode, "U", 14, "L", 14);
     }
 
+    private Force createForceAtJoint(int jointID, Point point) {
+        int forceAmount = 600;
+        if (jointID == 0 || jointID == 14) {
+            forceAmount = 300;
+        }
+
+        Force force = new Force(point, Vector3bd.UNIT_Y.negate(), new BigDecimal(forceAmount));
+        return force;
+    }
+
     private void setupJoints(ModelNode modelNode, float[] lowerHeights) {
         for (int i = 0; i <= 14; i++) {
             String name;
@@ -306,12 +338,7 @@ public class BridgeExercise extends TrussExercise {
             // create upper point
             PointBody upperJoint = createJoint("U", name, xPosition, yPosition, zPosition, modelNode, i);
 
-            int forceAmount = 600;
-            if (i == 0 || i == 14) {
-                forceAmount = 300;
-            }
-
-            Force force = new Force(upperJoint.getAnchor(), Vector3bd.UNIT_Y.negate(), new BigDecimal(forceAmount));
+            Force force = createForceAtJoint(i, upperJoint.getAnchor());
             force.createDefaultSchematicRepresentation();
             force.setName("load-U" + name);
             upperJoint.addObject(force);
