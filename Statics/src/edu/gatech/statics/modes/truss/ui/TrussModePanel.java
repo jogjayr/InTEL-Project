@@ -41,6 +41,9 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 
         popup1.popup(x1, y1, true);
         popup2.popup(x2, y2, true);
+
+        popup1.setLocation(x1 - popup1.getWidth() / 2, y1 - popup1.getHeight() / 2);
+        popup2.setLocation(x2 - popup2.getWidth() / 2, y2 - popup2.getHeight() / 2);
     }
 
     public void hideSectionBoxes() {
@@ -76,15 +79,22 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
         // the line produced by sectionPerp goes through the center of the screen.
         Vector2f screenCenter = new Vector2f(
                 DisplaySystem.getDisplaySystem().getWidth() / 2,
-                DisplaySystem.getDisplaySystem().getHeight() / 2 - 100);
+                DisplaySystem.getDisplaySystem().getHeight() / 2 + 0);
 
         Vector2f intersectionPoint = calculateIntersectionPoint(
                 section.getSectionStart(), section.getSectionEnd(),
                 screenCenter, screenCenter.add(sectionPerp));
 
         float offsetDistance = 125;
+        
+        // stretch the bubble a little,
+        // horizontal looks smaller because the actual popup boxes are rectangular.
+        sectionPerp.x *= 1.5;
+
         Vector2f popupLocation1 = intersectionPoint.add(sectionPerp.mult(offsetDistance));
         Vector2f popupLocation2 = intersectionPoint.add(sectionPerp.mult(-offsetDistance));
+
+
         return new Pair<Vector2f, Vector2f>(popupLocation1, popupLocation2);
     }
 
