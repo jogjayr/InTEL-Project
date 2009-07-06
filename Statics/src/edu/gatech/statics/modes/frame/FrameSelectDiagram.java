@@ -5,6 +5,7 @@ import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectState;
 import edu.gatech.statics.modes.select.SelectState.Builder;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Background;
@@ -34,6 +35,19 @@ public class FrameSelectDiagram extends SelectDiagram {
             }
         }
         return objects;
+    }
+
+    @Override
+    public void update() {
+
+        for (SimulationObject obj : super.getBaseObjects()) {
+            if (obj instanceof ZeroForceMember) {
+                //System.out.println("************* " + obj + " " + obj.getClass());
+                obj.setDisplayGrayed(true);
+            }
+        }
+
+        super.update();
     }
 
     public FrameSelectDiagram() {

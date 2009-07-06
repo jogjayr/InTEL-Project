@@ -27,13 +27,15 @@ public class ZeroForceMember extends TwoForceMember {
 
     @Override
     public boolean isDisplayGrayed() {
+        // let the parent class know that this is grayed.
+        super.setDisplayGrayed(true);
         return true;
     }
 
     @Override
     public void setDisplayGrayed(boolean grayed) {
         // do nothing
-        //super.setDisplayGrayed(grayed);
+        super.setDisplayGrayed(true);
     }
 
     @Override

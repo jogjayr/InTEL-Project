@@ -34,7 +34,6 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
 import edu.gatech.statics.modes.select.SelectMode;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -246,9 +245,11 @@ public class StaticsApplication {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
             }
             currentDiagram.deactivate();
+            currentDiagram.clearHighlights();
         }
 
-        clearHighlights();
+        //clearHighlights();
+
         this.currentDiagram = diagram;
         currentDiagram.activate();
         if (currentDiagram.getInputHandler() != null) {
@@ -256,6 +257,9 @@ public class StaticsApplication {
         }
 
         diagram.update();
+
+        //if(diagram != null)
+        //    diagram.clearHighlights();
 
         if (iRoot != null) {
             iRoot.setDiagram(diagram);
@@ -336,18 +340,6 @@ public class StaticsApplication {
             }
 
             stateChanged = false;
-        }
-    }
-
-    private void clearHighlights() {
-        if (currentDiagram == null) {
-            return;
-        }
-
-        for (SimulationObject obj : currentDiagram.allObjects()) {
-            obj.setDisplayHighlight(false);
-            obj.setDisplaySelected(false);
-            obj.setDisplayGrayed(false);
         }
     }
 

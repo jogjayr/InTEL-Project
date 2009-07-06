@@ -54,6 +54,8 @@ public class ModelRepresentation extends Representation {
         this.modelNode = modelNode;
 
         getRelativeNode().attachChild(modelNode);
+
+        //updateMaterial();
         updateRenderState();
 
         recordRenderStates(modelNode);
@@ -105,7 +107,7 @@ public class ModelRepresentation extends Representation {
         }
     }
 
-    private void setGrayRenderStates() {
+    private void setOverridenRenderStates() {
         for (Pair<SceneElement, RenderState> pair : originalMaterialStates) {
             // clear render states in the pairs, because there may be duplicates, the contents
             // of this loop might be called several times for the same scene elements
@@ -130,19 +132,34 @@ public class ModelRepresentation extends Representation {
         // do not propagate bounds for model representations
     }
     private boolean wasGrayed = false;
+    private boolean wasSelected = false;
 
     @Override
     protected void updateMaterial() {
         super.updateMaterial();
 
+        //boolean grayedChanged = wasGrayed != getDisplayGrayed();
+        //boolean selectedChanged = wasSelected != isSelected();
+
         if (wasGrayed != getDisplayGrayed()) {
+System.out.println("updating material!");
+
             wasGrayed = getDisplayGrayed();
             if (getDisplayGrayed()) {
-                setGrayRenderStates();
+                setOverridenRenderStates();
             } else {
                 setNormalRenderStates();
             }
             setRenderStateChanged(true);
         }
+
+//        if (wasSelected != isSelected()) {
+//            wasSelected = isSelected();
+//            if (isSelected()) {
+//                setOverridenRenderStates();
+//            } else {
+//                setNormalRenderStates();
+//            }
+//        }
     }
 }

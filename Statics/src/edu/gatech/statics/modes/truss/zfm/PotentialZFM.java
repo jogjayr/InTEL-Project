@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.truss.zfm;
 
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
@@ -44,13 +45,39 @@ public class PotentialZFM extends SimulationObject implements ResolvableByName {
         return baseName;
     }
 
+    private boolean inZFMMode() {
+        return StaticsApplication.getApp().getCurrentDiagram() instanceof ZFMDiagram;
+    }
+
+    @Override
+    public boolean isDisplayGrayed() {
+        if (inZFMMode()) {
+            return super.isDisplayGrayed();
+        } else {
+            super.setDisplayGrayed(true);
+            return true;
+        }
+    }
+
+    @Override
+    public void setDisplayGrayed(boolean grayed) {
+
+        System.out.println("*** setting grayed: " + this);
+        if (inZFMMode()) {
+            super.setDisplayGrayed(grayed);
+        } else {
+            System.out.println("**** BLERG " + this);
+            super.setDisplayGrayed(true);
+        }
+    }
+
     /**
      * For persistence, do not use
      * @deprecated
      */
     @Deprecated
     public PotentialZFM(String name) {
-        if(name.startsWith("potential")) {
+        if (name.startsWith("potential")) {
             setBaseName(name.substring("potential".length()));
         }
     }

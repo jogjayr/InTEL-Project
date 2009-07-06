@@ -25,6 +25,7 @@ import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.exercise.state.StateStack;
+import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
@@ -517,6 +518,27 @@ public abstract class Diagram<StateType extends DiagramState> {
         }
         return connectors;
     }
+
+    /**
+     * clears the highlights in the objects of this diagram.
+     *
+     */
+    public void clearHighlights() {
+
+        System.out.println("**** CURRENT DIAGRAM: "+this);
+        for (SimulationObject obj : allObjects()) {
+            //System.out.println("*** "+obj+" -> "+obj.getClass());
+
+            if(obj instanceof PotentialZFM) {
+                System.out.println("**** Clearing highlight on ZFM "+obj);
+            }
+
+            obj.setDisplayHighlight(false);
+            obj.setDisplaySelected(false);
+            obj.setDisplayGrayed(false);
+        }
+    }
+
 
     /**
      * Return a list of directions that make sense as snapping options for a
