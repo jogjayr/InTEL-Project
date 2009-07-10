@@ -7,6 +7,9 @@ package viewer;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
+import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +23,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceConfiguration;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.io.File;
 import java.net.URL;
 
@@ -58,16 +62,16 @@ public class ViewerExercise extends Exercise {
         ModelNode modelNode = ModelNode.load(directoryUrl, modelUrl);
 
         modelNode.extractLights();
-        
+
         model = modelNode.getRemainder(getSchematic().getBackground());
         //model = modelNode.extractElement(getSchematic().getBackground(),
         //        "VisualSceneNode/stand/leg2");
-        
+
         getSchematic().getBackground().addRepresentation(model);
-        
+
         ViewerModePanel modePanel = (ViewerModePanel) InterfaceRoot.getInstance().getModePanel("viewer");
         modePanel.setModel(model);
-        
+
         StaticsApplication.getApp().getCurrentDiagram().invalidateNodes();
     }
 
@@ -92,6 +96,23 @@ public class ViewerExercise extends Exercise {
             @Override
             public void createModePanels() {
                 getModePanels().add(new ViewerModePanel());
+            }
+
+            @Override
+            public ViewConstraints createViewConstraints() {
+                //return super.createViewConstraints();
+                ViewConstraints constraints = new ViewConstraints();
+
+                constraints.setPositionConstraints(-30, 30, -30, 30);
+                constraints.setZoomConstraints(.5f, 50);
+                constraints.setRotationConstraints(-1.5f, 1.5f);
+
+                return constraints;
+            }
+
+            @Override
+            public NavigationWindow createNavigationWindow() {
+                return new Navigation3DWindow();
             }
 
             @Override

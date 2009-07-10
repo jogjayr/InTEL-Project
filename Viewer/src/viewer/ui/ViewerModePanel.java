@@ -15,6 +15,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import viewer.ViewerMode;
 import viewer.ui.heirarchy.HeirarchyFrame;
 
 /**
@@ -91,6 +92,7 @@ public class ViewerModePanel extends ApplicationModePanel {
 
     @Override
     public DiagramType getDiagramType() {
-        return DiagramType.getType("viewer");
+        //return DiagramType.getType("viewer");
+        return ViewerMode.instance.getDiagramType();
     }
 }

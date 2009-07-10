@@ -60,7 +60,7 @@ public class Test extends ViewerExercise {
         //"viewer/demo/", "viewer/demo/bicycle5.dae");
         //"viewer/demo/", "viewer/demo/toast.dae");
         //getSchematic().getBackground().addRepresentation(rep);
-        getDisplayConstants().setDrawScale(2f);
+        //getDisplayConstants().setDrawScale(2f);
         //setModel(rep);
 
         Point origin = new Point("origin", Vector3bd.ZERO);
