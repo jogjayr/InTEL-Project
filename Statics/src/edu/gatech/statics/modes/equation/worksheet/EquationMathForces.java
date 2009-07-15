@@ -72,7 +72,8 @@ public class EquationMathForces extends EquationMath {
 
     @Override
     protected float valueComparePrecision() {
-        return 0.22f;
+        //return 0.22f;
+        return (float) (.22 * Math.pow(10, -Unit.force.getDecimalPrecision()));
     }
 
     @Override
