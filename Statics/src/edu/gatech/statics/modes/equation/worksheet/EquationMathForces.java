@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Calvin Ashmore
  */
-public class EquationMathForces extends EquationMath {
+public class EquationMathForces extends TermEquationMath {
 
     public EquationMathForces(String name, Vector3bd observationDirection, EquationDiagram world) {
         super(name, observationDirection, world);

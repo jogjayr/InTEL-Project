@@ -24,7 +24,11 @@ import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
@@ -62,12 +66,23 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
         // add the term if the equation is not locked
         if (!activeEquation.isLocked()) {
-            // if the term has already been added, select it.
-            if (activeEquation.getMath().getState().getTerms().containsKey(load.getAnchoredVector())) {
-                activeEquation.focusOnTerm(load.getAnchoredVector());
+            if (activeEquation.getMath().getState() instanceof ArbitraryEquationMathState) {
+                // if the term has already been added, select it.
+//                if (activeEquation.getMath().getState().getTerms().containsKey(load.getAnchoredVector())) {
+//                    activeEquation.focusOnTerm(load.getAnchoredVector());
+//                } else {
+//                    // otherwise, add it.
+//                    activeEquation.performAddTerm(load.getAnchoredVector());
+//                }
+            } else if (activeEquation.getMath().getState() instanceof TermEquationMathState) {
+                // if the term has already been added, select it.
+                if (((TermEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(load.getAnchoredVector())) {
+                    activeEquation.focusOnTerm(load.getAnchoredVector());
+                } else {
+                    // otherwise, add it.
+                    activeEquation.performAddTerm(load.getAnchoredVector());
+                }
             } else {
-                // otherwise, add it.
-                activeEquation.performAddTerm(load.getAnchoredVector());
             }
         }
 
@@ -92,6 +107,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }
+        // see if anything in the worksheet is present that is not present in uiMap.keySet()
+        // then, add new bar, and equationuidata
     }
 
     public EquationBar getActiveEquation() {
@@ -141,9 +158,18 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     }
 
     private void addEquationRow(EquationMath math) {
-
+        TermEquationMath a;
         final EquationUIData data = new EquationUIData();
-        data.equationBar = new EquationBar(math, this);
+
+        if (math instanceof ArbitraryEquationMath) {
+            data.equationBar = new TermEquationBar(math, this);
+        } else if (math instanceof TermEquationMath) {
+            data.equationBar = new ArbitraryEquationBar(math, this);
+        } else {
+            throw new IllegalArgumentException("Unknown math type! " + math);
+        }
+
+
 
         data.checkButton = new BButton("check", new ActionListener() {
 
@@ -191,11 +217,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     }
 
     private void addRowCreator() {
-       final EquationUIData data = new EquationUIData();
+        final EquationUIData data = new EquationUIData();
         data.addButton = new BButton("Add new equation...", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
-                
             }
         }, "add");
         //data.addButton.setStyleClass("smallcircle_button");

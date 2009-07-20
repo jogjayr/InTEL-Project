@@ -7,33 +7,34 @@ package edu.gatech.statics.modes.equation.actions;
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 
 /**
  * Removes a term from the worksheet
  * @author Calvin Ashmore
  */
-public class RemoveTerm implements DiagramAction<EquationState> {
+public class RemoveArbitrary implements DiagramAction<EquationState> {
 
     final private String equationName;
     final private AnchoredVector load;
 
-    public RemoveTerm(String equationName, AnchoredVector load) {
+    public RemoveArbitrary(String equationName, AnchoredVector load) {
         this.equationName = equationName;
         this.load = load;
     }
 
+
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
-        EquationMathState mathState = builder.getEquationStates().get(equationName);
-        // cannot modify the state if the equation is locked
-        if (mathState.isLocked()) {
-            return oldState;
-        }
-        TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
-        mathBuilder.getTerms().remove(load);
-        builder.putEquationState(mathBuilder.build());
+//        EquationMathState mathState = builder.getEquationStates().get(equationName);
+//        // cannot modify the state if the equation is locked
+//        if (mathState.isLocked()) {
+//            return oldState;
+//        }
+//        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState)mathState);
+//        mathBuilder.getTerms().remove(load);
+//        builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
 

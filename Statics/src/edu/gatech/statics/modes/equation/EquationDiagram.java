@@ -31,8 +31,10 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
@@ -139,7 +141,15 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             boolean anythingEntered = false;
             for (EquationMathState equationMathState : getCurrentState().getEquationStates().values()) {
                 // if the state has any terms, set anythingEntered to true.
-                anythingEntered |= !equationMathState.getTerms().isEmpty();
+                if (equationMathState instanceof ArbitraryEquationMathState) {
+                    //TODO write this in!
+                } else if (equationMathState instanceof TermEquationMathState) {
+                    anythingEntered |= !((TermEquationMathState) equationMathState).getTerms().isEmpty();
+                } else {
+                    throw new IllegalArgumentException("Unknown equation math state type! " + equationMathState);
+                }
+
+
             }
 
             if (!anythingEntered) {
@@ -164,7 +174,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     protected List<SimulationObject> getBaseObjects() {
         //FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
         //Diagram fbd = Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
-        List<SimulationObject> objects =  new ArrayList<SimulationObject>(fbd.allObjects());
+        List<SimulationObject> objects = new ArrayList<SimulationObject>(fbd.allObjects());
         objects.removeAll(fbd.getAdjacentObjects());
         return objects;
     }
@@ -267,14 +277,23 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
                     // and then force the coefficients to update
                     for (EquationMathState equationMathState : eqBuilder.getEquationStates().values()) {
-                        EquationMathState.Builder mathBuilder = equationMathState.getBuilder();
-                        Map<AnchoredVector, String> terms = mathBuilder.getTerms();
-                        String coefficient = terms.remove(oldLoad);
-                        if (coefficient == null) {
-                            continue;
+
+                        if (equationMathState instanceof ArbitraryEquationMathState) {
+                            //TODO write this in!
+                        } else if (equationMathState instanceof TermEquationMathState) {
+                            TermEquationMathState.Builder mathBuilder = ((TermEquationMathState) equationMathState).getBuilder();
+                            Map<AnchoredVector, String> terms = mathBuilder.getTerms();
+                            String coefficient = terms.remove(oldLoad);
+                            if (coefficient == null) {
+                                continue;
+                            }
+                            terms.put(newLoad, coefficient);
+                            eqBuilder.getEquationStates().put(equationMathState.getName(), mathBuilder.build());
+                        } else {
+                            throw new IllegalArgumentException("Unknown equation math state type! " + equationMathState);
                         }
-                        terms.put(newLoad, coefficient);
-                        eqBuilder.getEquationStates().put(equationMathState.getName(), mathBuilder.build());
+
+
                     }
                 }
             }
@@ -425,19 +444,26 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         List<AnchoredVector> fbdLoads = fbd.getCurrentState().getAddedLoads();
 
         EquationState.Builder builder = new EquationState.Builder(getCurrentState());
-        for (EquationMathState state : builder.getEquationStates().values()) {
-            EquationMathState.Builder mathBuilder = new EquationMathState.Builder(state);
+        for (EquationMathState state : getCurrentState().getEquationStates().values()) {
 
-            // get a list of everything present in the math
-            List<AnchoredVector> toRemove = new ArrayList<AnchoredVector>(mathBuilder.getTerms().keySet());
-            toRemove.removeAll(fbdLoads); // take out everything in the fbdLoads
-            for (AnchoredVector load : toRemove) {
-                // what is left is stuff that does not belong.
-                mathBuilder.getTerms().remove(load);
+            if (state instanceof ArbitraryEquationMathState) {
+                //TODO write this in!
+            } else if (state instanceof TermEquationMathState) {
+                TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)state);
+
+                // get a list of everything present in the math
+                List<AnchoredVector> toRemove = new ArrayList<AnchoredVector>(mathBuilder.getTerms().keySet());
+                toRemove.removeAll(fbdLoads); // take out everything in the fbdLoads
+                for (AnchoredVector load : toRemove) {
+                    // what is left is stuff that does not belong.
+                    mathBuilder.getTerms().remove(load);
+                }
+
+                // update the state in the builder.
+                builder.putEquationState(mathBuilder.build());
+            } else {
+                throw new IllegalArgumentException("Unknown equation math state type! " + state);
             }
-
-            // update the state in the builder.
-            builder.putEquationState(mathBuilder.build());
         }
         // build the result.
         pushState(builder.build());
@@ -520,10 +546,16 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         EquationState.Builder builder = new EquationState.Builder(getCurrentState());
         builder.setLocked(false);
         for (EquationMathState state : builder.getEquationStates().values()) {
-            // make sure the sub-states are all unlocked.
-            EquationMathState.Builder mathBuilder = new EquationMathState.Builder(state);
-            mathBuilder.setLocked(false);
-            builder.putEquationState(mathBuilder.build());
+            if (state instanceof ArbitraryEquationMathState) {
+                //TODO write this in!
+                } else if (state instanceof TermEquationMathState) {
+                // make sure the sub-states are all unlocked.
+                TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState) state);
+                mathBuilder.setLocked(false);
+                builder.putEquationState(mathBuilder.build());
+            } else {
+                throw new IllegalArgumentException("Unknown equation math state type! " + state);
+            }
         }
         pushState(builder.build());
 
@@ -605,7 +637,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         if (worksheet == null) {
             worksheet = createWorksheet();
         }
-        EquationState.Builder builder = new EquationState.Builder(worksheet.getEquationNames());
+        EquationState.Builder builder = new EquationState.Builder(worksheet.getEquations());
         return builder.build();
     }
 
@@ -622,7 +654,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         // do not solve the connector if it is internal
-        if(!(allBodies().contains(connector.getBody1()) ^ allBodies().contains(connector.getBody2()))) {
+        if (!(allBodies().contains(connector.getBody1()) ^ allBodies().contains(connector.getBody2()))) {
             return;
         }
 

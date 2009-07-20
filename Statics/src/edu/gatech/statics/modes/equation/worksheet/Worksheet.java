@@ -13,6 +13,7 @@ import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,10 @@ public class Worksheet {
     public Worksheet(EquationDiagram diagram, int numberEquations) {
         this.diagram = diagram;
         equationSystem = new EquationSystem(numberEquations);
+    }
+
+    public Map<String, EquationMath> getEquations() {
+        return Collections.unmodifiableMap(equations);
     }
 
     public List<String> getEquationNames() {
@@ -81,31 +86,37 @@ public class Worksheet {
                     continue;
                 }
 
-                for (Map.Entry<AnchoredVector, String> entry : mathState.getTerms().entrySet()) {
-                    AnchoredVector load = entry.getKey();
-                    String coefficient = entry.getValue();
+                if (mathState instanceof TermEquationMathState) {
+                    for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState)mathState).getTerms().entrySet()) {
+                        AnchoredVector load = entry.getKey();
+                        String coefficient = entry.getValue();
 
-                    AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
+                        AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
 
-                    // work with the term's quantity
-                    Quantity q = load.getVector().getQuantity();
-                    if (q.isSymbol() && !q.isKnown()) {
-                        // the vector represented by the term is an unknown symbol
-                        equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
-                        vectorNames.put(q.getSymbolName(), q);
+                        // work with the term's quantity
+                        Quantity q = load.getVector().getQuantity();
+                        if (q.isSymbol() && !q.isKnown()) {
+                            // the vector represented by the term is an unknown symbol
+                            equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
+                            vectorNames.put(q.getSymbolName(), q);
 
-                    } else {
-                        // the vector represented by this term is a constant
-
-                        if (affineCoefficient.isSymbolic()) {
-                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
-                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getMultiplier().floatValue(), affineCoefficient.getSymbolName());
-                            Quantity measureQuantity = new Quantity(Unit.distance, affineCoefficient.getSymbolName());
-                            vectorNames.put(measureQuantity.getSymbolName(), measureQuantity);
                         } else {
-                            equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
+                            // the vector represented by this term is a constant
+
+                            if (affineCoefficient.isSymbolic()) {
+                                equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
+                                equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getMultiplier().floatValue(), affineCoefficient.getSymbolName());
+                                Quantity measureQuantity = new Quantity(Unit.distance, affineCoefficient.getSymbolName());
+                                vectorNames.put(measureQuantity.getSymbolName(), measureQuantity);
+                            } else {
+                                equationSystem.addTerm(row, (float) q.doubleValue() * affineCoefficient.getConstant().floatValue(), null);
+                            }
                         }
                     }
+                } else if (mathState instanceof ArbitraryEquationMathState) {
+                    throw new IllegalArgumentException("Arbitrary equation math states are not yet implemented in Worksheet.");
+                } else {
+                    throw new IllegalArgumentException("Unknown equation math state type! " + mathState);
                 }
 
                 // increment our row count.

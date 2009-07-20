@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author Calvin Ashmore
  */
-public class EquationMathMoments extends EquationMath {
+public class EquationMathMoments extends TermEquationMath {
 
     /** Creates a new instance of EquationMoments */
     public EquationMathMoments(String name, Vector3bd observationDirection, EquationDiagram world) {

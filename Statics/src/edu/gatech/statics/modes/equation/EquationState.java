@@ -5,11 +5,17 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.exercise.state.DiagramState;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,15 +89,40 @@ final public class EquationState implements DiagramState<EquationDiagram> {
          * come from the equation worksheet.
          * @param equationNames
          */
-        public Builder(List<String> equationNames) {
+        public Builder(Map<String, EquationMath> equations) {
             equationStates = new HashMap<String, EquationMathState>();
-            for (String name : equationNames) {
-                EquationMathState mathState = new EquationMathState.Builder(name).build();
+            for (Map.Entry<String, EquationMath> entry : equations.entrySet()) {
+                String name = entry.getKey();
+                EquationMath math = entry.getValue();
+
+                EquationMathState mathState;
+
+                if(math instanceof EquationMathForces) {
+                    mathState = new TermEquationMathState.Builder(name).build();
+                } else if(math instanceof EquationMathMoments) {
+                    // can use separate builder for moment equations
+                    mathState = new TermEquationMathState.Builder(name).build();
+                } else if(math instanceof ArbitraryEquationMath) {
+                    mathState = new ArbitraryEquationMathState.Builder(name).build();
+                } else {
+                    throw new IllegalArgumentException("Unknown equation math! "+math);
+                }
+
                 equationStates.put(name, mathState);
             }
+
             locked = false;
-            momentPoint = null;
+            momentPoint = null; // legacy
         }
+//        public Builder(List<String> equationNames) {
+//            equationStates = new HashMap<String, EquationMathState>();
+//            for (String name : equationNames) {
+//                EquationMathState mathState = new EquationMathState.Builder(name).build();
+//                equationStates.put(name, mathState);
+//            }
+//            locked = false;
+//            momentPoint = null;
+//        }
 
         public Builder(EquationState state) {
             this.equationStates = new HashMap<String, EquationMathState>(state.getEquationStates());

@@ -6,7 +6,9 @@ package edu.gatech.statics.modes.equation.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 
 /**
  *
@@ -25,9 +27,17 @@ public class LockEquation implements DiagramAction<EquationState> {
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);
-        EquationMathState.Builder mathBuilder = new EquationMathState.Builder(mathState);
-        mathBuilder.setLocked(locked);
-        builder.putEquationState(mathBuilder.build());
+        if (mathState instanceof TermEquationMathState) {
+            TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
+            mathBuilder.setLocked(locked);
+            builder.putEquationState(mathBuilder.build());
+        } else if (mathState instanceof ArbitraryEquationMathState) {
+            ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState)mathState);
+            mathBuilder.setLocked(locked);
+            builder.putEquationState(mathBuilder.build());
+        } else {
+            throw new IllegalArgumentException("Something really bad happened while trying to lock an equation! "+mathState);
+        }
 
         //boolean allLocked = true;
         //for(EquationMathState state : builder.getEquationStates().values()) {
