@@ -203,7 +203,8 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     /**
      * Remove all of the highlights in the bodies.
      */
-    private void clearHighlights() {
+    @Override
+    public void clearHighlights() {
         for (Body body : allBodies()) {
             body.setDisplayHighlight(false);
             body.setDisplayGrayed(false);
