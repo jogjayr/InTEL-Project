@@ -46,24 +46,10 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 public class ArbitraryEquationBar extends EquationBar {
-
-    private EquationModePanel parent;
-    private EquationMath math;
     private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, ArbitraryEquationBar.TermBox>();
     //private BLabel sumOperand;
-    private BButton momentButton; // present only for moment math, pressing this sets the moment point
-    private boolean locked = false;
-    private static final ColorRGBA regularBorderColor = new ColorRGBA(0, 0, 0, 0f);
-    private static final ColorRGBA highlightBorderColor = new ColorRGBA(.5f, .5f, 1, 1f);
-    private static final String symbolColor = "ff0000";
-
-    public EquationMath getMath() {
-        return math;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
+    private BButton leftButton; // present only for moment math, pressing this sets the moment point
+    private BButton rightButton;
 
     /**
      * Removes all of the contents of the equation bar. This should be called
@@ -86,9 +72,17 @@ public class ArbitraryEquationBar extends EquationBar {
         ImageIcon icon;
 
         try {
-            // add sum icon
+            // add right button
             BContainer startContainer = makeStartContainer();
             add(startContainer);
+            rightButton = new BButton("?", new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) {
+                    //TODO this stuff
+                }
+            }, "right");
+
+            add(rightButton);
 
             // add = 0 icon
             icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
@@ -103,31 +97,15 @@ public class ArbitraryEquationBar extends EquationBar {
     private BContainer makeStartContainer() throws IOException {
         BContainer startContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
 
-        ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/sum.png")));
-        startContainer.add(new BLabel(icon));
+        leftButton = new BButton("?", new ActionListener() {
 
-        if (math instanceof EquationMathMoments) {
-            // we do special handling for moment math
-            startContainer.add(new BLabel("M["));
+            public void actionPerformed(ActionEvent event) {
+                //TODO this stuff
+            }
+        }, "left");
 
-            Point momentPoint = math.getDiagram().getMomentPoint();
-            String pointName = momentPoint == null ? "?" : momentPoint.getName();
-
-            momentButton = new BButton(pointName, new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram());
-                    selector.activate();
-                }
-            }, "momentpoint");
-
-            startContainer.add(momentButton);
-            startContainer.add(new BLabel("]"));
-        } else {
-            startContainer.add(new BLabel(math.getName()));
-        }
-
-        icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equals.png")));
+        startContainer.add(leftButton);
+        ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equals.png")));
         startContainer.add(new BLabel(icon));
 
         return startContainer;
@@ -291,14 +269,6 @@ public class ArbitraryEquationBar extends EquationBar {
      * (performAddTerm and performRemoveTerm) are called.
      */
     protected void stateChanged() {
-
-        // update the moment point button
-        if (momentButton != null) {
-            Point momentPoint = parent.getDiagram().getMomentPoint();
-            String momentName = momentPoint == null ? "?" : momentPoint.getName();
-            momentButton.setText(momentName);
-        }
-
         // go through terms that are present in the UI and mark the ones to remove
         List<TermBox> toRemove = new ArrayList<TermBox>();
 
@@ -313,8 +283,8 @@ public class ArbitraryEquationBar extends EquationBar {
             removeBox(box);
         }
 
-        // go through terms present in the state to add
-        // make sure that the values are correct, as well.
+    // go through terms present in the state to add
+    // make sure that the values are correct, as well.
 //        for (Map.Entry<AnchoredVector, String> entry : getMath().getState().getTerms().entrySet()) {
 //            TermBox box = terms.get(entry.getKey());
 //            if (box == null) {
@@ -353,8 +323,9 @@ public class ArbitraryEquationBar extends EquationBar {
      */
     public void focusOnTerm(AnchoredVector load) {
         TermBox box = terms.get(load);
-        if(box == null)
+        if (box == null) {
             return;
+        }
         box.coefficient.requestFocus();
     }
 
@@ -363,10 +334,6 @@ public class ArbitraryEquationBar extends EquationBar {
             box.coefficient.setEnabled(false);
         }
         locked = true;
-
-        if (momentButton != null) {
-            momentButton.setEnabled(false);        // clear the current tool
-        }
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
@@ -375,10 +342,6 @@ public class ArbitraryEquationBar extends EquationBar {
             box.coefficient.setEnabled(true);
         }
         locked = false;
-
-        if (momentButton != null) {
-            momentButton.setEnabled(true);        // clear the current tool
-        }
         StaticsApplication.getApp().setCurrentTool(null);
     }
 

@@ -194,6 +194,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * @return
      */
     protected Worksheet createWorksheet() {
+        //************
+                // Should use some non-worksheet class here?
+                // this should return an object that contains the initial equation list.
+                // this will be used to create the initial state.
         return new Worksheet2D(this);
     }
 

@@ -12,6 +12,7 @@ package edu.gatech.statics.modes.equation.worksheet;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
 import java.math.BigDecimal;
@@ -27,14 +28,14 @@ import java.util.logging.Logger;
  * contributions and changes to the terms.
  * @author Calvin Ashmore
  */
-abstract public class ArbitraryEquationMath extends EquationMath{
+public class ArbitraryEquationMath extends EquationMath {
 
     //protected static final float TEST_ACCURACY = .022f;
     private final String name;
     private final EquationDiagram diagram;
 
     /** Creates a new instance of Equation */
-    public ArbitraryEquationMath(String name, Vector3bd observationDirection, EquationDiagram world) {
+    public ArbitraryEquationMath(String name, EquationDiagram world) {
         super(name, world);
         this.name = name;
         this.diagram = world;
@@ -43,7 +44,7 @@ abstract public class ArbitraryEquationMath extends EquationMath{
     public boolean check() {
 
         // get the state
-        ArbitraryEquationMathState state = (ArbitraryEquationMathState)getState();
+        ArbitraryEquationMathState state = (ArbitraryEquationMathState) getState();
 
         // first, make sure all of the necessary terms are added to the equation.
         //List<Load> allLoads = getDiagramLoads();
@@ -68,7 +69,7 @@ abstract public class ArbitraryEquationMath extends EquationMath{
 //                return false;
 //            }
 //        }
-        
+
         // lock the math.
         LockEquation lockEquationAction = new LockEquation(name, true);
         diagram.performAction(lockEquationAction);
@@ -84,7 +85,13 @@ abstract public class ArbitraryEquationMath extends EquationMath{
      * may use a fixed value.
      * @return
      */
-    abstract protected float valueComparePrecision();
+    protected float valueComparePrecision() {
+        return (float) (.22 * Math.pow(10, -Unit.force.getDecimalPrecision()));
+    }
+
+    protected TermError checkTerm(AnchoredVector load, String coefficient) {
+        return TermError.missedALoad;
+    }
 
     /**
      * Compares the two values and returns: TermError.none if the values are equal,

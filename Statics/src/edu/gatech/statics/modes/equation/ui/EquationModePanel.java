@@ -107,8 +107,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }
-        // see if anything in the worksheet is present that is not present in uiMap.keySet()
-        // then, add new bar, and equationuidata
+    // see if anything in the worksheet is present that is not present in uiMap.keySet()
+    // then, add new bar, and equationuidata
     }
 
     public EquationBar getActiveEquation() {
@@ -127,16 +127,16 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public EquationModePanel() {
         super();
-
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
-        add(fullEquationContainer, BorderLayout.CENTER);
+        //add(fullEquationContainer, BorderLayout.CENTER);
 
         GroupLayout equationLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         equationLayout.setOffAxisJustification(GroupLayout.LEFT);
         equationBarContainer = new BContainer(equationLayout);
 
-        equationScrollPane = new BScrollPane(equationBarContainer, false, true);
+        equationScrollPane = new BScrollPane(equationBarContainer, true, true);
         equationScrollPane.setShowScrollbarAlways(false);
+        //equationScrollPane.setSize(equationScrollPane.getWidth(), 9000);
         fullEquationContainer.add(equationScrollPane, BorderLayout.CENTER);
 
 
@@ -147,10 +147,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         // will contain the solution to the equations.
         GroupLayout solutionLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         solutionLayout.setOffAxisJustification(GroupLayout.LEFT);
-        solutionContainer = new BContainer(solutionLayout);
+        BScrollPane newPane = new BScrollPane(fullEquationContainer, true, false);
+        newPane.setShowScrollbarAlways(false);
+        add(newPane, BorderLayout.CENTER);
 
-        add(solutionContainer, BorderLayout.EAST);
+        solutionContainer = new BContainer(solutionLayout);
         solutionContainer.setPreferredSize(200, -1);
+        add(solutionContainer, BorderLayout.EAST);
     }
 
     void refreshRows() {
@@ -158,13 +161,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     }
 
     private void addEquationRow(EquationMath math) {
-        TermEquationMath a;
         final EquationUIData data = new EquationUIData();
 
-        if (math instanceof ArbitraryEquationMath) {
+        if (math instanceof TermEquationMath) {
             data.equationBar = new TermEquationBar(math, this);
-        } else if (math instanceof TermEquationMath) {
-            data.equationBar = new ArbitraryEquationBar(math, this);
         } else {
             throw new IllegalArgumentException("Unknown math type! " + math);
         }
@@ -216,16 +216,76 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
-    private void addRowCreator() {
+    private void addArbitraryEquationRow(EquationMath math) {
         final EquationUIData data = new EquationUIData();
-        data.addButton = new BButton("Add new equation...", new ActionListener() {
+
+        if (math instanceof ArbitraryEquationMath) {
+            data.equationBar = new ArbitraryEquationBar(math, this);
+        } else {
+            throw new IllegalArgumentException("Unknown math type! " + math);
+        }
+
+        data.checkButton = new BButton("check", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
+                check(data.equationBar);
+            }
+        }, "check");
+        data.checkButton.setStyleClass("smallcircle_button");
+
+        data.equationBar.addListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent event) {
+                setActiveEquation(data.equationBar);
+            }
+        });
+
+        equationBarContainer.add(data.equationBar);
+        equationButtonContainer.add(data.checkButton);
+//        equationScrollPane.setSize(equationScrollPane.getWidth(), equationBarContainer.getHeight());
+//        refreshRows();
+
+        uiMap.put(math, data);
+
+//        if(math.isLocked()) {
+//            data.equationBar.setLocked();
+//            setCheckIcon(data.equationBar);
+//        }
+
+        if (getDiagram().getBodySubset().getBodies().size() == 1) {
+            for (Body b : getDiagram().getBodySubset().getBodies()) {
+                if (b instanceof TwoForceMember) {
+//                    getDiagram().equationSolved();
+
+                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
+                    getDiagram().performAction(lockEquationAction);
+
+                    data.equationBar.setLocked();
+                    setCheckIcon(data.equationBar);
+                }
+            }
+        }
+
+        if (uiMap.size() == 1) {
+            setActiveEquation(data.equationBar);
+        }
+    }
+
+    private void addRowCreator() {
+        final EquationUIData data = new EquationUIData();
+        data.addButton = new BButton("Add new equation", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                ArbitraryEquationMath math = new ArbitraryEquationMath("arbitrary", getDiagram());
+                equationBarContainer.remove(data.addButton);
+                addArbitraryEquationRow(math);
+                addRowCreator();
             }
         }, "add");
         //data.addButton.setStyleClass("smallcircle_button");
 
-        equationButtonContainer.add(data.addButton);
+        equationBarContainer.add(data.addButton);
     }
 
     private void setCheckIcon(EquationBar bar) {

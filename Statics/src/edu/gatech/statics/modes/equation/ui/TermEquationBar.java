@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.equation.ui;
 
 import com.jme.math.Vector2f;
-import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
@@ -32,6 +31,7 @@ import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;
@@ -47,23 +47,9 @@ import java.util.Map;
  */
 public class TermEquationBar extends EquationBar {
 
-    private EquationModePanel parent;
-    private EquationMath math;
     private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, TermEquationBar.TermBox>();
     //private BLabel sumOperand;
     private BButton momentButton; // present only for moment math, pressing this sets the moment point
-    private boolean locked = false;
-    private static final ColorRGBA regularBorderColor = new ColorRGBA(0, 0, 0, 0f);
-    private static final ColorRGBA highlightBorderColor = new ColorRGBA(.5f, .5f, 1, 1f);
-    private static final String symbolColor = "ff0000";
-
-    public EquationMath getMath() {
-        return math;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
 
     /**
      * Removes all of the contents of the equation bar. This should be called
@@ -270,6 +256,7 @@ public class TermEquationBar extends EquationBar {
      * removeBox, which is called by this method.
      * @param source
      */
+    @Override
     protected void performRemoveTerm(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
@@ -280,6 +267,7 @@ public class TermEquationBar extends EquationBar {
      * addBox, which is called by this method.
      * @param source
      */
+    @Override
     protected void performAddTerm(AnchoredVector source) {
         AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
@@ -315,7 +303,8 @@ public class TermEquationBar extends EquationBar {
 
         // go through terms present in the state to add
         // make sure that the values are correct, as well.
-        for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState)getMath().getState()).getTerms().entrySet()) {
+        EquationMathState state = getMath().getState();
+        for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState)state).getTerms().entrySet()) {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box

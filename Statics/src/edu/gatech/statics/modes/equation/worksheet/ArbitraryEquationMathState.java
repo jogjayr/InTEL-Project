@@ -8,9 +8,10 @@ package edu.gatech.statics.modes.equation.worksheet;
  * 
  * @author Calvin Ashmore
  */
-final public class ArbitraryEquationMathState extends EquationMathState{
+final public class ArbitraryEquationMathState extends EquationMathState {
 
- 
+    final private String name;
+    final private boolean locked;
     final private EquationNode leftSide;
     final private EquationNode rightSide;
 
@@ -22,8 +23,20 @@ final public class ArbitraryEquationMathState extends EquationMathState{
         return rightSide;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
     private ArbitraryEquationMathState(Builder builder) {
-        super(builder.getName(), builder.isLocked());
+        //super(builder.getName(), builder.isLocked());
+        name = builder.getName();
+        locked = builder.isLocked();
         leftSide = builder.getLeftSide();
         rightSide = builder.getRightSide();
     }
@@ -109,7 +122,7 @@ final public class ArbitraryEquationMathState extends EquationMathState{
             return false;
         }
         final ArbitraryEquationMathState other = (ArbitraryEquationMathState) obj;
-        if(!super.equals(other)){
+        if (!super.equals(other)) {
             // locked or name are different
             return false;
         }

@@ -16,17 +16,31 @@ import java.util.Map;
 final public class TermEquationMathState extends EquationMathState {
 
     final private String name;
-    final private Map<AnchoredVector, String> terms;
     final private boolean locked;
+    final private Map<AnchoredVector, String> terms;
 
     public Map<AnchoredVector, String> getTerms() {
         return terms;
     }
 
     private TermEquationMathState(Builder builder) {
+        if (builder.getName() == null || builder.getName().equals("")) {
+            throw new IllegalArgumentException("Equation state must have a name!");
+        }
+
         name = builder.getName();
         terms = Collections.unmodifiableMap(builder.getTerms());
         locked = builder.isLocked();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
     }
 
     static public class Builder implements edu.gatech.statics.util.Builder<TermEquationMathState> {
