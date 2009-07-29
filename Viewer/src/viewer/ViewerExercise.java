@@ -7,7 +7,8 @@ package viewer;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
+import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.net.MalformedURLException;
@@ -94,6 +95,12 @@ public class ViewerExercise extends Exercise {
         AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
 
             @Override
+            public Sidebar createSidebar() {
+                Sidebar sidebar = new Sidebar();
+                return sidebar;
+            }
+
+            @Override
             public void createModePanels() {
                 getModePanels().add(new ViewerModePanel());
             }
@@ -114,11 +121,10 @@ public class ViewerExercise extends Exercise {
             public NavigationWindow createNavigationWindow() {
                 return new Navigation3DWindow();
             }
-
-            @Override
-            public void createPopupWindows() {
-                // pass, do not create any popups.
-            }
+//            @Override
+//            public void createPopupWindows() {
+//                // pass, do not create any popups.
+//            }
         };
         return ic;
     }
@@ -131,5 +137,17 @@ public class ViewerExercise extends Exercise {
     @Override
     public boolean supportsType(DiagramType type) {
         return type == DiagramType.getType("viewer");
+    }
+
+    @Override
+    public Description getDescription() {
+        Description desc = new Description();
+        return desc;
+    }
+
+    @Override
+    public void loadDescriptionMode() {
+        // load the starting mode instead of the description.
+        loadStartingMode();
     }
 }

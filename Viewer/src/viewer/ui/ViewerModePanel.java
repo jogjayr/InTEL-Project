@@ -31,9 +31,14 @@ public class ViewerModePanel extends ApplicationModePanel {
         heirarchyFrame.setRoot(rep);
     }
 
+    @Override
+    public boolean isUndoVisible() {
+        return false;
+    }
+
     public ViewerModePanel() {
 
-        getTitleLabel().setText("Viewer");
+        //getTitleLabel().setText("Viewer");
 
         BContainer mainContainer = new BContainer(new BorderLayout());
 
@@ -60,10 +65,10 @@ public class ViewerModePanel extends ApplicationModePanel {
         heirarchyFrame.pack();
         heirarchyFrame.setVisible(true);
 
-    /*JFrame frame = new JFrame();
-    frame.add(new JLabel("EEK!"));
-    frame.pack();
-    frame.setVisible(true);*/
+        /*JFrame frame = new JFrame();
+        frame.add(new JLabel("EEK!"));
+        frame.pack();
+        frame.setVisible(true);*/
     }
 
     private String makeSpacerString(int spaces) {
@@ -85,11 +90,10 @@ public class ViewerModePanel extends ApplicationModePanel {
         }
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        return new ApplicationTab("Viewer");
-    }
-
+//    @Override
+//    protected ApplicationTab createTab() {
+//        return new ApplicationTab("Viewer");
+//    }
     @Override
     public DiagramType getDiagramType() {
         //return DiagramType.getType("viewer");

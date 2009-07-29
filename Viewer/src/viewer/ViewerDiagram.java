@@ -43,4 +43,9 @@ public class ViewerDiagram extends Diagram<ViewerState> {
     @Override
     public void completed() {
     }
+
+    @Override
+    public String getDescriptionText() {
+        return "Viewer";
+    }
 }
