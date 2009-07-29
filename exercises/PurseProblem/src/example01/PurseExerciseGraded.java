@@ -40,18 +40,18 @@ public class PurseExerciseGraded extends PurseExercise {
     public void initExercise() {
         super.initExercise();
         
-        float forearmWeight = (Float)getState().getParameter("forearmWeight");
-        float purseWeight = (Float)getState().getParameter("purseWeight");
-
-        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
-        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
-
-        setDescription(
-                "Here is a simplified model of the human arm. " +
-                "Please solve for the reactions at each of the points: B, C, and E. " +
-                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
-                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
-                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+//        float forearmWeight = (Float)getState().getParameter("forearmWeight");
+//        float purseWeight = (Float)getState().getParameter("purseWeight");
+//
+//        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+//        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+//
+//        setDescription(
+//                "Here is a simplified model of the human arm. " +
+//                "Please solve for the reactions at each of the points: B, C, and E. " +
+//                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
+//                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
+//                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
     }
 
     @Override

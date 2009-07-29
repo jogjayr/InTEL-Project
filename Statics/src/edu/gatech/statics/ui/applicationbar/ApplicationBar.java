@@ -7,22 +7,17 @@ package edu.gatech.statics.ui.applicationbar;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.text.HTMLView;
-import edu.gatech.statics.Mode;
-import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.DiagramKey;
-import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.exercise.Exercise;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.exercise.persistence.StateIO;
+import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.ui.InterfaceRoot;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import edu.gatech.statics.ui.windows.feedback.FeedbackWindow;
 
 /**
  *
@@ -30,103 +25,152 @@ import java.util.List;
  */
 public class ApplicationBar extends BWindow {
 
-    private static final int ADVICE_BOX_SIZE = 200;
-    public static final int APPLICATION_BAR_HEIGHT = 200;
-    private List<ApplicationTab> tabs = new ArrayList<ApplicationTab>();
-    private BContainer tabBar;
+    //private static final int ADVICE_BOX_SIZE = 200;
+    //public static final int APPLICATION_BAR_HEIGHT = 200;
+    //private List<ApplicationTab> tabs = new ArrayList<ApplicationTab>();
+    //private BContainer tabBar;
     private BContainer mainBar;
     private BContainer diagramBox;
-    private HTMLView adviceBox;
+    private BContainer undoRedoBox;
+    //private HTMLView adviceBox;
     private ApplicationModePanel modePanel;
-    private BButton undoButton,  redoButton,  saveButton,  loadButton;
+    private BButton undoButton, redoButton, saveButton, loadButton;
+    private BLabel feedbackLabel;
+    private BContainer sideBox;
+
+    public void setUIFeedback(String feedback) {
+        feedbackLabel.setText(feedback);
+        //updateSize();
+    }
 
     // ***
     // DO WE NEED A TITLE BAR, ONE WITH TEXT TO SHOW THE DIAGRAM NAME???
     // MAYBE MOVE THESE INTO ApplicationModePanel
-    public void setAdvice(String advice) {
-        adviceBox.setContents(advice);
-    }
-
+//    public void setAdvice(String advice) {
+//        adviceBox.setContents(advice);
+//    }
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }
 
-    protected void disableAllTabs() {
-        for (ApplicationTab tab : tabs) {
-            tab.setTabEnabled(false);
-        }
-    }
-
-    public void enableTab(Mode mode, boolean enabled) {
-        ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModeName());
-        panel.getTab().setTabEnabled(enabled);
-    }
-
+//    protected void disableAllTabs() {
+//        for (ApplicationTab tab : tabs) {
+//            tab.setTabEnabled(false);
+//        }
+//    }
+//    public void enableTab(Mode mode, boolean enabled) {
+//        ApplicationModePanel panel = InterfaceRoot.getInstance().getModePanel(mode.getModeName());
+//        panel.getTab().setTabEnabled(enabled);
+//    }
     /**
      * Sets a mode panel to be current. This is called after the new diagram is set.
+     * Resizing occurs here.
      * @param modePanel
      */
     public void setModePanel(ApplicationModePanel modePanel) {
         if (this.modePanel != null) {
-            this.modePanel.getTab().setActive(false);
+            //this.modePanel.getTab().setActive(false);
             this.modePanel.deactivate();
             mainBar.remove(this.modePanel);
         }
+
         this.modePanel = modePanel;
         if (modePanel != null) {
             mainBar.add(modePanel, BorderLayout.CENTER);
 
             modePanel.activate();
-            modePanel.getTab().setActive(true);
+            //modePanel.getTab().setActive(true);
+            //enableTabs();
 
-            enableTabs();
+            boolean showUndo = modePanel.isUndoVisible();
+            //undoRedoBox.setVisible(showUndo);
+            if (showUndo) {
+                if (!undoRedoBox.isAdded()) {
+                    sideBox.add(undoRedoBox, BorderLayout.CENTER);
+                }
+            } else {
+                sideBox.remove(undoRedoBox);
+            }
+
+            setVisible(true);
+        } else {
+            //undoRedoBox.setVisible(false);
+            setVisible(false);
         }
+
+        updateSize();
+    }
+
+    public void updateSize() {
+        // this is where a size change animation would occur
+        //pack();
+        Dimension preferredSize = getPreferredSize(-1, -1);
+        int screenWidth = DisplaySystem.getDisplaySystem().getWidth();
+
+        int averageX = (screenWidth - preferredSize.width) / 2;
+
+        // special treatment for the equation mode panel.
+        if (modePanel instanceof EquationModePanel) {
+            averageX = 0;
+            preferredSize.width = DisplaySystem.getDisplaySystem().getWidth() - FeedbackWindow.WIDTH;
+        }
+
+        setBounds(
+                averageX, 0,
+                preferredSize.width, preferredSize.height);
+
+        // let the application bar know that this has been resized.
+        InterfaceRoot.getInstance().appBarResized();
     }
 
     /**
      * This enables the tabs that should be active, given the current diagram.
      */
-    protected void enableTabs() {
-
-        // this is the current diagram, the most up-to-date one.
-        DiagramKey key = StaticsApplication.getApp().getCurrentDiagram().getKey();
-
-        // go through all types
-        for (DiagramType type : DiagramType.allTypes()) {
-
-            // is this type enabled for our key?
-            // if not, continue.
-            if (Exercise.getExercise().getDiagram(key, type) == null) {
-                continue;            // go through the types of mode panels
-            // and pick out the one that matches the type
-            }
-            for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
-
-                if (panel.getDiagramType() == type) {
-                    panel.getTab().setTabEnabled(true);
-                }
-            }
-        }
-    }
-
+//    protected void enableTabs() {
+//
+//        // this is the current diagram, the most up-to-date one.
+//        DiagramKey key = StaticsApplication.getApp().getCurrentDiagram().getKey();
+//
+//        // go through all types
+//        for (DiagramType type : DiagramType.allTypes()) {
+//
+//            // is this type enabled for our key?
+//            // if not, continue.
+//            if (Exercise.getExercise().getDiagram(key, type) == null) {
+//                continue;            // go through the types of mode panels
+//            // and pick out the one that matches the type
+//            }
+//            for (ApplicationModePanel panel : InterfaceRoot.getInstance().getAllModePanels()) {
+//
+//                if (panel.getDiagramType() == type) {
+//                    panel.getTab().setTabEnabled(true);
+//                }
+//            }
+//        }
+//    }
     public ApplicationBar() {
         super(InterfaceRoot.getInstance().getStyle(), new BorderLayout());
 
         //tabBar = createTabBar();
-        tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-        add(tabBar, BorderLayout.NORTH);
+//        tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
+//        add(tabBar, BorderLayout.NORTH);
 
         mainBar = new BContainer(new BorderLayout(5, 0));
         add(mainBar, BorderLayout.CENTER);
 
-        BContainer sideBox = new BContainer(new BorderLayout());
+        sideBox = new BContainer(new BorderLayout());
         mainBar.add(sideBox, BorderLayout.EAST);
 
-        adviceBox = createAdviceBox();
-        sideBox.add(adviceBox, BorderLayout.EAST);
+//        adviceBox = createAdviceBox();
+//        sideBox.add(adviceBox, BorderLayout.EAST);
 
-        BContainer undoRedoBox = createUndoRedoBox();
+        undoRedoBox = createUndoRedoBox();
         sideBox.add(undoRedoBox, BorderLayout.CENTER);
+
+        feedbackLabel = new BLabel("toast");
+        add(feedbackLabel, BorderLayout.NORTH);
+        // set the size on the feedback so that it is appropriately sized
+        feedbackLabel.setPreferredSize(-1, 32);
 
         //BContainer saveLoadBox = createSaveLoadBox();
         //sideBox.add(saveLoadBox, BorderLayout.WEST);
@@ -136,7 +180,8 @@ public class ApplicationBar extends BWindow {
 
         mainBar.setStyleClass("application_bar");
 
-        setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);
+        // NO PREFERRED SIZE NOW
+        //setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);
     }
 
     private BContainer createDiagramBox() {
@@ -214,29 +259,27 @@ public class ApplicationBar extends BWindow {
             }
         }
     }
-
-    private HTMLView createAdviceBox() {
-        adviceBox = new HTMLView();
-        adviceBox.setContents("Help is described here");
-        adviceBox.setPreferredSize(ADVICE_BOX_SIZE, ADVICE_BOX_SIZE);
-        adviceBox.setStyleClass("advice_box");
-        return adviceBox;
-    }
-
-    public void setTabs(List<ApplicationModePanel> panels) {
-        BContainer spacer = new BContainer();
-        spacer.setPreferredSize(3, -1);
-        tabBar.add(spacer);
-
-        for (ApplicationModePanel panel : panels) {
-
-            ApplicationTab tab = panel.getTab();
-            tabBar.add(tab);
-            tabs.add(tab);
-        }
-    }
-
-    public void removeTabs() {
-        tabBar.removeAll();
-    }
+//    private HTMLView createAdviceBox() {
+//        adviceBox = new HTMLView();
+//        adviceBox.setContents("Help is described here");
+//        adviceBox.setPreferredSize(ADVICE_BOX_SIZE, ADVICE_BOX_SIZE);
+//        adviceBox.setStyleClass("advice_box");
+//        return adviceBox;
+//    }
+//    public void setTabs(List<ApplicationModePanel> panels) {
+//        BContainer spacer = new BContainer();
+//        spacer.setPreferredSize(3, -1);
+//        tabBar.add(spacer);
+//
+//        for (ApplicationModePanel panel : panels) {
+//
+//            ApplicationTab tab = panel.getTab();
+//            tabBar.add(tab);
+//            tabs.add(tab);
+//        }
+//    }
+//
+//    public void removeTabs() {
+//        tabBar.removeAll();
+//    }
 }

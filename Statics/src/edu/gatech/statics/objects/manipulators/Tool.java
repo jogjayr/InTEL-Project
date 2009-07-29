@@ -84,7 +84,7 @@ abstract public class Tool extends InputHandler {
         setEnabled(false);
         active = false;
         StaticsApplication.getApp().setCurrentTool(null);
-        StaticsApplication.getApp().resetAdvice();
+        StaticsApplication.getApp().resetUIFeedback();
         
         //StaticsApplication.getApp().getInput().removeFromAttachedHandlers(this);
         onFinish();

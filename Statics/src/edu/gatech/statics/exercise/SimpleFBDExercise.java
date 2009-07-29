@@ -5,6 +5,7 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.modes.description.DescriptionMode;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
@@ -20,7 +21,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
  *
  * @author Calvin Ashmore
  */
-public class SimpleFBDExercise extends OrdinaryExercise {
+public abstract class SimpleFBDExercise extends OrdinaryExercise {
 
     public SimpleFBDExercise(Schematic world) {
         super(world);
@@ -52,7 +53,9 @@ public class SimpleFBDExercise extends OrdinaryExercise {
      */
     @Override
     public boolean supportsType(DiagramType type) {
-        if (type == SelectMode.instance.getDiagramType()) {
+        if (type == DescriptionMode.instance.getDiagramType()) {
+            return true;
+        } else if (type == SelectMode.instance.getDiagramType()) {
             return true;
         } else if (type == FBDMode.instance.getDiagramType()) {
             return true;

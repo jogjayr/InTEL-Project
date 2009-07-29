@@ -65,7 +65,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.add(load);
         temporaryLoads.add(load);
         updateDiagram();
-    //System.out.println("****** ADDING TEMPORARY LOAD");
+        //System.out.println("****** ADDING TEMPORARY LOAD");
     }
 
     /**
@@ -76,7 +76,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         loadObjects.remove(load);
         temporaryLoads.remove(load);
         updateDiagram();
-    //System.out.println("****** REMOVING TEMPORARY LOAD");
+        //System.out.println("****** REMOVING TEMPORARY LOAD");
     }
 
     /**
@@ -267,9 +267,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             }
 
             String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
-            StaticsApplication.getApp().setAdvice(advice);
-            StaticsApplication.getApp().setDefaultAdvice(advice);
-            StaticsApplication.getApp().resetAdvice();
+            StaticsApplication.getApp().setStaticsFeedback(advice);
+            StaticsApplication.getApp().setDefaultUIFeedback(advice);
+            StaticsApplication.getApp().resetUIFeedback();
         } else {
         }
     }
@@ -458,7 +458,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     @Override
     public void render(Renderer r) {
         super.render(r);
-    //renderIcon();
+        //renderIcon();
     }
 
     @Override
@@ -469,9 +469,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             adjacent.setDisplayGrayed(true);
         }
 
-        StaticsApplication.getApp().setDefaultAdvice(
+        StaticsApplication.getApp().setDefaultUIFeedback(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_welcome"));
-        StaticsApplication.getApp().resetAdvice();
+        StaticsApplication.getApp().resetUIFeedback();
 
         if (getCurrentState().isLocked()) {
             setSolved(true);
@@ -490,5 +490,10 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     @Override
     protected FBDState createInitialState() {
         return new FBDState.Builder().build();
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Add loads: " + getKey();
     }
 }

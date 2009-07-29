@@ -38,7 +38,7 @@ public class EquationMathMoments extends TermEquationMath {
             Logger.getLogger("Statics").info("check: Moment point is not set!");
             Logger.getLogger("Statics").info("check: FAILED");
 
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_moment_point_not_set");
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_moment_point_not_set");
             return false;
         }
 
@@ -169,32 +169,32 @@ public class EquationMathMoments extends TermEquationMath {
         if (error == TermError.shouldNotBeSymbolic) {
             Logger.getLogger("Statics").info("check: should not be symbolic");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
             return;
         } else if (error == TermError.shouldBeSymbolic) {
             Logger.getLogger("Statics").info("check: should be symbolic");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName());
             return;
         } else if (error == TermError.wrongSymbol) {
             Logger.getLogger("Statics").info("check: wrong symbol");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName());
             return;
         } else if (error == TermError.missingInclination) {
             Logger.getLogger("Statics").info("check: missing the inclination in the term");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
             return;
         } else if (error == TermError.missedALoad) {
             Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);
             Logger.getLogger("Statics").info("check: FAILED");
             if (load.getUnit() == Unit.moment) {
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_couples");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_couples");
                 return;
             } else {
                 // should be a force here
-                StaticsApplication.getApp().setAdviceKey("equation_feedback_check_fail_missing_moments");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_moments");
                 return;
             }
         }

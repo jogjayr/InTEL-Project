@@ -23,7 +23,7 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
     private SectionPopup popup1,  popup2;
 
     public TrussModePanel() {
-        getTitleLabel().setText("Create a Section");
+        //getTitleLabel().setText("Create a Section");
     }
 
     @Override
@@ -64,12 +64,12 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
         hideSectionBoxes();
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        ApplicationTab tab = new ApplicationTab("Create Section");
-        tab.setPreferredSize(125, -1);
-        return tab;
-    }
+//    @Override
+//    protected ApplicationTab createTab() {
+//        ApplicationTab tab = new ApplicationTab("Create Section");
+//        tab.setPreferredSize(125, -1);
+//        return tab;
+//    }
 
     private Pair<Vector2f, Vector2f> getPopupCoordinates(SectionCut section) {
         // we need to position the popup coordinates according to the section.

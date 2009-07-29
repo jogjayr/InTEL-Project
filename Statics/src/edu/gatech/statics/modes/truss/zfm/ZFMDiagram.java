@@ -28,6 +28,11 @@ public class ZFMDiagram extends Diagram<ZFMState> {
     }
 
     @Override
+    public String getName() {
+        return "Find ZFMs";
+    }
+
+    @Override
     public void completed() {
         SelectMode.instance.load();
     }
@@ -163,15 +168,20 @@ public class ZFMDiagram extends Diagram<ZFMState> {
                 if (isZfm != userZfm) {
                     if (isZfm) {
                         // there is a ZFM that the user missed
-                        StaticsApplication.getApp().setAdvice("Note: You have missed a Zero Force Member");
+                        StaticsApplication.getApp().setStaticsFeedback("Note: You have missed a Zero Force Member");
                     } else {
                         // the user added a ZFM that is not really
-                        StaticsApplication.getApp().setAdvice("Note: You have selected a body that is not a Zero Force Member");
+                        StaticsApplication.getApp().setStaticsFeedback("Note: You have selected a body that is not a Zero Force Member");
                     }
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Select Zero Force Members";
     }
 }

@@ -11,6 +11,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -18,13 +19,10 @@ import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
-import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Pin2d;
-import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
-import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
@@ -63,15 +61,38 @@ public class KeyboardFrictionExercise extends FrameExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Keyboard Stand (friction)");
+    public Description getDescription() {
+        Description description = new Description();
 
-        setDescription(
-                "This is a revised version of the keyboard stand example. " +
-                "The mass of the keyboard is 100N as in the previous problem, and the " +
-                "rest of the configuration is the same except now the bar PQ is absent. " +
-                "Assume it is standing on a rough surface. In order for the stand " +
-                "not to collapse, solve for the minimum friction coefficient of the floor.");
+        description.setTitle("Keyboard Stand (friction)");
+        description.setNarrative(
+                "Kasiem Hill is passionate about music, and figures his Civil Engineering " +
+                "degree from GT will be a good backup in case his songs don’t make it. " +
+                "He got a cool keyboard for his birthday, but he doesn’t have the money " +
+                "to buy a keyboard stand. He decides to build one with scrap wood, and " +
+                "would like to know how much force he can expect at each connection if he " +
+                "assumes the keyboard stand can be modeled as a frame. ");
+
+        description.setProblemStatement(
+                "The keyboard stand has rubber stoppers at B and E, which are in contact with " +
+                "the floor. Given its loading, the stand is just stable.");
+
+        description.setGoals(
+                "Find the coefficient of friction of the stand base on the floor.");
+
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Keyboard Stand (friction)");
+//
+//        setDescription(
+//                "This is a revised version of the keyboard stand example. " +
+//                "The mass of the keyboard is 100N as in the previous problem, and the " +
+//                "rest of the configuration is the same except now the bar PQ is absent. " +
+//                "Assume it is standing on a rough surface. In order for the stand " +
+//                "not to collapse, solve for the minimum friction coefficient of the floor.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");

@@ -35,7 +35,7 @@ public abstract class DiagramContainer extends BContainer implements DiagramList
 
         public void actionPerformed(ActionEvent event) {
             DiagramKey key = actionMap.get(event.getAction());
-            StaticsApplication.getApp().selectDiagramKey(key);
+            StaticsApplication.getApp().selectDiagram(key, null);
         }
     };
 

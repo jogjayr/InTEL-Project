@@ -29,9 +29,9 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class KnownLoadsWindow extends TitledDraggablePopupWindow implements SolveListener {
+public class KnownsWindow extends TitledDraggablePopupWindow implements SolveListener {
 
-    public static final String windowName = "known loads";
+    public static final String windowName = "knowns";
 
     @Override
     public String getName() {
@@ -39,8 +39,8 @@ public class KnownLoadsWindow extends TitledDraggablePopupWindow implements Solv
     }
     private HTMLView view;
 
-    public KnownLoadsWindow() {
-        super(new BorderLayout(), "Known Loads");
+    public KnownsWindow() {
+        super(new BorderLayout(), "Knowns");
 
         view = new HTMLView() {
 

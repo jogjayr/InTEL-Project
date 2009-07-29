@@ -75,11 +75,11 @@ public class LabelSelector /*extends SelectionTool*/ {
 
     public void dismiss() {
         popup.dismiss();
-        StaticsApplication.getApp().resetAdvice();
+        StaticsApplication.getApp().resetUIFeedback();
     }
 
     public void popup() {
-        StaticsApplication.getApp().setAdvice(advice);
+        StaticsApplication.getApp().setUIFeedback(advice);
 
 
         popup = new ModalPopupWindow(new BorderLayout(5, 5));

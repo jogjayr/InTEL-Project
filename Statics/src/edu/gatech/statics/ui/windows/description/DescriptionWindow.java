@@ -32,7 +32,7 @@ public class DescriptionWindow extends TitledDraggablePopupWindow implements Tas
         description = new HTMLView();
         description.setPreferredSize(300, -1);
         //description.setContents("My contents. A problem description, maybe?");
-        description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
+        //description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
         
         getContentContainer().add(description, BorderLayout.CENTER);
     }
@@ -51,10 +51,14 @@ public class DescriptionWindow extends TitledDraggablePopupWindow implements Tas
     }
     
     public void update() {
-        description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
+        //description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
     }
     
     public void taskSatisfied(Task task) {
+        update();
+    }
+
+    public void tasksChanged() {
         update();
     }
     

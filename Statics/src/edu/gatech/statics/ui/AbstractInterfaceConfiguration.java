@@ -5,7 +5,7 @@
 package edu.gatech.statics.ui;
 
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
+import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
@@ -19,13 +19,14 @@ import java.util.List;
  */
 abstract public class AbstractInterfaceConfiguration implements InterfaceConfiguration {
 
-    private List<TitledDraggablePopupWindow> popupWindows = new ArrayList<TitledDraggablePopupWindow>();
+    //private List<TitledDraggablePopupWindow> popupWindows = new ArrayList<TitledDraggablePopupWindow>();
     private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
     private List<String> displayNames = new ArrayList<String>();
     private NavigationWindow navigationWindow;
     private CoordinateSystemWindow coordinateSystemWindow;
     private ViewConstraints viewConstraints;
     private DiagramDisplayCalculator diagramDisplayCalculator;
+    private Sidebar sidebar;
     private float panSpeed = .7f;
     private float rotateSpeed = .05f;
     private float zoomSpeed = .02f;
@@ -48,6 +49,14 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
         this.rotateSpeed = rotateSpeed;
     }
 
+    public Sidebar getSidebar() {
+        return sidebar;
+    }
+
+    public void setSidebar(Sidebar sidebar) {
+        this.sidebar = sidebar;
+    }
+
     public void setCoordinateSystemWindow(CoordinateSystemWindow coordinateSystemWindow) {
         this.coordinateSystemWindow = coordinateSystemWindow;
     }
@@ -64,10 +73,9 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
         this.viewConstraints = viewConstraints;
     }
 
-    public List<TitledDraggablePopupWindow> getPopupWindows() {
-        return popupWindows;
-    }
-
+//    public List<TitledDraggablePopupWindow> getPopupWindows() {
+//        return popupWindows;
+//    }
     public List<ApplicationModePanel> getModePanels() {
         return modePanels;
     }

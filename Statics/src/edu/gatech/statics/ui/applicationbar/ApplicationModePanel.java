@@ -5,7 +5,6 @@
 package edu.gatech.statics.ui.applicationbar;
 
 import com.jmex.bui.BContainer;
-import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
@@ -18,8 +17,8 @@ import edu.gatech.statics.ui.InterfaceRoot;
  */
 public abstract class ApplicationModePanel<T extends Diagram> extends BContainer {
 
-    private ApplicationTab tab;
-    private BLabel titleLabel;
+    //private ApplicationTab tab;
+    //private BLabel titleLabel;
     private boolean active;
 
     /**
@@ -48,15 +47,14 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
     }
 
     //public abstract String getPanelName();
-    protected BLabel getTitleLabel() {
-        return titleLabel;
-    }
-
+//    protected BLabel getTitleLabel() {
+//        return titleLabel;
+//    }
     public ApplicationModePanel() {
         super(new BorderLayout());
-        tab = createTab();
-        titleLabel = new BLabel("", "mode_title");
-        add(titleLabel, BorderLayout.NORTH);
+        //tab = createTab();
+        //titleLabel = new BLabel("", "mode_title");
+        //add(titleLabel, BorderLayout.NORTH);
     }
 
     //abstract public void activate();
@@ -69,12 +67,10 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
         active = false;
     }
 
-    public ApplicationTab getTab() {
-        return tab;
-    }
-
-    abstract protected ApplicationTab createTab();
-
+//    public ApplicationTab getTab() {
+//        return tab;
+//    }
+    //abstract protected ApplicationTab createTab();
     /**
      * This is a utiliy method for subclasses of ApplicationModePanel to access 
      * the current diagram.
@@ -85,5 +81,14 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
         // attempt to pass this normally. If this fails, then the current diagram in the 
         // StaticsApplication is incorrect.
         return (T) currentDiagram;
+    }
+
+    /**
+     * Whether to show the undo/redo box or not.
+     * Note that functionality is still there, but the box may be hidden.
+     * @return
+     */
+    public boolean isUndoVisible() {
+        return true;
     }
 }

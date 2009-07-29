@@ -34,7 +34,6 @@ import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -363,7 +362,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 }
             }
             if (allSolved) {
-                InterfaceRoot.getInstance().setAdvice("Your system is not solvable!");
+                InterfaceRoot.getInstance().setStaticsFeedback("Your system is not solvable!");
             }
         }
     }
@@ -375,10 +374,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         public BButton addButton;
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        return new ApplicationTab("Solve");
-    }
+//    @Override
+//    protected ApplicationTab createTab() {
+//        return new ApplicationTab("Solve");
+//    }
 
     private void clear() {
         for (EquationUIData eqdata : uiMap.values()) {
@@ -402,9 +401,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
 
         if (diagram.getBodySubset().getSpecialName() != null) {
-            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
+            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
         } else {
-            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
+            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
         }
 
         for (String mathName : diagram.getWorksheet().getEquationNames()) {

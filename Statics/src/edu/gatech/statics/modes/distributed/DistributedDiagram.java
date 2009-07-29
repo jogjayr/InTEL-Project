@@ -100,9 +100,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             }
         }
 
-    //Force resultant = dlObj.getResultantForce();
-    //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
-    //String pointName = dl.getName()+" pos";
+        //Force resultant = dlObj.getResultantForce();
+        //DistanceMeasurement measure = new DistanceMeasurement(dl.getStartPoint(), resultant.getAnchor());
+        //String pointName = dl.getName()+" pos";
     }
 
     @Override
@@ -226,5 +226,10 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     @Override
     public void completed() {
         // do nothing yet
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Calculate Resultant for distributed force: " + getKey();
     }
 }

@@ -5,6 +5,8 @@
 package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.modes.description.DescriptionDiagram;
+import edu.gatech.statics.modes.description.DescriptionMode;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.FBDMode;
@@ -54,6 +56,10 @@ abstract public class OrdinaryExercise extends Exercise {
         return new EquationDiagram(bodies);
     }
 
+    private Diagram createDescriptionDiagram() {
+        return new DescriptionDiagram();
+    }
+
     /**
      * Ordinary exercises support the Select, FBD, and Equation modes.
      * @param type
@@ -61,7 +67,9 @@ abstract public class OrdinaryExercise extends Exercise {
      */
     @Override
     public boolean supportsType(DiagramType type) {
-        if (type == SelectMode.instance.getDiagramType()) {
+        if (type == DescriptionMode.instance.getDiagramType()) {
+            return true;
+        } else if (type == SelectMode.instance.getDiagramType()) {
             return true;
         } else if (type == FBDMode.instance.getDiagramType()) {
             return true;
@@ -74,11 +82,13 @@ abstract public class OrdinaryExercise extends Exercise {
 
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
-        if(!supportsType(type)) {
+        if (!supportsType(type)) {
             throw new UnsupportedOperationException("OrdinaryExercise does not support the diagram type: " + type);
         }
-        
-        if (type == SelectMode.instance.getDiagramType()) {
+
+        if (type == DescriptionMode.instance.getDiagramType()) {
+            return createDescriptionDiagram();
+        } else if (type == SelectMode.instance.getDiagramType()) {
             return createSelectDiagram();
         } else if (type == FBDMode.instance.getDiagramType()) {
             return createFreeBodyDiagram((BodySubset) key);
@@ -86,7 +96,7 @@ abstract public class OrdinaryExercise extends Exercise {
             return createEquationDiagram((BodySubset) key);
         }
 
-        throw new AssertionError("OrdinaryExercise does not support the diagram type: " + type+". " +
+        throw new AssertionError("OrdinaryExercise does not support the diagram type: " + type + ". " +
                 "This should be marked in the supportsType method!!!");
     }
 }

@@ -62,6 +62,23 @@ public abstract class Diagram<StateType extends DiagramState> {
     }
 
     /**
+     * Returns some general text that describes what the user is doing in this diagram.
+     * @return
+     */
+    abstract public String getDescriptionText();
+
+    /**
+     * Returns a the nice name for this diagram.
+     * This should be overridden by subclasses of diagram which have null for a DiagramKey.
+     * @return
+     */
+    public String getName() {
+        if(key != null)
+            return key.toString();
+        else return "NONAME";
+    }
+
+    /**
      * Returns the diagram key for this particular diagram.
      * @return
      */
@@ -525,13 +542,13 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     public void clearHighlights() {
 
-        System.out.println("**** CURRENT DIAGRAM: "+this);
+        //System.out.println("**** CURRENT DIAGRAM: "+this);
         for (SimulationObject obj : allObjects()) {
             //System.out.println("*** "+obj+" -> "+obj.getClass());
 
-            if(obj instanceof PotentialZFM) {
-                System.out.println("**** Clearing highlight on ZFM "+obj);
-            }
+//            if(obj instanceof PotentialZFM) {
+//                System.out.println("**** Clearing highlight on ZFM "+obj);
+//            }
 
             obj.setDisplayHighlight(false);
             obj.setDisplaySelected(false);

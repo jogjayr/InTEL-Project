@@ -11,6 +11,7 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
@@ -49,15 +50,27 @@ public class AwningExercise extends DistributedExercise {
     }
 
     @Override
+    public Description getDescription() {
+        Description description = new Description();
+
+        description.setTitle("Awning with Snow");
+        description.setGoals("What is the loading at the base of the awning?");
+
+        return description;
+    }
+
+
+
+    @Override
     public void initExercise() {
-        setName("Awning with Snow");
+        //setName("Awning with Snow");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");
         Unit.setSuffix(Unit.force, " N");
         Unit.setSuffix(Unit.forceOverDistance, " N/m");
 
-        setDescription("What is the loading at the base of the awning?");
+        //setDescription("What is the loading at the base of the awning?");
 
 //        getDisplayConstants().setMomentSize(0.5f);
 //        getDisplayConstants().setForceSize(0.5f);

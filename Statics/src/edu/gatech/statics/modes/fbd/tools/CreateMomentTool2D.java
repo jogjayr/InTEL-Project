@@ -40,7 +40,7 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
     @Override
     protected void onActivate() {
         super.onActivate();
-        StaticsApplication.getApp().setAdviceKey("fbd_tools_createMoment");
+        StaticsApplication.getApp().setUIFeedbackKey("fbd_tools_createMoment");
     }
 
     @Override

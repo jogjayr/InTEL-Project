@@ -13,6 +13,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
@@ -44,12 +45,25 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Tower of Pisa");
+    public Description getDescription() {
+        Description description = new Description();
 
-        setDescription(
-                "This is a model of the tower of Pisa, solve for the reaction forces at its base. " +
+        description.setTitle("Tower of Pisa");
+        description.setProblemStatement("This is a model of the leaning tower of Pisa.");
+        description.setGoals("Build a free body diagram of the tower. " +
+                "You do not need to solve for the reactions at the fixed support at the base. " +
                 "The tower's weight is 14700 tons.");
+
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Tower of Pisa");
+//
+//        setDescription(
+//                "This is a model of the tower of Pisa, solve for the reaction forces at its base. " +
+//                "The tower's weight is 14700 tons.");
 
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.force, " ton");

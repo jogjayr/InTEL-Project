@@ -23,7 +23,7 @@ public class TrussSelectModePanel extends FrameSelectModePanel {
     public void activate() {
         super.activate();
 
-        StaticsApplication.getApp().setDefaultAdvice("Drag the mouse across the diagram to create a line for the section.");
+        StaticsApplication.getApp().setDefaultUIFeedback("Drag the mouse across the diagram to create a line for the section.");
     }
 
 

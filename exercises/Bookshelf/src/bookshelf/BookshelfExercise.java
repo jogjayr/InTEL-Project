@@ -11,6 +11,7 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
@@ -47,10 +48,25 @@ public class BookshelfExercise extends DistributedExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Bookshelf");
-        setDescription("What are the loads on the supports of the bookshelf? " +
+    public Description getDescription() {
+        Description description = new Description();
+
+        description.setTitle("Bookshelf");
+
+
+        description.setGoals("What are the loads on the supports of the bookshelf? " +
                 "Treat A as a pin and B as a roller.");
+
+        return description;
+    }
+
+
+
+    @Override
+    public void initExercise() {
+//        setName("Bookshelf");
+//        setDescription("What are the loads on the supports of the bookshelf? " +
+//                "Treat A as a pin and B as a roller.");
 
         // *****
         // UNITS ARE ISSUE

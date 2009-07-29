@@ -11,6 +11,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -62,13 +63,36 @@ public class KeyboardExercise extends FrameExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Keyboard Stand");
+    public Description getDescription() {
+        Description description = new Description();
 
-        setDescription(
-                "This is a keyboard stand supported by two beams and a cross bar, PQ. " +
-                "Find the force in PQ and define whether it is in tension or compression. " +
+        description.setTitle("Keyboard Stand");
+        description.setNarrative(
+                "Kasiem Hill is passionate about music, and figures his Civil Engineering " +
+                "degree from GT will be a good backup in case his songs don’t make it. " +
+                "He got a cool keyboard for his birthday, but he doesn’t have the money " +
+                "to buy a keyboard stand. He decides to build one with scrap wood, and " +
+                "would like to know how much force he can expect at each connection if he " +
+                "assumes the keyboard stand can be modeled as a frame. ");
+
+        description.setProblemStatement(
+                "The keyboard stand supported by two beams and a cross bar, PQ. " +
                 "The supports at B and E are rollers, and the floor is frictionless.");
+
+        description.setGoals(
+                "Find the force in PQ, and define whether it is in tension or compression.");
+
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Keyboard Stand");
+//
+//        setDescription(
+//                "This is a keyboard stand supported by two beams and a cross bar, PQ. " +
+//                "Find the force in PQ and define whether it is in tension or compression. " +
+//                "The supports at B and E are rollers, and the floor is frictionless.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");

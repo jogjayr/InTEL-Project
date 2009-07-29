@@ -17,6 +17,7 @@ import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
@@ -37,27 +38,34 @@ import java.math.BigDecimal;
  */
 public class PurseExercise2 extends OrdinaryExercise {
 
+    @Override
+    public Description getDescription() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /** Creates a new instance of PurseExercise */
+    @Deprecated
     public PurseExercise2() {
         super(new Schematic());
+        throw new UnsupportedOperationException("PurseExercise2 is deprecated at the moment...");
     }
 
     @Override
     public void initExercise() {
-        setName("Holding a Purse");
+        //setName("Holding a Purse");
         StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
 
-        setDescription(
-                "Here is a simplified version of the human forearm. " +
-                "Please build a Free Body Diagram of the Forearm, and solve for the distance X. " +
-                "The weight of the forearm is 9 N and its center of mass is at G. " +
-                "The point C at the elbow is a <i>pin</i>." +
-                "The weight of the purse is 19.6 N.");
+//        setDescription(
+//                "Here is a simplified version of the human forearm. " +
+//                "Please build a Free Body Diagram of the Forearm, and solve for the distance X. " +
+//                "The weight of the forearm is 9 N and its center of mass is at G. " +
+//                "The point C at the elbow is a <i>pin</i>." +
+//                "The weight of the purse is 19.6 N.");
 
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
-    //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
+        //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
     protected float handPoint = -17;
     protected float tendonAnchorB = 13;
@@ -81,19 +89,19 @@ public class PurseExercise2 extends OrdinaryExercise {
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
 
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
-        
+
         A = new Point("A", "" + handPoint, "-10", "0");
-        
+
         C = new Point("C", "18", "-10", "0");
-        B = new UnknownPoint(new Point("B", "13", "-10", "0"), 
+        B = new UnknownPoint(new Point("B", "13", "-10", "0"),
                 C, Vector3bd.UNIT_X.negate());
-        
+
         Body forearm = new Beam("Forearm", C, A);
-        
+
 //        forearm.setName("Forearm");
-        
+
         jointC = new Pin2d(C);
-        
+
         jointC.attachToWorld(forearm);
 
         G = new Point("G", "" + (centerGravityOffset + 3), "-10", "0");

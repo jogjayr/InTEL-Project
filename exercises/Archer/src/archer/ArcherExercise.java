@@ -12,6 +12,7 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.exercise.SimpleFBDExercise;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
@@ -31,9 +32,22 @@ import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 public class ArcherExercise extends SimpleFBDExercise {
 
     @Override
+    public Description getDescription() {
+        //throw new UnsupportedOperationException("Not supported yet.");
+        Description description = new Description();
+
+        description.setTitle("Archer");
+        description.setNarrative("An olympic archer is holding a bow.");
+        //description.setProblemStatement("");
+        description.setGoals("Build free body diagrams of the bow, the bowstring, and the two together.");
+
+        return description;
+    }
+
+    @Override
     public void initExercise() {
-        setName("Archer");
-        setDescription("An olympic archer is holding a bow. Build free body diagrams of the bow, the bowstring, and the two together.");
+        //setName("Archer");
+        //setDescription("An olympic archer is holding a bow. Build free body diagrams of the bow, the bowstring, and the two together.");
 
         //getDisplayConstants().setDrawScale(1);
         getDisplayConstants().setForceSize(1);

@@ -7,6 +7,7 @@ package edu.gatech.statics.ui.windows.selectdiagram;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.exercise.Diagram;
 
 /**
  *
@@ -20,7 +21,11 @@ public class TiledDiagramContainer extends DiagramContainer {
     
     @Override
     protected void placeItem(BButton item) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // do nothing
+    }
+
+    public void onDiagramChanged(Diagram newDiagram) {
+        // do nothing
     }
     
 }

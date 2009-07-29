@@ -32,7 +32,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
     BButton checkButton;
 
     public ZFMModePanel() {
-        getTitleLabel().setText("Identify Zero Force Members");
+        //getTitleLabel().setText("Identify Zero Force Members");
 
         selectionListBox = new BContainer(new BorderLayout());
         checkButton = new BButton("Check", new ButtonListener(), "check");
@@ -52,11 +52,11 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
     public void activate() {
         super.activate();
 
-        getTitleLabel().setText("Nothing Selected");
+        //getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
         // *********** need special 
-        //StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
-        StaticsApplication.getApp().setAdvice("Please select the Zero Force Members");
+        //StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection1");
+        StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
     }
 
     @Override
@@ -64,12 +64,12 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         return ZFMMode.instance.getDiagramType();
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        ApplicationTab tab = new ApplicationTab("Find ZFMs");
-        tab.setPreferredSize(125, -1);
-        return tab;
-    }
+//    @Override
+//    protected ApplicationTab createTab() {
+//        ApplicationTab tab = new ApplicationTab("Find ZFMs");
+//        tab.setPreferredSize(125, -1);
+//        return tab;
+//    }
 
     @Override
     public void stateChanged() {
@@ -83,23 +83,23 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         List<PotentialZFM> selection = getDiagram().getCurrentState().getSelectedZFMs();
 
         if (selection.isEmpty()) {
-            getTitleLabel().setText("Nothing Selected");
+            //getTitleLabel().setText("Nothing Selected");
             selectionList.setContents("");
 
             //checkButton.setEnabled(false);
-            StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection1");
+            StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection1");
 
-            InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
+            //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
 
         } else {
-            getTitleLabel().setText("Currently Selected:");
+            //getTitleLabel().setText("Currently Selected:");
 
             selectionList.setContents(getContents(selection));
 
             //checkButton.setEnabled(true);
-            StaticsApplication.getApp().setAdviceKey("exercise_tools_Selection2");
+            StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection2");
 
-            InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
+            //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
         }
     }
 

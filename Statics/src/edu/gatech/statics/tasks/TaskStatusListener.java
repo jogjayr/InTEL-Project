@@ -11,4 +11,9 @@ package edu.gatech.statics.tasks;
 public interface TaskStatusListener {
 
     public void taskSatisfied(Task task);
+    
+    /**
+     * Called when the tasks have changed, usually when a task has been added.
+     */
+    public void tasksChanged();
 }

@@ -5,7 +5,6 @@
 package edu.gatech.statics.ui;
 
 import com.jme.input.InputHandler;
-import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputAction;
@@ -17,6 +16,7 @@ import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BStyleSheet;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.persistence.StateIO;
@@ -24,10 +24,11 @@ import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 import edu.gatech.statics.ui.menu.BrowsePopupMenu;
-import edu.gatech.statics.ui.components.DraggablePopupWindow;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
-import edu.gatech.statics.ui.menu.TopMenuBar;
+import edu.gatech.statics.ui.maintabbar.MainTabBar;
+import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
+import edu.gatech.statics.ui.windows.feedback.FeedbackWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
@@ -50,7 +51,8 @@ public class InterfaceRoot {
     private PolledRootNode buiNode;
     private BStyleSheet style;
     private BrowsePopupMenu browsePopupMenu;
-    private TopMenuBar menuBar;
+    //private TopMenuBar menuBar;
+    private MainTabBar mainTabBar;
     private ApplicationBar applicationBar;
     private NavigationWindow navWindow;
     private CoordinateSystemWindow coordinatesWindow;
@@ -61,9 +63,11 @@ public class InterfaceRoot {
     private Map<String, ApplicationModePanel> modePanels = new HashMap<String, ApplicationModePanel>();
     private List<ApplicationModePanel> allModePanels = new ArrayList<ApplicationModePanel>();
     private Map<String, TitledDraggablePopupWindow> popupWindows = new HashMap<String, TitledDraggablePopupWindow>();
-    private List<TitledDraggablePopupWindow> allPopupWindows = new ArrayList<TitledDraggablePopupWindow>();
+    //private List<TitledDraggablePopupWindow> allPopupWindows = new ArrayList<TitledDraggablePopupWindow>();
     private InterfaceConfiguration configuration;
     private Camera camera;
+    private Sidebar sidebar;
+    private FeedbackWindow feedbackWindow;
 
     public InputHandler getInput() {
         return input;
@@ -73,10 +77,9 @@ public class InterfaceRoot {
         return timer;
     }
 
-    public List<TitledDraggablePopupWindow> getAllPopupWindows() {
-        return allPopupWindows;
-    }
-
+//    public List<TitledDraggablePopupWindow> getAllPopupWindows() {
+//        return allPopupWindows;
+//    }
     public List<ApplicationModePanel> getAllModePanels() {
         return Collections.unmodifiableList(allModePanels);
     }
@@ -97,8 +100,8 @@ public class InterfaceRoot {
         return applicationBar;
     }
 
-    public TopMenuBar getMenuBar() {
-        return menuBar;
+    public MainTabBar getMenuBar() {
+        return mainTabBar;
     }
 
     public void setDiagram(Diagram diagram) {
@@ -143,8 +146,14 @@ public class InterfaceRoot {
      * Sets the text that shows up in the advice window
      * @param advice
      */
-    public void setAdvice(String advice) {
-        applicationBar.setAdvice(advice);
+    public void setStaticsFeedback(String feedback) {
+        // ********** TODO: Move this elsewhere
+        //applicationBar.setAdvice(advice);
+        feedbackWindow.setFeedback(feedback);
+    }
+
+    public void setUIFeedback(String feedback) {
+        applicationBar.setUIFeedback(feedback);
     }
 
     /**
@@ -187,19 +196,21 @@ public class InterfaceRoot {
      */
     private void setupSaveLoad() {
         //KeyBindingManager.getKeyBindingManager().add(command, keyCode);
-        
+
         InputAction save = new InputAction() {
+
             public void performAction(InputActionEvent evt) {
                 StateIO.saveToFile("Save.statics");
             }
         };
-        
+
         InputAction load = new InputAction() {
+
             public void performAction(InputActionEvent evt) {
                 StateIO.loadFromFile("Save.statics");
             }
         };
-        
+
         input.addAction(save, "Save", KeyInput.KEY_F9, false);
         input.addAction(load, "Load", KeyInput.KEY_F10, false);
     }
@@ -211,23 +222,41 @@ public class InterfaceRoot {
         this.configuration = configuration;
 
         // LOAD POPUP WINDOWS
-        List<String> windowNames = new ArrayList<String>();
-        allPopupWindows.addAll(configuration.getPopupWindows());
-        for (TitledDraggablePopupWindow popup : allPopupWindows) {
-            popupWindows.put(popup.getName(), popup);
-            windowNames.add(popup.getName());
-        }
+//        List<String> windowNames = new ArrayList<String>();
+//        allPopupWindows.addAll(configuration.getPopupWindows());
+//        for (TitledDraggablePopupWindow popup : allPopupWindows) {
+//            popupWindows.put(popup.getName(), popup);
+//            windowNames.add(popup.getName());
+//        }
+
+        // LOAD SIDEBAR
+        sidebar = configuration.getSidebar();
+        buiNode.addWindow(sidebar);
+        int sidebarWidth = Sidebar.WIDTH;
+        Dimension sidebarSize = sidebar.getPreferredSize(sidebarWidth, -1);
+        //sidebar.setSize(sidebarWidth, sidebarSize.height);
+        sidebar.setBounds(
+                //100,100,
+                0, //DisplaySystem.getDisplaySystem().getWidth() - sidebarWidth,
+                DisplaySystem.getDisplaySystem().getHeight() - sidebarSize.height - MainTabBar.MAIN_TAB_BAR_HEIGHT,
+                sidebarWidth, sidebarSize.height);
+        //int sidebarHeight = DisplaySystem.getDisplaySystem().getHeight();
+        //sidebarHeight -= MainTabBar.MAIN_TAB_BAR_HEIGHT;
+        //sidebar.setSize(sidebarWidth,sidebarHeight );
+        //sidebar.pack();
+
+
 
         // LOAD MENU
-        menuBar.setWindowList(windowNames);
-        menuBar.setDisplayList(configuration.getDisplayNames());
+//        menuBar.setWindowList(windowNames);
+//        menuBar.setDisplayList(configuration.getDisplayNames());
 
         // LOAD APPLICATION BAR
         allModePanels.addAll(configuration.getModePanels());
         for (ApplicationModePanel panel : allModePanels) {
             modePanels.put(panel.getPanelName(), panel);
         }
-        applicationBar.setTabs(allModePanels);
+        //applicationBar.setTabs(allModePanels);
         // ** REMEMBER TO DO THIS LATER
         //applicationBar.setModePanel(modePanels.get(configuration.getDefaultModePanelName()));
 
@@ -237,7 +266,9 @@ public class InterfaceRoot {
         navWindow.pack();
         navWindow.setLocation(
                 DisplaySystem.getDisplaySystem().getWidth() - navWindow.getPreferredSize(-1, -1).width - 5,
-                ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
+                //ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
+                //200 - 20);
+                DisplaySystem.getDisplaySystem().getHeight() - navWindow.getPreferredSize(-1, -1).height - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5);
 
         cameraControl = new CameraControl(camera, configuration.getViewConstraints());
         configuration.setupCameraControl(cameraControl);
@@ -248,25 +279,26 @@ public class InterfaceRoot {
         coordinatesWindow = configuration.getCoordinateSystemWindow();
         buiNode.addWindow(coordinatesWindow);
         coordinatesWindow.pack();
-        coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + navWindow.getPreferredSize(-1, -1).height + 10);
+        //coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + navWindow.getPreferredSize(-1, -1).height + 10);
+        coordinatesWindow.setLocation(5, 200 + navWindow.getPreferredSize(-1, -1).height + 10);
     }
 
     public void unloadConfiguration() {
 
         // CLEAR POPUPS
-        for (DraggablePopupWindow popup : allPopupWindows) {
-            popup.dismiss();
-        }
-        popupWindows.clear();
-        allPopupWindows.clear();
+//        for (DraggablePopupWindow popup : allPopupWindows) {
+//            popup.dismiss();
+//        }
+//        popupWindows.clear();
+//        allPopupWindows.clear();
 
         // CLEAR MENU
-        menuBar.removeWindows();
-        menuBar.removeDisplays();
+//        menuBar.removeWindows();
+//        menuBar.removeDisplays();
 
         // CLEAR APPLICATION BAR
         applicationBar.setModePanel(null);
-        applicationBar.removeTabs();
+        //applicationBar.removeTabs();
         modePanels.clear();
         allModePanels.clear();
 
@@ -286,10 +318,22 @@ public class InterfaceRoot {
 
     protected void createWindows() {
         // CREATE MENU BAR
-        menuBar = new TopMenuBar();
-        buiNode.addWindow(menuBar);
-        menuBar.pack();
-        menuBar.setLocation(0, DisplaySystem.getDisplaySystem().getHeight() - menuBar.getHeight());
+//        menuBar = new TopMenuBar();
+//        buiNode.addWindow(menuBar);
+//        menuBar.pack();
+//        menuBar.setLocation(0, DisplaySystem.getDisplaySystem().getHeight() - menuBar.getHeight());
+
+        // CREATE FEEDBACK WINDOW
+        feedbackWindow = new FeedbackWindow();
+        //buiNode.addWindow(feedbackWindow);
+        //feedbackWindow.pack();
+        //feedbackWindow.setLocation(DisplaySystem.getDisplaySystem().getWidth() - FeedbackWindow.WIDTH - 5, 5);
+
+        // CREATE MAIN TAB BAR
+        mainTabBar = new MainTabBar();
+        buiNode.addWindow(mainTabBar);
+        mainTabBar.pack();
+        mainTabBar.setLocation(0, DisplaySystem.getDisplaySystem().getHeight() - mainTabBar.getHeight());
 
         // CREATE APPLICATION BAR
         applicationBar = new ApplicationBar();
@@ -339,5 +383,15 @@ public class InterfaceRoot {
 
     public void update() {
         checkBrowsePopupMenu();
+    }
+
+    /**
+     * This updates the position of the feedback window then the application bar is resized.
+     * This occurs when diagrams change, as well as when the ui in the diagram changes.
+     */
+    public void appBarResized() {
+
+        // position the feedback window appropriately.
+        feedbackWindow.setLocation(applicationBar.getX() + applicationBar.getWidth(), 0);
     }
 }

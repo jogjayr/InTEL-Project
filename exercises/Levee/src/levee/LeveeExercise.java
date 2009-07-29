@@ -7,6 +7,7 @@ import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
@@ -50,25 +51,49 @@ public class LeveeExercise extends DistributedExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Levee");
-
-        setDescription(
-                "<p>In 2005, hurricane Katrina devastated New Orleans. New Orleans is " +
+    public Description getDescription() {
+        Description description = new Description();
+        description.setTitle("Levee");
+        description.setNarrative(
+                "In 2005, hurricane Katrina devastated New Orleans. New Orleans is " +
                 "below sea level, between the Mississippi river and Lake Pontchartrain, " +
                 "and relies on levees for protection. A day after Katrina hit the city, " +
-                "the levee system broke in three places.<br><br></p>" +
+                "the levee system broke in three places.");
 
-                "<p>This shows a levee under strained conditions, where the height of the " +
+        description.setProblemStatement(
+                "This shows a levee under strained conditions, where the height of the " +
                 "water is 12 ft. Assume that the ground can resist up to 10,400 lb*ft " +
                 "of moment and that it has unlimited resistance to a horizontal force. " +
+                "The distributed force of the water is " +
+                "given by a linear pressure distribution p(h) = d*g*h, where h represents depth. The quantity d*g " +
+                "is 62.4 lb/ft^3, the specific weight of water.");
+
+        description.setGoals(
                 "Examining a 1 foot cross section, solve for the actual loading of the " +
                 "water on the ground at the base of the levee (represented by the fixed " +
-                "support A). Will the ground be able to support the levee?<br><br></p>" +
+                "support A). Will the ground be able to support the levee?");
 
-                "<p>To calculate the resultant, the distributed force of the water is " +
-                "given by a linear pressure distribution p(h) = d*g*h, where h represents depth. The quantity d*g " +
-                "is 62.4 lb/ft^3, the specific weight of water.</p>");
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Levee");
+//
+//        setDescription(
+//                "<p>In 2005, hurricane Katrina devastated New Orleans. New Orleans is " +
+//                "below sea level, between the Mississippi river and Lake Pontchartrain, " +
+//                "and relies on levees for protection. A day after Katrina hit the city, " +
+//                "the levee system broke in three places.<br><br></p>" +
+//                "<p>This shows a levee under strained conditions, where the height of the " +
+//                "water is 12 ft. Assume that the ground can resist up to 10,400 lb*ft " +
+//                "of moment and that it has unlimited resistance to a horizontal force. " +
+//                "Examining a 1 foot cross section, solve for the actual loading of the " +
+//                "water on the ground at the base of the levee (represented by the fixed " +
+//                "support A). Will the ground be able to support the levee?<br><br></p>" +
+//                "<p>To calculate the resultant, the distributed force of the water is " +
+//                "given by a linear pressure distribution p(h) = d*g*h, where h represents depth. The quantity d*g " +
+//                "is 62.4 lb/ft^3, the specific weight of water.</p>");
 
 //        setDescription(
 //                "<p>In 2005, hurricane Katrina hit New Orleans, which caused enormous loss. " +
@@ -201,7 +226,6 @@ public class LeveeExercise extends DistributedExercise {
         StaticsApplication.getApp().getCamera().setDirection(new Vector3f(15, 1, 1).normalize());
         CameraControl cameraControl = InterfaceRoot.getInstance().getCameraControl();
         cameraControl.getViewDiagramState().getCameraCenter().addLocal(25, 55, 78);
-        StaticsApplication.getApp().selectDiagramKey(null);
+        //StaticsApplication.getApp().selectDiagram(null);
     }
-
 }

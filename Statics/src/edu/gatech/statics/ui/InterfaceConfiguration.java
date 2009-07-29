@@ -5,7 +5,7 @@
 package edu.gatech.statics.ui;
 
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
+import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface InterfaceConfiguration {
 
-    public List<TitledDraggablePopupWindow> getPopupWindows();
+    //public List<TitledDraggablePopupWindow> getPopupWindows();
     public List<ApplicationModePanel> getModePanels();
     public NavigationWindow getNavigationWindow();
     public CoordinateSystemWindow getCoordinateSystemWindow();
@@ -31,4 +31,6 @@ public interface InterfaceConfiguration {
 
     public void setupCameraControl(CameraControl cameraControl);
     public DiagramDisplayCalculator getDisplayCalculator();
+
+    public Sidebar getSidebar();
 }

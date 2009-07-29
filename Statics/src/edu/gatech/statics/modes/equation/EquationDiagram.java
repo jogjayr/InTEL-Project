@@ -432,10 +432,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // mark the state as changed so that the UI updates.
         stateChanged();
 
-        StaticsApplication.getApp().setDefaultAdvice(
+        StaticsApplication.getApp().setDefaultUIFeedback(
                 java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
 
-        StaticsApplication.getApp().resetAdvice();
+        StaticsApplication.getApp().resetUIFeedback();
     }
 
     /**
@@ -704,5 +704,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // we want to say that we have solved this joint from the perspective
         // of the current body in question.
         connector.solveReaction(solveBody, reactions);
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Solve equilibrium equations: "+getKey();
     }
 }

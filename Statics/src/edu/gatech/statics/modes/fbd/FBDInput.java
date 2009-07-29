@@ -84,7 +84,7 @@ public class FBDInput extends InputHandler {
         orientationHandler = new OrientationHandler(diagram, this, force);
         orientationPress = System.currentTimeMillis();
 
-        StaticsApplication.getApp().setAdviceKey("fbd_tools_createForce2");
+        StaticsApplication.getApp().setUIFeedbackKey("fbd_tools_createForce2");
     }
     protected static final int clickThreshold = 200;
     // NOTE: 

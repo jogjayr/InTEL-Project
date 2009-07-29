@@ -16,6 +16,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.PointAngleMeasurement;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -37,9 +38,16 @@ import java.math.BigDecimal;
 public class PurseExercise extends FrameExercise {
 
     @Override
-    public void initExercise() {
-        setName("Holding a Purse");
-        StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
+    public Description getDescription() {
+        Description description = new Description();
+
+        description.setTitle("Holding a Purse");
+        description.setNarrative(
+                "Whitney Peterson just got a new puppy, and puts it in a bag so " +
+                "she can show it to all her friends at her engineering sorority, " +
+                "Alpha Omega Epsilon. At the end of the day, though, her arm is " +
+                "quite sore, and she wonders how much force her biceps muscle had " +
+                "to provide to keep her arm bent at 90 degrees, compared to the puppy’s light weight.");
 
         float forearmWeight = (Float) getState().getParameter("forearmWeight");
         float purseWeight = (Float) getState().getParameter("purseWeight");
@@ -47,12 +55,44 @@ public class PurseExercise extends FrameExercise {
         BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
 
-        setDescription(
+        description.setProblemStatement(
                 "Here is a simplified model of the human arm. " +
                 "Please solve for the reactions at each of the points: B, C, and E. " +
                 "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
                 "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
                 "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+//                "Here is a simplified model of the human arm. " +
+//                "Please solve for the reactions at each of the points: B, C, and E. " +
+//                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
+//                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
+//                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+
+        description.setGoals("Solve for the reactions in the tendon and at the shoulder.");
+
+        //description.addImage("example01/assets/test.png");
+        //description.addImage("example01/assets/test.png");
+
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Holding a Purse");
+        StaticsApplication.getApp().createDisplayGroup("Bones", "bones");
+
+//        float forearmWeight = (Float) getState().getParameter("forearmWeight");
+//        float purseWeight = (Float) getState().getParameter("purseWeight");
+
+//        BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+//        BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
+
+//        setDescription(
+//                "Here is a simplified model of the human arm. " +
+//                "Please solve for the reactions at each of the points: B, C, and E. " +
+//                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
+//                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
+//                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+
         //"Here is a simplified version of the human arm. " +
         //"Please build a Free Body Diagram of the Forearm, and solve for the tension in the tendon. " +
         //"The weight of the forearm is 9 N and its center of mass is at G. " +
@@ -68,7 +108,7 @@ public class PurseExercise extends FrameExercise {
         getDisplayConstants().setForceLabelDistance(9f);
         getDisplayConstants().setMomentLabelDistance(40f);
         getDisplayConstants().setMeasurementBarSize(0.5f);
-    //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
+        //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
 
     @Override
@@ -106,25 +146,25 @@ public class PurseExercise extends FrameExercise {
         dPos.setY(new BigDecimal("" + tendonAnchorD));
         ePos.setY(new BigDecimal("" + shoulderHeight));
         gPos.setX(new BigDecimal("" + centerGravityOffset));
-        
+
         A.setPoint(aPos);
         B.setPoint(bPos);
         D.setPoint(dPos);
         E.setPoint(ePos);
         G.setPoint(gPos);
-        
+
         upperArm.setByEndpoints(E.getPosition(), C.getPosition());
         forearm.setByEndpoints(A.getPosition(), C.getPosition());
         tendon.setByEndpoints(B.getPosition(), D.getPosition());
 
-        purse.getVector().setDiagramValue(new BigDecimal(""+ getState().getParameter("purseWeight")));
+        purse.getVector().setDiagramValue(new BigDecimal("" + getState().getParameter("purseWeight")));
         forearm.getWeight().setDiagramValue(new BigDecimal((Float) getState().getParameter("forearmWeight"))); // ???
     }
-    Point A,B ,C ,D ,E ,G ;
-    Connector2ForceMember2d jointB,jointD ;
-    Pin2d jointC,jointE ;
+    Point A, B, C, D, E, G;
+    Connector2ForceMember2d jointB, jointD;
+    Pin2d jointC, jointE;
     Cable tendon;
-    LongBody upperArm,forearm ;
+    LongBody upperArm, forearm;
     Force purse;
 
     @Override

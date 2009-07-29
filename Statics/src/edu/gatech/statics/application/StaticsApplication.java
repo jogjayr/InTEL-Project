@@ -30,10 +30,10 @@ import edu.gatech.statics.DisplayGroup;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
-import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -103,18 +103,20 @@ public class StaticsApplication {
     }
 
     /**
-     * This method loads the most finished diagram with the specified bodies.
-     * @param bodies
+     * This method loads the most finished diagram with the specified diagram key.
+     * @param The key denoting the
      */
-    public void selectDiagramKey(DiagramKey key) {
+    public Diagram selectDiagram(DiagramKey key, DiagramType type) {
         Diagram diagram;
 
+        diagram = currentExercise.getAppropriateDiagram(key, type);
+
         // perfom special check. If null is passed, always load the select diagram. Otherwise, simply load the most recent.
-        if (key == null) {
-            diagram = currentExercise.getDiagram(key, SelectMode.instance.getDiagramType());
-        } else {
-            diagram = currentExercise.getRecentDiagram(key);
-        }
+//        if (key == null) {
+//            diagram = currentExercise.getDiagram(key, SelectMode.instance.getDiagramType());
+//        } else {
+//            diagram = currentExercise.getRecentDiagram(key);
+//        }
 
         if (diagram == null) {
             // this is an exceptional condition?
@@ -124,6 +126,7 @@ public class StaticsApplication {
             Mode newMode = diagram.getMode();
             newMode.load(key);
         }
+        return diagram;
     }
 
     //public void setDrawScale(float drawScale) {this.drawScale = drawScale;}
@@ -161,9 +164,9 @@ public class StaticsApplication {
     public Tool getCurrentTool() {
         return currentTool;
     }
-    private String defaultAdvice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
+    private String defaultUIFeedback = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
-    public void setAdviceKey(String key, Object... formatTerms) {
+    public void setStaticsFeedbackKey(String key, Object... formatTerms) {
         Logger.getLogger("Statics").info("Setting advice key: " + key);
         String advice;
         if (formatTerms == null || formatTerms.length == 0) {
@@ -173,20 +176,38 @@ public class StaticsApplication {
         }
         Logger.getLogger("Statics").info("Setting advice: " + advice);
         if (iRoot != null) {
-            iRoot.setAdvice(advice);
+            iRoot.setStaticsFeedback(advice);
         }
     }
 
-    public void setAdvice(String advice) {
-        iRoot.setAdvice(advice);
+    public void setUIFeedbackKey(String key, Object... formatTerms) {
+        Logger.getLogger("Statics").info("Setting advice key: " + key);
+        String advice;
+        if (formatTerms == null || formatTerms.length == 0) {
+            advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
+        } else {
+            advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
+        }
+        Logger.getLogger("Statics").info("Setting advice: " + advice);
+        if (iRoot != null) {
+            iRoot.setUIFeedback(advice);
+        }
     }
 
-    public void resetAdvice() {
-        iRoot.setAdvice(defaultAdvice);
+    public void setUIFeedback(String feedback) {
+        iRoot.setUIFeedback(feedback);
     }
 
-    public void setDefaultAdvice(String advice) {
-        defaultAdvice = advice;
+    public void setStaticsFeedback(String feedback) {
+        iRoot.setStaticsFeedback(feedback);
+    }
+
+    public void resetUIFeedback() {
+        iRoot.setUIFeedback(defaultUIFeedback);
+    }
+
+    public void setDefaultUIFeedback(String advice) {
+        defaultUIFeedback = advice;
     }
     private AbsoluteMouse mouse;
 
@@ -236,10 +257,12 @@ public class StaticsApplication {
             Logger.getLogger("Statics").info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
         }
 
+        // complain if the diagram is null
         if (diagram == null) {
             throw new IllegalArgumentException("Cannot give set the application to a null diagram!");
         }
 
+        // deactivate the current diagram, if it exists.
         if (currentDiagram != null) {
             if (currentDiagram.getInputHandler() != null) {
                 input.removeFromAttachedHandlers(currentDiagram.getInputHandler());
@@ -248,21 +271,32 @@ public class StaticsApplication {
             currentDiagram.clearHighlights();
         }
 
+        // clear graphics
         //clearHighlights();
 
+        // set and activate the new diagram.
         this.currentDiagram = diagram;
         currentDiagram.activate();
+
+        // if input has been loaded,
+        // update the input to the new diagram's input handler
         if (currentDiagram.getInputHandler() != null) {
             input.addToAttachedHandlers(currentDiagram.getInputHandler());
         }
 
+        // update the diagram once to start with
         diagram.update();
 
         //if(diagram != null)
         //    diagram.clearHighlights();
 
+        // let everyone listening know that we have switched to this diagram.
+        for (DiagramListener diagramListener : diagramListeners) {
+            diagramListener.onDiagramChanged(currentDiagram);
+        }
+
         if (iRoot != null) {
-            iRoot.setDiagram(diagram);
+            iRoot.setDiagram(currentDiagram);
         }
     }
 
@@ -343,6 +377,17 @@ public class StaticsApplication {
         }
     }
 
+//    private void clearHighlights() {
+//        if (currentDiagram == null) {
+//            return;
+//        }
+//
+//        for (SimulationObject obj : currentDiagram.allObjects()) {
+//            obj.setDisplayHighlight(false);
+//            obj.setDisplaySelected(false);
+//            obj.setDisplayGrayed(false);
+//        }
+//    }
     private void updateLabels() {
         for (LabelRepresentation label : currentDiagram.getLabels()) {
             if (!activeLabels.contains(label)) {
@@ -507,7 +552,11 @@ public class StaticsApplication {
             }
 
             // get the exercise ready to run.
-            getExercise().loadStartingMode();
+
+            getExercise().loadDescriptionMode();
+            //getExercise().loadStartingMode();
+
+
             getExercise().postLoadExercise();
             Logger.getLogger("Statics").info("Application init: finished post loading exercise!");
 

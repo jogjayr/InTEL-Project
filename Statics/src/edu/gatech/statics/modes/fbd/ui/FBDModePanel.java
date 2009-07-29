@@ -59,10 +59,10 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
         return new FBDTools2D(this);
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        return new ApplicationTab("Add Loads");
-    }
+//    @Override
+//    protected ApplicationTab createTab() {
+//        return new ApplicationTab("Add Loads");
+//    }
 
     @Override
     public void activate() {
@@ -72,9 +72,9 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
         FreeBodyDiagram diagram = (FreeBodyDiagram) getDiagram();
         
         if (diagram.getBodySubset().getSpecialName() != null) {
-            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
+            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
         } else {
-            getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
+            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
         }
 
         //Exercise.getExercise().enableTabs(diagram.getBodySubset());

@@ -12,6 +12,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -39,13 +40,44 @@ public class BicycleExercise extends FrameExercise {
     }
 
     @Override
-    public void initExercise() {
-        setName("Bicycle");
+    public Description getDescription() {
+        Description description = new Description();
 
-        setDescription(
+        description.setTitle("Bicycle");
+
+        description.setNarrative(
+                "Anna Smith is a ME student at GT who has a passion for bikes. " +
+                "She's learned in her MSE 2001 materials lab class that titanium has " +
+                "the highest strength-to-weight ratio of any metal, and she's " +
+                "thinking of using titanium to repair a broken bar on her bike. " +
+                "First, however, she needs to determine the necessary strength the " +
+                "bar must have, and for that she needs to know what is the typical " +
+                "force carried by each structural element in the bike during normal " +
+                "work conditions. This is where her Statics knowledge will be " +
+                "helpful. By assuming constant speed, and estimating the payload due " +
+                "to her weight on the seat and her grip at the front, she can treat " +
+                "the bike’s structure as a frame, each bar as a two-force member, " +
+                "and solve for the forces at each connection. ");
+
+        description.setProblemStatement(
                 "This is a model of a bicycle. The body FBGA is a beam, but the " +
-                "rest of the members are bars. You can select the joints D, C, and E by clicking on them. " +
-                "Try solving the frame and the beam first, and then use the method of joints to complete the exercise.");
+                "rest of the members are bars. You can select the joints D, C, and E by clicking on them.");
+
+        description.setGoals("Solve for the tension or compression in each of the two-force members.");
+
+        return description;
+    }
+
+
+
+    @Override
+    public void initExercise() {
+//        setName("Bicycle");
+//
+//        setDescription(
+//                "This is a model of a bicycle. The body FBGA is a beam, but the " +
+//                "rest of the members are bars. You can select the joints D, C, and E by clicking on them. " +
+//                "Try solving the frame and the beam first, and then use the method of joints to complete the exercise.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.moment, " N*m");

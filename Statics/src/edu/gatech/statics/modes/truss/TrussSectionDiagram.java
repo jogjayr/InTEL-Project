@@ -39,6 +39,11 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         return currentCut;
     }
 
+    @Override
+    public String getName() {
+        return "Create Section";
+    }
+
     public TrussSectionDiagram() {
         super(null);
         sectionTool = new SectionTool();
@@ -131,8 +136,8 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         sectionTool.setEnabled(true);
         currentCut = null;
 
-        StaticsApplication.getApp().setDefaultAdvice("Click and drag to create a section");
-        StaticsApplication.getApp().resetAdvice();
+        StaticsApplication.getApp().setDefaultUIFeedback("Click and drag to create a section");
+        StaticsApplication.getApp().resetUIFeedback();
     }
 
     @Override
@@ -301,5 +306,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         // if the values are on opposite sides, they will have opposite signs,
         // and the product will be negative. Otherwise, the product will be positive.
         return distance1 * distance2 < 0;
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Create Section";
     }
 }

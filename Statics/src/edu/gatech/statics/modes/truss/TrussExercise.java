@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-public class TrussExercise extends OrdinaryExercise {
+abstract public class TrussExercise extends OrdinaryExercise {
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {

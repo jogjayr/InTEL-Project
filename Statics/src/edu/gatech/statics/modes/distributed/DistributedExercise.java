@@ -21,7 +21,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
  *
  * @author Calvin Ashmore
  */
-public class DistributedExercise extends OrdinaryExercise {
+abstract public class DistributedExercise extends OrdinaryExercise {
 
     //private Map<DistributedForce, DistributedDiagram> diagramMap = new HashMap();
     @Override

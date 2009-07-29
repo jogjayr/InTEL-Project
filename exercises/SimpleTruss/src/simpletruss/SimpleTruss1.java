@@ -7,6 +7,7 @@ package simpletruss;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
@@ -36,11 +37,22 @@ import java.util.Map;
 public class SimpleTruss1 extends TrussExercise {
 
     @Override
-    public void initExercise() {
-        setName("Simple Truss 1");
+    public Description getDescription() {
+        Description description = new Description();
 
-        setDescription(
-                "Solve for the tension and compression in each member.");
+        description.setTitle("Gambrel roof truss");
+        description.setGoals(
+                "Determine the tension or compression in each member.");
+
+        return description;
+    }
+
+    @Override
+    public void initExercise() {
+//        setName("Simple Truss 1");
+//
+//        setDescription(
+//                "Solve for the tension and compression in each member.");
 
         Unit.setSuffix(Unit.distance, " m");
         Unit.setSuffix(Unit.force, " kN");
@@ -85,7 +97,7 @@ public class SimpleTruss1 extends TrussExercise {
 
         List<PointBody> pointBodies = Arrays.asList(
                 new PointBody[]{Ab, Bb, Cb, Db, Eb, Fb, Gb, Hb});
-                //new PointBody[]{Ab, Bb, Db, Eb, Fb, Hb});
+        //new PointBody[]{Ab, Bb, Db, Eb, Fb, Hb});
         Map<Point, PointBody> pointBodyMap = new HashMap();
         pointBodyMap.put(A, Ab);
         pointBodyMap.put(B, Bb);

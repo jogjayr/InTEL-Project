@@ -9,6 +9,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
@@ -67,9 +68,32 @@ public class BridgeExercise extends TrussExercise {
     }
 
     @Override
+    public Description getDescription() {
+        Description description = new Description();
+
+        description.setTitle("Bridge");
+        //description.setGoals(""); // goals described in subclasses.
+
+        description.setNarrative(
+                "On August 1, 2007, the I-35W Mississippi River bridge in Minneapolis, " +
+                "Minnesota collapsed during rush hour. During its operation, it carried " +
+                "140,000 vehicles per day. This problem examines the bridge as a truss.");
+
+        description.setProblemStatement(
+                "This problem simplifies the truss by examining a 2D perspective of it. " +
+                "The bridge has symmetric loading, making it possible to analyze only one half of the structure. " +
+                "It is necessary to first identify the zero force members, and then continue to use " +
+                "either the method of sections or the method of joints to solve for the unknowns.");
+
+        return description;
+    }
+
+
+
+    @Override
     public void initExercise() {
-        setName("Bridge");
-        setDescription("Solve for tension or compression in all of the members");
+//        setName("Bridge");
+//        setDescription("Solve for tension or compression in all of the members");
 
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " kip*ft");

@@ -16,7 +16,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
  * process working with frames.
  * @author Calvin Ashmore
  */
-public class FrameExercise extends OrdinaryExercise {
+abstract public class FrameExercise extends OrdinaryExercise {
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {

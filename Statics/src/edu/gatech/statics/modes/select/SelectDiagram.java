@@ -27,6 +27,16 @@ public class SelectDiagram extends Diagram<SelectState> {
     }
 
     @Override
+    public String getName() {
+        return "Select";
+    }
+
+    @Override
+    public String getDescriptionText() {
+        return "Select a body to continue";
+    }
+
+    @Override
     protected List<SimulationObject> getBaseObjects() {
         return getSchematic().allObjects();
     }
@@ -139,8 +149,8 @@ public class SelectDiagram extends Diagram<SelectState> {
             obj.setDisplaySelected(getCurrentlySelected().contains(obj));
         }
 
-    //SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-    //modePanel.updateSelection();
+        //SelectModePanel modePanel = (SelectModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        //modePanel.updateSelection();
     }
 
     @Override
@@ -163,6 +173,10 @@ public class SelectDiagram extends Diagram<SelectState> {
                 selection.add((Body) obj);
             }
         }
+
+        // do not try to continue with an empty selection
+        if(selection.isEmpty())
+            return;
 
         BodySubset bodies = new BodySubset(selection);
 

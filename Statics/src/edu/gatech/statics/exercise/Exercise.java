@@ -14,6 +14,9 @@ import edu.gatech.statics.CoordinateSystem;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.state.ExerciseState;
+import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.DescriptionMode;
+import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
@@ -31,6 +34,12 @@ public abstract class Exercise {
     private DisplayConstants displayConstants;
     //private SymbolManager symbolManager;
     private ExerciseState state;
+
+    /**
+     * Create a description for this exercise. This method will only be called once.
+     * @return
+     */
+    public abstract Description getDescription();
 
     public int getCompletionStatus() {
         // 1: not started
@@ -90,6 +99,9 @@ public abstract class Exercise {
 
     public void addTask(Task task) {
         tasks.add(task);
+        for (TaskStatusListener taskStatusListener : taskListeners) {
+            taskStatusListener.tasksChanged();
+        }
     }
 
     /**
@@ -122,7 +134,6 @@ public abstract class Exercise {
     //public void lockSchematic() {
     //    schematic.lock();
     //}
-
     /**
      * This method is called when the user tries to submit the exercise.
      * Do nothing here, it should be overridden.
@@ -132,7 +143,7 @@ public abstract class Exercise {
     public void removeTaskListener(TaskStatusListener listener) {
         taskListeners.remove(listener);
     }
-    private String name = "Exercise";
+//    private String name = "Exercise";
     private String appletExerciseName = "";
     private int problemID;
 
@@ -156,42 +167,42 @@ public abstract class Exercise {
         this.problemID = problemID;
     }
 
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//    private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    private String description;
+//    public String getFullDescription() {
+//
+//        StringBuffer taskString = new StringBuffer();
+//        //taskString.append("<ol>");
+//        taskString.append("<br>");
+//        for (Task task : tasks) {
+//            //taskString.append("<li>");
+//            taskString.append("->");
+//            taskString.append("<b>").append(task.getDescription()).append("</b>");
+//            if (task.isSatisfied()) {
+//                taskString.append(": DONE!!");
+//            }
+//            taskString.append("<br/>");
+//            //taskString.append("</li>");
+//        }
+//        //taskString.append("</ol>");
+//
+//        return "<html><body>" +
+//                "<center><font size=\"6\">" + getName() + "</font></center>" +
+//                description + "<br/>" +
+//                taskString +
+//                "</body></html>";
+//    }
 
-    public String getFullDescription() {
-
-        StringBuffer taskString = new StringBuffer();
-        //taskString.append("<ol>");
-        taskString.append("<br>");
-        for (Task task : tasks) {
-            //taskString.append("<li>");
-            taskString.append("->");
-            taskString.append("<b>").append(task.getDescription()).append("</b>");
-            if (task.isSatisfied()) {
-                taskString.append(": DONE!!");
-            }
-            taskString.append("<br/>");
-        //taskString.append("</li>");
-        }
-        //taskString.append("</ol>");
-
-        return "<html><body>" +
-                "<center><font size=\"6\">" + getName() + "</font></center>" +
-                description + "<br/>" +
-                taskString +
-                "</body></html>";
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
     private Schematic schematic;
 
     public Schematic getSchematic() {
@@ -394,5 +405,42 @@ public abstract class Exercise {
     protected Texture loadTexture(String textureUrl, int minFilter, int maxFilter) {
         Texture texture = TextureManager.loadTexture(getClass().getClassLoader().getResource(textureUrl), minFilter, maxFilter);
         return texture;
+    }
+
+    public void loadDescriptionMode() {
+        DescriptionMode.instance.load();
+    }
+
+    /**
+     * This method retrieves the diagram that is appropriate to display when the given
+     * key and type are loaded. This does not actually load the diagram, just retrieves them,
+     * and in the case that no appropriate diagram exists, null is returned.
+     * This method exists because when the key is null, usually the select diagram should be returned,
+     * but not always. If the key is not null, this method returns getRecentDiagram(key)
+     * @param key
+     * @param type
+     * @return
+     */
+    public Diagram getAppropriateDiagram(DiagramKey key, DiagramType type) {
+        if (key == null) {
+            if (canSwitchToNullKeyDiagramType(type)) {
+                return getDiagram(key, type);
+            } else {
+                return getDiagram(null, SelectMode.instance.getDiagramType());
+            }
+        } else {
+            return getRecentDiagram(key);
+        }
+    }
+
+    /**
+     * This method only applies to diagram types who have null as a key.
+     * This typically permits the description and select modes, but other types may also be allowed.
+     * Subclasses of exercise must override this if they wish to include additional diagram types.
+     * @return
+     */
+    public boolean canSwitchToNullKeyDiagramType(DiagramType type) {
+        return type == DescriptionMode.instance.getDiagramType() ||
+                type == SelectMode.instance.getDiagramType();
     }
 }

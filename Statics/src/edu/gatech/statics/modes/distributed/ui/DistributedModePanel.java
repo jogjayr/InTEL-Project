@@ -34,7 +34,7 @@ public class DistributedModePanel extends ApplicationModePanel {
 
     public DistributedModePanel() {
 
-        getTitleLabel().setText("Find the Resultant");
+        //getTitleLabel().setText("Find the Resultant");
 
         BContainer mainContainer = new BContainer(new BorderLayout());
         add(mainContainer, BorderLayout.CENTER);
@@ -96,11 +96,11 @@ public class DistributedModePanel extends ApplicationModePanel {
         // check to see if the distributed check succeeds
         if (diagram.check(positionField.getText(), magnitudeField.getText())) {
             // distributed check is successful!
-            StaticsApplication.getApp().setAdviceKey("distributed_feedback_check_success");
+            StaticsApplication.getApp().setStaticsFeedbackKey("distributed_feedback_check_success");
             diagram.setSolved();
         } else {
             // should we give any more detailed feedback?
-            StaticsApplication.getApp().setAdviceKey("distributed_feedback_check_fail");
+            StaticsApplication.getApp().setStaticsFeedbackKey("distributed_feedback_check_fail");
         }
     }
 
@@ -128,10 +128,10 @@ public class DistributedModePanel extends ApplicationModePanel {
         stateChanged();
     }
 
-    @Override
-    protected ApplicationTab createTab() {
-        return new ApplicationTab("Resultant");
-    }
+//    @Override
+//    protected ApplicationTab createTab() {
+//        return new ApplicationTab("Resultant");
+//    }
 
     @Override
     public DiagramType getDiagramType() {

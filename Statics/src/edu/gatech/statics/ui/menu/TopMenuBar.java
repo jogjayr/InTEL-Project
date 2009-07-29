@@ -51,7 +51,7 @@ public class TopMenuBar extends AppWindow {
         //super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         super(new BorderLayout());
 
-        String titleString = Exercise.getExercise().getName();
+        String titleString = "";//Exercise.getExercise().getName();
         title = new BLabel(titleString, "main_title");
         title.setPreferredSize(getDisplay().getWidth(), -1);
         add(title, BorderLayout.NORTH);
@@ -126,9 +126,9 @@ public class TopMenuBar extends AppWindow {
 
         @Override
         protected void showPopupMenu() {
-            for (TitledDraggablePopupWindow window : InterfaceRoot.getInstance().getAllPopupWindows()) {
-                setChecked(window.getName(), window.isVisible());
-            }
+//            for (TitledDraggablePopupWindow window : InterfaceRoot.getInstance().getAllPopupWindows()) {
+//                setChecked(window.getName(), window.isVisible());
+//            }
             super.showPopupMenu();
         }
 

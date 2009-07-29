@@ -39,7 +39,7 @@ public class DistributedFBDChecker extends FBDChecker {
 
                     Logger.getLogger("Statics").info("check: not all Distributed loads are solved");
                     Logger.getLogger("Statics").info("check: FAILED");
-                    StaticsApplication.getApp().setAdviceKey("distributed_feedback_fbd_check_unsolved_loads");
+                    StaticsApplication.getApp().setStaticsFeedbackKey("distributed_feedback_fbd_check_unsolved_loads");
                     return false;
                 }
             }

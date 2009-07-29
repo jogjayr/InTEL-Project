@@ -13,6 +13,7 @@ import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.exercise.SimpleFBDExercise;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Force;
@@ -38,9 +39,21 @@ import java.math.BigDecimal;
 public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
     @Override
+    public Description getDescription() {
+        Description description = new Description();
+
+        description.setTitle("See Saw");
+        description.setNarrative("Two children are playing on a see saw.");
+
+        description.setGoals("Build a free body diagram of the see saw.");
+
+        return description;
+    }
+
+    @Override
     public void initExercise() {
-        setName("See Saw");
-        setDescription("Two children are on a see saw. Build a free body diagram of the see saw.");
+//        setName("See Saw");
+//        setDescription("Two children are on a see saw. Build a free body diagram of the see saw.");
 
         Unit.setPrecision(Unit.distance, 2);
     }
@@ -85,7 +98,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         child1Force.setName("girl");
         //this set is needed even though the name should be set in the constructor
         child2Force.setName("W");
-        
+
         DistanceMeasurement measure1 = new DistanceMeasurement(child1Point, base);
         DistanceMeasurement measure2 = new DistanceMeasurement(base, child2Point);
 
