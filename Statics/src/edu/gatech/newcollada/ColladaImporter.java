@@ -162,6 +162,7 @@ import com.jmex.model.collada.schema.trianglesType;
 import com.jmex.model.collada.schema.vertex_weightsType;
 import com.jmex.model.collada.schema.visual_sceneType;
 import com.jmex.model.collada.schema.collada_schema_1_4_1Doc;
+import com.jmex.xml.xml.XmlException;
 import java.util.logging.Logger;
 
 /**
@@ -364,7 +365,7 @@ public class ColladaImporter {
         return (LightNode) instance.resourceLibrary.get(id);
     }
 
-    public static Object get(Object id) {
+    public static Object get(String id) {
         return instance.resourceLibrary.get(id);
     }
 
@@ -784,16 +785,28 @@ public class ColladaImporter {
             l = new PointLight();
             l.setDiffuse(getLightColor(common.getpoint().getcolor()));
             l.setAttenuate(true);
-            l.setConstant(Float.parseFloat(common.getpoint().getconstant_attenuation().getValue().toString()));
-            l.setLinear(Float.parseFloat(common.getpoint().getlinear_attenuation().getValue().toString()));
-            l.setQuadratic(Float.parseFloat(common.getpoint().getquadratic_attenuation().getValue().toString()));
+            try {
+                l.setConstant(Float.parseFloat(common.getpoint().getconstant_attenuation().getValue().toString()));
+                l.setLinear(Float.parseFloat(common.getpoint().getlinear_attenuation().getValue().toString()));
+                l.setQuadratic(Float.parseFloat(common.getpoint().getquadratic_attenuation().getValue().toString()));
+            } catch (XmlException ex) {
+                l.setConstant(1);
+                l.setLinear(0);
+                l.setQuadratic(0);
+            }
         } else if (common.hasspot()) {
             l = new SpotLight();
             l.setDiffuse(getLightColor(common.getspot().getcolor()));
             l.setAttenuate(true);
-            l.setConstant(Float.parseFloat(common.getspot().getconstant_attenuation().getValue().toString()));
-            l.setLinear(Float.parseFloat(common.getspot().getlinear_attenuation().getValue().toString()));
-            l.setQuadratic(Float.parseFloat(common.getspot().getquadratic_attenuation().getValue().toString()));
+            try {
+                l.setConstant(Float.parseFloat(common.getspot().getconstant_attenuation().getValue().toString()));
+                l.setLinear(Float.parseFloat(common.getspot().getlinear_attenuation().getValue().toString()));
+                l.setQuadratic(Float.parseFloat(common.getspot().getquadratic_attenuation().getValue().toString()));
+            } catch (XmlException ex) {
+                l.setConstant(1);
+                l.setLinear(0);
+                l.setQuadratic(0);
+            }
             ((SpotLight) l).setAngle(Float.parseFloat(common.getspot().getfalloff_angle().getValue().toString()));
             ((SpotLight) l).setExponent(Float.parseFloat(common.getspot().getfalloff_exponent().getValue().toString()));
         }
@@ -951,7 +964,7 @@ public class ColladaImporter {
                             data[x] = floatArray[(16 * i) + x];
                         }
                         transforms[i].set(data, true); // collada matrices are
-                    // in row order.
+                        // in row order.
                     }
                     put(source.getid().toString(), transforms);
                 } else if ("ROTX.ANGLE".equals(p.getname().toString())) {
@@ -1819,14 +1832,14 @@ public class ColladaImporter {
 
             /*
             if (pass.getcolor_material().hasface()) {
-                String face = pass.getcolor_material().getface().getvalue2().toString();
-                if ("FRONT".equals(face)) {
-                    ms.setMaterialFace(MaterialState.MF_FRONT);
-                } else if ("BACK".equals(face)) {
-                    ms.setMaterialFace(MaterialState.MF_BACK);
-                } else if ("FRONT_AND_BACK".equals(face)) {
-                    ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
-                }
+            String face = pass.getcolor_material().getface().getvalue2().toString();
+            if ("FRONT".equals(face)) {
+            ms.setMaterialFace(MaterialState.MF_FRONT);
+            } else if ("BACK".equals(face)) {
+            ms.setMaterialFace(MaterialState.MF_BACK);
+            } else if ("FRONT_AND_BACK".equals(face)) {
+            ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
+            }
             }*/
             // Statics specific override:
             // all materials should be front and back materials:
@@ -2400,7 +2413,7 @@ public class ColladaImporter {
         }
         mat.setState(ms);
 
-    // Ignored: reflective attributes, transparent attributes
+        // Ignored: reflective attributes, transparent attributes
     }
 
     private float processTransparency(
@@ -2907,7 +2920,7 @@ public class ColladaImporter {
                     mesh.gettriangles().addinput(newInput);
                 }
             }
-        //mesh.getvertices().get
+            //mesh.getvertices().get
         }
 
         // determine what type of geometry this is, and use the
@@ -2949,10 +2962,10 @@ public class ColladaImporter {
 
             if (tri.getcount().intValue() == 0) {
                 continue;            // differentiate batchIndex from currentBatch as a loop index.
-            // batchIndex denotes the TrianglesBatch that is added to the jME TriMesh.
-            // currentBatch denotes the index of the trianglesType group from the COLLADA source
-            // since some exporters, *cough* MAYA *cough*, export some batches with 0 polygons,
-            // that cause all manner of chaos all over the place.
+                // batchIndex denotes the TrianglesBatch that is added to the jME TriMesh.
+                // currentBatch denotes the index of the trianglesType group from the COLLADA source
+                // since some exporters, *cough* MAYA *cough*, export some batches with 0 polygons,
+                // that cause all manner of chaos all over the place.
             }
             batchIndex++;
 
@@ -3499,15 +3512,21 @@ public class ColladaImporter {
                     FloatBuffer normBuffer = BufferUtils.createVector3Buffer(normCount);
 
                     int offset = poly.getinputAt(i).getoffset().intValue();
-                    for (int j = 0; j < offset; j++) {
-                        if (j % stride == 0) {
-                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
-                        }
-                        st.nextToken();
-                    }
+//                    for (int j = 0; j < offset; j++) {
+//                        if (j % stride == 0) {
+//                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+//                        }
+//                        st.nextToken();
+//                    }
                     for (int j = 0; j < normCount; j++) {
                         if (j % stride == 0) {
                             st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+
+                            // *** CHANGE MADE:
+                            // Instead of performing offset change outside of the loop, do this inside.
+                            for (int k = 0; k < offset; k++) {
+                                st.nextToken();
+                            }
                         }
                         int index = Integer.parseInt(st.nextToken());
                         if (index < v.length) {
@@ -3549,12 +3568,12 @@ public class ColladaImporter {
                     FloatBuffer texBuffer = BufferUtils.createVector2Buffer(texCount);
                     int offset = poly.getinputAt(i).getoffset().intValue();
                     int set = poly.getinputAt(i).getset().intValue();
-                    for (int j = 0; j < offset; j++) {
-                        if (j % stride == 0) {
-                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
-                        }
-                        st.nextToken();
-                    }
+//                    for (int j = 0; j < offset; j++) {
+//                        if (j % stride == 0) {
+//                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+//                        }
+//                        st.nextToken();
+//                    }
 
                     // Keep a max to set the wrap mode (if it's 1, clamp, if
                     // it's > 1 wrap it)
@@ -3565,6 +3584,12 @@ public class ColladaImporter {
                     for (int j = 0; j < texCount; j++) {
                         if (j % stride == 0) {
                             st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+
+                            // ******* CHANGE MADE:
+                            // perform offset compensation loop in here.
+                            for (int k = 0; k < offset; k++) {
+                                st.nextToken();
+                            }
                         }
 
                         int index = Integer.parseInt(st.nextToken());
