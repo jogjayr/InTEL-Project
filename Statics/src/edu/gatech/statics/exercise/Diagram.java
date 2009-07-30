@@ -73,9 +73,11 @@ public abstract class Diagram<StateType extends DiagramState> {
      * @return
      */
     public String getName() {
-        if(key != null)
+        if (key != null) {
             return key.toString();
-        else return "NONAME";
+        } else {
+            return "NONAME";
+        }
     }
 
     /**
@@ -422,10 +424,11 @@ public abstract class Diagram<StateType extends DiagramState> {
      * object representations.
      */
     public void update() {
-        
+
         // if the application is not loaded for whatever reason, do not update.
-        if(StaticsApplication.getApp() == null)
+        if (StaticsApplication.getApp() == null) {
             return;
+        }
 
         // first update all of the objects
         for (SimulationObject obj : allObjects) {
@@ -511,6 +514,12 @@ public abstract class Diagram<StateType extends DiagramState> {
                     }
                     Debugger.drawBounds(getNode(layer), r, true);
                 }
+
+                if (DisplayConstants.getInstance().getShowNormals()) {
+                    if (layer == RepresentationLayer.modelBodies) {
+                        Debugger.drawNormals(getNode(layer), r);
+                    }
+                }
             }
             r.clearZBuffer();
         }
@@ -555,7 +564,6 @@ public abstract class Diagram<StateType extends DiagramState> {
             obj.setDisplayGrayed(false);
         }
     }
-
 
     /**
      * Return a list of directions that make sense as snapping options for a

@@ -16,6 +16,7 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
+@Deprecated
 abstract class TopMenuItemChecked extends TopMenuItem {
 
     private Map<String, BrowseMenuItemChecked> items = new HashMap();

@@ -6,12 +6,16 @@ package viewer.ui;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationTab;
@@ -24,7 +28,7 @@ import viewer.ui.heirarchy.HeirarchyFrame;
  */
 public class ViewerModePanel extends ApplicationModePanel {
 
-    private BContainer itemContainer;
+    //private BContainer itemContainer;
     private HeirarchyFrame heirarchyFrame;
 
     public void setModel(ModelRepresentation rep) {
@@ -42,11 +46,28 @@ public class ViewerModePanel extends ApplicationModePanel {
 
         BContainer mainContainer = new BContainer(new BorderLayout());
 
-        GroupLayout itemLayout = GroupLayout.makeVert(GroupLayout.CENTER);
-        itemLayout.setOffAxisJustification(GroupLayout.LEFT);
-        itemContainer = new BContainer(itemLayout);
-        BScrollPane scrollPane = new BScrollPane(itemContainer);
-        mainContainer.add(scrollPane, BorderLayout.WEST);
+        BButton showNormalsButton = new BButton("Show Normals", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                DisplayConstants.getInstance().setShowNormals(!DisplayConstants.getInstance().getShowNormals());
+            }
+        }, "button");
+
+        BButton showBoundsButton = new BButton("Show Bounding", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                DisplayConstants.getInstance().setShowBoundingVolumes(!DisplayConstants.getInstance().getShowBoundingVolumes());
+            }
+        }, "button");
+
+        mainContainer.add(showNormalsButton, BorderLayout.NORTH);
+        mainContainer.add(showBoundsButton, BorderLayout.CENTER);
+
+        //GroupLayout itemLayout = GroupLayout.makeVert(GroupLayout.CENTER);
+        //itemLayout.setOffAxisJustification(GroupLayout.LEFT);
+        //itemContainer = new BContainer(itemLayout);
+        //BScrollPane scrollPane = new BScrollPane(itemContainer);
+        //mainContainer.add(scrollPane, BorderLayout.WEST);
 
         add(mainContainer, BorderLayout.CENTER);
     }
@@ -79,17 +100,16 @@ public class ViewerModePanel extends ApplicationModePanel {
         return new String(str);
     }
 
-    private void listNode(Node node, int depth) {
-        int i = 0;
-        for (Spatial child : node.getChildren()) {
-            itemContainer.add(new BLabel(makeSpacerString(depth) + " child (" + i + "): " + child.toString()));
-            if (child instanceof Node) {
-                listNode((Node) child, depth + 1);
-            }
-            i++;
-        }
-    }
-
+//    private void listNode(Node node, int depth) {
+//        int i = 0;
+//        for (Spatial child : node.getChildren()) {
+//            itemContainer.add(new BLabel(makeSpacerString(depth) + " child (" + i + "): " + child.toString()));
+//            if (child instanceof Node) {
+//                listNode((Node) child, depth + 1);
+//            }
+//            i++;
+//        }
+//    }
 //    @Override
 //    protected ApplicationTab createTab() {
 //        return new ApplicationTab("Viewer");

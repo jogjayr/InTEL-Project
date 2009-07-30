@@ -70,7 +70,8 @@ public class BodySubset implements DiagramKey {
 
     @Override
     public String toString() {
-        return bodies.toString();
+        return toStringPretty();
+        //return bodies.toString();
     }
 
     /**

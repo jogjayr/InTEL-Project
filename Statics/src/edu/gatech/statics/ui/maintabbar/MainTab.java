@@ -6,6 +6,7 @@ package edu.gatech.statics.ui.maintabbar;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
+import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
@@ -36,9 +37,20 @@ public class MainTab extends BContainer {
                 onClicked();
             }
         }, "clickTab");
+
         add(label, BorderLayout.CENTER);
 
         updateLabel(diagram);
+    }
+
+    void onActivated() {
+        // disable button,
+        // change style (color?)
+    }
+
+    void onDeactivated() {
+        // enable button
+        // change style
     }
 
     private void onClicked() {
@@ -49,13 +61,19 @@ public class MainTab extends BContainer {
         updateLabel(diagram);
     }
 
-    private void updateLabel(Diagram diagram) {
+    void updateLabel(Diagram diagram) {
 
         label.setText(diagram.getName());
+        setBackground(new TintedBackground(MainTabBar.getTabColor(diagram)));
+        label.setColor(MainTabBar.getTextColor(diagram));
         //label.setText(diagram.toString());
     }
 
     DiagramKey getDiagramKey() {
         return diagramKey;
+    }
+
+    DiagramType getDiagramType() {
+        return diagramType;
     }
 }

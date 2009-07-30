@@ -29,6 +29,7 @@ public class PurseExerciseGraded extends PurseExercise {
 
         getState().setParameter("handPoint", -17 + (float) rand.nextInt(20) / 10 - 1);
         getState().setParameter("tendonAnchorB", 13 + (float) rand.nextInt(20) / 10);
+        //getState().setParameter("tendonAnchorB", 15f);
         getState().setParameter("tendonAnchorD", 13 + (float) rand.nextInt(20) / 10 - 1);
         getState().setParameter("shoulderHeight", 16 + -(float) rand.nextInt(10) / 10);
         getState().setParameter("forearmWeight", 9 + (float) rand.nextInt(20) / 10 - 1);

@@ -16,6 +16,7 @@ import java.util.List;
  * Also has facility for hover coloring and updates.
  * @author Calvin Ashmore
  */
+@Deprecated
 public class BrowsePopupMenu extends BPopupMenu {
 
     private BComponent parentComponent;

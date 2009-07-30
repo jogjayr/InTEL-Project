@@ -10,6 +10,7 @@ import com.jmex.bui.event.MouseEvent;
  * An item to go in a BrowsePopupMenu
  * @author Calvin Ashmore
  */
+@Deprecated
 public class BrowseMenuItem extends BMenuItem {
     
     private ColorRGBA hoverColor;

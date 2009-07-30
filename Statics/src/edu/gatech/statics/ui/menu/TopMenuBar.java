@@ -9,10 +9,8 @@ import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.DisplayGroup;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.ui.AppWindow;
 import edu.gatech.statics.ui.InterfaceRoot;
-import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import java.util.List;
 
 /**
@@ -20,6 +18,7 @@ import java.util.List;
  * exercise interaction, view controls, and the popup windows.
  * @author Calvin Ashmore
  */
+@Deprecated
 public class TopMenuBar extends AppWindow {
 
     private BLabel title;

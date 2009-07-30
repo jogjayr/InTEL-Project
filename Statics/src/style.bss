@@ -104,30 +104,30 @@ advice_box {
 }
 
 main_title {
-    background: solid #292a67;
+    background: solid #0d5acc;
     color: #ffffff;
     font: "Dialog" bold 20;
-    padding: 5 5 5 5;
+    //padding: 5 5 5 5;
 }
 
-menu_background {
-    background: solid #99a2e5;
-    padding: 1;
-}
 
-menu_title_base {
-    background: solid #3d449b;
-    color: #ffffff;
-    font: "Dialog" bold 16;
-    padding: 2 2 2 2;
-}
 
-menu_item_base {
-    background: solid #5e65ad;
-    color: #ffffff;
-    font: "Dialog" plain 16;
-    padding: 2 2 2 2;
-}
+//menu_background {
+//    background: solid #99a2e5;
+//    padding: 1;
+//}
+//menu_title_base {
+//    background: solid #3d449b;
+//    color: #ffffff;
+//    font: "Dialog" bold 16;
+//    padding: 2 2 2 2;
+//}
+//menu_item_base {
+//    background: solid #5e65ad;
+//    color: #ffffff;
+//    font: "Dialog" plain 16;
+//    padding: 2 2 2 2;
+//}
 
 draggable_title {
     background: solid #3d449b;

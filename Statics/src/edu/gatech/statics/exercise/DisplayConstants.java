@@ -11,6 +11,7 @@ package edu.gatech.statics.exercise;
  * @author Jimmy Truesdell
  */
 public class DisplayConstants {
+
     private static DisplayConstants instance;
     //private float jointSize = 0.2f; // use pointSize instead
     private float measurementBarSize = 0.1f;
@@ -23,8 +24,8 @@ public class DisplayConstants {
     private float distributedLabelMultiplier = 5f;
     private float distributedArrowSize = 1f;
     private float momentCircleRadius = 2f;
-
     private boolean showBoundingVolumes = false;
+    private boolean showNormals = false;
 
     public static DisplayConstants getInstance() {
         return instance;
@@ -39,16 +40,15 @@ public class DisplayConstants {
 
 
     /*public void setDrawScale(float value) {
-        forceLabelDistance = value;
-        cylinderRadius = value;
-        forceSize = value;
-        pointSize = value;
-        momentSize = value;
-        measurementBarSize = value;
-        momentLabelDistance = value;
-        jointSize = value;
+    forceLabelDistance = value;
+    cylinderRadius = value;
+    forceSize = value;
+    pointSize = value;
+    momentSize = value;
+    measurementBarSize = value;
+    momentLabelDistance = value;
+    jointSize = value;
     }*/
-
     public boolean getShowBoundingVolumes() {
         return showBoundingVolumes;
     }
@@ -60,7 +60,19 @@ public class DisplayConstants {
     public void setShowBoundingVolumes(boolean showBoundingVolumes) {
         this.showBoundingVolumes = showBoundingVolumes;
     }
-    
+
+    public boolean getShowNormals() {
+        return showNormals;
+    }
+
+    /**
+     * whether to show the normals or not
+     * @param showNormals
+     */
+    public void setShowNormals(boolean showNormals) {
+        this.showNormals = showNormals;
+    }
+
     public float getMomentCircleRadius() {
         return momentCircleRadius;
     }
@@ -192,16 +204,15 @@ public class DisplayConstants {
     public float getMeasurementBarSize() {
         return measurementBarSize;
     }
-
     /**
      * Sets the scale of a Connector's representation. Used in ConnectorRepresentation.
      * @param value
      */
     /*public void setJointSize(float value) {
-        jointSize = value;
+    jointSize = value;
     }
 
     public float getJointSize() {
-        return jointSize;
+    return jointSize;
     }*/
 }

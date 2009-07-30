@@ -3427,7 +3427,10 @@ public class ColladaImporter {
                     maxOffset = temp;
                 }
             }
-            int stride = maxOffset + 1;
+            // ****** CHANGE: Stride is calculated incorrectly.
+            // Stride means the # of vertices per polygon, but this is not the correct means
+            // for calculation
+            //int stride = maxOffset + 1;
 
             // next build the other buffers, based on the input semantic
             for (int i = 0; i < poly.getinputCount(); i++) {
@@ -3456,13 +3459,19 @@ public class ColladaImporter {
                     Vector3f[] v = (Vector3f[]) data;
 
                     StringTokenizer st = null;
-                    int vertCount = poly.getcount().intValue() * stride;
+                    //int vertCount = poly.getcount().intValue() * stride;
+                    int vertCount = poly.getcount().intValue() * 3; // **** FIXME: this is hard coded for triangles!!!
                     FloatBuffer vertBuffer = BufferUtils.createVector3Buffer(vertCount);
                     triBatch.setVertexCount(vertCount);
+                    int polygon = 0;
                     for (int j = 0; j < vertCount; j++) {
-                        if (j % stride == 0) {
-                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+                        if (st == null || !st.hasMoreTokens()) {
+                            st = new StringTokenizer(poly.getpAt(polygon).getValue());
+                            polygon++;
                         }
+//                        if (j % stride == 0) {
+//                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+//                        }
 
                         // need to store the index in p to what j is for later
                         // processing the index to the vert for bones
@@ -3508,7 +3517,8 @@ public class ColladaImporter {
                     Vector3f[] v = (Vector3f[]) data;
 
                     StringTokenizer st = null;
-                    int normCount = poly.getcount().intValue() * stride;
+                    //int normCount = poly.getcount().intValue() * stride;
+                    int normCount = poly.getcount().intValue() * 3; // **** FIXME: this is hard coded for triangles!!!
                     FloatBuffer normBuffer = BufferUtils.createVector3Buffer(normCount);
 
                     int offset = poly.getinputAt(i).getoffset().intValue();
@@ -3518,9 +3528,11 @@ public class ColladaImporter {
 //                        }
 //                        st.nextToken();
 //                    }
+                    int polygon = 0;
                     for (int j = 0; j < normCount; j++) {
-                        if (j % stride == 0) {
-                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+                        if (st == null || !st.hasMoreTokens()) {
+                            st = new StringTokenizer(poly.getpAt(polygon).getValue());
+                            polygon++;
 
                             // *** CHANGE MADE:
                             // Instead of performing offset change outside of the loop, do this inside.
@@ -3564,7 +3576,8 @@ public class ColladaImporter {
 
                     Vector3f[] v = (Vector3f[]) data;
                     StringTokenizer st = new StringTokenizer(poly.getp().getValue());
-                    int texCount = poly.getcount().intValue() * stride;
+                    //int texCount = poly.getcount().intValue() * stride;
+                    int texCount = poly.getcount().intValue() * 3; // ****** FIXME: This is hardcoded for triangles
                     FloatBuffer texBuffer = BufferUtils.createVector2Buffer(texCount);
                     int offset = poly.getinputAt(i).getoffset().intValue();
                     int set = poly.getinputAt(i).getset().intValue();
@@ -3580,10 +3593,12 @@ public class ColladaImporter {
                     float maxX = -1;
                     float maxY = -1;
 
+                    int polygon = 0;
                     Vector2f tempTexCoord = new Vector2f();
                     for (int j = 0; j < texCount; j++) {
-                        if (j % stride == 0) {
-                            st = new StringTokenizer(poly.getpAt(j / stride).getValue());
+                        if (st == null || !st.hasMoreTokens()) {
+                            st = new StringTokenizer(poly.getpAt(polygon).getValue());
+                            polygon++;
 
                             // ******* CHANGE MADE:
                             // perform offset compensation loop in here.
@@ -3593,17 +3608,24 @@ public class ColladaImporter {
                         }
 
                         int index = Integer.parseInt(st.nextToken());
-                        Vector3f value = v[index];
-                        if (value.x > maxX) {
-                            maxX = value.x;
-                        }
+                        if (index >= 0) {
+                            // handle normal UV coords
+                            Vector3f value = v[index];
+                            if (value.x > maxX) {
+                                maxX = value.x;
+                            }
 
-                        if (value.y > maxY) {
-                            maxY = value.y;
-                        }
+                            if (value.y > maxY) {
+                                maxY = value.y;
+                            }
 
-                        tempTexCoord.set(value.x, value.y);
-                        BufferUtils.setInBuffer(tempTexCoord, texBuffer, j);
+                            tempTexCoord.set(value.x, value.y);
+                            BufferUtils.setInBuffer(tempTexCoord, texBuffer, j);
+                        } else {
+                            // handle -1 UV coords, this is usually when the polygon has several UV layers
+                            tempTexCoord.set(0, 0);
+                            BufferUtils.setInBuffer(tempTexCoord, texBuffer, j);
+                        }
                         for (int k = 0; k < maxOffset; k++) {
                             if (st.hasMoreTokens()) {
                                 st.nextToken();

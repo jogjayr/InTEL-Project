@@ -1,7 +1,5 @@
 package edu.gatech.statics.ui.menu;
 
-import edu.gatech.statics.ui.menu.BrowseMenuItem;
-import edu.gatech.statics.ui.menu.BrowsePopupMenu;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BWindow;
@@ -13,6 +11,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 abstract class TopMenuItem extends BLabel {
     
     private static final ColorRGBA MENU_ITEM_BASE_BG = new ColorRGBA(0x5e/255f, 0x65/255f, 0xad/255f, 1);
