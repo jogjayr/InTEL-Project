@@ -14,13 +14,13 @@ import com.jmex.bui.layout.BorderLayout;
  *
  * @author Calvin Ashmore
  */
-public class CollapsibleSideWindow extends BContainer {
+public class SidebarWindow extends BContainer {
 
     private BContainer titleContainer;
     private BLabel titleLabel;
     private BContainer contentContainer;
 
-    public CollapsibleSideWindow(BLayoutManager layout, String title) {
+    public SidebarWindow(BLayoutManager layout, String title) {
         //super(InterfaceRoot.getInstance().getMenuBar(), new BorderLayout());
         super(new BorderLayout());
 
@@ -48,6 +48,7 @@ public class CollapsibleSideWindow extends BContainer {
 //        titleContainer.add(closeButton, BorderLayout.EAST);
 
         contentContainer = new BContainer(layout);
+        contentContainer.setStyleClass("translucent_container");
 
         BScrollPane contentScrollPane = new BScrollPane(contentContainer);
         contentScrollPane.setShowScrollbarAlways(false);

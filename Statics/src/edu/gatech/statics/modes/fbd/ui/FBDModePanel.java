@@ -15,7 +15,7 @@ import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import edu.gatech.statics.ui.components.NextButton;
 
 /**
  *
@@ -39,10 +39,10 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
 
         CheckListener listener = new CheckListener();
 
-        checkButton = new BButton("Check", listener, "check");
+        checkButton = new NextButton("Check", listener, "check");
         resetButton = new BButton("Reset", listener, "reset");
-        checkButton.setStyleClass("circle_button");
-        resetButton.setStyleClass("circle_button");
+        //checkButton.setStyleClass("circle_button");
+        //resetButton.setStyleClass("circle_button");
         checkContainer.add(checkButton);
         checkContainer.add(resetButton);
 

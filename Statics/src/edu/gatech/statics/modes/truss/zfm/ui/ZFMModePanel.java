@@ -12,13 +12,11 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
 import edu.gatech.statics.modes.truss.zfm.ZFMMode;
-import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import edu.gatech.statics.ui.components.NextButton;
 import java.util.List;
 
 /**
@@ -35,8 +33,8 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         //getTitleLabel().setText("Identify Zero Force Members");
 
         selectionListBox = new BContainer(new BorderLayout());
-        checkButton = new BButton("Check", new ButtonListener(), "check");
-        checkButton.setStyleClass("circle_button");
+        checkButton = new NextButton("Check", new ButtonListener(), "check");
+        //checkButton.setStyleClass("circle_button");
         checkButton.setEnabled(true);
 
         selectionListBox.setPreferredSize(300, -1);

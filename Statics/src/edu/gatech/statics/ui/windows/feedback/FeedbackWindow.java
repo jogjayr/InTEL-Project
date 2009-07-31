@@ -23,13 +23,14 @@ import edu.gatech.statics.util.DiagramListener;
  */
 public class FeedbackWindow extends AppWindow {
 
-    public static final int WIDTH = 150;
+    public static final int WIDTH = 200;
     private HTMLView view;
 
     public FeedbackWindow() {
         super(new BorderLayout());
 
         BContainer header = new BContainer(new BorderLayout());
+        header.setStyleClass("draggable_title");
 
         BLabel title = new BLabel("Feedback");
         header.add(title, BorderLayout.CENTER);
@@ -44,10 +45,16 @@ public class FeedbackWindow extends AppWindow {
 
         add(header, BorderLayout.NORTH);
 
-        view = new HTMLView();
-        add(view, BorderLayout.CENTER);
+        BContainer body = new BContainer(new BorderLayout());
+        body.setStyleClass("application_bar");
 
-        setStyleClass("advice_box");
+        view = new HTMLView();
+        //add(view, BorderLayout.CENTER);
+        body.add(view, BorderLayout.CENTER);
+        add(body, BorderLayout.CENTER);
+        view.setStyleClass("advice_box");
+
+        //setStyleClass("advice_box");
         //setVisible(false);
 
         // close when the diagram changes
@@ -82,9 +89,9 @@ public class FeedbackWindow extends AppWindow {
         //view.setPreferredSize(WIDTH, preferredSize2.height);
         //System.out.println("HEIGHT: "+preferredSize.height);
 
-        //setPreferredSize(WIDTH, -1);
-        int height = InterfaceRoot.getInstance().getApplicationBar().getHeight();
-        setPreferredSize(WIDTH, height);
+        setPreferredSize(WIDTH, -1);
+        //int height = InterfaceRoot.getInstance().getApplicationBar().getHeight();
+        //setPreferredSize(WIDTH, height);
         pack();
     }
 }

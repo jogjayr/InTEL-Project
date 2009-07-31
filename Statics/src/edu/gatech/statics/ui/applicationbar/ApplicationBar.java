@@ -178,7 +178,8 @@ public class ApplicationBar extends BWindow {
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);
 
-        mainBar.setStyleClass("application_bar");
+        //mainBar.setStyleClass("application_bar");
+        setStyleClass("application_bar");
 
         // NO PREFERRED SIZE NOW
         //setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);

@@ -18,6 +18,7 @@ import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.components.NextButton;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +36,9 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
         super();
 
         selectionListBox = new BContainer(new BorderLayout());
-        nextButton = new BButton("Done", new ButtonListener(), "done");
-        nextButton.setStyleClass("circle_button");
+        nextButton = new NextButton(
+                "Create", new ButtonListener(), "done");
+        //nextButton.setStyleClass("circle_button");
         //nextButton.setEnabled(false);
         //nextButton.setVisible(false);
 

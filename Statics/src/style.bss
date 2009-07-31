@@ -48,9 +48,11 @@ window {
 
 
 application_bar {
-    background: solid #000000;
+    //background: solid #000000;
+    background: solid #00455f;
     color: #ffffff;
     padding: 5;
+    border: 1 solid #000000;
 }
 
 application_bar_contents {
@@ -58,14 +60,14 @@ application_bar_contents {
     padding: 2;
 }
 
-application_tab {
-    // background and text color are just defaults here, they are replaced in code
-    background: solid #e9e9f4;
-    color: #000000;
-    padding: 2;
-    font: "Dialog" bold 16;
-    border: 2 solid #000000;
-}
+//application_tab {
+//    // background and text color are just defaults here, they are replaced in code
+//    background: solid #e9e9f4;
+//    color: #000000;
+//    padding: 2;
+//    font: "Dialog" bold 16;
+//    border: 2 solid #000000;
+//}
 
 application_popup {
     background: solid #ffffff;
@@ -130,10 +132,17 @@ main_title {
 //}
 
 draggable_title {
-    background: solid #3d449b;
+    //background: solid #3d449b;
+    background: solid #0d5acc;
     color: #ffffff;
     font: "Dialog" bold 16;
     padding: 2 2 2 2;
+}
+
+translucent_container {
+    background: solid #ffffffcc;
+    border: 1 solid #000000;
+    padding: 5 5 5 5;
 }
 
 content_container {
@@ -219,6 +228,7 @@ button:selected {
   padding: 4 4 2 6;
 }
 
+/*
 circle_button {
   background: image "rsrc/interfaceTextures/circleButton/circle_up.png" centerxy;
   padding: 5 5;
@@ -269,6 +279,7 @@ smallcircle_button:down {
   background: image "rsrc/interfaceTextures/circleButton/circleSmall_down.png" centerxy;
   color: #000000;
 }
+*/
 
 combobox {
   background: image "rsrc/interfaceTextures/button_up.png" framexy;

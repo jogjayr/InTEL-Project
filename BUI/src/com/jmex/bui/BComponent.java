@@ -294,7 +294,6 @@ public class BComponent {
         }
         _borders[state] = border;
     }
-    
 
     /**
      * A shorthhand for setting all of the borders on this component.
@@ -311,6 +310,10 @@ public class BComponent {
     public BBackground getBackground() {
         BBackground background = _backgrounds[getState()];
         return (background != null) ? background : _backgrounds[DEFAULT];
+    }
+
+    public BBackground getBackground(int state) {
+        return _backgrounds[state];
     }
 
     /**
@@ -709,7 +712,7 @@ public class BComponent {
 
         // dispatch this event to our listeners
         if (_listeners != null) {
-            for (int ii = 0,  ll = _listeners.size(); ii < ll; ii++) {
+            for (int ii = 0, ll = _listeners.size(); ii < ll; ii++) {
                 event.dispatch(_listeners.get(ii));
             }
         }
@@ -727,7 +730,7 @@ public class BComponent {
      * changing size.
      */
     protected void layout() {
-    // we have nothing to do by default
+        // we have nothing to do by default
     }
 
     /**
@@ -775,7 +778,7 @@ public class BComponent {
         }
         for (int ii = 0; ii < getStateCount(); ii++) {
             //if (_colors[ii] == null) {
-                _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
+            _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
             //}
             if (_insets[ii] == null) {
                 _insets[ii] = style.getInsets(this, getStatePseudoClass(ii));
@@ -1022,12 +1025,12 @@ public class BComponent {
     protected BContainer _parent;
     protected String _styleClass;
     protected Dimension _preferredSize;
-    protected int _x,  _y,  _width,  _height;
+    protected int _x, _y, _width, _height;
     protected ArrayList<ComponentListener> _listeners;
     protected HashMap<String, Object> _properties;
     protected String _tiptext;
     protected boolean _tipmouse;
-    protected boolean _valid,  _enabled = true,  _visible = true,  _hover;
+    protected boolean _valid, _enabled = true, _visible = true, _hover;
     protected float _alpha = 1f;
     protected ColorRGBA[] _colors = new ColorRGBA[getStateCount()];
     protected Insets[] _insets = new Insets[getStateCount()];

@@ -18,7 +18,7 @@ import edu.gatech.statics.modes.distributed.DistributedDiagram;
 import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.modes.distributed.DistributedState;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.applicationbar.ApplicationTab;
+import edu.gatech.statics.ui.components.NextButton;
 
 /**
  *
@@ -46,8 +46,8 @@ public class DistributedModePanel extends ApplicationModePanel {
             }
         };
 
-        checkButton = new BButton("Check", listener, "check");
-        checkButton.setStyleClass("circle_button");
+        checkButton = new NextButton("Check", listener, "check");
+        //checkButton.setStyleClass("circle_button");
         mainContainer.add(checkButton, BorderLayout.EAST);
 
         BContainer equationContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));

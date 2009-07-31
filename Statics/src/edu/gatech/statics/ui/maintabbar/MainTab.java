@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.ui.maintabbar;
 
+import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.background.TintedBackground;
@@ -14,6 +15,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.ui.components.ChromaButton;
 
 /**
  *
@@ -24,21 +26,25 @@ public class MainTab extends BContainer {
     private final DiagramKey diagramKey;
     private DiagramType diagramType; // this is the type of the diagram when the tab has been created.
     // The type of the active diagram corresponding to this key may change over time, though.
-    private BButton label;
+    private ChromaButton button;
 
     public MainTab(Diagram diagram) {
         super(new BorderLayout());
         this.diagramKey = diagram.getKey();
         this.diagramType = diagram.getType();
 
-        label = new BButton("", new ActionListener() {
+        button = new ChromaButton(
+                "rsrc/interfaceTextures/button",
+                null, "",
+                new ActionListener() {
 
-            public void actionPerformed(ActionEvent event) {
-                onClicked();
-            }
-        }, "clickTab");
+                    public void actionPerformed(ActionEvent event) {
+                        onClicked();
+                    }
+                },
+                "clickTab");
 
-        add(label, BorderLayout.CENTER);
+        add(button, BorderLayout.CENTER);
 
         updateLabel(diagram);
     }
@@ -63,9 +69,10 @@ public class MainTab extends BContainer {
 
     void updateLabel(Diagram diagram) {
 
-        label.setText(diagram.getName());
-        setBackground(new TintedBackground(MainTabBar.getTabColor(diagram)));
-        label.setColor(MainTabBar.getTextColor(diagram));
+        button.setText(diagram.getName());
+        //setBackground(new TintedBackground(MainTabBar.getTabColor(diagram)));
+        button.setChroma(MainTabBar.getTabColor(diagram));
+        button.setColor(MainTabBar.getTextColor(diagram));
         //label.setText(diagram.toString());
     }
 

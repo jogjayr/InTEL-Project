@@ -19,7 +19,7 @@ public class Sidebar extends AppWindow {
         super(GroupLayout.makeVert(GroupLayout.TOP));
     }
 
-    public void addWindow(CollapsibleSideWindow window) {
+    public void addWindow(SidebarWindow window) {
         add(window);
         window.setSize(WIDTH, -1);
     }
