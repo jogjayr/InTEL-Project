@@ -23,15 +23,14 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
-import edu.gatech.statics.modes.equation.actions.LockEquation;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
-import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.bodies.TwoForceMember;
+import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.io.IOException;
@@ -49,13 +48,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     public static final String panelName = "equation";
     private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
     private BContainer equationBarContainer;
-    private BContainer equationButtonContainer;
+    //private BContainer equationButtonContainer;
     private BContainer solutionContainer;
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
     //private BButton momentSelectButton;
-    private static final ColorRGBA regularBackgroundColor = ColorRGBA.black;
-    private static final ColorRGBA regularBorderColor = ColorRGBA.black;
+    private static final ColorRGBA regularBackgroundColor = new ColorRGBA(0, 69f / 255, 95f / 255, 1); //ColorRGBA.black;
+    //private static final ColorRGBA regularBorderColor = ColorRGBA.darkGray;
     private static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
     private static final ColorRGBA activeBorderColor = ColorRGBA.white;
 
@@ -106,8 +105,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }
-    // see if anything in the worksheet is present that is not present in uiMap.keySet()
-    // then, add new bar, and equationuidata
+        // see if anything in the worksheet is present that is not present in uiMap.keySet()
+        // then, add new bar, and equationuidata
     }
 
     public EquationBar getActiveEquation() {
@@ -117,7 +116,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     private void setActiveEquation(EquationBar bar) {
         if (activeEquation != null) {
             activeEquation.setBackground(new TintedBackground(regularBackgroundColor));
-            activeEquation.setBorder(new LineBorder(regularBorderColor));
+            //activeEquation.setBorder(new LineBorder(regularBorderColor));
+            activeEquation.setBorder(null);
         }
         this.activeEquation = bar;
         activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
@@ -139,8 +139,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         fullEquationContainer.add(equationScrollPane, BorderLayout.CENTER);
 
 
-        equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
-        fullEquationContainer.add(equationButtonContainer, BorderLayout.WEST);
+//        equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+//        fullEquationContainer.add(equationButtonContainer, BorderLayout.WEST);
 
         // the solution container is to the right of the mode panel, and 
         // will contain the solution to the equations.
@@ -159,24 +159,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         equationScrollPane.layout();
     }
 
-    private void addEquationRow(EquationMath math) {
-        final EquationUIData data = new EquationUIData();
+    private void addEquationData(EquationMath math, final EquationUIData data) {
 
-        if (math instanceof TermEquationMath) {
-            data.equationBar = new TermEquationBar(math, this);
-        } else {
-            throw new IllegalArgumentException("Unknown math type! " + math);
-        }
-
-
-
-        data.checkButton = new BButton("check", new ActionListener() {
-
-            public void actionPerformed(ActionEvent event) {
-                check(data.equationBar);
-            }
-        }, "check");
-        data.checkButton.setStyleClass("smallcircle_button");
+        //data.checkButton.setStyleClass("smallcircle_button");
 
         data.equationBar.addListener(new MouseAdapter() {
 
@@ -186,8 +171,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             }
         });
 
-        equationBarContainer.add(data.equationBar);
-        equationButtonContainer.add(data.checkButton);
+        //equationBarContainer.add(data.equationBar);
+        //equationButtonContainer.add(data.checkButton);
+
+        BContainer barAndButtonContainer = new BContainer(new BorderLayout(5, 0));
+        barAndButtonContainer.add(data.checkButton, BorderLayout.WEST);
+        barAndButtonContainer.add(data.equationBar, BorderLayout.CENTER);
+        equationBarContainer.add(barAndButtonContainer);
 
         uiMap.put(math, data);
 
@@ -196,79 +186,53 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             setCheckIcon(data.equationBar);
         }
 
-        if (getDiagram().getBodySubset().getBodies().size() == 1) {
-            for (Body b : getDiagram().getBodySubset().getBodies()) {
-                if (b instanceof TwoForceMember) {
-//                    getDiagram().equationSolved();
-
-                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
-                    getDiagram().performAction(lockEquationAction);
-
-                    data.equationBar.setLocked();
-                    setCheckIcon(data.equationBar);
-                }
-            }
-        }
+        // perform a special check for two force members
+        // currently, two force member diagrams are not allowed, so this is commented
+//        if (getDiagram().getBodySubset().getBodies().size() == 1) {
+//            for (Body b : getDiagram().getBodySubset().getBodies()) {
+//                if (b instanceof TwoForceMember) {
+////                    getDiagram().equationSolved();
+//
+//                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
+//                    getDiagram().performAction(lockEquationAction);
+//
+//                    data.equationBar.setLocked();
+//                    setCheckIcon(data.equationBar);
+//                }
+//            }
+//        }
 
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
     }
 
-    private void addArbitraryEquationRow(EquationMath math) {
+    private void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
-        if (math instanceof ArbitraryEquationMath) {
-            data.equationBar = new ArbitraryEquationBar(math, this);
-        } else {
-            throw new IllegalArgumentException("Unknown math type! " + math);
-        }
-
+        data.equationBar = new TermEquationBar(math, this);
         data.checkButton = new BButton("check", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
                 check(data.equationBar);
             }
         }, "check");
-        data.checkButton.setStyleClass("smallcircle_button");
 
-        data.equationBar.addListener(new MouseAdapter() {
+        addEquationData(math, data);
+    }
 
-            @Override
-            public void mousePressed(MouseEvent event) {
-                setActiveEquation(data.equationBar);
+    private void addArbitraryEquationRow(ArbitraryEquationMath math) {
+        final EquationUIData data = new EquationUIData();
+
+        data.equationBar = new ArbitraryEquationBar(math, this);
+        data.checkButton = new BButton("check", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                check(data.equationBar);
             }
-        });
+        }, "check");
 
-        equationBarContainer.add(data.equationBar);
-        equationButtonContainer.add(data.checkButton);
-//        equationScrollPane.setSize(equationScrollPane.getWidth(), equationBarContainer.getHeight());
-//        refreshRows();
-
-        uiMap.put(math, data);
-
-//        if(math.isLocked()) {
-//            data.equationBar.setLocked();
-//            setCheckIcon(data.equationBar);
-//        }
-
-        if (getDiagram().getBodySubset().getBodies().size() == 1) {
-            for (Body b : getDiagram().getBodySubset().getBodies()) {
-                if (b instanceof TwoForceMember) {
-//                    getDiagram().equationSolved();
-
-                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
-                    getDiagram().performAction(lockEquationAction);
-
-                    data.equationBar.setLocked();
-                    setCheckIcon(data.equationBar);
-                }
-            }
-        }
-
-        if (uiMap.size() == 1) {
-            setActiveEquation(data.equationBar);
-        }
+        addEquationData(math, data);
     }
 
     private void addRowCreator() {
@@ -367,6 +331,19 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+    /**
+     * Only add the row creator if there are contact points in this diagram.
+     * @return
+     */
+    private boolean shouldAddRowCreator() {
+        for (SimulationObject obj : getDiagram().allObjects()) {
+            if (obj instanceof ContactPoint) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class EquationUIData {
 
         public EquationBar equationBar;
@@ -378,14 +355,13 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 //    protected ApplicationTab createTab() {
 //        return new ApplicationTab("Solve");
 //    }
-
     private void clear() {
         for (EquationUIData eqdata : uiMap.values()) {
             eqdata.equationBar.clear();
         }
 
         equationBarContainer.removeAll();
-        equationButtonContainer.removeAll();
+        //equationButtonContainer.removeAll();
         solutionContainer.removeAll();
         uiMap.clear();
     }
@@ -408,10 +384,19 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
         for (String mathName : diagram.getWorksheet().getEquationNames()) {
             EquationMath math = diagram.getWorksheet().getMath(mathName);
-            addEquationRow(math);
+            if (math instanceof TermEquationMath) {
+                addTermEquationRow((TermEquationMath) math);
+            } else if (math instanceof ArbitraryEquationMath) {
+                addArbitraryEquationRow((ArbitraryEquationMath) math);
+            } else {
+                throw new IllegalArgumentException("Unknown math type: " + math);
+            }
         }
 
-        addRowCreator();
+        // only add the button to create extra rows if the diagram has friction in it.
+        if (shouldAddRowCreator()) {
+            addRowCreator();
+        }
 
         stateChanged();
         performSolve(false);
