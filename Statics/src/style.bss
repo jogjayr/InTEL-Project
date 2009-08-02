@@ -184,7 +184,7 @@ label {
 
 button {
   background: image "rsrc/interfaceTextures/button_up.png" framexy;
-  padding: 3 5;
+  padding: 3 8;
   font: "Dialog" bold 17;
   color: #dddddd;
   text-align: center;
@@ -199,14 +199,14 @@ imageButton {
     text-align: center;
 }
 
-menuitem {
+/*menuitem {
   padding: 0 2;
 }
 
 menuitem:hover {
   color: #000000;
   background: solid #FFFFFF88;
-}
+}*/
 
 button:hover {
   background: image "rsrc/interfaceTextures/button_hover.png" framexy;
@@ -220,12 +220,14 @@ button:disabled {
 button:down {
   background: image "rsrc/interfaceTextures/button_down.png" framexy;
   color: #FF00FF;
-  padding: 4 4 2 6;
+  // v+1, h, v-1, h
+  padding: 4 8 2 8;
 }
 
 button:selected {
   background: image "rsrc/interfaceTextures/button_down.png" framexy;
-  padding: 4 4 2 6;
+  // v+1, h, v-1, h
+  padding: 4 8 2 8;
 }
 
 /*
