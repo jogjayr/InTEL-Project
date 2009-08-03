@@ -4,10 +4,7 @@
  */
 package edu.gatech.statics.ui.maintabbar;
 
-import com.jme.renderer.ColorRGBA;
-import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
-import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
@@ -34,7 +31,7 @@ public class MainTab extends BContainer {
         this.diagramType = diagram.getType();
 
         button = new ChromaButton(
-                "rsrc/interfaceTextures/button",
+                "rsrc/interfaceTextures/tab",
                 null, "",
                 new ActionListener() {
 

@@ -39,6 +39,10 @@ label_force {
     //effect-color: #000000cc;
 }
 
+task_style {
+    font: "Arial" plain 12;
+}
+
 root:disabled {
   color: #888888;
 }
@@ -133,10 +137,11 @@ main_title {
 
 draggable_title {
     //background: solid #3d449b;
-    background: solid #0d5acc;
+    //background: solid #0d5acc;
+    background: image "rsrc/interfaceTextures/title.png" framexy;
     color: #ffffff;
     font: "Dialog" bold 16;
-    padding: 2 2 2 2;
+    padding: 5 2 2 10;
 }
 
 translucent_container {
@@ -186,7 +191,7 @@ button {
   background: image "rsrc/interfaceTextures/button_up.png" framexy;
   padding: 3 8;
   font: "Dialog" bold 17;
-  color: #dddddd;
+  color: #ffffff;
   text-align: center;
   //text-effect: outline;
   //effect-color: #442288;
@@ -210,7 +215,7 @@ menuitem:hover {
 
 button:hover {
   background: image "rsrc/interfaceTextures/button_hover.png" framexy;
-  color: #ffffff;
+  color: #000000;
 }
 
 button:disabled {
@@ -219,7 +224,7 @@ button:disabled {
 
 button:down {
   background: image "rsrc/interfaceTextures/button_down.png" framexy;
-  color: #FF00FF;
+  color: #000000;
   // v+1, h, v-1, h
   padding: 4 8 2 8;
 }

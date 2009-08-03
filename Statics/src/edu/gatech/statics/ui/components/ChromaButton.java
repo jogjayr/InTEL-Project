@@ -78,8 +78,6 @@ public class ChromaButton extends BButton {
             "_disabled.png",
             "_down.png"};
 
-
-
         try {
             // for each background type for the button assign the image.
             for (int i = 0; i < 4; i++) {

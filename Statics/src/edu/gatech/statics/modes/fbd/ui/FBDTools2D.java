@@ -10,6 +10,7 @@ import com.jmex.bui.event.ActionListener;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.tools.CreateForceTool2D;
 import edu.gatech.statics.modes.fbd.tools.CreateMomentTool2D;
+import edu.gatech.statics.ui.ButtonUtil;
 
 /**
  *
@@ -24,8 +25,12 @@ public class FBDTools2D extends FBDTools {
         super(modePanel);
         ToolListener listener = new ToolListener();
 
-        addForce = new BButton("Add Force", listener, "force");
-        addMoment = new BButton("Add Moment", listener, "moment");
+        addForce = new BButton("", listener, "force");
+        addMoment = new BButton("", listener, "moment");
+
+        ButtonUtil.setImageBackground(addForce, "rsrc/interfaceTextures/add_force");
+        ButtonUtil.setImageBackground(addMoment, "rsrc/interfaceTextures/add_moment");
+
         add(addForce);
         add(addMoment);
     }

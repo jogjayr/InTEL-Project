@@ -9,6 +9,7 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
+import edu.gatech.statics.ui.ButtonUtil;
 import edu.gatech.statics.ui.components.RepeatingButton;
 
 /**
@@ -36,8 +37,8 @@ public class Navigation3DWindow extends Navigation2DWindow {
         rotateLeft.setStyleClass("imageButton");
         rotateRight.setStyleClass("imageButton");
 
-        setImageBackground(rotateLeft, "rsrc/interfaceTextures/navigation/rotateCW");
-        setImageBackground(rotateRight, "rsrc/interfaceTextures/navigation/rotateCCW");
+        ButtonUtil.setImageBackground(rotateLeft, "rsrc/interfaceTextures/navigation/nav_rotate_right");
+        ButtonUtil.setImageBackground(rotateRight, "rsrc/interfaceTextures/navigation/nav_rotate_left");
         
         rotateLeft.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
         rotateRight.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);

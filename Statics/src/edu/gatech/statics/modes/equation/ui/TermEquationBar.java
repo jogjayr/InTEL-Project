@@ -166,7 +166,10 @@ public class TermEquationBar extends EquationBar {
                     // but do not post if the box has been removed.
                     if (isAdded()) {
                         ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
-                        parent.getDiagram().performAction(changeTermEvent);
+                        // it is possible that the ui shift is to a different diagram, so check before using.
+                        if (parent.getDiagram() instanceof EquationDiagram) {
+                            parent.getDiagram().performAction(changeTermEvent);
+                        }
                     }
                 }
             };
@@ -183,7 +186,7 @@ public class TermEquationBar extends EquationBar {
                     //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
                     //EquationBar.this.setSize(preferredSize.);
                     parent.refreshRows();
-                //update();
+                    //update();
                 }
             });
 
@@ -201,7 +204,7 @@ public class TermEquationBar extends EquationBar {
                     {
                         if (destroyOK) {
                             performRemoveTerm(source);
-                        //removeBox(TermBox.this);
+                            //removeBox(TermBox.this);
                         } else {
                             destroyOK = true;
                         }
@@ -220,14 +223,14 @@ public class TermEquationBar extends EquationBar {
                 public void mouseEntered(MouseEvent event) {
                     math.getDiagram().highlightVector(source);
                     highlightVector(source);
-                //math.getWorld().onHover(source);
+                    //math.getWorld().onHover(source);
                 }
 
                 public void mouseExited(MouseEvent event) {
                     if (getHitComponent(event.getX(), event.getY()) == null) {
                         math.getDiagram().highlightVector(null);
                         highlightVector(null);
-                    //math.getWorld().onHover(null);
+                        //math.getWorld().onHover(null);
                     }
                 }
 
@@ -291,7 +294,7 @@ public class TermEquationBar extends EquationBar {
         List<TermBox> toRemove = new ArrayList<TermBox>();
 
         for (Map.Entry<AnchoredVector, TermBox> entry : terms.entrySet()) {
-            if (!((TermEquationMathState)getMath().getState()).getTerms().containsKey(entry.getKey())) {
+            if (!((TermEquationMathState) getMath().getState()).getTerms().containsKey(entry.getKey())) {
                 toRemove.add(entry.getValue());
             }
         }
@@ -304,7 +307,7 @@ public class TermEquationBar extends EquationBar {
         // go through terms present in the state to add
         // make sure that the values are correct, as well.
         EquationMathState state = getMath().getState();
-        for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState)state).getTerms().entrySet()) {
+        for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState) state).getTerms().entrySet()) {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box
@@ -342,8 +345,9 @@ public class TermEquationBar extends EquationBar {
      */
     public void focusOnTerm(AnchoredVector load) {
         TermBox box = terms.get(load);
-        if(box == null)
+        if (box == null) {
             return;
+        }
         box.coefficient.requestFocus();
     }
 

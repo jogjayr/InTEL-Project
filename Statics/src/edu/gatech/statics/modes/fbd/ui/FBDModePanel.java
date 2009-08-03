@@ -34,6 +34,8 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
     public FBDModePanel() {
         super();
 
+        setLayoutManager(new BorderLayout(5, 0));
+
         tools = makeTools();//new BContainer(GroupLayout.makeHoriz(GroupLayout.CENTER));
         checkContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
 
