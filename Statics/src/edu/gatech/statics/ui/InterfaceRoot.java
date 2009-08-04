@@ -69,6 +69,10 @@ public class InterfaceRoot {
     private Sidebar sidebar;
     private FeedbackWindow feedbackWindow;
 
+    public InterfaceConfiguration getConfiguration() {
+        return configuration;
+    }
+
     public InputHandler getInput() {
         return input;
     }
@@ -102,15 +106,6 @@ public class InterfaceRoot {
 
     public MainTabBar getMenuBar() {
         return mainTabBar;
-    }
-
-    public void setDiagram(Diagram diagram) {
-
-        DiagramDisplayCalculator calculator = configuration.getDisplayCalculator();
-        ViewDiagramState viewFrame = calculator.calculate(diagram);
-        if (viewFrame != null) {
-            cameraControl.interpolate(viewFrame);
-        }
     }
 
     public void setModalWindow(ModalPopupWindow window) {

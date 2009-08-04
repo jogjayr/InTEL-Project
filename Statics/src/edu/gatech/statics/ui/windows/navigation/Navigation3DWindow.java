@@ -5,10 +5,9 @@
 package edu.gatech.statics.ui.windows.navigation;
 
 import com.jmex.bui.BButton;
-import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.layout.BorderLayout;
+import com.jmex.bui.util.Point;
 import edu.gatech.statics.ui.ButtonUtil;
 import edu.gatech.statics.ui.components.RepeatingButton;
 
@@ -23,32 +22,26 @@ public class Navigation3DWindow extends Navigation2DWindow {
 
     public Navigation3DWindow() {
 
-        remove(getMainContainer());
-
-        BContainer main3DContainer = new BContainer(new BorderLayout());
-        add(main3DContainer, BorderLayout.CENTER);
-        main3DContainer.add(getMainContainer(), BorderLayout.CENTER);
-
         NavigationListener3D navListener = new NavigationListener3D();
 
         rotateLeft = new RepeatingButton("", navListener, "rotateLeft");
         rotateRight = new RepeatingButton("", navListener, "rotateRight");
-        
+
         rotateLeft.setStyleClass("imageButton");
         rotateRight.setStyleClass("imageButton");
 
-        ButtonUtil.setImageBackground(rotateLeft, "rsrc/interfaceTextures/navigation/nav_rotate_right");
-        ButtonUtil.setImageBackground(rotateRight, "rsrc/interfaceTextures/navigation/nav_rotate_left");
-        
-        rotateLeft.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
-        rotateRight.setPreferredSize(getButtonSize(), 5 * getButtonSize() / 2);
+        ButtonUtil.setImageBackground(rotateLeft, "rsrc/interfaceTextures/navigation/nav_rotate_left");
+        ButtonUtil.setImageBackground(rotateRight, "rsrc/interfaceTextures/navigation/nav_rotate_right");
 
-        main3DContainer.add(rotateLeft, BorderLayout.WEST);
-        main3DContainer.add(rotateRight, BorderLayout.EAST);
+        int buttonSize = getButtonSize();
 
-        int width = 6 * getButtonSize();
-        int height = 3 * getButtonSize();
-        setPreferredSize(width, height);
+        rotateLeft.setPreferredSize(buttonSize, buttonSize);
+        rotateRight.setPreferredSize(buttonSize, buttonSize);
+
+        int buttonSpacing = buttonSize + 3;
+
+        getMainContainer().add(rotateRight, new Point(0, 0));
+        getMainContainer().add(rotateLeft, new Point(2 * buttonSpacing, 0));
     }
 
     private class NavigationListener3D implements ActionListener {
@@ -56,9 +49,9 @@ public class Navigation3DWindow extends Navigation2DWindow {
         public void actionPerformed(ActionEvent event) {
             String action = event.getAction();
             if (action.equals("rotateLeft")) {
-                getCameraControl().rotateCamera(-1, 0);
-            } else if (action.equals("rotateRight")) {
                 getCameraControl().rotateCamera(1, 0);
+            } else if (action.equals("rotateRight")) {
+                getCameraControl().rotateCamera(-1, 0);
             }
         }
     }

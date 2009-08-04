@@ -6,6 +6,10 @@ package edu.gatech.statics.ui.windows.navigation;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.util.DiagramListener;
 
 /**
  *
@@ -51,6 +55,17 @@ public class CameraControl {
 
         viewDiagramState = new ViewDiagramState();
         viewUserState = new ViewUserState();
+
+        // listen to diagram changes, and focus whenever it does.
+        StaticsApplication.getApp().addDiagramListener(new DiagramListener() {
+
+            public void onDiagramCreated(Diagram diagram) {
+            }
+
+            public void onDiagramChanged(Diagram newDiagram) {
+                focus();
+            }
+        });
     }
 
     public void panCamera(float dx, float dy) {
@@ -158,12 +173,21 @@ public class CameraControl {
         new Thread(myInterpolator).start();
     }
 
+    public void focus() {
+        DiagramDisplayCalculator calculator =
+                InterfaceRoot.getInstance().getConfiguration().getDisplayCalculator();
+        ViewDiagramState viewFrame = calculator.calculate(StaticsApplication.getApp().getCurrentDiagram());
+        if (viewFrame != null) {
+            interpolate(viewFrame);
+        }
+    }
+
     private class CameraInterpolator implements Runnable {
 
         //private static final float dt = .01f;
         private boolean terminated;
-        private ViewDiagramState diagramState0,  diagramState1;
-        private ViewUserState userState0,  userState1;
+        private ViewDiagramState diagramState0, diagramState1;
+        private ViewUserState userState0, userState1;
 
         public CameraInterpolator(ViewDiagramState diagramState1) {
             this.diagramState0 = new ViewDiagramState(viewDiagramState);
@@ -194,7 +218,7 @@ public class CameraControl {
             long startTime = System.currentTimeMillis();
             long endTime = startTime + (long) (1000 * transitionInSeconds);
 
-            System.out.println("Interpolating from: " +diagramState0 + " to: " + diagramState1);
+            //System.out.println("Interpolating from: " + diagramState0 + " to: " + diagramState1);
 
             while (System.currentTimeMillis() < endTime && !terminated) {
                 //t += dt;
@@ -207,7 +231,7 @@ public class CameraControl {
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException ex) {
-                //Logger.getLogger(CameraControl.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(CameraControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             myInterpolator = null;

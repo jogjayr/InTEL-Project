@@ -295,9 +295,9 @@ public class StaticsApplication {
             diagramListener.onDiagramChanged(currentDiagram);
         }
 
-        if (iRoot != null) {
-            iRoot.setDiagram(currentDiagram);
-        }
+//        if (iRoot != null) {
+//            iRoot.setDiagram(currentDiagram);
+//        }
     }
 
     public Diagram getCurrentDiagram() {

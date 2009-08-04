@@ -21,7 +21,7 @@ import edu.gatech.statics.ui.components.RepeatingButton;
 public class Navigation2DWindow extends NavigationWindow {
 
     private BButton up, down, left, right;
-    private BButton zoomIn, zoomOut;
+    private BButton zoomIn, zoomOut, focus;
     private BContainer mainContainer;
     private int buttonSize;
 
@@ -48,6 +48,7 @@ public class Navigation2DWindow extends NavigationWindow {
         right = new RepeatingButton("", navListener, "right");
         zoomIn = new RepeatingButton("", navListener, "zoomIn");
         zoomOut = new RepeatingButton("", navListener, "zoomOut");
+        focus = new BButton("", navListener, "focus");
 
         up.setStyleClass("imageButton");
         down.setStyleClass("imageButton");
@@ -55,6 +56,7 @@ public class Navigation2DWindow extends NavigationWindow {
         right.setStyleClass("imageButton");
         zoomIn.setStyleClass("imageButton");
         zoomOut.setStyleClass("imageButton");
+        focus.setStyleClass("imageButton");
 
         ButtonUtil.setImageBackground(up, "rsrc/interfaceTextures/navigation/nav_up");
         ButtonUtil.setImageBackground(down, "rsrc/interfaceTextures/navigation/nav_down");
@@ -62,6 +64,7 @@ public class Navigation2DWindow extends NavigationWindow {
         ButtonUtil.setImageBackground(right, "rsrc/interfaceTextures/navigation/nav_right");
         ButtonUtil.setImageBackground(zoomIn, "rsrc/interfaceTextures/navigation/nav_zoom_in");
         ButtonUtil.setImageBackground(zoomOut, "rsrc/interfaceTextures/navigation/nav_zoom_out");
+        ButtonUtil.setImageBackground(focus, "rsrc/interfaceTextures/navigation/nav_zoom_in");
 
         buttonSize = 30;
         up.setPreferredSize(buttonSize, buttonSize);
@@ -70,20 +73,17 @@ public class Navigation2DWindow extends NavigationWindow {
         right.setPreferredSize(buttonSize, buttonSize);
         zoomIn.setPreferredSize(buttonSize, buttonSize);
         zoomOut.setPreferredSize(buttonSize, buttonSize);
+        focus.setPreferredSize(buttonSize, buttonSize);
 
-        int width = 4 * buttonSize;
-        int height = 3 * buttonSize;
-        setPreferredSize(width, height);
+        int buttonSpacing = buttonSize + 3;
 
-        int hOffset = width / 2 - 3 * buttonSize / 4;
-        int vOffset = height / 2 - buttonSize / 4;
-
-        mainContainer.add(up, new Point(hOffset, vOffset - buttonSize / 4));
-        mainContainer.add(down, new Point(hOffset, vOffset - 5 * buttonSize / 4));
-        mainContainer.add(left, new Point(hOffset - buttonSize, vOffset - 3 * buttonSize / 4));
-        mainContainer.add(right, new Point(hOffset + buttonSize, vOffset - 3 * buttonSize / 4));
-        mainContainer.add(zoomOut, new Point(hOffset - 5 * buttonSize / 4, vOffset + buttonSize / 3));
-        mainContainer.add(zoomIn, new Point(hOffset + 5 * buttonSize / 4, vOffset + buttonSize / 3));
+        mainContainer.add(up, new Point(buttonSpacing, 2 * buttonSpacing));
+        mainContainer.add(down, new Point(buttonSpacing, 0));
+        mainContainer.add(left, new Point(0, 1 * buttonSpacing));
+        mainContainer.add(right, new Point(2 * buttonSpacing, 1 * buttonSpacing));
+        mainContainer.add(zoomIn, new Point(0, 2 * buttonSpacing));
+        mainContainer.add(zoomOut, new Point(2 * buttonSpacing, 2 * buttonSpacing));
+        mainContainer.add(focus, new Point(1 * buttonSpacing, 1 * buttonSpacing));
     }
 
     private class NavigationListener2D implements ActionListener {
@@ -107,6 +107,10 @@ public class Navigation2DWindow extends NavigationWindow {
             }
             if (action.equals("zoomOut")) {
                 getCameraControl().zoomCamera(1);
+            }
+            if (action.equals("focus")) {
+                //getCameraControl().zoomCamera(1);
+                getCameraControl().focus();
             }
         }
     }
