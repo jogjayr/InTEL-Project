@@ -35,7 +35,7 @@ public class DistributedForceObject extends SimulationObject {
      * @param suffix
      */
     public DistributedForceObject(DistributedForce dl, String suffix) {
-        setName(dl.getName() + " object");
+        setName("distributed force: " + dl.getName());
         this.dl = dl;
 
         // create the force and anchor

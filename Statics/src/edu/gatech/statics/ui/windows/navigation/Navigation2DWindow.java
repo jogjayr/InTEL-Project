@@ -64,7 +64,7 @@ public class Navigation2DWindow extends NavigationWindow {
         ButtonUtil.setImageBackground(right, "rsrc/interfaceTextures/navigation/nav_right");
         ButtonUtil.setImageBackground(zoomIn, "rsrc/interfaceTextures/navigation/nav_zoom_in");
         ButtonUtil.setImageBackground(zoomOut, "rsrc/interfaceTextures/navigation/nav_zoom_out");
-        ButtonUtil.setImageBackground(focus, "rsrc/interfaceTextures/navigation/nav_zoom_in");
+        ButtonUtil.setImageBackground(focus, "rsrc/interfaceTextures/navigation/nav_focus");
 
         buttonSize = 30;
         up.setPreferredSize(buttonSize, buttonSize);

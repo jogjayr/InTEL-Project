@@ -12,6 +12,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.distributed.DistributedDiagram;
@@ -36,7 +37,7 @@ public class DistributedModePanel extends ApplicationModePanel {
 
         //getTitleLabel().setText("Find the Resultant");
 
-        BContainer mainContainer = new BContainer(new BorderLayout());
+        BContainer mainContainer = new BContainer(new BorderLayout(5, 0));
         add(mainContainer, BorderLayout.CENTER);
 
         ActionListener listener = new ActionListener() {
@@ -50,17 +51,15 @@ public class DistributedModePanel extends ApplicationModePanel {
         //checkButton.setStyleClass("circle_button");
         mainContainer.add(checkButton, BorderLayout.EAST);
 
-        BContainer equationContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+        //BContainer equationContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+        BContainer equationContainer = new BContainer(new TableLayout(2, 5, 5));
         mainContainer.add(equationContainer, BorderLayout.CENTER);
 
-        BContainer positionContainer = new BContainer(new BorderLayout());
-        BContainer magnitudeContainer = new BContainer(new BorderLayout());
+        //BContainer positionContainer = new BContainer(new BorderLayout());
+        //BContainer magnitudeContainer = new BContainer(new BorderLayout());
 
-        equationContainer.add(positionContainer);
-        equationContainer.add(magnitudeContainer);
-
-        positionContainer.add(new BLabel("Centroid Position: "), BorderLayout.WEST);
-        magnitudeContainer.add(new BLabel("Resultant Magnitude: "), BorderLayout.WEST);
+        //equationContainer.add(positionContainer);
+        //equationContainer.add(magnitudeContainer);
 
         positionField = new BTextField() {
 
@@ -71,7 +70,9 @@ public class DistributedModePanel extends ApplicationModePanel {
                 diagram.setPosition(getText());
             }
         };
-        positionContainer.add(positionField, BorderLayout.CENTER);
+
+        equationContainer.add(new BLabel("Centroid Position: "), BorderLayout.WEST);
+        equationContainer.add(positionField, BorderLayout.CENTER);
         positionField.setPreferredWidth(200);
         positionField.setStyleClass("textfield_appbar");
 
@@ -84,7 +85,8 @@ public class DistributedModePanel extends ApplicationModePanel {
                 diagram.setMagnitude(getText());
             }
         };
-        magnitudeContainer.add(magnitudeField, BorderLayout.CENTER);
+        equationContainer.add(new BLabel("Resultant Magnitude: "), BorderLayout.WEST);
+        equationContainer.add(magnitudeField, BorderLayout.CENTER);
         magnitudeField.setPreferredWidth(200);
         magnitudeField.setStyleClass("textfield_appbar");
 
@@ -97,6 +99,9 @@ public class DistributedModePanel extends ApplicationModePanel {
         if (diagram.check(positionField.getText(), magnitudeField.getText())) {
             // distributed check is successful!
             StaticsApplication.getApp().setStaticsFeedbackKey("distributed_feedback_check_success");
+            checkButton.setEnabled(false);
+            magnitudeField.setEnabled(false);
+            positionField.setEnabled(false);
             diagram.setSolved();
         } else {
             // should we give any more detailed feedback?
@@ -112,9 +117,11 @@ public class DistributedModePanel extends ApplicationModePanel {
         if (getDiagram().isLocked()) {
             magnitudeField.setEnabled(false);
             positionField.setEnabled(false);
+            checkButton.setEnabled(false);
         } else {
             magnitudeField.setEnabled(true);
             positionField.setEnabled(true);
+            checkButton.setEnabled(true);
         }
     }
 
@@ -132,7 +139,6 @@ public class DistributedModePanel extends ApplicationModePanel {
 //    protected ApplicationTab createTab() {
 //        return new ApplicationTab("Resultant");
 //    }
-
     @Override
     public DiagramType getDiagramType() {
         return DistributedMode.instance.getDiagramType();

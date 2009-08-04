@@ -73,7 +73,7 @@ public class FrameSelectDiagram extends SelectDiagram {
                 Builder builder = oldState.getBuilder();
                 boolean removed = builder.getCurrentlySelected().remove(getClicked());
                 builder.clear();
-                if (!removed) {
+                if (!removed && getClicked() != null) {
                     builder.toggle(getClicked());
                 }
                 return builder.build();

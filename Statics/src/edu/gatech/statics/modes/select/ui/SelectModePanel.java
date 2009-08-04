@@ -9,7 +9,6 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
@@ -19,7 +18,6 @@ import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.components.NextButton;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +60,7 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
         //getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
-        StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
+        //StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
     }
 
     @Override
@@ -74,12 +72,13 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
     public void updateSelection() {
 
         // refine list to only bodies.
-        List<Body> selection = new ArrayList<Body>();
-        for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
-            if (obj instanceof Body) {
-                selection.add((Body) obj);
-            }
-        }
+        List<SimulationObject> selection = getDiagram().getCurrentlySelected();
+                //new ArrayList<SimulationObject>();
+//        for (SimulationObject obj : getDiagram().getCurrentlySelected()) {
+//            if (obj instanceof Body) {
+//                selection.add((Body) obj);
+//            }
+//        }
 
         if (selection.isEmpty()) {
             //getTitleLabel().setText("Nothing Selected");
@@ -90,7 +89,8 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
             if (nextButton.isAdded()) {
                 remove(nextButton);
             }
-            StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
+            //StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
+            StaticsApplication.getApp().resetUIFeedback();
 
             //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
 
@@ -119,15 +119,15 @@ public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
      * the given list of bodies is selected.
      * @return
      */
-    protected String getContents(List<Body> selection) {
+    protected String getContents(List<SimulationObject> selection) {
 
         String contents = "<font size=\"5\" color=\"white\">";
         for (int i = 0; i < selection.size(); i++) {
-            Body body = selection.get(i);
+            SimulationObject obj = selection.get(i);
             if (i > 0) {
-                contents += ",<br>";
+                contents += ", ";
             }
-            contents += body.getName();
+            contents += obj.getName();
         }
         contents += "</font>";
         return contents;

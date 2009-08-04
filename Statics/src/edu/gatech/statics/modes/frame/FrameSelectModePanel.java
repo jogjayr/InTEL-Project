@@ -1,10 +1,11 @@
 package edu.gatech.statics.modes.frame;
 
 import com.jmex.bui.layout.BorderLayout;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Background;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,14 +37,19 @@ public class FrameSelectModePanel extends SelectModePanel {
                 continue;
             }
             getDiagram().selectAll();
-        //getDiagram().onClick(body);
+            //getDiagram().onClick(body);
         }
     }
 
     @Override
-    protected String getContents(List<Body> selection) {
+    protected String getContents(List<SimulationObject> selection) {
         // return a special bit of text if the selection represents the whole frame
-        if (FrameUtil.isWholeDiagram(selection)) {
+        List<Body> selectionBodies = new ArrayList<Body>();
+        for (SimulationObject obj : selection) {
+            selectionBodies.add((Body) obj);
+        }
+
+        if (FrameUtil.isWholeDiagram(selectionBodies)) {
             String contents = "<font size=\"5\" color=\"white\">";
             contents += FrameUtil.whatToCallTheWholeDiagram + "</font>";
             return contents;

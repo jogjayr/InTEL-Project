@@ -65,17 +65,17 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
         super.onHover(obj);
     }
 
-    @Override
-    public void onClick(SimulationObject obj) {
-
-        if (obj instanceof DistributedForceObject) {
-            DistributedForceObject dlObj = (DistributedForceObject) obj;
-            if (!dlObj.isSolved()) {
-                DistributedMode.instance.load(dlObj.getDistributedForce());
-                return;
-            }
-        }
-
-        super.onClick(obj);
-    }
+//    @Override
+//    public void onClick(SimulationObject obj) {
+//
+//        if (obj instanceof DistributedForceObject) {
+//            DistributedForceObject dlObj = (DistributedForceObject) obj;
+//            if (!dlObj.isSolved()) {
+//                DistributedMode.instance.load(dlObj.getDistributedForce());
+//                return;
+//            }
+//        }
+//
+//        super.onClick(obj);
+//    }
 }

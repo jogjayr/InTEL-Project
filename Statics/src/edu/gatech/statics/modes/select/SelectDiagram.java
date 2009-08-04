@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.select;
 
 import edu.gatech.statics.Mode;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
@@ -73,6 +74,8 @@ public class SelectDiagram extends Diagram<SelectState> {
 
         // simulate an initial empty click
         onClick(null);
+
+        StaticsApplication.getApp().setDefaultUIFeedbackKey("exercise_tools_Selection1");
     }
     private SimulationObject currentHighlight;
 

@@ -209,6 +209,10 @@ public class StaticsApplication {
     public void setDefaultUIFeedback(String advice) {
         defaultUIFeedback = advice;
     }
+
+    public void setDefaultUIFeedbackKey(String key) {
+        defaultUIFeedback = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
+    }
     private AbsoluteMouse mouse;
 
     public AbsoluteMouse getMouse() {

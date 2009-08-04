@@ -44,6 +44,13 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     public void activate() {
         super.activate();
         updateResultant();
+
+        if(isSolved()) {
+            StaticsApplication.getApp().setDefaultUIFeedback("You have solved for the resultatnt of this distributed force.");
+        } else {
+            StaticsApplication.getApp().setDefaultUIFeedback("Enter the centroid position (indicated by \"pos\" on the diagram) and resultant magnitude. ");
+        }
+        StaticsApplication.getApp().resetUIFeedback();
     }
 
     public void setPosition(String text) {
@@ -230,6 +237,6 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     @Override
     public String getDescriptionText() {
-        return "Calculate Resultant for distributed force: " + getKey();
+        return "Calculate the resultant for distributed force: " + getKey();
     }
 }
