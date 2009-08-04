@@ -184,8 +184,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         super(bodies);
 
         this.fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(getKey(), FBDMode.instance.getDiagramType());
-    // FIXME: This diagram automatically loads a 2D worksheet
-    //worksheet = new Worksheet2D(this);
+        // FIXME: This diagram automatically loads a 2D worksheet
+        //worksheet = new Worksheet2D(this);
     }
 
     /**
@@ -195,9 +195,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      */
     protected Worksheet createWorksheet() {
         //************
-                // Should use some non-worksheet class here?
-                // this should return an object that contains the initial equation list.
-                // this will be used to create the initial state.
+        // Should use some non-worksheet class here?
+        // this should return an object that contains the initial equation list.
+        // this will be used to create the initial state.
         return new Worksheet2D(this);
     }
 
@@ -432,8 +432,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // mark the state as changed so that the UI updates.
         stateChanged();
 
-        StaticsApplication.getApp().setDefaultUIFeedback(
-                java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
+        if (!getCurrentState().isLocked()) {
+            StaticsApplication.getApp().setDefaultUIFeedback(
+                    java.util.ResourceBundle.getBundle("rsrc/Strings").getString("equation_welcome"));
+        } else {
+            StaticsApplication.getApp().setDefaultUIFeedback("You have solved all the equations here!");
+        }
 
         StaticsApplication.getApp().resetUIFeedback();
     }
@@ -453,7 +457,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             if (state instanceof ArbitraryEquationMathState) {
                 //TODO write this in!
             } else if (state instanceof TermEquationMathState) {
-                TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)state);
+                TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState) state);
 
                 // get a list of everything present in the math
                 List<AnchoredVector> toRemove = new ArrayList<AnchoredVector>(mathBuilder.getTerms().keySet());
@@ -537,7 +541,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             //showMomentArm(load);
             //}
         }
-    //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
+        //showCurve(vectorMap.get(v), activeEquation.getLineAnchor(v));
     }
     private VectorObject momentArm;
     private Load momentArmTarget;
@@ -611,7 +615,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         momentArm.addRepresentation(rep);
         momentArm.setSelectable(false);
 
-    //addUserObject(momentArm);
+        //addUserObject(momentArm);
     }
     private boolean showingCurve = false;
     private Vector3f curvePoints[] = new Vector3f[3];
@@ -708,6 +712,6 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     public String getDescriptionText() {
-        return "Solve equilibrium equations: "+getKey();
+        return "Solve equilibrium equations: " + getKey();
     }
 }

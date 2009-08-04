@@ -37,6 +37,7 @@ public class Solve2FMTask extends SolveConnectorTask {
     @Override
     public String getDescription() {
         return "Solve the two force member " +
+        //return "Solve the 2FM " +
                 tfm.getConnector1().getAnchor().getLabelText() +
                 tfm.getConnector2().getAnchor().getLabelText();
     }

@@ -109,10 +109,15 @@ public class ApplicationBar extends BWindow {
 
         int averageX = (screenWidth - preferredSize.width) / 2;
 
+        // set the size on the feedback so that it is appropriately sized
+        feedbackLabel.setPreferredSize(-1, 34);
+
         // special treatment for the equation mode panel.
         if (modePanel instanceof EquationModePanel) {
             averageX = 0;
             preferredSize.width = DisplaySystem.getDisplaySystem().getWidth() - FeedbackWindow.WIDTH;
+            // reduce the feedback size for the equation mode panel as well:
+            feedbackLabel.setPreferredSize(-1, 17);
         }
 
         setBounds(
@@ -169,8 +174,6 @@ public class ApplicationBar extends BWindow {
 
         feedbackLabel = new BLabel("toast");
         add(feedbackLabel, BorderLayout.NORTH);
-        // set the size on the feedback so that it is appropriately sized
-        feedbackLabel.setPreferredSize(-1, 34);
 
         //BContainer saveLoadBox = createSaveLoadBox();
         //sideBox.add(saveLoadBox, BorderLayout.WEST);

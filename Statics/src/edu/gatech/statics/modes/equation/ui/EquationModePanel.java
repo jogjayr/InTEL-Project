@@ -326,7 +326,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 }
             }
             if (allSolved) {
-                InterfaceRoot.getInstance().setStaticsFeedback("Your system is not solvable!");
+                InterfaceRoot.getInstance().setStaticsFeedback("There is nothing more to solve");
             }
         }
     }
