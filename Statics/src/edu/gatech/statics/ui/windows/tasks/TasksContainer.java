@@ -31,6 +31,8 @@ public class TasksContainer extends BContainer implements TaskStatusListener {
         layout.setOffAxisJustification(GroupLayout.LEFT);
         setLayoutManager(layout);
 
+        setStyleClass("sidebar_container");
+
         Exercise.getExercise().addTaskListener(this);
 
         try {
@@ -62,7 +64,7 @@ public class TasksContainer extends BContainer implements TaskStatusListener {
             String text = task.getDescription();
 
             BLabel label = new BLabel(text);
-            label.setStyleClass("task_style");
+            //label.setStyleClass("task_style");
             if (task.isSatisfied()) {
                 label.setIcon(checkIcon);
                 label.setText("@=#888888(" + text + ")");

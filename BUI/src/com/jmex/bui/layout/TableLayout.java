@@ -17,7 +17,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.layout;
 
 import java.util.Arrays;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 
 import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
-import com.jmex.bui.Log;
 import com.jmex.bui.util.Dimension;
 import com.jmex.bui.util.Insets;
 
@@ -36,28 +34,21 @@ import com.jmex.bui.util.Insets;
  *
  * <p> The table layout defaults to left horizontal alignment and top vertical alignment.
  */
-public class TableLayout extends BLayoutManager
-{
-    /** An enumeration class representing alignments. */
-    public static class Alignment
-    {
-    }
+public class TableLayout extends BLayoutManager {
 
+    /** An enumeration class representing alignments. */
+    public static class Alignment {
+    }
     /** Left justifies the table contents within the container. */
     public static final Alignment LEFT = new Alignment();
-
     /** Centers the table contents within the container. */
     public static final Alignment CENTER = new Alignment();
-
     /** Right justifies the table contents within the container. */
     public static final Alignment RIGHT = new Alignment();
-
     /** Top justifies the table contents within the container. */
     public static final Alignment TOP = new Alignment();
-
     /** Bottom justifies the table contents within the container. */
     public static final Alignment BOTTOM = new Alignment();
-
     /** Divides the column space among the columns in proportion to their preferred size. This only
      * works with {@link #setHorizontalAlignment}. */
     public static final Alignment STRETCH = new Alignment();
@@ -66,8 +57,7 @@ public class TableLayout extends BLayoutManager
      * Creates a table layout with the specified number of columns and a zero pixel gap between
      * rows and columns.
      */
-    public TableLayout (int columns)
-    {
+    public TableLayout(int columns) {
         this(columns, 0, 0);
     }
 
@@ -75,8 +65,7 @@ public class TableLayout extends BLayoutManager
      * Creates a table layout with the specified number of columns and the specifeid gap between
      * rows and columns.
      */
-    public TableLayout (int columns, int rowgap, int colgap)
-    {
+    public TableLayout(int columns, int rowgap, int colgap) {
         // A table must have at least a column
         columns = Math.max(1, columns);
         _fixedColumns = new boolean[columns];
@@ -88,8 +77,7 @@ public class TableLayout extends BLayoutManager
      * Configures the horizontal alignment (or stretching) of this table. This must be called
      * before the container using this layout is validated.
      */
-    public TableLayout setHorizontalAlignment (Alignment align)
-    {
+    public TableLayout setHorizontalAlignment(Alignment align) {
         _halign = align;
         return this;
     }
@@ -98,8 +86,7 @@ public class TableLayout extends BLayoutManager
      * Configures the vertical alignment of this table. This must be called before the container
      * using this layout is validated.
      */
-    public TableLayout setVerticalAlignment (Alignment align)
-    {
+    public TableLayout setVerticalAlignment(Alignment align) {
         _valign = align;
         return this;
     }
@@ -109,8 +96,7 @@ public class TableLayout extends BLayoutManager
      * <code>STRETCH</code> horizontal alignment, extra space is divided up among all of the
      * non-fixed columns. All columns are non-fixed by default.
      */
-    public TableLayout setFixedColumn (int column, boolean fixed)
-    {
+    public TableLayout setFixedColumn(int column, boolean fixed) {
         _fixedColumns[column] = fixed;
         return this;
     }
@@ -119,43 +105,40 @@ public class TableLayout extends BLayoutManager
      * Configures whether or not the table will force all rows to be a uniform size. This must be
      * called before the container using this layout is validated.
      */
-    public TableLayout setEqualRows (boolean equalRows)
-    {
+    public TableLayout setEqualRows(boolean equalRows) {
         _equalRows = equalRows;
         return this;
     }
 
     // documentation inherited
-    public Dimension computePreferredSize (BContainer target, int whint, int hhint)
-    {
+    public Dimension computePreferredSize(BContainer target, int whint, int hhint) {
         Metrics metrics = computeMetrics(target, true, whint);
-        int cx = (metrics.columnWidths.length-1) * _colgap;
-        int rx = (computeRows(target, true)-1) * _rowgap;
+        int cx = (metrics.columnWidths.length - 1) * _colgap;
+        int rx = (computeRows(target, true) - 1) * _rowgap;
         return new Dimension(sum(metrics.columnWidths) + cx, sum(metrics.rowHeights) + rx);
     }
 
     // documentation inherited
-    public void layoutContainer (BContainer target)
-    {
+    public void layoutContainer(BContainer target) {
         Insets insets = target.getInsets();
         int availwid = target.getWidth() - insets.getHorizontal();
 
         Metrics metrics = computeMetrics(target, false, availwid);
-        int totwidth = sum(metrics.columnWidths) + (metrics.columnWidths.length-1) * _colgap;
-        int totheight = sum(metrics.rowHeights) + (computeRows(target, false)-1) * _rowgap;
+        int totwidth = sum(metrics.columnWidths) + (metrics.columnWidths.length - 1) * _colgap;
+        int totheight = sum(metrics.rowHeights) + (computeRows(target, false) - 1) * _rowgap;
 
         // account for our horizontal alignment
         int sx = insets.left;
         if (_halign == RIGHT) {
             sx += target.getWidth() - insets.getHorizontal() - totwidth;
         } else if (_halign == CENTER) {
-            sx += (target.getWidth() - insets.getHorizontal() - totwidth)/2;
+            sx += (target.getWidth() - insets.getHorizontal() - totwidth) / 2;
         }
 
         // account for our vertical alignment
         int y = insets.bottom;
         if (_valign == CENTER) {
-            y += totheight + (target.getHeight() - insets.getVertical() - totheight)/2;
+            y += totheight + (target.getHeight() - insets.getVertical() - totheight) / 2;
         } else if (_valign == TOP) {
             y = target.getHeight() - insets.top;
         }
@@ -175,12 +158,12 @@ public class TableLayout extends BLayoutManager
         }
     }
 
-    protected Metrics computeMetrics (BContainer target, boolean preferred, int whint)
-    {
+    protected Metrics computeMetrics(BContainer target, boolean preferred, int whint) {
         Metrics metrics = new Metrics();
         metrics.columnWidths = new int[_fixedColumns.length];
 
         int rows = computeRows(target, preferred);
+        int cols = _fixedColumns.length;
         if (metrics.rowHeights == null || metrics.rowHeights.length != rows) {
             metrics.rowHeights = new int[rows];
         } else {
@@ -194,7 +177,7 @@ public class TableLayout extends BLayoutManager
             if (child.isVisible()) {
                 Dimension psize = _pscache.get(child);
                 if (psize == null || !child.isValid()) {
-                    _pscache.put(child, psize = child.getPreferredSize(whint, -1));
+                    _pscache.put(child, psize = child.getPreferredSize(whint / cols, -1));
                 }
                 if (psize.height > metrics.rowHeights[row]) {
                     metrics.rowHeights[row] = psize.height;
@@ -234,7 +217,7 @@ public class TableLayout extends BLayoutManager
 
             // now divide up the extra space among said non-fixed columns
             int avail = target.getWidth() - target.getInsets().getHorizontal() -
-                naturalWidth - (_colgap * (metrics.columnWidths.length-1));
+                    naturalWidth - (_colgap * (metrics.columnWidths.length - 1));
             int used = 0;
             for (int ii = 0; ii < metrics.columnWidths.length; ii++) {
                 if (_fixedColumns[ii]) {
@@ -264,8 +247,7 @@ public class TableLayout extends BLayoutManager
         return metrics;
     }
 
-    protected int computeRows (BContainer target, boolean preferred)
-    {
+    protected int computeRows(BContainer target, boolean preferred) {
         int ccount = target.getComponentCount();
         int rows = ccount / _fixedColumns.length;
         if (ccount % _fixedColumns.length != 0) {
@@ -274,8 +256,7 @@ public class TableLayout extends BLayoutManager
         return rows;
     }
 
-    protected int sum (int[] values)
-    {
+    protected int sum(int[] values) {
         int total = 0;
         for (int ii = 0; ii < values.length; ii++) {
             total += values[ii];
@@ -283,18 +264,16 @@ public class TableLayout extends BLayoutManager
         return total;
     }
 
-    protected class Metrics
-    {
+    protected class Metrics {
+
         public int cachedHint = Integer.MIN_VALUE;
         public int[] columnWidths;
         public int[] rowHeights;
     }
-
     protected Alignment _halign = LEFT, _valign = TOP;
     protected boolean _equalRows;
     protected int _rowgap, _colgap;
     protected boolean[] _fixedColumns;
-
     // TODO: expire from this cache (rarely needed)
-    protected HashMap<BComponent,Dimension> _pscache = new HashMap<BComponent,Dimension>();
+    protected HashMap<BComponent, Dimension> _pscache = new HashMap<BComponent, Dimension>();
 }

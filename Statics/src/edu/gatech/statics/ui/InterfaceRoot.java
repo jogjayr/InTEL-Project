@@ -229,16 +229,10 @@ public class InterfaceRoot {
         buiNode.addWindow(sidebar);
         int sidebarWidth = Sidebar.WIDTH;
         Dimension sidebarSize = sidebar.getPreferredSize(sidebarWidth, -1);
-        //sidebar.setSize(sidebarWidth, sidebarSize.height);
         sidebar.setBounds(
-                //100,100,
-                0, //DisplaySystem.getDisplaySystem().getWidth() - sidebarWidth,
-                DisplaySystem.getDisplaySystem().getHeight() - sidebarSize.height - MainTabBar.MAIN_TAB_BAR_HEIGHT,
+                0, 
+                DisplaySystem.getDisplaySystem().getHeight() - sidebarSize.height - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5,
                 sidebarWidth, sidebarSize.height);
-        //int sidebarHeight = DisplaySystem.getDisplaySystem().getHeight();
-        //sidebarHeight -= MainTabBar.MAIN_TAB_BAR_HEIGHT;
-        //sidebar.setSize(sidebarWidth,sidebarHeight );
-        //sidebar.pack();
 
 
 

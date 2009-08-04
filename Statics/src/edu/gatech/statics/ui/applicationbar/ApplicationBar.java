@@ -149,7 +149,7 @@ public class ApplicationBar extends BWindow {
 //        }
 //    }
     public ApplicationBar() {
-        super(InterfaceRoot.getInstance().getStyle(), new BorderLayout());
+        super(InterfaceRoot.getInstance().getStyle(), new BorderLayout(0, 2));
 
         //tabBar = createTabBar();
 //        tabBar = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
@@ -170,7 +170,7 @@ public class ApplicationBar extends BWindow {
         feedbackLabel = new BLabel("toast");
         add(feedbackLabel, BorderLayout.NORTH);
         // set the size on the feedback so that it is appropriately sized
-        feedbackLabel.setPreferredSize(-1, 32);
+        feedbackLabel.setPreferredSize(-1, 34);
 
         //BContainer saveLoadBox = createSaveLoadBox();
         //sideBox.add(saveLoadBox, BorderLayout.WEST);

@@ -104,6 +104,9 @@ public class TermEquationBar extends EquationBar {
                 public void actionPerformed(ActionEvent event) {
                     PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram());
                     selector.activate();
+
+                    // activate the bar when the button is pressed.
+                    parent.setActiveEquation(TermEquationBar.this);
                 }
             }, "momentpoint");
 

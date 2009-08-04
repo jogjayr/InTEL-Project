@@ -39,7 +39,7 @@ label_force {
     //effect-color: #000000cc;
 }
 
-task_style {
+sidebar_container {
     font: "Arial" plain 12;
 }
 
@@ -63,15 +63,6 @@ application_bar_contents {
     color: #ffffff;
     padding: 2;
 }
-
-//application_tab {
-//    // background and text color are just defaults here, they are replaced in code
-//    background: solid #e9e9f4;
-//    color: #000000;
-//    padding: 2;
-//    font: "Dialog" bold 16;
-//    border: 2 solid #000000;
-//}
 
 application_popup {
     background: solid #ffffff;
@@ -117,23 +108,6 @@ main_title {
 }
 
 
-
-//menu_background {
-//    background: solid #99a2e5;
-//    padding: 1;
-//}
-//menu_title_base {
-//    background: solid #3d449b;
-//    color: #ffffff;
-//    font: "Dialog" bold 16;
-//    padding: 2 2 2 2;
-//}
-//menu_item_base {
-//    background: solid #5e65ad;
-//    color: #ffffff;
-//    font: "Dialog" plain 16;
-//    padding: 2 2 2 2;
-//}
 
 draggable_title {
     //background: solid #3d449b;
@@ -204,14 +178,6 @@ imageButton {
     text-align: center;
 }
 
-/*menuitem {
-  padding: 0 2;
-}
-
-menuitem:hover {
-  color: #000000;
-  background: solid #FFFFFF88;
-}*/
 
 button:hover {
   background: image "rsrc/interfaceTextures/button_hover.png" framexy;
@@ -234,59 +200,6 @@ button:selected {
   // v+1, h, v-1, h
   padding: 4 8 2 8;
 }
-
-/*
-circle_button {
-  background: image "rsrc/interfaceTextures/circleButton/circle_up.png" centerxy;
-  padding: 5 5;
-  font: "Dialog" bold 17;
-  color: #000000;
-  text-align: center;
-}
-
-circle_button:hover {
-  background: image "rsrc/interfaceTextures/circleButton/circle_hover.png" centerxy;
-  color: #000000;
-}
-
-circle_button:selected {
-  background: image "rsrc/interfaceTextures/circleButton/circle_down.png" centerxy;
-  color: #000000;
-}
-
-circle_button:down {
-  background: image "rsrc/interfaceTextures/circleButton/circle_down.png" centerxy;
-  color: #000000;
-}
-
-circle_button:disabled {
-  background: image "rsrc/interfaceTextures/circleButton/circle_up.png" centerxy;
-  color: #aaaaaa;
-}
-
-smallcircle_button {
-  background: image "rsrc/interfaceTextures/circleButton/circleSmall_up.png" centerxy;
-  padding: 5 5;
-  font: "Dialog" plain 14;
-  color: #000000;
-  text-align: center;
-}
-
-smallcircle_button:hover {
-  background: image "rsrc/interfaceTextures/circleButton/circleSmall_hover.png" centerxy;
-  color: #000000;
-}
-
-smallcircle_button:selected {
-  background: image "rsrc/interfaceTextures/circleButton/circleSmall_down.png" centerxy;
-  color: #000000;
-}
-
-smallcircle_button:down {
-  background: image "rsrc/interfaceTextures/circleButton/circleSmall_down.png" centerxy;
-  color: #000000;
-}
-*/
 
 combobox {
   background: image "rsrc/interfaceTextures/button_up.png" framexy;
@@ -325,38 +238,79 @@ checkbox:disselected {
   icon: image "rsrc/interfaceTextures/checkbox.png" centery;
 }
 
+scrollbar {
+    //background: solid #00FF00;
+    background: image "rsrc/interfaceTextures/scrollbar/white_box.png" framexy;
+}
+
 scrollbar_hthumb {
-  background: solid #FFFFFF;
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny.png" framexy;
+}
+scrollbar_hthumb:hover {
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny_hover.png" framexy;
+}
+scrollbar_hthumb:down {
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny_down.png" framexy;
 }
 
 scrollbar_vthumb {
-  background: solid #FFFFFF;
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny.png" framexy;
+}
+scrollbar_vthumb:hover {
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny_hover.png" framexy;
+}
+scrollbar_vthumb:down {
+  background: image "rsrc/interfaceTextures/scrollbar/button_tiny_down.png" framexy;
 }
 
 scrollbar_hwell {
-  background: image "rsrc/interfaceTextures/scrollbar.png" framexy;
-  padding: 2;
+//  background: image "rsrc/interfaceTextures/scrollbar/scrollbar.png" framexy;
+//  padding: 2;
 }
 
 scrollbar_vwell {
-  background: image "rsrc/interfaceTextures/scrollbar.png" framexy;
-  padding: 2;
+//  background: image "rsrc/interfaceTextures/scrollbar/scrollbar.png" framexy;
+//  padding: 2;
 }
 
 scrollbar_hless {
-  icon: image "rsrc/interfaceTextures/scroll_left.png";
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_left.png";
+}
+scrollbar_hless:hover {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_left_over.png";
+}
+scrollbar_hless:down {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_left_down.png";
 }
 
 scrollbar_vless {
-  icon: image "rsrc/interfaceTextures/scroll_up.png";
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_up.png";
+}
+scrollbar_vless:hover {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_up_over.png";
+}
+scrollbar_vless:down {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_up_down.png";
 }
 
 scrollbar_hmore {
-  icon: image "rsrc/interfaceTextures/scroll_right.png";
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_right.png";
+}
+scrollbar_hmore:hover {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_right_over.png";
+}
+scrollbar_hmore:down {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_right_down.png";
 }
 
 scrollbar_vmore {
-  icon: image "rsrc/interfaceTextures/scroll_down.png";
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_down.png";
+}
+scrollbar_vmore:hover {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_down_over.png";
+}
+scrollbar_vmore:down {
+  icon: image "rsrc/interfaceTextures/scrollbar/triangle_down_down.png";
 }
 
 hslider {

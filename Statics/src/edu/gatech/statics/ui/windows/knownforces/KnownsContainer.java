@@ -5,9 +5,8 @@
 package edu.gatech.statics.ui.windows.knownforces;
 
 import com.jmex.bui.BContainer;
-import com.jmex.bui.layout.BorderLayout;
-import com.jmex.bui.text.HTMLView;
-import com.jmex.bui.util.Dimension;
+import com.jmex.bui.BLabel;
+import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
@@ -31,47 +30,45 @@ import java.util.List;
  */
 public class KnownsContainer extends BContainer implements SolveListener {
 
-    private HTMLView view;
-
+    //private HTMLView view;
     public KnownsContainer() {
-        super(new BorderLayout());
+//        GroupLayout layout = GroupLayout.makeVert(GroupLayout.TOP);
+//        layout.setOffAxisJustification(GroupLayout.LEFT);
 
-        view = new HTMLView() {
+        // columns, row gap, column gap
+        TableLayout layout = new TableLayout(2, 5, 5);
+        setLayoutManager(layout);
 
-            @Override
-            public Dimension getPreferredSize(int whint, int hhint) {
-                Dimension dim = super.getPreferredSize(whint, hhint);
-                //dim.height /= 2;
-                //dim.height += 10;
-                dim.height = hhint;
-                return dim;
-            }
-        };
-        add(view, BorderLayout.CENTER);
+        //setPreferredSize(200, -1);
+
+        setStyleClass("sidebar_container");
 
         StaticsApplication.getApp().addSolveListener(this);
         updateView();
     }
 
-    protected void handleConnector(Connector connector, List<Connector2ForceMember2d> handledConnectors, StringBuffer contents) {
+    protected void handleConnector(Connector connector, List<Connector2ForceMember2d> handledConnectors) {
         // iterate through reactions at joint
         if (connector instanceof Connector2ForceMember2d) {
             Connector2ForceMember2d connector2fm = (Connector2ForceMember2d) connector;
             if (!handledConnectors.contains(connector2fm.getOpposite())) {
-                writeReaction2FM(connector2fm, contents);
+                writeReaction2FM(connector2fm);
                 handledConnectors.add(connector2fm);
             }
         } else {
             for (Vector force : connector.getReactions(connector.getBody1())) {
-                writeReaction(force, connector.getAnchor(), contents);
+                writeReaction(force, connector.getAnchor());
             }
         }
     }
 
     private void updateView() {
-        StringBuffer contents = new StringBuffer();
+
+        removeAll();
+
+        //StringBuffer contents = new StringBuffer();
         //contents.append("<html><body>");
-        contents.append("<table cellspacing=\"2\" cellpadding=\"2\">");
+        //contents.append("<table cellspacing=\"2\" cellpadding=\"2\">");
 
         // handled connectors for sake of convenience with 2fms
         List<Connector2ForceMember2d> handledConnectors = new ArrayList<Connector2ForceMember2d>();
@@ -84,38 +81,38 @@ public class KnownsContainer extends BContainer implements SolveListener {
         //}
 
         for (SimulationObject obj : exercise.getSchematic().allObjects()) {
-            checkObject(obj, contents, handledConnectors);
+            checkObject(obj, handledConnectors);
         }
 
-        contents.append("</table>");
+        //contents.append("</table>");
         //contents.append("</body></html>");
 
-        view.setContents(contents.toString());
+        //view.setContents(contents.toString());
     }
 
-    protected void checkObject(SimulationObject obj, StringBuffer contents, List<Connector2ForceMember2d> handledConnectors) {
+    protected void checkObject(SimulationObject obj, List<Connector2ForceMember2d> handledConnectors) {
 
         // look at joints, specifically
         if (obj instanceof Connector) {
             Connector connector = (Connector) obj;
             if (connector.isSolved()) {
-                handleConnector(connector, handledConnectors, contents);
+                handleConnector(connector, handledConnectors);
             }
         }
 
         // look at free vectors
         if (obj instanceof Load) {
             Load vObj = (Load) obj;
-            writeReaction(vObj.getVector(), vObj.getAnchor(), contents, vObj.getName());
+            writeReaction(vObj.getVector(), vObj.getAnchor(), vObj.getName());
         }
 
         if (obj instanceof Body) {
             Body body = (Body) obj;
-            writeWeightReaction(body, contents);
+            writeWeightReaction(body);
         }
     }
 
-    protected void writeWeightReaction(Body body, StringBuffer contents) {
+    protected void writeWeightReaction(Body body) {
         if (body.getWeight().doubleValue() == 0) {
             return;
         }
@@ -123,29 +120,39 @@ public class KnownsContainer extends BContainer implements SolveListener {
         // we will probably want to have some facility for letting
         // weights be unknown later on...
 
-        contents.append("<tr><td>");
-        contents.append("Weight of <b>" + body.getName() + "</b> at [" + body.getCenterOfMassPoint().getName() + "]: ");
-        contents.append("</td><td>");
-        contents.append(body.getWeight().toString());
-        contents.append("</td></tr>");
+        String text = "Weight of @=b(" + body.getName() + ") at @=b(" + body.getCenterOfMassPoint().getName() + "): ";
+
+        BLabel label = new BLabel(text);
+        add(label);
+
+        label = new BLabel(body.getWeight().toString());
+        add(label);
     }
 
-    protected void writeReaction2FM(Connector2ForceMember2d connector, StringBuffer contents) {
+    protected void writeReaction2FM(Connector2ForceMember2d connector) {
 
-        contents.append("<tr><td>");
+        //contents.append("<tr><td>");
 
         TwoForceMember member = connector.getMember();
 
+        String text1;
+
         if (member instanceof Cable) {
-            contents.append("cable ");
+            //contents.append("cable ");
+            text1 = "cable ";
         } else if (member instanceof Bar) {
-            contents.append("bar ");
+            //contents.append("bar ");
+            text1 = "bar ";
         } else {
-            contents.append("??? ");
+            //contents.append("??? ");
+            text1 = "??? ";
         }
 
-        contents.append(member.getConnector1().getAnchor().getName());
-        contents.append(member.getConnector2().getAnchor().getName());
+        text1 += member.getConnector1().getAnchor().getName() +
+                member.getConnector2().getAnchor().getName();
+
+        //contents.append(member.getConnector1().getAnchor().getName());
+        //contents.append(member.getConnector2().getAnchor().getName());
 
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
@@ -155,9 +162,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
             reaction = reaction1.getVector();
         }
 
-        contents.append(" <font color=\"#ff0000\"><b>" + reaction.getSymbolName() + "</b></font>");
+        text1 += " @=b#ff0000(" + reaction.getSymbolName() + ")";
 
-        contents.append("</td><td>");
+        //contents.append(" <font color=\"#ff0000\"><b>" + reaction.getSymbolName() + "</b></font>");
+        //contents.append("</td><td>");
 
         String tensionOrCompression;
         if (connector.inTension()) {
@@ -165,21 +173,33 @@ public class KnownsContainer extends BContainer implements SolveListener {
         } else {
             tensionOrCompression = "compression";
         }
-        contents.append(reaction.getQuantity().toStringDecimal() + reaction.getUnit().getSuffix() + " " + tensionOrCompression);
-        contents.append("</td></tr>");
+
+        String value = reaction.getQuantity().toStringDecimal() + reaction.getUnit().getSuffix();
+
+        //String text2 = value + " \n" + tensionOrCompression ;
+        String text2 = value + " " + tensionOrCompression ;
+
+        BLabel label1 = new BLabel(text1);
+        BLabel label2 = new BLabel(text2);
+
+        add(label1);
+        add(label2);
+
+        //contents.append(reaction.getQuantity().toStringDecimal() + reaction.getUnit().getSuffix() + " " + tensionOrCompression);
+        //contents.append("</td></tr>");
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
+    protected void writeReaction(Vector load, Point applicationPoint) {
 
         AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
         if (load1 != null) {
             load = load1.getVector();
         }
 
-        writeReaction(load, applicationPoint, contents, load.getSymbolName());
+        writeReaction(load, applicationPoint, load.getSymbolName());
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
+    protected void writeReaction(Vector load, Point applicationPoint, String name) {
 
         if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
@@ -192,20 +212,33 @@ public class KnownsContainer extends BContainer implements SolveListener {
             return;
         }
 
-        String forceType = load.getUnit().name();
-        contents.append("<tr><td>");
-        contents.append(forceType + " ");
+        String text1 = load.getUnit().name() + " ";
+        //contents.append("<tr><td>");
+
+        //contents.append(forceType + " ");
         //if(Diagram.getSchematic().allObjects())
         //    contents.append("<b>"+force.getName()+"</b>");
         //else
-        contents.append("<font color=\"#ff0000\"><b>" + name + "</b></font>");
+
+        text1 += "@=b#ff0000(" + name + ")";
+
+        //contents.append("<font color=\"#ff0000\"><b>" + name + "</b></font>");
         if (applicationPoint != null) {
-            contents.append(" at [" + applicationPoint.getName() + "]: ");
+            text1 += " at @=b(" + applicationPoint.getName() + "): ";
+            //contents.append(" at [" + applicationPoint.getName() + "]: ");
         }
 
-        contents.append("</td><td>");
-        contents.append(load.getQuantity().toStringDecimal() + load.getUnit().getSuffix());
-        contents.append("</td></tr>");
+        String text2 = load.getQuantity().toStringDecimal() + load.getUnit().getSuffix();
+
+        BLabel label1 = new BLabel(text1);
+        BLabel label2 = new BLabel(text2);
+
+        add(label1);
+        add(label2);
+
+        //contents.append("</td><td>");
+        //contents.append(load.getQuantity().toStringDecimal() + load.getUnit().getSuffix());
+        //contents.append("</td></tr>");
     }
 
     boolean isGivenLoad(Vector load) {
@@ -218,7 +251,6 @@ public class KnownsContainer extends BContainer implements SolveListener {
         }
         return false;
     }
-
 
     public void update() {
         updateView();

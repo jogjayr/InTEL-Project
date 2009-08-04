@@ -113,7 +113,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         return activeEquation;
     }
 
-    private void setActiveEquation(EquationBar bar) {
+    void setActiveEquation(EquationBar bar) {
         if (activeEquation != null) {
             activeEquation.setBackground(new TintedBackground(regularBackgroundColor));
             //activeEquation.setBorder(new LineBorder(regularBorderColor));
