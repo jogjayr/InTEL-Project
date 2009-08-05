@@ -5,6 +5,7 @@ $title = 'Launch Problem';
 $type = 'compact';
 require_once('header.php');
 
+
 $uuid = '';
 if(isset($_SESSION['uuid'])) {
     $uuid = $_SESSION['uuid'];
@@ -18,6 +19,8 @@ if(isset($_GET['exercise_id'])) {
     $assignmentId = addslashes($_GET['exercise_id']);
 }
 
+$isOldUI = isset($_GET['oldui']);
+
 if($problemId != null) {
     $problem = retrieveProblem($problemId);
 } else {
@@ -30,6 +33,7 @@ else $userId = $user['id'];
 $problemName = $problem['name'];
 
 
+
 $assignments = getAssignments($uuid);
 $thisAssignment = null;
 foreach($assignments as $assignment) {
@@ -40,10 +44,17 @@ foreach($assignments as $assignment) {
     }
 }
 
+echo "<h1>$problemName</h1>";
+
+
 //main java apps
 if ($problem["type"]=="java"){
   $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
   $jarPath = "../applet/";
+  if($isOldUI) {
+    $jarPath = "../appletold/";
+  }
+  
   $launcher = "edu.gatech.statics.application.AppletLauncher";
   $exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
 
@@ -86,6 +97,7 @@ if ($problem["type"]=="java"){
   <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
   <?php } ?>
 
+  <div style="margin: 5px; padding: 5px; border: thin solid #aec3ff;">
   <applet
       archive="<?php echo $archiveString; ?>"
       code="<?php echo $launcher; ?>"
@@ -101,6 +113,7 @@ if ($problem["type"]=="java"){
       <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
       Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
   </applet>
+  </div>
   
 <?
 }
