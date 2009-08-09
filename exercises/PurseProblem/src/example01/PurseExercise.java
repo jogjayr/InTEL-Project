@@ -69,8 +69,8 @@ public class PurseExercise extends FrameExercise {
 
         description.setGoals("Solve for the reactions in the tendon and at the shoulder.");
 
-        //description.addImage("example01/assets/test.png");
-        //description.addImage("example01/assets/test.png");
+        description.addImage("example01/assets/arm-purse1.png");
+        description.addImage("example01/assets/arm-purse2.png");
 
         return description;
     }
