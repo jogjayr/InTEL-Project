@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.distributed.ui;
 
+import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 
 /**
@@ -14,8 +15,8 @@ public class DistributedInterfaceConfiguration extends DefaultInterfaceConfigura
 
     public DistributedInterfaceConfiguration() {
         getModePanels().add(new DistributedModePanel());
+        replaceModePanel(SelectModePanel.class, new DistributedSelectModePanel());
     }
-
 //    @Override
 //    protected KnownLoadsWindow createKnownLoadsWindow() {
 //        return new DistributedKnownLoadsWindow();

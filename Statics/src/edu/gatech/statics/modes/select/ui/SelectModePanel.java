@@ -26,16 +26,16 @@ import java.util.List;
  */
 public class SelectModePanel extends ApplicationModePanel<SelectDiagram> {
 
-    BContainer selectionListBox;
-    HTMLView selectionList;
-    BButton nextButton;
+    protected BContainer selectionListBox;
+    protected HTMLView selectionList;
+    protected BButton nextButton;
 
     public SelectModePanel() {
         super();
 
         selectionListBox = new BContainer(new BorderLayout());
         nextButton = new NextButton(
-                "Create", new ButtonListener(), "done");
+                "Create FBD", new ButtonListener(), "done");
         //nextButton.setStyleClass("circle_button");
         //nextButton.setEnabled(false);
         //nextButton.setVisible(false);
