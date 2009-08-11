@@ -13,6 +13,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.DistanceMeasurement;
 
@@ -121,6 +122,10 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
     @Override
     public void draw(Renderer r) {
         super.draw(r);
+
+        if (!StaticsApplication.getApp().getDrawLabels()) {
+            return;
+        }
 
         if (getTarget().isVertical() == true) {
             worldPointDifference.set(getTarget().getPoint2().getTranslation());

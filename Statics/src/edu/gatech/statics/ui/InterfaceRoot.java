@@ -18,7 +18,6 @@ import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.persistence.StateIO;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
@@ -30,9 +29,7 @@ import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.feedback.FeedbackWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
-import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
-import edu.gatech.statics.ui.windows.navigation.ViewDiagramState;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -179,6 +176,7 @@ public class InterfaceRoot {
 
         if (!StaticsApplication.getApp().isGraded()) {
             setupSaveLoad();
+            setupDisplayControls();
         }
 
         // create base windows that will stick around.
@@ -210,6 +208,24 @@ public class InterfaceRoot {
         input.addAction(load, "Load", KeyInput.KEY_F10, false);
     }
 
+    private void setupDisplayControls() {
+        InputAction toggleLabels = new InputAction() {
+
+            public void performAction(InputActionEvent evt) {
+                StaticsApplication.getApp().setDrawLabels(!StaticsApplication.getApp().getDrawLabels());
+            }
+        };
+        InputAction toggleInterface = new InputAction() {
+
+            public void performAction(InputActionEvent evt) {
+                StaticsApplication.getApp().setDrawInterface(!StaticsApplication.getApp().getDrawInterface());
+            }
+        };
+
+        input.addAction(toggleLabels, "ToggleLabels", KeyInput.KEY_F11, false);
+        input.addAction(toggleInterface, "ToggleInterface", KeyInput.KEY_F12, false);
+    }
+
     public void loadConfiguration(InterfaceConfiguration configuration) {
         if (this.configuration != null) {
             throw new IllegalStateException("Attempting to load a configuration while existing configuration is loaded");
@@ -230,7 +246,7 @@ public class InterfaceRoot {
         int sidebarWidth = Sidebar.WIDTH;
         Dimension sidebarSize = sidebar.getPreferredSize(sidebarWidth, -1);
         sidebar.setBounds(
-                0, 
+                0,
                 DisplaySystem.getDisplaySystem().getHeight() - sidebarSize.height - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5,
                 sidebarWidth, sidebarSize.height);
 

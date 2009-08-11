@@ -34,6 +34,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -77,6 +78,24 @@ public class StaticsApplication {
     private PostAssignment postAssignment = new PostAssignment();
     private DatabaseLogHandler logHandler;
     private boolean initialized = false; // this is set after init() completes
+    private boolean drawLabels = true;
+    private boolean drawInterface = true;
+
+    public boolean getDrawInterface() {
+        return drawInterface;
+    }
+
+    public void setDrawInterface(boolean drawInterface) {
+        this.drawInterface = drawInterface;
+    }
+
+    public boolean getDrawLabels() {
+        return drawLabels;
+    }
+
+    public void setDrawLabels(boolean drawLabels) {
+        this.drawLabels = drawLabels;
+    }
 
     public void setGraded(boolean graded) {
         this.graded = graded;
@@ -381,19 +400,14 @@ public class StaticsApplication {
         }
     }
 
-//    private void clearHighlights() {
-//        if (currentDiagram == null) {
-//            return;
-//        }
-//
-//        for (SimulationObject obj : currentDiagram.allObjects()) {
-//            obj.setDisplayHighlight(false);
-//            obj.setDisplaySelected(false);
-//            obj.setDisplayGrayed(false);
-//        }
-//    }
     private void updateLabels() {
+
         for (LabelRepresentation label : currentDiagram.getLabels()) {
+            // draw the point labels, but not the others.
+            if (!(drawLabels || (label.getTarget() instanceof Point))) {
+                continue;
+            }
+
             if (!activeLabels.contains(label)) {
                 activeLabels.add(label);
                 label.addToInterface();
@@ -401,7 +415,16 @@ public class StaticsApplication {
         }
 
         List<LabelRepresentation> removeLabels = new ArrayList<LabelRepresentation>(activeLabels);
-        removeLabels.removeAll(currentDiagram.getLabels());
+        if (drawLabels) {
+            removeLabels.removeAll(currentDiagram.getLabels());
+        } else {
+            // special behavior for removing the non-point labels
+            for (LabelRepresentation label : activeLabels) {
+                if (label.getTarget() instanceof Point) {
+                    removeLabels.remove(label);
+                }
+            }
+        }
         for (LabelRepresentation label : removeLabels) {
             activeLabels.remove(label);
             label.removeFromInterface();
@@ -448,11 +471,14 @@ public class StaticsApplication {
         }
 
         // Render UI
+        //if (drawLabels) {
         r.draw(labelNode);
-        r.draw(iRoot.getBuiNode());
+        //}
+        if (drawInterface) {
+            r.draw(iRoot.getBuiNode());
+        }
         r.renderQueue();
         r.clearQueue();
-
     }
 
     /**

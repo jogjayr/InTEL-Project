@@ -13,6 +13,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.AngleMeasurement;
 
@@ -25,7 +26,6 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
     //private float edgeWidth = .5f; // world units- should fix
     private float margin = 4f; // pixels
     //private float arrowsize = 6f; // pixels
-
     private float offset; //world units
 
     public float getOffset() {
@@ -88,13 +88,12 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
     // Vector3f objects that were churned through.
     // We keep these cached here so that they don't churn.
     //private static Vector3f worldPointDifference, offsetDirection, scaledOffsetDirection;
-    private static Vector3f p1,  p2,  pCenter,  pDirection;
+    private static Vector3f p1, p2, pCenter, pDirection;
     //private static Vector3f arrowOffset, measureExtent, measureExtentArrowHead;
     //private static Vector3f arrow1, arrow2, arrowHead1, arrowHead2, arrowHead1a, arrowHead2a;
-    private static Vector3f barOffset1,  barOffset2,  bar1,  bar2;
-    private static Vector3f midVector,  midVector1,  midVector2;
+    private static Vector3f barOffset1, barOffset2, bar1, bar2;
+    private static Vector3f midVector, midVector1, midVector2;
     //private static Vector3f perpindicular, xUnit, yUnit;
-
 
     static {
         //worldPointDifference = new Vector3f();
@@ -120,14 +119,18 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
         midVector = new Vector3f();
         midVector1 = new Vector3f();
         midVector2 = new Vector3f();
-    //perpindicular = new Vector3f();
-    //xUnit = new Vector3f();
-    //yUnit = new Vector3f();
+        //perpindicular = new Vector3f();
+        //xUnit = new Vector3f();
+        //yUnit = new Vector3f();
     }
 
     @Override
     public void draw(Renderer r) {
         super.draw(r);
+
+        if (!StaticsApplication.getApp().getDrawLabels()) {
+            return;
+        }
 
         float edgeWidth = DisplayConstants.getInstance().getMeasurementBarSize();
 
@@ -215,7 +218,7 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
             CurveUtil.renderArc(r, color, anchor, offset, axis1, pDirection);
             CurveUtil.renderArc(r, color, anchor, offset, pDirection, axis2);
 
-        //CurveUtil.renderLine(r, color, arrow1, arrow2);
+            //CurveUtil.renderLine(r, color, arrow1, arrow2);
 
         } else {
             // display text normally...
@@ -237,8 +240,8 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
             CurveUtil.renderArc(r, color, anchor, offset, axis1, midVector1);
             CurveUtil.renderArc(r, color, anchor, offset, midVector2, axis2);
 
-        //CurveUtil.renderLine(r, color, arrow1, midVector1);
-        //CurveUtil.renderLine(r, color, arrow2, midVector2);
+            //CurveUtil.renderLine(r, color, arrow1, midVector1);
+            //CurveUtil.renderLine(r, color, arrow2, midVector2);
         }
 
 
