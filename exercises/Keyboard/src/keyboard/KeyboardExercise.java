@@ -82,6 +82,9 @@ public class KeyboardExercise extends FrameExercise {
         description.setGoals(
                 "Find the force in PQ, and define whether it is in tension or compression.");
 
+        description.addImage("keyboard/assets/keyboard 2.png");
+        description.addImage("keyboard/assets/keyboard 1.png");
+
         return description;
     }
 

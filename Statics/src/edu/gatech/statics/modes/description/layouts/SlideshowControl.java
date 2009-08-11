@@ -46,7 +46,8 @@ public class SlideshowControl extends BContainer {
     public void setImages(List<BufferedImage> images) {
 
         if (icons.size() > 0) {
-            throw new IllegalStateException("Can't add set up the slideshow control twice!");
+            //throw new IllegalStateException("Can't add set up the slideshow control twice!");
+            return;
         }
 
         for (BufferedImage bufferedImage : images) {
