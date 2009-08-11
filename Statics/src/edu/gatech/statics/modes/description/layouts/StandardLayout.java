@@ -4,11 +4,9 @@
  */
 package edu.gatech.statics.modes.description.layouts;
 
-import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
-import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.text.HTMLView;
 import com.jmex.bui.util.Dimension;
@@ -29,14 +27,21 @@ public class StandardLayout implements DescriptionLayout {
     private HTMLView problemStatementView;
     private HTMLView goalsView;
     private BLabel imageLabel1;
-    private BLabel imageLabel2;
+    //private BLabel imageLabel2;
+    private SlideshowControl slideshow;
+
+    private static final int IMAGE_WIDTH = 550;
+    private static final int IMAGE_HEIGHT = 325;
 
     public void addComponents(DescriptionUI ui) {
 
         imageLabel1 = new BLabel("");
-        imageLabel2 = new BLabel("");
+        //imageLabel2 = new BLabel("");
         ui.add(imageLabel1);
-        ui.add(imageLabel2);
+        //ui.add(imageLabel2);
+
+        slideshow = new SlideshowControl(IMAGE_WIDTH, IMAGE_HEIGHT);
+        ui.add(slideshow);
 
 //        titleLabel = new BLabel("");
 //        ui.add(titleLabel);
@@ -65,9 +70,6 @@ public class StandardLayout implements DescriptionLayout {
 
 
         Dimension preferredSize;
-
-        int imageWidth = 550;
-        int imageHeight = 325;
 
         int yOffset = displayHeight - MainTabBar.MAIN_TAB_BAR_HEIGHT;
         int xOffset = 600;
@@ -117,12 +119,15 @@ public class StandardLayout implements DescriptionLayout {
             imageLabel1.setIcon(new ImageIcon(new BImage(description.getImages().get(0))));
             preferredSize = imageLabel1.getPreferredSize(-1, -1);
             //imageLabel1.setBounds(25, 25, preferredSize.width, preferredSize.height);
-            imageLabel1.setBounds(spacing, spacing, imageWidth, imageHeight);
+            imageLabel1.setBounds(spacing, spacing, IMAGE_WIDTH, IMAGE_HEIGHT);
 
-            imageLabel2.setIcon(new ImageIcon(new BImage(description.getImages().get(1))));
-            preferredSize = imageLabel2.getPreferredSize(-1, -1);
-            //imageLabel2.setBounds(25, 400, preferredSize.width, preferredSize.height);
-            imageLabel2.setBounds(spacing, 2 * spacing + imageHeight, imageWidth, imageHeight);
+            slideshow.setImages(description.getImages().subList(1, description.getImages().size()));
+            slideshow.setBounds(spacing, 2 * spacing + IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+//            imageLabel2.setIcon(new ImageIcon(new BImage(description.getImages().get(1))));
+//            preferredSize = imageLabel2.getPreferredSize(-1, -1);
+//            //imageLabel2.setBounds(25, 400, preferredSize.width, preferredSize.height);
+//            imageLabel2.setBounds(spacing, 2 * spacing + IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT);
         }
     }
 }
