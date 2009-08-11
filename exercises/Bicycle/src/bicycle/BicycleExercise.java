@@ -65,9 +65,13 @@ public class BicycleExercise extends FrameExercise {
 
         description.setGoals("Solve for the tension or compression in each of the two-force members.");
 
+        description.addImage("bicycle/assets/bicycle-main.png");
+        description.addImage("bicycle/assets/IMG_3406.JPG");
+        description.addImage("bicycle/assets/IMG_3410.JPG");
+        description.addImage("bicycle/assets/IMG_3416.JPG");
+
         return description;
     }
-
 
 
     @Override

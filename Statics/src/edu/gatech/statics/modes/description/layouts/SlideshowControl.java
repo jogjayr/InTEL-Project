@@ -28,6 +28,7 @@ public class SlideshowControl extends BContainer {
     private BLabel mainLabel;
     private int position = 0;
     private int width, height;
+    private BButton previousButton, nextButton;
 
     public SlideshowControl(int width, int height) {
 
@@ -72,8 +73,8 @@ public class SlideshowControl extends BContainer {
                 }
             };
 
-            BButton previousButton = new BButton("", listener, "previous");
-            BButton nextButton = new BButton("", listener, "next");
+            previousButton = new BButton("", listener, "previous");
+            nextButton = new BButton("", listener, "next");
 
             ButtonUtil.setImageBackground(nextButton, "rsrc/interfaceTextures/navigation/nav_right");
             ButtonUtil.setImageBackground(previousButton, "rsrc/interfaceTextures/navigation/nav_left");
@@ -116,5 +117,15 @@ public class SlideshowControl extends BContainer {
         mainLabel.setIcon(icon);
         remove(mainLabel);
         add(mainLabel, new Point((width - icon.getWidth()) / 2, mainLabel.getY()));
+
+        // remove and add buttons so that they
+        if (previousButton != null) {
+            remove(previousButton);
+            remove(nextButton);
+            
+            int offset = 10;
+            add(previousButton, new Point(offset, offset));
+            add(nextButton, new Point(width - 30 - offset, offset));
+        }
     }
 }
