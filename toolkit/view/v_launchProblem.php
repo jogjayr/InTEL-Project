@@ -223,7 +223,7 @@ if ($problem["type"]=="flash"){
     </object>
   </noscript>
   <div id="spacer" style="height:25px;"></div>
-<?
+<?php
 }
 require_once('footer.php'); 
 ?>
