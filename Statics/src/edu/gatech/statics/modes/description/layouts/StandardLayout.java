@@ -56,7 +56,7 @@ public class StandardLayout implements DescriptionLayout {
         ui.add(goalsView);
     }
 
-    @Override
+    //@Override
     public void layout(DescriptionUI ui, Description description) {
 
         String title = description.getTitle();
