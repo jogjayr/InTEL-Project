@@ -120,7 +120,7 @@ public class StaticsApplet extends Applet {
         super.destroy();
         alive = false;
         Logger.getLogger("Statics").info("Applet: destroy() finished");
-    //System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
+        //System.out.println("(destroy) I am destroyed: " + Thread.currentThread().getThreadGroup().isDestroyed());
     }
 
     @Override
@@ -191,7 +191,7 @@ public class StaticsApplet extends Applet {
                 Logger.getLogger("Statics").info("Applet: installing libraries complete!");
             } catch (Exception le) {
                 Logger.getLogger("Statics").log(Level.SEVERE, "Applet: installing libraries failed.", le);
-            //le.printStackTrace();
+                //le.printStackTrace();
             }
 
             display = application.initDisplay();
@@ -260,13 +260,13 @@ public class StaticsApplet extends Applet {
             public void focusGained(FocusEvent arg0) {
                 ((AWTKeyInput) KeyInput.get()).setEnabled(true);
                 ((AppletMouse) MouseInput.get()).setEnabled(true);
-            //((AWTMouseInput) MouseInput.get()).setEnabled(true);
+                //((AWTMouseInput) MouseInput.get()).setEnabled(true);
             }
 
             public void focusLost(FocusEvent arg0) {
                 ((AWTKeyInput) KeyInput.get()).setEnabled(false);
                 ((AppletMouse) MouseInput.get()).setEnabled(false);
-            //((AWTMouseInput) MouseInput.get()).setEnabled(false);
+                //((AWTMouseInput) MouseInput.get()).setEnabled(false);
             }
         });
 
@@ -331,6 +331,18 @@ public class StaticsApplet extends Applet {
             }
             try {
                 application.update();
+            } catch (IllegalStateException ex) {
+                // record
+                //error.printStackTrace();
+                Logger.getLogger("Statics").log(Level.SEVERE, "Crash in update()", ex);
+                alive = false;
+
+                JOptionPane.showMessageDialog(StaticsApplet.this,
+                        "There has been a problem in the software. " +
+                        "Please try updating java, or using a different browser or computer. " +
+                        "Please also contact support if the problem is recurring!", "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
             } catch (Error error) {
 
                 // record
@@ -340,7 +352,7 @@ public class StaticsApplet extends Applet {
 
                 JOptionPane.showMessageDialog(StaticsApplet.this,
                         "There has been a problem in the software. " +
-                        "Please try reloading the page, using a different browser or computer. " +
+                        "Please try reloading the page, or using a different browser or computer. " +
                         "Please also contact support if the problem is recurring!", "Error", JOptionPane.ERROR_MESSAGE);
 
                 return;
