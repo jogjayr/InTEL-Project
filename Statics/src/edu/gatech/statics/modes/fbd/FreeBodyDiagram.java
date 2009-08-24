@@ -444,7 +444,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
 
         LabelSelector labelTool = new LabelSelector(this, load, load.getAnchor().getTranslation());
         labelTool.setAdvice("Please give a name or a value for your load");
-        labelTool.setUnits(load.getUnit().getSuffix());
+        //labelTool.setUnits(load.getUnit().getSuffix());
         //labelTool.setHintText("");
         if (load.isSymbol()) {
             labelTool.setHintText(load.getSymbolName());

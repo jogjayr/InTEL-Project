@@ -63,7 +63,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     protected void showLabelSelector() {
         labelTool = createLabelSelector();
-        labelTool.setUnits(Unit.force.getSuffix());
+        //labelTool.setUnits(Unit.force.getSuffix());
         labelTool.setHintText("");
         labelTool.setIsCreating(true);
         labelTool.popup();

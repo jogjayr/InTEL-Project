@@ -21,6 +21,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 
 
@@ -41,7 +42,7 @@ public class LabelSelector /*extends SelectionTool*/ {
     private boolean isCreating;
     private String hintText = "F";
     private String advice = "Please give a name or a value";
-    private String units = "";
+    //private String units = "";
     private LabelListener labelListener;
     private Vector3f displayPoint;
     private Load load;
@@ -58,16 +59,16 @@ public class LabelSelector /*extends SelectionTool*/ {
         this.load = force;
         this.labelListener = new LoadLabelListener(force);
         this.displayPoint = displayPoint;
-    //super(world, VectorObject.class);
+        //super(world, VectorObject.class);
     }
 
     public void setHintText(String text) {
         hintText = text;
     }
 
-    public void setUnits(String units) {
-        this.units = units;
-    }
+//    public void setUnits(String units) {
+//        this.units = units;
+//    }
 
     public void setIsCreating(boolean isCreating) {
         this.isCreating = isCreating;
@@ -86,7 +87,9 @@ public class LabelSelector /*extends SelectionTool*/ {
         popup.setStyleClass("application_popup");
         popup.setModal(true);
 
-        BLabel label = new BLabel("Label Force:\n(give a name or a number)");
+        String forceOrMoment = load.getUnit() == Unit.force ? "Force" : "Moment";
+
+        BLabel label = new BLabel("Label " + forceOrMoment + ":\n(give a name or a number)");
         popup.add(label, BorderLayout.NORTH);
 
         BContainer centerContainer = new BContainer(new BorderLayout(4, 4));
@@ -95,7 +98,7 @@ public class LabelSelector /*extends SelectionTool*/ {
         textfield.setText(hintText);
 
         centerContainer.add(textfield, BorderLayout.CENTER);
-        BLabel unitsLabel = new BLabel(units);
+        BLabel unitsLabel = new BLabel(load.getUnit().getSuffix());
         centerContainer.add(unitsLabel, BorderLayout.EAST);
         popup.add(centerContainer, BorderLayout.CENTER);
 
