@@ -9,6 +9,7 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
+import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
@@ -21,8 +22,8 @@ import java.math.BigDecimal;
  */
 public class DistanceMeasurement extends Measurement {
 
-    private Point v1,  v2;
-    private boolean verticalLine = false,  horizontalLine = false;
+    private Point v1, v2;
+    private boolean verticalLine = false, horizontalLine = false;
 
     public void forceVertical() {
         horizontalLine = false;
@@ -88,9 +89,12 @@ public class DistanceMeasurement extends Measurement {
     }
 
     public void createDefaultSchematicRepresentation(float offset) {
-        DistanceRepresentation rep = new DistanceRepresentation(this);
-        rep.setOffset(offset);
-        addRepresentation(rep);
+        // if the system is without a display, do not attempt to create the representation
+        if (DisplaySystem.getDisplaySystem().getRenderer() != null) {
+            DistanceRepresentation rep = new DistanceRepresentation(this);
+            rep.setOffset(offset);
+            addRepresentation(rep);
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@
 package edu.gatech.statics.objects;
 
 import com.jme.math.Vector3f;
+import com.jme.system.DisplaySystem;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.representations.AngleRepresentation;
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 abstract public class AngleMeasurement extends Measurement {
 
     private Point anchor;
-    private Vector3f axis1,  axis2;
+    private Vector3f axis1, axis2;
 
     public AngleMeasurement(Point anchor) {
         super(anchor);
@@ -29,9 +30,12 @@ abstract public class AngleMeasurement extends Measurement {
     }
 
     public void createDefaultSchematicRepresentation(float offset) {
-        AngleRepresentation rep = new AngleRepresentation(this);
-        rep.setOffset(offset);
-        addRepresentation(rep);
+        // if the system is without a display, do not attempt to create the representation
+        if (DisplaySystem.getDisplaySystem().getRenderer() != null) {
+            AngleRepresentation rep = new AngleRepresentation(this);
+            rep.setOffset(offset);
+            addRepresentation(rep);
+        }
     }
 
     public Point getAnchor() {

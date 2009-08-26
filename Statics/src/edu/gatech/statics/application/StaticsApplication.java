@@ -583,7 +583,9 @@ public class StaticsApplication {
 
             // get the exercise ready to run.
 
-            getExercise().loadDescriptionMode();
+            if (display != null) {
+                getExercise().loadDescriptionMode();
+            }
             //getExercise().loadStartingMode();
 
 

@@ -71,7 +71,7 @@ public class PurseExercise extends FrameExercise {
 
         description.addImage("example01/assets/arm-purse1.png");
         description.addImage("example01/assets/arm-purse2.png");
-        
+
 //        description.addImage("example01/assets/arm-purse3.jpg");
 //        description.addImage("example01/assets/arm-purse4.jpg");
 //        description.addImage("example01/assets/arm-purse5.jpg");
@@ -176,8 +176,10 @@ public class PurseExercise extends FrameExercise {
 
         Schematic world = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
-        StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
+        if (DisplaySystem.getDisplaySystem().getRenderer() != null) {
+            DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(0.96f, 0.98f, 0.90f, 1.0f));
+            StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
+        }
 
         A = new Point("A", "" + 0, "-16", "0");
         B = new Point("B", "" + 0, "-16", "0");
@@ -292,45 +294,51 @@ public class PurseExercise extends FrameExercise {
         RepresentationLayer bones = new RepresentationLayer("bones", RepresentationLayer.modelBodies.getPriority() - 1);
         RepresentationLayer.addLayer(bones);
 
-        ImageRepresentation imageRep;
-        float repScale = .025f;
+        // do not load these if there is no display
+        // this is unusual: most exercises should not need to worry about this,
+        // but we check here because the purse problem is a good baseline to test on.
+        if (DisplaySystem.getDisplaySystem().getRenderer() != null) {
 
-        imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm.png"));
-        imageRep.setScale(repScale * 1738, repScale * 501f);
-        imageRep.setTranslation(-1, 1.75f, 0);
-        forearm.addRepresentation(imageRep);
+            ImageRepresentation imageRep;
+            float repScale = .025f;
 
-        imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm_bone.png"));
-        imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 1617, repScale * 310f);
-        imageRep.setTranslation(-2.25f, -0.5f, .02f);
-        forearm.addRepresentation(imageRep);
+            imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm.png"));
+            imageRep.setScale(repScale * 1738, repScale * 501f);
+            imageRep.setTranslation(-1, 1.75f, 0);
+            forearm.addRepresentation(imageRep);
 
-
-        imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm.png"));
-        imageRep.setScale(repScale * 483f, repScale * 1539f);
-        imageRep.setTranslation(-0.75f, 1.0f, 0);
-        upperArm.addRepresentation(imageRep);
-
-        imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm_bone.png"));
-        imageRep.setLayer(bones);
-        imageRep.setScale(repScale * 191f, repScale * 1453f);
-        imageRep.setTranslation(-0.5f, 1, 0);
-        upperArm.addRepresentation(imageRep);
+            imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm_bone.png"));
+            imageRep.setLayer(bones);
+            imageRep.setScale(repScale * 1617, repScale * 310f);
+            imageRep.setTranslation(-2.25f, -0.5f, .02f);
+            forearm.addRepresentation(imageRep);
 
 
-        imageRep = new ImageRepresentation(A, loadTexture("example01/assets/purse.png"));
-        imageRep.setScale(repScale * 538f, repScale * 835f);
-        imageRep.setTranslation(0, -11.0f, .02f);
-        //A.addRepresentation(imageRep);
-        getSchematic().getBackground().addRepresentation(imageRep);
+            imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm.png"));
+            imageRep.setScale(repScale * 483f, repScale * 1539f);
+            imageRep.setTranslation(-0.75f, 1.0f, 0);
+            upperArm.addRepresentation(imageRep);
 
-        imageRep = new ImageRepresentation(tendon, loadTexture("example01/assets/muscle.png"));
-        imageRep.setLayer(bones);
-        imageRep.setRotation(-.075f);
-        //imageRep.setScale(repScale * 121f,repScale * 347f);
-        imageRep.setScale(.9f * repScale * 213f, .9f * repScale * 1331f);
-        imageRep.setTranslation(0.0f, 0.5f, .05f);
-        tendon.addRepresentation(imageRep);
+            imageRep = new ImageRepresentation(upperArm, loadTexture("example01/assets/upperArm_bone.png"));
+            imageRep.setLayer(bones);
+            imageRep.setScale(repScale * 191f, repScale * 1453f);
+            imageRep.setTranslation(-0.5f, 1, 0);
+            upperArm.addRepresentation(imageRep);
+
+
+            imageRep = new ImageRepresentation(A, loadTexture("example01/assets/purse.png"));
+            imageRep.setScale(repScale * 538f, repScale * 835f);
+            imageRep.setTranslation(0, -11.0f, .02f);
+            //A.addRepresentation(imageRep);
+            getSchematic().getBackground().addRepresentation(imageRep);
+
+            imageRep = new ImageRepresentation(tendon, loadTexture("example01/assets/muscle.png"));
+            imageRep.setLayer(bones);
+            imageRep.setRotation(-.075f);
+            //imageRep.setScale(repScale * 121f,repScale * 347f);
+            imageRep.setScale(.9f * repScale * 213f, .9f * repScale * 1331f);
+            imageRep.setTranslation(0.0f, 0.5f, .05f);
+            tendon.addRepresentation(imageRep);
+        }
     }
 }

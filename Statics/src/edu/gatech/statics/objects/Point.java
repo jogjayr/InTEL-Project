@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.objects;
 
+import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Vector3bd;
@@ -66,12 +67,15 @@ public class Point extends SimulationObject implements ResolvableByName {
     }
 
     public void createDefaultSchematicRepresentation() {
-        Representation rep1 = new PointRepresentation(this);
-        LabelRepresentation rep2 = new LabelRepresentation(this, "label_point");
-        rep2.setOffset(15, 15);
+        // if the system is without a display, do not attempt to create the representation
+        if (DisplaySystem.getDisplaySystem().getRenderer() != null) {
+            Representation rep1 = new PointRepresentation(this);
+            LabelRepresentation rep2 = new LabelRepresentation(this, "label_point");
+            rep2.setOffset(15, 15);
 
-        addRepresentation(rep1);
-        addRepresentation(rep2);
+            addRepresentation(rep1);
+            addRepresentation(rep2);
+        }
     }
 
     public boolean pointEquals(Point other) {

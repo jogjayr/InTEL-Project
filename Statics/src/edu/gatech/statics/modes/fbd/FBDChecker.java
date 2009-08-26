@@ -367,8 +367,10 @@ public class FBDChecker {
                 return false;
             }
 
-            if (userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getFrictionDirection())) {
-                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'f') {
+            if (isCloseEnough(userAnchoredVectorsAtConnector.get(0).getVectorValue(), cp.getNormalDirection()) &&
+                    isCloseEnough(userAnchoredVectorsAtConnector.get(1).getVectorValue(), cp.getFrictionDirection())) {
+                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' ||
+                        userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
                     logInfo("check: has the user added loads with the right names");
@@ -379,7 +381,8 @@ public class FBDChecker {
                     return false;
                 }
 
-            } else if (userAnchoredVectorsAtConnector.get(1).getVectorValue().equals(cp.getNormalDirection()) && userAnchoredVectorsAtConnector.get(0).getVectorValue().equals(cp.getFrictionDirection())) {
+            } else if (isCloseEnough(userAnchoredVectorsAtConnector.get(1).getVectorValue(), cp.getNormalDirection()) &&
+                    isCloseEnough(userAnchoredVectorsAtConnector.get(0).getVectorValue(), cp.getFrictionDirection())) {
                 if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
@@ -394,7 +397,7 @@ public class FBDChecker {
                 logInfo("check: has the user added the loads in the right direction");
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_wrong_direction", cp.getAnchor().getName());
-                    //setStaticsFeedbackKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
+                //setStaticsFeedbackKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
                 debugInfo("STEP 5: FAILED");
                 return false;
             }
@@ -490,7 +493,7 @@ public class FBDChecker {
                     debugInfo("    has symbolic equivalent: " + loadFromSymbolManager);
 
                     // make sure the directions are pointing the correct way:
-                    if (reaction.getVectorValue().equals(loadFromSymbolManager.getVectorValue().negate())) {
+                    if (isCloseEnough(reaction.getVectorValue(), loadFromSymbolManager.getVectorValue().negate())) {
                         loadFromSymbolManager = new AnchoredVector(loadFromSymbolManager);
                         loadFromSymbolManager.getVectorValue().negateLocal();
 
@@ -500,8 +503,8 @@ public class FBDChecker {
                     // of the user AnchoredVectors, only check those which point in maybe the right direction
                     List<AnchoredVector> userAnchoredVectorsAtConnectorInDirection = new ArrayList<AnchoredVector>();
                     for (AnchoredVector AnchoredVector : userAnchoredVectorsAtConnector) {
-                        if (AnchoredVector.getVectorValue().equals(reaction.getVectorValue()) ||
-                                AnchoredVector.getVectorValue().equals(reaction.getVectorValue().negate())) {
+                        if (isCloseEnough(AnchoredVector.getVectorValue(), reaction.getVectorValue()) ||
+                                isCloseEnough(AnchoredVector.getVectorValue(), reaction.getVectorValue().negate())) {
                             userAnchoredVectorsAtConnectorInDirection.add(AnchoredVector);
                         }
                     }
@@ -929,18 +932,18 @@ public class FBDChecker {
                 }
             }
 
-        /*for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
-        if (!(obj instanceof Load)) {
-        continue;
-        }
-        // ******
-        // THERE IS A PROBLEM HERE
-        // This check is testing if there is ANY load present at this other point. It does not check
-        // to see if it is the joint, or if it is a relevant point!!
-        if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
-        return NameCheckResult.shouldMatch2FM;
-        }
-        }*/
+            /*for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
+            if (!(obj instanceof Load)) {
+            continue;
+            }
+            // ******
+            // THERE IS A PROBLEM HERE
+            // This check is testing if there is ANY load present at this other point. It does not check
+            // to see if it is the joint, or if it is a relevant point!!
+            if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
+            return NameCheckResult.shouldMatch2FM;
+            }
+            }*/
         }
 
         // if the result of the standard check is anything but "there is a duplicate in this diagram"
@@ -974,8 +977,8 @@ public class FBDChecker {
         // we want to find something that could be a reaction on the other end of the 2fm,
         // and we want it to match the name of our current AnchoredVector.
         for (AnchoredVector otherAnchoredVector : AnchoredVectorsAtOtherReaction) {
-            if (otherAnchoredVector.getVectorValue().equals(otherReactionTarget.getVectorValue()) ||
-                    otherAnchoredVector.getVectorValue().equals(otherReactionTarget.getVectorValue().negate())) {
+            if (isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue()) ||
+                    isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue().negate())) {
                 if (candidate.getSymbolName().equalsIgnoreCase(otherAnchoredVector.getSymbolName())) {
                     otherReaction = otherAnchoredVector;
                 }
@@ -1021,26 +1024,42 @@ public class FBDChecker {
      */
     protected List<AnchoredVector> getCandidates(List<AnchoredVector> searchPool, AnchoredVector target, boolean testOpposites) {
         List<AnchoredVector> candidates = new ArrayList<AnchoredVector>();
-        for (AnchoredVector AnchoredVector : searchPool) {
+        for (AnchoredVector candidate : searchPool) {
             // make sure types are the same
             //if (AnchoredVector.getClass() != target.getClass()) {
             //    continue;
             //}
-            if (AnchoredVector.getVector().getUnit() != target.getVector().getUnit()) {
+            if (candidate.getVector().getUnit() != target.getVector().getUnit()) {
                 continue;
             }
 
             // make sure the anchor is the same
-            if (!AnchoredVector.getAnchor().pointEquals(target.getAnchor())) {
+            if (!candidate.getAnchor().pointEquals(target.getAnchor())) {
                 continue;
             }
             // add if direction is the same, or is opposite and the testOpposites flag is set
-            if (AnchoredVector.getVectorValue().equals(target.getVectorValue()) ||
-                    (testOpposites && AnchoredVector.getVectorValue().negate().equals(target.getVectorValue()))) {
-                candidates.add(AnchoredVector);
+            if (isCloseEnough(candidate.getVectorValue(), target.getVectorValue()) ||
+                    (testOpposites && isCloseEnough(candidate.getVectorValue().negate(), target.getVectorValue()))) {
+                candidates.add(candidate);
             }
+
+//            if (candidate.getVectorValue().equals(target.getVectorValue()) ||
+//                    (testOpposites && candidate.getVectorValue().negate().equals(target.getVectorValue()))) {
+//                candidates.add(candidate);
+//            }
         }
         return candidates;
+    }
+
+    /**
+     * Returns true if the two vectors are close enough to be considered equal.
+     * @param v1
+     * @param v2
+     * @return
+     */
+    private boolean isCloseEnough(Vector3bd v1, Vector3bd v2) {
+        // use a flat comparison here.
+        return v1.distance(v2) < .001;
     }
 
     /**
@@ -1108,9 +1127,11 @@ public class FBDChecker {
                 // the numeric values are off.
                 return AnchoredVectorCheckResult.wrongNumericValue;
             }
-            if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+            //if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+            if (!isCloseEnough(candidate.getVectorValue(), target.getVectorValue())) {
                 // pointing the wrong way
-                if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                //if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                if (isCloseEnough(candidate.getVectorValue(), target.getVectorValue().negate())) {
                     return AnchoredVectorCheckResult.opposite;
                 }
 
@@ -1133,9 +1154,11 @@ public class FBDChecker {
                 return AnchoredVectorCheckResult.wrongSymbol;
             }
 
-            if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+            //if (!candidate.getVectorValue().equals(target.getVectorValue())) {
+            if (!isCloseEnough(candidate.getVectorValue(), target.getVectorValue())) {
                 // pointing the wrong way
-                if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                //if (candidate.getVectorValue().equals(target.getVectorValue().negate())) {
+                if (isCloseEnough(candidate.getVectorValue(), target.getVectorValue().negate())) {
                     return AnchoredVectorCheckResult.opposite;
                 }
                 return AnchoredVectorCheckResult.wrongDirection;
@@ -1215,11 +1238,11 @@ public class FBDChecker {
         List<AnchoredVector> loads = new ArrayList<AnchoredVector>();
         for (Vector vector : reactions) {
             loads.add(new AnchoredVector(connector.getAnchor(), vector));
-        /*if (vector.getUnit() == Unit.force) {
-        AnchoredVectors.add(new Force(joint.getAnchor(), vector));
-        } else if (vector.getUnit() == Unit.moment) {
-        AnchoredVectors.add(new Moment(joint.getAnchor(), vector));
-        }*/
+            /*if (vector.getUnit() == Unit.force) {
+            AnchoredVectors.add(new Force(joint.getAnchor(), vector));
+            } else if (vector.getUnit() == Unit.moment) {
+            AnchoredVectors.add(new Moment(joint.getAnchor(), vector));
+            }*/
         }
         return loads;
     }
