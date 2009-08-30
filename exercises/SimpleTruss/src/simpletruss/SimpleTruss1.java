@@ -62,7 +62,6 @@ public class SimpleTruss1 extends TrussExercise {
         getDisplayConstants().setForceSize(0.5f);
         getDisplayConstants().setPointSize(0.5f);
         getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(1f);
         getDisplayConstants().setMomentLabelDistance(0f);
         getDisplayConstants().setMeasurementBarSize(0.1f);
     }

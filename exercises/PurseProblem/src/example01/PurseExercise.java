@@ -109,7 +109,6 @@ public class PurseExercise extends FrameExercise {
         getDisplayConstants().setForceSize(2f);
         getDisplayConstants().setPointSize(2f);
         getDisplayConstants().setCylinderRadius(2f);
-        getDisplayConstants().setForceLabelDistance(9f);
         getDisplayConstants().setMomentLabelDistance(40f);
         getDisplayConstants().setMeasurementBarSize(0.5f);
         //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet

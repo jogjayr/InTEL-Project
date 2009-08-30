@@ -11,7 +11,6 @@ package edu.gatech.statics.objects;
 import edu.gatech.statics.math.Vector;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Representation;
-import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
@@ -55,7 +54,7 @@ public class Force extends Load {
         rep.setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
 
         LabelRepresentation label = new LabelRepresentation(this, "label_force");
-        label.setOffset(0, DisplayConstants.getInstance().getForceLabelDistance());
+        //label.setOffset(0, DisplayConstants.getInstance().getForceLabelDistance());
         addRepresentation(label);
     }
 

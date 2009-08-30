@@ -84,7 +84,6 @@ public class BookshelfExercise extends DistributedExercise {
         getDisplayConstants().setForceSize(0.5f);
         getDisplayConstants().setPointSize(0.5f);
         getDisplayConstants().setCylinderRadius(0.5f);
-        getDisplayConstants().setForceLabelDistance(5f);
         getDisplayConstants().setMomentLabelDistance(10f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
 

@@ -16,7 +16,7 @@ public class DisplayConstants {
     //private float jointSize = 0.2f; // use pointSize instead
     private float measurementBarSize = 0.1f;
     private float momentLabelDistance = 0f;
-    private float forceLabelDistance = 1f;
+    private float forceLabelDistance = 1.15f;
     private float cylinderRadius = 0.2f;
     private float forceSize = 0.2f;
     private float pointSize = 0.2f;
