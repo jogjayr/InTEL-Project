@@ -8,9 +8,12 @@
  */
 package edu.gatech.statics.modes.fbd.tools;
 
+import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.system.DisplaySystem;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BPopupWindow;
@@ -19,6 +22,9 @@ import com.jmex.bui.background.BBackground;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.MouseEvent;
+import com.jmex.bui.event.MouseListener;
+import com.jmex.bui.event.MouseMotionListener;
 import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
@@ -39,6 +45,8 @@ import edu.gatech.statics.ui.components.ModalPopupWindow;
  */
 public class LabelSelector /*extends SelectionTool*/ {
 
+    // the how many pixels away the popup window will appear from the anchor of the load being labeled.
+    private static final int POPUP_OFFSET = 20;
     private boolean isCreating;
     private String hintText = "F";
     private String advice = "Please give a name or a value";
@@ -69,7 +77,6 @@ public class LabelSelector /*extends SelectionTool*/ {
 //    public void setUnits(String units) {
 //        this.units = units;
 //    }
-
     public void setIsCreating(boolean isCreating) {
         this.isCreating = isCreating;
     }
@@ -129,7 +136,6 @@ public class LabelSelector /*extends SelectionTool*/ {
 
         BContainer buttonContainer = new BContainer(new BorderLayout());
 
-
         BButton okButton = new BButton("OK", listener, "ok");
         buttonContainer.add(okButton, BorderLayout.CENTER);
         BButton cancelButton = new BButton("Cancel", listener, "cancel");
@@ -139,11 +145,81 @@ public class LabelSelector /*extends SelectionTool*/ {
 
         Vector3f screenCoords = StaticsApplication.getApp().getCamera().getScreenCoordinates(displayPoint);
 
-        popup.popup((int) screenCoords.x, (int) screenCoords.y, true);
+        popup.popup((int) screenCoords.x + POPUP_OFFSET, (int) screenCoords.y + POPUP_OFFSET, true);
+
+        DragController dragController = new DragController(popup);
+        popup.addListener(dragController);
+        label.addListener(dragController);
 
         BBackground background = new TintedBackground(new ColorRGBA(.8f, .8f, .8f, 1.0f));
         for (int state = 0; state < 3; state++) {
             popup.setBackground(state, background);
+        }
+    }
+
+    // copied from DraggablePopupWindow
+    private class DragController implements MouseListener, MouseMotionListener {
+
+        private static final int WINDOW_TOLERANCE = 10;
+
+        public DragController(BComponent component) {
+            this.component = component;
+        }
+        private final BComponent component;
+        private boolean dragging;
+        private int mouseX;
+        private int mouseY;
+
+        public void mousePressed(MouseEvent event) {
+            dragging = true;
+            mouseX = event.getX();
+            mouseY = event.getY();
+        }
+
+        public void mouseReleased(MouseEvent event) {
+            dragging = false;
+        }
+
+        public void mouseEntered(MouseEvent event) {
+        }
+
+        public void mouseExited(MouseEvent event) {
+        }
+
+        public void mouseMoved(MouseEvent event) {
+            if (!MouseInput.get().isButtonDown(0)) {
+                dragging = false;
+            }
+        }
+
+        public void mouseDragged(MouseEvent event) {
+
+            if (!dragging) {
+                return;
+            }
+
+            int dx = event.getX() - mouseX;
+            int dy = event.getY() - mouseY;
+
+            // check the boundary so that we can't accidentally move the window off the screen.
+            int newX = dx + component.getX();
+            int newY = dy + component.getY();
+
+            if (newX < WINDOW_TOLERANCE) {
+                newX = WINDOW_TOLERANCE;
+            }
+            if (newY < WINDOW_TOLERANCE) {
+                newY = WINDOW_TOLERANCE;
+            }
+            if (newX > DisplaySystem.getDisplaySystem().getWidth() - component.getWidth() - WINDOW_TOLERANCE) {
+                newX = DisplaySystem.getDisplaySystem().getWidth() - component.getWidth() - WINDOW_TOLERANCE;
+            }
+            if (newY > DisplaySystem.getDisplaySystem().getHeight() - component.getHeight() - WINDOW_TOLERANCE) {
+                newY = DisplaySystem.getDisplaySystem().getHeight() - component.getHeight() - WINDOW_TOLERANCE;
+            }
+            component.setLocation(newX, newY);
+            mouseX = event.getX();
+            mouseY = event.getY();
         }
     }
 }
