@@ -12,6 +12,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
@@ -185,6 +186,20 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(ConstantDistributedForce.class, distributedForcePersistenceDelegate);
         setPersistenceDelegate(QuarterEllipseDistributedForce.class, distributedForcePersistenceDelegate);
         setPersistenceDelegate(TriangularDistributedForce.class, distributedForcePersistenceDelegate);
+
+
+        PersistenceDelegate distributedForceObjectPersistenceDelegate = new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                DistributedForceObject dlObj = (DistributedForceObject) oldInstance;
+                // DistributedLoad dl, String suffix
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
+                            dlObj.getDistributedForce(), dlObj.getSuffix()});
+            }
+        };
+
+        setPersistenceDelegate(DistributedForceObject.class, distributedForceObjectPersistenceDelegate);
 
         // set up the delegates for tasks.
         setPersistenceDelegate(CompleteFBDTask.class, namedPersistenceDelegate);

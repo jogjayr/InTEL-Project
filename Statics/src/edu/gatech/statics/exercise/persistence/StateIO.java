@@ -4,9 +4,14 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.state.ExerciseState;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.windows.knownforces.KnownsContainer;
+import edu.gatech.statics.ui.windows.knownforces.KnownsSidebarWindow;
 import edu.gatech.statics.util.Base64;
+import edu.gatech.statics.util.SolveListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -120,6 +125,13 @@ public class StateIO {
 
         // now update UI elements
         // TODO: Make sure that UI is upadated?
+
+        for (SolveListener solveListener : StaticsApplication.getApp().getSolveListeners()) {
+            // attempt to catch the knowns container
+            if (solveListener instanceof KnownsContainer) {
+                ((KnownsContainer) solveListener).update();
+            }
+        }
 //        for (TitledDraggablePopupWindow popup : InterfaceRoot.getInstance().getAllPopupWindows()) {
 //            if (popup instanceof DescriptionWindow) {
 //                ((DescriptionWindow) popup).update();

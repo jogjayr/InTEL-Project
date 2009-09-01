@@ -9,6 +9,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -21,12 +22,13 @@ import edu.gatech.statics.objects.representations.LabelRepresentation;
  *
  * @author Calvin Ashmore
  */
-public class DistributedForceObject extends SimulationObject {
+public class DistributedForceObject extends SimulationObject implements ResolvableByName {
 
     private Force resultantForce;
     private Point resultantAnchor;
     private DistanceMeasurement measure;
-    private DistributedForce dl;
+    private final DistributedForce dl;
+    private String suffix;
 
     /**
      * The suffix represents the suffix at the end of the resultant and centroid.
@@ -37,6 +39,7 @@ public class DistributedForceObject extends SimulationObject {
     public DistributedForceObject(DistributedForce dl, String suffix) {
         setName("distributed force: " + dl.getName());
         this.dl = dl;
+        this.suffix = suffix;
 
         // create the force and anchor
         //String anchorName = dl.getName() + " anchor";
@@ -47,12 +50,18 @@ public class DistributedForceObject extends SimulationObject {
         resultantForce.setName(loadName);
         //resultantForce.setName(dl.getName() + " resultant");
 
+        // this can occur during persistence...
+        if(dl.getSurface().getEnd1() != null) {
+            measure = new DistanceMeasurement(
+                    //new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
+                    dl.getSurface().getEnd1(), resultantAnchor);
+            measure.setKnown(false);
+            measure.setSymbol("pos");
+        }
+    }
 
-        measure = new DistanceMeasurement(
-                //new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
-                dl.getSurface().getEnd1(), resultantAnchor);
-        measure.setKnown(false);
-        measure.setSymbol("pos");
+    public String getSuffix() {
+        return suffix;
     }
 
     public DistanceMeasurement getMeasure() {
