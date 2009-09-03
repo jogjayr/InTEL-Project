@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.exercise.state.DiagramState;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
@@ -13,6 +14,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermType;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,15 +99,21 @@ final public class EquationState implements DiagramState<EquationDiagram> {
 
                 EquationMathState mathState;
 
-                if(math instanceof EquationMathForces) {
-                    mathState = new TermEquationMathState.Builder(name).build();
-                } else if(math instanceof EquationMathMoments) {
+                if (math instanceof EquationMathForces) {
+                    if (((EquationMathForces) math).getObservationDirection() == Vector3bd.UNIT_X) {
+                        mathState = new TermEquationMathState.Builder(name, TermType.forceXAxis).build();
+                    } else if (((EquationMathForces) math).getObservationDirection() == Vector3bd.UNIT_Y) {
+                        mathState = new TermEquationMathState.Builder(name, TermType.forceYAxis).build();
+                    } else {
+                        throw new IllegalArgumentException("Loads on the Z axis must be Moments! " + math);
+                    }
+                } else if (math instanceof EquationMathMoments) {
                     // can use separate builder for moment equations
-                    mathState = new TermEquationMathState.Builder(name).build();
-                } else if(math instanceof ArbitraryEquationMath) {
+                    mathState = new TermEquationMathState.Builder(name, TermType.moment).build();
+                } else if (math instanceof ArbitraryEquationMath) {
                     mathState = new ArbitraryEquationMathState.Builder(name).build();
                 } else {
-                    throw new IllegalArgumentException("Unknown equation math! "+math);
+                    throw new IllegalArgumentException("Unknown equation math! " + math);
                 }
 
                 equationStates.put(name, mathState);

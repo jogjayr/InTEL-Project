@@ -27,6 +27,7 @@ import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.actions.AddArbitrary;
 import edu.gatech.statics.modes.equation.actions.AddTerm;
 import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @author Calvin Ashmore
  */
 public class ArbitraryEquationBar extends EquationBar {
+
     private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, ArbitraryEquationBar.TermBox>();
     //private BLabel sumOperand;
     private BButton leftButton; // present only for moment math, pressing this sets the moment point
@@ -63,6 +65,10 @@ public class ArbitraryEquationBar extends EquationBar {
         }
     }
 
+    private ArbitraryEquationBar getThis() {
+        return this;
+    }
+
     public ArbitraryEquationBar(EquationMath math, EquationModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -78,15 +84,16 @@ public class ArbitraryEquationBar extends EquationBar {
             rightButton = new BButton("?", new ActionListener() {
 
                 public void actionPerformed(ActionEvent event) {
-                    //TODO this stuff
+                    LoadSelector selector = new LoadSelector(getThis());
+                    selector.activate();
                 }
             }, "right");
 
             add(rightButton);
 
-            // add = 0 icon
-            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
-            add(new BLabel(icon));
+        // add = 0 icon
+        //icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
+        //add(new BLabel(icon));
 
         } catch (IOException e) {
             // this is here in case there is a problem with loading the icon.
@@ -100,7 +107,8 @@ public class ArbitraryEquationBar extends EquationBar {
         leftButton = new BButton("?", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
-                //TODO this stuff
+                LoadSelector selector = new LoadSelector(getThis());
+                selector.activate();
             }
         }, "left");
 
@@ -192,7 +200,7 @@ public class ArbitraryEquationBar extends EquationBar {
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
                     {
                         if (destroyOK) {
-                            performRemoveTerm(source);
+                            performRemove(source);
                         //removeBox(TermBox.this);
                         } else {
                             destroyOK = true;
@@ -248,7 +256,8 @@ public class ArbitraryEquationBar extends EquationBar {
      * removeBox, which is called by this method.
      * @param source
      */
-    protected void performRemoveTerm(AnchoredVector source) {
+    @Override
+    protected void performRemove(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
     }
@@ -258,9 +267,10 @@ public class ArbitraryEquationBar extends EquationBar {
      * addBox, which is called by this method.
      * @param source
      */
-    protected void performAddTerm(AnchoredVector source) {
-        AddTerm addTermAction = new AddTerm(getMath().getName(), source);
-        getMath().getDiagram().performAction(addTermAction);
+    @Override
+    protected void performAdd(AnchoredVector source) {
+        AddArbitrary addArbitraryAction = new AddArbitrary(getMath().getName(), source);
+        getMath().getDiagram().performAction(addArbitraryAction);
     }
 
     /**

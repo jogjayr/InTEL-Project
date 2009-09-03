@@ -206,7 +206,7 @@ public class TermEquationBar extends EquationBar {
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
                     {
                         if (destroyOK) {
-                            performRemoveTerm(source);
+                            performRemove(source);
                             //removeBox(TermBox.this);
                         } else {
                             destroyOK = true;
@@ -263,7 +263,7 @@ public class TermEquationBar extends EquationBar {
      * @param source
      */
     @Override
-    protected void performRemoveTerm(AnchoredVector source) {
+    protected void performRemove(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
     }
@@ -274,7 +274,7 @@ public class TermEquationBar extends EquationBar {
      * @param source
      */
     @Override
-    protected void performAddTerm(AnchoredVector source) {
+    protected void performAdd(AnchoredVector source) {
         AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
     }

@@ -20,8 +20,8 @@ public class Worksheet2D extends Worksheet {
         EquationMath sumFy = new EquationMathForces("F[Y]", Vector3bd.UNIT_Y, diagram);
         EquationMath sumMp = new EquationMathMoments("M[P]", Vector3bd.UNIT_Z, diagram);
 
-        addEquation(sumFx);
-        addEquation(sumFy);
-        addEquation(sumMp);
+//        addEquation(sumFx);
+//        addEquation(sumFy);
+//        addEquation(sumMp);
     }
 }

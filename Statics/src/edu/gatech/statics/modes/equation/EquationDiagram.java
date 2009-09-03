@@ -193,12 +193,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * the diagram constructor, so subclasses should not 
      * @return
      */
-    protected Worksheet createWorksheet() {
+    protected Initial2DEquationList createInitialEquationList() {
         //************
         // Should use some non-worksheet class here?
         // this should return an object that contains the initial equation list.
         // this will be used to create the initial state.
-        return new Worksheet2D(this);
+        return new Initial2DEquationList(this);
     }
 
     /**
@@ -642,10 +642,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected EquationState createInitialState() {
+        EquationState.Builder builder = new EquationState.Builder(createInitialEquationList().getEquations());
         if (worksheet == null) {
-            worksheet = createWorksheet();
+            worksheet = new Worksheet(this, builder.getEquationStates().size());
         }
-        EquationState.Builder builder = new EquationState.Builder(worksheet.getEquations());
         return builder.build();
     }
 

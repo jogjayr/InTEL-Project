@@ -18,12 +18,10 @@ public class AddArbitrary implements DiagramAction<EquationState> {
 
     final private String equationName;
     final private AnchoredVector load;
-    final private String coefficient;
 
     public AddArbitrary(String equationName, AnchoredVector load, String coefficient) {
         this.equationName = equationName;
         this.load = load;
-        this.coefficient = coefficient;
     }
 
     public AddArbitrary(String equationName, AnchoredVector load) {
@@ -32,20 +30,20 @@ public class AddArbitrary implements DiagramAction<EquationState> {
 
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
-//        EquationMathState mathState = builder.getEquationStates().get(equationName);
-//
-//        // cannot modify the state if the equation is locked
-//        if (mathState.isLocked()) {
-//            return oldState;
-//        }
-//        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState)mathState);
-//        mathBuilder.getTerms().put(load, coefficient);
-//        builder.putEquationState(mathBuilder.build());
+        EquationMathState mathState = builder.getEquationStates().get(equationName);
+
+        // cannot modify the state if the equation is locked
+        if (mathState.isLocked()) {
+            return oldState;
+        }
+        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState)mathState);
+        //mathBuilder.add(load, coefficient);
+        builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
 
     @Override
     public String toString() {
-        return "AddTerm [" + equationName + ", " + load + ", \"" + coefficient + "\"]";
+        return "AddArbitrary [" + equationName + ", " + load + "\"]";
     }
 }

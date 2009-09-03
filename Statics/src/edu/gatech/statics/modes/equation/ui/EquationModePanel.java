@@ -23,9 +23,12 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.actions.LockEquation;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
@@ -37,6 +40,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -65,20 +69,14 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         // add the term if the equation is not locked
         if (!activeEquation.isLocked()) {
             if (activeEquation.getMath().getState() instanceof ArbitraryEquationMathState) {
-                // if the term has already been added, select it.
-//                if (activeEquation.getMath().getState().getTerms().containsKey(load.getAnchoredVector())) {
-//                    activeEquation.focusOnTerm(load.getAnchoredVector());
-//                } else {
-//                    // otherwise, add it.
-//                    activeEquation.performAddTerm(load.getAnchoredVector());
-//                }
+                //do nothing
             } else if (activeEquation.getMath().getState() instanceof TermEquationMathState) {
                 // if the term has already been added, select it.
                 if (((TermEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(load.getAnchoredVector())) {
                     activeEquation.focusOnTerm(load.getAnchoredVector());
                 } else {
                     // otherwise, add it.
-                    activeEquation.performAddTerm(load.getAnchoredVector());
+                    activeEquation.performAdd(load.getAnchoredVector());
                 }
             } else {
             }
@@ -102,6 +100,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     @Override
     public void stateChanged() {
         super.stateChanged();
+        getDiagram().getWorksheet().updateEquations();
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }
@@ -239,11 +238,29 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         final EquationUIData data = new EquationUIData();
         data.addButton = new BButton("Add new equation", new ActionListener() {
 
+            Random rand = new Random();
+
             public void actionPerformed(ActionEvent event) {
-                ArbitraryEquationMath math = new ArbitraryEquationMath("arbitrary", getDiagram());
+                getDiagram().getWorksheet().updateEquations();
+                Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
+
+                ArbitraryEquationMath math = new ArbitraryEquationMath("arbitraryEquation# " + Integer.toString(rand.nextInt()), getDiagram());
+                equations.putAll(getDiagram().getWorksheet().getEquations());
+                equations.put(math.getName(), math);
+
+                EquationState.Builder builder = new EquationState.Builder(equations);
+                getDiagram().pushState(builder.build());
+
+                getDiagram().getWorksheet().updateEquations();
                 equationBarContainer.remove(data.addButton);
-                addArbitraryEquationRow(math);
+
+                addArbitraryEquationRow((ArbitraryEquationMath)getDiagram().getWorksheet().getMath(math.getName()));
                 addRowCreator();
+                stateChanged();
+                performSolve(false);
+
+                refreshRows();
+                invalidate();
             }
         }, "add");
         //data.addButton.setStyleClass("smallcircle_button");
@@ -381,6 +398,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         } else {
             //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
         }
+
+        diagram.getWorksheet().updateEquations();
 
         for (String mathName : diagram.getWorksheet().getEquationNames()) {
             EquationMath math = diagram.getWorksheet().getMath(mathName);

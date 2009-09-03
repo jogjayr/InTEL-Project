@@ -52,7 +52,7 @@ public abstract class EquationBar extends BContainer {
      * removeBox, which is called by this method.
      * @param source
      */
-    protected void performRemoveTerm(AnchoredVector source) {
+    protected void performRemove(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
     }
@@ -62,7 +62,7 @@ public abstract class EquationBar extends BContainer {
      * addBox, which is called by this method.
      * @param source
      */
-    protected void performAddTerm(AnchoredVector source) {
+    protected void performAdd(AnchoredVector source) {
         AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
     }

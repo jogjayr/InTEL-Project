@@ -9,8 +9,10 @@ import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,8 +46,43 @@ public class Worksheet {
         return new ArrayList(equations.keySet());
     }
 
+    public List<String> getEquationStateNames() {
+        return new ArrayList(diagram.getCurrentState().getEquationStates().keySet());
+    }
+
     public EquationMath getMath(String name) {
         return equations.get(name);
+    }
+
+    public void updateEquations() {
+        //add math present in state but not the equation list
+        for (String mathNames : getEquationStateNames()) {
+            if (equations.containsKey(mathNames)) {
+                continue;
+            }
+            if (diagram.getCurrentState().getEquationStates().get(mathNames) instanceof TermEquationMathState) {
+                if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.forceXAxis) {
+                    equations.put(mathNames, new EquationMathForces(mathNames, Vector3bd.UNIT_X, diagram));
+                } else if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.forceYAxis) {
+                    equations.put(mathNames, new EquationMathForces(mathNames, Vector3bd.UNIT_Y, diagram));
+                } else if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.moment) {
+                    equations.put(mathNames, new EquationMathMoments(mathNames, Vector3bd.UNIT_Z, diagram));
+                } else {
+                    throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathNames));
+                }
+            } else if (diagram.getCurrentState().getEquationStates().get(mathNames) instanceof ArbitraryEquationMathState) {
+                equations.put(mathNames, new ArbitraryEquationMath(mathNames, diagram));
+            } else {
+                throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathNames));
+            }
+        }
+
+        //remove math not present in state but present in the equation list
+        for (String names : getEquationNames()) {
+            if (!diagram.getCurrentState().getEquationStates().containsKey(names)) {
+                equations.remove(names);
+            }
+        }
     }
 
     /**
@@ -87,7 +124,7 @@ public class Worksheet {
                 }
 
                 if (mathState instanceof TermEquationMathState) {
-                    for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState)mathState).getTerms().entrySet()) {
+                    for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState) mathState).getTerms().entrySet()) {
                         AnchoredVector load = entry.getKey();
                         String coefficient = entry.getValue();
 
@@ -162,7 +199,7 @@ public class Worksheet {
     //public List<EquationMath> getEquations() {
     //    return Collections.unmodifiableList(equations);
     //}
-    protected void addEquation(EquationMath math) {
-        equations.put(math.getName(), math);
-    }
+//    protected void addEquation(EquationMath math) {
+//        equations.put(math.getName(), math);
+//    }
 }
