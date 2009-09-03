@@ -7,7 +7,6 @@ package edu.gatech.statics.modes.fbd.tools;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.actions.AddLoad;
@@ -125,6 +124,7 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         if (labelTool != null) {
             labelTool.dismiss();
         }
+        diagram.stateChanged();
     }
 
     @Override

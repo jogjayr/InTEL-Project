@@ -127,7 +127,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * diagram to be synchronized with what is present in the state.
      */
     @Override
-    protected void stateChanged() {
+    public void stateChanged() {
         super.stateChanged();
 
         // clear the temporary list.
