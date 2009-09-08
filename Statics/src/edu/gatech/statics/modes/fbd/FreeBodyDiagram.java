@@ -45,7 +45,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
      * These loads are not the state of the diagram, but will be updated to reflect
      * the state. We do not use a Map&lt;AnchoredVector,Load&gt; because that would
      * require there to be distinct AnchoredVectors in the state. This is not necessarily
-     * the case, becuase users may add two forces that are equivalent. 
+     * the case, becuase users may add two forces that are equivalent.
      */
     private List<Load> loadObjects = new ArrayList<Load>();
     /**
@@ -58,7 +58,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
     /**
      * This method adds a temporary load to the diagram. This load exists and is visible,
      * but does not reflect the actual state of the diagram. Any loads added via this method
-     * will be cleared the next time that the state changes. 
+     * will be cleared the next time that the state changes.
      * @param load
      */
     public void addTemporaryLoad(Load load) {
@@ -162,7 +162,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                     load = candidate;                //if()
                 }
             }
-            // if we have not found it 
+            // if we have not found it
             if (load == null) {
                 newVectors.add(vector);
             }
@@ -276,7 +276,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
 
     /**
      * This handles what happens when the diagram is solved.
-     * By default, we load the equation mode. Later on, other exercise types may 
+     * By default, we load the equation mode. Later on, other exercise types may
      * choose to pass this step.
      */
     @Override

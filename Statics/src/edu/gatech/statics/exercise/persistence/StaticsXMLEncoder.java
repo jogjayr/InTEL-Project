@@ -18,6 +18,7 @@ import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
@@ -159,6 +160,8 @@ public class StaticsXMLEncoder extends XMLEncoder {
 
         setPersistenceDelegate(Point.class, namedPersistenceDelegate);
         setPersistenceDelegate(Body.class, namedPersistenceDelegate);
+
+        setPersistenceDelegate(ConstantObject.class, namedPersistenceDelegate);
 
         // we should have some general approach so that this nonsense is not necessary
         setPersistenceDelegate(Beam.class, namedPersistenceDelegate);

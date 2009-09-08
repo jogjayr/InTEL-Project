@@ -16,6 +16,7 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
 import edu.gatech.statics.objects.Connector;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
@@ -114,6 +115,7 @@ public class LeveeExercise extends DistributedExercise {
         Unit.setSuffix(Unit.moment, " kip*ft");
         Unit.setSuffix(Unit.force, " kip");
         Unit.setSuffix(Unit.forceOverDistance, " kip/ft");
+        Unit.setSuffix(Unit.specificWeight, " lb/ft^3");
 
         getDisplayConstants().setMomentSize(0.5f);
         getDisplayConstants().setForceSize(0.5f);
@@ -141,6 +143,8 @@ public class LeveeExercise extends DistributedExercise {
         Beam levee = new Beam("Levee", A, B);
 
         BigDecimal waterDensity = new BigDecimal("62.4");
+        ConstantObject waterDensityObject = new ConstantObject("specific weight of water", waterDensity, Unit.specificWeight);
+        schematic.add(waterDensityObject);
         BigDecimal peakAmount = new BigDecimal(waterLevel).multiply(waterDensity);
 
         DistributedForce waterForce = new TriangularDistributedForce("water", levee, A, B,

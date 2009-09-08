@@ -7,10 +7,8 @@ package edu.gatech.statics.modes.distributed;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
-import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.util.SelectionFilter;
 
 /**
  * Represents a simple extension of FreeBodyDiagram that accomodates some checks 
@@ -33,28 +31,28 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
         super.activate();
         DistributedUtil.grayoutSolvedDistributedObjects();
     }
-    private SelectionFilter filter = new SelectionFilter() {
-
-        private SelectionFilter superFilter = DistributedFreeBodyDiagram.super.getSelectionFilter();
-
-        public boolean canSelect(SimulationObject obj) {
-            if (superFilter.canSelect(obj)) {
-                return true;
-            }
-            if (obj instanceof DistributedForceObject) {
-                // we can select the object if it is not solved yet.
-                if (!((DistributedForceObject) obj).isSolved()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    };
-
-    @Override
-    public SelectionFilter getSelectionFilter() {
-        return filter;
-    }
+//    private SelectionFilter filter = new SelectionFilter() {
+//
+//        private SelectionFilter superFilter = DistributedFreeBodyDiagram.super.getSelectionFilter();
+//
+//        public boolean canSelect(SimulationObject obj) {
+//            if (superFilter.canSelect(obj)) {
+//                return true;
+//            }
+//            if (obj instanceof DistributedForceObject) {
+//                // we can select the object if it is not solved yet.
+//                if (!((DistributedForceObject) obj).isSolved()) {
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
+//    };
+//
+//    @Override
+//    public SelectionFilter getSelectionFilter() {
+//        return filter;
+//    }
 
     @Override
     public void onHover(SimulationObject obj) {
