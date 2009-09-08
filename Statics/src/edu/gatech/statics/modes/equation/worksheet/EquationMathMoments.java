@@ -18,6 +18,7 @@ import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.UnknownPoint;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.logging.Logger;
 
 /**
@@ -133,6 +134,7 @@ public class EquationMathMoments extends TermEquationMath {
         AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
 
         // parse the coefficient
+        // ****** TODO: We can provide more specific feedback here!
         if (affineCoefficient == null) {
             return TermError.parse;
         }
@@ -155,6 +157,42 @@ public class EquationMathMoments extends TermEquationMath {
 //                return TermError.missingInclination;
 //            }
 //        }
+        return error;
+    }
+
+    @Override
+    protected TermError compareValues(BigDecimal userValue, BigDecimal targetValue) {
+
+        TermError error = super.compareValues(userValue, targetValue);
+        if (error == TermError.none || error == TermError.badSign) {
+            return error;
+        }
+
+        String positivePowers[] = new String[]{"1000", "100", "10"};
+        String negativePowers[] = new String[]{".1", ".01", ".001"};
+
+        if (Math.abs(targetValue.floatValue()) > valueComparePrecision()) {
+            // the target value is not near zero.
+            // Therefore, we can check the negative powers
+
+            for (String power : negativePowers) {
+                BigDecimal bdPower = new BigDecimal(power);
+                BigDecimal userScaledValue = userValue.multiply(bdPower);
+                if (Math.abs(userScaledValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
+                    return TermError.wrongUnits;
+                }
+            }
+        }
+
+        // check the positive powers
+        for (String power : positivePowers) {
+            BigDecimal bdPower = new BigDecimal(power);
+            BigDecimal userScaledValue = userValue.multiply(bdPower);
+            if (Math.abs(userScaledValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
+                return TermError.wrongUnits;
+            }
+        }
+
         return error;
     }
 
@@ -185,6 +223,11 @@ public class EquationMathMoments extends TermEquationMath {
             Logger.getLogger("Statics").info("check: missing the inclination in the term");
             Logger.getLogger("Statics").info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
+            return;
+        } else if (error == TermError.wrongUnits) {
+            Logger.getLogger("Statics").info("check: user used wrong units");
+            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_units", Unit.distance.getSuffix(), load.getVector().getPrettyName());
             return;
         } else if (error == TermError.missedALoad) {
             Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);

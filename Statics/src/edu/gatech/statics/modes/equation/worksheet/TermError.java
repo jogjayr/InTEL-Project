@@ -56,5 +56,11 @@ public enum TermError {
     /**
      * The user has missed a load in the equation
      */
-    missedALoad;
+    missedALoad,
+    /**
+     * User has entered something that uses the wrong units in the moment equation.
+     * This is frequently caused by a student using meters when the system expects mm.
+     */
+    wrongUnits
+    ;
 }
