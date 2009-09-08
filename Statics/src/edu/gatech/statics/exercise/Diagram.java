@@ -25,7 +25,6 @@ import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.exercise.state.StateStack;
-import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.Body;
