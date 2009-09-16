@@ -43,9 +43,22 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         Description description = new Description();
 
         description.setTitle("See Saw");
-        description.setNarrative("Two children are playing on a see saw.");
+        description.setNarrative(
+                "Sam is at the park with his nephew and niece, Jenny and Bobby, " +
+                "who are balancing on a see-saw.  He is taking a statics class at " +
+                "Georgia Tech and has recently learned about free body diagrams.  " +
+                "Can you help him make a FBD of the see saw?");
 
+        description.setProblemStatement(
+                "The see saw is supported with a pin at point B.  " +
+                "Jenny and Bobby are located at points A and C respectively.");
+        
         description.setGoals("Build a free body diagram of the see saw.");
+
+        description.addImage("seesaw/assets/seesaw-0.png");
+        description.addImage("seesaw/assets/seesaw-1.jpg");
+        description.addImage("seesaw/assets/seesaw-2.jpg");
+        description.addImage("seesaw/assets/seesaw-3.jpg");
 
         return description;
     }
@@ -94,10 +107,10 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         Point child2Point = new Point("C", "1.75", "0", "0");
 
         Force child1Force = new Force(child1Point, Vector3bd.UNIT_Y.negate(), new BigDecimal(15 * 9.8f));
-        Force child2Force = new Force(child2Point, Vector3bd.UNIT_Y.negate(), "W");
-        child1Force.setName("girl");
+        Force child2Force = new Force(child2Point, Vector3bd.UNIT_Y.negate(), "Bobby");
+        child1Force.setName("Jenny");
         //this set is needed even though the name should be set in the constructor
-        child2Force.setName("W");
+        child2Force.setName("Bobby");
 
         DistanceMeasurement measure1 = new DistanceMeasurement(child1Point, base);
         DistanceMeasurement measure2 = new DistanceMeasurement(base, child2Point);

@@ -9,6 +9,8 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
+import edu.gatech.statics.Representation;
+import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
@@ -49,10 +51,22 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         Description description = new Description();
 
         description.setTitle("Tower of Pisa");
-        description.setProblemStatement("This is a model of the leaning tower of Pisa.");
-        description.setGoals("Build a free body diagram of the tower. " +
-                "You do not need to solve for the reactions at the fixed support at the base. " +
-                "The tower's weight is 14700 tons.");
+        description.setProblemStatement(
+                "Stephanie is a Civil Engineering student and is studying abroad " +
+                "at Georgia Tech Lorraine in France and at the end of the semester " +
+                "she stays in Europe for a few weeks and travels around Europe.  " +
+                "She stops in Italy and sees the Leaning Tower of Pisa.  " +
+                "She wonders how it stays upright with how heavy it is and decides " +
+                "to construct a free body diagram of the tower.");
+
+        description.setGoals("Build a free body diagram of the tower.  " +
+                "You do not need to solve for the reactions at the fixed support at the base.  " +
+                "The weight of the tower is 14700 tons.");
+
+        description.addImage("example02/assets/pisa-0.png");
+        description.addImage("example02/assets/pisa-1.jpg");
+        description.addImage("example02/assets/pisa-2.jpg");
+        description.addImage("example02/assets/pisa-3.jpg");
 
         return description;
     }
@@ -109,7 +123,7 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
 
         jointA.attachToWorld(tower);
 
-        float scale = 4f;
+        float scale = 3.25f;
 
         ModelNode modelNode = ModelNode.load("example02/assets/", "example02/assets/pisaTower.dae");
 

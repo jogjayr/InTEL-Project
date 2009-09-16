@@ -37,9 +37,18 @@ public class ArcherExercise extends SimpleFBDExercise {
         Description description = new Description();
 
         description.setTitle("Archer");
-        description.setNarrative("An olympic archer is holding a bow.");
+        description.setNarrative(
+                "Stephen is a member of the national archery team and he is practicing for the upcoming Olympics.  " +
+                "He is pulling the bow and arrow backwards and is just about to shoot.");
         //description.setProblemStatement("");
-        description.setGoals("Build free body diagrams of the bow, the bowstring, and the two together.");
+        description.setGoals(
+                "Build a free body diagram of the bow by itself, " +
+                "of the bow string by itself, and then one of the bow and bow string together.");
+
+        description.addImage("archer/assets/archer-0.png");
+        description.addImage("archer/assets/archer-1.png");
+        description.addImage("archer/assets/archer-2.png");
+        description.addImage("archer/assets/archer-3.png");
 
         return description;
     }

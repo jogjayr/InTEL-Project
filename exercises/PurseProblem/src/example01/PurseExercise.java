@@ -55,19 +55,30 @@ public class PurseExercise extends FrameExercise {
         BigDecimal bdForearmWeight = new BigDecimal(forearmWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal bdPurseWeight = new BigDecimal(purseWeight).setScale(Unit.force.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
 
-        description.setProblemStatement(
-                "Here is a simplified model of the human arm. " +
-                "Please solve for the reactions at each of the points: B, C, and E. " +
-                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
-                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
-                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+//        description.setProblemStatement(
 //                "Here is a simplified model of the human arm. " +
 //                "Please solve for the reactions at each of the points: B, C, and E. " +
 //                "C and E are both pins, but there is a couple due to the shoulder exerting a moment at E. " +
 //                "You can treat the bicep (BD) as a cable, but you do not need to build a diagram for it alone. " +
 //                "The weight of the forearm is " + bdForearmWeight + " N at G, and the weight of the purse is " + bdPurseWeight + " N at A.");
+//
+//        description.setGoals("Solve for the reactions in the tendon and at the shoulder.");
 
-        description.setGoals("Solve for the reactions in the tendon and at the shoulder.");
+
+        description.setProblemStatement(
+                "This shows a simplified model of the human arm.  " +
+                "Points C and E are both pins, but there is a couple due to the shoulder " +
+                "exerting a moment at E (note: in real life there is no moment at the shoulder, " +
+                "but on this simplified model a moment is necessary).  " +
+                "You can treat the biceps (BD) as a cable.");
+
+        description.setGoals(
+                "Solve for the reactions at C and E, " +
+                "and for the force in the biceps (BD). " +
+                "You will need to do this in 2 steps: first, " +
+                "use the FBD of the lower arm to get the reactions at C and biceps force. " +
+                "Next, use the FBD of the entire system " +
+                "(lower arm + biceps + upper arm) to solve for the reactions at E.");
 
         description.addImage("example01/assets/arm-purse1.png");
         description.addImage("example01/assets/arm-purse2.png");
