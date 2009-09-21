@@ -25,8 +25,8 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
@@ -141,7 +141,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 //        equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
 //        fullEquationContainer.add(equationButtonContainer, BorderLayout.WEST);
 
-        // the solution container is to the right of the mode panel, and 
+        // the solution container is to the right of the mode panel, and
         // will contain the solution to the equations.
         GroupLayout solutionLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         solutionLayout.setOffAxisJustification(GroupLayout.LEFT);
@@ -330,7 +330,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
                 BLabel entryLabel = new BLabel(
                         "@=b(@=#ff0000(" + q.getSymbolName() + ")" +
-                        " = " + q.getDiagramValue() + //entry.getValue() + 
+                        " = " + q.getDiagramValue() + //entry.getValue() +
                         " " + q.getUnit().getSuffix() + ")");
                 solutionContainer.add(entryLabel);
             }

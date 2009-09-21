@@ -31,7 +31,7 @@ import edu.gatech.statics.modes.equation.actions.AddArbitrary;
 import edu.gatech.statics.modes.equation.actions.AddTerm;
 import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.objects.Point;

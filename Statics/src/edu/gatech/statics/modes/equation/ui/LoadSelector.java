@@ -12,7 +12,7 @@ import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.actions.SetMomentPoint;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;

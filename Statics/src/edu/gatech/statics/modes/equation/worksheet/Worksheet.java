@@ -4,6 +4,8 @@
  */
 package edu.gatech.statics.modes.equation.worksheet;
 
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
@@ -161,7 +163,7 @@ public class Worksheet {
             }
 
             equationSystem.process();
-            //moved "solved = true" to line 92 so that solve() can be run multiple times on 
+            //moved "solved = true" to line 92 so that solve() can be run multiple times on
             //things that are initially unable to be solved
             if (!equationSystem.isSolvable()) {
                 solution = null;
@@ -175,7 +177,7 @@ public class Worksheet {
                     // with partial solutions, we reject a solution in this case, even if it could be solved
                     return null;
                 } else {
-                    // if we get here, then all the unknowns are solved for. 
+                    // if we get here, then all the unknowns are solved for.
                     solved = true;
                     solution = new HashMap<Quantity, Float>();
                     for (Map.Entry<String, Float> entry : nameSolution.entrySet()) {

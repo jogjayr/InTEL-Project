@@ -31,7 +31,7 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
@@ -190,7 +190,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     /**
      * This constructs the worksheet for this diagram. This method is called by
-     * the diagram constructor, so subclasses should not 
+     * the diagram constructor, so subclasses should not
      * @return
      */
     protected Initial2DEquationList createInitialEquationList() {
@@ -302,7 +302,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 }
             }
 
-            // this section will need to be updated 
+            // this section will need to be updated
             // solved measures should be stored in the symbol manager.
             if (obj instanceof Measurement) {
                 Measurement measure = (Measurement) obj;

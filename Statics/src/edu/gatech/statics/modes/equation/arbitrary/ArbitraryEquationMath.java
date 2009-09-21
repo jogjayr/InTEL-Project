@@ -7,8 +7,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.worksheet;
+package edu.gatech.statics.modes.equation.arbitrary;
 
+import edu.gatech.statics.modes.equation.worksheet.*;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;

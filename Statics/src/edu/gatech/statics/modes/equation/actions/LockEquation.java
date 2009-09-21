@@ -6,7 +6,7 @@ package edu.gatech.statics.modes.equation.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.modes.equation.EquationState;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 

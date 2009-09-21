@@ -6,8 +6,8 @@ package edu.gatech.statics.modes.equation;
 
 import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.math.Vector3bd;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMath;
-import edu.gatech.statics.modes.equation.worksheet.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
@@ -86,7 +86,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         }
 
         /**
-         * This is the intended default constructor for the EquationState Builder. It needs 
+         * This is the intended default constructor for the EquationState Builder. It needs
          * to be passed a list of strings that makes the equation names. This will probably
          * come from the equation worksheet.
          * @param equationNames

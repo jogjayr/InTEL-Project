@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.gatech.statics.modes.equation.worksheet;
+package edu.gatech.statics.modes.equation.arbitrary;
+
+import edu.gatech.statics.modes.equation.worksheet.*;
+import edu.gatech.statics.math.AnchoredVector;
 
 /**
  * 
@@ -65,6 +68,10 @@ final public class ArbitraryEquationMathState extends EquationMathState {
             this.leftSide = state.getLeftSide();
             this.rightSide = state.getRightSide();
             this.locked = state.isLocked();
+        }
+
+        public void add(AnchoredVector load) {
+            
         }
 
         public boolean isLocked() {
