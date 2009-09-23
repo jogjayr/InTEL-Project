@@ -26,6 +26,7 @@ import edu.gatech.statics.ui.menu.BrowsePopupMenu;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.ui.maintabbar.MainTabBar;
 import edu.gatech.statics.ui.sidebar.Sidebar;
+import edu.gatech.statics.ui.windows.coordinates.CoordinateSystem3DWindow;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.feedback.FeedbackWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
@@ -269,16 +270,31 @@ public class InterfaceRoot {
         navWindow = configuration.getNavigationWindow();
         buiNode.addWindow(navWindow);
         navWindow.pack();
+        int navWindowWidth = navWindow.getPreferredSize(-1, -1).width;
+        int navWindowHeight = navWindow.getPreferredSize(-1, -1).height;
         navWindow.setLocation(
-                DisplaySystem.getDisplaySystem().getWidth() - navWindow.getPreferredSize(-1, -1).width - 5,
+                DisplaySystem.getDisplaySystem().getWidth() - navWindowWidth - 5,
                 //ApplicationBar.APPLICATION_BAR_HEIGHT - 20);
                 //200 - 20);
-                DisplaySystem.getDisplaySystem().getHeight() - navWindow.getPreferredSize(-1, -1).height - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5);
+                DisplaySystem.getDisplaySystem().getHeight() - navWindowHeight - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5);
 
         cameraControl = new CameraControl(camera, configuration.getViewConstraints());
         configuration.setupCameraControl(cameraControl);
         navWindow.setCameraControl(cameraControl);
         cameraControl.updateCamera();
+        
+        
+        // ********** TODO:
+        // PUSH THIS INTO THE CONFIGURATION
+//        CoordinateSystemWindow coordinateSystem = new CoordinateSystem3DWindow();
+//        buiNode.addWindow(coordinateSystem);
+//        coordinateSystem.pack();
+//        int coordinateSystemHeight = coordinateSystem.getPreferredSize(-1, -1).height;
+//        coordinateSystem.setLocation(
+//                DisplaySystem.getDisplaySystem().getWidth() - coordinateSystem.getPreferredSize(-1, -1).width - 5,
+//                DisplaySystem.getDisplaySystem().getHeight() - navWindowHeight - coordinateSystemHeight - MainTabBar.MAIN_TAB_BAR_HEIGHT - 10);
+        // **************
+
 
         // LOAD COORDINATES WINDOW
         coordinatesWindow = configuration.getCoordinateSystemWindow();
