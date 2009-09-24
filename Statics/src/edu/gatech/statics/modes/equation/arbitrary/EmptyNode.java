@@ -10,9 +10,16 @@ package edu.gatech.statics.modes.equation.arbitrary;
  */
 public class EmptyNode extends EquationNode {
 
-    public EmptyNode() {
+    public EmptyNode(EquationNode parent) {
+        super(parent);
     }
 
+    @Override
+    public boolean isTerminal() {
+        return true;
+    }
+
+    @Override
     public boolean isEmpty() {
         return true;
     }

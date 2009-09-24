@@ -14,7 +14,8 @@ public class AnchoredVectorNode extends EquationNode {
 
     private AnchoredVector anchoredVector;
 
-     public void AnchoredVectorNode(AnchoredVector av) {
+     public AnchoredVectorNode(EquationNode parent, AnchoredVector av) {
+         super(parent);
         anchoredVector = av;
     }
 
@@ -24,5 +25,15 @@ public class AnchoredVectorNode extends EquationNode {
 
     public void setAnchoredVector(AnchoredVector anchoredVector) {
         this.anchoredVector = anchoredVector;
+    }
+
+    @Override
+    boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    boolean isTerminal() {
+        return true;
     }
 }

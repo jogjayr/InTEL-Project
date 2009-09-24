@@ -14,7 +14,8 @@ public class OperatorNode extends EquationNode {
     private EquationNode leftNode;
     private EquationNode rightNode;
 
-    public OperatorNode(EquationNode leftNode, EquationNode rightNode) {
+    public OperatorNode(EquationNode parent, EquationNode leftNode, EquationNode rightNode) {
+        super(parent);
         this.leftNode = leftNode;
         this.rightNode = rightNode;
     }
@@ -41,5 +42,15 @@ public class OperatorNode extends EquationNode {
 
     public void setRightNode(EquationNode rightNode) {
         this.rightNode = rightNode;
+    }
+
+    @Override
+    boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    boolean isTerminal() {
+        return false;
     }
 }

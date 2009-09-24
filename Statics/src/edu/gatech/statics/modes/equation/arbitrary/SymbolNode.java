@@ -12,7 +12,8 @@ public class SymbolNode extends EquationNode {
 
     private String symbol;
 
-    public void SymbolNode(String symbol) {
+    public SymbolNode(EquationNode parent, String symbol) {
+        super(parent);
         this.symbol = symbol;
     }
 
@@ -22,5 +23,15 @@ public class SymbolNode extends EquationNode {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    @Override
+    boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    boolean isTerminal() {
+        return true;
     }
 }
