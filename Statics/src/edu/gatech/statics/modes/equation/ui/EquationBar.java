@@ -47,25 +47,25 @@ public abstract class EquationBar extends BContainer {
         this.parent = parent;
     }
 
-    /**
-     * This handles the *state change* aspect of removing a term. The UI change occurs in
-     * removeBox, which is called by this method.
-     * @param source
-     */
-    protected void performRemove(AnchoredVector source) {
-        RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
-        getMath().getDiagram().performAction(removeTermAction);
-    }
-
-    /**
-     * This handles the *state change* aspect of adding a term. The UI change occurs in
-     * addBox, which is called by this method.
-     * @param source
-     */
-    protected void performAdd(AnchoredVector source) {
-        AddTerm addTermAction = new AddTerm(getMath().getName(), source);
-        getMath().getDiagram().performAction(addTermAction);
-    }
+//    /**
+//     * This handles the *state change* aspect of removing a term. The UI change occurs in
+//     * removeBox, which is called by this method.
+//     * @param source
+//     */
+//    protected void performRemove(AnchoredVector source) {
+//        RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
+//        getMath().getDiagram().performAction(removeTermAction);
+//    }
+//
+//    /**
+//     * This handles the *state change* aspect of adding a term. The UI change occurs in
+//     * addBox, which is called by this method.
+//     * @param source
+//     */
+//    protected void performAdd(AnchoredVector source) {
+//        AddTerm addTermAction = new AddTerm(getMath().getName(), source);
+//        getMath().getDiagram().performAction(addTermAction);
+//    }
 
     //abstract BContainer makeStartContainer() throws IOException;
 
@@ -76,7 +76,7 @@ public abstract class EquationBar extends BContainer {
      */
     abstract void stateChanged();
 
-    abstract void addBox(AnchoredVector load, String coefficient);
+    //abstract void addBox(AnchoredVector load, String coefficient);
 
     /**
      * Put the component focus on the load that has been given.
@@ -90,5 +90,5 @@ public abstract class EquationBar extends BContainer {
 
     abstract void highlightVector(AnchoredVector obj);
 
-    abstract Vector2f getLineAnchor(VectorObject obj);
+    //abstract Vector2f getLineAnchor(VectorObject obj);
 }

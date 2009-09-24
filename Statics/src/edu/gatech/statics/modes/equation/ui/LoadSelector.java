@@ -59,12 +59,18 @@ public class LoadSelector extends Tool {
 
         if (obj != null) {
 
+            System.out.println("**** LoadSelector: " + obj);
+
             // if the term has already been added, select it.
 //                if (((ArbitraryEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(((Load)obj).getAnchoredVector())) {
 //                    activeEquation.focusOnTerm(((Load)obj).getAnchoredVector());
 //                } else {
-                    // otherwise, add it.
-                    activeEquation.performAdd(((Load)obj).getAnchoredVector());
+
+            // otherwise, add it.
+//        if (activeEquation instanceof TermEquationBar) {
+//            ((TermEquationBar) activeEquation).performAdd(((Load) obj).getAnchoredVector());
+//        }
+
 //                }
 
 //            // store the point, finish.

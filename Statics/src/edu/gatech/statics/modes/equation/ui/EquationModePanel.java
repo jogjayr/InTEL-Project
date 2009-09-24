@@ -24,11 +24,8 @@ import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.EquationState;
-import edu.gatech.statics.modes.equation.actions.LockEquation;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
-import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
@@ -68,17 +65,22 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
         // add the term if the equation is not locked
         if (!activeEquation.isLocked()) {
-            if (activeEquation.getMath().getState() instanceof ArbitraryEquationMathState) {
+            //if (activeEquation.getMath().getState() instanceof ArbitraryEquationMathState) {
+            if (activeEquation instanceof ArbitraryEquationBar) {
                 //do nothing
-            } else if (activeEquation.getMath().getState() instanceof TermEquationMathState) {
+                //} else if (activeEquation.getMath().getState() instanceof TermEquationMathState) {
+            } else if (activeEquation instanceof TermEquationBar) {
                 // if the term has already been added, select it.
                 if (((TermEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(load.getAnchoredVector())) {
                     activeEquation.focusOnTerm(load.getAnchoredVector());
                 } else {
                     // otherwise, add it.
-                    activeEquation.performAdd(load.getAnchoredVector());
+                    ((TermEquationBar) activeEquation).performAdd(load.getAnchoredVector());
                 }
+
             } else {
+                // ??? illegal state
+                throw new IllegalStateException("we have invalid math: ");
             }
         }
 
@@ -254,7 +256,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 getDiagram().getWorksheet().updateEquations();
                 equationBarContainer.remove(data.addButton);
 
-                addArbitraryEquationRow((ArbitraryEquationMath)getDiagram().getWorksheet().getMath(math.getName()));
+                addArbitraryEquationRow((ArbitraryEquationMath) getDiagram().getWorksheet().getMath(math.getName()));
                 addRowCreator();
                 stateChanged();
                 performSolve(false);

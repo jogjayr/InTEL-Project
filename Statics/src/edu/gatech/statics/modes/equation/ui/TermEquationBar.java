@@ -262,7 +262,6 @@ public class TermEquationBar extends EquationBar {
      * removeBox, which is called by this method.
      * @param source
      */
-    @Override
     protected void performRemove(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
@@ -273,7 +272,6 @@ public class TermEquationBar extends EquationBar {
      * addBox, which is called by this method.
      * @param source
      */
-    @Override
     protected void performAdd(AnchoredVector source) {
         AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
