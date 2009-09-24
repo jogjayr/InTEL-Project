@@ -53,4 +53,13 @@ public class OperatorNode extends EquationNode {
     boolean isTerminal() {
         return false;
     }
+
+    @Override
+    protected EquationNode clone(EquationNode newParent) {
+        OperatorNode opNode = new OperatorNode(newParent, null, null);
+        opNode.setLeftNode(leftNode.clone(opNode));
+        opNode.setRightNode(rightNode.clone(opNode));
+
+        return opNode;
+    }
 }

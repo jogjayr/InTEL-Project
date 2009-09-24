@@ -34,4 +34,9 @@ public class SymbolNode extends EquationNode {
     boolean isTerminal() {
         return true;
     }
+
+    @Override
+    protected EquationNode clone(EquationNode newParent) {
+        return new SymbolNode(newParent, symbol);
+    }
 }

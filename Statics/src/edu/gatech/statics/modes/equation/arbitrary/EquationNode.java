@@ -18,6 +18,8 @@ abstract public class EquationNode {
 
     abstract boolean isEmpty();
     abstract boolean isTerminal();
+    
+    abstract protected EquationNode clone(EquationNode newParent);
 
 //    public void addNode(EquationNode node) {
 //        if (node instanceof AnchoredVectorNode || node instanceof SymbolNode) {

@@ -23,4 +23,8 @@ public class EmptyNode extends EquationNode {
     public boolean isEmpty() {
         return true;
     }
+
+    protected EquationNode clone(EquationNode newParent) {
+        return new EmptyNode(newParent);
+    }
 }

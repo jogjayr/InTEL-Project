@@ -36,4 +36,11 @@ public class AnchoredVectorNode extends EquationNode {
     boolean isTerminal() {
         return true;
     }
+
+    @Override
+    protected EquationNode clone(EquationNode newParent) {
+        return new AnchoredVectorNode(newParent, anchoredVector);
+    }
+
+
 }
