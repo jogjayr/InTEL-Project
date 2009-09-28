@@ -61,9 +61,13 @@ public class BicycleExercise extends FrameExercise {
 
         description.setProblemStatement(
                 "This is a model of a bicycle. The body FBGA is a beam, but the " +
-                "rest of the members are bars. You can select the joints D, C, and E by clicking on them.");
+                "rest of the members are bars. You can select the joints D, C, and E by clicking on them. " +
+                "You are to treat A and D as rollers only, and neglect all friction - which " +
+                "violates physics, but is necessary to keep the problem solvable with statics. " +
+                "It is recommended to first use the overall FBD to solve for the support forces, " +
+                "and then either start at joint D or beam FBGA to solve all remaining unknowns.");
 
-        description.setGoals("Solve for the tension or compression in each of the two-force members.");
+        //description.setGoals("Solve for the tension or compression in each of the two-force members.");
 
         description.addImage("bicycle/assets/bicycle-main.png");
         description.addImage("bicycle/assets/IMG_3406.JPG");

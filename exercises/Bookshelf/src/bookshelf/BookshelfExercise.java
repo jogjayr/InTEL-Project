@@ -53,9 +53,22 @@ public class BookshelfExercise extends DistributedExercise {
 
         description.setTitle("Bookshelf");
 
+        description.setNarrative(
+                "Cindy is a Mechanical Engineering student at Georgia Tech.  " +
+                "Recently one of her bookshelves fell down and she wants to hang " +
+                "it back up this weekend.  She went to the hardware store to look " +
+                "for different wall hangers that she can use to hang the shelf up " +
+                "with, but they have different load ratings.  She needs to find " +
+                "out what the loads are at the ends of the bookshelf so that she " +
+                "can purchase the appropriate supports for the shelf.");
+        
+        description.setProblemStatement(
+                "The supports she is looking at can only resist vertical forces.  " +
+                "The left group of books has a mass per unit length of 20 kg/m, " +
+                "the center group of books has 30 kg/m and the right group of " +
+                "books has 15 kg/m.  Treat A as a pin and B as a roller.");
 
-        description.setGoals("What are the loads on the supports of the bookshelf? " +
-                "Treat A as a pin and B as a roller.");
+        description.setGoals("Solve for the reactions at points A and B.");
 
         return description;
     }
