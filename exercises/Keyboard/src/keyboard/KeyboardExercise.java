@@ -41,24 +41,11 @@ public class KeyboardExercise extends FrameExercise {
         AbstractInterfaceConfiguration ic = super.createInterfaceConfiguration();
         ic.setCameraSpeed(.2f, 0.02f, .05f);
 
-
-        //AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
-        // ideally, we shouldn't need to create a subclass here.
-        // we should just be able to modify the camera control directly, but so it goes.
-        /*AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
-
-        @Override
-        public void setupCameraControl(CameraControl cameraControl) {
-        super.setupCameraControl(cameraControl);
-        cameraControl.setMovementSpeed(.2f, .02f, .05f);
-        }
-        };*/
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-2, 2, -1, 4);
         vc.setZoomConstraints(0.5f, 1.5f);
         ic.setViewConstraints(vc);
-        // this throws a null pointer
-        //ic.getNavigationWindow().getCameraControl().setMovementSpeed(.2f, .02f, .05f);
+        
         return ic;
     }
 
@@ -68,22 +55,26 @@ public class KeyboardExercise extends FrameExercise {
 
         description.setTitle("Keyboard Stand");
         description.setNarrative(
-                "Kasiem Hill is passionate about music, and figures his Civil Engineering " +
-                "degree from GT will be a good backup in case his songs don’t make it. " +
-                "He got a cool keyboard for his birthday, but he doesn’t have the money " +
-                "to buy a keyboard stand. He decides to build one with scrap wood, and " +
-                "would like to know how much force he can expect at each connection if he " +
-                "assumes the keyboard stand can be modeled as a frame. ");
+                "Kasiem Hill is in a music group comprised of Civil Engineering " +
+                "students from Georgia Tech, in which he plays the keyboard.  " +
+                "For his birthday, he received a new keyboard, but it is much bigger " +
+                "(both in size and weight) than his last one, so he needs to buy a " +
+                "new keyboard stand.  He finds one he really likes from a local " +
+                "dealer and is unsure if the connections will be able to support " +
+                "the weight of the new keyboard.  He measures the dimensions of " +
+                "the stand and he wants to calculate how much force he can expect " +
+                "at each connection in the cross bar before he makes the investment.");
 
         description.setProblemStatement(
-                "The keyboard stand supported by two beams and a cross bar, PQ. " +
-                "The supports at B and E are rollers, and the floor is frictionless.");
+                "The stand can be modeled as a frame and is supported by two beams and a cross bar PQ. " +
+                "The supports at B and E are rollers and the floor is frictionless.");
 
         description.setGoals(
-                "Find the force in PQ, and define whether it is in tension or compression.");
+                "Find the force in PQ and define whether it is in tension or compression.");
 
-        description.addImage("keyboard/assets/keyboard 2.png");
         description.addImage("keyboard/assets/keyboard 1.png");
+        description.addImage("keyboard/assets/keyboard 2.jpg");
+        description.addImage("keyboard/assets/keyboard 3.jpg");
 
         return description;
     }
