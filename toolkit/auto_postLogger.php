@@ -17,13 +17,14 @@ require_once("model/m_auto_posting.php");
 
 // here is our data:
 $problemId =  addslashes($_POST["problem_id"]);
+$userId =     addslashes($_POST["user_id"]);
 $sessionId =  addslashes($_POST["session_id"]);
 $javaClass =  addslashes($_POST["java_class"]);
 $javaMethod = addslashes($_POST["java_method"]);
 $message =    addslashes($_POST["message"]);
 $timestamp =  addslashes($_POST["timestamp"]);
 
-$success = post_logger($problemId, $sessionId, $javaClass, $javaMethod, $message, $timestamp);
+$success = post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $message, $timestamp);
 
 // report back
 if($success) {

@@ -5,6 +5,7 @@ require_once("model/mysql.php");
 /**
  * All Strings passed to this method must be sanitized for MySQL!
  * @param problemId int The ID of the problem being logged about
+ * @param userId int the ID of the user working on the problem
  * @param sessionId int The session ID for the problem
  * @param javaClass string The class that is creating the log message
  * @param javaMethod string The method that is creating the log message
@@ -12,14 +13,14 @@ require_once("model/mysql.php");
  * @param timestamp long The timestamp, according to Java, when this message was posted
  * @return boolean true if the post is successful, false otherwise
  */
-function post_logger($problemId, $sessionId, $javaClass, $javaMethod, $message, $timestamp) {
+function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $message, $timestamp) {
 
   global $db;
 
   //add logger entry
   $query =
-    "INSERT INTO app_problem_usage_log (problem_id, java_problem_session_id, java_class, java_method, message, created_on)
-    VALUES ({$problemId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$message}', {$timestamp})";
+    "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, message, created_on)
+    VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$message}', {$timestamp})";
 
   query($query, $db);
 
