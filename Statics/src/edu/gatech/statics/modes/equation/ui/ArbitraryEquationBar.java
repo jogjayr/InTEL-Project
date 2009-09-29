@@ -125,6 +125,10 @@ public class ArbitraryEquationBar extends EquationBar {
 
         private void onClick() {
             // someone pressed the ? button.
+            // be able to select loads on the diagram
+            // also be able to select symbolic terms somehow
+            // that's all?
+            new LoadSelector(ArbitraryEquationBar.this, this.node);
         }
     }
 

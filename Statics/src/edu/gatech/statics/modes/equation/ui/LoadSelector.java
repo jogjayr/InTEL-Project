@@ -10,11 +10,11 @@ package edu.gatech.statics.modes.equation.ui;
 
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.modes.equation.EquationDiagram;
-import edu.gatech.statics.modes.equation.actions.SetMomentPoint;
-import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.arbitrary.AnchoredVectorNode;
+import edu.gatech.statics.modes.equation.arbitrary.EquationNode;
+import edu.gatech.statics.modes.equation.arbitrary.SymbolNode;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Load;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.logging.Logger;
@@ -26,15 +26,17 @@ import java.util.logging.Logger;
 public class LoadSelector extends Tool {
 
     private EquationBar activeEquation;
+    private EquationNode toReplace;
 
     /** Creates a new instance of LoadSelector */
-    public LoadSelector(EquationBar activeEquation) {
+    public LoadSelector(EquationBar activeEquation, EquationNode toReplace) {
         this.activeEquation = activeEquation;
+        this.toReplace = toReplace;
     }
     private static final SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
-            return obj instanceof Load;
+            return obj instanceof Load || obj instanceof ConstantObject;
         }
     };
 
@@ -51,38 +53,26 @@ public class LoadSelector extends Tool {
     @Override
     public void onClick(SimulationObject obj) {
 
-        if (obj == null || !(obj instanceof Load)) {
+        if (obj == null || !(obj instanceof Load || obj instanceof ConstantObject)) {
             return;
         }
 
         Logger.getLogger("Statics").info("Selected... " + obj);
 
-        if (obj != null) {
-
-            System.out.println("**** LoadSelector: " + obj);
-
-            // if the term has already been added, select it.
-//                if (((ArbitraryEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(((Load)obj).getAnchoredVector())) {
-//                    activeEquation.focusOnTerm(((Load)obj).getAnchoredVector());
-//                } else {
-
-            // otherwise, add it.
-//        if (activeEquation instanceof TermEquationBar) {
-//            ((TermEquationBar) activeEquation).performAdd(((Load) obj).getAnchoredVector());
-//        }
-
-//                }
-
-//            // store the point, finish.
-//            //world.setMomentPoint((Point) obj);
-//            //getWorld().clearSelection();
-//            SetMomentPoint setMomentPointAction = new SetMomentPoint((Point) obj);
-//            diagram.performAction(setMomentPointAction);
-
-
-
-            finish();
+        // when we have selected the object, attempt to add it
+        EquationNode toReplaceWith;
+        if (obj instanceof Load) {
+            toReplaceWith = new AnchoredVectorNode();
+        } else {
+            toReplaceWith = new SymbolNode();
         }
+        // uncomment these when the actions work
+//        ChangeArbitrary action = new ChangeArbitrary(activeEquation.getMath().getName(), toReplace, toReplaceWith);
+//        EquationDiagram diagram = (EquationDiagram) StaticsApplication.getApp().getCurrentDiagram();
+//        diagram.performAction(action);
+
+        finish();
+
     }
 
     @Override
