@@ -15,71 +15,49 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
  */
 public class InsertArbitraryNode implements DiagramAction<EquationState> {
 
-    private EquationNode node;
+    private EquationNode toBeReplaced;
     private String equationName;
-    private AnchoredVector load;
-    private String coefficient;
-    private boolean symbolic;
+    private EquationNode replacerNode;
 
-    public InsertArbitraryNode(EquationNode node, String equationName, AnchoredVector load, String coefficient, boolean symbolic) {
-        this.node = node;
+    /**
+     * Inserts an AnchoredVector node.
+     * @param toBeReplaced
+     * @param equationName
+     * @param load
+     * @param coefficient
+     */
+    public InsertArbitraryNode(EquationNode toBeReplaced, String equationName, AnchoredVector load) {
+        this.toBeReplaced = toBeReplaced;
         this.equationName = equationName;
-        this.load = load;
-        this.coefficient = coefficient;
-        this.symbolic = symbolic;
+        replacerNode = new AnchoredVectorNode(toBeReplaced, load);
+    }
+
+    /**
+     * Inserts a SymbolNode.
+     * @param toBeReplaced
+     * @param equationName
+     * @param symbol
+     */
+    public InsertArbitraryNode(EquationNode toBeReplaced, String equationName, String symbol){
+        this.toBeReplaced = toBeReplaced;
+        this.equationName = equationName;
+        replacerNode = new SymbolNode(toBeReplaced, symbol);
     }
 
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);
-        boolean found = false;
 
         // cannot modify the state if the equation is locked
         if (mathState.isLocked()) {
             return oldState;
         }
-        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) mathState);
+//        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) mathState);
 
-        EquationNode stateNode = mathBuilder.getRightSide();
-        while (!found) {
-            if (stateNode == node) {
-                if (stateNode.isTerminal() && stateNode.isEmpty()) {
-                    if (symbolic) {
-                        stateNode = new SymbolNode(stateNode.parent, equationName);
-                        found = true;
-                    } else {
-                        stateNode = new AnchoredVectorNode(stateNode.parent, load);
-                        found = true;
-                    }
-                } else if (stateNode.isTerminal() && !stateNode.isEmpty() && !(stateNode.parent instanceof OperatorNode)) {
-                    if (symbolic) {
-                        EquationNode tempNode = stateNode;
-                        stateNode = new OperatorNode(stateNode.parent, tempNode, new SymbolNode(stateNode.parent, equationName));
-                        found = true;
-                    } else {
-                        EquationNode tempNode = stateNode;
-                        stateNode = new OperatorNode(stateNode.parent, tempNode, new AnchoredVectorNode(stateNode.parent, load));
-                        found = true;
-                    }
-                } else if (stateNode.isTerminal() && !stateNode.isEmpty() && stateNode.parent instanceof OperatorNode) {
-                    if (symbolic) {
-                        EquationNode tempNode = stateNode;
-                        stateNode = new OperatorNode(stateNode.parent, tempNode, new SymbolNode(stateNode.parent, equationName));
-                        ((OperatorNode)tempNode.parent).setLeftNode(stateNode);
-                        found = true;
-                    } else {
-                        EquationNode tempNode = stateNode;
-                        stateNode = new OperatorNode(stateNode.parent, tempNode, new AnchoredVectorNode(stateNode.parent, load));
-                        ((OperatorNode)tempNode.parent).setLeftNode(stateNode);
-                        found = true;
-                    }
-                }
-            } else {
-                //search further
-            }
-        }
+//        Util.doReplacement(toBeReplaced, replacerNode, (ArbitraryEquationMathState)mathState);
 
-        builder.putEquationState(mathBuilder.build());
+
+        builder.putEquationState(Util.doReplacement(toBeReplaced, replacerNode, (ArbitraryEquationMathState)mathState));
         return builder.build();
     }
 }

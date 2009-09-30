@@ -16,14 +16,20 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
  */
 public class ChangeArbitraryNode implements DiagramAction<EquationState> {
 
-    private EquationNode stateNode;
-    private EquationNode replacerNode;
+    private EquationNode toBeChanged;
     private String equationName;
+    private EquationNode replacerNode;
 
-    public ChangeArbitraryNode(String equationName, EquationNode stateNode, EquationNode replacerNode) {
-        this.stateNode = stateNode;
-        this.replacerNode = replacerNode;
+    /**
+     * Change one node in the tree to one of another type. Used mostly for deletion.
+     * @param toBeReplaced
+     * @param equationName
+     * @param replacerNode
+     */
+    public ChangeArbitraryNode(EquationNode toBeChanged, String equationName, EquationNode replacerNode) {
+        this.toBeChanged = toBeChanged;
         this.equationName = equationName;
+        this.replacerNode = replacerNode;
     }
 
     public EquationState performAction(EquationState oldState) {
@@ -35,9 +41,10 @@ public class ChangeArbitraryNode implements DiagramAction<EquationState> {
             return oldState;
         }
 
-        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) mathState);
+//        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) mathState);
+//        builder.putEquationState(mathBuilder.build());
+        builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode, (ArbitraryEquationMathState) mathState));
 
-        builder.putEquationState(mathBuilder.build());
         return builder.build();
     }
 }

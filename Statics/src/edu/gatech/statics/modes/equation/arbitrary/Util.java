@@ -18,6 +18,27 @@ class Util {
     private Util() {
     }
 
+    static ArbitraryEquationMathState insertBy(EquationNode toBeInsertedBy, EquationNode toBeInserted, ArbitraryEquationMathState oldState) {
+        Builder builder = oldState.getBuilder();
+        if (toBeInsertedBy.parent == null) {
+            // toBeReplaced is a root node, it is either the left or the right side of oldState.
+            if (toBeInsertedBy == oldState.getLeftSide()) {
+                // builder is making a copy of the old state, here we give it a state with a copy of the replaced node.
+                builder.setLeftSide(new OperatorNode(null, toBeInsertedBy, toBeInserted));
+            } else if (toBeInsertedBy == oldState.getRightSide()) {
+                builder.setRightSide(new OperatorNode(null, toBeInsertedBy, toBeInserted));
+            } else {
+                // we have a problem
+                throw new IllegalArgumentException("Attempting to insert by a node that is not part of the arbitrary equation math state!");
+            }
+        } else {
+            builder.setLeftSide(makeInsertion(oldState.getLeftSide(), null, toBeInsertedBy, toBeInserted));
+            builder.setRightSide(makeInsertion(oldState.getRightSide(), null, toBeInsertedBy, toBeInserted));
+        }
+
+        return builder.build();
+    }
+
     /**
      * This produces a copy of oldState with the given replacement in effect.
      * @param toBeReplaced
@@ -50,6 +71,31 @@ class Util {
         }
 
         return builder.build();
+    }
+
+    private static EquationNode makeInsertion(EquationNode node, EquationNode nodeParent, EquationNode toBeInsertedBy, EquationNode toBeInserted) {
+        if (node instanceof OperatorNode) {
+            OperatorNode opNode = (OperatorNode) node;
+            if (opNode.getLeftNode() == toBeInsertedBy) {
+                OperatorNode newOperator = new OperatorNode(nodeParent, null, null);
+                newOperator.setLeftNode(opNode.getLeftNode().clone(newOperator));
+                newOperator.setRightNode(toBeInserted.clone(newOperator));
+                return newOperator;
+            } else if (opNode.getRightNode() == toBeInsertedBy) {
+                OperatorNode newOperator = new OperatorNode(nodeParent, null, null);
+                newOperator.setLeftNode(toBeInserted.clone(newOperator));
+                newOperator.setRightNode(opNode.getRightNode().clone(newOperator));
+                return newOperator;
+            } else {
+                OperatorNode newOperator = new OperatorNode(nodeParent, null, null);
+
+                newOperator.setLeftNode(makeInsertion(opNode.getLeftNode(), newOperator, toBeInsertedBy, toBeInserted));
+                newOperator.setRightNode(makeInsertion(opNode.getRightNode(), newOperator, toBeInsertedBy, toBeInserted));
+                return newOperator;
+            }
+        } else {
+            return node.clone(nodeParent);
+        }
     }
 
     private static EquationNode makeCopy(EquationNode node, EquationNode nodeParent, EquationNode toBeReplaced, EquationNode replacer) {
