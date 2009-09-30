@@ -8,6 +8,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
@@ -92,6 +93,11 @@ public class TestingBoilerplate {
                 getSchematic().add(A);
                 getSchematic().add(B);
                 getSchematic().add(body);
+            }
+
+            @Override
+            public Description getDescription() {
+                return null;
             }
         };
     }

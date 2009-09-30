@@ -17,10 +17,14 @@ abstract public class EquationNode {
     }
 
     abstract boolean isEmpty();
+
     abstract boolean isTerminal();
-    
+
     abstract protected EquationNode clone(EquationNode newParent);
 
+    public EquationNode getParent() {
+        return parent;
+    }
 //    public void addNode(EquationNode node) {
 //        if (node instanceof AnchoredVectorNode || node instanceof SymbolNode) {
 //            if (this instanceof EmptyNode) {
@@ -30,8 +34,6 @@ abstract public class EquationNode {
 //            throw new UnsupportedOperationException("Invalid node add type");
 //        }
 //    }
-
-
 //    public void insertNode(EquationNode node) {
 //        if (this instanceof AnchoredVectorNode || this instanceof SymbolNode) {
 //            //remove this, insertNode(), create a new OperatorNode, add this to left side of OperatorNode, add node to right side of OperatorNode

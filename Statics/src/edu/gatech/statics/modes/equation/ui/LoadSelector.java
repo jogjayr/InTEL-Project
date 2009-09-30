@@ -62,9 +62,9 @@ public class LoadSelector extends Tool {
         // when we have selected the object, attempt to add it
         EquationNode toReplaceWith;
         if (obj instanceof Load) {
-            toReplaceWith = new AnchoredVectorNode();
+            toReplaceWith = new AnchoredVectorNode(toReplace.getParent(), ((Load) obj).getAnchoredVector());
         } else {
-            toReplaceWith = new SymbolNode();
+            toReplaceWith = new SymbolNode(toReplace.getParent(), ((ConstantObject) obj).getQuantity().getSymbolName());
         }
         // uncomment these when the actions work
 //        ChangeArbitrary action = new ChangeArbitrary(activeEquation.getMath().getName(), toReplace, toReplaceWith);

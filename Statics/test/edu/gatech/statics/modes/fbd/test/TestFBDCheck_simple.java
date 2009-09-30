@@ -9,6 +9,7 @@ import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FBDState.Builder;
 import edu.gatech.statics.modes.frame.FrameExercise;
@@ -53,6 +54,11 @@ public class TestFBDCheck_simple {
                 getSchematic().add(A);
                 getSchematic().add(B);
                 getSchematic().add(body);
+            }
+
+            @Override
+            public Description getDescription() {
+                return null;
             }
         };
     }

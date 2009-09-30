@@ -11,6 +11,7 @@ import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.fbd.FBDChecker;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
@@ -59,6 +60,11 @@ public class ReflectCheck {
                 getSchematic().add(A);
                 getSchematic().add(B);
                 getSchematic().add(body);
+            }
+
+            @Override
+            public Description getDescription() {
+                return null;
             }
         };
     }
