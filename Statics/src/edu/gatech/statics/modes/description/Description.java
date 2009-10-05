@@ -60,6 +60,21 @@ public class Description {
         }
     }
 
+    public void setImageAt(String imageURL, int index) {
+        if (images == null) {
+            images = new ArrayList<BufferedImage>();
+        }
+
+        BufferedImage img;
+        try {
+            img = ImageIO.read(getClass().getClassLoader().getResource(imageURL));
+            //images.add(img);
+            images.set(index, img);
+        } catch (IOException ex) {
+            Logger.getLogger(Description.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public String getNarrative() {
         return narrative;
     }
