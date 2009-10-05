@@ -28,6 +28,8 @@ public class LeveeExerciseLow extends LeveeExercise {
                 "given by a linear pressure distribution p(h) = d*g*h, where h represents depth. The quantity d*g " +
                 "is 62.4 lb/ft^3, the specific weight of water.");
 
+        description.setImageAt("levee/assets/levee1-12ft.png",0);
+
         return description;
     }
 

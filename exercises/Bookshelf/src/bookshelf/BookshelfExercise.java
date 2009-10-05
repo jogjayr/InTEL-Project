@@ -70,6 +70,12 @@ public class BookshelfExercise extends DistributedExercise {
 
         description.setGoals("Solve for the reactions at points A and B.");
 
+        description.addImage("bookshelf/assets/bookshelf1.png");
+        description.addImage("bookshelf/assets/bookshelf2.jpg");
+        description.addImage("bookshelf/assets/bookshelf3.jpg");
+        description.addImage("bookshelf/assets/bookshelf4.jpg");
+        description.addImage("bookshelf/assets/bookshelf5.jpg");
+
         return description;
     }
 

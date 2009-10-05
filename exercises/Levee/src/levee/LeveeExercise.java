@@ -72,7 +72,12 @@ public class LeveeExercise extends DistributedExercise {
         description.setGoals(
                 "Examining a 1 foot cross section, solve for the actual loading of the " +
                 "water on the ground at the base of the levee (represented by the fixed " +
-                "support A). Will the ground be able to support the levee?");
+                "support A). Will the ground be able to support the levee? <br>" +
+                "Hint: check your units when you calculate the resultant.");
+
+        description.addImage("levee/assets/levee1-12ft.png");
+        description.addImage("levee/assets/levee2.png");
+        description.addImage("levee/assets/levee3.png");
 
         return description;
     }

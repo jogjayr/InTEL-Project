@@ -54,7 +54,23 @@ public class AwningExercise extends DistributedExercise {
         Description description = new Description();
 
         description.setTitle("Awning with Snow");
-        description.setGoals("What is the loading at the base of the awning?");
+        description.setNarrative(
+                "Last winter Sophie was visiting her aunt and uncle in upstate " +
+                "New York and a blizzard came through and two feet of snow fell.  " +
+                "She is a Civil Engineering at Georgia Tech and doesn’t get to see " +
+                "much snow when at school, so they went and drove around a local " +
+                "college campus.  The awning in front of a building on the campus " +
+                "had a significant amount of snow on it and she wondered how much " +
+                "force the snow covered awning exerted on the wall.");
+        description.setProblemStatement(
+                "The awning is fixed at point A (at the wall) and point A is the " +
+                "only support for the awning.  Assume that the weight of the snow " +
+                "on the awning creates a linearly varying distributed force, which " +
+                "varies between 0 N/m (at the free end of the beam) to 10 N/m (at A).");
+        description.setGoals("Find the reaction forces at point A.");
+
+        description.addImage("awning/assets/awning1.png");
+        description.addImage("awning/assets/awning2.png");
 
         return description;
     }
