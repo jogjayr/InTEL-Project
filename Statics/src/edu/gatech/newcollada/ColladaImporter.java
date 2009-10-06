@@ -3575,7 +3575,7 @@ public class ColladaImporter {
                     }
 
                     Vector3f[] v = (Vector3f[]) data;
-                    StringTokenizer st = new StringTokenizer(poly.getp().getValue());
+                    StringTokenizer st = null;// = new StringTokenizer(poly.getp().getValue());
                     //int texCount = poly.getcount().intValue() * stride;
                     int texCount = poly.getcount().intValue() * 3; // ****** FIXME: This is hardcoded for triangles
                     FloatBuffer texBuffer = BufferUtils.createVector2Buffer(texCount);
