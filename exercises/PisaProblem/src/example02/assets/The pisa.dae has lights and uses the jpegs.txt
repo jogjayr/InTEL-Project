@@ -1,1 +1,0 @@
-The pisa.dae has lights and uses the jpegs.

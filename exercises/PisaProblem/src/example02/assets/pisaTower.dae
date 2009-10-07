@@ -68,8 +68,8 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <linear_attenuation>0</linear_attenuation>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
-          <falloff_exponent>1</falloff_exponent>
-          <intensity>2.314</intensity>
+          <falloff_exponent>1.0</falloff_exponent>
+          <intensity>1.7</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>
