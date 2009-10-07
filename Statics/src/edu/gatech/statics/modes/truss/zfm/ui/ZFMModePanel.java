@@ -85,7 +85,8 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
             selectionList.setContents("");
 
             //checkButton.setEnabled(false);
-            StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection1");
+            //StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
+            StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
 
             //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
 
@@ -95,7 +96,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
             selectionList.setContents(getContents(selection));
 
             //checkButton.setEnabled(true);
-            StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection2");
+            StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection2");
 
             //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
         }

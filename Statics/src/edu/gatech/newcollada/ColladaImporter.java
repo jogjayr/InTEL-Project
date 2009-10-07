@@ -34,6 +34,8 @@ package edu.gatech.newcollada;
 import com.jmex.model.collada.schema.InputLocalOffset;
 import com.jmex.model.collada.schema.common_color_or_texture_type;
 import com.jmex.model.collada.schema.common_float_or_param_type;
+import com.jmex.model.collada.schema.extraType;
+import com.jmex.model.collada.schema.techniqueType5;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -164,6 +166,7 @@ import com.jmex.model.collada.schema.visual_sceneType;
 import com.jmex.model.collada.schema.collada_schema_1_4_1Doc;
 import com.jmex.xml.xml.XmlException;
 import java.util.logging.Logger;
+import org.w3c.dom.NodeList;
 
 /**
  * <code>ColladaNode</code> provides a mechanism to parse and load a COLLADA
@@ -814,11 +817,32 @@ public class ColladaImporter {
         if (l != null) {
             l.getSpecular().set(0, 0, 0, 1);
 
+            float intensity = 1;
+
+            if(light.hasextra() && light.getextra().hastechnique()) {
+                techniqueType5 technique = light.getextra().gettechnique();
+                //technique.getDomNode().getC
+                NodeList nl = technique.getDomNode().getChildNodes();
+                for(int i=0;i<nl.getLength();i++) {
+                    org.w3c.dom.Node item = nl.item(i);
+                    if("intensity".equals(item.getNodeName())) {
+                        String value = item.getChildNodes().item(0).getNodeValue();
+                        intensity = Float.parseFloat(value);
+                    }
+                }
+            }
+
+            if(intensity != 1) {
+                l.setDiffuse( l.getDiffuse().multLocal(intensity) );
+            }
+
             if (common.hasambient()) {
-                l.setAmbient(getLightColor(common.getambient().getcolor()));
+                ColorRGBA ambientColor = getLightColor(common.getambient().getcolor());
+                l.setAmbient(ambientColor.multLocal(intensity));
             } else {
                 l.getAmbient().set(0, 0, 0, 1);
             }
+
 
             l.setEnabled(true);
 

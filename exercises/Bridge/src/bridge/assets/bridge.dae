@@ -158,7 +158,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
           <falloff_exponent>1</falloff_exponent>
-          <intensity>0.8264</intensity>
+          <intensity>0.3</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>
@@ -176,7 +176,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
           <falloff_exponent>1</falloff_exponent>
-          <intensity>0.4958</intensity>
+          <intensity>0.3</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>
@@ -194,7 +194,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
           <falloff_exponent>1</falloff_exponent>
-          <intensity>0.6612</intensity>
+          <intensity>0.4</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>
@@ -212,7 +212,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
           <falloff_exponent>1</falloff_exponent>
-          <intensity>0.992</intensity>
+          <intensity>0.6</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>
@@ -230,7 +230,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           <quadratic_attenuation>0</quadratic_attenuation>
           <falloff_angle>5</falloff_angle>
           <falloff_exponent>1</falloff_exponent>
-          <intensity>0.5786</intensity>
+          <intensity>0.3</intensity>
           <outer_cone>5</outer_cone>
         </technique>
       </extra>

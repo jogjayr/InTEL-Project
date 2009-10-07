@@ -113,7 +113,8 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         // update the display
         for (SimulationObject obj : allObjects()) {
             // mark to display as selected if it is in the list of selected objects.
-            obj.setDisplaySelected(getCurrentState().getSelectedZFMs().contains(obj));
+            boolean isSelected = getCurrentState().getSelectedZFMs().contains(obj);
+            obj.setDisplaySelected(isSelected);
         }
 
         if (getCurrentState().isLocked()) {

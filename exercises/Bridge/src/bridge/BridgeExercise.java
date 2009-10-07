@@ -232,7 +232,17 @@ public class BridgeExercise extends TrussExercise {
             potential.setBaseName(barName);
             String modelPath = getModelPath(prefix1, index1, prefix2, index2);
 
-            potential.addRepresentation(new MimicRepresentation(potential, modelRepresentations.get(modelPath)));
+            MimicRepresentation rep = new MimicRepresentation(potential, modelRepresentations.get(modelPath));
+
+            // ******************************
+            // TEST TEST TEST
+//            rep.setSelectDiffuse(ColorRGBA.blue);
+//            rep.setHoverDiffuse(ColorRGBA.orange);
+//            rep.setSelectLightColor(ColorRGBA.blue);
+//            rep.setHoverLightColor(ColorRGBA.orange);
+
+            potential.addRepresentation(rep);
+
             //potential.addRepresentations(bar);
             getSchematic().add(potential);
         }

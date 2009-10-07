@@ -132,7 +132,8 @@ public class ModelRepresentation extends Representation {
         // do not propagate bounds for model representations
     }
     private boolean wasGrayed = false;
-    private boolean wasSelected = false;
+//    private boolean wasSelected = false;
+//    private boolean wasHighlighted = false;
 
     @Override
     protected void updateMaterial() {
@@ -141,10 +142,24 @@ public class ModelRepresentation extends Representation {
         //boolean grayedChanged = wasGrayed != getDisplayGrayed();
         //boolean selectedChanged = wasSelected != isSelected();
 
-        if (wasGrayed != getDisplayGrayed()) {
+        boolean doChange = false;
+        if(wasGrayed != getDisplayGrayed()) {
+            wasGrayed = getDisplayGrayed();
+            doChange = true;
+        }
+//        if(wasSelected != isSelected()) {
+//            wasSelected = isSelected();
+//            doChange = true;
+//        }
+//        if(wasHighlighted != isHover()) {
+//            wasHighlighted = isHover();
+//            doChange = true;
+//        }
+
+        if(doChange) {
 System.out.println("updating material!");
 
-            wasGrayed = getDisplayGrayed();
+            //if (getDisplayGrayed() || isSelected() || isHover()) {
             if (getDisplayGrayed()) {
                 setOverridenRenderStates();
             } else {
@@ -153,13 +168,5 @@ System.out.println("updating material!");
             setRenderStateChanged(true);
         }
 
-//        if (wasSelected != isSelected()) {
-//            wasSelected = isSelected();
-//            if (isSelected()) {
-//                setOverridenRenderStates();
-//            } else {
-//                setNormalRenderStates();
-//            }
-//        }
     }
 }
