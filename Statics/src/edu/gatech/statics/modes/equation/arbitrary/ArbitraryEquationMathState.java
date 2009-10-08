@@ -61,6 +61,10 @@ final public class ArbitraryEquationMathState extends EquationMathState {
 
         public Builder(String name) {
             this.name = name;
+            // create a default empty state
+            this.leftSide = new EmptyNode(null);
+            this.rightSide = new EmptyNode(null);
+            this.locked = false;
         }
 
         public Builder(ArbitraryEquationMathState state) {

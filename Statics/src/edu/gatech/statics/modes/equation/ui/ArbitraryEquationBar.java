@@ -4,21 +4,28 @@
  */
 package edu.gatech.statics.modes.equation.ui;
 
+import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.MouseAdapter;
+import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
+import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.AnchoredVectorNode;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.arbitrary.EmptyNode;
 import edu.gatech.statics.modes.equation.arbitrary.EquationNode;
+import edu.gatech.statics.modes.equation.arbitrary.InsertArbitraryNode;
 import edu.gatech.statics.modes.equation.arbitrary.OperatorNode;
 import edu.gatech.statics.modes.equation.arbitrary.SymbolNode;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
@@ -128,7 +135,8 @@ public class ArbitraryEquationBar extends EquationBar {
             // be able to select loads on the diagram
             // also be able to select symbolic terms somehow
             // that's all?
-            new LoadSelector(ArbitraryEquationBar.this, this.node);
+            parent.setActiveEquation(ArbitraryEquationBar.this);
+            new LoadSelector(ArbitraryEquationBar.this, this.node).activate();
         }
     }
 
@@ -147,6 +155,9 @@ public class ArbitraryEquationBar extends EquationBar {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
             add(vectorLabel, BorderLayout.CENTER);
+            
+            // so that we can insert
+            add(new InsertSliver(this, true), BorderLayout.EAST);
         }
     }
 
@@ -154,6 +165,57 @@ public class ArbitraryEquationBar extends EquationBar {
 
         public NodeBoxSymbol(SymbolNode node) {
             super(node);
+        }
+    }
+
+    private class InsertSliver extends BContainer {
+
+        private NodeBox owner;
+        private boolean isRight; // true for right, false for left
+
+        public InsertSliver(NodeBox owner, boolean isRight) {
+            this.owner = owner;
+            this.isRight = isRight;
+
+            // **** test
+            setLayoutManager(new BorderLayout());
+            add(new BLabel("HELLO!"), BorderLayout.CENTER);
+            // ****
+
+            setPreferredSize(5, 15);
+            setBackground(new TintedBackground(ColorRGBA.magenta));
+
+            addListener(new MouseAdapter() {
+
+                @Override
+                public void mouseEntered(MouseEvent event) {
+                    onMouseEntered();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent event) {
+                    onMouseExited();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent event) {
+                    onMousePressed();
+                }
+            });
+        }
+
+        private void onMouseEntered() {
+        }
+
+        private void onMouseExited() {
+        }
+
+        private void onMousePressed() {
+
+            // do insert action here:
+            InsertArbitraryNode action = new InsertArbitraryNode(owner.getNode(), getMath().getName(), new EmptyNode(null));
+            EquationDiagram diagram = (EquationDiagram) StaticsApplication.getApp().getCurrentDiagram();
+            diagram.performAction(action);
         }
     }
 
@@ -178,6 +240,15 @@ public class ArbitraryEquationBar extends EquationBar {
         leftContainer.add(buildBox(state.getLeftSide()), BorderLayout.CENTER);
         rightContainer.add(buildBox(state.getRightSide()), BorderLayout.CENTER);
 
+        Dimension preferredSize = leftContainer.getPreferredSize(-1, -1);
+        leftContainer.setSize(preferredSize.width, preferredSize.height);
+
+        preferredSize = rightContainer.getPreferredSize(-1, -1);
+        rightContainer.setSize(preferredSize.width, preferredSize.height);
+
+        //invalidate();
+        //parent.refreshRows();
+        //layout();
     }
 
     public void focusOnTerm(AnchoredVector load) {
