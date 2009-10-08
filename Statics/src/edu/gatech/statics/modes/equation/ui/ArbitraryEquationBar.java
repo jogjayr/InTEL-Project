@@ -144,6 +144,7 @@ public class ArbitraryEquationBar extends EquationBar {
 
         public NodeBoxAnchoredVector(AnchoredVectorNode node) {
             super(node);
+            setLayoutManager(new BorderLayout());
 
             // add a label representing the vector
             AnchoredVector source = node.getAnchoredVector();
@@ -176,11 +177,6 @@ public class ArbitraryEquationBar extends EquationBar {
         public InsertSliver(NodeBox owner, boolean isRight) {
             this.owner = owner;
             this.isRight = isRight;
-
-            // **** test
-            setLayoutManager(new BorderLayout());
-            add(new BLabel("HELLO!"), BorderLayout.CENTER);
-            // ****
 
             setPreferredSize(5, 15);
             setBackground(new TintedBackground(ColorRGBA.magenta));
@@ -239,16 +235,6 @@ public class ArbitraryEquationBar extends EquationBar {
 
         leftContainer.add(buildBox(state.getLeftSide()), BorderLayout.CENTER);
         rightContainer.add(buildBox(state.getRightSide()), BorderLayout.CENTER);
-
-        Dimension preferredSize = leftContainer.getPreferredSize(-1, -1);
-        leftContainer.setSize(preferredSize.width, preferredSize.height);
-
-        preferredSize = rightContainer.getPreferredSize(-1, -1);
-        rightContainer.setSize(preferredSize.width, preferredSize.height);
-
-        //invalidate();
-        //parent.refreshRows();
-        //layout();
     }
 
     public void focusOnTerm(AnchoredVector load) {
