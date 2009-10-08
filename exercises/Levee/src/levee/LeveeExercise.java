@@ -117,9 +117,9 @@ public class LeveeExercise extends DistributedExercise {
 //                "if the water level increases to its maximum 12ft height?</p>");
 
         Unit.setSuffix(Unit.distance, " ft");
-        Unit.setSuffix(Unit.moment, " kip*ft");
-        Unit.setSuffix(Unit.force, " kip");
-        Unit.setSuffix(Unit.forceOverDistance, " kip/ft");
+        Unit.setSuffix(Unit.moment, " lb*ft");
+        Unit.setSuffix(Unit.force, " lbs");
+        Unit.setSuffix(Unit.forceOverDistance, " lb/ft");
         Unit.setSuffix(Unit.specificWeight, " lb/ft^3");
 
         getDisplayConstants().setMomentSize(0.5f);
