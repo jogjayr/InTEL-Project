@@ -5,9 +5,7 @@
 package edu.gatech.statics.modes.equation.arbitrary;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
-import edu.gatech.statics.modes.equation.arbitrary.EquationNode;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 
 /**
@@ -43,8 +41,33 @@ public class ChangeArbitraryNode implements DiagramAction<EquationState> {
 
 //        ArbitraryEquationMathState.Builder mathBuilder = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) mathState);
 //        builder.putEquationState(mathBuilder.build());
-        builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode, (ArbitraryEquationMathState) mathState));
-
+        if (toBeChanged.parent == null) {
+            builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode, (ArbitraryEquationMathState) mathState));
+        } else if (toBeChanged.parent instanceof OperatorNode) {
+            if (replacerNode instanceof EmptyNode) {
+                //if this is the case then we need to remove the operator node and add replace it with the other leg of the opnode and change the parent of that node
+                OperatorNode tempOp = (OperatorNode) toBeChanged.parent;
+                if (tempOp.getLeftNode() == replacerNode) {
+                    //set parents of the former right node to that of its parent OpNode and replace the OpNode with the right leg node
+                    builder.putEquationState(Util.doReplacement(toBeChanged.parent, tempOp.getRightNode().parent = tempOp.parent, (ArbitraryEquationMathState) mathState));
+                } else {
+                    //set parents of the former right node to that of its parent OpNode and replace the OpNode with the left leg node
+                    builder.putEquationState(Util.doReplacement(toBeChanged.parent, tempOp.getLeftNode().parent = tempOp.parent, (ArbitraryEquationMathState) mathState));
+                }
+            } else {
+                replacerNode.parent = toBeChanged.parent;
+                builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode, (ArbitraryEquationMathState) mathState));
+            }
+        } //must be OperatorNode
+        else {
+            if(replacerNode instanceof OperatorNode) {
+                ((OperatorNode)replacerNode).setLeftNode(((OperatorNode)toBeChanged).getLeftNode().parent = replacerNode);
+                ((OperatorNode)replacerNode).setRightNode(((OperatorNode)toBeChanged).getRightNode().parent = replacerNode);
+                builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode.parent = toBeChanged.parent, (ArbitraryEquationMathState) mathState));
+            } else {
+                builder.putEquationState(Util.doReplacement(toBeChanged, replacerNode.parent = toBeChanged.parent, (ArbitraryEquationMathState) mathState));
+            }
+        }
         return builder.build();
     }
 }
