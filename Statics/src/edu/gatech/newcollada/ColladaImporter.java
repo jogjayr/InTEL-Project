@@ -34,7 +34,6 @@ package edu.gatech.newcollada;
 import com.jmex.model.collada.schema.InputLocalOffset;
 import com.jmex.model.collada.schema.common_color_or_texture_type;
 import com.jmex.model.collada.schema.common_float_or_param_type;
-import com.jmex.model.collada.schema.extraType;
 import com.jmex.model.collada.schema.techniqueType5;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -80,6 +79,7 @@ import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
 import com.jme.scene.batch.GeomBatch;
+import com.jme.scene.batch.SharedBatch;
 import com.jme.scene.batch.TriangleBatch;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.ClipState;
@@ -109,6 +109,7 @@ import com.jmex.model.collada.schema.accessorType;
 import com.jmex.model.collada.schema.animationType;
 import com.jmex.model.collada.schema.assetType;
 import com.jmex.model.collada.schema.bind_materialType;
+import com.jmex.model.collada.schema.blinnType;
 import com.jmex.model.collada.schema.cameraType;
 import com.jmex.model.collada.schema.colorType;
 import com.jmex.model.collada.schema.common_newparam_type;
@@ -819,21 +820,21 @@ public class ColladaImporter {
 
             float intensity = 1;
 
-            if(light.hasextra() && light.getextra().hastechnique()) {
+            if (light.hasextra() && light.getextra().hastechnique()) {
                 techniqueType5 technique = light.getextra().gettechnique();
                 //technique.getDomNode().getC
                 NodeList nl = technique.getDomNode().getChildNodes();
-                for(int i=0;i<nl.getLength();i++) {
+                for (int i = 0; i < nl.getLength(); i++) {
                     org.w3c.dom.Node item = nl.item(i);
-                    if("intensity".equals(item.getNodeName())) {
+                    if ("intensity".equals(item.getNodeName())) {
                         String value = item.getChildNodes().item(0).getNodeValue();
                         intensity = Float.parseFloat(value);
                     }
                 }
             }
 
-            if(intensity != 1) {
-                l.setDiffuse( l.getDiffuse().multLocal(intensity) );
+            if (intensity != 1) {
+                l.setDiffuse(l.getDiffuse().multLocal(intensity));
             }
 
             if (common.hasambient()) {
@@ -1664,8 +1665,7 @@ public class ColladaImporter {
             throws Exception {
 
         if (param.hassampler2D()) {
-            processSampler2D(param.getsid().toString(), param.getsampler2D(),
-                    mat);
+            processSampler2D(param.getsid().toString(), param.getsampler2D(), mat);
         }
 
         if (param.hassurface()) {
@@ -2340,6 +2340,9 @@ public class ColladaImporter {
         if (technique.hasphong()) {
             processPhong(technique.getphong(), mat);
         }
+        if(technique.hasblinn()) {
+            processBlinn(technique.getblinn(), mat);
+        }
     }
 
     private void processPhong(phongType pt, ColladaMaterial mat) throws Exception {
@@ -2385,6 +2388,55 @@ public class ColladaImporter {
         if (pt.hasemission()) {
             if (pt.getemission().hascolor()) {
                 ms.setEmissive(getColor(pt.getemission().getcolor()));
+            }
+        }
+
+        mat.setState(ms);
+    }
+
+    private void processBlinn(blinnType bt, ColladaMaterial mat) throws Exception {
+
+        float colorAlpha = -1;
+
+        if (bt.hastransparent()) {
+            common_color_or_texture_type transparent = bt.gettransparent();
+            common_float_or_param_type transparency = bt.gettransparency();
+            colorAlpha = processTransparency(transparent, transparency, mat);
+        }
+
+        // obtain the colors for the material
+        MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
+        //ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
+
+        // set the ambient color value of the material
+        if (bt.hasambient()) {
+            ms.setAmbient(getColor(bt.getambient().getcolor()));
+        }
+
+        // set the diffuse color value of the material
+        if (bt.hasdiffuse()) {
+            if (bt.getdiffuse().hascolor()) {
+                //ms.setDiffuse(getColor(lt.getdiffuse().getcolor()));
+                ColorRGBA diffuseColor = getColor(bt.getdiffuse().getcolor());
+                if (colorAlpha >= 0) {
+                    diffuseColor.a = colorAlpha;
+                }
+                ms.setDiffuse(diffuseColor);
+            }
+
+            if (bt.getdiffuse().hastexture()) {
+                // create a texturestate, and we will need to make use of
+                // texcoord to put this texture in the correct "unit"
+                for (int i = 0; i < bt.getdiffuse().gettextureCount(); i++) {
+                    mat.setState(processTexture(bt.getdiffuse().gettextureAt(i), mat));
+                }
+            }
+        }
+
+        // set the emmission color value of the material
+        if (bt.hasemission()) {
+            if (bt.getemission().hascolor()) {
+                ms.setEmissive(getColor(bt.getemission().getcolor()));
             }
         }
 
@@ -2941,7 +2993,10 @@ public class ColladaImporter {
                     // move these over to the triangles batch, where they will do some good.
                     //mesh.gettriangles().addinput(mesh.getvertices().getinputAt(1));
                     InputLocalOffset newInput = new InputLocalOffset(mesh.getvertices().getinputAt(1).getDomNode());
-                    mesh.gettriangles().addinput(newInput);
+                    if(mesh.hastriangles())
+                        mesh.gettriangles().addinput(newInput);
+                    else if(mesh.haspolygons())
+                        mesh.getpolygons().addinput(newInput);
                 }
             }
             //mesh.getvertices().get
@@ -3245,12 +3300,12 @@ public class ColladaImporter {
             }
         }
 
-        int unit;
-        if (set == 0) {
-            unit = 0;
-        } else {
-            unit = set - 1;
-        }
+        int unit = set;
+//        if (set == 0) {
+//            unit = 0;
+//        } else {
+//            unit = set - 1;
+//        }
         triMesh.setTextureBuffer(batchIndex, texBuffer, unit);
 
         // Set the wrap mode, check if the batch has a texture
@@ -3432,6 +3487,7 @@ public class ColladaImporter {
             }
 
             if (poly.hasmaterial()) {
+                // note: this material reference is used later
                 triBatch.setName(poly.getmaterial().toString());
             }
 
@@ -3657,12 +3713,13 @@ public class ColladaImporter {
                         }
                     }
 
-                    int unit;
-                    if (set == 0) {
-                        unit = 0;
-                    } else {
-                        unit = set - 1;
-                    }
+                    int unit = set;
+//                    if (set == 0) {
+//                        unit = 0;
+//                    } else {
+//                        unit = set - 1;
+//                    }
+
                     triMesh.setTextureBuffer(batchIndex, texBuffer, unit);
 
                     // Set the wrap mode, check if the batch has a texture
@@ -4132,6 +4189,12 @@ public class ColladaImporter {
             GeomBatch batch = geomBindTo.getBatch(i);
             String symbol = material.getsymbol().toString();
             if (symbol.equals(batch.getName())) {
+                target = batch;
+                break;
+            } else if (
+                    // this corrects a material mis-assignment issue
+                    batch instanceof SharedBatch &&
+                    symbol.equals(((SharedBatch) batch).getTarget().getName())) {
                 target = batch;
                 break;
             }
