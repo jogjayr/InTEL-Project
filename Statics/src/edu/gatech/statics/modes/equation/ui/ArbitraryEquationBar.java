@@ -32,6 +32,7 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
  *
@@ -156,7 +157,7 @@ public class ArbitraryEquationBar extends EquationBar {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
             add(vectorLabel, BorderLayout.CENTER);
-            
+
             // so that we can insert
             add(new InsertSliver(this, true), BorderLayout.EAST);
         }
@@ -219,6 +220,11 @@ public class ArbitraryEquationBar extends EquationBar {
 
         public NodeBoxOperator(OperatorNode node) {
             super(node);
+            setLayoutManager(new BorderLayout());
+
+            add(buildBox(node.getLeftNode()), BorderLayout.WEST);
+            add(new BLabel("" + node.getOperation()), BorderLayout.CENTER);
+            add(buildBox(node.getRightNode()), BorderLayout.EAST);
         }
     }
 

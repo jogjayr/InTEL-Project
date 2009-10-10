@@ -62,4 +62,9 @@ public class OperatorNode extends EquationNode {
 
         return opNode;
     }
+
+    @Override
+    public String toString() {
+        return "Op Node (" + leftNode + " " + operation + " " + rightNode + ")";
+    }
 }

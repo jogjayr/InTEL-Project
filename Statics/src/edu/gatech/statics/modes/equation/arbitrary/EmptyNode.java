@@ -27,4 +27,9 @@ public class EmptyNode extends EquationNode {
     protected EquationNode clone(EquationNode newParent) {
         return new EmptyNode(newParent);
     }
+
+    @Override
+    public String toString() {
+        return "Empty Node";
+    }
 }

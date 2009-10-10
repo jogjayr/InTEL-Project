@@ -39,4 +39,9 @@ public class SymbolNode extends EquationNode {
     protected EquationNode clone(EquationNode newParent) {
         return new SymbolNode(newParent, symbol);
     }
+
+    @Override
+    public String toString() {
+        return "Symbol Node ("+symbol+")";
+    }
 }

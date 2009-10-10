@@ -39,14 +39,8 @@ public class InsertArbitraryNode implements DiagramAction<EquationState> {
             return oldState;
         }
         //top level node, insert normally
-        if (toBeInsertedBy.parent == null) {
-            builder.putEquationState(Util.doReplacement(toBeInsertedBy, toBeInserted, (ArbitraryEquationMathState) mathState));
-        }
-        //node under an OperatorNode, add the two nodes to either leg of the new OpNode and then add the new OpNode to the tree. Still needs a test for right and left.
-        else {
-            OperatorNode opNode = new OperatorNode(toBeInsertedBy.parent, toBeInsertedBy, toBeInserted);
-            builder.putEquationState(Util.doReplacement(toBeInsertedBy, opNode.parent = toBeInsertedBy.parent, (ArbitraryEquationMathState) mathState));
-        }
+        OperatorNode opNode = new OperatorNode(toBeInsertedBy.parent, toBeInsertedBy, toBeInserted);
+        builder.putEquationState(Util.doReplacement(toBeInsertedBy, opNode, (ArbitraryEquationMathState) mathState));
         return builder.build();
     }
 }

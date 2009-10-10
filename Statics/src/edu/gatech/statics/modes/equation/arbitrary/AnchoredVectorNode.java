@@ -42,5 +42,8 @@ public class AnchoredVectorNode extends EquationNode {
         return new AnchoredVectorNode(newParent, anchoredVector);
     }
 
-
+    @Override
+    public String toString() {
+        return "AV Node "+anchoredVector;
+    }
 }
