@@ -5,12 +5,14 @@
 package edu.gatech.statics.modes.equation.arbitrary;
 
 import edu.gatech.statics.math.AnchoredVector;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Jimmy Truesdell
  */
-public class FrictionEquationRecognizer implements EquationRecognizer {
+public class FrictionEquationRecognizer extends EquationRecognizer {
 
     /**
      * Ensure that the user's entered equation follows the proper format.
@@ -46,11 +48,64 @@ public class FrictionEquationRecognizer implements EquationRecognizer {
     }
 
     /**
+     * Map keys are: "f", "mu", and "N"
+     * Representing exactly what they ought to
+     * @param state
+     * @return
+     */
+    @Override
+    protected Map<String, EquationNode> interpret(ArbitraryEquationMathState state) {
+        // attempt to fill in values of the form f = mu * N
+        // where equation sides may be reversed, and multiplication order may be reversed.
+        // return null if something is incorrect.
+
+        Map<String, EquationNode> nodeMap = new HashMap<String, EquationNode>();
+
+        // to START, just work with A = mu * B format, and return null for anything else.
+        if (state.getLeftSide() instanceof AnchoredVectorNode) {
+            nodeMap.put("f", state.getLeftSide());
+        } else {
+            return null;
+        }
+
+        if (state.getRightSide() instanceof OperatorNode) {
+            OperatorNode opNode = (OperatorNode) state.getRightSide();
+            if (opNode.getLeftNode() instanceof SymbolNode) {
+                nodeMap.put("mu", opNode.getLeftNode());
+            } else {
+                return null;
+            }
+
+            if (opNode.getRightNode() instanceof AnchoredVectorNode) {
+                nodeMap.put("N", opNode.getRightNode());
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        return nodeMap;
+    }
+
+    /**
      * Ensure that the equation's assertion is true. That is to say, a == bu.
      * @param state
      * @return
      */
     public boolean isValid(ArbitraryEquationMathState state) {
+
+        Map<String, EquationNode> interpretation = interpret(state);
+        if(interpretation == null) return false;
+
+        AnchoredVectorNode fNode = (AnchoredVectorNode) interpretation.get("f");
+        AnchoredVectorNode NNode = (AnchoredVectorNode) interpretation.get("N");
+        SymbolNode muNode = (SymbolNode) interpretation.get("mu");
+
+        
+
+
+
         if (recognize(state)) {
             //the equation follows proper form (AV = AV*S)
             AnchoredVector leftAV = ((AnchoredVectorNode) state.getLeftSide()).getAnchoredVector();
@@ -68,7 +123,7 @@ public class FrictionEquationRecognizer implements EquationRecognizer {
                 friction = ((SymbolNode) rightSide.getLeftNode()).getValue();
             }
 
-            if (leftAV.getVector().doubleValue() == rightAV.getVector().doubleValue()*friction) {
+            if (leftAV.getVector().doubleValue() == rightAV.getVector().doubleValue() * friction) {
                 //if the two sides are equivalent
                 return true;
             } else {
