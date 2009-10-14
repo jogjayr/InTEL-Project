@@ -11,18 +11,20 @@ package edu.gatech.statics.modes.equation.arbitrary;
 public class SymbolNode extends EquationNode {
 
     private String symbol;
+    private double value;
 
-    public SymbolNode(EquationNode parent, String symbol) {
+    public SymbolNode(EquationNode parent, String symbol, double value) {
         super(parent);
         this.symbol = symbol;
+        this.value = value;
     }
 
     public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public double getValue() {
+        return value;
     }
 
     @Override
@@ -37,11 +39,11 @@ public class SymbolNode extends EquationNode {
 
     @Override
     protected EquationNode clone(EquationNode newParent) {
-        return new SymbolNode(newParent, symbol);
+        return new SymbolNode(newParent, symbol, value);
     }
 
     @Override
     public String toString() {
-        return "Symbol Node ("+symbol+")";
+        return "Symbol Node ("+symbol+", "+value+")";
     }
 }

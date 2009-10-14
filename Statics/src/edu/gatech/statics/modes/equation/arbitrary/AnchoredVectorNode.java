@@ -23,10 +23,6 @@ public class AnchoredVectorNode extends EquationNode {
         return anchoredVector;
     }
 
-    public void setAnchoredVector(AnchoredVector anchoredVector) {
-        this.anchoredVector = anchoredVector;
-    }
-
     @Override
     boolean isEmpty() {
         return false;
