@@ -13,6 +13,7 @@ import com.jmex.bui.BTextField;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.BEvent;
 import com.jmex.bui.event.KeyEvent;
 import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseEvent;
@@ -175,6 +176,16 @@ public class TermEquationBar extends EquationBar {
                         }
                     }
                 }
+
+                @Override
+                public boolean dispatchEvent(BEvent event) {
+                    boolean result = super.dispatchEvent(event);
+                    if(event instanceof KeyEvent) {
+                        // do not consume the key pressed event.
+                        return false;
+                    }
+                    return result;
+                }
             };
             coefficient.setStyleClass("textfield_appbar");
             //coefficient.setPreferredWidth(10);
@@ -198,9 +209,10 @@ public class TermEquationBar extends EquationBar {
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
 
-                boolean destroyOK = false;
-
+                boolean destroyOK = true;
+                
                 public void keyReleased(KeyEvent event) {
+                    System.out.println("*** KEY RELEASED "+ event.getKeyCode());
                     if (coefficient.getText().length() == 0 &&
                             (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?

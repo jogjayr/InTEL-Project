@@ -4,15 +4,11 @@
  */
 package edu.gatech.statics.modes.equation.ui;
 
-import com.jme.math.Vector2f;
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.modes.equation.actions.AddTerm;
-import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.objects.VectorObject;
 
 /**
  *
