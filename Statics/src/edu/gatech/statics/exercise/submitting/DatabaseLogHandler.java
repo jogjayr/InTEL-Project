@@ -22,12 +22,26 @@ public class DatabaseLogHandler extends Handler {
     @Override
     public void publish(LogRecord record) {
         Map<String, String> postMap = poster.getNewPostMap();
+
+        String message = record.getMessage();
+        if(record.getThrown() != null) {
+            Throwable throwable = record.getThrown();
+            
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement stackTraceElement : throwable.getStackTrace()) {
+                sb.append(stackTraceElement.toString()+"\n");
+            }
+
+            message += sb.toString();
+        }
+
         postMap.put("problem_id", "" + Exercise.getExercise().getProblemID());
         postMap.put("user_id", "" + Exercise.getExercise().getState().getUserID());
         postMap.put("session_id", "" + Exercise.getExercise().getSessionID());
         postMap.put("java_class", record.getSourceClassName());
         postMap.put("java_method", record.getSourceMethodName());
-        postMap.put("message", record.getMessage());
+        postMap.put("level", record.getLevel().toString());
+        postMap.put("message", message);
         postMap.put("timestamp", "" + record.getMillis());
 
         poster.post(postMap);

@@ -13,6 +13,6 @@ public class PostLogger extends Poster {
     private static final String URL = "http://intel.gatech.edu/toolkit/auto_postLogger.php";
 
     public PostLogger() {
-        super(URL, "problem_id", "user_id", "session_id", "java_class", "java_method", "message", "timestamp");
+        super(URL, "problem_id", "user_id", "session_id", "java_class", "java_method", "level", "message", "timestamp");
     }
 }

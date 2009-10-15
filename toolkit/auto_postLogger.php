@@ -21,10 +21,11 @@ $userId =     addslashes($_POST["user_id"]);
 $sessionId =  addslashes($_POST["session_id"]);
 $javaClass =  addslashes($_POST["java_class"]);
 $javaMethod = addslashes($_POST["java_method"]);
+$level =      addslashes($_POST["level"]);
 $message =    addslashes($_POST["message"]);
 $timestamp =  addslashes($_POST["timestamp"]);
 
-$success = post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $message, $timestamp);
+$success = post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $level, $message, $timestamp);
 
 // report back
 if($success) {
