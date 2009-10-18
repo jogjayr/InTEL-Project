@@ -208,7 +208,8 @@ public class AngleRepresentation extends Representation<AngleMeasurement> {
             //labelCenter.set(pCenter);
 
             labelCenter.set(pDirection);
-            labelCenter.multLocal(offset * 2);
+            float extra = DisplayConstants.getInstance().getAngleLabelExtra();
+            labelCenter.multLocal(offset + extra);
             labelCenter.addLocal(anchor);
             //offsetDirection.set(pDirection);
             //offsetDirection.multLocal(totalOffset);

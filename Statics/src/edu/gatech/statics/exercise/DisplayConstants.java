@@ -24,6 +24,7 @@ public class DisplayConstants {
     private float distributedLabelMultiplier = 5f;
     private float distributedArrowSize = 1f;
     private float momentCircleRadius = 2f;
+    private float angleLabelExtra = 1f;
     private boolean showBoundingVolumes = false;
     private boolean showNormals = false;
 
@@ -204,15 +205,17 @@ public class DisplayConstants {
     public float getMeasurementBarSize() {
         return measurementBarSize;
     }
+
     /**
-     * Sets the scale of a Connector's representation. Used in ConnectorRepresentation.
-     * @param value
+     * This denotes the distance away from the arc that an angle label be placed,
+     * when the arc is too small for the label to be placed within it.
+     * @param angleLabelExtra
      */
-    /*public void setJointSize(float value) {
-    jointSize = value;
+    public void setAngleLabelExtra(float angleLabelExtra) {
+        this.angleLabelExtra = angleLabelExtra;
     }
 
-    public float getJointSize() {
-    return jointSize;
-    }*/
+    public float getAngleLabelExtra() {
+        return angleLabelExtra;
+    }
 }

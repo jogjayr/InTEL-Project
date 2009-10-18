@@ -105,7 +105,7 @@ public class BridgeExercise extends TrussExercise {
         getDisplayConstants().setCylinderRadius(0.5f);
         getDisplayConstants().setMomentLabelDistance(10f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
-
+        getDisplayConstants().setAngleLabelExtra(.5f);
 
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
     }
