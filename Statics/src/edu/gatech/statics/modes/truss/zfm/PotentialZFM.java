@@ -62,11 +62,11 @@ public class PotentialZFM extends SimulationObject implements ResolvableByName {
     @Override
     public void setDisplayGrayed(boolean grayed) {
 
-        System.out.println("*** setting grayed: " + this);
+        //System.out.println("*** setting grayed: " + this);
         if (inZFMMode()) {
             super.setDisplayGrayed(grayed);
         } else {
-            System.out.println("**** BLERG " + this);
+            //System.out.println("**** BLERG " + this);
             super.setDisplayGrayed(true);
         }
     }

@@ -6,7 +6,6 @@ package edu.gatech.statics.objects.representations;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -110,9 +109,6 @@ public class MimicRepresentation extends Representation {
         base.setLayer(layer);
     }
 
-//    public boolean getRenderStateChanged() {
-//        return base.getRenderStateChanged();
-//    }
     @Override
     public Node getRelativeNode() {
         return base.getRelativeNode();
@@ -123,123 +119,4 @@ public class MimicRepresentation extends Representation {
         return base.getLayer();
     }
 
-//    @Override
-//    public void setSelectLightColor(ColorRGBA color) {
-//        base.setSelectLightColor(color);
-//    }
-//
-//    @Override
-//    public void setSelectDiffuse(ColorRGBA selectDiffuse) {
-//        base.setSelectDiffuse(selectDiffuse);
-//    }
-//
-//    @Override
-//    public void setHoverLightColor(ColorRGBA color) {
-//        base.setHoverLightColor(color);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setHoverDiffuse(ColorRGBA hoverDiffuse) {
-//        base.setHoverDiffuse(hoverDiffuse);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setHidden(boolean hidden) {
-//        base.setHidden(hidden);
-//    }
-//
-//    @Override
-//    public void setGrayColors(ColorRGBA grayColor, ColorRGBA grayEmissive) {
-//        base.setGrayColors(grayColor, grayEmissive);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setDisplaySelected(boolean selected) {
-//        base.setDisplaySelected(selected);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setDisplayHighlight(boolean hover) {
-//        base.setDisplayHighlight(hover);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setDisplayGrayed(boolean grayed) {
-//        base.setDisplayGrayed(grayed);
-//        updateMaterial();
-//    }
-//
-//    @Override
-//    public void setDiffuse(ColorRGBA diffuse) {
-//        base.setDiffuse(diffuse);
-//    }
-//
-//    @Override
-//    public void setAmbient(ColorRGBA ambient) {
-//        base.setAmbient(ambient);
-//    }
-//
-//    @Override
-//    public boolean isSelected() {
-//        return base.isSelected();
-//    }
-//
-//    @Override
-//    public boolean isHover() {
-//        return base.isHover();
-//    }
-//
-//    @Override
-//    public boolean isHidden() {
-//        return base.isHidden();
-//    }
-//
-//    @Override
-//    public ColorRGBA getSelectDiffuse() {
-//        return base.getSelectDiffuse();
-//    }
-//
-//    @Override
-//    public boolean getRenderStateChanged() {
-//        return base.getRenderStateChanged();
-//    }
-//
-//    @Override
-//    public ColorRGBA getHoverDiffuse() {
-//        return base.getHoverDiffuse();
-//    }
-//
-//    @Override
-//    public boolean getDisplayGrayed() {
-//        return base.getDisplayGrayed();
-//    }
-//
-//    @Override
-//    public ColorRGBA getDiffuse() {
-//        return base.getDiffuse();
-//    }
-//
-//    @Override
-//    public ColorRGBA getAmbient() {
-//        return base.getAmbient();
-//    }
-
-//    @Override
-//    protected void updateMaterial() {
-//        super.setAmbient(base.getAmbient());
-//        super.setDiffuse(base.getAmbient());
-//        super.setDisplayGrayed(base.getDisplayGrayed());
-//        super.setDisplayHighlight(base.isHover());
-//        super.setDisplaySelected(base.isSelected());
-//        super.setHoverDiffuse(base.getHoverDiffuse());
-//        //super.setHoverLightColor(base.getHo);
-//        super.setSelectDiffuse(base.getSelectDiffuse());
-//
-//        super.updateMaterial();
-//    }
 }

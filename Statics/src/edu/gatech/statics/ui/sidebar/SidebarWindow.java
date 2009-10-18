@@ -9,6 +9,7 @@ import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.layout.BLayoutManager;
 import com.jmex.bui.layout.BorderLayout;
+import com.jmex.bui.util.Dimension;
 
 /**
  *
@@ -21,44 +22,29 @@ public class SidebarWindow extends BContainer {
     private BContainer contentContainer;
 
     public SidebarWindow(BLayoutManager layout, String title) {
-        //super(InterfaceRoot.getInstance().getMenuBar(), new BorderLayout());
         super(new BorderLayout());
 
         titleContainer = new BContainer(new BorderLayout());
         titleContainer.setStyleClass("draggable_title");
-        //titleLabel = new BLabel(title, "draggable_title");
         titleLabel = new BLabel(title);
         titleContainer.add(titleLabel, BorderLayout.CENTER);
-        //if (closable) {
-
-//        BIcon closeIcon = null;
-//        try {
-//            closeIcon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/interfaceTextures/close.png")));
-//        } catch (IOException ex) {
-//            // do nothing?
-//        }
-//
-//        BButton closeButton = new BButton(closeIcon, new ActionListener() {
-//
-//            public void actionPerformed(ActionEvent event) {
-//                //TitledDraggablePopupWindow.this.setVisible(false);
-//                toggleCollapsed();
-//            }
-//        }, "");
-//        titleContainer.add(closeButton, BorderLayout.EAST);
 
         contentContainer = new BContainer(layout);
+//
+//            @Override
+//            protected Dimension computePreferredSize(int whint, int hhint) {
+//                return super.computePreferredSize(whint, hhint);
+//            }
+//
+//        };
         contentContainer.setStyleClass("translucent_container");
 
-        BScrollPane contentScrollPane = new BScrollPane(contentContainer);
-        contentScrollPane.setShowScrollbarAlways(false);
-
-//        addDragHandle(titleContainer);
-//        addDragHandle(titleLabel);
-//        addDragHandle(contentContainer);
+//        BScrollPane contentScrollPane = new BScrollPane(contentContainer);
+//        contentScrollPane.setShowScrollbarAlways(false);
 
         add(titleContainer, BorderLayout.NORTH);
-        add(contentScrollPane, BorderLayout.CENTER);
+        //add(contentScrollPane, BorderLayout.CENTER);
+        add(contentContainer, BorderLayout.CENTER);
     }
 
     public BLabel getTitleLabel() {
@@ -69,6 +55,8 @@ public class SidebarWindow extends BContainer {
         return contentContainer;
     }
 
-    private void toggleCollapsed() {
-    }
+//    @Override
+//    protected Dimension computePreferredSize(int whint, int hhint) {
+//        return super.computePreferredSize(whint, hhint);
+//    }
 }

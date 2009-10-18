@@ -22,11 +22,9 @@ import edu.gatech.statics.exercise.persistence.StateIO;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
-import edu.gatech.statics.ui.menu.BrowsePopupMenu;
 import edu.gatech.statics.ui.components.TitledDraggablePopupWindow;
 import edu.gatech.statics.ui.maintabbar.MainTabBar;
 import edu.gatech.statics.ui.sidebar.Sidebar;
-import edu.gatech.statics.ui.windows.coordinates.CoordinateSystem3DWindow;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.feedback.FeedbackWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
@@ -48,7 +46,7 @@ public class InterfaceRoot {
     private static InterfaceRoot instance;
     private PolledRootNode buiNode;
     private BStyleSheet style;
-    private BrowsePopupMenu browsePopupMenu;
+    //private BrowsePopupMenu browsePopupMenu;
     //private TopMenuBar menuBar;
     private MainTabBar mainTabBar;
     private ApplicationBar applicationBar;
@@ -124,6 +122,9 @@ public class InterfaceRoot {
      */
     public void activateModePanel(String panelName) {
         applicationBar.setModePanel(modePanels.get(panelName));
+        if (sidebar != null) {
+            sidebar.adjustSize();
+        }
     }
 
     /**
@@ -251,8 +252,6 @@ public class InterfaceRoot {
                 DisplaySystem.getDisplaySystem().getHeight() - sidebarSize.height - MainTabBar.MAIN_TAB_BAR_HEIGHT - 5,
                 sidebarWidth, sidebarSize.height);
 
-
-
         // LOAD MENU
 //        menuBar.setWindowList(windowNames);
 //        menuBar.setDisplayList(configuration.getDisplayNames());
@@ -282,8 +281,8 @@ public class InterfaceRoot {
         configuration.setupCameraControl(cameraControl);
         navWindow.setCameraControl(cameraControl);
         cameraControl.updateCamera();
-        
-        
+
+
         // ********** TODO:
         // PUSH THIS INTO THE CONFIGURATION
 //        CoordinateSystemWindow coordinateSystem = new CoordinateSystem3DWindow();
@@ -363,31 +362,30 @@ public class InterfaceRoot {
         applicationBar.setLocation(0, 0);
     }
 
-    public void setBrowsePopupMenu(BrowsePopupMenu popup) {
-        if (this.browsePopupMenu != null) {
-            clearBrowsePopupMenu();
-        }
-        this.browsePopupMenu = popup;
+    /*public void setBrowsePopupMenu(BrowsePopupMenu popup) {
+    if (this.browsePopupMenu != null) {
+    clearBrowsePopupMenu();
+    }
+    this.browsePopupMenu = popup;
     }
 
     public void clearBrowsePopupMenu() {
-        browsePopupMenu.dismiss();
-        browsePopupMenu = null;
+    browsePopupMenu.dismiss();
+    browsePopupMenu = null;
     }
 
     protected void checkBrowsePopupMenu() {
-        if (browsePopupMenu != null) {
-            int x = MouseInput.get().getXAbsolute();
-            int y = MouseInput.get().getYAbsolute();
+    if (browsePopupMenu != null) {
+    int x = MouseInput.get().getXAbsolute();
+    int y = MouseInput.get().getYAbsolute();
 
-            if (browsePopupMenu.getHitComponent(x, y) == null &&
-                    //popupMenu.getParentComponent().getHitComponent(x, y) == null)
-                    browsePopupMenu.getParentComponent() != browsePopupMenu.getParentWindow().getHitComponent(x, y)) {
-                clearBrowsePopupMenu();
-            }
-        }
+    if (browsePopupMenu.getHitComponent(x, y) == null &&
+    //popupMenu.getParentComponent().getHitComponent(x, y) == null)
+    browsePopupMenu.getParentComponent() != browsePopupMenu.getParentWindow().getHitComponent(x, y)) {
+    clearBrowsePopupMenu();
     }
-
+    }
+    }*/
     public boolean hasMouse() {
         if (modalWindow != null) {
             return true;
@@ -403,7 +401,7 @@ public class InterfaceRoot {
     }
 
     public void update() {
-        checkBrowsePopupMenu();
+        //checkBrowsePopupMenu();
     }
 
     /**
