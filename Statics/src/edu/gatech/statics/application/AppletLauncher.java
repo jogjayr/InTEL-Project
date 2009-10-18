@@ -30,7 +30,7 @@ public class AppletLauncher extends StaticsApplet {
     public void init() {
 
         try {
-            getApplication().setGraded(true);
+            getApplication().setApplet(true);
 
             String exerciseName = getExercise();
             Class exerciseClass = Class.forName(exerciseName);
@@ -83,6 +83,13 @@ public class AppletLauncher extends StaticsApplet {
         String assignmentIDString = getParameter("assignmentID");
         String problemIDString = getParameter("problemID");
         String problemName = getParameter("problemName");
+        String testingMode = getParameter("testingMode");
+
+        // by default, have graded mode be true.
+        // if testing mode is set, let graded be false.
+        if(testingMode == null) {
+            getApplication().setGraded(true);
+        }
 
         if (userIDString == null || assignmentIDString == null) {
             Logger.getLogger("Statics").info("Applet loaded, but user ID not recorded. Continuing anonymously.");

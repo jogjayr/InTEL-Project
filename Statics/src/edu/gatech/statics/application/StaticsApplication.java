@@ -48,6 +48,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -75,6 +76,7 @@ public class StaticsApplication {
     private List<SolveListener> solveListeners = new ArrayList<SolveListener>();
     private List<DiagramListener> diagramListeners = new ArrayList<DiagramListener>();
     private boolean graded;
+    private boolean applet;
     private PostAssignment postAssignment = new PostAssignment();
     private DatabaseLogHandler logHandler;
     private boolean initialized = false; // this is set after init() completes
@@ -103,6 +105,14 @@ public class StaticsApplication {
 
     public boolean isGraded() {
         return graded;
+    }
+
+    public boolean isApplet() {
+        return applet;
+    }
+
+    public void setApplet(boolean applet) {
+        this.applet = applet;
     }
 
     public void addSolveListener(SolveListener listener) {
@@ -390,7 +400,7 @@ public class StaticsApplication {
 
         // this is called whenever the state gets changed
         if (stateChanged) {
-            if (graded) {
+            if (isGraded()) {
                 // if the assignment is graded, send the state and status
                 // to our assignment post page
                 postAssignment.postState();
@@ -535,11 +545,18 @@ public class StaticsApplication {
             // get rid of some obnoxious log messages in com.jme.scene.Node
             Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
 
-            if (graded) {
+            if (isApplet()) {
                 logHandler = new DatabaseLogHandler();
                 Logger.getLogger("Statics").addHandler(logHandler);
             }
             Logger.getLogger("Statics").info("Application init");
+
+            try {
+                Properties systemProperties = System.getProperties();
+                Logger.getLogger("Statics").info("system properties: "+systemProperties.toString());
+            } catch (SecurityException ex) {
+                Logger.getLogger("Statics").info("Cannot record system properties");
+            }
 
             // initialization of the exercise
             getExercise().initParameters();

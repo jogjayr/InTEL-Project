@@ -379,7 +379,7 @@ public abstract class Exercise {
     protected void finishExercise() {
         finished = true;
 
-        if (StaticsApplication.getApp().isGraded()) {
+        if (StaticsApplication.getApp().isApplet()) {
             ExerciseUtilities.showCompletionPopup();
         }
     }

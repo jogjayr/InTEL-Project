@@ -4,12 +4,10 @@
  */
 package edu.gatech.statics.exercise.submitting;
 
-import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.exercise.Exercise;
 import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 /**
  *
@@ -24,15 +22,15 @@ public class DatabaseLogHandler extends Handler {
         Map<String, String> postMap = poster.getNewPostMap();
 
         String message = record.getMessage();
-        if(record.getThrown() != null) {
+        if (record.getThrown() != null) {
             Throwable throwable = record.getThrown();
-            
+
             StringBuilder sb = new StringBuilder();
             for (StackTraceElement stackTraceElement : throwable.getStackTrace()) {
-                sb.append(stackTraceElement.toString()+"\n");
+                sb.append(stackTraceElement.toString() + "\n");
             }
 
-            message += sb.toString();
+            message += "\n" + sb.toString();
         }
 
         postMap.put("problem_id", "" + Exercise.getExercise().getProblemID());
