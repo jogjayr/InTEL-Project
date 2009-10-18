@@ -215,7 +215,7 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    boolean isGivenLoad(Vector load) {
+    protected boolean isGivenLoad(Vector load) {
         for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
             for (SimulationObject obj : body.getAttachedObjects()) {
                 if (obj instanceof Load && ((Load) obj).getVector().equals(load)) {

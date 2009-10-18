@@ -5,8 +5,10 @@
 package edu.gatech.statics.ui.sidebar;
 
 import com.jme.system.DisplaySystem;
+import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BScrollPane;
+import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.application.StaticsApplication;
@@ -58,5 +60,22 @@ public class Sidebar extends AppWindow {
         setBounds(0, yPosition, WIDTH, allowedHeight);
         setPreferredSize(WIDTH, allowedHeight);
         layout();
+    }
+
+    public void replaceWindow(Class windowType, SidebarWindow window) {
+
+        BComponent toReplace = null;
+        int index = -1;
+        for (int i=0;i<mainContainer.getComponentCount();i++){
+            BComponent component = mainContainer.getComponent(i);
+            if(component.getClass().isAssignableFrom(windowType)){
+                toReplace = component;
+                index = i;
+            }
+        }
+        if(toReplace == null)
+            throw new IllegalArgumentException("Window type "+windowType+" does not seem to be in the sidebar...");
+        mainContainer.remove(toReplace);
+        mainContainer.add(index, window);
     }
 }

@@ -20,6 +20,7 @@ import edu.gatech.statics.modes.distributed.DistributedMode;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.modes.truss.zfm.ZFMMode;
 import edu.gatech.statics.ui.AppWindow;
 import edu.gatech.statics.util.DiagramListener;
 import java.util.ArrayList;
@@ -154,6 +155,8 @@ public class MainTabBar extends AppWindow {
             return new ColorRGBA(0, 1, 1, 1);
         } else if (mode == DistributedMode.instance) {
             return new ColorRGBA(1, 168f / 255, 0, 1);
+        } else if (mode == ZFMMode.instance) {
+            return new ColorRGBA(1, 0, 168f / 255, 1);
         } else {
             return ColorRGBA.white;
         }

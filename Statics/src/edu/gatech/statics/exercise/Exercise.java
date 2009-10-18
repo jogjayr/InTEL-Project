@@ -17,6 +17,7 @@ import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.DescriptionMode;
 import edu.gatech.statics.modes.select.SelectMode;
+import edu.gatech.statics.modes.truss.zfm.ZFMMode;
 import edu.gatech.statics.tasks.Task;
 import edu.gatech.statics.tasks.TaskStatusListener;
 import edu.gatech.statics.ui.InterfaceConfiguration;
@@ -441,6 +442,7 @@ public abstract class Exercise {
      */
     public boolean canSwitchToNullKeyDiagramType(DiagramType type) {
         return type == DescriptionMode.instance.getDiagramType() ||
-                type == SelectMode.instance.getDiagramType();
+                type == SelectMode.instance.getDiagramType() ||
+                type == ZFMMode.instance.getDiagramType();
     }
 }

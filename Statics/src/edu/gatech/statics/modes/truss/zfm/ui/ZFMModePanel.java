@@ -15,6 +15,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
 import edu.gatech.statics.modes.truss.zfm.ZFMMode;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.NextButton;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
     BContainer selectionListBox;
     HTMLView selectionList;
     BButton checkButton;
-
+    
     public ZFMModePanel() {
         //getTitleLabel().setText("Identify Zero Force Members");
 
@@ -54,20 +55,19 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         selectionList.setContents("");
         // *********** need special 
         //StaticsApplication.getApp().setStaticsFeedbackKey("exercise_tools_Selection1");
-        StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
+
+        if (getDiagram().isLocked()) {
+            updateSelection();
+            checkButton.setText("Next");
+        } else {
+            StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
+        }
     }
 
     @Override
     public DiagramType getDiagramType() {
         return ZFMMode.instance.getDiagramType();
     }
-
-//    @Override
-//    protected ApplicationTab createTab() {
-//        ApplicationTab tab = new ApplicationTab("Find ZFMs");
-//        tab.setPreferredSize(125, -1);
-//        return tab;
-//    }
 
     @Override
     public void stateChanged() {
@@ -80,26 +80,19 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         // refine list to only bodies.
         List<PotentialZFM> selection = getDiagram().getCurrentState().getSelectedZFMs();
 
-        if (selection.isEmpty()) {
-            //getTitleLabel().setText("Nothing Selected");
-            selectionList.setContents("");
-
-            //checkButton.setEnabled(false);
-            //StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection1");
-            StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
-
-            //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, false);
-
-        } else {
-            //getTitleLabel().setText("Currently Selected:");
-
+        if (getDiagram().isLocked()) {
             selectionList.setContents(getContents(selection));
-
-            //checkButton.setEnabled(true);
+            StaticsApplication.getApp().setUIFeedback("The following are Zero Force Members");
+        } else if (selection.isEmpty()) {
+            selectionList.setContents("");
+            StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
+        } else {
+            selectionList.setContents(getContents(selection));
             StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection2");
-
-            //InterfaceRoot.getInstance().getApplicationBar().enableTab(FBDMode.instance, true);
         }
+
+        // Update the AppBar size
+        InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
     /**
@@ -126,7 +119,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         public void actionPerformed(ActionEvent event) {
 
             //getDiagram().completed();
-            if(getDiagram().check()) {
+            if (getDiagram().check()) {
                 getDiagram().setSolved();
             }
         }

@@ -30,20 +30,9 @@ public class SidebarWindow extends BContainer {
         titleContainer.add(titleLabel, BorderLayout.CENTER);
 
         contentContainer = new BContainer(layout);
-//
-//            @Override
-//            protected Dimension computePreferredSize(int whint, int hhint) {
-//                return super.computePreferredSize(whint, hhint);
-//            }
-//
-//        };
         contentContainer.setStyleClass("translucent_container");
 
-//        BScrollPane contentScrollPane = new BScrollPane(contentContainer);
-//        contentScrollPane.setShowScrollbarAlways(false);
-
         add(titleContainer, BorderLayout.NORTH);
-        //add(contentScrollPane, BorderLayout.CENTER);
         add(contentContainer, BorderLayout.CENTER);
     }
 
@@ -54,9 +43,4 @@ public class SidebarWindow extends BContainer {
     protected BContainer getContentContainer() {
         return contentContainer;
     }
-
-//    @Override
-//    protected Dimension computePreferredSize(int whint, int hhint) {
-//        return super.computePreferredSize(whint, hhint);
-//    }
 }

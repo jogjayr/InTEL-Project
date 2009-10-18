@@ -67,7 +67,7 @@ public class ZFMDiagram extends Diagram<ZFMState> {
     @Override
     public void activate() {
         super.activate();
-
+        
         // activate the mimic representations
         for (SimulationObject obj : getBaseObjects()) {
             if (obj instanceof PotentialZFM) {

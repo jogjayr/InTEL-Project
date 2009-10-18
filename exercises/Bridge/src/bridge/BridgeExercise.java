@@ -8,12 +8,14 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.AngleMeasurement;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -29,6 +31,8 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.knownforces.KnownsContainer;
+import edu.gatech.statics.ui.windows.knownforces.KnownsSidebarWindow;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
@@ -64,6 +68,32 @@ public class BridgeExercise extends TrussExercise {
         vc.setZoomConstraints(0.1f, 8.0f);
         vc.setRotationConstraints(-1, 1);
         interfaceConfiguration.setViewConstraints(vc);
+
+        // This complicated construction overrides behavior in the sidebar for this problem.
+        // We exclude all the given loads, in favor of using ConstantObjects
+        // There are 15 forces total, and they almost all have the same value, so it is very
+        // distracting having them all in that list.
+        interfaceConfiguration.getSidebar().replaceWindow(KnownsSidebarWindow.class, new KnownsSidebarWindow() {
+
+            @Override
+            protected KnownsContainer createKnownsContainer() {
+                //return super.createKnownsContainer();
+                return new KnownsContainer() {
+
+                    @Override
+                    protected void writeReaction(Vector load, Point applicationPoint, String name) {
+
+                        // ignore these given loads.
+                        if(isGivenLoad(load) && name.startsWith("load-U"))
+                            return;
+
+                        super.writeReaction(load, applicationPoint, name);
+                    }
+
+                };
+            }
+        });
+
         return interfaceConfiguration;
     }
 
@@ -92,8 +122,6 @@ public class BridgeExercise extends TrussExercise {
 
     @Override
     public void initExercise() {
-//        setName("Bridge");
-//        setDescription("Solve for tension or compression in all of the members");
 
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " kip*ft");
@@ -113,6 +141,11 @@ public class BridgeExercise extends TrussExercise {
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
+
+        // useful things to put in the knowns list:
+        // FIX THIS: use NON hardcoded values
+        schematic.add(new ConstantObject("U-0 and U-14", new BigDecimal(300), Unit.force));
+        schematic.add(new ConstantObject("U-1 to U-13", new BigDecimal(600), Unit.force));
 
         float lowerHeights[] = new float[]{
             30f, 31.2083333f, 32.41666f, 36.083333f, 39.75f, 45.875f, 52f, 60f,

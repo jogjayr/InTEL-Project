@@ -17,8 +17,12 @@ public class KnownsSidebarWindow extends SidebarWindow {
     public KnownsSidebarWindow() {
         super(new BorderLayout(), "Knowns");
 
-        getContentContainer().add(new KnownsContainer(), BorderLayout.CENTER);
+        getContentContainer().add(createKnownsContainer(), BorderLayout.CENTER);
 
         setPreferredSize(Sidebar.WIDTH, -1);
+    }
+
+    protected KnownsContainer createKnownsContainer() {
+        return new KnownsContainer();
     }
 }
