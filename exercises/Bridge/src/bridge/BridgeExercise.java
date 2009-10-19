@@ -65,7 +65,7 @@ public class BridgeExercise extends TrussExercise {
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-100f, 100f, -40f, 40f);
-        vc.setZoomConstraints(0.1f, 8.0f);
+        vc.setZoomConstraints(0.075f, 8.0f);
         vc.setRotationConstraints(-1, 1);
         interfaceConfiguration.setViewConstraints(vc);
 
@@ -128,7 +128,7 @@ public class BridgeExercise extends TrussExercise {
         Unit.setSuffix(Unit.force, " kip");
 
         getDisplayConstants().setMomentSize(0.5f);
-        getDisplayConstants().setForceSize(0.5f);
+        getDisplayConstants().setForceSize(0.25f);
         getDisplayConstants().setPointSize(0.5f);
         getDisplayConstants().setCylinderRadius(0.5f);
         getDisplayConstants().setMomentLabelDistance(10f);
@@ -267,16 +267,7 @@ public class BridgeExercise extends TrussExercise {
 
             MimicRepresentation rep = new MimicRepresentation(potential, modelRepresentations.get(modelPath));
 
-            // ******************************
-            // TEST TEST TEST
-//            rep.setSelectDiffuse(ColorRGBA.blue);
-//            rep.setHoverDiffuse(ColorRGBA.orange);
-//            rep.setSelectLightColor(ColorRGBA.blue);
-//            rep.setHoverLightColor(ColorRGBA.orange);
-
             potential.addRepresentation(rep);
-
-            //potential.addRepresentations(bar);
             getSchematic().add(potential);
         }
     }
