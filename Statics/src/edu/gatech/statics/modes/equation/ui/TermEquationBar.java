@@ -136,10 +136,10 @@ public class TermEquationBar extends EquationBar {
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
-                setBorder(new LineBorder(highlightBorderColor));
+                setBorder(new LineBorder(highlightBorderColor,2));
             } else {
                 //_borders[getState()] = regularBorder;
-                setBorder(new LineBorder(regularBorderColor));
+                setBorder(new LineBorder(regularBorderColor,2));
             }
             invalidate();
         }
@@ -161,6 +161,9 @@ public class TermEquationBar extends EquationBar {
             } else {
                 vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
+            vectorLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
+
+
             coefficient = new BTextField(coefficientText) {
 
                 @Override
@@ -180,7 +183,7 @@ public class TermEquationBar extends EquationBar {
                 @Override
                 public boolean dispatchEvent(BEvent event) {
                     boolean result = super.dispatchEvent(event);
-                    if(event instanceof KeyEvent) {
+                    if (event instanceof KeyEvent) {
                         // do not consume the key pressed event.
                         return false;
                     }
@@ -210,9 +213,9 @@ public class TermEquationBar extends EquationBar {
                 // only one character. With this, we check to see if this deletion was the last before destroying.
 
                 boolean destroyOK = true;
-                
+
                 public void keyReleased(KeyEvent event) {
-                    System.out.println("*** KEY RELEASED "+ event.getKeyCode());
+                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
                     if (coefficient.getText().length() == 0 &&
                             (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?

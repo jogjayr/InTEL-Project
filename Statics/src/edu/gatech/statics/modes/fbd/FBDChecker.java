@@ -826,17 +826,17 @@ public class FBDChecker {
             case matchesSymbolElsewhere:
                 logInfo("check: forces and moments should not have the same name as any other force or moment: " + candidate);
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate", candidate.getUnit().toString(), candidate.getSymbolName(), candidate.getAnchor().getLabelText());
                 return;
             case matchesMeasurementSymbol:
                 logInfo("check: force or moment should not share the same name with an unknown measurement ");
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate_measurement", candidate.getUnit().toString(), candidate.getSymbolName(), candidate.getAnchor().getLabelText());
                 return;
             case matchesPointName:
                 logInfo("check: anchors and added force/moments should not share names");
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", candidate.getUnit().toString(), candidate.getAnchor().getLabelText());
+                setAdviceKey("fbd_feedback_check_fail_duplicate_anchor", candidate.getUnit().toString(), candidate.getSymbolName(), candidate.getAnchor().getLabelText());
                 return;
             case shouldMatch2FM:
                 //the student has created a 2FM with non matching forces

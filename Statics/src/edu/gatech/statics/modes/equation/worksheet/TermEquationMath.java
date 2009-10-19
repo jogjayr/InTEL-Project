@@ -156,41 +156,41 @@ abstract public class TermEquationMath extends EquationMath{
                 Logger.getLogger("Statics").info("check: equation has unnecessary term: " + load);
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessary", load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessary", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
 
             case cannotHandle:
                 Logger.getLogger("Statics").info("check: cannot handle term");
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_cannot_handle", coefficient, load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_cannot_handle", coefficient, load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
 
             case shouldNotBeSymbolic:
                 Logger.getLogger("Statics").info("check: should not be symbolic");
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
 
             case badSign:
                 Logger.getLogger("Statics").info("check: wrong sign");
                 Logger.getLogger("Statics").info("check: FAILED");
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_sign", load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_sign", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
 
             case parse:
                 Logger.getLogger("Statics").info("check: parse error");
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_parse", coefficient, load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_parse", coefficient, load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
 
             case incorrect:
                 Logger.getLogger("Statics").info("check: term is incorrect");
                 Logger.getLogger("Statics").info("check: FAILED");
 
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_coefficient", coefficient, load.getVector().getPrettyName());
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_coefficient", coefficient, load.getVector().getPrettyName(), load.getAnchor().getName());
                 return;
         }
     }

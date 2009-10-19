@@ -9,9 +9,8 @@
  */
 package edu.gatech.statics.modes.equation.worksheet;
 
-import edu.gatech.statics.modes.equation.*;
-import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.equation.EquationDiagram;
+
 
 /**
  * EquationMath is the logical end of managing the equations in the equation mode.
@@ -59,22 +58,4 @@ abstract public class EquationMath {
     }
 
     public abstract boolean check();
-
-    /**
-     * This yields the precision to be used in value comparisons. Moments equations
-     * must compare values with respect to the precision of distance. Non moment equations
-     * may use a fixed value.
-     * @return
-     */
-    abstract protected float valueComparePrecision();
-
-    /**
-     * This method should be overridden by the subclasses of EquationMath.
-     * This checks the given load and coefficient, and will return an error code.
-     * If the check passes, checkTerm should return TermError.none
-     * @param load
-     * @param coefficient
-     * @return
-     */
-    protected abstract TermError checkTerm(AnchoredVector load, String coefficient);
 }

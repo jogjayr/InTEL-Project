@@ -84,7 +84,7 @@ public class EquationMathForces extends TermEquationMath {
             Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + load);
             Logger.getLogger("Statics").info("check: FAILED");
 
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessaryMoment", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessaryMoment", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         }
 

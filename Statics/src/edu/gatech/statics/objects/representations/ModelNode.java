@@ -118,7 +118,7 @@ public class ModelNode {
                 SimpleResourceLocator locator = new SimpleResourceLocator(textureUrl.toURI());
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
             } catch (URISyntaxException ex) {
-                Logger.getLogger(ModelNode.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger("Statics").log(Level.SEVERE, null, ex);
             }
         }
 

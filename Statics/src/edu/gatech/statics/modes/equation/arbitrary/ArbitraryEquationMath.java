@@ -13,10 +13,7 @@ import edu.gatech.statics.modes.equation.worksheet.*;
 import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -78,108 +75,5 @@ public class ArbitraryEquationMath extends EquationMath {
         Logger.getLogger("Statics").info("check: PASSED!");
         StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_success");
         return true;
-    }
-
-    /**
-     * This yields the precision to be used in value comparisons. Moments equations
-     * must compare values with respect to the precision of distance. Non moment equations
-     * may use a fixed value.
-     * @return
-     */
-    protected float valueComparePrecision() {
-        return (float) (.22 * Math.pow(10, -Unit.force.getDecimalPrecision()));
-    }
-
-    protected TermError checkTerm(AnchoredVector load, String coefficient) {
-        return TermError.missedALoad;
-    }
-
-    /**
-     * Compares the two values and returns: TermError.none if the values are equal,
-     * TermError.badSign if the sign is wrong, or TermError.incorrect if the value is
-     * incorrect but not anything else.
-     * @param userValue
-     * @param targetValue
-     * @return
-     */
-    protected TermError compareValues(BigDecimal userValue, BigDecimal targetValue) {
-
-        if (Math.abs(userValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
-            // value is okay, return positive
-            return TermError.none;
-        } else {
-            // check to see if the negated value is correct instead
-            if (Math.abs(-1 * userValue.floatValue() - targetValue.floatValue()) < valueComparePrecision()) {
-                return TermError.badSign;
-            }
-
-            // otherwise we just have something random.
-            return TermError.incorrect;
-        }
-    }
-
-    /**
-     * This method produces the error response for the error code and the 
-     * load and coefficient.
-     * @param error
-     * @param load
-     * @param coefficient
-     */
-    protected void reportError(TermError error, AnchoredVector load, String coefficient) {
-
-        switch (error) {
-            case internal:
-            case shouldBeSymbolic:
-            case wrongSymbol:
-            case missingInclination:
-                // ??? should not be here
-                Logger.getLogger("Statics").info("check: unknown error?");
-                Logger.getLogger("Statics").info("check: got inappropriate error code: " + error);
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unknown");
-                return;
-
-            case doesNotBelong:
-                Logger.getLogger("Statics").info("check: equation has unnecessary term: " + load);
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessary", load.getVector().getPrettyName());
-                return;
-
-            case cannotHandle:
-                Logger.getLogger("Statics").info("check: cannot handle term");
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_cannot_handle", coefficient, load.getVector().getPrettyName());
-                return;
-
-            case shouldNotBeSymbolic:
-                Logger.getLogger("Statics").info("check: should not be symbolic");
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
-                return;
-
-            case badSign:
-                Logger.getLogger("Statics").info("check: wrong sign");
-                Logger.getLogger("Statics").info("check: FAILED");
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_sign", load.getVector().getPrettyName());
-                return;
-
-            case parse:
-                Logger.getLogger("Statics").info("check: parse error");
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_parse", coefficient, load.getVector().getPrettyName());
-                return;
-
-            case incorrect:
-                Logger.getLogger("Statics").info("check: term is incorrect");
-                Logger.getLogger("Statics").info("check: FAILED");
-
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_coefficient", coefficient, load.getVector().getPrettyName());
-                return;
-        }
     }
 }

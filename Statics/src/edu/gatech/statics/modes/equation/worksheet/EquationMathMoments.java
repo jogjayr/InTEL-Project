@@ -18,7 +18,6 @@ import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.UnknownPoint;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.logging.Logger;
 
 /**
@@ -207,27 +206,27 @@ public class EquationMathMoments extends TermEquationMath {
         if (error == TermError.shouldNotBeSymbolic) {
             Logger.getLogger("Statics").info("check: should not be symbolic");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.shouldBeSymbolic) {
             Logger.getLogger("Statics").info("check: should be symbolic");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.wrongSymbol) {
             Logger.getLogger("Statics").info("check: wrong symbol");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.missingInclination) {
             Logger.getLogger("Statics").info("check: missing the inclination in the term");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.wrongUnits) {
             Logger.getLogger("Statics").info("check: user used wrong units");
             Logger.getLogger("Statics").info("check: FAILED");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_units", Unit.distance.getSuffix(), load.getVector().getPrettyName());
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_units", Unit.distance.getSuffix(), load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.missedALoad) {
             Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);

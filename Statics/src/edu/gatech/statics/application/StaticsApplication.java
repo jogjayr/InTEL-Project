@@ -48,6 +48,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -553,7 +554,11 @@ public class StaticsApplication {
 
             try {
                 Properties systemProperties = System.getProperties();
-                Logger.getLogger("Statics").info("system properties: "+systemProperties.toString());
+                StringBuilder sb = new StringBuilder();
+                for (Entry<Object, Object> entry : systemProperties.entrySet()) {
+                    sb.append("  "+entry.getKey()+"="+entry.getValue()+",\n");
+                }
+                Logger.getLogger("Statics").info("system properties: {\n"+sb+"}");
             } catch (SecurityException ex) {
                 Logger.getLogger("Statics").info("Cannot record system properties");
             }
