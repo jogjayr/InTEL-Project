@@ -5,19 +5,21 @@
 package edu.gatech.statics.modes.equation.ui;
 
 import com.jme.renderer.ColorRGBA;
-import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.BToggleButton;
 import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.KeyEvent;
+import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
+import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
-import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
@@ -32,7 +34,6 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
 
 /**
  *
@@ -96,14 +97,19 @@ public class ArbitraryEquationBar extends EquationBar {
     abstract private class NodeBox extends BContainer {
 
         EquationNode node;
+        MouseListener mouseListener;
+        KeyListener keyListener;
 
         void setHighlight(boolean highlight) {
+            if (!isSelectable()) {
+                return;
+            }
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
-                setBorder(new LineBorder(highlightBorderColor));
+                setBorder(new LineBorder(highlightBorderColor, 2));
             } else {
                 //_borders[getState()] = regularBorder;
-                setBorder(new LineBorder(regularBorderColor));
+                setBorder(new LineBorder(regularBorderColor, 2));
             }
             invalidate();
         }
@@ -115,20 +121,80 @@ public class ArbitraryEquationBar extends EquationBar {
         NodeBox(EquationNode node) {
             this.node = node;
             setHighlight(false);
+
+            mouseListener = new MouseAdapter() {
+
+                @Override
+                public void mouseEntered(MouseEvent event) {
+                    if (isSelectable()) {
+                        setHighlight(true);
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent event) {
+                    if (getHitComponent(event.getX(), event.getY()) == null && isSelectable()) {
+                        setHighlight(false);
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent event) {
+                    //super.mousePressed(event);
+                    requestFocus();
+                }
+            };
+
+            keyListener = new KeyListener() {
+
+                public void keyPressed(KeyEvent event) {
+                    System.out.println("******** key pressed " + event);
+                }
+
+                public void keyReleased(KeyEvent event) {
+                }
+            };
+        }
+
+        /**
+         * Return true if this particular node box can be selected by the user
+         * The only non-selectable node box is for operators
+         * @return
+         */
+        boolean isSelectable() {
+            return true;
         }
     }
 
     private class NodeBoxEmpty extends NodeBox {
 
+        private BToggleButton button;
+        private LoadSelector loadSelector;
+
         public NodeBoxEmpty(EmptyNode node) {
             super(node);
             setLayoutManager(new BorderLayout());
-            add(new BButton("?", new ActionListener() {
+
+            button = new BToggleButton("?", "?");
+            button.addListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent event) {
-                    onClick();
+                    if (button.isSelected()) {
+                        onClick();
+                    } else {
+                        if (loadSelector != null) {
+                            loadSelector.cancel();
+                        }
+                    }
                 }
-            }, "?"), BorderLayout.CENTER);
+            });
+
+            add(button, BorderLayout.CENTER);
+
+            addListener(mouseListener);
+            addListener(keyListener);
+            button.addListener(mouseListener);
+            button.addListener(keyListener);
         }
 
         private void onClick() {
@@ -137,7 +203,16 @@ public class ArbitraryEquationBar extends EquationBar {
             // also be able to select symbolic terms somehow
             // that's all?
             parent.setActiveEquation(ArbitraryEquationBar.this);
-            new LoadSelector(ArbitraryEquationBar.this, this.node).activate();
+            loadSelector = new LoadSelector(ArbitraryEquationBar.this, this.node) {
+
+                @Override
+                protected void onFinish() {
+
+                    super.onFinish();
+                    button.setSelected(false);
+                }
+            };
+            loadSelector.activate();
         }
     }
 
@@ -160,6 +235,11 @@ public class ArbitraryEquationBar extends EquationBar {
 
             // so that we can insert
             add(new InsertSliver(this, true), BorderLayout.EAST);
+
+            addListener(mouseListener);
+            addListener(keyListener);
+            vectorLabel.addListener(mouseListener);
+            vectorLabel.addListener(keyListener);
         }
     }
 
@@ -210,7 +290,7 @@ public class ArbitraryEquationBar extends EquationBar {
         private void onMousePressed() {
 
             // do insert action here:
-            InsertArbitraryNode action = new InsertArbitraryNode(owner.getNode(), getMath().getName(), new EmptyNode(null));
+            InsertArbitraryNode action = new InsertArbitraryNode(owner.getNode(), getMath().getName(), new EmptyNode(null), isRight);
             EquationDiagram diagram = (EquationDiagram) StaticsApplication.getApp().getCurrentDiagram();
             diagram.performAction(action);
         }
@@ -225,6 +305,10 @@ public class ArbitraryEquationBar extends EquationBar {
             add(buildBox(node.getLeftNode()), BorderLayout.WEST);
             add(new BLabel("" + node.getOperation()), BorderLayout.CENTER);
             add(buildBox(node.getRightNode()), BorderLayout.EAST);
+        }
+
+        boolean isSelectable() {
+            return false;
         }
     }
 

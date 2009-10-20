@@ -17,6 +17,7 @@ public class InsertArbitraryNode implements DiagramAction<EquationState> {
     private EquationNode toBeInsertedBy;
     private String equationName;
     private EquationNode toBeInserted;
+    private boolean isRight;
 
     /**
      * Inserts an AnchoredVector or Symbol node.
@@ -25,10 +26,11 @@ public class InsertArbitraryNode implements DiagramAction<EquationState> {
      * @param load
      * @param coefficient
      */
-    public InsertArbitraryNode(EquationNode toBeInsertedBy, String equationName, EquationNode toBeInserted) {
+    public InsertArbitraryNode(EquationNode toBeInsertedBy, String equationName, EquationNode toBeInserted, boolean isRight) {
         this.toBeInsertedBy = toBeInsertedBy;
         this.equationName = equationName;
         this.toBeInserted = toBeInserted;
+        this.isRight = isRight;
     }
 
     public EquationState performAction(EquationState oldState) {
@@ -39,7 +41,12 @@ public class InsertArbitraryNode implements DiagramAction<EquationState> {
             return oldState;
         }
         //top level node, insert normally
-        OperatorNode opNode = new OperatorNode(toBeInsertedBy.parent, toBeInsertedBy, toBeInserted);
+        OperatorNode opNode;
+        if (isRight) {
+            opNode = new OperatorNode(toBeInsertedBy.parent, toBeInsertedBy, toBeInserted);
+        } else {
+            opNode = new OperatorNode(toBeInsertedBy.parent, toBeInserted, toBeInsertedBy);
+        }
         builder.putEquationState(Util.doReplacement(toBeInsertedBy, opNode, (ArbitraryEquationMathState) mathState));
         return builder.build();
     }

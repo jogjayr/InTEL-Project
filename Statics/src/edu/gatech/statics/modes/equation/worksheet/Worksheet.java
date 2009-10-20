@@ -14,7 +14,6 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.equation.EquationDiagram;
-import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,24 +57,26 @@ public class Worksheet {
 
     public void updateEquations() {
         //add math present in state but not the equation list
-        for (String mathNames : getEquationStateNames()) {
-            if (equations.containsKey(mathNames)) {
+        for (String mathName : getEquationStateNames()) {
+            if (equations.containsKey(mathName)) {
                 continue;
             }
-            if (diagram.getCurrentState().getEquationStates().get(mathNames) instanceof TermEquationMathState) {
-                if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.forceXAxis) {
-                    equations.put(mathNames, new EquationMathForces(mathNames, Vector3bd.UNIT_X, diagram));
-                } else if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.forceYAxis) {
-                    equations.put(mathNames, new EquationMathForces(mathNames, Vector3bd.UNIT_Y, diagram));
-                } else if (((TermEquationMathState) diagram.getCurrentState().getEquationStates().get(mathNames)).getTermType() == TermType.moment) {
-                    equations.put(mathNames, new EquationMathMoments(mathNames, Vector3bd.UNIT_Z, diagram));
+            EquationMathState mathState = diagram.getCurrentState().getEquationStates().get(mathName);
+
+            if (mathState instanceof TermEquationMathState) {
+                if (((TermEquationMathState) mathState).getTermType() == TermType.forceXAxis) {
+                    equations.put(mathName, new EquationMathForces(mathName, Vector3bd.UNIT_X, diagram));
+                } else if (((TermEquationMathState) mathState).getTermType() == TermType.forceYAxis) {
+                    equations.put(mathName, new EquationMathForces(mathName, Vector3bd.UNIT_Y, diagram));
+                } else if (((TermEquationMathState) mathState).getTermType() == TermType.moment) {
+                    equations.put(mathName, new EquationMathMoments(mathName, Vector3bd.UNIT_Z, diagram));
                 } else {
-                    throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathNames));
+                    throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathName));
                 }
-            } else if (diagram.getCurrentState().getEquationStates().get(mathNames) instanceof ArbitraryEquationMathState) {
-                equations.put(mathNames, new ArbitraryEquationMath(mathNames, diagram));
+            } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof ArbitraryEquationMathState) {
+                equations.put(mathName, new ArbitraryEquationMath(mathName, diagram));
             } else {
-                throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathNames));
+                throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathName));
             }
         }
 
@@ -87,23 +88,6 @@ public class Worksheet {
         }
     }
 
-    /**
-     * This method updates the equations present in the worksheet and makes them consistent with the state.
-     */
-    /*public void update() {
-    for (EquationMath em : equations.values()) {
-    em.update();
-    }
-    }*/    //public boolean isSolved() {
-    //    return solved;
-    //}
-
-    /*public void resetSolve() {
-    for (EquationMath math : equations) {
-    math.setLocked(false);
-    }
-    //        solved = false;
-    }*/
     public Map<Quantity, Float> solve() {
         if (!solved) {
 
@@ -197,11 +181,4 @@ public class Worksheet {
 
         return solution;
     }
-
-    //public List<EquationMath> getEquations() {
-    //    return Collections.unmodifiableList(equations);
-    //}
-//    protected void addEquation(EquationMath math) {
-//        equations.put(math.getName(), math);
-//    }
 }

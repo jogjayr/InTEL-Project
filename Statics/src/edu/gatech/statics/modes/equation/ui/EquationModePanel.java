@@ -187,22 +187,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             setCheckIcon(data.equationBar);
         }
 
-        // perform a special check for two force members
-        // currently, two force member diagrams are not allowed, so this is commented
-//        if (getDiagram().getBodySubset().getBodies().size() == 1) {
-//            for (Body b : getDiagram().getBodySubset().getBodies()) {
-//                if (b instanceof TwoForceMember) {
-////                    getDiagram().equationSolved();
-//
-//                    LockEquation lockEquationAction = new LockEquation(math.getName(), true);
-//                    getDiagram().performAction(lockEquationAction);
-//
-//                    data.equationBar.setLocked();
-//                    setCheckIcon(data.equationBar);
-//                }
-//            }
-//        }
-
         if (uiMap.size() == 1) {
             setActiveEquation(data.equationBar);
         }
@@ -233,6 +217,23 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             }
         }, "check");
 
+        // allow arbitrary rows to be deletable
+        // key listener doesn't seem to work. Try adding a button instead?
+//        data.equationBar.addListener(new KeyListener() {
+//
+//            public void keyPressed(KeyEvent event) {
+//                System.out.println("*** Key pressed "+event);
+//                if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+//                        event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
+//                    RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
+//                    getDiagram().performAction(removeRowAction);
+//                }
+//            }
+//
+//            public void keyReleased(KeyEvent event) {
+//            }
+//        });
+
         addEquationData(math, data);
     }
 
@@ -243,6 +244,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             Random rand = new Random();
 
             public void actionPerformed(ActionEvent event) {
+
+                // TODO: Revise this so that it uses Actions rather than working between the
+                // state, math, and the worksheet
+
                 getDiagram().getWorksheet().updateEquations();
                 Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
 
@@ -265,7 +270,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 invalidate();
             }
         }, "add");
-        //data.addButton.setStyleClass("smallcircle_button");
 
         equationBarContainer.add(data.addButton);
     }

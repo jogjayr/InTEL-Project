@@ -215,7 +215,7 @@ public class TermEquationBar extends EquationBar {
                 boolean destroyOK = true;
 
                 public void keyReleased(KeyEvent event) {
-                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
+                    //System.out.println("*** KEY RELEASED " + event.getKeyCode());
                     if (coefficient.getText().length() == 0 &&
                             (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
