@@ -111,7 +111,7 @@ if ($problem["type"]=="java") {
         <param name="problemName" value="<?php echo $problemName ?>"/>
         <param name="exerciseState" value="<?php echo $state; ?>">
         <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
-        Java 1.5 or higher is required to run this applet. Please download a JRE from <a href="http://java.sun.com">java.sun.com</a>.
+        Java 1.6 or higher is required to run this applet. Please download a JRE from <a href="http://www.java.com">www.java.com</a>.
     </applet>
 </div>
 

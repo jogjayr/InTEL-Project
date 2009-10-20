@@ -30,6 +30,31 @@ function getAssignments($uuid) {
 	return $results;
 }
 
+function getAllAssignmentsByUuid($uuid) {
+  //retrieves problem_id for current users current class, or all active for anaymous
+  // retrieves all problems, whether they are closed are not.
+
+  global $db;
+
+    $class = getClassByUUID($uuid);
+    $dateTime = mktime();
+    $user = getUserByUUID($uuid);
+    $query = "SELECT app_assignment.id, app_assignment.problem_id, app_problem.name, app_problem.description, app_submission_status.status, app_user_assignment.state, app_assignment_type.type
+    FROM app_problem, app_user_assignment, app_assignment, app_submission_status, app_assignment_type
+    WHERE app_user_assignment.user_id={$user['id']} 
+    AND app_user_assignment.assignment_id=app_assignment.id
+    AND app_assignment.problem_id=app_problem.id
+    AND app_user_assignment.submission_status_id=app_submission_status.id
+    AND app_assignment.assignment_type_id=app_assignment_type.id
+    AND app_assignment.is_active=1
+    AND app_assignment.class_id={$class['class_id']}
+    ORDER BY app_assignment.open_date DESC";
+
+  $results = aquery($query, $db);
+
+  return $results;
+}
+
 function getAssignmentById($id){
   //returns an assignment by its id
     
