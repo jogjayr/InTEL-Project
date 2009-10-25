@@ -38,7 +38,7 @@ public class FBDChecker {
     /**
      * This is the debugging flag. Set this to true while debugging to get extra information.
      */
-    private static final boolean DEBUGGING = true;
+    private static final boolean DEBUGGING = false;
     private FreeBodyDiagram diagram;
     //private Joint nextJoint;
     //private boolean done = false;
