@@ -38,7 +38,7 @@ public class FBDChecker {
     /**
      * This is the debugging flag. Set this to true while debugging to get extra information.
      */
-    private static final boolean DEBUGGING = false;
+    private static final boolean DEBUGGING = true;
     private FreeBodyDiagram diagram;
     //private Joint nextJoint;
     //private boolean done = false;
@@ -486,6 +486,12 @@ public class FBDChecker {
             for (AnchoredVector reaction : expectedReactions) {
 
                 debugInfo("    testing reaction: " + reaction);
+                
+                if(reaction.getDiagramValue().floatValue() == 0f) {
+                    debugInfo("    load is solved and equivalent to zero. Therefore we skip it.");
+                    continue;
+                }
+
                 // get a AnchoredVector and result corresponding to this check.
                 AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
 
@@ -1205,6 +1211,13 @@ public class FBDChecker {
 
         boolean negatable = connector.isForceDirectionNegatable();
         for (AnchoredVector reaction : reactionAnchoredVectors) {
+            if(reaction.getDiagramValue().floatValue() == 0f) {
+                // this reaction is solved and has a value of zero.
+                // we do not need to include the zero here.
+                // should revise error reporting to say something to that effect
+                continue;
+            }
+
             // check each reaction AnchoredVector to make sure it is present and proper
             List<AnchoredVector> candidates = getCandidates(candidateAnchoredVectors, reaction, negatable);
             if (candidates.isEmpty()) {
