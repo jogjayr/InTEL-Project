@@ -35,7 +35,6 @@ import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.Worksheet2D;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
@@ -44,6 +43,7 @@ import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.VectorObject;
+import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -440,6 +440,38 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         StaticsApplication.getApp().resetUIFeedback();
+
+        solvabilityCheck();
+    }
+
+    /**
+     * This checks to see if the diagram is solvable, and will show the TooManyUnknownsPopup if not.
+     * This does not redirect or stop the user, though.
+     */
+    protected void solvabilityCheck() {
+
+        // check to see if the diagram is solvable, and if not, post the TooManyUnknownsPopup
+        int unknowns = 0;
+        for (SimulationObject simulationObject : allObjects()) {
+            if (simulationObject instanceof Load) {
+                Load load = (Load) simulationObject;
+                if (!load.getAnchoredVector().isKnown()) {
+                    unknowns++;
+                }
+            }
+        }
+        int maxUnknowns = 3;
+
+        if (fbd.getBodySubset().getBodies().size() == 1 &&
+                fbd.getBodySubset().getBodies().toArray()[0] instanceof PointBody) {
+            maxUnknowns = 2;
+        }
+
+        if (unknowns > maxUnknowns) {
+            TooManyUnknownsPopup popup = new TooManyUnknownsPopup();
+            popup.popup(0, 0, true);
+            popup.center();
+        }
     }
 
     /**

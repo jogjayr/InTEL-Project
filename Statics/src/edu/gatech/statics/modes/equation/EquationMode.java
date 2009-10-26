@@ -33,12 +33,10 @@ public class EquationMode extends Mode {
         }
     }
 
-    @Override
-    public void preLoad(DiagramKey key) {
-        EquationDiagram eq = (EquationDiagram) Exercise.getExercise().getDiagram(key, getDiagramType());
-    //EquationDiagram eq = Exercise.getExercise().getEquationDiagram((BodySubset) key);
-    //eq.getWorksheet().updateEquations();
-    }
+//    @Override
+//    public void preLoad(DiagramKey key) {
+//        EquationDiagram eq = (EquationDiagram) Exercise.getExercise().getDiagram(key, getDiagramType());
+//    }
 
     /**
      * Here we override postLoad to check that the FBD is still OK. If the FBD
@@ -51,20 +49,10 @@ public class EquationMode extends Mode {
     public void postLoad(DiagramKey key) {
 
         FreeBodyDiagram fbd = (FreeBodyDiagram) Exercise.getExercise().getDiagram(key, FBDMode.instance.getDiagramType());
-        //Exercise.getExercise().getFreeBodyDiagram((BodySubset) key);
         EquationDiagram eq = (EquationDiagram) Exercise.getExercise().getDiagram(key, getDiagramType());
-        //Exercise.getExercise().getEquationDiagram((BodySubset) key);
 
         FBDChecker fbdChecker = fbd.getChecker();
         fbdChecker.setVerbose(false);
-        //eq.getWorksheet().updateEquations();
-        /*System.out.println("****************");
-        System.out.println("*** postLoad ***");
-        System.out.println("****************");
-        System.out.println(Exercise.getExercise().getSymbolManager().getSymbols());
-        for (Load load : Exercise.getExercise().getSymbolManager().allLoads()) {
-        System.out.println("  " + load);
-        }*/
 
         // okay, the check fails, now we clear check flags and
         // load up the fbd mode.

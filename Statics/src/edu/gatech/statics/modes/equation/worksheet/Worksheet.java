@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.equation.worksheet;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
@@ -176,7 +177,12 @@ public class Worksheet {
             Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
         } else {
             Logger.getLogger("Statics").info("system solve: PASSED!");
-            StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
+            //StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
+            if (Exercise.getExercise().isExerciseFinished()) {
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_done");
+            } else {
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_not_done");
+            }
         }
 
         return solution;
