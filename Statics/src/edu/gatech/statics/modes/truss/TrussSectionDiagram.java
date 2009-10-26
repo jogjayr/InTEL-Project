@@ -17,12 +17,15 @@ import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.truss.ui.TrussModePanel;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -31,6 +34,11 @@ import java.util.List;
  */
 public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
+    private static Vector3f intendedSectionDirection = Vector3f.UNIT_X;
+
+    public static void setIntendedSectionDirection(Vector3f intendedSectionDirection) {
+        TrussSectionDiagram.intendedSectionDirection = intendedSectionDirection;
+    }
     private SectionTool sectionTool;
     private SectionCut currentCut;
     private int selectionSide;
@@ -75,18 +83,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
             }
         }
 
-        String specialName = "Section ";
-        //boolean first = true;
-        for (Body body : bodiesOnSide) {
-            if (body instanceof PointBody) {
-                //if (!first) {
-                //    specialName += "";
-                //}
-                specialName += ((PointBody) body).getAnchor().getName();
-
-            //first = false;
-            }
-        }
+        String specialName = createSpecialName(bodiesOnSide);
 
         BodySubset bodies = new BodySubset(bodiesOnSide);
         bodies.setSpecialName(specialName);
@@ -311,5 +308,47 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     @Override
     public String getDescriptionText() {
         return "Create Section";
+    }
+
+    /**
+     * NOTE: This method depends on the intendedSectionDirection static variable.
+     * If the truss is vertical, this needs to be changed, otherwise the section names will not make sense
+     * @param bodiesOnSide
+     * @return
+     */
+    private String createSpecialName(List<Body> bodiesOnSide) {
+
+        List<Point> allPoints = new ArrayList<Point>();
+        for (Body body : bodiesOnSide) {
+            if (body instanceof PointBody) {
+                allPoints.add(((PointBody) body).getAnchor());
+            }
+        }
+
+        Collections.sort(allPoints, new Comparator<Point>() {
+
+            public int compare(Point o1, Point o2) {
+                float d1 = o1.getPosition().toVector3f().dot(intendedSectionDirection);
+                float d2 = o2.getPosition().toVector3f().dot(intendedSectionDirection);
+                return (int) Math.signum(d1 - d2);
+            }
+        });
+
+        List<Point> endpoints = new ArrayList<Point>();
+        if (allPoints.size() < 4) {
+            endpoints.addAll(allPoints);
+        } else {
+            endpoints.add(allPoints.get(0));
+            endpoints.add(allPoints.get(1));
+            endpoints.add(allPoints.get(allPoints.size() - 2));
+            endpoints.add(allPoints.get(allPoints.size() - 1));
+        }
+
+        String specialName = "Section ";
+
+        for (Point point : endpoints) {
+            specialName += point.getName();
+        }
+        return specialName;
     }
 }
