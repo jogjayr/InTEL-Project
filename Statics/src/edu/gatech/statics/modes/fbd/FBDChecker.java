@@ -414,8 +414,12 @@ public class FBDChecker {
     protected boolean checkConnectors(List<AnchoredVector> addedLoads) {
         debugInfo("STEP 5: Connectors have reactions?");
 
-        // Step 5: go through all the border connectors connecting this FBD to the external world,
-        // and check each AnchoredVector implied by the connector.
+        // Due to some issues with the symbol manager on the bridge problem
+        // (and other problems which might have two forces pointing in the same direction)
+        // we check the solved connectors first, to mark loads in the symbol manager
+        // that have already been checked. If a load has been found in the symbol manager,
+        // then we mark it so that we don't try to compare against it twice.
+        List<Connector> connectors = new ArrayList<Connector>();
         for (int i = 0; i < diagram.getCentralObjects().size(); i++) {
             SimulationObject obj = diagram.getCentralObjects().get(i);
             if (!(obj instanceof Connector)) {
@@ -423,6 +427,18 @@ public class FBDChecker {
             }
 
             Connector connector = (Connector) obj;
+
+            if(connector.isSolved())
+                connectors.add(0, connector);
+            else
+                connectors.add(connector);
+        }
+
+        List<AnchoredVector> markedLoads = new ArrayList<AnchoredVector>();
+
+        // Step 5: go through all the border connectors connecting this FBD to the external world,
+        // and check each AnchoredVector implied by the connector.
+        for (Connector connector : connectors) {
 
             // find the body in this diagram to which the connector is attached.
             Body body = null;
@@ -494,6 +510,16 @@ public class FBDChecker {
 
                 // get a AnchoredVector and result corresponding to this check.
                 AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
+
+                if(markedLoads.contains(loadFromSymbolManager)) {
+                    // we have already checked against this load from the symbol manager, so it was likely one
+                    // used by a solved reaction. Set this to null so that we don't have to check against it.
+                    // ***********
+                    debugInfo("    load from symbol manager has already been marked.");
+                    loadFromSymbolManager = null;
+                } else {
+                    markedLoads.add(loadFromSymbolManager);
+                }
 
                 if (loadFromSymbolManager != null) {
                     debugInfo("    has symbolic equivalent: " + loadFromSymbolManager);
@@ -892,6 +918,11 @@ public class FBDChecker {
                 }
             }
         }
+
+        // there is a case in which the candidate being checked is in the symbol manager
+        // check to see if it is there, and if so, return a pass.
+        if(Exercise.getExercise().getSymbolManager().getLoad(candidate) != null)
+            return NameCheckResult.passed;
 
         // look through other symbols stored in the symbol manager
         if (Exercise.getExercise().getSymbolManager().getSymbols().contains(name)) {

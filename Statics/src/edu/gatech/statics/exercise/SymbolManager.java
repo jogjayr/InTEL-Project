@@ -66,7 +66,7 @@ public class SymbolManager {
             //symbolicLoads.add(((AnchoredVector) quantified).clone());
             // make a defensive copy
             symbolicLoads.add(new AnchoredVector((AnchoredVector) load));
-        //}
+            //}
 
         } else {
             throw new UnsupportedOperationException(
@@ -85,12 +85,26 @@ public class SymbolManager {
         // either opposite or same direction. However, this PREFERS loads pointing
         // in the same direction, so we run two checks. First in same direction, then opposite.
 
+        if (symbolicLoads.contains(load)) {
+            return load.getUnmodifiableAnchoredVector();
+        }
+
+        AnchoredVector maybe = null;
         for (AnchoredVector toCheck : symbolicLoads) {
             if (load.getAnchor() == toCheck.getAnchor() &&
                     load.getVectorValue().equals(toCheck.getVectorValue())) {
-                // return defensive copy
-                return toCheck.getUnmodifiableAnchoredVector();
+
+                // if we have a match that has the same name, return it immediately
+                if (load.isSymbol() && load.getSymbolName().equals(toCheck.getSymbolName())) {
+                    return toCheck.getUnmodifiableAnchoredVector();
+                }
+
+                // otherwise, defer a return of an ordinary match.
+                maybe = toCheck.getUnmodifiableAnchoredVector();
             }
+        }
+        if (maybe != null) {
+            return maybe;
         }
 
         for (AnchoredVector toCheck : symbolicLoads) {
