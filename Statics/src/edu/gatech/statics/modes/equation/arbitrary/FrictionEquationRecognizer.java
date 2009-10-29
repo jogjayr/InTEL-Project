@@ -4,8 +4,15 @@
  */
 package edu.gatech.statics.modes.equation.arbitrary;
 
+import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.Connector;
+import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.connectors.ContactPoint;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,45 +22,11 @@ import java.util.Map;
 public class FrictionEquationRecognizer extends EquationRecognizer {
 
     /**
-     * Ensure that the user's entered equation follows the proper format.
-     * @param state
-     * @return
-     */
-    public boolean recognize(ArbitraryEquationMathState state) {
-        EquationNode leftSide = state.getLeftSide();
-        EquationNode rightSide = state.getRightSide();
-
-        if (!(leftSide instanceof AnchoredVectorNode)) {
-            //left side must be an AnchoredVectorNode, return false
-            return false;
-        } else {
-            if (!(rightSide instanceof OperatorNode)) {
-                //right side must be an OperatorNode as it requires two nodes thus requiring the OpNode to link them, return false
-                return false;
-            } else {
-                if (((OperatorNode) rightSide).getLeftNode() instanceof AnchoredVectorNode && ((OperatorNode) rightSide).getRightNode() instanceof SymbolNode) {
-                    //the two nodes on the right side under the OperatorNode are an AnchoredVectorNode and a SymbolNode (in that order), return true
-                    return true;
-                } else if (((OperatorNode) rightSide).getRightNode() instanceof SymbolNode && ((OperatorNode) rightSide).getLeftNode() instanceof AnchoredVectorNode) {
-                    //the two nodes on the right side under the OperatorNode are a SymbolNode and a AnchoredVectorNode (in that order), return true
-                    return true;
-                } else {
-                    //One of two cases is true: one of the expected node types is wrong or both of the expected node types are wrong.
-                    //This basically means that if either node under the operator node is an OperatorNode or an EmptyNode (EmptyNode should not
-                    //be possible here but would still be caught).
-                    return false;
-                }
-            }
-        }
-    }
-
-    /**
      * Map keys are: "f", "mu", and "N"
      * Representing exactly what they ought to
      * @param state
      * @return
      */
-    @Override
     protected Map<String, EquationNode> interpret(ArbitraryEquationMathState state) {
         // attempt to fill in values of the form f = mu * N
         // where equation sides may be reversed, and multiplication order may be reversed.
@@ -61,31 +34,84 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
 
         Map<String, EquationNode> nodeMap = new HashMap<String, EquationNode>();
 
-        // to START, just work with A = mu * B format, and return null for anything else.
         if (state.getLeftSide() instanceof AnchoredVectorNode) {
+            //if left side is valid format
             nodeMap.put("f", state.getLeftSide());
-        } else {
-            return null;
-        }
 
-        if (state.getRightSide() instanceof OperatorNode) {
-            OperatorNode opNode = (OperatorNode) state.getRightSide();
+            if (state.getRightSide() instanceof OperatorNode) {
+                //if right side suggests valid format
+                OperatorNode opNode = (OperatorNode) state.getRightSide();
+
+                if (opNode.getLeftNode() instanceof SymbolNode) {
+                    //if first element of right side is valid
+                    nodeMap.put("mu", opNode.getLeftNode());
+
+                    if (opNode.getRightNode() instanceof AnchoredVectorNode) {
+                        //if second element of right side is valid
+                        nodeMap.put("N", opNode.getRightNode());
+
+                    } else {
+                        return null;
+                    }
+                } else if (opNode.getLeftNode() instanceof AnchoredVectorNode) {
+                    //if first element of right side is valid but reversed
+                    nodeMap.put("N", opNode.getLeftNode());
+
+                    if (opNode.getRightNode() instanceof SymbolNode) {
+                        //if second element of right side is valid but reversed
+                        nodeMap.put("mu", opNode.getRightNode());
+
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } else if (state.getLeftSide() instanceof OperatorNode) {
+            //if left side is valid but reversed
+            OperatorNode opNode = (OperatorNode) state.getLeftSide();
+
             if (opNode.getLeftNode() instanceof SymbolNode) {
+                //if first element of right side is valid
                 nodeMap.put("mu", opNode.getLeftNode());
+
+                if (opNode.getRightNode() instanceof AnchoredVectorNode) {
+                    //if second element of right side is valid
+                    nodeMap.put("N", opNode.getRightNode());
+
+                } else {
+                    return null;
+                }
+            } else if (opNode.getLeftNode() instanceof AnchoredVectorNode) {
+                //if first element of right side is valid but reversed
+                nodeMap.put("N", opNode.getLeftNode());
+
+                if (opNode.getRightNode() instanceof SymbolNode) {
+                    //if second element of right side is valid but reversed
+                    nodeMap.put("mu", opNode.getRightNode());
+
+                } else {
+                    return null;
+                }
             } else {
                 return null;
             }
-
-            if (opNode.getRightNode() instanceof AnchoredVectorNode) {
-                nodeMap.put("N", opNode.getRightNode());
-            } else {
-                return null;
+            if (state.getRightSide() instanceof AnchoredVectorNode) {
+                //if right side is valid format but reversed
+                nodeMap.put("f", state.getRightSide());
             }
         } else {
             return null;
         }
-
         return nodeMap;
+    }
+
+    private boolean isCloseEnough(Vector3bd v1, Vector3bd v2) {
+        // use a flat comparison here.
+        return v1.distance(v2) < .001;
     }
 
     /**
@@ -96,79 +122,45 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
     public boolean isValid(ArbitraryEquationMathState state) {
 
         Map<String, EquationNode> interpretation = interpret(state);
-        if(interpretation == null) return false;
+        if (interpretation == null) {
+            return false;
+        }
 
         AnchoredVectorNode fNode = (AnchoredVectorNode) interpretation.get("f");
         AnchoredVectorNode NNode = (AnchoredVectorNode) interpretation.get("N");
         SymbolNode muNode = (SymbolNode) interpretation.get("mu");
+        List pList = StaticsApplication.getApp().getCurrentDiagram().getConnectorsAtPoint(fNode.getAnchoredVector().getAnchor());
+        ContactPoint cp = null;
+        /////////////////////////////
+        //TODO ADD CHECK FOR MUNODE//
+        /////////////////////////////
 
-        
-
-
-
-        if (recognize(state)) {
-            //the equation follows proper form (AV = AV*S)
-            AnchoredVector leftAV = ((AnchoredVectorNode) state.getLeftSide()).getAnchoredVector();
-            OperatorNode rightSide = (OperatorNode) state.getRightSide();
-            AnchoredVector rightAV;
-            double friction;
-
-            if (rightSide.getLeftNode() instanceof AnchoredVectorNode) {
-                //if the right side of the equation follows the form AV*S
-                rightAV = ((AnchoredVectorNode) rightSide.getLeftNode()).getAnchoredVector();
-                friction = ((SymbolNode) rightSide.getRightNode()).getValue();
-            } else {
-                //if the right side of the equation follows the form S*AV
-                rightAV = ((AnchoredVectorNode) rightSide.getRightNode()).getAnchoredVector();
-                friction = ((SymbolNode) rightSide.getLeftNode()).getValue();
-            }
-
-            if (leftAV.getVector().doubleValue() == rightAV.getVector().doubleValue() * friction) {
-                //if the two sides are equivalent
-                return true;
-            } else {
-                //the two sides are not equivalent
-                return false;
-            }
-        } else {
-            //the equation has bad form
+        //are N and f at the same point?
+        if (fNode.getAnchoredVector().getAnchor() != NNode.getAnchoredVector().getAnchor()) {
             return false;
         }
-    }
 
-    /**
-     * Check to see if two ArbitraryEquationMathStates are equivalent.
-     * @param state1
-     * @param state2
-     * @return
-     */
-    public boolean isEquivalent(ArbitraryEquationMathState state1, ArbitraryEquationMathState state2) {
-        if (recognize(state1) && recognize(state2)) {
-            //if the equation has proper form
-            if (((AnchoredVectorNode) state1.getLeftSide()).getAnchoredVector().equals(((AnchoredVectorNode) state2.getLeftSide()).getAnchoredVector())) {
-                //if the left sides are equivalent
-                EquationNode state1OperatorLeft = ((OperatorNode) state1.getRightSide()).getLeftNode();
-                EquationNode state1OperatorRight = ((OperatorNode) state1.getRightSide()).getRightNode();
-                EquationNode state2OperatorLeft = ((OperatorNode) state2.getRightSide()).getLeftNode();
-                EquationNode state2OperatorRight = ((OperatorNode) state2.getRightSide()).getRightNode();
-
-                if (state1OperatorLeft.equals(state2OperatorLeft) && state1OperatorRight.equals(state2OperatorRight)) {
-                    //if the right sides are equivalent and congruent
-                    return true;
-                } else if (state1OperatorLeft.equals(state2OperatorRight) && state1OperatorRight.equals(state2OperatorLeft)) {
-                    //if the right sides are equivalent and incongruent
-                    return true;
-                } else {
-                    //the right sides are not equivalent
-                    return false;
-                }
-            } else {
-                //the left sides are not equivalent
+        //is this point a ContactPoint?
+        for (int i = 0; i < pList.size(); i++)//Object p : cp){
+        {
+            if (((Connector) pList.get(i)) instanceof ContactPoint) {
+                cp = ((ContactPoint) pList.get(i));
+                break;
+            } else if (i == pList.size() - 1) {
                 return false;
             }
-        } else {
-            //the equation has bad form
+        }
+
+        //is NNode pointed the right way?
+        if (!isCloseEnough(NNode.getAnchoredVector().getVectorValue(), cp.getNormalDirection())) {
             return false;
         }
+
+        //is fNode pointed the right way?
+        if (!isCloseEnough(fNode.getAnchoredVector().getVectorValue(), cp.getFrictionDirection())) {
+            return false;
+        }
+
+        return true;
     }
 }

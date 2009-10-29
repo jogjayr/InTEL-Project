@@ -66,7 +66,7 @@ public class LoadSelector extends Tool {
         if (obj instanceof Load) {
             toReplaceWith = new AnchoredVectorNode(toReplace.getParent(), ((Load) obj).getAnchoredVector());
         } else {
-            toReplaceWith = new SymbolNode(toReplace.getParent(), ((ConstantObject) obj).getQuantity().getSymbolName(), ((ConstantObject) obj).getQuantity().doubleValue());
+            toReplaceWith = new SymbolNode(toReplace.getParent(), ((ConstantObject) obj).getQuantity().getSymbolName());
         }
         
         ChangeArbitraryNode action = new ChangeArbitraryNode(toReplace, activeEquation.getMath().getName(), toReplaceWith);
