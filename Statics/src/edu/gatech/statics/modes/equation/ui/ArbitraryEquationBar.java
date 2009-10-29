@@ -13,6 +13,7 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.BEvent;
 import com.jmex.bui.event.KeyEvent;
 import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseAdapter;
@@ -29,6 +30,7 @@ import edu.gatech.statics.modes.equation.arbitrary.EmptyNode;
 import edu.gatech.statics.modes.equation.arbitrary.EquationNode;
 import edu.gatech.statics.modes.equation.arbitrary.InsertArbitraryNode;
 import edu.gatech.statics.modes.equation.arbitrary.OperatorNode;
+import edu.gatech.statics.modes.equation.arbitrary.RemoveArbitraryNode;
 import edu.gatech.statics.modes.equation.arbitrary.SymbolNode;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import java.io.IOException;
@@ -118,7 +120,7 @@ public class ArbitraryEquationBar extends EquationBar {
             return node;
         }
 
-        NodeBox(EquationNode node) {
+        NodeBox(final EquationNode node) {
             this.node = node;
             setHighlight(false);
 
@@ -148,12 +150,25 @@ public class ArbitraryEquationBar extends EquationBar {
             keyListener = new KeyListener() {
 
                 public void keyPressed(KeyEvent event) {
-                    System.out.println("******** key pressed " + event);
+                    if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
+
+                        // Delete or backspace was pressed, so try to delete this node.
+                        RemoveArbitraryNode action = new RemoveArbitraryNode(node, getMath().getName());
+                        EquationDiagram diagram = (EquationDiagram) StaticsApplication.getApp().getCurrentDiagram();
+                        diagram.performAction(action);
+                    }
                 }
 
                 public void keyReleased(KeyEvent event) {
                 }
             };
+        }
+
+        @Override
+        public boolean acceptsFocus() {
+            //return super.acceptsFocus();
+            return true;
         }
 
         /**
@@ -307,6 +322,7 @@ public class ArbitraryEquationBar extends EquationBar {
             add(buildBox(node.getRightNode()), BorderLayout.EAST);
         }
 
+        @Override
         boolean isSelectable() {
             return false;
         }
