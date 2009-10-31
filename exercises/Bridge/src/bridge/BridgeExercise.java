@@ -129,6 +129,11 @@ public class BridgeExercise extends TrussExercise {
 
         description.setLayout(new ScrollbarLayout());
 
+        description.addImage("bridge/assets/bridge0.png");
+        description.addImage("bridge/assets/bridge1.jpg");
+        description.addImage("bridge/assets/bridge2.jpg");
+        description.addImage("bridge/assets/bridge3.jpg");
+
 //        description.setNarrative(
 //                "On August 1, 2007, the I-35W Mississippi River bridge in Minneapolis, " +
 //                "Minnesota collapsed during rush hour. During its operation, it carried " +
