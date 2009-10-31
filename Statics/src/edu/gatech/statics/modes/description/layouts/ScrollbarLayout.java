@@ -10,7 +10,7 @@ import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.icon.ImageIcon;
-import com.jmex.bui.layout.AbsoluteLayout;
+import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.text.HTMLView;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.modes.description.Description;
@@ -51,6 +51,9 @@ public class ScrollbarLayout implements DescriptionLayout {
 //        ui.add(titleLabel);
 
         scrollContainer = new BContainer();
+        GroupLayout layout = GroupLayout.makeVert(GroupLayout.LEFT);
+        layout.setGap(25);
+        scrollContainer.setLayoutManager(layout);
         scrollPane = new BScrollPane(scrollContainer, true, false);
 
         narrativeView = new HTMLView();
@@ -98,35 +101,35 @@ public class ScrollbarLayout implements DescriptionLayout {
                 textWidth+spacing,
                 displayHeight - 2 * spacing - 2 * MainTabBar.MAIN_TAB_BAR_HEIGHT);
 
-        int yOffset = 0;
+//        int yOffset = 0;
 
         if (goals != null) {
             goalsView.setContents(goals);
             goalsView.getStyleSheet().addRule("body {font-size: 115%}");
-            preferredSize = goalsView.getPreferredSize(400, -1);
-            //yOffset -= preferredSize.height + spacing;
-            //goalsView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
-            goalsView.setBounds(0, yOffset, textWidth, preferredSize.height);
-            yOffset += preferredSize.height + spacing;
+//            preferredSize = goalsView.getPreferredSize(400, -1);
+//            //yOffset -= preferredSize.height + spacing;
+//            //goalsView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
+//            goalsView.setBounds(0, yOffset, textWidth, preferredSize.height);
+//            yOffset += preferredSize.height + spacing;
             //goalsView.setBorder(new LineBorder(ColorRGBA.blue, 1));
         }
         if (problemStatement != null) {
             problemStatementView.setContents(problemStatement);
             problemStatementView.getStyleSheet().addRule("body {font-size: 115%}");
-            preferredSize = problemStatementView.getPreferredSize(textWidth, -1);
-            //yOffset -= preferredSize.height + spacing;
-            //problemStatementView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
-            problemStatementView.setBounds(0, yOffset, textWidth, preferredSize.height);
-            yOffset += preferredSize.height + spacing;
+//            preferredSize = problemStatementView.getPreferredSize(textWidth, -1);
+//            //yOffset -= preferredSize.height + spacing;
+//            //problemStatementView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
+//            problemStatementView.setBounds(0, yOffset, textWidth, preferredSize.height);
+//            yOffset += preferredSize.height + spacing;
             //problemStatementView.setBorder(new LineBorder(ColorRGBA.blue, 1));
         }
         if (narrative != null) {
             narrativeView.setContents(narrative);
             narrativeView.getStyleSheet().addRule("body {font-size: 115%}");
-            preferredSize = narrativeView.getPreferredSize(textWidth, -1);
-            //narrativeView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
-            narrativeView.setBounds(0, yOffset, textWidth, preferredSize.height);
-            yOffset += preferredSize.height + spacing;
+//            preferredSize = narrativeView.getPreferredSize(textWidth, -1);
+//            //narrativeView.setBounds(xOffset, yOffset, textWidth, preferredSize.height);
+//            narrativeView.setBounds(0, yOffset, textWidth, preferredSize.height);
+//            yOffset += preferredSize.height + spacing;
             //narrativeView.setBorder(new LineBorder(ColorRGBA.blue, 1));
         }
 

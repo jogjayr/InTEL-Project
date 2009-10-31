@@ -11,6 +11,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
@@ -105,15 +106,39 @@ public class BridgeExercise extends TrussExercise {
         //description.setGoals(""); // goals described in subclasses.
 
         description.setNarrative(
-                "On August 1, 2007, the I-35W Mississippi River bridge in Minneapolis, " +
-                "Minnesota collapsed during rush hour. During its operation, it carried " +
-                "140,000 vehicles per day. This problem examines the bridge as a truss.");
+                "On August 1, 2007 at 6:05 pm, the I-35W Saint Anthony Bridge in Minneapolis, " +
+                "Minnesota collapsed into the Mississippi River during rush hour. During its operation, " +
+                "the eight lane steel truss arch bridge carried 140,000 vehicles per day and spanned 1,907 feet.  " +
+                "The collapse killed thirteen individuals and injured 145 others.  " +
+                "The recovery of all the victims took over three weeks.  The cause of the collapse went through " +
+                "a thorough investigation and it was determined that some of the load bearing components were " +
+                "undersized and that a recent resurfacing of the bridge increased the dead load by 20%, which " +
+                "the bridge had trouble supporting.  The bridge has recently been replaced and reopened to " +
+                "the public on September 18, 2008.");
 
         description.setProblemStatement(
-                "This problem simplifies the truss by examining a 2D perspective of it. " +
-                "The bridge has symmetric loading, making it possible to analyze only one half of the structure. " +
-                "It is necessary to first identify the zero force members, and then continue to use " +
-                "either the method of sections or the method of joints to solve for the unknowns.");
+                "This problem simplifies the truss by examining it from only a 2D perspective. " +
+                "The bridge has symmetric loading, which allows us to analyze one half of the structure.  " +
+                "(To see a detailed analysis of the entire bridge without these simplifications, " +
+                "which was done by hand, see: .pdf file.)  We want to look at three different members " +
+                "of the truss structure and analyze the force in each member. It is mandatory to first " +
+                "identify the zero force members and to create a free body diagram of the whole truss " +
+                "to solve for the supports before you can begin to solve for the member forces.  " +
+                "Then continue to solve for the unknowns by using either the method of sections " +
+                "(which is recommended) or the method of joints.");
+
+        description.setLayout(new ScrollbarLayout());
+
+//        description.setNarrative(
+//                "On August 1, 2007, the I-35W Mississippi River bridge in Minneapolis, " +
+//                "Minnesota collapsed during rush hour. During its operation, it carried " +
+//                "140,000 vehicles per day. This problem examines the bridge as a truss.");
+//
+//        description.setProblemStatement(
+//                "This problem simplifies the truss by examining a 2D perspective of it. " +
+//                "The bridge has symmetric loading, making it possible to analyze only one half of the structure. " +
+//                "It is necessary to first identify the zero force members, and then continue to use " +
+//                "either the method of sections or the method of joints to solve for the unknowns.");
 
         return description;
     }
