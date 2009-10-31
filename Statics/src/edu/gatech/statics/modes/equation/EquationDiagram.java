@@ -44,6 +44,7 @@ import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.bodies.PointBody;
+import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -465,6 +466,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         if (fbd.getBodySubset().getBodies().size() == 1 &&
                 fbd.getBodySubset().getBodies().toArray()[0] instanceof PointBody) {
             maxUnknowns = 2;
+        }
+
+        // contact points yield friction equations
+        for (SimulationObject simulationObject : allObjects()) {
+            if (simulationObject instanceof ContactPoint) {
+                maxUnknowns++;
+            }
         }
 
         if (unknowns > maxUnknowns) {
