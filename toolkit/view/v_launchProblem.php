@@ -46,6 +46,10 @@ foreach($assignments as $assignment) {
 
 echo "<h1>$problemName</h1>";
 
+if(isset($problem["extra"])) {
+    // show the extra information associated with this problem.
+    echo $problem["extra"];
+}
 
 //main java apps
 if ($problem["type"]=="java") {
@@ -94,7 +98,7 @@ if ($problem["type"]=="java") {
     ?>
 
     <?php if($userId == 0) { ?>
-<em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+<p style="font-size: 150%"><em>Note:</em> You are not logged in. If you were assigned this problem, you will not get credit!!</p>
     <?php } ?>
 
 <div style="margin: 5px; padding: 5px; border: thin solid #aec3ff;">
@@ -128,9 +132,10 @@ if ($problem["type"]=="simplejava") {
     ?>
 
     <?php if($userId == 0) { ?>
-<em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+<p style="font-size: 150%"><em>Note:</em> You are not logged in. If you were assigned this problem, you will not get credit!!</p>
     <?php } ?>
 
+<br/>
 <!--[if !IE]> -->
 <object classid="java:<?php echo $exerciseClass;?>.class"
         type="application/x-java-applet"
@@ -183,8 +188,9 @@ if ($problem["type"]=="flash") {
     $resHeight = $problem["height"]; // 400;
 
     if($userId == 0) { ?>
-<em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
+<p style="font-size: 150%"><em>Note:</em> You are not logged in. If you were assigned this problem, you will not get credit!!</p>
     <?php }?>
+<br/>
 <script language="javascript">AC_FL_RunContent = 0;</script>
 <script src="<?echo $swfPath;?>AC_RunActiveContent.js" language="javascript"></script>
 <script language="javascript">
