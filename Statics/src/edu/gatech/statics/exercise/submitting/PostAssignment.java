@@ -70,4 +70,13 @@ public class PostAssignment extends Poster {
                 digestBytes[0], digestBytes[1], digestBytes[2], digestBytes[3]);
         return verifierKey;
     }
+
+    @Override
+    protected void failedPost(Exception ex) {
+        Logger.getLogger("Statics").log(Level.SEVERE, "Cannot submit assignment progress!", ex);
+
+        SubmittingErrorPopup popup = new SubmittingErrorPopup();
+        popup.popup(0, 0, true);
+        popup.center();
+    }
 }
