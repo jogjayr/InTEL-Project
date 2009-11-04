@@ -5,6 +5,7 @@
 
 package edu.gatech.statics.modes.equation.arbitrary;
 
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,9 +30,10 @@ public abstract class EquationRecognizer {
     /**
      * Is this state valid in that it is a correct equation
      * @param state
+     * @param diagram
      * @return
      */
-    public abstract boolean isValid(ArbitraryEquationMathState state);
+    public abstract boolean isValid(ArbitraryEquationMathState state, FreeBodyDiagram diagram);
 
     /**
      * Returns true if the two states are equivalent. eg, "A = mu * B" is equivalent to "mu * B = A" and "A = B * mu"

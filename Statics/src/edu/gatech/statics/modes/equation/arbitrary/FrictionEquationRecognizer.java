@@ -5,9 +5,11 @@
 package edu.gatech.statics.modes.equation.arbitrary;
 
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.connectors.ContactPoint;
@@ -33,8 +35,7 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
         // return null if something is incorrect.
 
         Map<String, EquationNode> nodeMap = new HashMap<String, EquationNode>();
-
-        if (state.getLeftSide() instanceof AnchoredVectorNode) {
+        if (state.getLeftSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode)state.getLeftSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
             //if left side is valid format
             nodeMap.put("f", state.getLeftSide());
 
@@ -46,14 +47,14 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                     //if first element of right side is valid
                     nodeMap.put("mu", opNode.getLeftNode());
 
-                    if (opNode.getRightNode() instanceof AnchoredVectorNode) {
+                    if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                         //if second element of right side is valid
                         nodeMap.put("N", opNode.getRightNode());
 
                     } else {
                         return null;
                     }
-                } else if (opNode.getLeftNode() instanceof AnchoredVectorNode) {
+                } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                     //if first element of right side is valid but reversed
                     nodeMap.put("N", opNode.getLeftNode());
 
@@ -78,14 +79,14 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                 //if first element of right side is valid
                 nodeMap.put("mu", opNode.getLeftNode());
 
-                if (opNode.getRightNode() instanceof AnchoredVectorNode) {
+                if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                     //if second element of right side is valid
                     nodeMap.put("N", opNode.getRightNode());
 
                 } else {
                     return null;
                 }
-            } else if (opNode.getLeftNode() instanceof AnchoredVectorNode) {
+            } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                 //if first element of right side is valid but reversed
                 nodeMap.put("N", opNode.getLeftNode());
 
@@ -99,7 +100,7 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
             } else {
                 return null;
             }
-            if (state.getRightSide() instanceof AnchoredVectorNode) {
+            if (state.getRightSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode)state.getRightSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
                 //if right side is valid format but reversed
                 nodeMap.put("f", state.getRightSide());
             }
@@ -119,7 +120,7 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
      * @param state
      * @return
      */
-    public boolean isValid(ArbitraryEquationMathState state) {
+    public boolean isValid(ArbitraryEquationMathState state, FreeBodyDiagram d) {
 
         Map<String, EquationNode> interpretation = interpret(state);
         if (interpretation == null) {
@@ -129,26 +130,32 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
         AnchoredVectorNode fNode = (AnchoredVectorNode) interpretation.get("f");
         AnchoredVectorNode NNode = (AnchoredVectorNode) interpretation.get("N");
         SymbolNode muNode = (SymbolNode) interpretation.get("mu");
-        List pList = StaticsApplication.getApp().getCurrentDiagram().getConnectorsAtPoint(fNode.getAnchoredVector().getAnchor());
+        List pList = d.getConnectorsAtPoint(fNode.getAnchoredVector().getAnchor());
         ContactPoint cp = null;
         /////////////////////////////
         //TODO ADD CHECK FOR MUNODE//
         /////////////////////////////
 
-        //are N and f at the same point?
-        if (fNode.getAnchoredVector().getAnchor() != NNode.getAnchoredVector().getAnchor()) {
+        //is this point a ContactPoint?
+        for (Object p : pList)//Object p : cp){
+        {
+            if (((Connector) p) instanceof ContactPoint) {
+                cp = ((ContactPoint) p);
+                break;
+            }
+        }
+
+        if (cp == null) {
             return false;
         }
 
-        //is this point a ContactPoint?
-        for (int i = 0; i < pList.size(); i++)//Object p : cp){
-        {
-            if (((Connector) pList.get(i)) instanceof ContactPoint) {
-                cp = ((ContactPoint) pList.get(i));
-                break;
-            } else if (i == pList.size() - 1) {
-                return false;
-            }
+        if(!muNode.getSymbol().equals(cp.getFrictionCoefficient().getName())) {
+            return false;
+        }
+
+        //are N and f at the same point?
+        if (fNode.getAnchoredVector().getAnchor() != NNode.getAnchoredVector().getAnchor()) {
+            return false;
         }
 
         //is NNode pointed the right way?

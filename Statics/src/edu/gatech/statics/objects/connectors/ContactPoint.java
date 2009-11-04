@@ -12,7 +12,9 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Connector;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Point;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,11 @@ public class ContactPoint extends Connector {
 
     private Vector3bd frictionDirection = Vector3bd.UNIT_X;
     private Vector3bd normalDirection = Vector3bd.UNIT_Y;
+    private ConstantObject frictionCoefficient;
+
+    public ConstantObject getFrictionCoefficient() {
+        return frictionCoefficient;
+    }
 
     public Vector3bd getFrictionDirection() {
         return frictionDirection;
@@ -44,6 +51,12 @@ public class ContactPoint extends Connector {
     /** Creates a new instance of ContactPoint */
     public ContactPoint(Point point) {
         super(point);
+        this.frictionCoefficient = new ConstantObject("mu", new BigDecimal("1.0"), Unit.none);
+    }
+
+    public ContactPoint(Point point, ConstantObject frictionCoefficient) {
+        super(point);
+        this.frictionCoefficient = frictionCoefficient;
     }
 
     //change it so that there is some kind of setter for the direction

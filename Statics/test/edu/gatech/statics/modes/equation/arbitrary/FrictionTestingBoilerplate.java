@@ -68,7 +68,7 @@ public class FrictionTestingBoilerplate {
         // construct the state to check with the state provider
         FBDState stateToCheck = stateProvider.createState(exercise.getSchematic().getAllObjectsByName(), stateBuilder);
         diagram.pushState(stateToCheck);
-
+        //StaticsApplication.getApp().setCurrentDiagram(diagram);
         // actually perform the check
         //check = diagram.getChecker();
 

@@ -14,6 +14,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
@@ -110,6 +111,8 @@ public class KeyboardFrictionExercise extends FrameExercise {
     //Roller2d jointE;
     Body leftLeg, rightLeg;
     Bar bar;
+    BigDecimal mu;
+    ConstantObject frictionObject;
 
     @Override
     public void loadExercise() {
@@ -117,6 +120,10 @@ public class KeyboardFrictionExercise extends FrameExercise {
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
+
+        mu = new BigDecimal("2.66");
+        frictionObject = new ConstantObject("mu", mu, Unit.none);
+        schematic.add(frictionObject);
 
         A = new Point("A", "0", "6", "0");
         D = new Point("D", "8", "6", "0");
@@ -129,10 +136,10 @@ public class KeyboardFrictionExercise extends FrameExercise {
 
         jointC = new Pin2d(C);
 
-        jointB = new ContactPoint(B);
+        jointB = new ContactPoint(B, frictionObject);
         jointB.setNormalDirection(new Vector3bd("0.0","1.0","0.0"));
         jointB.setFrictionDirection(new Vector3bd("-1.0","0.0","0.0"));
-        jointE = new ContactPoint(E);
+        jointE = new ContactPoint(E, frictionObject);
         jointE.setNormalDirection(new Vector3bd("0.0","1.0","0.0"));
         jointE.setFrictionDirection(new Vector3bd("1.0","0.0","0.0"));
 

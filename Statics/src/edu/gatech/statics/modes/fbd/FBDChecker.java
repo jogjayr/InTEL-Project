@@ -369,7 +369,7 @@ public class FBDChecker {
 
             if (isCloseEnough(userAnchoredVectorsAtConnector.get(0).getVectorValue(), cp.getNormalDirection()) &&
                     isCloseEnough(userAnchoredVectorsAtConnector.get(1).getVectorValue(), cp.getFrictionDirection())) {
-                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' ||
+                if (userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'N' &&
                         userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
@@ -383,7 +383,7 @@ public class FBDChecker {
 
             } else if (isCloseEnough(userAnchoredVectorsAtConnector.get(1).getVectorValue(), cp.getNormalDirection()) &&
                     isCloseEnough(userAnchoredVectorsAtConnector.get(0).getVectorValue(), cp.getFrictionDirection())) {
-                if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' || userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'f') {
+                if (userAnchoredVectorsAtConnector.get(1).getSymbolName().charAt(0) == 'N' && userAnchoredVectorsAtConnector.get(0).getSymbolName().charAt(0) == 'f') {
                     continue;
                 } else {
                     logInfo("check: has the user added loads with the right names");
