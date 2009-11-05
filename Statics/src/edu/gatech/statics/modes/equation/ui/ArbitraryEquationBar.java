@@ -358,4 +358,19 @@ public class ArbitraryEquationBar extends EquationBar {
 
     void highlightVector(AnchoredVector obj) {
     }
+
+    @Override
+    public boolean acceptsFocus() {
+        //return super.acceptsFocus();
+        return true;
+    }
+
+    /**
+     * Return true if this particular node box can be selected by the user
+     * The only non-selectable node box is for operators
+     * @return
+     */
+    boolean isSelectable() {
+        return true;
+    }
 }

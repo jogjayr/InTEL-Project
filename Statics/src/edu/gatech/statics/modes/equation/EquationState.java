@@ -62,7 +62,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         public void setEquationStates(Map<String, EquationMathState> equationStates) {
             this.equationStates.clear();
             this.equationStates.putAll(equationStates);
-        //this.equationStates = equationStates;
+            //this.equationStates = equationStates;
         }
 
         public boolean isLocked() {
@@ -111,7 +111,11 @@ final public class EquationState implements DiagramState<EquationDiagram> {
                     // can use separate builder for moment equations
                     mathState = new TermEquationMathState.Builder(name, TermType.moment).build();
                 } else if (math instanceof ArbitraryEquationMath) {
-                    mathState = new ArbitraryEquationMathState.Builder(name).build();
+                    if (math.getState() == null) {
+                        mathState = new ArbitraryEquationMathState.Builder(name).build();
+                    } else {
+                        mathState = new ArbitraryEquationMathState.Builder((ArbitraryEquationMathState) math.getState()).build();
+                    }
                 } else {
                     throw new IllegalArgumentException("Unknown equation math! " + math);
                 }

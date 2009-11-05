@@ -14,6 +14,8 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.KeyEvent;
+import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
@@ -24,6 +26,7 @@ import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.actions.RemoveRow;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
@@ -219,20 +222,20 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
         // allow arbitrary rows to be deletable
         // key listener doesn't seem to work. Try adding a button instead?
-//        data.equationBar.addListener(new KeyListener() {
-//
-//            public void keyPressed(KeyEvent event) {
-//                System.out.println("*** Key pressed "+event);
-//                if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-//                        event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
-//                    RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
-//                    getDiagram().performAction(removeRowAction);
-//                }
-//            }
-//
-//            public void keyReleased(KeyEvent event) {
-//            }
-//        });
+        data.equationBar.addListener(new KeyListener() {
+
+            public void keyPressed(KeyEvent event) {
+                System.out.println("*** Key pressed "+event);
+                if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                        event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
+                    RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
+                    getDiagram().performAction(removeRowAction);
+                }
+            }
+
+            public void keyReleased(KeyEvent event) {
+            }
+        });
 
         addEquationData(math, data);
     }
