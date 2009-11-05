@@ -30,6 +30,8 @@ import edu.gatech.statics.objects.bodies.Pulley;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveConnectorTask;
+import edu.gatech.statics.tasks.SolveFBDTask;
+import edu.gatech.statics.tasks.SolveZFMTask;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 import java.beans.DefaultPersistenceDelegate;
@@ -206,6 +208,8 @@ public class StaticsXMLEncoder extends XMLEncoder {
 
         // set up the delegates for tasks.
         setPersistenceDelegate(CompleteFBDTask.class, namedPersistenceDelegate);
+        setPersistenceDelegate(SolveFBDTask.class, namedPersistenceDelegate);
+        setPersistenceDelegate(SolveZFMTask.class, namedPersistenceDelegate);
         setPersistenceDelegate(Solve2FMTask.class, namedPersistenceDelegate);
         setPersistenceDelegate(SolveConnectorTask.class, namedPersistenceDelegate);
 

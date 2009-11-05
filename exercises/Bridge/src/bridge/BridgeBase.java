@@ -4,9 +4,12 @@
  */
 package bridge;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.tasks.SolveFBDTask;
+import edu.gatech.statics.tasks.SolveZFMTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +66,14 @@ abstract public class BridgeBase extends BridgeExercise {
     @Override
     public void applyParameters() {
         getTasks().clear();
+        
+        addTask(new SolveZFMTask("Solve zfms"));
+
+        BodySubset subset = new BodySubset(getSchematic().allBodies());
+        subset.setSpecialName("Whole Truss");
+        addTask(new SolveFBDTask("Solve whole truss", subset));
+
+
         Set<String> toSolve = (Set<String>) getState().getParameter("toSolve");
 
         for (String twoForceMemberName : toSolve) {
