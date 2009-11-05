@@ -12,6 +12,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.text.HTMLView;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.modes.truss.zfm.ClearAction;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZFMDiagram;
 import edu.gatech.statics.modes.truss.zfm.ZFMMode;
@@ -29,7 +30,8 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
     BContainer selectionListBox;
     HTMLView selectionList;
     BButton checkButton;
-    
+    BButton clearButton;
+
     public ZFMModePanel() {
         //getTitleLabel().setText("Identify Zero Force Members");
 
@@ -40,8 +42,14 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
 
         selectionListBox.setPreferredSize(300, -1);
 
+        BContainer buttonContainer = new BContainer(new BorderLayout());
+
+        clearButton = new BButton("Clear", new ButtonListener(), "clear");
+
         add(selectionListBox, BorderLayout.WEST);
-        add(checkButton, BorderLayout.EAST);
+        add(buttonContainer, BorderLayout.EAST);
+        buttonContainer.add(checkButton, BorderLayout.CENTER);
+        buttonContainer.add(clearButton, BorderLayout.SOUTH);
 
         selectionList = new HTMLView();
         selectionListBox.add(selectionList, BorderLayout.CENTER);
@@ -119,8 +127,12 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         public void actionPerformed(ActionEvent event) {
 
             //getDiagram().completed();
-            if (getDiagram().check()) {
-                getDiagram().setSolved();
+            if ("check".equals(event.getAction())) {
+                if (getDiagram().check()) {
+                    getDiagram().setSolved();
+                }
+            } else if ("clear".equals(event.getAction())) {
+                getDiagram().performAction(new ClearAction());
             }
         }
     }

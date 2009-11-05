@@ -4,7 +4,6 @@
  */
 package edu.gatech.statics.exercise.submitting;
 
-import edu.gatech.statics.modes.equation.*;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
