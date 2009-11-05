@@ -19,6 +19,7 @@ import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.representations.CurveUtil;
@@ -115,12 +116,12 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
-        for (Body body : getSchematic().allBodies()) {
-            if (body instanceof ZeroForceMember) {
-                // ignore ZFMs
-                continue;
-            }
-            baseObjects.add(body);
+
+        for(SimulationObject obj : getSchematic().allObjects()) {
+            if(obj instanceof Body && !(obj instanceof ZeroForceMember || obj instanceof Background))
+                baseObjects.add(obj);
+            if(obj instanceof Point)
+                baseObjects.add(obj);
         }
         return baseObjects;
     }
