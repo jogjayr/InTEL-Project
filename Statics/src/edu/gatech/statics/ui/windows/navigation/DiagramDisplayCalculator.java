@@ -54,6 +54,7 @@ public class DiagramDisplayCalculator {
         Node schematicNode = diagram.getNode(RepresentationLayer.schematicBodies);
         Node modelNode = diagram.getNode(RepresentationLayer.modelBodies);
         Node pointNode = diagram.getNode(RepresentationLayer.points);
+        Node vectorNode = diagram.getNode(RepresentationLayer.vectors);
 
         if (schematicNode == null || modelNode == null) {
             return null;
@@ -71,6 +72,10 @@ public class DiagramDisplayCalculator {
             } else {
                 volume = pointNode.getWorldBound();
             }
+        }
+
+        if(vectorNode.getWorldBound() != null) {
+            volume.mergeLocal(vectorNode.getWorldBound());
         }
 
         if (volume == null) {
