@@ -184,17 +184,17 @@ public class Schematic {
             // we count the measurement to be added if
             // two of the points described by the measurement are covered by
             // the bodies
-            if (containsTwo(bodyPoints, measurement.getPoints())) {
-                // only get angles if the anchor is included
-                if (measurement instanceof AngleMeasurement) {
-                    AngleMeasurement angleMeasurement = (AngleMeasurement) measurement;
-                    if (bodyPoints.contains(angleMeasurement.getAnchor())) {
-                        r.add(measurement);
-                    }
-                } else {
-                    // add distance measurements
+
+            if (measurement instanceof AngleMeasurement) {
+                AngleMeasurement angleMeasurement = (AngleMeasurement) measurement;
+                if (bodyPoints.contains(angleMeasurement.getAnchor())) {
                     r.add(measurement);
                 }
+            } else if (containsTwo(bodyPoints, measurement.getPoints())) {
+                // only get angles if the anchor is included
+                // else {
+                // add distance measurements
+                r.add(measurement);
             }
         }
 
