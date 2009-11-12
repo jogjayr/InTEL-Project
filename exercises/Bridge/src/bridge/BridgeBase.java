@@ -6,6 +6,9 @@ package bridge;
 
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.tasks.SolveFBDTask;
@@ -69,7 +72,13 @@ abstract public class BridgeBase extends BridgeExercise {
         
         addTask(new SolveZFMTask("Solve zfms"));
 
-        BodySubset subset = new BodySubset(getSchematic().allBodies());
+        List<Body> allBodies = new ArrayList<Body>();
+        for (Body body : getSchematic().allBodies()) {
+            if(body instanceof ZeroForceMember || body instanceof Background)
+                continue;
+            allBodies.add(body);
+        }
+        BodySubset subset = new BodySubset(allBodies);
         subset.setSpecialName("Whole Truss");
         addTask(new SolveFBDTask("Solve whole truss", subset));
 

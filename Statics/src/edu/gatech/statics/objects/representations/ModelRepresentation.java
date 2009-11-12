@@ -157,7 +157,7 @@ public class ModelRepresentation extends Representation {
 //        }
 
         if(doChange) {
-System.out.println("updating material!");
+//System.out.println("updating material!");
 
             //if (getDisplayGrayed() || isSelected() || isHover()) {
             if (getDisplayGrayed()) {
