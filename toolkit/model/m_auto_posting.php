@@ -21,7 +21,7 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
   //add logger entry
   $query =
     "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, level, message, created_on)
-    VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', {$timestamp})";
+    VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', now())";
 
   query($query, $db);
 
