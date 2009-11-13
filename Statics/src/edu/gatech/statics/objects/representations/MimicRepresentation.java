@@ -27,7 +27,7 @@ public class MimicRepresentation extends Representation {
         super(target);
         this.base = base;
 
-        attachChild(base.getRelativeNode());
+        //attachChild(base.getRelativeNode());
     }
 
     /**

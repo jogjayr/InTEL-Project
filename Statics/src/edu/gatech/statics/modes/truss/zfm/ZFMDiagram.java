@@ -78,6 +78,9 @@ public class ZFMDiagram extends Diagram<ZFMState> {
                 setPotentialZfmActive((PotentialZFM) obj, true);
             }
         }
+
+        // call stateChanged to update view.
+        stateChanged();
     }
 
     @Override
@@ -121,9 +124,9 @@ public class ZFMDiagram extends Diagram<ZFMState> {
             obj.setDisplaySelected(isSelected);
         }
 
-        if (getCurrentState().isLocked()) {
-            completed();
-        }
+//        if (getCurrentState().isLocked()) {
+//            completed();
+//        }
     }
 
     @Override
@@ -203,8 +206,8 @@ public class ZFMDiagram extends Diagram<ZFMState> {
                 if (userZfm && !isZfm) {
                     // the user added a ZFM that is not really
                     StaticsApplication.getApp().setStaticsFeedback("You have selected a body that is not a Zero Force Member" + extraHint);
+                    return false;
                 }
-                return false;
             }
         }
 

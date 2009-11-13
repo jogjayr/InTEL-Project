@@ -70,6 +70,9 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         } else {
             StaticsApplication.getApp().setUIFeedback("Please select the Zero Force Members");
         }
+
+        // update text
+        stateChanged();
     }
 
     @Override
@@ -130,6 +133,7 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
             if ("check".equals(event.getAction())) {
                 if (getDiagram().check()) {
                     getDiagram().setSolved();
+                    getDiagram().completed();
                 }
             } else if ("clear".equals(event.getAction())) {
                 getDiagram().performAction(new ClearAction());
