@@ -233,7 +233,13 @@ public class StaticsXMLEncoder extends XMLEncoder {
     @Override
     public void writeObject(Object o) {
 
-        super.writeObject(o);
+        try {
+            super.writeObject(o);
+        } catch (RuntimeException ex) {
+            // pick up an exception that might have been thrown and adds some logging
+            Logger.getLogger("Statics").log(Level.WARNING, "Persistence of "+o.getClass().getName()+" ("+o+") caused an exception...");
+            throw ex;
+        }
     }
 
     /**

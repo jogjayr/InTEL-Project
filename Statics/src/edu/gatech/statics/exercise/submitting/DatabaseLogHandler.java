@@ -30,6 +30,7 @@ public class DatabaseLogHandler extends Handler {
                 sb.append(stackTraceElement.toString() + "\n");
             }
 
+            message += "\n" + throwable;
             message += "\n" + sb.toString();
         }
 
