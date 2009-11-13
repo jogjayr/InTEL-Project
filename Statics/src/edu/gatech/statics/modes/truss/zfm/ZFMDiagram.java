@@ -23,6 +23,10 @@ import java.util.List;
  */
 public class ZFMDiagram extends Diagram<ZFMState> {
 
+    // the number of times check has been called: used for giving hints
+    // does not need persistence.
+    private int checkCount;
+
     public ZFMDiagram() {
         super(null);
     }
@@ -67,7 +71,7 @@ public class ZFMDiagram extends Diagram<ZFMState> {
     @Override
     public void activate() {
         super.activate();
-        
+
         // activate the mimic representations
         for (SimulationObject obj : getBaseObjects()) {
             if (obj instanceof PotentialZFM) {
@@ -160,24 +164,50 @@ public class ZFMDiagram extends Diagram<ZFMState> {
     }
 
     public boolean check() {
+
+        checkCount++;
+
+        String extraHint = "";
+
+        if (checkCount > 10) {
+            extraHint = "<br><b>Hint:</b> Try looking at joints attached to 3 two-force members and identify which of those members can carry loads.";
+        }
+        if (checkCount > 40) {
+            extraHint = "<br><b>Hint:</b> If a joint has 3 two-force members attached to it, and two of those members have the same angle, then the third cannot carry a load.";
+        }
+
+        // perform this check using two loops, because students get confused regarding its process.
+
+        // first make sure that the student has added all ZFMs
         for (SimulationObject obj : getBaseObjects()) {
             if (obj instanceof PotentialZFM) {
                 PotentialZFM potentialZfm = (PotentialZFM) obj;
                 boolean isZfm = potentialZfm.isZfm();
                 boolean userZfm = getCurrentState().getSelectedZFMs().contains(potentialZfm);
 
-                if (isZfm != userZfm) {
-                    if (isZfm) {
-                        // there is a ZFM that the user missed
-                        StaticsApplication.getApp().setStaticsFeedback("Note: You have missed a Zero Force Member");
-                    } else {
-                        // the user added a ZFM that is not really
-                        StaticsApplication.getApp().setStaticsFeedback("Note: You have selected a body that is not a Zero Force Member");
-                    }
+                if (isZfm && !userZfm) {
+                    // there is a ZFM that the user missed
+                    StaticsApplication.getApp().setStaticsFeedback("You have missed a Zero Force Member" + extraHint);
                     return false;
                 }
             }
         }
+
+        // then make sure that the student has not added anything that is NOT a ZMF
+        for (SimulationObject obj : getBaseObjects()) {
+            if (obj instanceof PotentialZFM) {
+                PotentialZFM potentialZfm = (PotentialZFM) obj;
+                boolean isZfm = potentialZfm.isZfm();
+                boolean userZfm = getCurrentState().getSelectedZFMs().contains(potentialZfm);
+
+                if (userZfm && !isZfm) {
+                    // the user added a ZFM that is not really
+                    StaticsApplication.getApp().setStaticsFeedback("You have selected a body that is not a Zero Force Member" + extraHint);
+                }
+                return false;
+            }
+        }
+
         return true;
     }
 

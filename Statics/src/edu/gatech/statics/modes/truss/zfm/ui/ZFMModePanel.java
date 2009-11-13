@@ -27,10 +27,10 @@ import java.util.List;
  */
 public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
 
-    BContainer selectionListBox;
-    HTMLView selectionList;
-    BButton checkButton;
-    BButton clearButton;
+    private BContainer selectionListBox;
+    private HTMLView selectionList;
+    private BButton checkButton;
+    private BButton clearButton;
 
     public ZFMModePanel() {
         //getTitleLabel().setText("Identify Zero Force Members");
