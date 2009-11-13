@@ -170,10 +170,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         String extraHint = "";
 
         if (checkCount > 10) {
-            extraHint = "<br><b>Hint:</b> Try looking at joints attached to 3 two-force members and identify which of those members can carry loads.";
+            extraHint = "<br><b>Hint:</b> Try looking at unloaded joints attached to 3 two-force members and identify which of those members can carry loads.";
         }
-        if (checkCount > 40) {
-            extraHint = "<br><b>Hint:</b> If a joint has 3 two-force members attached to it, and two of those members have the same angle, then the third cannot carry a load.";
+        if (checkCount > 20) {
+            extraHint = "<br><b>Hint:</b> If an unloaded joint has 3 two-force members attached to it, and two of those members have the same angle, then the third cannot carry a load.";
         }
 
         // perform this check using two loops, because students get confused regarding its process.
