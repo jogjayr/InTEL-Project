@@ -215,15 +215,16 @@ public class FBDChecker {
                     }
                 }
                 // check if this is mistaken for a contactPoint
-                if (!connector.connectorName().equals("contact point")) {
-                    ContactPoint testPoint = new ContactPoint(connector.getAnchor());
-                    if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed) {
-                        logInfo("check: user wrongly created a contactPoint at point " + connector.getAnchor().getLabelText());
-                        logInfo("check: FAILED");
-                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "contact point", connector.connectorName());
-                        return false;
-                    }
-                }
+                // this check shouldn't be necessary, the required reactions at a contact point are the same as if there were a pin.
+//                if (!connector.connectorName().equals("contact point")) {
+//                    ContactPoint testPoint = new ContactPoint(connector.getAnchor());
+//                    if (checkConnector(userAnchoredVectorsAtConnector, testPoint, null) == ConnectorCheckResult.passed) {
+//                        logInfo("check: user wrongly created a contactPoint at point " + connector.getAnchor().getLabelText());
+//                        logInfo("check: FAILED");
+//                        setAdviceKey("fbd_feedback_check_fail_joint_wrong_type", connector.getAnchor().getLabelText(), "contact point", connector.connectorName());
+//                        return false;
+//                    }
+//                }
                 // otherwise, the user did something strange.
                 logInfo("check: user simply added reactions to a joint that don't make sense to point " + connector.getAnchor().getLabelText());
                 logInfo("check: FAILED");

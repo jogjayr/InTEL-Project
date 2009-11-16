@@ -18,6 +18,13 @@ label_point {
     effect-color: #000000cc;
 }
 
+label_hovering_coefficient {
+    color: #880000;
+    font: "Arial" bold 18;
+    background: solid #ffffff88;
+    border: 1 solid #000000;
+}
+
 label_measurement {
     color: #000000;
     font: "Arial" bold 18;

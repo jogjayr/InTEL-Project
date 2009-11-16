@@ -14,7 +14,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Point;
-import java.math.BigDecimal;
+import edu.gatech.statics.objects.representations.FrictionCoefficientLabel;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,10 +49,10 @@ public class ContactPoint extends Connector {
     }
 
     /** Creates a new instance of ContactPoint */
-    public ContactPoint(Point point) {
-        super(point);
-        this.frictionCoefficient = new ConstantObject("mu", new BigDecimal("1.0"), Unit.none);
-    }
+//    public ContactPoint(Point point) {
+//        super(point);
+//        this.frictionCoefficient = new ConstantObject("mu", new BigDecimal("1.0"), Unit.none);
+//    }
 
     public ContactPoint(Point point, ConstantObject frictionCoefficient) {
         super(point);
@@ -69,7 +69,10 @@ public class ContactPoint extends Connector {
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        System.out.println("There is currently no representation for Friction.");
+        //System.out.println("There is currently no representation for Friction.");
+        FrictionCoefficientLabel rep = new FrictionCoefficientLabel(this);
+        rep.setOffset(-15, -20);
+        addRepresentation(rep);
     }
 
     @Override

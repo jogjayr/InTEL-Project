@@ -112,7 +112,7 @@ public class KeyboardFrictionExercise extends FrameExercise {
     Body leftLeg, rightLeg;
     Bar bar;
     BigDecimal mu;
-    ConstantObject frictionObject;
+    ConstantObject frictionObjectB, frictionObjectE;
 
     @Override
     public void loadExercise() {
@@ -122,8 +122,10 @@ public class KeyboardFrictionExercise extends FrameExercise {
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
         mu = new BigDecimal("2.66");
-        frictionObject = new ConstantObject("mu", mu, Unit.none);
-        schematic.add(frictionObject);
+        frictionObjectB = new ConstantObject("mu B", mu, Unit.none);
+        schematic.add(frictionObjectB);
+        frictionObjectE = new ConstantObject("mu E", mu, Unit.none);
+        schematic.add(frictionObjectE);
 
         A = new Point("A", "0", "6", "0");
         D = new Point("D", "8", "6", "0");
@@ -136,10 +138,10 @@ public class KeyboardFrictionExercise extends FrameExercise {
 
         jointC = new Pin2d(C);
 
-        jointB = new ContactPoint(B, frictionObject);
+        jointB = new ContactPoint(B, frictionObjectB);
         jointB.setNormalDirection(new Vector3bd("0.0","1.0","0.0"));
         jointB.setFrictionDirection(new Vector3bd("-1.0","0.0","0.0"));
-        jointE = new ContactPoint(E, frictionObject);
+        jointE = new ContactPoint(E, frictionObjectE);
         jointE.setNormalDirection(new Vector3bd("0.0","1.0","0.0"));
         jointE.setFrictionDirection(new Vector3bd("1.0","0.0","0.0"));
 
@@ -184,6 +186,9 @@ public class KeyboardFrictionExercise extends FrameExercise {
         C.createDefaultSchematicRepresentation();
         D.createDefaultSchematicRepresentation();
         E.createDefaultSchematicRepresentation();
+
+        jointB.createDefaultSchematicRepresentation();
+        jointE.createDefaultSchematicRepresentation();
 
         keyboardLeft.createDefaultSchematicRepresentation();
         keyboardRight.createDefaultSchematicRepresentation();

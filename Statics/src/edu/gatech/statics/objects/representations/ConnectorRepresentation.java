@@ -31,31 +31,19 @@ public class ConnectorRepresentation extends PointRepresentation {
     public void update() {
 
         // return if the the application is not loaded.
-        if(StaticsApplication.getApp() == null)
+        if (StaticsApplication.getApp() == null) {
             return;
+        }
 
         // we should enable the representation if the diagram is a select diagram
         boolean shouldEnable = StaticsApplication.getApp().getCurrentDiagram() instanceof SelectDiagram;
-        //setLocalScale(DisplayConstants.getInstance().getJointSize());
-        // states are consistent, no need to do anything
-        //if (shouldEnable == enabled) {
-        //    return;
-        //}
 
         enabled = shouldEnable;
 
         if (enabled) {
-                setHidden(false);
-            //if (!getRelativeNode().hasChild(getQuad())) {
-                //getRelativeNode().attachChild(getQuad());
-                //getQuad().setCullMode(CULL_NEVER);
-            //}
+            setHidden(false);
         } else {
-                setHidden(true);
-            //if (getRelativeNode().hasChild(getQuad())) {
-                //getRelativeNode().detachChild(getQuad());
-                //getQuad().setCullMode(CULL_ALWAYS);
-            //}
+            setHidden(true);
         }
         super.update();
     }

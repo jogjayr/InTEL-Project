@@ -97,10 +97,14 @@ public class LabelRepresentation extends Representation {
     private Vector3f pos2d;
     private String labelText = null;
 
+    protected String getLabelText() {
+        return getTarget().getLabelText();
+    }
+
     @Override
     public void update() {
 
-        String newLabelText = getTarget().getLabelText();
+        String newLabelText = getLabelText();
 
         if (!newLabelText.equals(labelText)) {
 
