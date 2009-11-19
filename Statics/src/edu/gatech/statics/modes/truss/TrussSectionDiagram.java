@@ -117,11 +117,13 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
 
-        for(SimulationObject obj : getSchematic().allObjects()) {
-            if(obj instanceof Body && !(obj instanceof ZeroForceMember || obj instanceof Background))
+        for (SimulationObject obj : getSchematic().allObjects()) {
+            if (obj instanceof Body && !(obj instanceof ZeroForceMember || obj instanceof Background)) {
                 baseObjects.add(obj);
-            if(obj instanceof Point)
+            }
+            if (obj instanceof Point) {
                 baseObjects.add(obj);
+            }
         }
         return baseObjects;
     }
@@ -203,6 +205,13 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         }
     }
 
+    public void onStartSection() {
+        currentCut = null;
+        TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
+        modePanel.hideSectionBoxes();
+        clearHighlights();
+    }
+
     /**
      * Remove all of the highlights in the bodies.
      */
@@ -253,7 +262,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
      * @param section
      * @return
      */
-    private List<TwoForceMember> getAllCutMembers(SectionCut section) {
+    public List<TwoForceMember> getAllCutMembers(SectionCut section) {
 
         List<TwoForceMember> cutMembers = new ArrayList<TwoForceMember>();
 

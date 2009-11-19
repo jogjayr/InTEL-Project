@@ -6,13 +6,19 @@ package edu.gatech.statics.modes.truss.ui;
 
 import com.jme.math.Vector2f;
 import com.jme.system.DisplaySystem;
+import com.jmex.bui.BContainer;
+import com.jmex.bui.BLabel;
+import com.jmex.bui.layout.BorderLayout;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.truss.SectionCut;
 import edu.gatech.statics.modes.truss.TrussSectionDiagram;
 import edu.gatech.statics.modes.truss.TrussSectionMode;
+import edu.gatech.statics.objects.bodies.TwoForceMember;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
-import edu.gatech.statics.ui.applicationbar.ApplicationTab;
 import edu.gatech.statics.util.Pair;
+import java.util.List;
 
 /**
  *
@@ -20,10 +26,18 @@ import edu.gatech.statics.util.Pair;
  */
 public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 
-    private SectionPopup popup1,  popup2;
+    private SectionPopup popup1, popup2;
+    private BLabel label;
 
     public TrussModePanel() {
         //getTitleLabel().setText("Create a Section");
+
+
+        //****** text field for "you have cut through"...
+        BContainer container = new BContainer(new BorderLayout());
+        label = new BLabel("");
+        container.add(label, BorderLayout.CENTER);
+        add(container, BorderLayout.CENTER);
     }
 
     @Override
@@ -44,11 +58,42 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 
         popup1.setLocation(x1 - popup1.getWidth() / 2, y1 - popup1.getHeight() / 2);
         popup2.setLocation(x2 - popup2.getWidth() / 2, y2 - popup2.getHeight() / 2);
+
+        updateText(section);
+    }
+
+    protected void updateText(SectionCut section) {
+
+        if (section == null) {
+            // clear
+            label.setText("");
+            StaticsApplication.getApp().resetUIFeedback();
+        } else {
+            TrussSectionDiagram diagram = getDiagram();
+            List<TwoForceMember> cutMembers = diagram.getAllCutMembers(section);
+            StaticsApplication.getApp().setUIFeedback("You have cut through "+cutMembers.size()+" members: ");
+
+            //String contents = "<font size=\"5\" color=\"white\">";
+            String contents = "@=b(";
+            for (int i = 0; i < cutMembers.size(); i++) {
+                TwoForceMember body = cutMembers.get(i);
+                if (i > 0) {
+                    contents += ", ";
+                }
+                contents += body.getName();
+            }
+            //contents += "</font>";
+            contents += ")";
+            label.setText(contents);
+
+        }
+        InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
     public void hideSectionBoxes() {
         popup1.dismiss();
         popup2.dismiss();
+        updateText(null);
     }
 
     @Override
@@ -70,7 +115,6 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 //        tab.setPreferredSize(125, -1);
 //        return tab;
 //    }
-
     private Pair<Vector2f, Vector2f> getPopupCoordinates(SectionCut section) {
         // we need to position the popup coordinates according to the section.
         Vector2f sectionDirection = section.getSectionEnd().subtract(section.getSectionStart()).normalize();
@@ -86,7 +130,7 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
                 screenCenter, screenCenter.add(sectionPerp));
 
         float offsetDistance = 125;
-        
+
         // stretch the bubble a little,
         // horizontal looks smaller because the actual popup boxes are rectangular.
         sectionPerp.x *= 1.5;

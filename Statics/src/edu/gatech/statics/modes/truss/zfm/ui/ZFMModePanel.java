@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.truss.zfm.ui;
 
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
+import com.jmex.bui.BScrollPane;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
@@ -40,19 +41,26 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         //checkButton.setStyleClass("circle_button");
         checkButton.setEnabled(true);
 
-        selectionListBox.setPreferredSize(300, -1);
+        //selectionListBox.setPreferredSize(300, -1);
+        selectionListBox.setPreferredSize(300, 150);
 
         BContainer buttonContainer = new BContainer(new BorderLayout());
 
         clearButton = new BButton("Clear", new ButtonListener(), "clear");
 
+        selectionList = new HTMLView();
+
+        //BScrollPane scrollPane = new BScrollPane(selectionListBox);
+        BScrollPane scrollPane = new BScrollPane(selectionList);
+
+        //selectionListBox.add(selectionList, BorderLayout.CENTER);
+        selectionListBox.add(scrollPane, BorderLayout.CENTER);
+
+        //add(scrollPane, BorderLayout.WEST);
         add(selectionListBox, BorderLayout.WEST);
         add(buttonContainer, BorderLayout.EAST);
         buttonContainer.add(checkButton, BorderLayout.CENTER);
         buttonContainer.add(clearButton, BorderLayout.SOUTH);
-
-        selectionList = new HTMLView();
-        selectionListBox.add(selectionList, BorderLayout.CENTER);
     }
 
     @Override

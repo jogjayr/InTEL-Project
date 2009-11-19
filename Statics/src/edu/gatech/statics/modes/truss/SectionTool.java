@@ -78,6 +78,9 @@ public class SectionTool extends Tool {
     private void onMouseDown() {
         Vector3f screenPos = StaticsApplication.getApp().getMouse().getLocalTranslation();
         mouseStart.set(screenPos.x, screenPos.y);
+
+        TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
+        currentDiagram.onStartSection();
     }
 
     private void onMouseUp() {
