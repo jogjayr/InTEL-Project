@@ -228,7 +228,16 @@ public class FBDChecker {
                 // otherwise, the user did something strange.
                 logInfo("check: user simply added reactions to a joint that don't make sense to point " + connector.getAnchor().getLabelText());
                 logInfo("check: FAILED");
-                setAdviceKey("fbd_feedback_check_fail_joint_wrong", connector.connectorName(), connector.getAnchor().getLabelText());
+
+                String userReactions = "";
+                for (int i = 0; i < userAnchoredVectorsAtConnector.size(); i++) {
+                    if (i > 0) {
+                        userReactions += ", ";
+                    }
+                    String name = userAnchoredVectorsAtConnector.get(i).getVector().getPrettyName();
+                    userReactions += "<b><font color=\"red\">" + name + "</font></b>";
+                }
+                setAdviceKey("fbd_feedback_check_fail_joint_wrong", userReactions, connector.connectorName(), connector.getAnchor().getLabelText());
                 return false;
         }
         return true;
@@ -429,10 +438,11 @@ public class FBDChecker {
 
             Connector connector = (Connector) obj;
 
-            if(connector.isSolved())
+            if (connector.isSolved()) {
                 connectors.add(0, connector);
-            else
+            } else {
                 connectors.add(connector);
+            }
         }
 
         List<AnchoredVector> markedLoads = new ArrayList<AnchoredVector>();
@@ -503,8 +513,8 @@ public class FBDChecker {
             for (AnchoredVector reaction : expectedReactions) {
 
                 debugInfo("    testing reaction: " + reaction);
-                
-                if(reaction.getDiagramValue().floatValue() == 0f) {
+
+                if (reaction.getDiagramValue().floatValue() == 0f) {
                     debugInfo("    load is solved and equivalent to zero. Therefore we skip it.");
                     continue;
                 }
@@ -512,7 +522,7 @@ public class FBDChecker {
                 // get a AnchoredVector and result corresponding to this check.
                 AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
 
-                if(markedLoads.contains(loadFromSymbolManager)) {
+                if (markedLoads.contains(loadFromSymbolManager)) {
                     // we have already checked against this load from the symbol manager, so it was likely one
                     // used by a solved reaction. Set this to null so that we don't have to check against it.
                     // ***********
@@ -922,8 +932,9 @@ public class FBDChecker {
 
         // there is a case in which the candidate being checked is in the symbol manager
         // check to see if it is there, and if so, return a pass.
-        if(Exercise.getExercise().getSymbolManager().getLoad(candidate) != null)
+        if (Exercise.getExercise().getSymbolManager().getLoad(candidate) != null) {
             return NameCheckResult.passed;
+        }
 
         // look through other symbols stored in the symbol manager
         if (Exercise.getExercise().getSymbolManager().getSymbols().contains(name)) {
@@ -1243,7 +1254,7 @@ public class FBDChecker {
 
         boolean negatable = connector.isForceDirectionNegatable();
         for (AnchoredVector reaction : reactionAnchoredVectors) {
-            if(reaction.getDiagramValue().floatValue() == 0f) {
+            if (reaction.getDiagramValue().floatValue() == 0f) {
                 // this reaction is solved and has a value of zero.
                 // we do not need to include the zero here.
                 // should revise error reporting to say something to that effect
