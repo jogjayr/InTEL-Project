@@ -25,8 +25,6 @@ import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -335,23 +333,94 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
             }
         }
 
-        Collections.sort(allPoints, new Comparator<Point>() {
-
-            public int compare(Point o1, Point o2) {
-                float d1 = o1.getPosition().toVector3f().dot(intendedSectionDirection);
-                float d2 = o2.getPosition().toVector3f().dot(intendedSectionDirection);
-                return (int) Math.signum(d1 - d2);
-            }
-        });
-
         List<Point> endpoints = new ArrayList<Point>();
-        if (allPoints.size() < 4) {
+        if (allPoints.size() <= 4) {
             endpoints.addAll(allPoints);
         } else {
-            endpoints.add(allPoints.get(0));
-            endpoints.add(allPoints.get(1));
-            endpoints.add(allPoints.get(allPoints.size() - 2));
-            endpoints.add(allPoints.get(allPoints.size() - 1));
+
+            float xMax = -Float.MAX_VALUE;
+            float xMin = Float.MAX_VALUE;
+            float yMax = -Float.MAX_VALUE;
+            float yMin = Float.MAX_VALUE;
+
+            for (Point point : allPoints) {
+                float px = point.getPosition().getX().floatValue();
+                float py = point.getPosition().getY().floatValue();
+
+                if (xMax < px) {
+                    xMax = px;
+                }
+                if (xMin > px) {
+                    xMin = px;
+                }
+                if (yMax < py) {
+                    yMax = py;
+                }
+                if (yMin > py) {
+                    yMin = py;
+                }
+            }
+
+            float xMid = (xMax + xMin) / 2;
+            float yMid = (yMax + yMin) / 2;
+
+            float xScale, yScale;
+
+            if (xMax - xMid > 0) {
+                xScale = 1 / (xMax - xMid);
+            } else {
+                xScale = 0;
+            }
+            if (yMax - yMid > 0) {
+                yScale = 1 / (yMax - yMid);
+            } else {
+                yScale = 0;
+            }
+
+            Point point00 = null;
+            Point point10 = null;
+            Point point01 = null;
+            Point point11 = null;
+
+            float pDist00 = 0;
+            float pDist10 = 0;
+            float pDist01 = 0;
+            float pDist11 = 0;
+
+            for (Point point : allPoints) {
+                float px = point.getPosition().getX().floatValue();
+                float py = point.getPosition().getY().floatValue();
+
+                float dx = xScale * (px - xMid);
+                float dy = yScale * (py - yMid);
+
+                float curDist00 = dx + dy;
+                float curDist10 = -dx + dy;
+                float curDist01 = dx + -dy;
+                float curDist11 = -dx + -dy;
+
+                if (curDist00 > pDist00) {
+                    pDist00 = curDist00;
+                    point00 = point;
+                }
+                if (curDist10 > pDist10) {
+                    pDist10 = curDist10;
+                    point10 = point;
+                }
+                if (curDist01 > pDist01) {
+                    pDist01 = curDist01;
+                    point01 = point;
+                }
+                if (curDist11 > pDist11) {
+                    pDist11 = curDist11;
+                    point11 = point;
+                }
+            }
+
+            endpoints.add(point10);
+            endpoints.add(point00);
+            endpoints.add(point11);
+            endpoints.add(point01);
         }
 
         String specialName = "Section ";

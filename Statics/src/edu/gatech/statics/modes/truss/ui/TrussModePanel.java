@@ -84,6 +84,7 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
             }
             //contents += "</font>";
             contents += ")";
+            contents += "\nYou may click and drag to create another section.";
             label.setText(contents);
 
         }

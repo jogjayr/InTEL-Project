@@ -125,7 +125,8 @@ public class BridgeExercise extends TrussExercise {
                 "identify the zero force members and to create a free body diagram of the whole truss " +
                 "to solve for the supports before you can begin to solve for the member forces.  " +
                 "Then continue to solve for the unknowns by using either the method of sections " +
-                "(which is recommended) or the method of joints.");
+                "(which is recommended) or the method of joints. Due to symmetry, <b>U14-L14</b> and <b>L13-L14</b> are " +
+                "zero-force members.");
 
         description.setLayout(new ScrollbarLayout());
 
