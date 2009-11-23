@@ -24,10 +24,12 @@ import java.util.logging.Logger;
 public class PointSelector extends Tool {
 
     private EquationDiagram diagram;
+    private String mathName;
 
     /** Creates a new instance of PointSelector */
-    public PointSelector(EquationDiagram diagram) {
+    public PointSelector(EquationDiagram diagram, String mathName) {
         this.diagram = diagram;
+        this.mathName = mathName;
     }
     private static final SelectionFilter filter = new SelectionFilter() {
 
@@ -60,7 +62,7 @@ public class PointSelector extends Tool {
             // store the point, finish.
             //world.setMomentPoint((Point) obj);
             //getWorld().clearSelection();
-            SetMomentPoint setMomentPointAction = new SetMomentPoint((Point) obj);
+            SetMomentPoint setMomentPointAction = new SetMomentPoint((Point) obj, mathName);
             diagram.performAction(setMomentPointAction);
 
             finish();

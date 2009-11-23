@@ -27,14 +27,14 @@ import java.util.logging.Logger;
 public class EquationMathMoments extends TermEquationMath {
 
     /** Creates a new instance of EquationMoments */
-    public EquationMathMoments(String name, Vector3bd observationDirection, EquationDiagram world) {
-        super(name, observationDirection, world);
+    public EquationMathMoments(String name, EquationDiagram world) {
+        super(name, world);
     }
 
     @Override
     public boolean check() {
 
-        if (getDiagram().getCurrentState().getMomentPoint() == null) {
+        if (getState().getMomentPoint() == null) {
             Logger.getLogger("Statics").info("check: Moment point is not set!");
             Logger.getLogger("Statics").info("check: FAILED");
 
@@ -59,7 +59,7 @@ public class EquationMathMoments extends TermEquationMath {
                 // this is a force, there is no affine issue, so we compare normally.
 
                 // get the moment point
-                Vector3bd momentPoint = getDiagram().getCurrentState().getMomentPoint().getPosition();
+                Vector3bd momentPoint = getState().getMomentPoint().getPosition();
                 Vector3bd anchorPos = load.getAnchor().getPosition();
 
                 Vector3bd vectorOrient = load.getVectorValue();
@@ -251,16 +251,16 @@ public class EquationMathMoments extends TermEquationMath {
      * @return
      */
     private boolean isAffine(AnchoredVector load) {
-        // check the force anchor
-        if (load.getAnchor() instanceof UnknownPoint && !((UnknownPoint) load.getAnchor()).isKnown()) {
-            return true;
-        }
-        // check the moment point
-        Point momentPoint = getDiagram().getCurrentState().getMomentPoint();
-        if ((momentPoint instanceof UnknownPoint) && !((UnknownPoint) momentPoint).isKnown()) {
-            return true;
-        }
-        // otherwise false
+//        // check the force anchor
+//        if (load.getAnchor() instanceof UnknownPoint && !((UnknownPoint) load.getAnchor()).isKnown()) {
+//            return true;
+//        }
+//        // check the moment point
+//        Point momentPoint = getDiagram().getMomentPoint();
+//        if ((momentPoint instanceof UnknownPoint) && !((UnknownPoint) momentPoint).isKnown()) {
+//            return true;
+//        }
+//        // otherwise false
         return false;
     }
 
@@ -270,85 +270,87 @@ public class EquationMathMoments extends TermEquationMath {
      * @return
      */
     private TermError affineCheck(AnchoredVector load, String coefficient) {
-
-        Point anchor = load.getAnchor();
-
-        UnknownPoint uAnchor = new UnknownPoint(anchor);
-        UnknownPoint uObservation = new UnknownPoint(getDiagram().getCurrentState().getMomentPoint());
-
-        Vector3bd differenceBase;
-        Vector3bd differenceDirection;
-        String distanceSymbol;
-        try {
-            // first we want to get the vector between the observation point and the anchor. 
-            // this term is an affine expression, that is, each of the x, y, and z components are affine terms
-            AffineQuantity differenceX = uAnchor.getDirectionalContribution(Vector3bd.UNIT_X).subtract(
-                    uObservation.getDirectionalContribution(Vector3bd.UNIT_X));
-            AffineQuantity differenceY = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Y).subtract(
-                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Y));
-            AffineQuantity differenceZ = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Z).subtract(
-                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Z));
-
-            differenceBase = new Vector3bd(differenceX.getConstant(), differenceY.getConstant(), differenceZ.getConstant());
-            differenceDirection = new Vector3bd(differenceX.getMultiplier(), differenceY.getMultiplier(), differenceZ.getMultiplier());
-            distanceSymbol = differenceX.getSymbolName();
-        } catch (ArithmeticException ex) {
-            // this happens if the points have different symbols. We should never reach a situation like this, ideally.
-            // return false with an internal error
-            return TermError.internal;
-        }
-
-        // get the direction of our actual vector
-        Vector3bd vectorOrient = load.getVectorValue();
-
-        // get the direction of the unit moment arm
-        // this is the direction that the moment arm points.
-        Vector3bd momentArm = vectorOrient.cross(getObservationDirection());
-
-        // compare the actual moment arm with the affine quantity defined by differenceBase and differenceDirection
-        // this is what will get compared to what the student has entered
-        BigDecimal constantContribution = differenceBase.dot(momentArm);
-        BigDecimal symbolicContribution = differenceDirection.dot(momentArm);
-
-        // check the magnitude of symbolicContribution to make sure that we still have a symbolic term in there.
-        if (symbolicContribution.floatValue() == 0) {
-            // okay, we just need to do a regular check here.
-            return compareValuesMoment(coefficient, constantContribution, new BigDecimal(differenceBase.length()));
-        }
-
-        // symbolicContribution is nonzero, so the user entered value MUST be symbolic
-        //AffineQuantity targetAffineValue = new AffineQuantity(constantContribution, symbolicContribution, distanceSymbol);
-        // get the affine quantity described by the user's coefficient
-        AffineQuantity coefficientAffineValue = Parser.evaluateSymbol(coefficient);
-
-        // parse the coefficient
-        if (coefficientAffineValue == null) {
-            return TermError.parse;
-        }
-
-        // if the coefficient is not symbolic, complain
-        if (!coefficientAffineValue.isSymbolic()) {
-            return TermError.shouldBeSymbolic;
-        }
-
-        // do a simple check to make sure the symbol is correct
-        if (!coefficientAffineValue.getSymbolName().equals(distanceSymbol)) {
-            return TermError.wrongSymbol;
-        }
-
-        // actually check the values
-        if (Math.abs(coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
-                Math.abs(coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
-            // hooray, our values are correct!
-            return TermError.none;
-        } else {
-            // do negation check
-            if (Math.abs(-coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
-                    Math.abs(-coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
-                return TermError.badSign;
-            }
-
-            return TermError.incorrect;
-        }
+        // not supporting affine at the moment.....
+        return TermError.incorrect;
+//
+//        Point anchor = load.getAnchor();
+//
+//        UnknownPoint uAnchor = new UnknownPoint(anchor);
+//        UnknownPoint uObservation = new UnknownPoint(getDiagram().getMomentPoint());
+//
+//        Vector3bd differenceBase;
+//        Vector3bd differenceDirection;
+//        String distanceSymbol;
+//        try {
+//            // first we want to get the vector between the observation point and the anchor.
+//            // this term is an affine expression, that is, each of the x, y, and z components are affine terms
+//            AffineQuantity differenceX = uAnchor.getDirectionalContribution(Vector3bd.UNIT_X).subtract(
+//                    uObservation.getDirectionalContribution(Vector3bd.UNIT_X));
+//            AffineQuantity differenceY = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Y).subtract(
+//                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Y));
+//            AffineQuantity differenceZ = uAnchor.getDirectionalContribution(Vector3bd.UNIT_Z).subtract(
+//                    uObservation.getDirectionalContribution(Vector3bd.UNIT_Z));
+//
+//            differenceBase = new Vector3bd(differenceX.getConstant(), differenceY.getConstant(), differenceZ.getConstant());
+//            differenceDirection = new Vector3bd(differenceX.getMultiplier(), differenceY.getMultiplier(), differenceZ.getMultiplier());
+//            distanceSymbol = differenceX.getSymbolName();
+//        } catch (ArithmeticException ex) {
+//            // this happens if the points have different symbols. We should never reach a situation like this, ideally.
+//            // return false with an internal error
+//            return TermError.internal;
+//        }
+//
+//        // get the direction of our actual vector
+//        Vector3bd vectorOrient = load.getVectorValue();
+//
+//        // get the direction of the unit moment arm
+//        // this is the direction that the moment arm points.
+//        Vector3bd momentArm = vectorOrient.cross(getObservationDirection());
+//
+//        // compare the actual moment arm with the affine quantity defined by differenceBase and differenceDirection
+//        // this is what will get compared to what the student has entered
+//        BigDecimal constantContribution = differenceBase.dot(momentArm);
+//        BigDecimal symbolicContribution = differenceDirection.dot(momentArm);
+//
+//        // check the magnitude of symbolicContribution to make sure that we still have a symbolic term in there.
+//        if (symbolicContribution.floatValue() == 0) {
+//            // okay, we just need to do a regular check here.
+//            return compareValuesMoment(coefficient, constantContribution, new BigDecimal(differenceBase.length()));
+//        }
+//
+//        // symbolicContribution is nonzero, so the user entered value MUST be symbolic
+//        //AffineQuantity targetAffineValue = new AffineQuantity(constantContribution, symbolicContribution, distanceSymbol);
+//        // get the affine quantity described by the user's coefficient
+//        AffineQuantity coefficientAffineValue = Parser.evaluateSymbol(coefficient);
+//
+//        // parse the coefficient
+//        if (coefficientAffineValue == null) {
+//            return TermError.parse;
+//        }
+//
+//        // if the coefficient is not symbolic, complain
+//        if (!coefficientAffineValue.isSymbolic()) {
+//            return TermError.shouldBeSymbolic;
+//        }
+//
+//        // do a simple check to make sure the symbol is correct
+//        if (!coefficientAffineValue.getSymbolName().equals(distanceSymbol)) {
+//            return TermError.wrongSymbol;
+//        }
+//
+//        // actually check the values
+//        if (Math.abs(coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
+//                Math.abs(coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
+//            // hooray, our values are correct!
+//            return TermError.none;
+//        } else {
+//            // do negation check
+//            if (Math.abs(-coefficientAffineValue.getConstant().floatValue() - constantContribution.floatValue()) < valueComparePrecision() &&
+//                    Math.abs(-coefficientAffineValue.getMultiplier().floatValue() - symbolicContribution.floatValue()) < valueComparePrecision()) {
+//                return TermError.badSign;
+//            }
+//
+//            return TermError.incorrect;
+//        }
     }
 }

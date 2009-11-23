@@ -73,10 +73,10 @@ final public class ArbitraryEquationMathState extends EquationMathState {
             this.rightSide = state.getRightSide();
             this.locked = state.isLocked();
         }
-
-        public void add(AnchoredVector load) {
-            
-        }
+//
+//        public void add(AnchoredVector load) {
+//
+//        }
 
         public boolean isLocked() {
             return locked;

@@ -12,13 +12,11 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.TermType;
 import edu.gatech.statics.objects.Point;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -29,11 +27,6 @@ final public class EquationState implements DiagramState<EquationDiagram> {
     //private Worksheet worksheet;
     final private Map<String, EquationMathState> equationStates;
     final private boolean locked;
-    final private Point momentPoint;
-
-    public Point getMomentPoint() {
-        return momentPoint;
-    }
 
     public Map<String, EquationMathState> getEquationStates() {
         return equationStates;
@@ -42,13 +35,12 @@ final public class EquationState implements DiagramState<EquationDiagram> {
     private EquationState(Builder builder) {
         this.equationStates = Collections.unmodifiableMap(builder.getEquationStates());
         this.locked = builder.isLocked();
-        this.momentPoint = builder.getMomentPoint();
     }
 
     public static final class Builder implements edu.gatech.statics.util.Builder<EquationState> {
 
         private Map<String, EquationMathState> equationStates;
-        private Point momentPoint;
+        //private Point momentPoint;
         private boolean locked;
 
         public Map<String, EquationMathState> getEquationStates() {
@@ -73,16 +65,15 @@ final public class EquationState implements DiagramState<EquationDiagram> {
             this.locked = locked;
         }
 
-        public Point getMomentPoint() {
-            return momentPoint;
-        }
-
-        public void setMomentPoint(Point momentPoint) {
-            this.momentPoint = momentPoint;
-        }
-
+//        public Point getMomentPoint() {
+//            return momentPoint;
+//        }
+//
+//        public void setMomentPoint(Point momentPoint) {
+//            this.momentPoint = momentPoint;
+//        }
         public Builder() {
-            equationStates = new HashMap<String, EquationMathState>();
+            equationStates = new TreeMap<String, EquationMathState>();
         }
 
         /**
@@ -92,7 +83,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
          * @param equationNames
          */
         public Builder(Map<String, EquationMath> equations) {
-            equationStates = new HashMap<String, EquationMathState>();
+            equationStates = new TreeMap<String, EquationMathState>();
             for (Map.Entry<String, EquationMath> entry : equations.entrySet()) {
                 String name = entry.getKey();
                 EquationMath math = entry.getValue();
@@ -100,16 +91,28 @@ final public class EquationState implements DiagramState<EquationDiagram> {
                 EquationMathState mathState;
 
                 if (math instanceof EquationMathForces) {
-                    if (((EquationMathForces) math).getObservationDirection() == Vector3bd.UNIT_X) {
-                        mathState = new TermEquationMathState.Builder(name, TermType.forceXAxis).build();
-                    } else if (((EquationMathForces) math).getObservationDirection() == Vector3bd.UNIT_Y) {
-                        mathState = new TermEquationMathState.Builder(name, TermType.forceYAxis).build();
+                    if (((EquationMathForces) math).getObservationDirection().equals(Vector3bd.UNIT_X)) {
+                        if (math.getState() == null) {
+                            mathState = new TermEquationMathState.Builder(name, false, null, Vector3bd.UNIT_X).build();
+                        } else {
+                            mathState = new TermEquationMathState.Builder((TermEquationMathState) math.getState()).build();
+                        }
+                    } else if (((EquationMathForces) math).getObservationDirection().equals(Vector3bd.UNIT_Y)) {
+                        if (math.getState() == null) {
+                            mathState = new TermEquationMathState.Builder(name, false, null, Vector3bd.UNIT_Y).build();
+                        } else {
+                            mathState = new TermEquationMathState.Builder((TermEquationMathState) math.getState()).build();
+                        }
                     } else {
                         throw new IllegalArgumentException("Loads on the Z axis must be Moments! " + math);
                     }
                 } else if (math instanceof EquationMathMoments) {
                     // can use separate builder for moment equations
-                    mathState = new TermEquationMathState.Builder(name, TermType.moment).build();
+                    if (math.getState() == null) {
+                        mathState = new TermEquationMathState.Builder(name, true, null, Vector3bd.UNIT_Z).build();
+                    } else {
+                        mathState = new TermEquationMathState.Builder((TermEquationMathState) math.getState()).build();
+                    }
                 } else if (math instanceof ArbitraryEquationMath) {
                     if (math.getState() == null) {
                         mathState = new ArbitraryEquationMathState.Builder(name).build();
@@ -124,7 +127,7 @@ final public class EquationState implements DiagramState<EquationDiagram> {
             }
 
             locked = false;
-            momentPoint = null; // legacy
+//            momentPoint = null; // legacy
         }
 //        public Builder(List<String> equationNames) {
 //            equationStates = new HashMap<String, EquationMathState>();
@@ -137,9 +140,8 @@ final public class EquationState implements DiagramState<EquationDiagram> {
 //        }
 
         public Builder(EquationState state) {
-            this.equationStates = new HashMap<String, EquationMathState>(state.getEquationStates());
+            this.equationStates = new TreeMap<String, EquationMathState>(state.getEquationStates());
             this.locked = state.locked;
-            this.momentPoint = state.momentPoint;
         }
 
         public EquationState build() {
@@ -175,23 +177,19 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         if (this.locked != other.locked) {
             return false;
         }
-        if (this.momentPoint != other.momentPoint && (this.momentPoint == null || !this.momentPoint.equals(other.momentPoint))) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + (this.equationStates != null ? this.equationStates.hashCode() : 0);
-        hash = 53 * hash + (this.locked ? 1 : 0);
-        hash = 53 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
+        int hash = 5;
+        hash = 37 * hash + (this.equationStates != null ? this.equationStates.hashCode() : 0);
+        hash = 37 * hash + (this.locked ? 1 : 0);
         return hash;
     }
 
     @Override
     public String toString() {
-        return "EquationState: {locked=" + locked + ", momentPoint=" + momentPoint + ", equationStates=" + equationStates + "}";
+        return "EquationState: {locked=" + locked + ", equationStates=" + equationStates + "}";
     }
 }

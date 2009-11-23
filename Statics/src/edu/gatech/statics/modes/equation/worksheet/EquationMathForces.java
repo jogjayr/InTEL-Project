@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  */
 public class EquationMathForces extends TermEquationMath {
 
-    public EquationMathForces(String name, Vector3bd observationDirection, EquationDiagram world) {
-        super(name, observationDirection, world);
+    public EquationMathForces(String name, EquationDiagram world) {
+        super(name, world);
     }
 
     @Override

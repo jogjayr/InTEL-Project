@@ -83,7 +83,7 @@ public class ArbitraryEquationBar extends EquationBar {
     }
 
     private NodeBox buildBox(EquationNode node) {
-        if (node instanceof EmptyNode || node == null) {
+        if (node instanceof EmptyNode /*|| node == null*/) {
             return new NodeBoxEmpty((EmptyNode) node);
         } else if (node instanceof AnchoredVectorNode) {
             return new NodeBoxAnchoredVector((AnchoredVectorNode) node);
@@ -150,6 +150,10 @@ public class ArbitraryEquationBar extends EquationBar {
             keyListener = new KeyListener() {
 
                 public void keyPressed(KeyEvent event) {
+                    if (!isAdded()) {
+                        return;
+                    }
+
                     if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                             event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
 
@@ -262,6 +266,22 @@ public class ArbitraryEquationBar extends EquationBar {
 
         public NodeBoxSymbol(SymbolNode node) {
             super(node);
+            setLayoutManager(new BorderLayout());
+
+            // add a label representing the vector
+            BLabel label;
+
+            label = new BLabel("(@=b(" + node.getSymbol() + "))");
+
+            add(label, BorderLayout.CENTER);
+
+            // so that we can insert
+            add(new InsertSliver(this, true), BorderLayout.EAST);
+
+            addListener(mouseListener);
+            addListener(keyListener);
+            label.addListener(mouseListener);
+            label.addListener(keyListener);
         }
     }
 

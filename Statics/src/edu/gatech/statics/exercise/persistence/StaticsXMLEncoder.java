@@ -15,6 +15,10 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.distributed.objects.QuarterEllipseDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.TriangularDistributedForce;
+import edu.gatech.statics.modes.equation.arbitrary.AnchoredVectorNode;
+import edu.gatech.statics.modes.equation.arbitrary.EmptyNode;
+import edu.gatech.statics.modes.equation.arbitrary.OperatorNode;
+import edu.gatech.statics.modes.equation.arbitrary.SymbolNode;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.Body;
@@ -214,6 +218,48 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(SolveConnectorTask.class, namedPersistenceDelegate);
 
         setPersistenceDelegate(ExerciseState.class, new ExerciseStatePersistenceDelegate());
+
+
+        // set up delegates for Arbitrary equation nodes
+        setPersistenceDelegate(EmptyNode.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                //return super.instantiate(oldInstance, out);
+                EmptyNode node = (EmptyNode) oldInstance;
+                return new Expression(oldInstance, EmptyNode.class, "new",new Object[] {node.getParent()});
+            }
+        });
+        setPersistenceDelegate(AnchoredVectorNode.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                //return super.instantiate(oldInstance, out);
+                AnchoredVectorNode node = (AnchoredVectorNode) oldInstance;
+                return new Expression(oldInstance, AnchoredVectorNode.class, "new",new Object[] {node.getParent(), node.getAnchoredVector()});
+            }
+        });
+        setPersistenceDelegate(SymbolNode.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                //return super.instantiate(oldInstance, out);
+                SymbolNode node = (SymbolNode) oldInstance;
+                return new Expression(oldInstance, SymbolNode.class, "new",new Object[] {node.getParent(), node.getSymbol()});
+            }
+        });
+        setPersistenceDelegate(OperatorNode.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                //return super.instantiate(oldInstance, out);
+                OperatorNode node = (OperatorNode) oldInstance;
+                // operatornode takes left and right, but we give it nulls to start with
+                // so that the persistence delegate will actually fill in the left and right for us.
+                // we can't provide them here, because the left and right nodes need to be built using this operator.
+                return new Expression(oldInstance, OperatorNode.class, "new",new Object[] {node.getParent(), null, null});
+            }
+        });
 
 
         // set up an exception listener

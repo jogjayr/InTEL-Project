@@ -20,9 +20,9 @@ public class Initial2DEquationList {
     final private Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
 
     public Initial2DEquationList(EquationDiagram diagram) {
-        EquationMath sumFx = new EquationMathForces("F[X]", Vector3bd.UNIT_X, diagram);
-        EquationMath sumFy = new EquationMathForces("F[Y]", Vector3bd.UNIT_Y, diagram);
-        EquationMath sumMp = new EquationMathMoments("M[P]", Vector3bd.UNIT_Z, diagram);
+        EquationMath sumFx = new EquationMathForces("F[X]", diagram);
+        EquationMath sumFy = new EquationMathForces("F[Y]", diagram);
+        EquationMath sumMp = new EquationMathMoments("M[P]", diagram);
         equations.put(sumFx.getName(), sumFx);
         equations.put(sumFy.getName(), sumFy);
         equations.put(sumMp.getName(), sumMp);

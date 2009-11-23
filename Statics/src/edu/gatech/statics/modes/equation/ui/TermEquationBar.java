@@ -97,13 +97,13 @@ public class TermEquationBar extends EquationBar {
             // we do special handling for moment math
             startContainer.add(new BLabel("M["));
 
-            Point momentPoint = math.getDiagram().getMomentPoint();
+            Point momentPoint = ((TermEquationMathState) math.getState()).getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
 
             momentButton = new BButton(pointName, new ActionListener() {
 
                 public void actionPerformed(ActionEvent event) {
-                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram());
+                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram(), math.getState().getName());
                     selector.activate();
 
                     // activate the bar when the button is pressed.
@@ -136,10 +136,10 @@ public class TermEquationBar extends EquationBar {
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
-                setBorder(new LineBorder(highlightBorderColor,2));
+                setBorder(new LineBorder(highlightBorderColor, 2));
             } else {
                 //_borders[getState()] = regularBorder;
-                setBorder(new LineBorder(regularBorderColor,2));
+                setBorder(new LineBorder(regularBorderColor, 2));
             }
             invalidate();
         }
@@ -301,7 +301,7 @@ public class TermEquationBar extends EquationBar {
 
         // update the moment point button
         if (momentButton != null) {
-            Point momentPoint = parent.getDiagram().getMomentPoint();
+            Point momentPoint = ((TermEquationMathState) math.getState()).getMomentPoint();
             String momentName = momentPoint == null ? "?" : momentPoint.getName();
             momentButton.setText(momentName);
         }

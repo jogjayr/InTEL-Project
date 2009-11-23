@@ -30,8 +30,11 @@ import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.equation.EquationState.Builder;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
@@ -51,6 +54,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -82,9 +86,17 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * Returns the point about which the moment is being calculated.
      * @return
      */
-    public Point getMomentPoint() {
-        return getCurrentState().getMomentPoint();
-    }
+//    public Point getMomentPoint() {
+//        EquationMathState ems;
+//        for (Map.Entry<String, EquationMathState> entry : getCurrentState().getEquationStates().entrySet()) {
+//            ems = entry.getValue();
+//            if (ems instanceof TermEquationMathState) {
+//                return ((TermEquationMathState) ems).getMomentPoint();
+//            }
+//        }
+//        return null;
+////        return getCurrentState().getMomentPoint();
+//    }
 
     /**
      * This attempts to find the in-diagram Load object that corresponds to the
@@ -194,14 +206,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * the diagram constructor, so subclasses should not
      * @return
      */
-    protected Initial2DEquationList createInitialEquationList() {
-        //************
-        // Should use some non-worksheet class here?
-        // this should return an object that contains the initial equation list.
-        // this will be used to create the initial state.
-        return new Initial2DEquationList(this);
-    }
-
+//    protected Initial2DEquationList createInitialEquationList() {
+//        //************
+//        // Should use some non-worksheet class here?
+//        // this should return an object that contains the initial equation list.
+//        // this will be used to create the initial state.
+//        return new Initial2DEquationList(this);
+//    }
     /**
      * This actually updates the vectors and joints with the result of the solution.
      * The update applies to objects within the EquationDiagram, but these are references
@@ -546,10 +557,19 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             CurveUtil.renderCurve(r, ColorRGBA.blue, curvePoints);
         }
 
-        if (getCurrentState().getMomentPoint() != null) {
-            CurveUtil.renderCircle(r, ColorRGBA.blue, getCurrentState().getMomentPoint().getTranslation(),
-                    DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
+        for (EquationMathState equationMathState : getCurrentState().getEquationStates().values()) {
+            if(equationMathState instanceof TermEquationMathState) {
+                TermEquationMathState termState = (TermEquationMathState) equationMathState;
+                if (termState.getMomentPoint() != null) {
+                    CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
+                            DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
+                }
+            }
         }
+//        if (getMomentPoint() != null) {
+//            CurveUtil.renderCircle(r, ColorRGBA.blue, getMomentPoint().getTranslation(),
+//                    DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
+//        }
     }
     private SimulationObject currentHover;
 
@@ -612,48 +632,48 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     }
 
     private void showMomentArm(Load target) {
-
-        if (target instanceof Moment) {
-            target = null;
-        }
-
-        // we may get hovers onto the momentarm itself...
-        if (momentArmTarget == target || target == momentArm) {
-            return;
-        }
-
-        if (momentArm != null) {
-            //removeUserObject(momentArm);
-            momentArm = null;
-            momentArmTarget = null;
-        }
-
-        if (target == null) {
-            return;
-        }
-
-        //if(!((EquationMathMoments) sumBar.getMath()).getObservationPointSet())
-        if (getCurrentState().getMomentPoint() == null) {
-            return;
-        }
-
-        //Vector3f observationPoint = ((EquationMathMoments) sumBar.getMath()).getObservationPoint();
-        //Vector3f observationPointPos = this.momentPoint.getTranslation();
-        Point targetPoint = target.getAnchor();
-
-        // have a direction vector pointing from the observation point to the target point
-        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
-        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
-        Vector3bd armDirection = targetPoint.getPosition().subtract(getCurrentState().getMomentPoint().getPosition());
-        AnchoredVector momentArmVector = new AnchoredVector(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
-        momentArm = new VectorObject(momentArmVector);
-        momentArmTarget = target;
-
-        ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);
-        rep.setAmbient(ColorRGBA.yellow);
-        rep.setDiffuse(ColorRGBA.yellow);
-        momentArm.addRepresentation(rep);
-        momentArm.setSelectable(false);
+//
+//        if (target instanceof Moment) {
+//            target = null;
+//        }
+//
+//        // we may get hovers onto the momentarm itself...
+//        if (momentArmTarget == target || target == momentArm) {
+//            return;
+//        }
+//
+//        if (momentArm != null) {
+//            //removeUserObject(momentArm);
+//            momentArm = null;
+//            momentArmTarget = null;
+//        }
+//
+//        if (target == null) {
+//            return;
+//        }
+//
+//        //if(!((EquationMathMoments) sumBar.getMath()).getObservationPointSet())
+//        if (getMomentPoint() == null) {
+//            return;
+//        }
+//
+//        //Vector3f observationPoint = ((EquationMathMoments) sumBar.getMath()).getObservationPoint();
+//        //Vector3f observationPointPos = this.momentPoint.getTranslation();
+//        Point targetPoint = target.getAnchor();
+//
+//        // have a direction vector pointing from the observation point to the target point
+//        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1);
+//        //Vector3f armDirection = targetPoint.getTranslation().subtract(observationPointPos).mult(-1/StaticsApplication.getApp().getDrawScale());
+//        Vector3bd armDirection = targetPoint.getPosition().subtract(getMomentPoint().getPosition());
+//        AnchoredVector momentArmVector = new AnchoredVector(targetPoint, new Vector(Unit.distance, armDirection, new BigDecimal(armDirection.length())));
+//        momentArm = new VectorObject(momentArmVector);
+//        momentArmTarget = target;
+//
+//        ArrowRepresentation rep = new ArrowRepresentation(momentArm, false);
+//        rep.setAmbient(ColorRGBA.yellow);
+//        rep.setDiffuse(ColorRGBA.yellow);
+//        momentArm.addRepresentation(rep);
+//        momentArm.setSelectable(false);
 
         //addUserObject(momentArm);
     }
@@ -682,7 +702,11 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
     @Override
     protected EquationState createInitialState() {
-        EquationState.Builder builder = new EquationState.Builder(createInitialEquationList().getEquations());
+        Builder builder = new EquationState.Builder();
+        builder.getEquationStates().put("F[x]", (new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build()));
+        builder.getEquationStates().put("F[y]", (new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build()));
+        builder.getEquationStates().put("M[p]", (new TermEquationMathState.Builder("M[p]", true, null, Vector3bd.UNIT_Z).build()));
+
         if (worksheet == null) {
             worksheet = new Worksheet(this, builder.getEquationStates().size());
         }

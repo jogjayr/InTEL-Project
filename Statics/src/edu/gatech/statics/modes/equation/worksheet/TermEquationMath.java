@@ -31,15 +31,19 @@ abstract public class TermEquationMath extends EquationMath{
 
     //protected static final float TEST_ACCURACY = .022f;
     private final String name;
-    private final Vector3bd observationDirection;
     private final EquationDiagram diagram;
 
+    @Override
+    public TermEquationMathState getState() {
+        return (TermEquationMathState) super.getState();
+    }
+
     public Vector3bd getObservationDirection() {
-        return observationDirection;
+        return ((TermEquationMathState)getState()).getObservationDirection();
     }
 
     public String getAxis() {
-        if (observationDirection.dot(Vector3bd.UNIT_X).floatValue() != 0) {
+        if (getObservationDirection().dot(Vector3bd.UNIT_X).floatValue() != 0) {
             return "X";
         } else {
             return "Y";
@@ -47,10 +51,9 @@ abstract public class TermEquationMath extends EquationMath{
     }
 
     /** Creates a new instance of Equation */
-    public TermEquationMath(String name, Vector3bd observationDirection, EquationDiagram world) {
+    public TermEquationMath(String name, EquationDiagram world) {
         super(name, world);
         this.name = name;
-        this.observationDirection = observationDirection;
         this.diagram = world;
     }
 

@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.equation.ui;
 
 import com.jme.renderer.ColorRGBA;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
 import com.jmex.bui.BLabel;
@@ -14,6 +15,7 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.event.KeyEvent;
 import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseAdapter;
@@ -38,9 +40,11 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -106,6 +110,24 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     public void stateChanged() {
         super.stateChanged();
         getDiagram().getWorksheet().updateEquations();
+
+        // make sure that uiMap is consistent with our equation states
+        // ie, remove rows that are no longer present.
+        // rows are added elsewhere, though. (Should that get moved here?)
+        List<EquationMath> toRemove = new ArrayList<EquationMath>();
+        for (EquationMath equationMath : uiMap.keySet()) {
+            if (!getDiagram().getWorksheet().getEquationNames().contains(equationMath.getName())) {
+                // the entry in uiMap is NOT present in the worksheet list of names, so mark it for removal.
+                toRemove.add(equationMath);
+            }
+        }
+        for (EquationMath equationMath : toRemove) {
+            EquationUIData data = uiMap.get(equationMath);
+            // remove data
+            removeEquationData(data);
+            uiMap.remove(equationMath);
+        }
+
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.stateChanged();
         }
@@ -161,6 +183,32 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     void refreshRows() {
         equationScrollPane.layout();
+    }
+
+    private void removeEquationData(EquationUIData data) {
+
+        // look through the equation bar container for the container that has our
+        // check button and equation bar.
+        BContainer toRemove = null;
+        for (int i = 0; i < equationBarContainer.getComponentCount(); i++) {
+            BComponent component = equationBarContainer.getComponent(i);
+            if (component instanceof BContainer) {
+                // should always be an instance of BContainer, but put this check in just for safety sake
+                // this should be the barAndButtonContainer that is used below.
+                BContainer container = (BContainer) component;
+                // go through children, because order may be unclear
+                for (int j = 0; j < container.getComponentCount(); j++) {
+                    if (container.getComponent(j) == data.checkButton) {
+                        // found match
+                        toRemove = container;
+                    }
+                }
+            }
+        }
+
+        if (toRemove != null) {
+            equationBarContainer.remove(toRemove);
+        }
     }
 
     private void addEquationData(EquationMath math, final EquationUIData data) {
@@ -225,7 +273,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         data.equationBar.addListener(new KeyListener() {
 
             public void keyPressed(KeyEvent event) {
-                System.out.println("*** Key pressed "+event);
+                System.out.println("*** Key pressed " + event);
                 if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
                         event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
                     RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
@@ -244,8 +292,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         final EquationUIData data = new EquationUIData();
         data.addButton = new BButton("Add new equation", new ActionListener() {
 
-            Random rand = new Random();
-
+            //Random rand = new Random();
             public void actionPerformed(ActionEvent event) {
 
                 // TODO: Revise this so that it uses Actions rather than working between the
@@ -254,7 +301,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 getDiagram().getWorksheet().updateEquations();
                 Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
 
-                ArbitraryEquationMath math = new ArbitraryEquationMath("arbitraryEquation# " + Integer.toString(rand.nextInt()), getDiagram());
+                ArbitraryEquationMath math = new ArbitraryEquationMath("arbitraryEquation# " + UUID.randomUUID(), getDiagram());
                 equations.putAll(getDiagram().getWorksheet().getEquations());
                 equations.put(math.getName(), math);
 

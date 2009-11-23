@@ -5,7 +5,8 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,9 @@ final public class TermEquationMathState extends EquationMathState {
     final private String name;
     final private boolean locked;
     final private Map<AnchoredVector, String> terms;
-    final private TermType termType;
+    final private boolean isMoment; // denotes whether this state denotes a moment equation
+    final private Point momentPoint; // if this is a moment equation, this contains the point about which the moment is calculated
+    final private Vector3bd observationDirection; // this denotes the observation direction for this equation (partially intended for use in 3d)
 
     public Map<AnchoredVector, String> getTerms() {
         return terms;
@@ -33,7 +36,9 @@ final public class TermEquationMathState extends EquationMathState {
         name = builder.getName();
         terms = Collections.unmodifiableMap(builder.getTerms());
         locked = builder.isLocked();
-        termType = builder.getTermType();
+        isMoment = builder.getIsMoment();
+        momentPoint = builder.getMomentPoint();
+        observationDirection = builder.getObservationDirection();
     }
 
     @Override
@@ -46,8 +51,16 @@ final public class TermEquationMathState extends EquationMathState {
         return locked;
     }
 
-    public TermType getTermType() {
-        return termType;
+    public boolean isMoment() {
+        return isMoment;
+    }
+
+    public Point getMomentPoint() {
+        return momentPoint;
+    }
+
+    public Vector3bd getObservationDirection() {
+        return observationDirection;
     }
 
     static public class Builder implements edu.gatech.statics.util.Builder<TermEquationMathState> {
@@ -55,7 +68,9 @@ final public class TermEquationMathState extends EquationMathState {
         private String name;
         private boolean locked;
         private Map<AnchoredVector, String> terms = new HashMap<AnchoredVector, String>();
-        private TermType termType;
+        private boolean isMoment;
+        private Point momentPoint;
+        private Vector3bd observationDirection;
 
         /**
          * For persistence, do not use
@@ -65,16 +80,20 @@ final public class TermEquationMathState extends EquationMathState {
         public Builder() {
         }
 
-        public Builder(String name, TermType termType) {
+        public Builder(String name, boolean isMoment, Point momentPoint, Vector3bd observationDirection) {
             this.name = name;
-            this.termType = termType;
+            this.isMoment = isMoment;
+            this.momentPoint = momentPoint;
+            this.observationDirection = observationDirection;
         }
 
         public Builder(TermEquationMathState state) {
             this.name = state.getName();
             this.terms.putAll(state.getTerms());
             this.locked = state.locked;
-            this.termType = state.getTermType();
+            this.isMoment = state.isMoment;
+            this.momentPoint = state.momentPoint;
+            this.observationDirection = state.observationDirection;
         }
 
         public boolean isLocked() {
@@ -88,7 +107,7 @@ final public class TermEquationMathState extends EquationMathState {
         public void setTerms(Map<AnchoredVector, String> terms) {
             this.terms.clear();
             this.terms.putAll(terms);
-        //this.terms = terms;
+            //this.terms = terms;
         }
 
         public Map<AnchoredVector, String> getTerms() {
@@ -99,8 +118,16 @@ final public class TermEquationMathState extends EquationMathState {
             return name;
         }
 
-        public TermType getTermType() {
-            return termType;
+        public boolean getIsMoment() {
+            return isMoment;
+        }
+
+        public Point getMomentPoint() {
+            return momentPoint;
+        }
+
+        public Vector3bd getObservationDirection() {
+            return observationDirection;
         }
 
         /**
@@ -115,12 +142,26 @@ final public class TermEquationMathState extends EquationMathState {
 
         /**
          * For persistence, do not use.
-         * @param termType
+         * @param isMoment
          * @deprecated
          */
         @Deprecated
-        public void setTermType(TermType termType) {
-            this.termType = termType;
+        public void setIsMoment(boolean isMoment) {
+            this.isMoment = isMoment;
+        }
+
+        public void setMomentPoint(Point momentPoint) {
+            this.momentPoint = momentPoint;
+        }
+
+        /**
+         * For persistence, do not use.
+         * @param observationDirection
+         * @deprecated
+         */
+        @Deprecated
+        public void setObservationDirection(Vector3bd observationDirection) {
+            this.observationDirection = observationDirection;
         }
 
         public TermEquationMathState build() {
@@ -146,7 +187,13 @@ final public class TermEquationMathState extends EquationMathState {
         if (this.terms != other.terms && (this.terms == null || !this.terms.equals(other.terms))) {
             return false;
         }
-        if (this.termType != other.termType) {
+        if (this.isMoment != other.isMoment) {
+            return false;
+        }
+        if (this.momentPoint != other.momentPoint && (this.momentPoint == null || !this.momentPoint.equals(other.momentPoint))) {
+            return false;
+        }
+        if (this.observationDirection != other.observationDirection && (this.observationDirection == null || !this.observationDirection.equals(other.observationDirection))) {
             return false;
         }
         return true;
@@ -154,19 +201,19 @@ final public class TermEquationMathState extends EquationMathState {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 29 * hash + (this.locked ? 1 : 0);
-        hash = 29 * hash + (this.terms != null ? this.terms.hashCode() : 0);
-        hash = 29 * hash + (this.termType != null ? this.termType.hashCode() : 0);
+        int hash = 7;
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.locked ? 1 : 0);
+        hash = 97 * hash + (this.terms != null ? this.terms.hashCode() : 0);
+        hash = 97 * hash + (this.isMoment ? 1 : 0);
+        hash = 97 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
+        hash = 97 * hash + (this.observationDirection != null ? this.observationDirection.hashCode() : 0);
         return hash;
     }
 
-    
-
     @Override
     public String toString() {
-        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + "}";
+        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment="+isMoment+", momentPoint="+momentPoint+", observationDirection="+observationDirection+"}";
     }
 
     public Builder getBuilder() {

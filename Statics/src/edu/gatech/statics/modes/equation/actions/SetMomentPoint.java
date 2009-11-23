@@ -6,6 +6,8 @@ package edu.gatech.statics.modes.equation.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState.Builder;
 import edu.gatech.statics.objects.Point;
 
 /**
@@ -15,9 +17,11 @@ import edu.gatech.statics.objects.Point;
 public class SetMomentPoint implements DiagramAction<EquationState> {
 
     private final Point momentPoint;
+    private final String mathName;
 
-    public SetMomentPoint(Point momentPoint) {
+    public SetMomentPoint(Point momentPoint, String mathName) {
         this.momentPoint = momentPoint;
+        this.mathName = mathName;
     }
 
     public EquationState performAction(EquationState oldState) {
@@ -25,7 +29,12 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
         if (oldState.isLocked()) {
             return oldState;
         }
-        builder.setMomentPoint(momentPoint);
+        TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
+        Builder mathBuilder = math.getBuilder();
+        mathBuilder.setMomentPoint(momentPoint);
+
+        builder.putEquationState(mathBuilder.build());
+
         return builder.build();
     }
 

@@ -12,7 +12,6 @@ import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.solver.EquationSystem;
@@ -21,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class Worksheet {
 
-    final private Map<String, EquationMath> equations = new HashMap<String, EquationMath>();
+    final private Map<String, EquationMath> equations = new TreeMap<String, EquationMath>();
     final private EquationSystem equationSystem;
     final private EquationDiagram diagram;
     private Map<Quantity, Float> solution = null;
@@ -65,13 +65,12 @@ public class Worksheet {
             EquationMathState mathState = diagram.getCurrentState().getEquationStates().get(mathName);
 
             if (mathState instanceof TermEquationMathState) {
-                if (((TermEquationMathState) mathState).getTermType() == TermType.forceXAxis) {
-                    equations.put(mathName, new EquationMathForces(mathName, Vector3bd.UNIT_X, diagram));
-                } else if (((TermEquationMathState) mathState).getTermType() == TermType.forceYAxis) {
-                    equations.put(mathName, new EquationMathForces(mathName, Vector3bd.UNIT_Y, diagram));
-                } else if (((TermEquationMathState) mathState).getTermType() == TermType.moment) {
-                    equations.put(mathName, new EquationMathMoments(mathName, Vector3bd.UNIT_Z, diagram));
-                } else {
+                TermEquationMathState state = (TermEquationMathState)mathState;
+                if (!state.isMoment()) {
+                    equations.put(mathName, new EquationMathForces(mathName, diagram));
+                } else if (state.isMoment()) {
+                    equations.put(mathName, new EquationMathMoments(mathName, diagram));
+                }  else {
                     throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathName));
                 }
             } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof ArbitraryEquationMathState) {
