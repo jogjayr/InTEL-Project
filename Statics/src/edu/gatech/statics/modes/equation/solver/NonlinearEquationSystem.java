@@ -55,9 +55,9 @@ public class NonlinearEquationSystem {
         List<Polynomial> polys = new ArrayList<Polynomial>(system.values());
         List<Polynomial> basis = new BuchbergerAlgorithm().findBasis(polys);
 
-        for (Polynomial polynomial : basis) {
-            System.out.println("basis: "+polynomial);
-        }
+//        for (Polynomial polynomial : basis) {
+//            System.out.println("basis: "+polynomial);
+//        }
 
         // collect all linear polynomials
         List<Polynomial> linearPolys = new ArrayList<Polynomial>();
