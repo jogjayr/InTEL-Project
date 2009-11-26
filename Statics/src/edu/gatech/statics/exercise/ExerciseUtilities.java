@@ -12,6 +12,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.util.Dimension;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 
 /**
@@ -98,11 +99,15 @@ public class ExerciseUtilities {
         BLabel textLabel;
 
         if (Exercise.getExercise().isExerciseFinished()) {
-            textLabel = new BLabel("CONGRATULATIONS! You have solved this exercise. " +
-                    "Your work has automatically been submitted.");
+            if (StaticsApplication.getApp().isGraded()) {
+                textLabel = new BLabel("CONGRATULATIONS! You have solved this exercise. " +
+                        "Your work has automatically been submitted.");
+                
+            } else {
+                textLabel = new BLabel("CONGRATULATIONS! You have solved this exercise.");
+            }
         } else {
-            textLabel = new BLabel("You have not finished the exercise." +
-                    "Your progress has already been submitted.");
+            textLabel = new BLabel("");
         }
 
         BContainer textContainer = new BContainer(new BorderLayout());
