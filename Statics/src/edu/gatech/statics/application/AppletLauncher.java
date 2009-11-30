@@ -87,7 +87,7 @@ public class AppletLauncher extends StaticsApplet {
 
         // by default, have graded mode be true.
         // if testing mode is set, let graded be false.
-        if(testingMode == null) {
+        if(testingMode == null && !userIDString.equals("0")) {
             getApplication().setGraded(true);
         }
 

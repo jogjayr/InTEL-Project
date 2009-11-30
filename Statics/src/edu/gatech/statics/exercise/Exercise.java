@@ -363,7 +363,7 @@ public abstract class Exercise {
                 }
             }
         }
-        if (satisfied && !isExerciseFinished()) {
+        if (satisfied && !finished) {
             finishExercise();
         }
     }
@@ -374,15 +374,16 @@ public abstract class Exercise {
      * @return
      */
     public boolean isExerciseFinished() {
+        testTasks();
         return finished;
     }
 
     protected void finishExercise() {
         finished = true;
 
-        if (StaticsApplication.getApp().isApplet()) {
-            ExerciseUtilities.showCompletionPopup();
-        }
+//        if (StaticsApplication.getApp().isApplet()) {
+        ExerciseUtilities.showCompletionPopup();
+//        }
     }
 
     /**

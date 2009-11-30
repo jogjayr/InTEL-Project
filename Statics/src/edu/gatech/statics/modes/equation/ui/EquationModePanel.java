@@ -23,7 +23,9 @@ import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
@@ -36,7 +38,6 @@ import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.ContactPoint;
-import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -391,15 +392,29 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 solutionContainer.add(entryLabel);
             }
 
+        }
+//        else {
+//            boolean allSolved = true;
+//            for (EquationMath math : uiMap.keySet()) {
+//                if (!math.isLocked()) {
+//                    allSolved = false;
+//                }
+//            }
+//            if (allSolved) {
+//                InterfaceRoot.getInstance().setStaticsFeedback("There is nothing more to solve");
+//            }
+//        }
+
+        // do a little check here for submission.
+        if (solution == null) {
+            Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
         } else {
-            boolean allSolved = true;
-            for (EquationMath math : uiMap.keySet()) {
-                if (!math.isLocked()) {
-                    allSolved = false;
-                }
-            }
-            if (allSolved) {
-                InterfaceRoot.getInstance().setStaticsFeedback("There is nothing more to solve");
+            Logger.getLogger("Statics").info("system solve: PASSED!");
+            //StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
+            if (Exercise.getExercise().isExerciseFinished()) {
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_done");
+            } else {
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_not_done");
             }
         }
     }

@@ -172,17 +172,17 @@ public class Worksheet {
         }
 
         // do a little check here for submission.
-        if (solution == null) {
-            Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
-        } else {
-            Logger.getLogger("Statics").info("system solve: PASSED!");
-            //StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
-            if (Exercise.getExercise().isExerciseFinished()) {
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_done");
-            } else {
-                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_not_done");
-            }
-        }
+//        if (solution == null) {
+//            Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
+//        } else {
+//            Logger.getLogger("Statics").info("system solve: PASSED!");
+//            //StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
+//            if (Exercise.getExercise().isExerciseFinished()) {
+//                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_done");
+//            } else {
+//                StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_not_done");
+//            }
+//        }
 
         return solution;
     }
