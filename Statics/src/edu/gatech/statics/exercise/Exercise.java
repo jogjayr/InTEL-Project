@@ -167,7 +167,6 @@ public abstract class Exercise {
     public void setProblemID(int problemID) {
         this.problemID = problemID;
     }
-
 //    public String getName() {
 //        return name;
 //    }
@@ -176,7 +175,6 @@ public abstract class Exercise {
 //        this.name = name;
 //    }
 //    private String description;
-
 //    public String getFullDescription() {
 //
 //        StringBuffer taskString = new StringBuffer();
@@ -200,7 +198,6 @@ public abstract class Exercise {
 //                taskString +
 //                "</body></html>";
 //    }
-
 //    public void setDescription(String description) {
 //        this.description = description;
 //    }
@@ -381,9 +378,10 @@ public abstract class Exercise {
     protected void finishExercise() {
         finished = true;
 
-//        if (StaticsApplication.getApp().isApplet()) {
-        ExerciseUtilities.showCompletionPopup();
-//        }
+        // don't show popup if the tasks are empty
+        if (!tasks.isEmpty()) {
+            ExerciseUtilities.showCompletionPopup();
+        }
     }
 
     /**

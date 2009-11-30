@@ -6,6 +6,7 @@ package edu.gatech.statics.modes.equation.solver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +15,11 @@ import java.util.Map;
  *
  * @author Calvin Ashmore
  */
-public class NonlinearEquationSystem {
+public class NonlinearEquationSystem implements EquationSystem {
 
     private Map<Integer, Polynomial> system = new HashMap<Integer, Polynomial>();
+    private Map<String, Float> solution;
+    private boolean processed;
 
     private Polynomial getRow(int equation) {
         Polynomial row = system.get(equation);
@@ -27,45 +30,36 @@ public class NonlinearEquationSystem {
         return row;
     }
 
-    public void addLinearTerm(int equation, float term, String symbol) {
-        Polynomial row = getRow(equation);
+    public void addTerm(int equationId, EquationTerm term) {
+        Polynomial row = getRow(equationId);
+        Polynomial.Term polyTerm;
 
-        if (symbol == null) {
-            // constant term
-            row.addTerm(new Polynomial.Term(Arrays.<Polynomial.Symbol>asList()), term);
+        if (term instanceof EquationTerm.Constant) {
+            polyTerm = new Polynomial.Term(Collections.<Polynomial.Symbol>emptyList());
+        } else if (term instanceof EquationTerm.Symbol) {
+            String symbolName = ((EquationTerm.Symbol) term).getName();
+            polyTerm = new Polynomial.Term(Arrays.asList(new Polynomial.Symbol(symbolName, 1)));
+        } else if (term instanceof EquationTerm.Polynomial) {
+            Map<String, Integer> powers = ((EquationTerm.Polynomial) term).getPowers();
+            polyTerm = new Polynomial.Term(powers);
         } else {
-            // symbol term
-            row.addTerm(new Polynomial.Term(Arrays.asList(new Polynomial.Symbol(symbol, 1))), term);
+            throw new IllegalArgumentException("Invalid equation term provided: " + term.getClass());
         }
+        row.addTerm(polyTerm, term.getCoefficient());
     }
 
-    public void addProductTerm(int equation, float term, String... symbols) {
-        Polynomial row = getRow(equation);
-
-        List<Polynomial.Symbol> termSymbols = new ArrayList<Polynomial.Symbol>();
-        for (String symbolName : symbols) {
-            termSymbols.add(new Polynomial.Symbol(symbolName, 1));
-        }
-
-        row.addTerm(new Polynomial.Term(termSymbols), term);
-    }
-
-    public void process() {
+    private void process() {
 
         List<Polynomial> polys = new ArrayList<Polynomial>(system.values());
         List<Polynomial> basis = new BuchbergerAlgorithm().findBasis(polys);
 
-//        for (Polynomial polynomial : basis) {
-//            System.out.println("basis: "+polynomial);
-//        }
+        if (basis == null) {
+            processed = true;
+            return;
+        }
 
-        // collect all linear polynomials
         List<Polynomial> linearPolys = new ArrayList<Polynomial>();
-//        for (Polynomial polynomial : polys) {
-//            if (polynomial.getMaxDegree() == 1) {
-//                linearPolys.add(polynomial);
-//            }
-//        }
+
         for (Polynomial polynomial : basis) {
             if (polynomial.getMaxDegree() == 1) {
                 linearPolys.add(polynomial);
@@ -73,24 +67,43 @@ public class NonlinearEquationSystem {
         }
 
         // we have a list of linear polynomials. Attempt to build linear system from them...
-        EquationSystem linearSystem = new EquationSystem(linearPolys.size());
+        LinearEquationSystem linearSystem = new LinearEquationSystem();
         int row = 0;
         for (Polynomial polynomial : linearPolys) {
             for (Polynomial.Term term : polynomial.getAllTerms()) {
-                float coefficient = (float)polynomial.getCoefficient(term);
+                double coefficient = polynomial.getCoefficient(term);
                 if (term.degree() == 1) {
                     // term is linear
-                    linearSystem.addTerm(row, coefficient, term.getSymbols().get(0).getName());
+                    linearSystem.addTerm(row, new EquationTerm.Symbol(coefficient, term.getSymbols().get(0).getName()));
                 } else {
                     // term is constant (it must be due to linearity)
-                    linearSystem.addTerm(row, coefficient, null);
+                    linearSystem.addTerm(row, new EquationTerm.Constant(coefficient));
                 }
             }
             row++;
         }
 
-        linearSystem.process();
-        linearSystem.isSolvable();
-        System.out.println(linearSystem.solve());
+        solution = linearSystem.solve();
+        processed = true;
+    }
+
+    public boolean isSolvable() {
+        if (!processed) {
+            process();
+        }
+        return solution != null;
+    }
+
+    public Map<String, Float> solve() {
+        if (!processed) {
+            process();
+        }
+        return solution;
+    }
+
+    public void resetTerms() {
+        system.clear();
+        solution = null;
+        processed = false;
     }
 }

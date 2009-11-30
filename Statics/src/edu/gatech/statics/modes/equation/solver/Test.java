@@ -18,15 +18,14 @@ import java.util.Map;
 public class Test {
     public static void main(String args[]) {
         
-        EquationSystem system = new EquationSystem(3);
-        system.addTerm(0, -1, "v");
-        system.addTerm(0, 123f, null);
+        LinearEquationSystem system = new LinearEquationSystem();
+        system.addTerm(0, new EquationTerm.Symbol(-1, "v"));
+        system.addTerm(0, new EquationTerm.Constant(123f));
+
+        system.addTerm(1, new EquationTerm.Symbol(-1*.17f, "v"));
+        system.addTerm(1, new EquationTerm.Constant(123f*.17f));
         
-        system.addTerm(1, -1*.17f, "v");
-        system.addTerm(1, 123*.17f, null);
         
-        
-        system.process();
         System.out.println(system.isSolvable());
         Map<String, Float> solution = system.solve();
         System.out.println(solution);
@@ -58,7 +57,7 @@ public class Test {
         System.out.print(M2);
         System.out.println();*/
         
-        /*EquationSystem system = new EquationSystem(3);
+        /*LinearEquationSystem system = new LinearEquationSystem(3);
         system.addTerm(0, 1, "Cx");
         system.addTerm(0, .12f, "T");
         

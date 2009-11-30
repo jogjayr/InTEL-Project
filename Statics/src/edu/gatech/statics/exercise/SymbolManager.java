@@ -6,6 +6,7 @@ package edu.gatech.statics.exercise;
 
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantity;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class SymbolManager {
 
     private List<String> symbols = new ArrayList<String>();
     private List<AnchoredVector> symbolicLoads = new ArrayList<AnchoredVector>();
+    private List<ConstantObject> symbolicConstants = new ArrayList<ConstantObject>();
 
     @Override
     public String toString() {
@@ -33,6 +35,22 @@ public class SymbolManager {
 
     public List<String> getSymbols() {
         return Collections.unmodifiableList(symbols);
+    }
+
+    public void addSymbol(ConstantObject obj) {
+        if (!symbols.contains(obj.getName())) {
+            symbols.add(obj.getName());
+            symbolicConstants.add(obj);
+        }
+    }
+
+    public ConstantObject getConstant(String name) {
+        for (ConstantObject constantObject : symbolicConstants) {
+            if (constantObject.getName().equals(name)) {
+                return constantObject;
+            }
+        }
+        return null;
     }
 
     /**

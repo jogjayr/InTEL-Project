@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.objects;
 
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.math.Unit;
@@ -39,6 +40,7 @@ public class ConstantObject extends SimulationObject implements ResolvableByName
         quantity.setDiagramValue(value);
 
         setName(name);
+        Exercise.getExercise().getSymbolManager().addSymbol(this);
     }
 
     /**
@@ -51,6 +53,7 @@ public class ConstantObject extends SimulationObject implements ResolvableByName
         quantity = new Quantity(unit, name);
 
         setName(name);
+        Exercise.getExercise().getSymbolManager().addSymbol(this);
     }
 
     @Override

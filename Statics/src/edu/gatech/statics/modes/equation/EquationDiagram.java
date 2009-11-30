@@ -41,6 +41,7 @@ import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
@@ -53,6 +54,7 @@ import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +99,6 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 //        return null;
 ////        return getCurrentState().getMomentPoint();
 //    }
-
     /**
      * This attempts to find the in-diagram Load object that corresponds to the
      * given AnchoredVector.
@@ -308,8 +309,6 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                         } else {
                             throw new IllegalArgumentException("Unknown equation math state type! " + equationMathState);
                         }
-
-
                     }
                 }
             }
@@ -328,6 +327,21 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                         // okay, our measure actually is actually solved for in the solution
                         measure.updateQuantityValue(new BigDecimal(entry.getValue()));
                         measure.setKnown(true);
+                    }
+                }
+            }
+
+            // the
+            if (obj instanceof ConstantObject) {
+                ConstantObject constant = (ConstantObject) obj;
+                if (constant.getQuantity().isKnown()) {
+                    continue;
+                }
+
+                for (Map.Entry<Quantity, Float> entry : values.entrySet()) {
+                    if (constant.getQuantity().getSymbolName().equals(entry.getKey().getSymbolName())) {
+                        constant.getQuantity().setDiagramValue(new BigDecimal(entry.getValue()));
+                        constant.getQuantity().setKnown(true);
                     }
                 }
             }
@@ -558,7 +572,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         for (EquationMathState equationMathState : getCurrentState().getEquationStates().values()) {
-            if(equationMathState instanceof TermEquationMathState) {
+            if (equationMathState instanceof TermEquationMathState) {
                 TermEquationMathState termState = (TermEquationMathState) equationMathState;
                 if (termState.getMomentPoint() != null) {
                     CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
@@ -674,7 +688,6 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 //        rep.setDiffuse(ColorRGBA.yellow);
 //        momentArm.addRepresentation(rep);
 //        momentArm.setSelectable(false);
-
         //addUserObject(momentArm);
     }
     private boolean showingCurve = false;
@@ -708,7 +721,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         builder.getEquationStates().put("M[p]", (new TermEquationMathState.Builder("M[p]", true, null, Vector3bd.UNIT_Z).build()));
 
         if (worksheet == null) {
-            worksheet = new Worksheet(this, builder.getEquationStates().size());
+            worksheet = new Worksheet(this);
         }
         return builder.build();
     }

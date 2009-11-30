@@ -153,21 +153,20 @@ public class TestNonlinear {
 //        System.out.println("\n\n");
 
         NonlinearEquationSystem solver = new NonlinearEquationSystem();
-        solver.addLinearTerm(0, 1, "f1");
-        solver.addLinearTerm(0, -1, "f2");
-        solver.addLinearTerm(1, 1, "N1");
-        solver.addLinearTerm(1, 1, "N2");
-        solver.addLinearTerm(1, -100, null);
-        solver.addLinearTerm(2, 10, "N2");
-        solver.addLinearTerm(2, -10*50, null);
-        solver.addLinearTerm(3, 1, "f1");
-        solver.addProductTerm(3, -1, "N1","mu");
-        solver.addLinearTerm(4, 1, "f2");
-        solver.addProductTerm(4, -1, "N2","mu");
-        solver.addLinearTerm(5, 1, "f1");
-        solver.addLinearTerm(5, -10, null);
+        solver.addTerm(0, new EquationTerm.Symbol(1, "f1"));
+        solver.addTerm(0, new EquationTerm.Symbol(-1, "f2"));
+        solver.addTerm(1, new EquationTerm.Symbol(1, "N1"));
+        solver.addTerm(1, new EquationTerm.Symbol(1, "N2"));
+        solver.addTerm(1, new EquationTerm.Constant(-100));
+        solver.addTerm(2, new EquationTerm.Symbol(10, "N2"));
+        solver.addTerm(2, new EquationTerm.Constant(-10*50));
+        solver.addTerm(3, new EquationTerm.Symbol(1, "f1"));
+        solver.addTerm(3, new EquationTerm.Polynomial(-1, "N1", "mu"));
+        solver.addTerm(4, new EquationTerm.Symbol(1, "f2"));
+        solver.addTerm(4, new EquationTerm.Polynomial(-1, "N2", "mu"));
+        solver.addTerm(5, new EquationTerm.Symbol(1, "f1"));
+        solver.addTerm(5, new EquationTerm.Constant(-10));
 
-
-        solver.process();
+        System.out.println(solver.solve());
     }
 }

@@ -114,9 +114,14 @@ public class BuchbergerAlgorithm {
         // make sure that the polynomials in the basis are maximally reduced.
         // that is- reduce the polynomials in the basis with respect to all the other polynomials in the basis.
         List<Polynomial> furtherBasis = new ArrayList<Polynomial>();
-        for (Polynomial polynomial1 : basis) {
-            for (Polynomial polynomial2 : basis) {
-                if (polynomial1.equals(polynomial2)) {
+        for(int i=0;i<basis.size();i++) {
+            Polynomial polynomial1 = basis.get(i);
+            for(int j=0;j<basis.size();j++) {
+                Polynomial polynomial2 = basis.get(j);
+//        for (Polynomial polynomial1 : basis) {
+//            for (Polynomial polynomial2 : basis) {
+                //if (polynomial1.equals(polynomial2)) {
+                if(i == j) {
                     continue;
                 }
 
