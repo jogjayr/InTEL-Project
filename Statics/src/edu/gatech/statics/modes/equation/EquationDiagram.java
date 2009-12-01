@@ -75,6 +75,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return worksheet;
     }
 
+    public FreeBodyDiagram getFBD() {
+        return fbd;
+    }
+
     /**
      * Sets the point about which the moment will be calculated.
      * This also notifies the panel to update its value for the moment point.

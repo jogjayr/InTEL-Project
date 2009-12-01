@@ -14,9 +14,9 @@ import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import java.util.List;
 import java.util.logging.Logger;
-
 /**
  * EquationMath is the logical end of managing the equations in the equation mode.
  * Specifically, the job of this class is to perform the equation check, to make sure
@@ -49,6 +49,13 @@ public class ArbitraryEquationMath extends EquationMath {
         List<AnchoredVector> allLoads = diagram.getDiagramLoads();
 
         Logger.getLogger("Statics").info("check: allForces: " + allLoads);
+
+        FrictionEquationRecognizer fer = new FrictionEquationRecognizer();
+
+        if(!fer.isValid(state, diagram.getFBD())){
+            Logger.getLogger("Statics").info("check: arbitrary equation" + state + " does not evaluate correctly \n");
+            return false;
+        }
 
 //        for (AnchoredVector load : allLoads) {
 //
