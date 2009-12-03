@@ -5,17 +5,14 @@
 package edu.gatech.statics.modes.equation.arbitrary;
 
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.Connector;
-import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +32,7 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
         // return null if something is incorrect.
 
         Map<String, EquationNode> nodeMap = new HashMap<String, EquationNode>();
-        if (state.getLeftSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode)state.getLeftSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
+        if (state.getLeftSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode) state.getLeftSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
             //if left side is valid format
             nodeMap.put("f", state.getLeftSide());
 
@@ -47,14 +44,18 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                     //if first element of right side is valid
                     nodeMap.put("mu", opNode.getLeftNode());
 
-                    if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
+                    if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode) opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                         //if second element of right side is valid
                         nodeMap.put("N", opNode.getRightNode());
 
                     } else {
+                        Logger.getLogger("Statics").info("check: improper friction equation");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                         return null;
                     }
-                } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
+                } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode) opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                     //if first element of right side is valid but reversed
                     nodeMap.put("N", opNode.getLeftNode());
 
@@ -63,12 +64,24 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                         nodeMap.put("mu", opNode.getRightNode());
 
                     } else {
+                        Logger.getLogger("Statics").info("check: improper friction equation");
+                        Logger.getLogger("Statics").info("check: FAILED");
+
+                        StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                         return null;
                     }
                 } else {
+                    Logger.getLogger("Statics").info("check: improper friction equation");
+                    Logger.getLogger("Statics").info("check: FAILED");
+
+                    StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
                 }
             } else {
+                Logger.getLogger("Statics").info("check: improper friction equation");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                 return null;
             }
         } else if (state.getLeftSide() instanceof OperatorNode) {
@@ -79,14 +92,18 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                 //if first element of right side is valid
                 nodeMap.put("mu", opNode.getLeftNode());
 
-                if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
+                if (opNode.getRightNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode) opNode.getRightNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                     //if second element of right side is valid
                     nodeMap.put("N", opNode.getRightNode());
 
                 } else {
+                    Logger.getLogger("Statics").info("check: improper friction equation");
+                    Logger.getLogger("Statics").info("check: FAILED");
+
+                    StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
                 }
-            } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode)opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
+            } else if (opNode.getLeftNode() instanceof AnchoredVectorNode && ((AnchoredVectorNode) opNode.getLeftNode()).getAnchoredVector().getSymbolName().charAt(0) == 'N') {
                 //if first element of right side is valid but reversed
                 nodeMap.put("N", opNode.getLeftNode());
 
@@ -95,16 +112,28 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                     nodeMap.put("mu", opNode.getRightNode());
 
                 } else {
+                    Logger.getLogger("Statics").info("check: improper friction equation");
+                    Logger.getLogger("Statics").info("check: FAILED");
+
+                    StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
                 }
             } else {
+                Logger.getLogger("Statics").info("check: improper friction equation");
+                Logger.getLogger("Statics").info("check: FAILED");
+
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                 return null;
             }
-            if (state.getRightSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode)state.getRightSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
+            if (state.getRightSide() instanceof AnchoredVectorNode && ((AnchoredVectorNode) state.getRightSide()).getAnchoredVector().getSymbolName().charAt(0) == 'f') {
                 //if right side is valid format but reversed
                 nodeMap.put("f", state.getRightSide());
             }
         } else {
+            Logger.getLogger("Statics").info("check: improper friction equation");
+            Logger.getLogger("Statics").info("check: FAILED");
+
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
             return null;
         }
         return nodeMap;
@@ -132,9 +161,6 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
         SymbolNode muNode = (SymbolNode) interpretation.get("mu");
         List pList = d.getConnectorsAtPoint(fNode.getAnchoredVector().getAnchor());
         ContactPoint cp = null;
-        /////////////////////////////
-        //TODO ADD CHECK FOR MUNODE//
-        /////////////////////////////
 
         //is this point a ContactPoint?
         for (Object p : pList)//Object p : cp){
@@ -149,7 +175,11 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
             return false;
         }
 
-        if(!muNode.getSymbol().equals(cp.getFrictionCoefficient().getName())) {
+        if (!muNode.getSymbol().equals(cp.getFrictionCoefficient().getName())) {
+            Logger.getLogger("Statics").info("check: wrong friction coefficient selected. Expected: " + cp.getFrictionCoefficient());
+            Logger.getLogger("Statics").info("check: FAILED");
+
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_coefficient");
             return false;
         }
 

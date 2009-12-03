@@ -75,6 +75,12 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return worksheet;
     }
 
+    /**
+     * Used for equation solving in ArbitraryEquationMath. Do not use!
+     * @return
+     * @deprecated
+     */
+    @Deprecated
     public FreeBodyDiagram getFBD() {
         return fbd;
     }
