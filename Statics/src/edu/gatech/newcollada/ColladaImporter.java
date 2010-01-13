@@ -2586,9 +2586,11 @@ public class ColladaImporter {
         Texture t0 = TextureManager.loadTexture(textureURL, mat.getMinFilterConstant(), mat.getMagFilterConstant());
         //Texture t0 = TextureManager.loadTexture(textureURL);
         if (t0 != null) {
-            // Clamping for now, there is probably a section that defines how
-            // wrapping should be handled.
-            t0.setWrap(Texture.WM_ECLAMP_S_ECLAMP_T);
+            // ******** CHANGE:
+            // Wrap by default.
+            // This code is modified from the original, which clamped by default.
+            //t0.setWrap(Texture.WM_ECLAMP_S_ECLAMP_T);
+            t0.setWrap(Texture.WM_WRAP_S_WRAP_T);
             ts.setTexture(t0);
         } else {
             if (!squelch) {
