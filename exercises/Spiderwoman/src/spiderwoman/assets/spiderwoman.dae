@@ -121,7 +121,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
   </library_lights>
   <library_images>
     <image id="file1" name="file1">
-      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/brickDark.tif</init_from>
+      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/brickDark.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
@@ -130,7 +130,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       </extra>
     </image>
     <image id="file2" name="file2">
-      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/brick.tif</init_from>
+      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/brick.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
@@ -139,7 +139,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       </extra>
     </image>
     <image id="file3" name="file3">
-      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/window.tif</init_from>
+      <init_from>file:///C:/Projects/InTEL/exercises/Spiderwoman/window.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
