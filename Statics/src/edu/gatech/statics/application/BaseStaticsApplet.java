@@ -87,6 +87,8 @@ public abstract class BaseStaticsApplet extends Applet {
      */
     @Override
     public void init() {
+
+        logger.info("Display classloader: "+Display.class.getClassLoader());
         
         logger.info("Applet initialized.");
         setLayout(new BorderLayout());
@@ -111,7 +113,9 @@ public abstract class BaseStaticsApplet extends Applet {
 
             @Override
             public void run() {
-                
+
+                logger.info("Display classloader: "+Display.class.getClassLoader());
+        
                 displayParent = new Canvas();
                 displayParent.setSize(getWidth(), getHeight());
                 add(displayParent);
