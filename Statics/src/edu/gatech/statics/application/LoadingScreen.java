@@ -26,13 +26,13 @@ public class LoadingScreen extends Node {
         String imagePath = "rsrc/logo.png";
 
         URL textureLoc = PointRepresentation.class.getClassLoader().getResource(imagePath);
-        Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR, Texture.FM_LINEAR);
+        Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
 
         Quad pointQuad = new Quad("", .5f, .5f);
         TextureState textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
         textureState.setTexture(pointTexture);
         pointQuad.setRenderState(textureState);
-        pointQuad.setLightCombineMode(LightState.OFF);
+        pointQuad.setLightCombineMode(LightCombineMode.Off);
         pointQuad.setLocalTranslation(0, 0, 1);
 
         pointQuad.setLocalScale(new Vector3f(-3.0f, 3.0f, 1));

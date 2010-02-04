@@ -20,6 +20,8 @@
 
 package com.jmex.bui;
 
+import com.jme.intersection.CollisionResults;
+import com.jme.scene.Spatial;
 import java.awt.Canvas;
 
 import com.jme.input.KeyInput;

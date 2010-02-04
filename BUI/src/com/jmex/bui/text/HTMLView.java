@@ -227,7 +227,7 @@ public class HTMLView extends BComponent
             Insets insets = getInsets();
             //_rendered.render(renderer, insets.left, insets.bottom, _alpha);
             _rendered.render(renderer, 
-                    0, 0, _rendered.getWidth(), _rendered.getHeight(),
+                    0, 0, (int) _rendered.getWidth(), (int) _rendered.getHeight(),
                     insets.left, insets.bottom, _alpha);
         }
     }

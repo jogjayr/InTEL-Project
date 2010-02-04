@@ -387,4 +387,12 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     public void setHardwareCursor(URL file, Image[] images, int[] delays, int xHotspot, int yHotspot) {
         ; // ignore!
     }
+
+    @Override
+    public void clear() {
+    }
+
+    @Override
+    public void clearButton(int buttonCode) {
+    }
 }

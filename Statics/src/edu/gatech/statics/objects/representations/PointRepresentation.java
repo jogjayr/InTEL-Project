@@ -14,7 +14,7 @@ import com.jme.image.Texture;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
@@ -56,20 +56,20 @@ public class PointRepresentation extends Representation/*<Point>*/ {
         super(target);
         setLayer(RepresentationLayer.points);
         ZBufferState bufState = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
-        bufState.setFunction(ZBufferState.CF_ALWAYS);
+        bufState.setFunction(ZBufferState.TestFunction.Always);
         setRenderState(bufState);
         
-        AlphaState alphaState = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+        BlendState alphaState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
         alphaState.setBlendEnabled( true );
-        alphaState.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-        alphaState.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+        alphaState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        alphaState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
         alphaState.setTestEnabled( true );
-        alphaState.setTestFunction( AlphaState.TF_ALWAYS );
+        alphaState.setTestFunction( BlendState.TestFunction.Always );
         setRenderState(alphaState);
         
         
         URL textureLoc = PointRepresentation.class.getClassLoader().getResource(imagePath);
-        Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MM_LINEAR,Texture.FM_LINEAR);
+        Texture pointTexture = TextureManager.loadTexture(textureLoc, Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
         
         pointQuad = new Quad("",.5f,.5f);
         TextureState textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();

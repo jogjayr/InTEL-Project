@@ -410,17 +410,27 @@ public abstract class BRootNode extends Geometry
         }
     }
 
-    // documentation inherited
-    public void findCollisions (Spatial scene, CollisionResults results)
-    {
-        // nothing doing
+
+    @Override
+    public void findCollisions(Spatial scene, CollisionResults results, int requiredOnBits) {
     }
 
-    // documentation inherited
-    public boolean hasCollision (Spatial scene, boolean checkTriangles)
-    {
-        return false; // nothing doing
+    @Override
+    public boolean hasCollision(Spatial scene, boolean checkTriangles, int requiredOnBits) {
+        return false;
     }
+
+//    // documentation inherited
+//    public void findCollisions (Spatial scene, CollisionResults results)
+//    {
+//        // nothing doing
+//    }
+//
+//    // documentation inherited
+//    public boolean hasCollision (Spatial scene, boolean checkTriangles)
+//    {
+//        return false; // nothing doing
+//    }
 
     /**
      * Sets the color of the shade behind the first active modal window.

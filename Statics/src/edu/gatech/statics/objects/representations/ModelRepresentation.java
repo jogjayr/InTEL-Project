@@ -12,9 +12,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
 import com.jme.scene.Spatial;
-import com.jme.scene.batch.GeomBatch;
 import com.jme.scene.state.RenderState;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
@@ -46,7 +44,7 @@ public class ModelRepresentation extends Representation {
     public void setModelRotation(Matrix3f rotation) {
         modelNode.setLocalRotation(rotation);
     }
-    List<Pair<SceneElement, RenderState>> originalMaterialStates = new ArrayList<Pair<SceneElement, RenderState>>();
+    List<Pair<Spatial, RenderState>> originalMaterialStates = new ArrayList<Pair<Spatial, RenderState>>();
 
     ModelRepresentation(SimulationObject target, Node modelNode) {
         super(target);
@@ -77,11 +75,11 @@ public class ModelRepresentation extends Representation {
             // record its render state
             RenderState renderState = child.getRenderState(RenderState.RS_MATERIAL);
             if (renderState != null) {
-                originalMaterialStates.add(new Pair<SceneElement, RenderState>(child, renderState));
+                originalMaterialStates.add(new Pair<Spatial, RenderState>(child, renderState));
             }
             renderState = child.getRenderState(RenderState.RS_TEXTURE);
             if (renderState != null) {
-                originalMaterialStates.add(new Pair<SceneElement, RenderState>(child, renderState));
+                originalMaterialStates.add(new Pair<Spatial, RenderState>(child, renderState));
             }
 
             if (child instanceof Node) {
@@ -90,37 +88,37 @@ public class ModelRepresentation extends Representation {
             }
             if (child instanceof Geometry) {
                 Geometry geom = (Geometry) child;
-                for (int i = 0; i < geom.getBatchCount(); i++) {
-                    GeomBatch batch = geom.getBatch(i);
+//                for (int i = 0; i < geom.getBatchCount(); i++) {
+//                    GeomBatch batch = geom.getBatch(i);
 
                     // record geometry batches
-                    renderState = batch.getRenderState(RenderState.RS_MATERIAL);
+                    renderState = geom.getRenderState(RenderState.RS_MATERIAL);
                     if (renderState != null) {
-                        originalMaterialStates.add(new Pair<SceneElement, RenderState>(batch, renderState));
+                        originalMaterialStates.add(new Pair<Spatial, RenderState>(geom, renderState));
                     }
-                    renderState = batch.getRenderState(RenderState.RS_TEXTURE);
+                    renderState = geom.getRenderState(RenderState.RS_TEXTURE);
                     if (renderState != null) {
-                        originalMaterialStates.add(new Pair<SceneElement, RenderState>(batch, renderState));
+                        originalMaterialStates.add(new Pair<Spatial, RenderState>(geom, renderState));
                     }
-                }
+//                }
             }
         }
     }
 
     private void setOverridenRenderStates() {
-        for (Pair<SceneElement, RenderState> pair : originalMaterialStates) {
+        for (Pair<Spatial, RenderState> pair : originalMaterialStates) {
             // clear render states in the pairs, because there may be duplicates, the contents
             // of this loop might be called several times for the same scene elements
-            SceneElement element = pair.getLeft();
+            Spatial element = pair.getLeft();
             element.clearRenderState(RenderState.RS_MATERIAL);
             element.clearRenderState(RenderState.RS_TEXTURE);
         }
     }
 
     private void setNormalRenderStates() {
-        for (Pair<SceneElement, RenderState> pair : originalMaterialStates) {
+        for (Pair<Spatial, RenderState> pair : originalMaterialStates) {
             // add every pair we find
-            SceneElement element = pair.getLeft();
+            Spatial element = pair.getLeft();
             RenderState renderState = pair.getRight();
             element.setRenderState(renderState);
         }

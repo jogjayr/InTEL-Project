@@ -11,10 +11,11 @@ import com.jme.scene.state.LightState;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
+//import com.jmex.model.collada.ColladaImporter;
+import edu.gatech.newcollada.ColladaImporter;
 import com.jmex.model.converters.AseToJme;
 import com.jmex.model.converters.MaxToJme;
 import com.jmex.model.converters.MilkToJme;
-import edu.gatech.newcollada.ColladaImporter;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.SimulationObject;
 import java.io.BufferedInputStream;
@@ -130,6 +131,7 @@ public class ModelNode {
 
         try {
             if (extension.equals("dae")) {
+                //ColladaImporter.load(fileUrl.openStream(), "model");
                 ColladaImporter.load(fileUrl.openStream(), textureUrl, "model");
                 rootNode = ColladaImporter.getModel();
 

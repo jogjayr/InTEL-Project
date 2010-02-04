@@ -148,7 +148,7 @@ public class ArcherExercise extends SimpleFBDExercise {
         rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringBound");
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);
-        rep.setCullMode(Spatial.CULL_ALWAYS);
+        rep.setCullHint(Spatial.CullHint.Always);
         bowString.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);

@@ -13,7 +13,7 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.Representation;
@@ -53,12 +53,13 @@ public class ImageRepresentation extends Representation {
         super(obj);
         setLayer(RepresentationLayer.modelBodies);
 
-        AlphaState alphaState = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
-        alphaState.setBlendEnabled(true);
-        alphaState.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-        alphaState.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
-        alphaState.setTestEnabled(true);
-        alphaState.setTestFunction(AlphaState.TF_ALWAYS);
+        BlendState alphaState = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+        alphaState.setEnabled(true);
+        alphaState.setBlendEnabled( true );
+        alphaState.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+        alphaState.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
+        alphaState.setTestEnabled( true );
+        alphaState.setTestFunction( BlendState.TestFunction.Always );
         setRenderState(alphaState);
 
         quad = new Quad("", 1, 1);

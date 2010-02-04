@@ -85,9 +85,9 @@ public class Arrow extends Node {
             }
 
             if (length < CULL_THRESHOLD) {
-                setCullMode(CULL_ALWAYS);
+                setCullHint(CullHint.Always);
             } else {
-                setCullMode(CULL_NEVER);
+                setCullHint(CullHint.Never);
             }
 
             tail.setLocalTranslation(0, 0, tailMagnitude / 2);

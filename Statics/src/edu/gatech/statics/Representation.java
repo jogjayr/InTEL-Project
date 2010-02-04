@@ -174,7 +174,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
         }
 
         materialState = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
-        materialState.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
+        materialState.setMaterialFace(MaterialState.MaterialFace.FrontAndBack);
         setRenderState(materialState);
         updateRenderState();
 
@@ -242,8 +242,8 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     }
 
     @Override
-    public void setCullMode(int mode) {
-        super.setCullMode(mode);
+    public void setCullHint(CullHint hint) {
+        super.setCullHint(hint);
     }
 
     public boolean isHidden() {

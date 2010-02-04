@@ -167,7 +167,7 @@ public class LeveeExercise extends DistributedExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
-        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createBlendState());
         rep.setModelBound(null);
         rep.setModelScale(1, waterScale, 1);
         waterForceObject.addRepresentation(rep);
@@ -176,7 +176,7 @@ public class LeveeExercise extends DistributedExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
-        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createBlendState());
         rep.setModelBound(null);
         rep.setModelScale(1, waterScale, 1);
         schematic.getBackground().addRepresentation(rep);
@@ -186,7 +186,7 @@ public class LeveeExercise extends DistributedExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
-        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createAlphaState());
+        rep.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createBlendState());
         rep.setModelBound(null);
         rep.setModelScale(1, waterScale, 1);
         schematic.getBackground().addRepresentation(rep);

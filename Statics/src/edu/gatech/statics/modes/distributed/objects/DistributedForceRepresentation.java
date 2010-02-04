@@ -11,7 +11,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
 import com.jme.scene.TriMesh;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.WireframeState;
@@ -53,18 +53,18 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         border.setLocalScale(new Vector3f(distance / 2, displayScale, 1));
 
         Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
-        AlphaState as = renderer.createAlphaState();
+        BlendState as = renderer.createBlendState();
         as.setEnabled(true);
         as.setBlendEnabled(true);
-        as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-        as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+        as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+        as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
         as.setTestEnabled(true);
-        as.setTestFunction(AlphaState.TF_ALWAYS);
+        as.setTestFunction(BlendState.TestFunction.Always);
         surface.setRenderState(as);
         border.setRenderState(as);
 
         CullState cullState = renderer.createCullState();
-        cullState.setCullMode(CullState.CS_NONE);
+        cullState.setCullFace(CullState.Face.None);
         surface.setRenderState(cullState);
 
         WireframeState ws = renderer.createWireframeState();
@@ -73,8 +73,8 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         border.setRenderState(ws);
         border.setAntialiased(true);
 
-        surface.setLightCombineMode(LightState.OFF);
-        border.setLightCombineMode(LightState.OFF);
+        surface.setLightCombineMode(LightCombineMode.Off);
+        border.setLightCombineMode(lightCombineMode.Off);
 
         setLayer(RepresentationLayer.vectors);
 

@@ -93,13 +93,13 @@ public class ColladaToFate extends SimpleHeadlessApp {
             }
             
             
-            try {
-                ColladaImporter.load(input, url, modelName);
-                collada = ColladaImporter.getModel();
-                ColladaImporter.cleanUp();
-            } catch (Exception e) {
-                e.printStackTrace( );
-            }
+//            try {
+//                ColladaImporter.load(input, url, modelName);
+//                collada = ColladaImporter.getModel();
+//                ColladaImporter.cleanUp();
+//            } catch (Exception e) {
+//                e.printStackTrace( );
+//            }
             
             collada.updateGeometricState(0, true);
             collada.updateRenderState();

@@ -391,7 +391,7 @@ public abstract class Exercise {
      * @return
      */
     protected Texture loadTexture(String textureUrl) {
-        return loadTexture(textureUrl, Texture.FM_LINEAR, Texture.FM_LINEAR);
+        return loadTexture(textureUrl, Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear);
     }
 
     /**
@@ -402,7 +402,7 @@ public abstract class Exercise {
      * @param maxFilter
      * @return
      */
-    protected Texture loadTexture(String textureUrl, int minFilter, int maxFilter) {
+    protected Texture loadTexture(String textureUrl, Texture.MinificationFilter minFilter, Texture.MagnificationFilter maxFilter) {
         Texture texture = TextureManager.loadTexture(getClass().getClassLoader().getResource(textureUrl), minFilter, maxFilter);
         return texture;
     }

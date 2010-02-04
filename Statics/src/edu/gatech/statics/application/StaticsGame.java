@@ -85,11 +85,11 @@ public class StaticsGame extends BaseGame {
         display = application.initDisplay();
 
         display.createWindow(
-                properties.getWidth(),
-                properties.getHeight(),
-                properties.getDepth(),
-                properties.getFreq(),
-                properties.getFullscreen());
+                settings.getWidth(),
+                settings.getHeight(),
+                settings.getDepth(),
+                settings.getFrequency(),
+                false);
     }
 
     protected void initGame() {

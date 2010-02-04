@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.equation.arbitrary;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.fbd.FBDChecker;
@@ -17,6 +18,7 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.test.FBDStateProvider;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
@@ -90,7 +92,8 @@ public class FrictionTestingBoilerplate {
 //                givenMoment.setName("wombat2");
                 Body body = new Beam("test", A, B);
 
-                ContactPoint jointB = new ContactPoint(B);
+                ConstantObject frictionCoefficient = new ConstantObject("coefficient", new BigDecimal("0.3"), Unit.none);
+                ContactPoint jointB = new ContactPoint(B, frictionCoefficient);
                 jointB.setNormalDirection(new Vector3bd("0.0", "1.0", "0.0"));
                 jointB.setFrictionDirection(new Vector3bd("-1.0", "0.0", "0.0"));
                 jointB.attachToWorld(body);

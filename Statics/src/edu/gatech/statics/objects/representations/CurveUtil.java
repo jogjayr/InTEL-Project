@@ -18,7 +18,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Line;
 import com.jme.scene.Spatial;
-import com.jme.scene.state.AlphaState;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.WireframeState;
 import com.jme.util.geom.BufferUtils;
 import java.nio.FloatBuffer;
@@ -45,22 +45,22 @@ public class CurveUtil {
             
             curveUtil_line = new Line();
 
-            AlphaState as = r.createAlphaState();
+            BlendState as = r.createBlendState();
             as.setEnabled(true);
             as.setBlendEnabled( true );
-            as.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-            as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+            as.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+            as.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
             as.setTestEnabled( true );
-            as.setTestFunction( AlphaState.TF_ALWAYS );
+            as.setTestFunction( BlendState.TestFunction.Always );
             curveUtil_line.setRenderState(as);
 
             curveUtil_line.setAntialiased(true);
 
             curveUtil_line.updateRenderState();
             
-            curveUtil_line.setVertexBuffer(0, curveUtil_line_points);
-            curveUtil_line.setColorBuffer(0, curveUtil_line_colors);
-            curveUtil_line.generateIndices(0);
+            curveUtil_line.setVertexBuffer(curveUtil_line_points);
+            curveUtil_line.setColorBuffer(curveUtil_line_colors);
+            curveUtil_line.generateIndices();
         }
         
         curveUtil_line_colors.rewind();
@@ -78,14 +78,14 @@ public class CurveUtil {
 
         if(curveUtil_curve == null) {
             curveUtil_curve = new BezierCurve("");
-            
-            AlphaState as = r.createAlphaState();
+
+            BlendState as = r.createBlendState();
             as.setEnabled(true);
             as.setBlendEnabled( true );
-            as.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-            as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+            as.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+            as.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
             as.setTestEnabled( true );
-            as.setTestFunction( AlphaState.TF_ALWAYS );
+            as.setTestFunction( BlendState.TestFunction.Always );
             curveUtil_curve.setRenderState(as);
 
             WireframeState ws = r.createWireframeState();
@@ -97,7 +97,7 @@ public class CurveUtil {
         }
 
         //Curve line = new BezierCurve("", points);
-        curveUtil_curve.setVertexBuffer(0, BufferUtils.createFloatBuffer(points));
+        curveUtil_curve.setVertexBuffer(BufferUtils.createFloatBuffer(points));
         curveUtil_curve.setSteps(10 * points.length);
         
         
@@ -106,7 +106,7 @@ public class CurveUtil {
         fb.put(color.g);
         fb.put(color.b);
         fb.put(color.a);
-        curveUtil_curve.setColorBuffer(0,fb);
+        curveUtil_curve.setColorBuffer(fb);
         
         r.draw(curveUtil_curve);
     }
@@ -143,11 +143,11 @@ public class CurveUtil {
             return new Matrix3f();
         }
 
-        public void findCollisions(Spatial scene, CollisionResults results) {
+        public void findCollisions(Spatial scene, CollisionResults results, int requiredOnBits) {
             return;
         }
 
-        public boolean hasCollision(Spatial scene, boolean checkTriangles) {
+        public boolean hasCollision(Spatial scene, boolean checkTriangles, int requiredOnBits) {
             return false;
         }
     }
@@ -157,13 +157,13 @@ public class CurveUtil {
         if(curveUtil_circle == null) {
             curveUtil_circle = new Circle();
 
-            AlphaState as = r.createAlphaState();
+            BlendState as = r.createBlendState();
             as.setEnabled(true);
             as.setBlendEnabled( true );
-            as.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-            as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+            as.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+            as.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
             as.setTestEnabled( true );
-            as.setTestFunction( AlphaState.TF_ALWAYS );
+            as.setTestFunction( BlendState.TestFunction.Always );
             curveUtil_circle.setRenderState(as);
 
             WireframeState ws = r.createWireframeState();
@@ -186,7 +186,7 @@ public class CurveUtil {
         fb.put(color.g);
         fb.put(color.b);
         fb.put(color.a);
-        curveUtil_circle.setColorBuffer(0,fb);
+        curveUtil_circle.setColorBuffer(fb);
         
         r.draw(curveUtil_circle);
     }
@@ -244,11 +244,11 @@ public class CurveUtil {
             return new Matrix3f();
         }
 
-        public void findCollisions(Spatial scene, CollisionResults results) {
+        public void findCollisions(Spatial scene, CollisionResults results, int requiredOnBits) {
             return;
         }
 
-        public boolean hasCollision(Spatial scene, boolean checkTriangles) {
+        public boolean hasCollision(Spatial scene, boolean checkTriangles, int requiredOnBits) {
             return false;
         }
     }
@@ -259,13 +259,13 @@ public class CurveUtil {
         if(curveUtil_arc == null) {
             curveUtil_arc = new Arc();
 
-            AlphaState as = r.createAlphaState();
+            BlendState as = r.createBlendState();
             as.setEnabled(true);
             as.setBlendEnabled( true );
-            as.setSrcFunction( AlphaState.SB_SRC_ALPHA );
-            as.setDstFunction( AlphaState.DB_ONE_MINUS_SRC_ALPHA );
+            as.setSourceFunction( BlendState.SourceFunction.SourceAlpha );
+            as.setDestinationFunction( BlendState.DestinationFunction.OneMinusSourceAlpha );
             as.setTestEnabled( true );
-            as.setTestFunction( AlphaState.TF_ALWAYS );
+            as.setTestFunction( BlendState.TestFunction.Always );
             curveUtil_arc.setRenderState(as);
 
             WireframeState ws = r.createWireframeState();
@@ -284,7 +284,7 @@ public class CurveUtil {
         fb.put(color.g);
         fb.put(color.b);
         fb.put(color.a);
-        curveUtil_arc.setColorBuffer(0,fb);
+        curveUtil_arc.setColorBuffer(fb);
         
         r.draw(curveUtil_arc);
     }

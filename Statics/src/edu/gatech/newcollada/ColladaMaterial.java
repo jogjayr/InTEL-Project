@@ -22,7 +22,7 @@ public class ColladaMaterial {
     
 
     public ColladaMaterial() {
-        stateList = new RenderState[RenderState.RS_MAX_STATE];
+        stateList = new RenderState[RenderState.StateType.values().length];
     }
     
     public void addController(Controller c) {
@@ -42,55 +42,62 @@ public class ColladaMaterial {
         stateList[ss.getType()] = ss;
     }
 
+    /**
+     * @deprecated As of 2.0, use {@link #getState(com.jme.scene.state.RenderState.StateType)} instead.
+     */
     public RenderState getState(int index) {
         return stateList[index];
     }
+
+    public RenderState getState(RenderState.StateType type) {
+        return stateList[type.ordinal()];
+    }
     
-    public int getMagFilterConstant() {
+    public Texture.MagnificationFilter getMagFilterConstant() {
         if(magFilter == null) {
-            return Texture.FM_LINEAR;
+            return Texture.MagnificationFilter.Bilinear;
         }
         
         if(magFilter.equals("NEAREST")) {
-            return Texture.FM_NEAREST;
+            return Texture.MagnificationFilter.NearestNeighbor;
         }
         
         if(magFilter.equals("LINEAR")) {
-            return Texture.FM_LINEAR;
+            return Texture.MagnificationFilter.Bilinear;
         }
         
-        return Texture.FM_LINEAR;
+        return Texture.MagnificationFilter.Bilinear;
     }
     
-    public int getMinFilterConstant() {
+    public Texture.MinificationFilter getMinFilterConstant() {
         if(minFilter == null) {
-            return Texture.MM_LINEAR_LINEAR;
+            return Texture.MinificationFilter.Trilinear;
         }
         
         if(minFilter.equals("NEAREST")) {
-            return Texture.MM_NEAREST;
+            return Texture.MinificationFilter.NearestNeighborNearestMipMap;
         }
         
         if(minFilter.equals("LINEAR")) {
-            return Texture.MM_LINEAR;
+            return Texture.MinificationFilter.Trilinear;
         }
         
         if(minFilter.equals("NEAREST_MIPMAP_NEAREST")) {
-            return Texture.MM_NEAREST_NEAREST;
+            return Texture.MinificationFilter.NearestNeighborNearestMipMap;
         }
         
         if(minFilter.equals("NEAREST_MIPMAP_LINEAR")) {
-            return Texture.MM_NEAREST_LINEAR;
+            return Texture.MinificationFilter.BilinearNearestMipMap;
         }
         
         if(minFilter.equals("LINEAR_MIPMAP_NEAREST")) {
-            return Texture.MM_LINEAR_NEAREST;
+            return Texture.MinificationFilter.NearestNeighborLinearMipMap;
         }
         
         if(minFilter.equals("LINEAR_MIPMAP_LINEAR")) {
-            return Texture.MM_LINEAR_LINEAR;
+            return Texture.MinificationFilter.Trilinear;
         }
-        
-        return Texture.MM_LINEAR_LINEAR;
+
+        return Texture.MinificationFilter.Trilinear;
     }
 }

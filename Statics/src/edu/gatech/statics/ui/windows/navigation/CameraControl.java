@@ -126,27 +126,37 @@ public class CameraControl {
         float zoom = viewUserState.getZoom();
 
 
-        Vector3f cameraDefaultPosVector = cameraCenter.subtract(cameraLookAtCenter);
-        float distance = cameraDefaultPosVector.length();
-        cameraDefaultPosVector.normalizeLocal();
-        Vector3f up = new Vector3f(Vector3f.UNIT_Y);
-        Vector3f cameraDefaultRightVector = up.cross(cameraDefaultPosVector);
-        cameraDefaultRightVector.normalizeLocal();
+        Vector3f cameraDefaultDirVector = cameraCenter.subtract(cameraLookAtCenter);
+        float distance = cameraDefaultDirVector.length();
+        cameraDefaultDirVector.normalizeLocal();
+        Vector3f upContribution = new Vector3f(Vector3f.UNIT_Y);
+        Vector3f leftContribution = upContribution.cross(cameraDefaultDirVector);
+        leftContribution.normalizeLocal();
 
         // newPos = cos(yaw)*cos(pitch)*defaultPos + sin(yaw)*cos(pitch)*right+ sin(pitch)*up + lookAt
-        cameraDefaultPosVector.multLocal((float) (Math.cos(yaw) * Math.cos(pitch)));
-        cameraDefaultRightVector.multLocal((float) (Math.sin(yaw) * Math.cos(pitch)));
-        up.multLocal((float) Math.sin(pitch));
-        Vector3f newDirection = cameraDefaultPosVector.add(cameraDefaultPosVector).add(cameraDefaultRightVector).add(up);
+        cameraDefaultDirVector.multLocal((float) (2 * Math.cos(yaw) * Math.cos(pitch)));
+        leftContribution.multLocal((float) (Math.sin(yaw) * Math.cos(pitch)));
+        upContribution.multLocal((float) Math.sin(pitch));
+//        Vector3f newDirection = cameraDefaultDirVector.add(cameraDefaultDirVector).add(cameraDefaultRightVector).add(up);
+        Vector3f newDirection = cameraDefaultDirVector.add(leftContribution).add(upContribution);
         Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom * distance));
         newDirection.multLocal(-1);
-        newDirection.normalize();
+        newDirection.normalizeLocal();
 
         newPosition.addLocal(cameraSlideX.mult(xpos));
         newPosition.addLocal(cameraSlideY.mult(ypos));
 
         camera.setLocation(newPosition);
         camera.setDirection(newDirection);
+
+        // normalize the camera
+        Vector3f up = new Vector3f(Vector3f.UNIT_Y);
+        Vector3f left = up.cross(newDirection);
+        up = newDirection.cross(left);
+        up.normalizeLocal();
+
+        camera.setUp(up);
+        camera.setLeft(left);
     }
 
     public void interpolate(ViewDiagramState diagramState) {

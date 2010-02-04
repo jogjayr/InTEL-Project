@@ -35,6 +35,8 @@ final public class DiagramType {
      * DiagramTypes must ALL be created before the main loop of the application.
      * DiagramTypes should be created ONLY within the Mode. This way, when mode instances 
      * are loaded, (at exercise startup) the diagram types are all created.
+     * The variable priority represents the relative progress of the diagram, with lower numbers
+     * meaning early progress, and higher numbers being the most progress.
      * 
      * @param name
      * @param priority an int denoting the priority of the type. Should be positive. 

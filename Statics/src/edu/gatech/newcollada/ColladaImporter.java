@@ -13,8 +13,8 @@
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
  *
- * * Neither the name of 'jMonkeyEngine' nor the names of its contributors 
- *   may be used to endorse or promote products derived from this software 
+ * * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *   may be used to endorse or promote products derived from this software
  *   without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -54,6 +54,7 @@ import com.jme.animation.BoneAnimation;
 import com.jme.animation.BoneTransform;
 import com.jme.animation.SkinNode;
 import com.jme.animation.TextureKeyframeController;
+import com.jme.bounding.BoundingBox;
 import com.jme.bounding.OrientedBoundingBox;
 import com.jme.image.Texture;
 import com.jme.light.DirectionalLight;
@@ -74,18 +75,19 @@ import com.jme.scene.Controller;
 import com.jme.scene.Geometry;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
-import com.jme.scene.SceneElement;
+//import com.jme.scene.SceneElement;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
+import com.jme.scene.TexCoords;
 import com.jme.scene.TriMesh;
-import com.jme.scene.batch.GeomBatch;
-import com.jme.scene.batch.SharedBatch;
-import com.jme.scene.batch.TriangleBatch;
-import com.jme.scene.state.AlphaState;
+//import com.jme.scene.batch.GeomBatch;
+//import com.jme.scene.batch.SharedBatch;
+//import com.jme.scene.batch.TriangleBatch;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.ClipState;
 import com.jme.scene.state.ColorMaskState;
 import com.jme.scene.state.CullState;
-import com.jme.scene.state.DitherState;
+//import com.jme.scene.state.DitherState;
 import com.jme.scene.state.FogState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
@@ -176,7 +178,7 @@ import org.w3c.dom.NodeList;
  * classes and then processed by jME. This processing is currently aimed at the
  * 1.4 release of the COLLADA Specification, and will, in most likelyhood,
  * require updating with a new release of COLLADA.
- * 
+ *
  * @author Mark Powell
  */
 public class ColladaImporter {
@@ -201,6 +203,7 @@ public class ColladaImporter {
     private ArrayList<String> lightNodeNames;
     private ArrayList<String> geometryNames;
     private ArrayList<String> skeletonNames;
+    private Map<TriMesh, String> subMaterialLibrary;
     private Node model;
     /**
      * Unique Serial ID for ColladaNode
@@ -211,7 +214,7 @@ public class ColladaImporter {
      * Default constructor creates the ColladaNode. A basic Node structure is
      * built and no data is loaded until the <code>load</code> method is
      * called.
-     * 
+     *
      * @param name
      *            the name of the node.
      */
@@ -224,7 +227,7 @@ public class ColladaImporter {
      * COLLADASchemaDoc object to load it. This is then stored as a heirarchy of
      * data objects. This heirarchy is passed to the processCollada method to
      * build the jME data structures necessary to view the model.
-     * 
+     *
      * @param source
      *            the source to import.
      * @param textureDirectory
@@ -244,7 +247,7 @@ public class ColladaImporter {
     /**
      * load is called by the static load method, creating an instance of the
      * model to be returned.
-     * 
+     *
      * @param source
      *            the source to import.
      * @param textureDirectory
@@ -253,6 +256,7 @@ public class ColladaImporter {
     private void load(InputStream source, URL textureDirectory) {
         model = new Node(name);
         resourceLibrary = new HashMap<String, Object>();
+        subMaterialLibrary = new HashMap<TriMesh, String>();
         this.textureDirectory = textureDirectory;
         collada_schema_1_4_1Doc doc = new collada_schema_1_4_1Doc();
         try {
@@ -269,7 +273,7 @@ public class ColladaImporter {
 
     /**
      * returns the names of the controllers that affect this imported model.
-     * 
+     *
      * @return the list of string values for each controller name.
      */
     public static ArrayList<String> getControllerNames() {
@@ -298,7 +302,7 @@ public class ColladaImporter {
     /**
      * returns the names of the skin nodes that are associated with this
      * imported model.
-     * 
+     *
      * @return the names of the skin nodes associated with this model.
      */
     public static ArrayList<String> getSkinNodeNames() {
@@ -310,7 +314,7 @@ public class ColladaImporter {
 
     /**
      * Returns the camera node names associated with this model.
-     * 
+     *
      * @return the list of camera names that are referenced in this file.
      */
     public static ArrayList<String> getCameraNodeNames() {
@@ -424,7 +428,7 @@ public class ColladaImporter {
 
     /**
      * Author of the last loaded collada model.
-     * 
+     *
      * @return the modelAuthor the author of the last loaded model.
      */
     public String getModelAuthor() {
@@ -433,7 +437,7 @@ public class ColladaImporter {
 
     /**
      * Revision number of the last loaded collada model.
-     * 
+     *
      * @return the revision revision number of the last loaded collada model.
      */
     public String getRevision() {
@@ -442,7 +446,7 @@ public class ColladaImporter {
 
     /**
      * the tool used to build the last collada model.
-     * 
+     *
      * @return the tool
      */
     public String getTool() {
@@ -451,7 +455,7 @@ public class ColladaImporter {
 
     /**
      * the unit scale of the last collada model.
-     * 
+     *
      * @return the unitMeter
      */
     public float getUnitMeter() {
@@ -460,7 +464,7 @@ public class ColladaImporter {
 
     /**
      * the unit name of the last collada model.
-     * 
+     *
      * @return the unitName
      */
     public String getUnitName() {
@@ -474,7 +478,7 @@ public class ColladaImporter {
      * TOOL<br>
      * UNITNAME UNITMETER<br>
      * UPAXIS<br>
-     * 
+     *
      * @return the string representation of the asset information of this file.
      */
     public String getAssetInformation() {
@@ -486,7 +490,7 @@ public class ColladaImporter {
      * information obtained from the XML structure of a COLLADA model. This root
      * object is processed and sets the data structures for jME to render the
      * model to *this* object.
-     * 
+     *
      * @param root
      *            the COLLADAType data structure that contains the COLLADA model
      *            information.
@@ -747,7 +751,7 @@ public class ColladaImporter {
                     // right state.
                     pNode.revertToBind();
                     pNode.remapInfluences(GeometryTool.minimizeVerts(mesh,
-                            options));
+                            options), 0);
                     pNode.regenInfluenceOffsets();
                     pNode.updateSkin();
                 } else {
@@ -759,7 +763,7 @@ public class ColladaImporter {
 
     /**
      * processLightLibrary
-     * 
+     *
      * @param libraryLights
      * @throws Exception
      */
@@ -773,7 +777,7 @@ public class ColladaImporter {
     }
 
     /**
-     * 
+     *
      * @param light
      * @throws Exception
      */
@@ -848,8 +852,8 @@ public class ColladaImporter {
             l.setEnabled(true);
 
             LightNode lightNode = new LightNode(
-                    light.getid().toString(),
-                    DisplaySystem.getDisplaySystem().getRenderer().createLightState());
+                    light.getid().toString());
+                    //DisplaySystem.getDisplaySystem().getRenderer().createLightState());
             lightNode.setLight(l);
 
             if (lightNodeNames == null) {
@@ -862,7 +866,7 @@ public class ColladaImporter {
 
     /**
      * getLightColor
-     * 
+     *
      * @param color
      * @return c
      */
@@ -877,7 +881,7 @@ public class ColladaImporter {
      * processScene finalizes the model node to be returned as the COLLADA
      * model. This looks up visual scene instances that were placed in the
      * resource library previously.
-     * 
+     *
      * @param scene
      *            the scene to process
      * @throws Exception
@@ -967,7 +971,7 @@ public class ColladaImporter {
     /**
      * processSource builds resource objects TIME, TRANSFORM and Name array for
      * the interpolation type.
-     * 
+     *
      * @param source
      *            the source to process
      * @throws Exception
@@ -1093,7 +1097,7 @@ public class ColladaImporter {
     /**
      * processInterpolationArray builds a int array that corresponds to the
      * interpolation types defined in BoneAnimationController.
-     * 
+     *
      * @param array
      *            the array to process.
      * @return the int array.
@@ -1119,7 +1123,7 @@ public class ColladaImporter {
     /**
      * processes a float array object. The floats are represented as a String
      * with the values delimited by a space.
-     * 
+     *
      * @param array
      *            the array to parse.
      * @return the float array to return.
@@ -1139,7 +1143,7 @@ public class ColladaImporter {
      * processAssetInformation will store the information about the collada file
      * for future reference. This will include the author, the tool used, the
      * revision, the unit information, and the defined up axis.
-     * 
+     *
      * @param asset
      *            the assetType for the root of the model.
      */
@@ -1166,7 +1170,7 @@ public class ColladaImporter {
      * Animations at this level can be considered top level animations that
      * should be called from this level. These animations may contain children
      * animations the top level animation is responsible for calling.
-     * 
+     *
      * @param animLib
      *            the library of animations to parse.
      */
@@ -1197,7 +1201,7 @@ public class ColladaImporter {
      * controller defining the animation's keyframe and sampler functions. These
      * interact on single bones, where a collection of controllers will build up
      * a complete animation.
-     * 
+     *
      * @param animation
      *            the animation to parse.
      * @throws Exception
@@ -1479,7 +1483,7 @@ public class ColladaImporter {
      * working directory. Therefore, the directory will be stripped off leaving
      * only the filename. This filename will be associated with a id key that
      * can be obtained by the material that wishes to make use of it.
-     * 
+     *
      * @param libraryImg
      *            the library of images (name/image pair).
      */
@@ -1496,7 +1500,7 @@ public class ColladaImporter {
     /**
      * processImage takes an image type and places the necessary information in
      * the resource library.
-     * 
+     *
      * @param image
      *            the image to process.
      * @throws Exception
@@ -1518,7 +1522,7 @@ public class ColladaImporter {
     /**
      * getFileName takes a String object stripping off any directory information
      * returning only the substring that follows the last '/' or '\'.
-     * 
+     *
      * @param fullName
      *            the fileName to strip.
      * @return the stripped file name.
@@ -1540,7 +1544,7 @@ public class ColladaImporter {
      * instance effect that defines its qualities, it won't be until the
      * library_effects tag is processed that the material state information is
      * filled in.
-     * 
+     *
      * @param libraryMat
      *            the material library type.
      * @throws Exception
@@ -1558,7 +1562,7 @@ public class ColladaImporter {
     /**
      * process Material which typically contains an id and a reference URL to an
      * effect.
-     * 
+     *
      * @param mat
      * @throws Exception
      *             thrown if there is a problem processing the xml.
@@ -1588,7 +1592,7 @@ public class ColladaImporter {
      * based on the the name of the effect. Currently, the id of the effect is
      * ignored as it is directly tied to the material id. However, in the future
      * this may require support.
-     * 
+     *
      * @param libraryEffects
      *            the library of effects to build.
      * @throws Exception
@@ -1618,7 +1622,7 @@ public class ColladaImporter {
      * There is a possibility that each profile may have multiple techniques,
      * defining different materials for different situations, i.e. LOD. This
      * version of the loader will assume a single technique.
-     * 
+     *
      * @param effect
      *            the collada effect to process.
      * @param mat
@@ -1653,7 +1657,7 @@ public class ColladaImporter {
     /**
      * processNewParam sets specific properties of a material (surface
      * properties, sampler properties, etc).
-     * 
+     *
      * @param param
      *            the xml element of the new parameter.
      * @param mat
@@ -1676,7 +1680,7 @@ public class ColladaImporter {
     /**
      * processes images information, defining the min and mag filter for
      * mipmapping.
-     * 
+     *
      * @param id
      *            the id on the sampler
      * @param sampler
@@ -1707,7 +1711,7 @@ public class ColladaImporter {
     /**
      * processes rendering information defined to be GLSL standard, which
      * includes all OpenGL state information and GLSL shader information.
-     * 
+     *
      * @param technique
      * @param mat
      * @throws Exception
@@ -1781,17 +1785,17 @@ public class ColladaImporter {
             }
         }
 
-        if (pass.hasdither_enable()) {
-            DitherState ds = (DitherState) mat.getState(RenderState.RS_DITHER);
-            if (ds == null) {
-                ds = DisplaySystem.getDisplaySystem().getRenderer().createDitherState();
-                mat.setState(ds);
-            }
-
-            if (pass.getdither_enable().hasvalue2()) {
-                ds.setEnabled(pass.getdither_enable().getvalue2().booleanValue());
-            }
-        }
+//        if (pass.hasdither_enable()) {
+//            DitherState ds = (DitherState) mat.getState(RenderState.RS_DITHER);
+//            if (ds == null) {
+//                ds = DisplaySystem.getDisplaySystem().getRenderer().createDitherState();
+//                mat.setState(ds);
+//            }
+//
+//            if (pass.getdither_enable().hasvalue2()) {
+//                ds.setEnabled(pass.getdither_enable().getvalue2().booleanValue());
+//            }
+//        }
 
         if (pass.hasdepth_func()) {
             ZBufferState zbs = (ZBufferState) mat.getState(RenderState.RS_ZBUFFER);
@@ -1804,21 +1808,21 @@ public class ColladaImporter {
                 String depth = pass.getdepth_func().getvalue2().toString();
 
                 if ("NEVER".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_NEVER);
+                    zbs.setFunction(ZBufferState.TestFunction.Never);
                 } else if ("LESS".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_LESS);
+                    zbs.setFunction(ZBufferState.TestFunction.LessThan);
                 } else if ("LEQUAL".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_LEQUAL);
+                    zbs.setFunction(ZBufferState.TestFunction.LessThanOrEqualTo);
                 } else if ("EQUAL".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_EQUAL);
+                    zbs.setFunction(ZBufferState.TestFunction.EqualTo);
                 } else if ("GREATER".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_GREATER);
+                    zbs.setFunction(ZBufferState.TestFunction.GreaterThan);
                 } else if ("NOTEQUAL".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_NOTEQUAL);
+                    zbs.setFunction(ZBufferState.TestFunction.NotEqualTo);
                 } else if ("GEQUAL".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_GEQUAL);
+                    zbs.setFunction(ZBufferState.TestFunction.GreaterThanOrEqualTo);
                 } else if ("ALWAYS".equals(depth)) {
-                    zbs.setFunction(ZBufferState.CF_ALWAYS);
+                    zbs.setFunction(ZBufferState.TestFunction.Always);
                 }
             }
         }
@@ -1867,20 +1871,20 @@ public class ColladaImporter {
             }*/
             // Statics specific override:
             // all materials should be front and back materials:
-            ms.setMaterialFace(MaterialState.MF_FRONT_AND_BACK);
+            ms.setMaterialFace(MaterialState.MaterialFace.FrontAndBack);
 
             if (pass.getcolor_material().hasmode()) {
                 String mode = pass.getcolor_material().getmode().getvalue2().toString();
                 if ("AMBIENT".equals(mode)) {
-                    ms.setColorMaterial(MaterialState.CM_AMBIENT);
+                    ms.setColorMaterial(MaterialState.ColorMaterial.Ambient);
                 } else if ("EMISSION".equals(mode)) {
-                    ms.setColorMaterial(MaterialState.CM_EMISSIVE);
+                    ms.setColorMaterial(MaterialState.ColorMaterial.Emissive);
                 } else if ("DIFFUSE".equals(mode)) {
-                    ms.setColorMaterial(MaterialState.CM_DIFFUSE);
+                    ms.setColorMaterial(MaterialState.ColorMaterial.Diffuse);
                 } else if ("SPECULAR".equals(mode)) {
-                    ms.setColorMaterial(MaterialState.CM_SPECULAR);
+                    ms.setColorMaterial(MaterialState.ColorMaterial.Specular);
                 } else if ("AMBIENT_AND_DIFFUSE".equals(mode)) {
-                    ms.setColorMaterial(MaterialState.CM_AMBIENT_AND_DIFFUSE);
+                    ms.setColorMaterial(MaterialState.ColorMaterial.AmbientAndDiffuse);
                 }
             }
         }
@@ -1949,11 +1953,11 @@ public class ColladaImporter {
             if (pass.getfog_mode().hasvalue2()) {
                 String mode = pass.getfog_mode().getvalue2().toString();
                 if ("LINEAR".equals(mode)) {
-                    fs.setDensityFunction(FogState.DF_LINEAR);
+                    fs.setDensityFunction(FogState.DensityFunction.Linear);
                 } else if ("EXP".equals(mode)) {
-                    fs.setDensityFunction(FogState.DF_EXP);
+                    fs.setDensityFunction(FogState.DensityFunction.Exponential);
                 } else if ("EXP2".equals(mode)) {
-                    fs.setDensityFunction(FogState.DF_EXPSQR);
+                    fs.setDensityFunction(FogState.DensityFunction.ExponentialSquared);
                 }
             }
         }
@@ -1971,9 +1975,9 @@ public class ColladaImporter {
         }
 
         if (pass.hasalpha_test_enable()) {
-            AlphaState as = (AlphaState) mat.getState(RenderState.RS_ALPHA);
+            BlendState as = (BlendState) mat.getState(RenderState.RS_BLEND);
             if (as == null) {
-                as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+                as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
                 mat.setState(as);
             }
 
@@ -1981,30 +1985,30 @@ public class ColladaImporter {
         }
 
         if (pass.hasalpha_func()) {
-            AlphaState as = (AlphaState) mat.getState(RenderState.RS_ALPHA);
+            BlendState as = (BlendState) mat.getState(RenderState.RS_BLEND);
             if (as == null) {
-                as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+                as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
                 mat.setState(as);
             }
 
             if (pass.getalpha_func().hasfunc()) {
                 String func = pass.getalpha_func().getfunc().getvalue2().toString();
                 if ("NEVER".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_NEVER);
+                    as.setTestFunction(BlendState.TestFunction.Never);
                 } else if ("LESS".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_LESS);
+                    as.setTestFunction(BlendState.TestFunction.LessThan);
                 } else if ("LEQUAL".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_LEQUAL);
+                    as.setTestFunction(BlendState.TestFunction.LessThanOrEqualTo);
                 } else if ("EQUAL".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_EQUAL);
+                    as.setTestFunction(BlendState.TestFunction.EqualTo);
                 } else if ("GREATER".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_GREATER);
+                    as.setTestFunction(BlendState.TestFunction.GreaterThan);
                 } else if ("NOTEQUAL".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_NOTEQUAL);
+                    as.setTestFunction(BlendState.TestFunction.GreaterThanOrEqualTo);
                 } else if ("GEQUAL".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_GEQUAL);
+                    as.setTestFunction(BlendState.TestFunction.LessThanOrEqualTo);
                 } else if ("ALWAYS".equals(func)) {
-                    as.setTestFunction(AlphaState.TF_ALWAYS);
+                    as.setTestFunction(BlendState.TestFunction.Always);
                 }
             }
 
@@ -2014,9 +2018,9 @@ public class ColladaImporter {
         }
 
         if (pass.hasblend_enable()) {
-            AlphaState as = (AlphaState) mat.getState(RenderState.RS_ALPHA);
+            BlendState as = (BlendState) mat.getState(RenderState.RS_BLEND);
             if (as == null) {
-                as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+                as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
                 mat.setState(as);
             }
 
@@ -2024,78 +2028,71 @@ public class ColladaImporter {
         }
 
         if (pass.hasblend_func()) {
-            AlphaState as = (AlphaState) mat.getState(RenderState.RS_ALPHA);
+            BlendState as = (BlendState) mat.getState(RenderState.RS_BLEND);
             if (as == null) {
-                as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+                as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
                 mat.setState(as);
             }
 
             if (pass.getblend_func().hasdest()) {
                 String dest = pass.getblend_func().getdest().getvalue2().toString();
                 if ("ZERO".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_ZERO);
+                    as.setDestinationFunction(BlendState.DestinationFunction.Zero);
                 } else if ("ONE".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_ONE);
+                    as.setDestinationFunction(BlendState.DestinationFunction.One);
                 } else if ("SRC_COLOR".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_SRC_COLOR);
+                    as.setDestinationFunction(BlendState.DestinationFunction.SourceColor);
                 } else if ("ONE_MINUS_SRC_COLOR".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_COLOR);
+                    as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceColor);
                 } else if ("SRC_ALPHA".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_SRC_ALPHA);
+                    as.setDestinationFunction(BlendState.DestinationFunction.SourceAlpha);
                 } else if ("ONE_MINUS_SRC_ALPHA".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+                    as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
                 } else if ("DST_ALPHA".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_DST_ALPHA);
+                    as.setDestinationFunction(BlendState.DestinationFunction.DestinationAlpha);
                 } else if ("ONE_MINUS_DST_ALPHA".equals(dest)) {
-                    as.setDstFunction(AlphaState.DB_ONE_MINUS_DST_ALPHA);
+                    as.setDestinationFunction(BlendState.DestinationFunction.OneMinusDestinationAlpha);
                 } else if ("CONSTANT_COLOR".equals(dest)) {
-                    logger.log(Level.WARNING, "Constant not supported");
+                    as.setDestinationFunction(BlendState.DestinationFunction.ConstantColor);
                 } else if ("ONE_MINUS_CONSTANT_COLOR".equals(dest)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setDestinationFunction(BlendState.DestinationFunction.OneMinusConstantColor);
                 } else if ("CONSTANT_ALPHA".equals(dest)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setDestinationFunction(BlendState.DestinationFunction.ConstantAlpha);
                 } else if ("ONE_MINUS_CONSTANT_ALPHA".equals(dest)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setDestinationFunction(BlendState.DestinationFunction.OneMinusConstantAlpha);
                 } else if ("SRC_ALPHA_SATURATE".equals(dest)) {
                     logger.log(Level.WARNING, "saturate not supported");
-
                 }
             }
 
             if (pass.getblend_func().hassrc()) {
                 String src = pass.getblend_func().getsrc().getvalue2().toString();
                 if ("ZERO".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_ZERO);
+                    as.setSourceFunction(BlendState.SourceFunction.Zero);
                 } else if ("ONE".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_ONE);
+                    as.setSourceFunction(BlendState.SourceFunction.One);
                 } else if ("DEST_COLOR".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_DST_COLOR);
+                    as.setSourceFunction(BlendState.SourceFunction.DestinationColor);
                 } else if ("ONE_MINUS_DEST_COLOR".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_ONE_MINUS_DST_COLOR);
+                    as.setSourceFunction(BlendState.SourceFunction.OneMinusDestinationColor);
                 } else if ("SRC_ALPHA".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+                    as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
                 } else if ("ONE_MINUS_SRC_ALPHA".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_ONE_MINUS_SRC_ALPHA);
+                    as.setSourceFunction(BlendState.SourceFunction.OneMinusSourceAlpha);
                 } else if ("DST_ALPHA".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_DST_ALPHA);
+                    as.setSourceFunction(BlendState.SourceFunction.DestinationAlpha);
                 } else if ("ONE_MINUS_DST_ALPHA".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_ONE_MINUS_DST_ALPHA);
+                    as.setSourceFunction(BlendState.SourceFunction.OneMinusDestinationAlpha);
                 } else if ("CONSTANT_COLOR".equals(src)) {
-                    logger.log(Level.WARNING, "Constant not supported");
+                    as.setSourceFunction(BlendState.SourceFunction.ConstantColor);
                 } else if ("ONE_MINUS_CONSTANT_COLOR".equals(src)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setSourceFunction(BlendState.SourceFunction.OneMinusConstantColor);
                 } else if ("CONSTANT_ALPHA".equals(src)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setSourceFunction(BlendState.SourceFunction.ConstantAlpha);
                 } else if ("ONE_MINUS_CONSTANT_ALPHA".equals(src)) {
-                    logger.log(Level.WARNING, "Constant not supported");
-
+                    as.setSourceFunction(BlendState.SourceFunction.OneMinusConstantAlpha);
                 } else if ("SRC_ALPHA_SATURATE".equals(src)) {
-                    as.setSrcFunction(AlphaState.SB_SRC_ALPHA_SATURATE);
+                    as.setSourceFunction(BlendState.SourceFunction.SourceAlphaSaturate);
                 }
             }
         }
@@ -2120,11 +2117,11 @@ public class ColladaImporter {
             if (pass.getcull_face().hasvalue2()) {
                 String face = pass.getcull_face().getvalue2().toString();
                 if ("FRONT".equals(face)) {
-                    cs.setCullMode(CullState.CS_FRONT);
+                    cs.setCullFace(CullState.Face.Front);
                 } else if ("BACK".equals(face)) {
-                    cs.setCullMode(CullState.CS_BACK);
+                    cs.setCullFace(CullState.Face.Back);
                 } else if ("FRONT_AND_BACK".equals(face)) {
-                    cs.setCullMode(CullState.CS_FRONT_AND_BACK);
+                    cs.setCullFace(CullState.Face.FrontAndBack);
                 }
             }
         }
@@ -2141,9 +2138,9 @@ public class ColladaImporter {
                 String shade = pass.getshade_model().getvalue2().toString();
 
                 if ("FLAT".equals(shade)) {
-                    ss.setShade(ShadeState.SM_FLAT);
+                    ss.setShadeMode(ShadeState.ShadeMode.Flat);
                 } else if ("SMOOTH".equals(shade)) {
-                    ss.setShade(ShadeState.SM_SMOOTH);
+                    ss.setShadeMode(ShadeState.ShadeMode.Smooth);
                 }
             }
         }
@@ -2241,28 +2238,28 @@ public class ColladaImporter {
             if (pass.getstencil_func().hasfunc()) {
                 String func = pass.getstencil_func().getfunc().toString();
                 if ("NEVER".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_NEVER);
+                    ss.setStencilFunction(StencilState.StencilFunction.Never);
                 } else if ("LESS".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_LESS);
+                    ss.setStencilFunction(StencilState.StencilFunction.LessThan);
                 } else if ("LEQUAL".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_LEQUAL);
+                    ss.setStencilFunction(StencilState.StencilFunction.LessThanOrEqualTo);
                 } else if ("EQUAL".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_EQUAL);
+                    ss.setStencilFunction(StencilState.StencilFunction.EqualTo);
                 } else if ("GREATER".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_GREATER);
+                    ss.setStencilFunction(StencilState.StencilFunction.GreaterThan);
                 } else if ("NOTEQUAL".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_NOTEQUAL);
+                    ss.setStencilFunction(StencilState.StencilFunction.NotEqualTo);
                 } else if ("GEQUAL".equals(func)) {
-                    ss.setStencilFunc(StencilState.SF_GEQUAL);
+                    ss.setStencilFunction(StencilState.StencilFunction.GreaterThanOrEqualTo);
                 }
             }
 
             if (pass.getstencil_func().hasref()) {
-                ss.setStencilRef(pass.getstencil_func().getref().getvalue2().intValue());
+                ss.setStencilReference(pass.getstencil_func().getref().getvalue2().intValue());
             }
 
             if (pass.getstencil_func().hasmask()) {
-                ss.setStencilRef(pass.getstencil_func().getmask().getvalue2().intValue());
+                ss.setStencilReference(pass.getstencil_func().getmask().getvalue2().intValue());
             }
         }
 
@@ -2295,25 +2292,25 @@ public class ColladaImporter {
         }
     }
 
-    public int evaluateStencilOp(String value) {
+    public StencilState.StencilOperation evaluateStencilOp(String value) {
         if ("KEEP".equals(value)) {
-            return StencilState.SO_KEEP;
+            return StencilState.StencilOperation.Keep;
         } else if ("ZERO".equals(value)) {
-            return StencilState.SO_ZERO;
+            return StencilState.StencilOperation.Zero;
         } else if ("REPLACE".equals(value)) {
-            return StencilState.SO_REPLACE;
+            return StencilState.StencilOperation.Replace;
         } else if ("INCR".equals(value)) {
-            return StencilState.SO_INCR;
+            return StencilState.StencilOperation.Increment;
         } else if ("DECR".equals(value)) {
-            return StencilState.SO_DECR;
+            return StencilState.StencilOperation.Decrement;
         } else if ("INVERT".equals(value)) {
-            return StencilState.SO_INVERT;
+            return StencilState.StencilOperation.Invert;
         } else if ("INCR_WRAP".equals(value)) {
-            return StencilState.SO_KEEP;
+            return StencilState.StencilOperation.IncrementWrap;
         } else if ("DECT_WRAP".equals(value)) {
-            return StencilState.SO_KEEP;
+            return StencilState.StencilOperation.DecrementWrap;
         } else {
-            return StencilState.SO_KEEP;
+            return StencilState.StencilOperation.Keep;
         }
     }
 
@@ -2321,7 +2318,7 @@ public class ColladaImporter {
      * processTechniqueCOMMON process a technique of techniqueType2 which are
      * defined to be returned from a profile_COMMON object. This technique
      * contains images, lambert shading, phong shading and blinn shading.
-     * 
+     *
      * @param technique
      *            the fixed pipeline technique.
      * @param mat
@@ -2504,24 +2501,24 @@ public class ColladaImporter {
             ColorRGBA transparentColor = getColor(transparent.getcolor());
             colorAlpha = 1 - (transparentColor.r + transparentColor.g + transparentColor.b) / 3;
             if (colorAlpha < 1) {
-                AlphaState as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
-                as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-                as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+                BlendState as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+                as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+                as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
                 as.setBlendEnabled(true);
                 mat.setState(as);
             }
 
         } else if (transparent.hastexture()) {
-            AlphaState as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
-            as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-            as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+            BlendState as = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+            as.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
+            as.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
             as.setBlendEnabled(true);
 
             // the following will work for cutoff image transparency,
             // which is not what we are usually using, we may wish to use something special here?
             //as.setReference(0.14f);
             //as.setTestEnabled(true);
-            //as.setTestFunction(AlphaState.TF_GEQUAL);
+            //as.setTestFunction(BlendState.TF_GEQUAL);
             mat.setState(as);
 
             for (int i = 0; i < transparent.gettextureCount(); i++) {
@@ -2535,7 +2532,7 @@ public class ColladaImporter {
      * processTexture generates a texture state that contains the image and
      * texture coordinate unit information. This texture state is returned to be
      * placed in the Collada material.
-     * 
+     *
      * @param texture
      *            the texture type to process.
      * @return the generated TextureState that handles this texture tag.
@@ -2590,7 +2587,7 @@ public class ColladaImporter {
             // Wrap by default.
             // This code is modified from the original, which clamped by default.
             //t0.setWrap(Texture.WM_ECLAMP_S_ECLAMP_T);
-            t0.setWrap(Texture.WM_WRAP_S_WRAP_T);
+            t0.setWrap(Texture.WrapMode.Repeat);
             ts.setTexture(t0);
         } else {
             if (!squelch) {
@@ -2604,7 +2601,7 @@ public class ColladaImporter {
     /**
      * Process Geometry will build a number of Geometry objects attaching them
      * to the supplied parent.
-     * 
+     *
      * @param geometryLibrary
      *            the geometries to process individually.
      * @throws Exception
@@ -2617,7 +2614,7 @@ public class ColladaImporter {
             geometryType geom = geometryLibrary.getgeometryAt(i);
             if (geom.hasmesh()) {
                 for (int j = 0; j < geom.getmeshCount(); j++) {
-                    Geometry g = processMesh(geom.getmeshAt(j), geom);
+                    Spatial g = processMesh(geom.getmeshAt(j), geom);
                     put(geom.getid().toString(), g);
                     if (geometryNames == null) {
                         geometryNames = new ArrayList<String>();
@@ -2639,7 +2636,7 @@ public class ColladaImporter {
     /**
      * processControllerLibrary builds a controller for each controller tag in
      * the file.
-     * 
+     *
      * @param controllerLibrary
      *            the controller library object to parse.
      * @throws Exception
@@ -2657,7 +2654,7 @@ public class ColladaImporter {
     /**
      * controllers define how one object interacts with another. Typically, this
      * is skinning and morph targets.
-     * 
+     *
      * @param controller
      *            the controller to process
      */
@@ -2674,7 +2671,7 @@ public class ColladaImporter {
     /**
      * processSkin builds a SkinnedMesh object that defines the vertex
      * information of a model and the skeletal system that supports it.
-     * 
+     *
      * @param skin
      *            the skin to process
      * @throws Exception
@@ -2710,7 +2707,8 @@ public class ColladaImporter {
                 return;
             }
             processBindShapeMatrix(skinNode, skin.getbind_shape_matrix());
-            skinNode.setSkin(mesh);
+            // Updating to JME 2.2.1: I don't know what the second argument for setSkinRegion is supposed to be, so I leave it at null.
+            skinNode.setSkinRegion(mesh,null);
         }
 
         // There are a couple types of sources, those setting the joints,
@@ -2756,7 +2754,7 @@ public class ColladaImporter {
      * processVertexWeights defines a list of vertices and weights for a given
      * bone. These bones are defined by <v> as the first element to a group. The
      * bones were prebuilt in the priocessControllerSource method.
-     * 
+     *
      * @param weights
      * @throws Exception
      */
@@ -2796,7 +2794,7 @@ public class ColladaImporter {
 
         }
 
-        Map<Integer, ArrayList<BatchVertPair>> vertMap = (Map) resourceLibrary.get(skinNode.getSkin().getName() + "VertMap");
+        Map<Integer, ArrayList<BatchVertPair>> vertMap = (Map) resourceLibrary.get(skinNode.getSkins().getName() + "VertMap");
         while (st.hasMoreTokens()) {
             // Get bone index
             for (int i = 0; i < boneCount[count]; i++) {
@@ -2822,7 +2820,7 @@ public class ColladaImporter {
      * processControllerSource will process the source types that define how a
      * controller is built. This includes support for skin joints, bindings and
      * weights.
-     * 
+     *
      * @param source
      *            the source to process.
      * @throws Exception
@@ -2895,7 +2893,7 @@ public class ColladaImporter {
      * processBindShapeMatrix sets the initial transform of the skinned mesh.
      * The 4x4 matrix is converted to a 3x3 matrix and a vector, then passed to
      * the skinned mesh for use.
-     * 
+     *
      * @param skin
      *            the skin to apply the bind to.
      * @param matrix
@@ -2916,14 +2914,14 @@ public class ColladaImporter {
 
     /**
      * processBindMaterial
-     * 
+     *
      * @param material
      * @param spatial
      * @throws Exception
      *             the matrix to parse.
      */
     private void processBindMaterial(bind_materialType material,
-            Geometry geomBindTo) throws Exception {
+            Spatial geomBindTo) throws Exception {
         technique_commonType common = material.gettechnique_common();
         for (int i = 0; i < common.getinstance_materialCount(); i++) {
             processInstanceMaterial(common.getinstance_materialAt(i),
@@ -2935,7 +2933,7 @@ public class ColladaImporter {
      * processMesh will create either lines or a TriMesh. This means that the
      * only supported child elements are: triangles and lines or linestrips.
      * Polygons, trifans and tristrips are ignored.
-     * 
+     *
      * @param mesh
      *            the mesh to parse.
      * @param geom
@@ -2944,7 +2942,7 @@ public class ColladaImporter {
      * @throws Exception
      *             thrown if there is a problem processing the xml.
      */
-    private Geometry processMesh(meshType mesh, geometryType geom)
+    private Spatial processMesh(meshType mesh, geometryType geom)
             throws Exception {
         // we need to build all the source data objects.
         for (int i = 0; i < mesh.getsourceCount(); i++) {
@@ -3021,7 +3019,7 @@ public class ColladaImporter {
      * processTriMesh will process the triangles tag from the mesh section of
      * the COLLADA file. A jME TriMesh is returned that defines the vertices,
      * indices, normals, texture coordinates and colors.
-     * 
+     *
      * @param mesh
      *            the meshType to process for the trimesh.
      * @param geom
@@ -3030,89 +3028,108 @@ public class ColladaImporter {
      * @throws Exception
      *             thrown if there is a problem processing the xml.
      */
-    private TriMesh processTriMesh(meshType mesh, geometryType geom)
+    private Spatial processTriMesh(meshType mesh, geometryType geom)
             throws Exception {
         HashMap<Integer, ArrayList<BatchVertPair>> vertMap = new HashMap<Integer, ArrayList<BatchVertPair>>();
         put(geom.getid().toString() + "VertMap", vertMap);
-        TriMesh triMesh = new TriMesh(geom.getid().toString());
+        //TriMesh triMesh = new TriMesh(geom.getid().toString());
+
+        Node parentNode = new Node(geom.getid().toString());
 
         int batchIndex = -1;
-        for (int currentBatch = 0; currentBatch < mesh.gettrianglesCount(); currentBatch++) {
-            trianglesType tri = mesh.gettrianglesAt(currentBatch);
-            TriangleBatch triBatch = null;
+        for (int triangleIndex = 0; triangleIndex < mesh.gettrianglesCount(); triangleIndex++) {
+            trianglesType tri = mesh.gettrianglesAt(triangleIndex);
+//            TriangleBatch triMesh = null;
+//
+//            if (tri.getcount().intValue() == 0) {
+//                continue;            // differentiate batchIndex from currentBatch as a loop index.
+//                // batchIndex denotes the TrianglesBatch that is added to the jME TriMesh.
+//                // currentBatch denotes the index of the trianglesType group from the COLLADA source
+//                // since some exporters, *cough* MAYA *cough*, export some batches with 0 polygons,
+//                // that cause all manner of chaos all over the place.
+//            }
+//            batchIndex++;
+//
+//            if (batchIndex < triMesh.getBatchCount()) {
+//                triMesh = triMesh.getBatch(batchIndex);
+//            } else {
+//                triMesh = new TriangleBatch();
+//                triMesh.addBatch(triMesh);
+//            }
 
-            if (tri.getcount().intValue() == 0) {
-                continue;            // differentiate batchIndex from currentBatch as a loop index.
-                // batchIndex denotes the TrianglesBatch that is added to the jME TriMesh.
-                // currentBatch denotes the index of the trianglesType group from the COLLADA source
-                // since some exporters, *cough* MAYA *cough*, export some batches with 0 polygons,
-                // that cause all manner of chaos all over the place.
-            }
-            batchIndex++;
-
-            if (batchIndex < triMesh.getBatchCount()) {
-                triBatch = triMesh.getBatch(batchIndex);
-            } else {
-                triBatch = new TriangleBatch();
-                triMesh.addBatch(triBatch);
-            }
+            TriMesh triMesh = new TriMesh(geom.getid().toString());
 
             if (tri.hasmaterial()) {
                 // first set the appropriate materials to this mesh.
-                String matKey = (String) resourceLibrary.get(tri.getmaterial().toString());
-                ColladaMaterial cm = (ColladaMaterial) resourceLibrary.get(matKey);
+                String matKey = (String) resourceLibrary.get(tri.getmaterial()
+                        .toString());
+                triMesh.setName(triMesh.getName()+"-"+tri.getmaterial().toString());
+                ColladaMaterial cm = (ColladaMaterial) resourceLibrary
+                    .get(matKey);
+
                 if (cm != null) {
-                    for (int i = 0; i < RenderState.RS_MAX_STATE; i++) {
-                        if (cm.getState(i) != null) {
-                            if (cm.getState(i).getType() == RenderState.RS_ALPHA) {
-                                triMesh.getBatch(batchIndex).setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+                	for (RenderState.StateType type : RenderState.StateType.values()) {
+                        if (cm.getState(type) != null) {
+                            if (type == RenderState.StateType.Blend) {
+                                triMesh.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
                             }
                             // clone the state as different mesh's may have
                             // different
                             // attributes
                             try {
                                 ByteArrayOutputStream out = new ByteArrayOutputStream();
-                                BinaryExporter.getInstance().save(cm.getState(i), out);
-                                ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-                                RenderState rs = (RenderState) BinaryImporter.getInstance().load(in);
-                                triBatch.setRenderState(rs);
+                                BinaryExporter.getInstance().save(
+                                        cm.getState(type), out);
+                                ByteArrayInputStream in = new ByteArrayInputStream(
+                                        out.toByteArray());
+                                RenderState rs = (RenderState) BinaryImporter
+                                        .getInstance().load(in);
+                                triMesh.setRenderState(rs);
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                logger
+                                        .throwing(
+                                                this.getClass().toString(),
+                                                "processTriMesh(meshType mesh, geometryType geom)",
+                                                e);
                             }
                         }
                     }
-
                     ArrayList<Controller> cList = cm.getControllerList();
                     if (cList != null) {
                         for (int c = 0; c < cList.size(); c++) {
                             if (cList.get(c) instanceof TextureKeyframeController) {
-                                TextureState ts = (TextureState) triBatch.getRenderState(RenderState.RS_TEXTURE);
+                                TextureState ts = (TextureState) triMesh
+                                        .getRenderState(RenderState.StateType.Texture);
                                 if (ts != null) {
                                     // allow wrapping, as animated textures will
                                     // almost always need it.
-                                    ts.getTexture().setWrap(Texture.WM_WRAP_S_WRAP_T);
-                                    ((TextureKeyframeController) cList.get(c)).setTexture(ts.getTexture());
+                                    ts.getTexture().setWrap(Texture.WrapAxis.S, Texture.WrapMode.Repeat);
+                                    ts.getTexture().setWrap(Texture.WrapAxis.T, Texture.WrapMode.Repeat);
+                                    ((TextureKeyframeController) cList.get(c))
+                                            .setTexture(ts.getTexture());
                                 }
                             }
                         }
                     }
-
                     if (mesh.hasextra()) {
                         for (int i = 0; i < mesh.getextraCount(); i++) {
                             try {
-                                ExtraPluginManager.processExtra(triBatch, mesh.getextraAt(i));
+                                ExtraPluginManager.processExtra(triMesh, mesh
+                                        .getextraAt(i));
                             } catch (Exception e) {
                                 if (!squelch) {
-                                    e.printStackTrace();
-                                    logger.log(Level.WARNING,
-                                            "Error processing extra information - " + e, e);
+                                    logger
+                                            .log(
+                                                    Level.INFO,
+                                                    "Error processing extra information for mesh",
+                                                    e);
                                 }
                             }
                         }
                     }
                 }
 
-                triBatch.setName(tri.getmaterial().toString());
+                subMaterialLibrary.put(triMesh, tri.getmaterial().toString());
             }
 
             // test for double_sided flag in extra
@@ -3123,12 +3140,12 @@ public class ColladaImporter {
                     if (childNode.getLocalName().equals("double_sided")) {
                         if (Integer.parseInt(childNode.getTextContent()) == 1) {
                             CullState cullState = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
-                            cullState.setCullMode(CullState.CS_NONE);
+                            cullState.setCullFace(CullState.Face.None);
                             cullState.setEnabled(true);
                             triMesh.setRenderState(cullState);
                         } else {
                             CullState cullState = DisplaySystem.getDisplaySystem().getRenderer().createCullState();
-                            cullState.setCullMode(CullState.CS_BACK);
+                            cullState.setCullFace(CullState.Face.Back);
                             cullState.setEnabled(true);
                             triMesh.setRenderState(cullState);
                         }
@@ -3146,7 +3163,7 @@ public class ColladaImporter {
             for (int i = 0; i < indexBuffer.capacity(); i++) {
                 indexBuffer.put(i);
             }
-            triMesh.setIndexBuffer(batchIndex, indexBuffer);
+            triMesh.setIndexBuffer(indexBuffer);
 
             // find the maximum offset to understand the stride
             int maxOffset = -1;
@@ -3160,29 +3177,39 @@ public class ColladaImporter {
             // next build the other buffers, based on the input semantic
             for (int i = 0; i < tri.getinputCount(); i++) {
                 if ("VERTEX".equals(tri.getinputAt(i).getsemantic().toString())) {
-                    FloatBuffer buffer = processVertexBuffer(batchIndex, maxOffset, tri.getinputAt(i).getsource().getValue().toString(), tri, vertMap, triBatch);
+                    FloatBuffer buffer = processVertexBuffer(batchIndex, maxOffset, tri.getinputAt(i).getsource().getValue().toString(), tri, vertMap, triMesh);
                     if (buffer != null) {
-                        triMesh.setVertexBuffer(batchIndex, buffer);
+                        triMesh.setVertexBuffer(buffer);
                     }
                 } else if ("NORMAL".equals(tri.getinputAt(i).getsemantic().toString())) {
                     FloatBuffer buffer = processNormalBuffer(maxOffset, tri, i);
                     if (buffer != null) {
-                        triMesh.setNormalBuffer(batchIndex, buffer);
+                        triMesh.setNormalBuffer(buffer);
                     }
                 } else if ("TEXCOORD".equals(tri.getinputAt(i).getsemantic().toString())) {
-                    processTexcoordBuffer(batchIndex, triBatch, triMesh, i, maxOffset, tri);
+                    processTexcoordBuffer(batchIndex, triMesh, i, maxOffset, tri);
 
                 } else if ("COLOR".equals(tri.getinputAt(i).getsemantic().toString())) {
                     FloatBuffer buffer = processColorBuffer(maxOffset, tri, i);
-                    triMesh.setColorBuffer(batchIndex, buffer);
+                    triMesh.setColorBuffer(buffer);
                 }
             }
+
+            triMesh.setModelBound(new BoundingBox());
+            triMesh.updateModelBound();
+
+//XXX: not parenting under a node when only one mesh needs to be fixed!! /rherlitz
+//            if (mesh.gettrianglesCount() == 1) {
+//                return triMesh;
+//            }
+
+            parentNode.attachChild(triMesh);
         }
 
-        triMesh.setModelBound(new OrientedBoundingBox());
-        triMesh.updateModelBound();
+//        triMesh.setModelBound(new OrientedBoundingBox());
+//        triMesh.updateModelBound();
 
-        return triMesh;
+        return parentNode;
     }
 
     private FloatBuffer processColorBuffer(final int maxOffset, final trianglesType tri, final int i) throws Exception, NumberFormatException {
@@ -3226,7 +3253,7 @@ public class ColladaImporter {
         return colorBuffer;
     }
 
-    private void processTexcoordBuffer(final int batchIndex, final TriangleBatch triBatch, final TriMesh triMesh, final int i, final int maxOffset, final trianglesType tri) throws Exception, NumberFormatException {
+    private void processTexcoordBuffer(final int batchIndex, final TriMesh triMesh, final int i, final int maxOffset, final trianglesType tri) throws Exception, NumberFormatException {
         // build the texture buffer
         String key = tri.getinputAt(i).getsource().getValue().toString();
 
@@ -3308,7 +3335,8 @@ public class ColladaImporter {
 //        } else {
 //            unit = set - 1;
 //        }
-        triMesh.setTextureBuffer(batchIndex, texBuffer, unit);
+        TexCoords coords = new TexCoords(texBuffer);
+        triMesh.setTextureCoords(coords, unit);
 
         // Set the wrap mode, check if the batch has a texture
         // first, if not
@@ -3316,37 +3344,37 @@ public class ColladaImporter {
         // Then, based on the texture coordinates, we may need to
         // change it from the
         // default.
-        TextureState ts = (TextureState) triBatch.getRenderState(RenderState.RS_TEXTURE);
+        TextureState ts = (TextureState) triMesh.getRenderState(RenderState.RS_TEXTURE);
         if (ts == null) {
             ts = (TextureState) triMesh.getRenderState(RenderState.RS_TEXTURE);
         }
 
-        if (ts != null) {
-            Texture t = ts.getTexture(unit);
-            if (t != null) {
-                if (maxX > 1 || minX < 0) {
-                    if (maxY > 1 || minY < 0) {
-                        t.setWrap(Texture.WM_WRAP_S_WRAP_T);
-                    } else {
-                        if (t.getWrap() != Texture.WM_WRAP_S_WRAP_T) {
-                            if (t.getWrap() == Texture.WM_CLAMP_S_WRAP_T) {
-                                t.setWrap(Texture.WM_WRAP_S_WRAP_T);
-                            } else {
-                                t.setWrap(Texture.WM_WRAP_S_CLAMP_T);
-                            }
-                        }
-                    }
-                } else if (maxY > 1 || minY < 0) {
-                    if (t.getWrap() != Texture.WM_WRAP_S_WRAP_T) {
-                        if (t.getWrap() == Texture.WM_WRAP_S_CLAMP_T) {
-                            t.setWrap(Texture.WM_WRAP_S_WRAP_T);
-                        } else {
-                            t.setWrap(Texture.WM_CLAMP_S_WRAP_T);
-                        }
-                    }
-                }
-            }
-        }
+//        if (ts != null) {
+//            Texture t = ts.getTexture(unit);
+//            if (t != null) {
+//                if (maxX > 1 || minX < 0) {
+//                    if (maxY > 1 || minY < 0) {
+//                        t.setWrap(Texture.WM_WRAP_S_WRAP_T);
+//                    } else {
+//                        if (t.getWrap() != Texture.WM_WRAP_S_WRAP_T) {
+//                            if (t.getWrap() == Texture.WM_CLAMP_S_WRAP_T) {
+//                                t.setWrap(Texture.WM_WRAP_S_WRAP_T);
+//                            } else {
+//                                t.setWrap(Texture.WM_WRAP_S_CLAMP_T);
+//                            }
+//                        }
+//                    }
+//                } else if (maxY > 1 || minY < 0) {
+//                    if (t.getWrap() != Texture.WM_WRAP_S_WRAP_T) {
+//                        if (t.getWrap() == Texture.WM_WRAP_S_CLAMP_T) {
+//                            t.setWrap(Texture.WM_WRAP_S_WRAP_T);
+//                        } else {
+//                            t.setWrap(Texture.WM_CLAMP_S_WRAP_T);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private FloatBuffer processNormalBuffer(final int maxOffset, final trianglesType tri, final int i) throws Exception, NumberFormatException {
@@ -3405,7 +3433,7 @@ public class ColladaImporter {
             String key,
             final trianglesType tri,
             final HashMap<Integer, ArrayList<BatchVertPair>> vertMap,
-            final TriangleBatch triBatch)
+            final TriMesh triMesh)
             throws Exception, NumberFormatException {
         // build the vertex buffer
         //String key = tri.getinputAt(i).getsource().getValue().toString();
@@ -3433,7 +3461,7 @@ public class ColladaImporter {
         StringTokenizer st = new StringTokenizer(tri.getp().getValue());
         int vertCount = tri.getcount().intValue() * 3;
         FloatBuffer vertBuffer = BufferUtils.createVector3Buffer(vertCount);
-        triBatch.setVertexCount(vertCount);
+        triMesh.setVertexCount(vertCount);
         for (int j = 0; j < vertCount; j++) {
             // need to store the index in p to what j is for later
             // processing the index to the vert for bones
@@ -3459,11 +3487,11 @@ public class ColladaImporter {
     /**
      * TODO: this implementation is a quick hack to import triangles supplied in
      * polygon form...
-     * 
+     *
      * processPolygonMesh will process the polygons tag from the mesh section of
      * the COLLADA file. A jME TriMesh is returned that defines the vertices,
      * indices, normals, texture coordinates and colors.
-     * 
+     *
      * @param mesh
      *            the meshType to process for the trimesh.
      * @param geom
@@ -3472,25 +3500,22 @@ public class ColladaImporter {
      * @throws Exception
      *             thrown if there is a problem processing the xml.
      */
-    private TriMesh processPolygonMesh(meshType mesh, geometryType geom)
+    private Spatial processPolygonMesh(meshType mesh, geometryType geom)
             throws Exception {
         HashMap<Integer, ArrayList<BatchVertPair>> vertMap = new HashMap<Integer, ArrayList<BatchVertPair>>();
         put(geom.getid().toString() + "VertMap", vertMap);
-        TriMesh triMesh = new TriMesh(geom.getid().toString());
-        for (int batchIndex = 0; batchIndex < mesh.getpolygonsCount(); batchIndex++) {
-            polygonsType poly = mesh.getpolygonsAt(batchIndex);
-            TriangleBatch triBatch = null;
+        
 
-            if (batchIndex < triMesh.getBatchCount()) {
-                triBatch = triMesh.getBatch(batchIndex);
-            } else {
-                triBatch = new TriangleBatch();
-                triMesh.addBatch(triBatch);
-            }
+        Node parentNode = new Node(geom.getid().toString());
+        
+        for (int triangleIndex = 0; triangleIndex < mesh.getpolygonsCount(); triangleIndex++) {
+            polygonsType poly = mesh.getpolygonsAt(triangleIndex);
+            //TriangleBatch triMesh = null;
+            TriMesh triMesh = new TriMesh(geom.getid().toString());
 
             if (poly.hasmaterial()) {
                 // note: this material reference is used later
-                triBatch.setName(poly.getmaterial().toString());
+                triMesh.setName(poly.getmaterial().toString());
             }
 
             // build the index buffer, this is going to be easy as it's only
@@ -3499,7 +3524,7 @@ public class ColladaImporter {
             for (int i = 0; i < indexBuffer.capacity(); i++) {
                 indexBuffer.put(i);
             }
-            triMesh.setIndexBuffer(batchIndex, indexBuffer);
+            triMesh.setIndexBuffer(indexBuffer);
 
             // find the maximum offset to understand the stride
             int maxOffset = -1;
@@ -3544,7 +3569,7 @@ public class ColladaImporter {
                     //int vertCount = poly.getcount().intValue() * stride;
                     int vertCount = poly.getcount().intValue() * 3; // **** FIXME: this is hard coded for triangles!!!
                     FloatBuffer vertBuffer = BufferUtils.createVector3Buffer(vertCount);
-                    triBatch.setVertexCount(vertCount);
+                    triMesh.setVertexCount(vertCount);
                     int polygon = 0;
                     for (int j = 0; j < vertCount; j++) {
                         if (st == null || !st.hasMoreTokens()) {
@@ -3561,10 +3586,10 @@ public class ColladaImporter {
                         ArrayList<BatchVertPair> storage = vertMap.get(Integer.valueOf(vertKey));
                         if (storage == null) {
                             storage = new ArrayList<BatchVertPair>();
-                            storage.add(new BatchVertPair(batchIndex, j));
+                            storage.add(new BatchVertPair(triangleIndex, j));
                             vertMap.put(Integer.valueOf(vertKey), storage);
                         } else {
-                            storage.add(new BatchVertPair(batchIndex, j));
+                            storage.add(new BatchVertPair(triangleIndex, j));
                         }
 
                         BufferUtils.setInBuffer(v[vertKey], vertBuffer, j);
@@ -3572,7 +3597,7 @@ public class ColladaImporter {
                             st.nextToken();
                         }
                     }
-                    triMesh.setVertexBuffer(batchIndex, vertBuffer);
+                    triMesh.setVertexBuffer(vertBuffer);
                 } else if ("NORMAL".equals(poly.getinputAt(i).getsemantic().toString())) {
                     // build the normal buffer
                     String key = poly.getinputAt(i).getsource().getValue().toString();
@@ -3633,7 +3658,7 @@ public class ColladaImporter {
                         }
                     }
 
-                    triMesh.setNormalBuffer(batchIndex, normBuffer);
+                    triMesh.setNormalBuffer(normBuffer);
                 } else if ("TEXCOORD".equals(poly.getinputAt(i).getsemantic().toString())) {
                     // build the texture buffer
                     String key = poly.getinputAt(i).getsource().getValue().toString();
@@ -3722,7 +3747,7 @@ public class ColladaImporter {
 //                        unit = set - 1;
 //                    }
 
-                    triMesh.setTextureBuffer(batchIndex, texBuffer, unit);
+                    triMesh.setTextureCoords(new TexCoords(texBuffer), unit);
 
                     // Set the wrap mode, check if the batch has a texture
                     // first, if not
@@ -3730,7 +3755,7 @@ public class ColladaImporter {
                     // Then, based on the texture coordinates, we may need to
                     // change it from the
                     // default.
-                    TextureState ts = (TextureState) triBatch.getRenderState(RenderState.RS_TEXTURE);
+                    TextureState ts = (TextureState) triMesh.getRenderState(RenderState.RS_TEXTURE);
                     if (ts == null) {
                         ts = (TextureState) triMesh.getRenderState(RenderState.RS_TEXTURE);
                     }
@@ -3739,13 +3764,10 @@ public class ColladaImporter {
                         Texture t = ts.getTexture(unit);
                         if (t != null) {
                             if (maxX > 1) {
-                                if (maxY > 1) {
-                                    t.setWrap(Texture.WM_WRAP_S_WRAP_T);
-                                } else {
-                                    t.setWrap(Texture.WM_WRAP_S_CLAMP_T);
-                                }
-                            } else if (maxY > 1) {
-                                t.setWrap(Texture.WM_CLAMP_S_WRAP_T);
+                                t.setWrap(Texture.WrapAxis.S, Texture.WrapMode.Repeat);
+                            }
+                            if (maxY > 1) {
+                                t.setWrap(Texture.WrapAxis.T, Texture.WrapMode.Repeat);
                             }
                         }
                     }
@@ -3788,21 +3810,23 @@ public class ColladaImporter {
                         }
                     }
 
-                    triMesh.setColorBuffer(batchIndex, colorBuffer);
+                    triMesh.setColorBuffer(colorBuffer);
                 }
             }
+            
+            triMesh.setModelBound(new OrientedBoundingBox());
+            triMesh.updateModelBound();
+            parentNode.attachChild(triMesh);
         }
-        triMesh.setModelBound(new OrientedBoundingBox());
-        triMesh.updateModelBound();
 
-        return triMesh;
+        return parentNode;
     }
 
     /**
      * processLines will process the lines tag from the mesh section of the
      * COLLADA file. A jME Line is returned that defines the vertices, normals,
      * texture coordinates and colors.
-     * 
+     *
      * @param mesh
      *            the meshType to process for the lines.
      * @param geom
@@ -3820,7 +3844,7 @@ public class ColladaImporter {
     /**
      * The library of visual scenes defines how the loaded geometry is stored in
      * the scene graph, including scaling, translation, rotation, etc.
-     * 
+     *
      * @param libScene
      *            the library of scenes
      * @throws Exception
@@ -3840,7 +3864,7 @@ public class ColladaImporter {
     /**
      * the visual scene will contain any number of nodes that define references
      * to geometry. These are then placed into the scene as needed.
-     * 
+     *
      * @param scene
      *            the scene to process.
      * @param node
@@ -3867,7 +3891,7 @@ public class ColladaImporter {
 
     /**
      * a node tag
-     * 
+     *
      * @param xmlNode
      * @param parent
      * @throws Exception
@@ -4041,7 +4065,7 @@ public class ColladaImporter {
 
     /**
      * processInstanceCamera
-     * 
+     *
      * @param camera
      * @param node
      * @throws Exception
@@ -4062,7 +4086,7 @@ public class ColladaImporter {
 
     /**
      * processInstanceLight
-     * 
+     *
      * @param light
      * @param node
      * @throws Exception
@@ -4092,7 +4116,7 @@ public class ColladaImporter {
 
     /**
      * processInstanceController
-     * 
+     *
      * @param controller
      * @param node
      * @throws Exception
@@ -4137,13 +4161,13 @@ public class ColladaImporter {
         }
 
         if (controller.hasbind_material()) {
-            processBindMaterial(controller.getbind_material(), sNode.getSkin());
+            processBindMaterial(controller.getbind_material(), sNode.getSkins());
         }
     }
 
     /**
      * processInstanceGeom
-     * 
+     *
      * @param geometry
      * @param node
      * @throws Exception
@@ -4156,7 +4180,7 @@ public class ColladaImporter {
             key = key.substring(1);
         }
 
-        Geometry g = (Geometry) resourceLibrary.get(key);
+        Spatial g = (Spatial) resourceLibrary.get(key);
         if (g != null) {
             if (g instanceof TriMesh) {
                 g = new SharedMesh(key, (TriMesh) g);
@@ -4171,13 +4195,13 @@ public class ColladaImporter {
 
     /**
      * processInstanceMaterial
-     * 
+     *
      * @param material
      * @param node
      * @throws Exception
      */
     private void processInstanceMaterial(instance_materialType material,
-            Geometry geomBindTo) throws Exception {
+            Spatial geomBindTo) throws Exception {
         String key = material.gettarget().toString();
 
         if (key.startsWith("#")) {
@@ -4185,27 +4209,30 @@ public class ColladaImporter {
         }
 
         ColladaMaterial cm = (ColladaMaterial) resourceLibrary.get(resourceLibrary.get(key));
+        String symbol = material.getsymbol().toString();
 
-        SceneElement target = geomBindTo;
-        for (int i = 0; i < geomBindTo.getBatchCount(); ++i) {
-            GeomBatch batch = geomBindTo.getBatch(i);
-            String symbol = material.getsymbol().toString();
-            if (symbol.equals(batch.getName())) {
-                target = batch;
-                break;
-            } else if (
-                    // this corrects a material mis-assignment issue
-                    batch instanceof SharedBatch &&
-                    symbol.equals(((SharedBatch) batch).getTarget().getName())) {
-                target = batch;
-                break;
+        Spatial target = geomBindTo;
+        if (target instanceof Node) {
+            Node targetNode = (Node) target;
+            for (int i = 0; i < targetNode.getQuantity(); ++i) {
+                Spatial child = targetNode.getChild(i);
+                if (child instanceof TriMesh
+                        && symbol.equals(subMaterialLibrary.get(child))) {
+                    target = child;
+                    break;
+                } else if (child instanceof SharedMesh
+                        && symbol.equals(subMaterialLibrary
+                                .get(((SharedMesh) child).getTarget()))) {
+                    target = child;
+                    break;
+                }
             }
         }
 
         if (cm != null) {
             for (int i = 0; i < RenderState.RS_MAX_STATE; ++i) {
                 if (cm.getState(i) != null) {
-                    if (cm.getState(i).getType() == RenderState.RS_ALPHA) {
+                    if (cm.getState(i).getType() == RenderState.RS_BLEND) {
                         target.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
                     }
                     // clone the state as different mesh's may have different
@@ -4228,7 +4255,7 @@ public class ColladaImporter {
     /**
      * getColor uses a string tokenizer to parse the value of a colorType into a
      * ColorRGBA type used internally by jME.
-     * 
+     *
      * @param color
      *            the colorType to parse (RGBA format).
      * @return the ColorRGBA object to be used by jME.
@@ -4254,7 +4281,7 @@ public class ColladaImporter {
 
         /**
          * BatchVertPair
-         * 
+         *
          * @param batch
          * @param index
          */
@@ -4266,7 +4293,7 @@ public class ColladaImporter {
 
     /**
      * squelchErrors sets if the ColladaImporter should spit out errors or not
-     * 
+     *
      * @param b
      */
     public static void squelchErrors(boolean b) {

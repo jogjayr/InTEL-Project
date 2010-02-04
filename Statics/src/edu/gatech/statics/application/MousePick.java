@@ -121,7 +121,7 @@ public class MousePick extends MouseInputAction {
                 if (tPickData.getTargetTris().isEmpty()) {
                     continue;
                 }
-                Geometry geom = tPickData.getTargetMesh().getParentGeom();
+                Geometry geom = tPickData.getTargetMesh();
                 SimulationObject obj;
                 if (geom != null && (obj = getSimObject(geom)) != null) {
 

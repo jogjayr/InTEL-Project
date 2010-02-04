@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.application;
 
+import com.jme.image.Image.Format;
 import com.jme.input.action.InputActionEvent;
 import edu.gatech.statics.exercise.Exercise;
 import com.jmex.bui.PolledRootNode;
@@ -463,7 +464,7 @@ public class StaticsApplication {
         }
 
         Renderer r = display.getRenderer();
-        r.clearStatistics();
+        //r.clearStatistics();
         r.clearBuffers();
 
         // Execute renderQueue item
@@ -506,7 +507,7 @@ public class StaticsApplication {
     public void addScreenshotListener(ScreenshotListener listener) {
         screenshotListeners.add(listener);
     }
-    private IntBuffer screenshotBuffer = null;
+    private ByteBuffer screenshotBuffer = null;
     private BufferedImage screenshotImage = null;
 
     private BufferedImage takeScreenshot() {
@@ -517,10 +518,11 @@ public class StaticsApplication {
 
         if (screenshotBuffer == null) {
             screenshotBuffer = ByteBuffer.allocateDirect(windowWidth * windowHeight * 4).order(
-                    ByteOrder.LITTLE_ENDIAN).asIntBuffer();
+                    ByteOrder.LITTLE_ENDIAN);
         }
 
-        DisplaySystem.getDisplaySystem().getRenderer().grabScreenContents(screenshotBuffer, 0, 0, windowWidth, windowHeight);
+        //DisplaySystem.getDisplaySystem().getRenderer().grabScreenContents(screenshotBuffer, 0, 0, windowWidth, windowHeight);
+        DisplaySystem.getDisplaySystem().getRenderer().grabScreenContents(screenshotBuffer, Format.Guess, 0, 0, windowWidth, windowHeight);
 
         if (screenshotImage == null) {
             screenshotImage = new BufferedImage(windowWidth, windowHeight,

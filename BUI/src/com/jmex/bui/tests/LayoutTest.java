@@ -216,7 +216,7 @@ public class LayoutTest extends BaseTest
         ZBufferState zstate =
             DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
         zstate.setEnabled(true);
-        zstate.setFunction(ZBufferState.CF_LESS);
+        zstate.setFunction(ZBufferState.TestFunction.LessThan);
 
         final Box box = new Box("box", new Vector3f(), 4, 4, 4);
         Quaternion quat45 = new Quaternion();

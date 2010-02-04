@@ -10,9 +10,9 @@
         <signjar jar="dist/Statics.jar" alias="mykey" storepass="monkeys" keystore="../applet/.keystore"/>
         <copyfile src="dist/Statics.jar" dest="../applet/Statics.jar" />
         <copyfile src="properties.cfg" dest="dist/properties.cfg" />
-        <unjar src="windows_natives.jar" dest="dist/"/>
+        <!--<unjar src="windows_natives.jar" dest="dist/"/>
         <unjar src="macosx_natives.jar" dest="dist/"/>
-        <unjar src="linux_natives.jar" dest="dist/"/>
+        <unjar src="linux_natives.jar" dest="dist/"/>-->
     </target>
     
     <!--

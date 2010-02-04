@@ -130,7 +130,7 @@ public class RepresentationLayer {
 
         bufferState = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
         bufferState.setEnabled(true);
-        bufferState.setFunction(ZBufferState.CF_LEQUAL);
+        bufferState.setFunction(ZBufferState.TestFunction.LessThanOrEqualTo);
         addRenderState(bufferState);
 
         /** Set up a basic, default light. */
