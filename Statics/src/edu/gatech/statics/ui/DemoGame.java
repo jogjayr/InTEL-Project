@@ -8,7 +8,7 @@ import com.jme.app.SimpleGame;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyboardLookHandler;
 import com.jme.input.MouseInput;
-import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.ColorRGBA; 
 import com.jme.scene.shape.Sphere;
 import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
