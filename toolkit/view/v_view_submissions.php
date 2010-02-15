@@ -105,6 +105,7 @@
       <th>Class</th>
       <th>Status</th>
       <th>Date Submitted</th>
+      <th>Time Submitted</th>
 		</tr>
 <?php
 		foreach($submissions as $sub) {
@@ -117,6 +118,7 @@
       $className = $class['description'];
       $status = $sub['status'];
       $date = date("m/d/y", $sub['updated_on']);
+      $time = date("g:i a", $sub['updated_on']);
       
 			echo '<tr class="record">';
 				echo '<td>' .t2h($first). '</td>';
@@ -126,6 +128,7 @@
         echo '<td>' . t2h($className) . '</td>';
         echo '<td>' . t2h($status) . '</td>';
         echo '<td>' . t2h($date) . '</td>';
+        echo '<td>' . t2h($time) . '</td>';
 			echo '</tr>';
 		}
 
