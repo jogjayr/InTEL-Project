@@ -411,8 +411,10 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
             // draw message
             int messageX = (getWidth() - fm.stringWidth(message)) / 2;
-            int messageY = y + logo.getHeight(null) + 20;
+            //int messageY = y + logo.getHeight(null) + 20;
+            int messageY = getHeight()/2 + 100;
             og.drawString(message, messageX, messageY);
+            //og.fillOval(messageX, messageY, 100, 100);
 
             // draw subtaskmessage, if any
             if (subtaskMessage.length() > 0) {
@@ -546,6 +548,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             debug_sleep(2000);
 
             // parse the urls for the jars into the url list
+            logger.info("### AppletLoader: loadJarURLs()");
             loadJarURLs();
 
             // get path where applet will be stored
@@ -569,6 +572,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             File dir = new File(path);
 
             // create directory
+            logger.info("### AppletLoader: creating temp dir");
             if (!dir.exists()) {
                 dir.mkdirs();
             }
@@ -604,12 +608,15 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             // if jars not available or need updating download them
             if (!cacheAvailable) {
                 // downloads jars from the server
+                logger.info("### AppletLoader: downloadJars()");
                 downloadJars(path);		// 10-55%
 
                 // Extract Pack and LZMA files
+                logger.info("### AppletLoader: extractJars()");
                 extractJars(path);		// 55-65%
 
                 // Extracts Native Files
+                logger.info("### AppletLoader: extractNatives()");
                 extractNatives(path);	// 65-85%
 
                 // add version information once jars downloaded successfully
@@ -620,6 +627,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             }
 
             // add the downloaded jars and natives to classpath
+            logger.info("### AppletLoader: updateClassPath()");
             updateClassPath(path);
 
             // switch to LWJGL Applet
