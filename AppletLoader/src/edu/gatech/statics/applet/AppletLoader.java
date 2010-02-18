@@ -43,6 +43,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilePermission;
 import java.io.IOException;
@@ -55,6 +56,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
+import java.net.SocketException;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -73,6 +75,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Pack200;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import sun.security.util.SecurityConstants;
 
@@ -189,7 +192,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     protected boolean pack200Supported = false;
     /** generic error message to display on error */
     protected String[] genericErrorMessage = {"An error occured while loading the applet.",
-        "Please contact support to resolve this issue.",
+        "Please try refreshing the browser, using a different computer, or contact support to resolve this issue.",
         "<placeholder for error message>"};
     /** whether a certificate refused error occured */
     protected boolean certificateRefused;
@@ -254,6 +257,82 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         }
 
         logger.info("### AppletLoader: init done");
+    }
+
+    private int downloadJar(final String currentFile, URLConnection urlconnection, String path, byte[] buffer, int initialPercentage)
+            throws IOException, Exception, FileNotFoundException {
+        final InputStream inputstream = getJarInputStream(currentFile, urlconnection);
+        FileOutputStream fos = new FileOutputStream(path + currentFile);
+        int bufferSize;
+        long downloadStartTime = System.currentTimeMillis();
+        int downloadedAmount = 0;
+        int fileSize = 0;
+        String downloadSpeedMessage = "";
+
+        // do a buffered read of the jar.
+        // inputstream.read() sometimes blocks indefinitely,
+        // so we launch a monitor thread to check it.
+        // lastRead contains the timestamp of the last read.
+        final long[] lastRead = new long[1];
+        lastRead[0] = System.currentTimeMillis();
+        final boolean[] closed = new boolean[1];
+        closed[0] = false;
+
+        Thread monitorThread = new Thread(new Runnable() {
+
+            public void run() {
+                while (!closed[0]) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                    }
+                    if (System.currentTimeMillis() - lastRead[0] > 5000) {
+                        try {
+                            logger.info("### forcing reload (" + currentFile + ")");
+                            inputstream.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(AppletLoader.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        return;
+                    }
+                }
+            }
+        });
+        monitorThread.start();
+
+        while ((bufferSize = inputstream.read(buffer, 0, buffer.length)) != -1) {
+            debug_sleep(10);
+            lastRead[0] = System.currentTimeMillis();
+
+            fos.write(buffer, 0, bufferSize);
+            currentSizeDownload += bufferSize;
+            fileSize += bufferSize;
+
+            percentage = initialPercentage + ((currentSizeDownload * 45) / totalSizeDownload);
+            subtaskMessage = "Retrieving: " + currentFile + " " + ((currentSizeDownload * 100) / totalSizeDownload) + "%";
+            downloadedAmount += bufferSize;
+
+
+            long timeLapse = System.currentTimeMillis() - downloadStartTime;
+            // update only if a second or more has passed
+            if (timeLapse >= 1000) {
+                // get kb/s, nice that bytes/millis is same as kilobytes/seconds
+                float downloadSpeed = (float) downloadedAmount / timeLapse;
+                // round to two decimal places
+                downloadSpeed = ((int) (downloadSpeed * 100)) / 100f;
+                // set current speed message
+                downloadSpeedMessage = " @ " + downloadSpeed + " KB/sec";
+                // reset downloaded amount
+                downloadedAmount = 0;
+                // reset start time
+                downloadStartTime = System.currentTimeMillis();
+            }
+            subtaskMessage += downloadSpeedMessage;
+        }
+        closed[0] = true;
+        inputstream.close();
+        fos.close();
+        return fileSize;
     }
 
     /**
@@ -412,7 +491,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             // draw message
             int messageX = (getWidth() - fm.stringWidth(message)) / 2;
             //int messageY = y + logo.getHeight(null) + 20;
-            int messageY = getHeight()/2 + 100;
+            int messageY = getHeight() / 2 + 100;
             og.drawString(message, messageX, messageY);
             //og.fillOval(messageX, messageY, 100, 100);
 
@@ -692,7 +771,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         }
 
         // add downloaded jars to the classpath with required permissions
-        logger.info("### CREATING CLASSLOADER, existing("+classLoader+")");
+        logger.info("### CREATING CLASSLOADER, existing(" + classLoader + ")");
         if (classLoader == null) {
             classLoader = new URLClassLoader(urls) {
 
@@ -748,20 +827,20 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         debug_sleep(2000);
 
-        logger.info("### MY CLASSLOADER: "+classLoader);
+        logger.info("### MY CLASSLOADER: " + classLoader);
         Class appletClass = classLoader.loadClass(getParameter("al_main"));
 //        if (lwjglApplet == null) {
-            lwjglApplet = (Applet) appletClass.newInstance();
+        lwjglApplet = (Applet) appletClass.newInstance();
 
-            lwjglApplet.setStub(this);
-            lwjglApplet.setSize(getWidth(), getHeight());
+        lwjglApplet.setStub(this);
+        lwjglApplet.setSize(getWidth(), getHeight());
 
-            setLayout(new BorderLayout());
-            add(lwjglApplet);
-            validate();
+        setLayout(new BorderLayout());
+        add(lwjglApplet);
+        validate();
 
-            state = STATE_INITIALIZE_REAL_APPLET;
-            lwjglApplet.init();
+        state = STATE_INITIALIZE_REAL_APPLET;
+        lwjglApplet.init();
 //        }
 
         state = STATE_START_REAL_APPLET;
@@ -800,9 +879,10 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         // download each jar
         byte buffer[] = new byte[65536];
         for (int i = 0; i < urlList.length; i++) {
+            String currentFile = getFileName(urlList[i]);
 
             int unsuccessfulAttempts = 0;
-            int maxUnsuccessfulAttempts = 3;
+            int maxUnsuccessfulAttempts = 5;
             boolean downloadFile = true;
 
             // download the jar a max of 3 times
@@ -818,46 +898,13 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
                     urlconnection.connect();
                 }
 
-                String currentFile = getFileName(urlList[i]);
-                InputStream inputstream = getJarInputStream(currentFile, urlconnection);
-                FileOutputStream fos = new FileOutputStream(path + currentFile);
-
-
-                int bufferSize;
-                long downloadStartTime = System.currentTimeMillis();
-                int downloadedAmount = 0;
                 int fileSize = 0;
-                String downloadSpeedMessage = "";
 
-                while ((bufferSize = inputstream.read(buffer, 0, buffer.length)) != -1) {
-                    debug_sleep(10);
-                    fos.write(buffer, 0, bufferSize);
-                    currentSizeDownload += bufferSize;
-                    fileSize += bufferSize;
-                    percentage = initialPercentage + ((currentSizeDownload * 45) / totalSizeDownload);
-                    subtaskMessage = "Retrieving: " + currentFile + " " + ((currentSizeDownload * 100) / totalSizeDownload) + "%";
-
-                    downloadedAmount += bufferSize;
-                    long timeLapse = System.currentTimeMillis() - downloadStartTime;
-                    // update only if a second or more has passed
-                    if (timeLapse >= 1000) {
-                        // get kb/s, nice that bytes/millis is same as kilobytes/seconds
-                        float downloadSpeed = (float) downloadedAmount / timeLapse;
-                        // round to two decimal places
-                        downloadSpeed = ((int) (downloadSpeed * 100)) / 100f;
-                        // set current speed message
-                        downloadSpeedMessage = " @ " + downloadSpeed + " KB/sec";
-                        // reset downloaded amount
-                        downloadedAmount = 0;
-                        // reset start time
-                        downloadStartTime = System.currentTimeMillis();
-                    }
-
-                    subtaskMessage += downloadSpeedMessage;
+                try {
+                    fileSize = downloadJar(currentFile, urlconnection, path, buffer, initialPercentage);
+                } catch (SocketException ex) {
+                    // swallow and try to load again
                 }
-
-                inputstream.close();
-                fos.close();
 
                 // download complete, verify if it was successful
                 if (urlconnection instanceof HttpURLConnection) {
