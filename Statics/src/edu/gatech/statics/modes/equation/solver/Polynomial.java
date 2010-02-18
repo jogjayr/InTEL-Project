@@ -515,7 +515,8 @@ public class Polynomial {
     public String toString() {
         String s = "";
         int i = 0;
-        for (Term term : terms.descendingKeySet()) {
+        for (Term term : terms.keySet()) {
+        //for (Term term : terms.descendingKeySet()) {
 
             if (i != 0) {
                 s += " + ";
