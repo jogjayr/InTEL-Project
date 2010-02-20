@@ -176,6 +176,7 @@ public class InterfaceRoot {
             System.exit(-1);
         }
 
+//            setupSaveLoad();
         if (!StaticsApplication.getApp().isApplet()) {
             setupSaveLoad();
             setupDisplayControls();

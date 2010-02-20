@@ -175,8 +175,8 @@ public class ApplicationBar extends BWindow {
         feedbackLabel = new BLabel("toast");
         add(feedbackLabel, BorderLayout.NORTH);
 
-        //BContainer saveLoadBox = createSaveLoadBox();
-        //sideBox.add(saveLoadBox, BorderLayout.WEST);
+//        BContainer saveLoadBox = createSaveLoadBox();
+//        sideBox.add(saveLoadBox, BorderLayout.WEST);
 
         diagramBox = createDiagramBox();
         //mainBar.add(diagramBox, BorderLayout.WEST);
@@ -209,36 +209,36 @@ public class ApplicationBar extends BWindow {
         return inner;
     }
 
-    private BContainer createSaveLoadBox() {
-        BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
-        //outer.add(inner, BorderLayout.CENTER);
-
-        ActionListener saveLoadListener = new SaveLoadListener();
-        saveButton = new BButton("Save", saveLoadListener, "save");
-        loadButton = new BButton("Load", saveLoadListener, "load");
-        inner.add(saveButton);
-        inner.add(loadButton);
-
-        return inner;
-    }
-
-    private final class SaveLoadListener implements ActionListener {
-
-        public void actionPerformed(ActionEvent event) {
-            try {
-                if (event.getAction().equals("save")) {
-                    if (getModePanel() == null || getModePanel().getDiagram() == null) {
-                        return;
-                    }
-                    StateIO.saveToFile("Save.statics");
-                } else if (event.getAction().equals("load")) {
-                    StateIO.loadFromFile("Save.statics");
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
+//    private BContainer createSaveLoadBox() {
+//        BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+//        //outer.add(inner, BorderLayout.CENTER);
+//
+//        ActionListener saveLoadListener = new SaveLoadListener();
+//        saveButton = new BButton("Save", saveLoadListener, "save");
+//        loadButton = new BButton("Load", saveLoadListener, "load");
+//        inner.add(saveButton);
+//        inner.add(loadButton);
+//
+//        return inner;
+//    }
+//
+//    private final class SaveLoadListener implements ActionListener {
+//
+//        public void actionPerformed(ActionEvent event) {
+//            try {
+//                if (event.getAction().equals("save")) {
+//                    if (getModePanel() == null || getModePanel().getDiagram() == null) {
+//                        return;
+//                    }
+//                    StateIO.saveToFile("Save.statics");
+//                } else if (event.getAction().equals("load")) {
+//                    StateIO.loadFromFile("Save.statics");
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
+//        }
+//    }
 
     void updateUndoRedoState() {
         if (getModePanel() == null || getModePanel().getDiagram() == null) {

@@ -60,6 +60,9 @@ public class StaticsXMLEncoder extends XMLEncoder {
     public StaticsXMLEncoder(OutputStream out) {
         super(out);
 
+        // specialized delegate for Class objects
+        //setPersistenceDelegate(Class.class, new ClassPersistenceDelegate());
+
         //setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
         setPersistenceDelegate(Buildable.class, new DefaultPersistenceDelegate() {
 
@@ -287,6 +290,24 @@ public class StaticsXMLEncoder extends XMLEncoder {
             throw ex;
         }
     }
+
+    @Override
+    public Object get(Object oldInstance) {
+
+        if(oldInstance != null && oldInstance instanceof Class) {
+//            if(((Class)oldInstance).getName().startsWith("edu.gatech"))
+//                return oldInstance;
+            try {
+                return super.get(oldInstance);
+            } catch(Exception ex) {
+                return oldInstance;
+            }
+        }
+
+        return super.get(oldInstance);
+    }
+
+
 
     /**
      * Here we force instances of DiagramState to use the DiagramStatePersistenceDelegate.

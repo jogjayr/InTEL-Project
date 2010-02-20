@@ -34,7 +34,7 @@ public class StateIO {
 
     public static void saveToFile(String filename) {
         try {
-            FileOutputStream output = new FileOutputStream("Test.statics");
+            FileOutputStream output = new FileOutputStream(filename);
             String saveState = StateIO.saveState();
             output.write(saveState.getBytes());
             //System.out.println("State Data:");
@@ -47,7 +47,7 @@ public class StateIO {
 
     public static void loadFromFile(String filename) {
         try {
-            FileInputStream fileInput = new FileInputStream("Test.statics");
+            FileInputStream fileInput = new FileInputStream(filename);
             byte data[] = new byte[10 * 1024];
             int read = fileInput.read(data);
             String s = new String(data, 0, read);

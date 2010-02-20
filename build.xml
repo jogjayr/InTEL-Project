@@ -14,6 +14,7 @@
         <get src="http://lcc.gatech.edu/~cashmore/Statics/JavaMonkeyEngine.zip" dest="./JavaMonkeyEngine.zip"/>
         <unzip src="JavaMonkeyEngine.zip" dest="."/>
         <delete file="JavaMonkeyEngine.zip"/>
+        <copyfile src="JavaMonkeyEngine/dist/JavaMonkeyEngine.jar" dest="applet/JavaMonkeyEngine.jar" />
         <echo>*** Done!</echo>
     </target>
     
@@ -22,6 +23,9 @@
         <echo>***</echo>
         <echo>*** Building BUI</echo>
         <subant buildpath="BUI/" target="jar"/>
+
+        <echo>*** Building AppletLoader</echo>
+        <subant buildpath="AppletLoader/" target="jar"/>
         
         <echo>*** Building Statics</echo>
         <subant buildpath="Statics/" target="jar"/>

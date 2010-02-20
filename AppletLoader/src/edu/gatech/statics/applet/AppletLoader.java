@@ -201,12 +201,20 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         "Please accept the permissions dialog to allow",
         "the applet to continue the loading process."};
 
+    private static AppletLoader instance;
+    public static AppletLoader getInstance() {return instance;}
+
+    public static ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
     /*
      * @see java.applet.Applet#init()
      */
     @Override
     public void init() {
         logger.info("### AppletLoader: init");
+        instance = this;
         state = STATE_INIT;
 
         // sanity check
@@ -261,6 +269,9 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
     private int downloadJar(final String currentFile, URLConnection urlconnection, String path, byte[] buffer, int initialPercentage)
             throws IOException, Exception, FileNotFoundException {
+
+        logger.info("### AppletLoader: downloading "+currentFile);
+
         final InputStream inputstream = getJarInputStream(currentFile, urlconnection);
         FileOutputStream fos = new FileOutputStream(path + currentFile);
         int bufferSize;
@@ -773,36 +784,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         // add downloaded jars to the classpath with required permissions
         logger.info("### CREATING CLASSLOADER, existing(" + classLoader + ")");
         if (classLoader == null) {
-            classLoader = new URLClassLoader(urls) {
-
-                @Override
-                protected PermissionCollection getPermissions(CodeSource codesource) {
-                    PermissionCollection perms = null;
-
-                    try {
-                        // getPermissions from original classloader is important as it checks for signed jars and shows any security dialogs needed
-                        Method method = SecureClassLoader.class.getDeclaredMethod("getPermissions", new Class[]{CodeSource.class});
-                        method.setAccessible(true);
-                        perms = (PermissionCollection) method.invoke(getClass().getClassLoader(), new Object[]{codesource});
-
-                        String host = getCodeBase().getHost();
-
-                        if (host != null && (host.length() > 0)) {
-                            // add permission for downloaded jars to access host they were from
-                            perms.add(new SocketPermission(host, SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION));
-                        } else if (codesource.getLocation().getProtocol().equals("file")) {
-                            // if running locally add file permission
-                            String path = codesource.getLocation().getFile().replace('/', File.separatorChar);
-                            perms.add(new FilePermission(path, SecurityConstants.FILE_READ_ACTION));
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    return perms;
-                }
-            };
+            classLoader = new AppletClassLoader(urls, getCodeBase().getHost());
         }
 
         debug_sleep(2000);
@@ -1332,6 +1314,37 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             Thread.sleep(ms);
         } catch (Exception e) {
             /* ignored */
+        }
+    }
+
+    public static class AppletClassLoader extends URLClassLoader {
+
+        private String host;
+        public AppletClassLoader(URL[] urls, String host) {
+            super(urls);
+        }
+
+        @Override
+        protected PermissionCollection getPermissions(CodeSource codesource) {
+            PermissionCollection perms = null;
+            try {
+                // getPermissions from original classloader is important as it checks for signed jars and shows any security dialogs needed
+                Method method = SecureClassLoader.class.getDeclaredMethod("getPermissions", new Class[]{CodeSource.class});
+                method.setAccessible(true);
+                perms = (PermissionCollection) method.invoke(getClass().getClassLoader(), new Object[]{codesource});
+                //String host = getCodeBase().getHost();
+                if (host != null && (host.length() > 0)) {
+                    // add permission for downloaded jars to access host they were from
+                    perms.add(new SocketPermission(host, SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION));
+                } else if (codesource.getLocation().getProtocol().equals("file")) {
+                    // if running locally add file permission
+                    String path = codesource.getLocation().getFile().replace('/', File.separatorChar);
+                    perms.add(new FilePermission(path, SecurityConstants.FILE_READ_ACTION));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return perms;
         }
     }
 }
