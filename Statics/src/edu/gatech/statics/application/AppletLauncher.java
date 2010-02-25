@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,15 +46,26 @@ public class AppletLauncher extends StaticsApplet {
 
         } catch (NullPointerException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            showError();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            showError();
         } catch (ClassCastException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            showError();
         } catch (IllegalAccessException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            showError();
         } catch (InstantiationException ex) {
             Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            showError();
         }
+    }
+
+    private void showError() {
+        JOptionPane.showMessageDialog(this,
+                "An error occurred in loading the exercise. Please refresh the page and try again.",
+                "Could not load exercise", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -99,7 +111,7 @@ public class AppletLauncher extends StaticsApplet {
 
         if (!checkVerifierKey()) {
             // this should also post an error message of some sort as well.
-            Logger.getLogger("Statics").info("Verifier key does not check!! This is a problem. Continuing anonymously.");
+            Logger.getLogger("Statics").severe("Verifier key does not check!! This is a problem. Continuing anonymously.");
         }
 
         int exerciseID = Integer.valueOf(assignmentIDString);

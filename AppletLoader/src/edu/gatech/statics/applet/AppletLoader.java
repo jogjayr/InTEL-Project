@@ -68,6 +68,7 @@ import java.security.PermissionCollection;
 import java.security.PrivilegedExceptionAction;
 import java.security.SecureClassLoader;
 import java.security.cert.Certificate;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
@@ -167,7 +168,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     /** urls of the jars to download */
     protected URL[] urlList;
     /** classLoader used to add downloaded jars to the classpath */
-    protected static ClassLoader classLoader;
+    protected static AppletClassLoader classLoader;
     /** actual thread that does the loading */
     protected Thread loaderThread;
     /** animation thread that renders our load screen while loading */
@@ -200,9 +201,11 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     protected String[] certificateRefusedMessage = {"Permissions for Applet Refused.",
         "Please accept the permissions dialog to allow",
         "the applet to continue the loading process."};
-
     private static AppletLoader instance;
-    public static AppletLoader getInstance() {return instance;}
+
+    public static AppletLoader getInstance() {
+        return instance;
+    }
 
     public static ClassLoader getClassLoader() {
         return classLoader;
@@ -270,7 +273,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     private int downloadJar(final String currentFile, URLConnection urlconnection, String path, byte[] buffer, int initialPercentage)
             throws IOException, Exception, FileNotFoundException {
 
-        logger.info("### AppletLoader: downloading "+currentFile);
+        logger.info("### AppletLoader: downloading " + currentFile);
 
         final InputStream inputstream = getJarInputStream(currentFile, urlconnection);
         FileOutputStream fos = new FileOutputStream(path + currentFile);
@@ -785,6 +788,10 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         logger.info("### CREATING CLASSLOADER, existing(" + classLoader + ")");
         if (classLoader == null) {
             classLoader = new AppletClassLoader(urls, getCodeBase().getHost());
+        } else {
+            for (URL url : urls) {
+                classLoader.addURL(url);
+            }
         }
 
         debug_sleep(2000);
@@ -1320,8 +1327,16 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     public static class AppletClassLoader extends URLClassLoader {
 
         private String host;
+
         public AppletClassLoader(URL[] urls, String host) {
             super(urls);
+        }
+
+        @Override
+        public void addURL(URL url) {
+            if (!Arrays.asList(getURLs()).contains(url)) {
+                super.addURL(url);
+            }
         }
 
         @Override
