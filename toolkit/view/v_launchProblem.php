@@ -12,10 +12,10 @@ function changeScreenSize()
 		if(deltaX < 0) deltaX = 0;
 		if(deltaY < 0) deltaY = 0;
 		
-		window.resizeBy(deltaX, deltaY);
+		if(deltaX > 0 || deltaY > 0)
+		  window.resizeBy(deltaX, deltaY);
 		
-       //window.resizeTo(document.body.clientWidth, document.body.clientHeight);
-	   window.scrollTo(document.body.clientWidth, document.body.clientHeight);
+	   window.scrollTo(0, 10000);
      }
 </script>";
 $bodyExtra = 'onLoad="javascript:changeScreenSize()"';
