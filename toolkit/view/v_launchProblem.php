@@ -1,13 +1,24 @@
-<script type="text/javascript">
-function changeScreenSize(w,h)
-     {
-       window.resizeTo( w,h );
-	   window.scrollTo(1200, 850);
-     }
-</script>
-
 <?php
 //require "null";
+
+$headExtra = "<script type=\"text/javascript\">
+function changeScreenSize()
+     {
+		var appletWidth = 1100 + 20;
+		var appletHeight = 768 + 20;
+		
+		var deltaX = appletWidth - document.body.clientWidth;
+		var deltaY = appletHeight - document.body.clientHeight;
+		if(deltaX < 0) deltaX = 0;
+		if(deltaY < 0) deltaY = 0;
+		
+		window.resizeBy(deltaX, deltaY);
+		
+       //window.resizeTo(document.body.clientWidth, document.body.clientHeight);
+	   window.scrollTo(document.body.clientWidth, document.body.clientHeight);
+     }
+</script>";
+$bodyExtra = 'onLoad="javascript:changeScreenSize()"';
 
 $title = 'Launch Problem';
 $type = 'compact';

@@ -22,9 +22,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><?php echo t2h($site_title); if ($title != '') { echo ' - ' . t2h($title); } ?></title>
 <link rel="stylesheet" type="text/css" href="styles/toolkit.css" />
+<?php if(isset($headExtra)) echo $headExtra; ?>
 </head>
 
-<body>
+<body <?php if(isset($bodyExtra)) echo $bodyExtra; ?>>
 <div id="header">
   <a href="http://intel.gatech.edu"><img src="resources/logo.gif" alt = "InTEL" /></a><br />
 	<h1>Statics Toolkit</h1>
