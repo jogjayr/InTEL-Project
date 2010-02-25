@@ -118,6 +118,7 @@ public abstract class BaseStaticsApplet extends Applet {
         
                 displayParent = new Canvas();
                 displayParent.setSize(getWidth(), getHeight());
+                logger.info("Canvas size: "+getWidth()+" x "+getHeight());
                 add(displayParent);
                 displayParent.setFocusable(true);
                 displayParent.requestFocus();

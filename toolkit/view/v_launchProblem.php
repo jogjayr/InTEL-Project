@@ -1,3 +1,11 @@
+<script type="text/javascript">
+function changeScreenSize(w,h)
+     {
+       window.resizeTo( w,h );
+	   window.scrollTo(1200, 850);
+     }
+</script>
+
 <?php
 //require "null";
 
