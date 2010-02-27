@@ -51,7 +51,7 @@
   <p>GT Prism ID: <input type="text" name="gt_prism_id" value="<?php echo $user['gt_prism_id']; ?>" /></p>
 	<p><input type="submit" name="submit" value="Update" /></p>
 </form>
-<p><a href="changePassword.php">Change Your Password</a></p>
+<p> Need to change your password?  Please contact <a href='mailto:beth.schechter@gatech.com'>InTEL support</a>.</p>
 <?php
 	
 	require_once('footer.php') 
