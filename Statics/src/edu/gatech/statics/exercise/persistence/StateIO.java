@@ -67,7 +67,9 @@ public class StateIO {
         // 1) Encode the state to XML
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         StaticsXMLEncoder encoder = new StaticsXMLEncoder(bout);
+//        System.out.println("************ "+System.nanoTime());
         encoder.writeObject(Exercise.getExercise().getState());
+//        System.out.println("************ "+System.nanoTime());
         encoder.close();
         byte[] xmlData = bout.toByteArray();
 //System.out.println("OUTPUT: "+new String(xmlData));

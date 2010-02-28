@@ -39,6 +39,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -292,15 +293,17 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         final boolean[] closed = new boolean[1];
         closed[0] = false;
 
+        final int timeout = 2500;
+
         Thread monitorThread = new Thread(new Runnable() {
 
             public void run() {
                 while (!closed[0]) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(timeout);
                     } catch (InterruptedException ex) {
                     }
-                    if (System.currentTimeMillis() - lastRead[0] > 5000) {
+                    if (System.currentTimeMillis() - lastRead[0] > timeout) {
                         try {
                             logger.info("### forcing reload (" + currentFile + ")");
                             inputstream.close();
@@ -935,7 +938,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
                 @Override
                 public void run() {
                     try {
-                        is[0] = urlconnection.getInputStream();
+                        is[0] = new BufferedInputStream(urlconnection.getInputStream());
                     } catch (IOException e) {
                         /* ignored */
                     }

@@ -269,12 +269,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setExceptionListener(new ExceptionListener() {
 
             public void exceptionThrown(Exception e) {
-//                if (e instanceof ClassNotFoundException) {
-////                    ClassNotFoundException ex = (ClassNotFoundException) e;
-////                    Logger.getLogger("Statics").info("ClassNotFoundException: " + ex.getMessage());
-//                } else {
                 Logger.getLogger("Statics").log(Level.WARNING, "Persistence failed!", e);
-//                }
             }
         });
     }
@@ -298,19 +293,6 @@ public class StaticsXMLEncoder extends XMLEncoder {
 
     @Override
     public Object get(Object oldInstance) {
-
-//        if (oldInstance != null && oldInstance instanceof Class) {
-////            if(((Class)oldInstance).getName().startsWith("edu.gatech"))
-////                return oldInstance;
-//            try {
-//                //Class c = (Class) oldInstance;
-//                //return ClassFinder.findClass(c.getName());
-//                return super.get(oldInstance);
-//            } catch (Exception ex) {
-//                return oldInstance;
-//            }
-//        }
-
         return super.get(oldInstance);
     }
 
@@ -320,7 +302,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 exp.getMethodName().equals("forName") &&
                 !(exp instanceof ClassPersistenceDelegate.ClassExpression)) {
             try {
-                return ClassFinder.findClass((String) exp.getArguments()[0]);
+                return Class.forName((String) exp.getArguments()[0]);//ClassFinder.findClass((String) exp.getArguments()[0]);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(StaticsXMLEncoder.class.getName()).log(Level.SEVERE, null, ex);
             }

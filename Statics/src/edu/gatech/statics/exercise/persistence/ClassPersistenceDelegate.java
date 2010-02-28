@@ -24,24 +24,40 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
     protected boolean mutatesTo(Object oldInstance, Object newInstance) {
         return oldInstance.equals(newInstance);
     }
+    private static final boolean LOGGING = false;
+    private static long lastLog = 0;
+
+    private static void logTime(String message) {
+        if (LOGGING) {
+            long timestamp = System.nanoTime();
+            long delta = timestamp - lastLog;
+            lastLog = timestamp;
+            System.out.println("********** " + timestamp + " (" + delta + ") " + message);
+        }
+    }
 
     @Override
     public void writeObject(Object oldInstance, Encoder out) {
 //super.writeObject(oldInstance, out);
-//        System.out.println("********** Writing: "+oldInstance);
+        logTime("Writing: " + oldInstance);
+        //System.out.println("********** "+System.nanoTime()+" Writing: "+oldInstance);
         Object newInstance;
         try {
             newInstance = out.get(oldInstance);
         } catch (Exception ex) {
-//            System.out.println("************* CLASS NOT FOUND " + oldInstance + " " + ex);
+            System.out.println("************* CLASS NOT FOUND " + oldInstance + " " + ex);
             newInstance = oldInstance;
         }
-//Object newInstance = oldInstance;
+        logTime("postget: " + newInstance);
+        //System.out.println("********** "+System.nanoTime()+" postget: "+newInstance);
+
         if (!mutatesTo(oldInstance, newInstance)) {
             out.remove(oldInstance);
             out.writeExpression(instantiate(oldInstance, out));
+            logTime("postwrite");
         } else {
             initialize(oldInstance.getClass(), oldInstance, newInstance, out);
+            logTime("postinit");
         }
     }
 
@@ -77,10 +93,12 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
 
         @Override
         public Object getValue() throws Exception {
-//            System.out.println("************* classForName: "+getArguments()[0]);
+            logTime("classForName: " + getArguments()[0]);
+//            System.out.println("************* "+System.nanoTime()+" classForName: "+getArguments()[0]);
             //Object value = ModifiedObjectHandler.classForName((String) getArguments()[0]);
             Object value = super.getValue();
-//            System.out.println("************* returns OK: "+value);
+            logTime("returns OK: " + value);
+//            System.out.println("************* "+System.nanoTime()+" returns OK: "+value);
             setValue(value);
             return value;
         }
