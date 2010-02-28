@@ -58,7 +58,8 @@ class ClassFinder {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             if (loader == null) {
                 // can be null in IE (see 6204697)
-                loader = ClassLoader.getSystemClassLoader();
+                //loader = ClassLoader.getSystemClassLoader();
+                loader = ClassFinder.class.getClassLoader();
             }
             if (loader != null) {
                 return Class.forName(name, false, loader);

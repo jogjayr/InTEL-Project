@@ -70,6 +70,7 @@ public class StateIO {
         encoder.writeObject(Exercise.getExercise().getState());
         encoder.close();
         byte[] xmlData = bout.toByteArray();
+//System.out.println("OUTPUT: "+new String(xmlData));
 
         // 2) Zip it
         Deflater deflater = new Deflater();

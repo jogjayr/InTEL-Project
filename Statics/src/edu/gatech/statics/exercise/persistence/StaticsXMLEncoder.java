@@ -38,13 +38,13 @@ import edu.gatech.statics.tasks.SolveFBDTask;
 import edu.gatech.statics.tasks.SolveZFMTask;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.ExceptionListener;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.beans.Statement;
-import java.beans.XMLEncoder;
+import edu.gatech.newbeans.DefaultPersistenceDelegate;
+import edu.gatech.newbeans.Encoder;
+import edu.gatech.newbeans.ExceptionListener;
+import edu.gatech.newbeans.Expression;
+import edu.gatech.newbeans.PersistenceDelegate;
+import edu.gatech.newbeans.Statement;
+import edu.gatech.newbeans.XMLEncoder;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         super(out);
 
         // specialized delegate for Class objects
-        //setPersistenceDelegate(Class.class, new ClassPersistenceDelegate());
+        setPersistenceDelegate(Class.class, new ClassPersistenceDelegate());
 
         //setPersistenceDelegate(DiagramState.class, new DiagramStatePersistenceDelegate());
         setPersistenceDelegate(Buildable.class, new DefaultPersistenceDelegate() {
@@ -230,7 +230,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 //return super.instantiate(oldInstance, out);
                 EmptyNode node = (EmptyNode) oldInstance;
-                return new Expression(oldInstance, EmptyNode.class, "new",new Object[] {node.getParent()});
+                return new Expression(oldInstance, EmptyNode.class, "new", new Object[]{node.getParent()});
             }
         });
         setPersistenceDelegate(AnchoredVectorNode.class, new DefaultPersistenceDelegate() {
@@ -239,7 +239,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 //return super.instantiate(oldInstance, out);
                 AnchoredVectorNode node = (AnchoredVectorNode) oldInstance;
-                return new Expression(oldInstance, AnchoredVectorNode.class, "new",new Object[] {node.getParent(), node.getAnchoredVector()});
+                return new Expression(oldInstance, AnchoredVectorNode.class, "new", new Object[]{node.getParent(), node.getAnchoredVector()});
             }
         });
         setPersistenceDelegate(SymbolNode.class, new DefaultPersistenceDelegate() {
@@ -248,7 +248,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             protected Expression instantiate(Object oldInstance, Encoder out) {
                 //return super.instantiate(oldInstance, out);
                 SymbolNode node = (SymbolNode) oldInstance;
-                return new Expression(oldInstance, SymbolNode.class, "new",new Object[] {node.getParent(), node.getSymbol()});
+                return new Expression(oldInstance, SymbolNode.class, "new", new Object[]{node.getParent(), node.getSymbol()});
             }
         });
         setPersistenceDelegate(OperatorNode.class, new DefaultPersistenceDelegate() {
@@ -260,7 +260,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 // operatornode takes left and right, but we give it nulls to start with
                 // so that the persistence delegate will actually fill in the left and right for us.
                 // we can't provide them here, because the left and right nodes need to be built using this operator.
-                return new Expression(oldInstance, OperatorNode.class, "new",new Object[] {node.getParent(), null, null});
+                return new Expression(oldInstance, OperatorNode.class, "new", new Object[]{node.getParent(), null, null});
             }
         });
 
@@ -269,7 +269,12 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setExceptionListener(new ExceptionListener() {
 
             public void exceptionThrown(Exception e) {
+//                if (e instanceof ClassNotFoundException) {
+////                    ClassNotFoundException ex = (ClassNotFoundException) e;
+////                    Logger.getLogger("Statics").info("ClassNotFoundException: " + ex.getMessage());
+//                } else {
                 Logger.getLogger("Statics").log(Level.WARNING, "Persistence failed!", e);
+//                }
             }
         });
     }
@@ -286,7 +291,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             super.writeObject(o);
         } catch (RuntimeException ex) {
             // pick up an exception that might have been thrown and adds some logging
-            Logger.getLogger("Statics").log(Level.WARNING, "Persistence of "+o.getClass().getName()+" ("+o+") caused an exception...");
+            Logger.getLogger("Statics").log(Level.WARNING, "Persistence of " + o.getClass().getName() + " (" + o + ") caused an exception...");
             throw ex;
         }
     }
@@ -294,20 +299,35 @@ public class StaticsXMLEncoder extends XMLEncoder {
     @Override
     public Object get(Object oldInstance) {
 
-        if(oldInstance != null && oldInstance instanceof Class) {
-//            if(((Class)oldInstance).getName().startsWith("edu.gatech"))
+//        if (oldInstance != null && oldInstance instanceof Class) {
+////            if(((Class)oldInstance).getName().startsWith("edu.gatech"))
+////                return oldInstance;
+//            try {
+//                //Class c = (Class) oldInstance;
+//                //return ClassFinder.findClass(c.getName());
+//                return super.get(oldInstance);
+//            } catch (Exception ex) {
 //                return oldInstance;
-            try {
-                return super.get(oldInstance);
-            } catch(Exception ex) {
-                return oldInstance;
-            }
-        }
+//            }
+//        }
 
         return super.get(oldInstance);
     }
 
+    @Override
+    public Object getValue(Expression exp) {
+        if (exp != null && exp.getTarget() == Class.class &&
+                exp.getMethodName().equals("forName") &&
+                !(exp instanceof ClassPersistenceDelegate.ClassExpression)) {
+            try {
+                return ClassFinder.findClass((String) exp.getArguments()[0]);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(StaticsXMLEncoder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
+        return super.getValue(exp);
+    }
 
     /**
      * Here we force instances of DiagramState to use the DiagramStatePersistenceDelegate.
