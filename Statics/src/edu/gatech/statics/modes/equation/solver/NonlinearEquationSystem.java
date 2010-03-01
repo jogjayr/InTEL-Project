@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -51,7 +52,13 @@ public class NonlinearEquationSystem implements EquationSystem {
     private void process() {
 
         List<Polynomial> polys = new ArrayList<Polynomial>(system.values());
-        List<Polynomial> basis = new BuchbergerAlgorithm().findBasis(polys);
+        List<Polynomial> basis = null;
+
+        try {
+            basis = new BuchbergerAlgorithm().findBasis(polys);
+        } catch (ArithmeticException ex) {
+            Logger.getLogger("Statics").info("Could not process system due to arithmetic error: " + ex.getMessage());
+        }
 
         if (basis == null) {
             processed = true;
