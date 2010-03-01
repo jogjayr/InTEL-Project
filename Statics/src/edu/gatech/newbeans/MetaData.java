@@ -15,7 +15,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import java.beans.BeanInfo;
-import java.beans.ConstructorProperties;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
