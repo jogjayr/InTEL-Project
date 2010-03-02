@@ -36,7 +36,7 @@ import java.math.BigDecimal;
 public class BookshelfExercise extends DistributedExercise {
 
     @Override
-    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
@@ -78,8 +78,6 @@ public class BookshelfExercise extends DistributedExercise {
 
         return description;
     }
-
-
 
     @Override
     public void initExercise() {

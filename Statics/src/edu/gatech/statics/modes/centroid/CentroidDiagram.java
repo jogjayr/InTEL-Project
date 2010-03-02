@@ -13,6 +13,7 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.objects.SimulationObject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +98,10 @@ public class CentroidDiagram extends Diagram<CentroidState>{
 
     @Override
     protected List<SimulationObject> getBaseObjects() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<SimulationObject> objects = new ArrayList<SimulationObject>();
+        objects.add(cpObj);
+        //measurements?
+        return objects;
     }
 
     public void updateCentroid() {

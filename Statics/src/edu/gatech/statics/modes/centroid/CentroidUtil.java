@@ -12,7 +12,7 @@ package edu.gatech.statics.modes.centroid;
 class CentroidUtil {
 
     static void unshadeSolvedCentroidPartObjects() {
-        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }
