@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.centroid;
 
+import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Point;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Jimmy Truesdell
  */
-public class CentroidBody extends Body {
+public class CentroidBody extends Body implements DiagramKey {
 
     private List<CentroidPartObject> parts;
     private final Point centerOfMass;

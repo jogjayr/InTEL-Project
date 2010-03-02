@@ -28,14 +28,14 @@ abstract public class CentroidExercise extends OrdinaryExercise {
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (type == CentroidMode.instance.getDiagramType()) {
-            return createCentroidDiagram((CentroidPart) key);
+            return createCentroidDiagram((CentroidBody) key);
         }
 
         return super.createNewDiagramImpl(key, type);
     }
     
-    protected CentroidDiagram createCentroidDiagram(CentroidPart dl) {
-        return new CentroidDiagram(dl);
+    protected CentroidDiagram createCentroidDiagram(CentroidBody body) {
+        return new CentroidDiagram(body);
     }
     
     @Override

@@ -27,7 +27,7 @@ public class CentroidMode extends Mode{
 
     @Override
     protected Diagram getDiagram(DiagramKey key) {
-        if (key instanceof CentroidPart) {
+        if (key instanceof CentroidBody) {
             return Exercise.getExercise().getDiagram(key, getDiagramType());
         } else {
             throw new IllegalStateException("Attempting to get a CentroidDiagram with a key that is not a CentroidPart: " + key);

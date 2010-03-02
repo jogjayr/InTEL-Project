@@ -12,6 +12,7 @@ import edu.gatech.statics.modes.select.SelectState;
 import edu.gatech.statics.modes.select.SelectState.Builder;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,6 @@ public class CentroidSelectDiagram extends SelectDiagram {
 
     public CentroidSelectDiagram() {
     }
-
     private SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -53,10 +53,19 @@ public class CentroidSelectDiagram extends SelectDiagram {
     @Override
     public void completed() {
         List<SimulationObject> selected = getCurrentState().getCurrentlySelected();
-        if (selected.size() == 1 && selected.get(0) instanceof CentroidPartObject) {
 
-            CentroidPartObject cpObj = (CentroidPartObject) selected.get(0);
-            CentroidMode.instance.load(cpObj.getCentroidPart());
+
+        // TODO: Find out if the Centroid has been found, ie if the CentroidState for the given body is locked.
+        // If it is locked, call super.completed(), otherwise load the centroid mode
+        // maybe put this sort of check in CentroidUtil
+        // SEE CentroidSelectModePanel
+        // ALSO TODO: get CentroidSelectModePanel used by CentroidExercise
+
+        if (selected.size() == 1 && selected.get(0) instanceof CentroidBody) {
+
+            //CentroidPartObject cpObj = (CentroidPartObject) selected.get(0);
+            CentroidBody centroidBody = (CentroidBody) selected.get(0);
+            CentroidMode.instance.load(centroidBody);
         } else {
             super.completed();
         }
@@ -82,5 +91,21 @@ public class CentroidSelectDiagram extends SelectDiagram {
                 return builder.build();
             }
         };
+    }
+
+
+
+    @Override
+    protected List<SimulationObject> getBaseObjects() {
+        //return super.getBaseObjects();
+        List<SimulationObject> objects = new ArrayList<SimulationObject>();
+        for (SimulationObject obj : super.getBaseObjects()) {
+            if (obj instanceof CentroidPartObject) {
+                // discard
+            } else {
+                objects.add(obj);
+            }
+        }
+        return objects;
     }
 }

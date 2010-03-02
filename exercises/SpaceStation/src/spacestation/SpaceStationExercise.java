@@ -17,6 +17,7 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
@@ -232,33 +233,45 @@ public class SpaceStationExercise extends CentroidExercise {
         Vector3f modelTranslation = new Vector3f(0, 0, 0);
         float modelScale = .4f;
 
-        ModelRepresentation rep = modelNode.extractElement(A, "RootNode/completespacestation/solarpanel1");
+        ModelRepresentation rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel1");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
-        A.addRepresentation(rep);
+        station.addRepresentation(rep);
 
-        rep = modelNode.extractElement(B, "RootNode/completespacestation/solarpanel2");
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-        rep.setModelScale(modelScale);
-        rep.setModelOffset(modelTranslation);
-        B.addRepresentation(rep);
+        MimicRepresentation mimic = new MimicRepresentation(A, rep);
+        A.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(C, "RootNode/completespacestation/mainBody");
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel2");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
-        C.addRepresentation(rep);
+        station.addRepresentation(rep);
 
-        rep = modelNode.extractElement(D, "RootNode/completespacestation/truss");
+        mimic = new MimicRepresentation(B, rep);
+        B.addRepresentation(mimic);
+
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/mainBody");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
-        D.addRepresentation(rep);
+        station.addRepresentation(rep);
+
+        mimic = new MimicRepresentation(C, rep);
+        C.addRepresentation(mimic);
+
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/truss");
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.setModelScale(modelScale);
+        rep.setModelOffset(modelTranslation);
+        station.addRepresentation(rep);
+
+        mimic = new MimicRepresentation(D, rep);
+        D.addRepresentation(mimic);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
