@@ -19,6 +19,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
 import com.jme.system.lwjgl.LWJGLDisplaySystem;
 import com.jme.util.ThrowableHandler;
+import javax.swing.JOptionPane;
 
 /**
  * Base class for lwjgl2 kind if Applets, similar to {@link BaseGame}.<br>
@@ -88,8 +89,8 @@ public abstract class BaseStaticsApplet extends Applet {
     @Override
     public void init() {
 
-        logger.info("Display classloader: "+Display.class.getClassLoader());
-        
+        logger.info("Display classloader: " + Display.class.getClassLoader());
+
         logger.info("Applet initialized.");
         setLayout(new BorderLayout());
         try {
@@ -114,11 +115,11 @@ public abstract class BaseStaticsApplet extends Applet {
             @Override
             public void run() {
 
-                logger.info("Display classloader: "+Display.class.getClassLoader());
-        
+                logger.info("Display classloader: " + Display.class.getClassLoader());
+
                 displayParent = new Canvas();
                 displayParent.setSize(getWidth(), getHeight());
-                logger.info("Canvas size: "+getWidth()+" x "+getHeight());
+                logger.info("Canvas size: " + getWidth() + " x " + getHeight());
                 add(displayParent);
                 displayParent.setFocusable(true);
                 displayParent.requestFocus();
@@ -132,6 +133,18 @@ public abstract class BaseStaticsApplet extends Applet {
                     // initGL();
                 } catch (LWJGLException e) {
                     e.printStackTrace();
+                    remove(displayParent);
+
+                    JOptionPane.showMessageDialog(BaseStaticsApplet.this,
+                            "There has been a problem with creating the display. " +
+                            "Please try loading the applet in a different browser, updating your display drivers, or trying a different computer.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    hasTerminated = true;
+
+                    synchronized (SHUTDOWN_LOCK) {
+                        SHUTDOWN_LOCK.notify();
+                    }
+                    return;
                 }
 
                 logger.info("*** Starting game loop");
