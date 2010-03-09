@@ -8,12 +8,17 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
+import edu.gatech.statics.modes.centroid.actions.SetAreaValue;
+import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
+import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
+import edu.gatech.statics.util.SelectionFilter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +45,72 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //                }
 //            }
 //        }
+    }
+
+    @Override
+    public SelectionFilter getSelectionFilter() {
+        //can select CentroidPartObjects. not the body
+        return super.getSelectionFilter();
+    }
+
+    @Override
+    public void onClick(SimulationObject obj) {
+        //somethind like that. also needs to be selectable = true
+        //CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getModePanel(CentroiMode.instance.getModeName());
+        //modePanel.onSelect((CentroidPartObject) obj);
+    }
+
+
+    public boolean check(String areaValue, String xValue, String yValue) {
+        BigDecimal userArea = Parser.evaluate(areaValue);
+        BigDecimal userXPosition = Parser.evaluate(xValue);
+        BigDecimal userYPosition = Parser.evaluate(yValue);
+
+        if (userArea == null || userXPosition == null || userYPosition == null) {
+            return false;
+        }
+
+        CentroidPart part = getCentroidPart();
+        BigDecimal desiredArea = new BigDecimal(part.getSurfaceArea());
+        BigDecimal desiredX = new BigDecimal(part.getxPosition());
+        BigDecimal desiredY = new BigDecimal(part.getyPosition());
+
+        // debugging messages
+        System.out.println("user area: \"" + areaValue + "\" " + userArea);
+        System.out.println("user xpos: \"" + xValue + "\" " + userXPosition);
+        System.out.println("user ypos: \"" + yValue + "\" " + userYPosition);
+        System.out.println("area: " + desiredArea);
+        System.out.println("xpos: " + desiredX);
+        System.out.println("ypos: " + desiredY);
+
+        boolean success = true;
+
+        float areaTolerance = TOLERANCE * Math.max(1, Math.abs(desiredArea.floatValue()));
+        float xPositionTolerance = TOLERANCE * Math.max(1, Math.abs(desiredX.floatValue()));
+        float yPositionTolerance = TOLERANCE * Math.max(1, Math.abs(desiredY.floatValue()));
+
+        success &= Math.abs(desiredArea.subtract(userArea).floatValue()) < areaTolerance;
+        success &= Math.abs(desiredX.subtract(userXPosition).floatValue()) < xPositionTolerance;
+        success &= Math.abs(desiredY.subtract(userYPosition).floatValue()) < yPositionTolerance;
+
+        System.out.println("success: " + success);
+
+        return success;
+    }
+
+    public void setArea(String text) {
+        SetAreaValue action = new SetAreaValue(text);
+        performAction(action);
+    }
+
+    public void setXPosition(String text) {
+        SetXPositionValue action = new SetXPositionValue(text);
+        performAction(action);
+    }
+
+    public void setYPosition(String text) {
+        SetYPositionValue action = new SetYPositionValue(text);
+        performAction(action);
     }
 
     @Override

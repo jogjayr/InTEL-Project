@@ -10,7 +10,9 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
+import edu.gatech.statics.modes.centroid.ui.CentroidInterfaceConfiguration;
 import edu.gatech.statics.modes.select.SelectDiagram;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 
 /**
  *
@@ -42,4 +44,10 @@ abstract public class CentroidExercise extends OrdinaryExercise {
     protected SelectDiagram createSelectDiagram() {
         return new CentroidSelectDiagram();
     }
+
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        return new CentroidInterfaceConfiguration();
+    }
+
 }

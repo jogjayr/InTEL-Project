@@ -44,4 +44,8 @@ public class CentroidPart implements DiagramKey {
     public String getzPosition() {
         return zPosition;
     }
+
+    public String getSurfaceArea() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

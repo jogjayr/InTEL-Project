@@ -28,9 +28,10 @@ public class CentroidSelectModePanel extends SelectModePanel {
             // TODO: Find out if the Centroid has been found, ie if the CentroidState for the given body is locked.
             // If it is locked, say "Create FBD" just like normal, otherwise say "Find Centroid"
             // maybe put this sort of check in CentroidUtil
-
-            if (firstSelected instanceof CentroidBody) {
+            if (firstSelected instanceof CentroidBody && currentState.isLocked() == false) {
                 nextButton.setText("Find Centroid");
+            } else if (firstSelected instanceof CentroidBody && currentState.isLocked()) {
+                nextButton.setText("Create FBD");
             } else if (firstSelected instanceof Body) {
                 nextButton.setText("Create FBD");
             } else {
