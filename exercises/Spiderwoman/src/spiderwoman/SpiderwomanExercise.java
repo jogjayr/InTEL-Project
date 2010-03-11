@@ -16,6 +16,7 @@ import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
@@ -58,7 +59,7 @@ public class SpiderwomanExercise extends FrameExercise {
     ContactPoint jointB;
     Potato body;
     ConstantObject frictionObjectB;
-    BigDecimal mu;
+    //BigDecimal mu;
 //pin2dconnector for G, A - 
 
     @Override
@@ -68,8 +69,9 @@ public class SpiderwomanExercise extends FrameExercise {
 
         //DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA();
         //StaticsApplication.getApp().getCamera().setLocation(new Vector3f();
-        mu = new BigDecimal("2.66");
-        frictionObjectB = new ConstantObject("mu B", mu, Unit.none);
+        //mu = new BigDecimal("2.66");
+
+        frictionObjectB = new ConstantObject("mu B", Unit.none);
         schematic.add(frictionObjectB);
 
         Vector3bd ropeAngle = new Vector3bd(
@@ -94,11 +96,13 @@ public class SpiderwomanExercise extends FrameExercise {
         jointB.setFrictionDirection(Vector3bd.UNIT_Y);
         jointB.attachToWorld(body);
 
-
-        Pin2dKnownDirection connectorTop = new Pin2dKnownDirection(A);
-        connectorTop.setName("Connector A");
-        connectorTop.setDirection(ropeAngle);
-        connectorTop.attachToWorld(body);
+        Force tension = new Force(A, ropeAngle, new BigDecimal("600"));
+        tension.setName("tension");
+        body.addObject(tension);
+//        Pin2dKnownDirection connectorTop = new Pin2dKnownDirection(A);
+//        connectorTop.setName("Connector A");
+//        connectorTop.setDirection(ropeAngle);
+//        connectorTop.attachToWorld(body);
 
 
         AngleMeasurement measureBody = new FixedAngleMeasurement(A, Vector3bd.UNIT_X, ropeAngle.toVector3f());
@@ -112,6 +116,9 @@ public class SpiderwomanExercise extends FrameExercise {
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         G.createDefaultSchematicRepresentation();
+
+        tension.createDefaultSchematicRepresentation();
+        body.addObject(A);
 
 
         schematic.add(A);
