@@ -64,8 +64,11 @@ if ($problem["type"]=="java") {
     $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
     $jarPath = "../applet/";
 
+
+    $loader = "edu.gatech.statics.applet.AppletLoader";
+    $loaderArchive = $jarPath."AppletLoader.jar";
     $launcher = "edu.gatech.statics.application.AppletLauncher";
-    $exerciseClass = $problem["java_class_name"];//"example01.PurseExerciseGraded2";
+    $exerciseClass = $problem["java_class_name"];
 
     $jars = Array(
         $exerciseJar,
@@ -73,13 +76,10 @@ if ($problem["type"]=="java") {
         "BUI.jar",
         "JavaMonkeyEngine.jar",
         "lwjgl_applet.jar",
-        "lwjgl_util_applet.jar",
         "lwjgl.jar",
         "lwjgl_util.jar",
-        "lwjgl_fmod3.jar",
-        "lwjgl_devil.jar",
-        "natives.jar",
-        "jinput.jar"
+        "jinput.jar",
+        "jme-colladabinding.jar"
     );
 
     $archiveString = "";
@@ -108,16 +108,23 @@ if ($problem["type"]=="java") {
 
 <div style="margin: 5px; padding: 5px; border: thin solid #aec3ff;">
     <applet
-        archive="<?php echo $archiveString; ?>"
-        code="<?php echo $launcher; ?>"
+        archive="<?php echo $loaderArchive; ?>"
+        code="<?php echo $loader; ?>"
         width="<?php echo $resWidth; ?>" height="<?php echo $resHeight; ?>">
+        
+    	  <param name="al_title" value="InTEL"/>
+    	  <param name="al_main" value="<?php echo $launcher; ?>"/>
+    	  <param name="al_jars" value="<?php echo $archiveString; ?>"/>
+    	  <param name="al_windows" value="<?php echo $jarPath; ?>natives_windows.jar"/>
+    	  <param name="al_linux" value="<?php echo $jarPath; ?>natives_linux.jar"/>
+    	  <param name="al_mac" value="<?php echo $jarPath; ?>natives_macosx.jar"/>
+        
         <param name="exercise" value="<?php echo $exerciseClass;?>"/>
         <param name="width" value="<?php echo $resWidth; ?>"/>
         <param name="height" value="<?php echo $resHeight ?>"/>
         <param name="problemID" value="<?php echo $problemId ?>"/>
         <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
         <param name="userID" value="<?php echo $userId ?>"/>
-        <param name="testingMode" value="true"/>
         <param name="problemName" value="<?php echo $problemName ?>"/>
         <param name="exerciseState" value="<?php echo $state; ?>">
         <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
