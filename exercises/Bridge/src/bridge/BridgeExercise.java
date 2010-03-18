@@ -130,6 +130,7 @@ public class BridgeExercise extends TrussExercise {
 
         description.setLayout(new ScrollbarLayout());
 
+        //description.addImage("bridge/assets/bridge.jpg");
         description.addImage("bridge/assets/bridge0.png");
         description.addImage("bridge/assets/bridge1.jpg");
         description.addImage("bridge/assets/bridge2.jpg");

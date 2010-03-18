@@ -81,7 +81,7 @@ public class SpiderwomanExercise extends FrameExercise {
 
         BigDecimal Weight = new BigDecimal(700);
 
-        A = new Point("A", "0", "20.5", "0");
+        A = new Point("A", "-5.5", "11.2", "0");
         B = new Point("B", "0", "0", "0");
         G = new Point("G", "-6", "5.5", "0");
 
@@ -117,7 +117,7 @@ public class SpiderwomanExercise extends FrameExercise {
         B.createDefaultSchematicRepresentation();
         G.createDefaultSchematicRepresentation();
 
-        tension.createDefaultSchematicRepresentation();
+        //tension.createDefaultSchematicRepresentation();
         body.addObject(A);
 
 

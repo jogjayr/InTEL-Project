@@ -81,6 +81,11 @@ public class KeyboardFrictionExercise extends FrameExercise {
         description.setGoals(
                 "Find the coefficient of friction of the stand base on the floor.");
 
+        description.addImage("keyboard/assets/keyboard 1.png");
+        description.addImage("keyboard/assets/keyboard 2.jpg");
+        description.addImage("keyboard/assets/keyboard 3.jpg");
+
+
         return description;
     }
 
