@@ -161,6 +161,18 @@ public class Worksheet {
                     equationSystem.addTerm(row, new Polynomial(leftSymbols.getLeft(), leftSymbols.getRight().toArray(new String[0])));
                     equationSystem.addTerm(row, new Polynomial(-rightSymbols.getLeft(), rightSymbols.getRight().toArray(new String[0])));
 
+                    // add constant symbols to the name list
+                    for (String string : leftSymbols.getRight()) {
+                        ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
+                        if(constant != null)
+                            vectorNames.put(string, constant.getQuantity());
+                    }
+                    for (String string : rightSymbols.getRight()) {
+                        ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
+                        if(constant != null)
+                            vectorNames.put(string, constant.getQuantity());
+                    }
+
                 } else {
                     throw new IllegalArgumentException("Unknown equation math state type! " + mathState);
                 }

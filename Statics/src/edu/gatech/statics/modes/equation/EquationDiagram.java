@@ -24,7 +24,6 @@ import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Quantified;
 import edu.gatech.statics.math.Quantity;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Point;
@@ -33,8 +32,6 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationState.Builder;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
@@ -44,19 +41,15 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.Measurement;
-import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.objects.VectorObject;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.connectors.ContactPoint;
-import edu.gatech.statics.objects.representations.ArrowRepresentation;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -437,6 +430,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                 q = ((Load) obj).getVector();
             } else if (obj instanceof Quantified) {
                 q = (Quantified) obj;
+            } else if (obj instanceof ContactPoint) {
+                q = ((ContactPoint) obj).getFrictionCoefficient().getQuantity();
             }
 
             if (q != null && q.isSymbol() && !q.isKnown()) {
@@ -489,11 +484,20 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         // check to see if the diagram is solvable, and if not, post the TooManyUnknownsPopup
         int unknowns = 0;
         for (SimulationObject simulationObject : allObjects()) {
+
+            // each unknown load is an unknown
             if (simulationObject instanceof Load) {
                 Load load = (Load) simulationObject;
                 if (!load.getAnchoredVector().isKnown()) {
                     unknowns++;
                 }
+            }
+
+            // each unsolved contact point is an unknown
+            if(simulationObject instanceof ContactPoint) {
+                ContactPoint contact = (ContactPoint) simulationObject;
+                if(!contact.getFrictionCoefficient().getQuantity().isKnown())
+                    unknowns++;
             }
         }
         int maxUnknowns = 3;
