@@ -48,7 +48,7 @@ public class StateIO {
     public static void loadFromFile(String filename) {
         try {
             FileInputStream fileInput = new FileInputStream(filename);
-            byte data[] = new byte[10 * 1024];
+            byte data[] = new byte[100 * 1024];
             int read = fileInput.read(data);
             String s = new String(data, 0, read);
 
