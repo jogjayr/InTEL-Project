@@ -17,9 +17,9 @@
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
 package com.jmex.bui.background;
 
+import java.lang.reflect.Field;
 import org.lwjgl.opengl.GL11;
 
 import com.jme.renderer.ColorRGBA;
@@ -31,23 +31,24 @@ import com.jmex.bui.BImage;
 /**
  * Displays a partially transparent solid color in the background.
  */
-public class TintedBackground extends BBackground
-{
+public class TintedBackground extends BBackground {
+
     /**
      * Creates a tinted background with the specified color.
      */
-    public TintedBackground (ColorRGBA color)
-    {
+    public TintedBackground(ColorRGBA color) {
         _color = color;
     }
 
     // documentation inherited
-    public void render (Renderer renderer, int x, int y, int width, int height,
-        float alpha)
-    {
+    @Override
+    public void render(Renderer renderer, int x, int y, int width, int height,
+            float alpha) {
         super.render(renderer, x, y, width, height, alpha);
 
         BComponent.applyDefaultStates();
+
+        BImage.class.getFields();
         BImage.blendState.apply();
 
         GL11.glColor4f(_color.r, _color.g, _color.b, _color.a * alpha);
@@ -58,9 +59,13 @@ public class TintedBackground extends BBackground
         GL11.glVertex2f(x, y + height);
         GL11.glEnd();
     }
-
     protected ColorRGBA _color;
-    public ColorRGBA getColor() {return _color;}
-    public void setColor(ColorRGBA color) {this._color = color;}
-    
+
+    public ColorRGBA getColor() {
+        return _color;
+    }
+
+    public void setColor(ColorRGBA color) {
+        this._color = color;
+    }
 }

@@ -165,7 +165,7 @@ public class BScrollPane extends BContainer
     }
 
     /** Does all the heavy lifting for the {@link BScrollPane}. */
-    protected static class BViewport extends BContainer
+    public static class BViewport extends BContainer
     {
         public BViewport (
             BComponent target, boolean vert, boolean horiz, int snap)

@@ -42,7 +42,7 @@ public class AppletTester {
         int width = 1100;
         int height = 768;
 
-        myApplet.setResolution(width, height);
+        //myApplet.setResolution(width, height);
         myApplet.setPreferredSize(new Dimension(width, height));
         return myApplet;
     }

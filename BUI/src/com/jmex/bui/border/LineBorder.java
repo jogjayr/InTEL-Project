@@ -61,6 +61,7 @@ public class LineBorder extends BBorder
         super.render(renderer, x, y, width, height, alpha);
 
         BComponent.applyDefaultStates();
+        BImage.class.getFields();
         BImage.blendState.apply();
 
         RenderContext ctx = DisplaySystem.getDisplaySystem().getCurrentContext();

@@ -5,9 +5,17 @@
 package edu.gatech.statics.ui.maintabbar;
 
 import com.jme.renderer.ColorRGBA;
+import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
+import com.jmex.bui.BScrollPane;
+import com.jmex.bui.BoundedRangeModel;
 import com.jmex.bui.background.TintedBackground;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
+import com.jmex.bui.event.ChangeEvent;
+import com.jmex.bui.event.ChangeListener;
+import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
@@ -36,18 +44,29 @@ public class MainTabBar extends AppWindow {
     private static final int DESCRIPTION_HEIGHT = 20;
     public static final int MAIN_TAB_BAR_HEIGHT = TAB_HEIGHT + DESCRIPTION_HEIGHT;
     private BContainer tabContainer;
+    private BScrollPane.BViewport viewport;
+    private BContainer scrollingTabContainer;
     private BLabel diagramLabel;
     private List<MainTab> tabs = new ArrayList<MainTab>();
     private MainTab activeTab = null;
+    private boolean scrollButtonsAdded = false;
 
     //private BContainer mainLabelContainer;
     public MainTabBar() {
         super(new BorderLayout());
 
+        scrollingTabContainer = new BContainer(new BorderLayout());
+        add(scrollingTabContainer, BorderLayout.CENTER);
+
         tabContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT)); //buildTabContainer();
-        tabContainer.setStyleClass("main_title");
-        add(tabContainer, BorderLayout.CENTER);
-        tabContainer.setPreferredSize(getDisplay().getWidth(), TAB_HEIGHT);
+        //tabContainer.setStyleClass("main_title");
+        //tabContainer.setPreferredSize(getDisplay().getWidth(), TAB_HEIGHT);
+
+        //BScrollPane scrollPane = new BScrollPane(tabContainer, false, false);
+        viewport = new BScrollPane.BViewport(tabContainer, false, true, -1);
+        scrollingTabContainer.add(viewport, BorderLayout.CENTER);
+        scrollingTabContainer.setPreferredSize(getDisplay().getWidth(), TAB_HEIGHT);
+        scrollingTabContainer.setStyleClass("main_title");
 
         diagramLabel = new BLabel("");
         diagramLabel.setStyleClass("menu_background");
@@ -112,6 +131,15 @@ public class MainTabBar extends AppWindow {
         Dimension tabPreferredSize = tab.getPreferredSize(-1, -1);
         tab.setSize(tabPreferredSize.width, tabPreferredSize.height);
         tabs.add(tab);
+
+        viewport.layout();
+        BoundedRangeModel hModel = viewport.getHModel();
+
+        // if there are more tabs than will fit in the viewport, add the buttons for scrolling.
+        if (hModel.getRange() != hModel.getExtent() && !scrollButtonsAdded && hModel.getExtent() > 0) {
+            addScrollButtons();
+            viewport.layout();
+        }
     }
 
     /**
@@ -171,5 +199,37 @@ public class MainTabBar extends AppWindow {
         } else {
             return ColorRGBA.black;
         }
+    }
+
+    private void addScrollButtons() {
+        scrollButtonsAdded = true;
+
+        final BoundedRangeModel hModel = viewport.getHModel();
+        ActionListener scrollListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                if (event.getAction().equals("scroll_left")) {
+                    // scroll left
+                    hModel.setValue(hModel.getValue() - hModel.getScrollIncrement() / 4);
+                } else if (event.getAction().equals("scroll_right")) {
+                    // scroll right
+                    hModel.setValue(hModel.getValue() + hModel.getScrollIncrement() / 4);
+                }
+            }
+        };
+
+        final BButton left = new BButton("<", scrollListener, "scroll_left");
+        scrollingTabContainer.add(left, BorderLayout.WEST);
+
+        final BButton right = new BButton(">", scrollListener, "scroll_right");
+        scrollingTabContainer.add(right, BorderLayout.EAST);
+
+        hModel.addChangeListener(new ChangeListener() {
+
+            public void stateChanged(ChangeEvent event) {
+                left.setEnabled(hModel.getValue() > hModel.getMinimum());
+                right.setEnabled(hModel.getValue() < hModel.getMaximum() - hModel.getExtent());
+            }
+        });
     }
 }
