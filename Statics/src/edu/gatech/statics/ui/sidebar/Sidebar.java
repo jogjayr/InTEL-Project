@@ -4,12 +4,10 @@
  */
 package edu.gatech.statics.ui.sidebar;
 
-import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import com.jmex.bui.BComponent;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BScrollPane;
-import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import edu.gatech.statics.application.StaticsApplication;
@@ -26,13 +24,14 @@ public class Sidebar extends AppWindow {
 
     public static final int WIDTH = 200;
     private BContainer mainContainer;
+    BScrollPane scrollPane;
 
     public Sidebar() {
         //super(GroupLayout.makeVert(GroupLayout.TOP));
         super(new BorderLayout());
         mainContainer = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
 
-        BScrollPane scrollPane = new BScrollPane(mainContainer);
+        scrollPane = new BScrollPane(mainContainer,true,false);
         scrollPane.setShowScrollbarAlways(false);
 
         //setBackground(new TintedBackground(ColorRGBA.blue));
@@ -60,15 +59,17 @@ public class Sidebar extends AppWindow {
             allowedHeight -= appBarHeight;
         }
 
-        int preferredHeight = getPreferredSize(WIDTH, -1).height;
+        int preferredHeight = getPreferredSize(WIDTH, -1).height + 20;
         int height = Math.min(allowedHeight, preferredHeight);
 
         int yPosition = DisplaySystem.getDisplaySystem().getHeight()
                 - MainTabBar.MAIN_TAB_BAR_HEIGHT - height;
 
         setBounds(0, yPosition, WIDTH, height);
-        //setPreferredSize(WIDTH, allowedHeight);
+
         layout();
+        remove(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     public void replaceWindow(Class windowType, SidebarWindow window) {
