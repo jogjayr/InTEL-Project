@@ -83,6 +83,7 @@ public class PurseExercise extends FrameExercise {
         description.addImage("example01/assets/arm-purse1.png");
         description.addImage("example01/assets/arm-purse2.png");
 
+
 //        description.addImage("example01/assets/arm-purse3.jpg");
 //        description.addImage("example01/assets/arm-purse4.jpg");
 //        description.addImage("example01/assets/arm-purse5.jpg");

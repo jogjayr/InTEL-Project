@@ -22,6 +22,7 @@ import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import java.math.BigInteger;
 
 /**
@@ -36,7 +37,24 @@ public class SpiderwomanExercise extends FrameExercise {
         Description description = new Description();
 
         description.setTitle("Georgia Tech Spiderwoman");
-        description.setNarrative("...");
+        description.setNarrative("Stealing the T off of Tech Tower is a tradition on Georgia Tech’s campus that was first started in " +
+                "April of 1969 by a group called the Magnificent Seven, but has since been banned.  " +
+                "Spiderwoman has heard some students around campus talking about a group called Disarray " +
+                "Duo planning to steal the T off of Tech Tower and she has some leads about the day that they " +
+                "plan to steal it.  When she arrived to Tech Tower on the night of the attempt, Disarray Duo was " +
+                "already in p   rocess of stealing the T.  She then had to shoot her web up to the top of the building " +
+                "and scale up the side.  Will she be able to scale up the side of Tech Tower? ");
+
+        description.setProblemStatement("Her weight is 800 N.  The tension in the spiderweb is 700 N.  The angle between the spiderweb and the " +
+                "vertical side of the building is 60.");
+
+        description.setGoals("Draw a free body diagram of Spiderwoman " +
+                "in equilibrium while scaling building.  Solve for the reaction forces at her feet.  Find the minimum " +
+                "coefficient of friction so that her feet will not slip while she is scaling the building.");
+
+        description.addImage("spiderwoman/assets/techtower.png");
+        description.addImage("spiderwoman/assets/spiderwoman.png");
+       //description.addImage("spiderwoman/assets/techtower.png");
 
         return description;
     }
@@ -139,6 +157,11 @@ public class SpiderwomanExercise extends FrameExercise {
         float scale = 1;
         Vector3f modelOffset = new Vector3f();
 
+        rep = modelNode.extractElement(schematic.getBackground(), "VisualSceneNode/Spiderwoman/rope");
+        rep.getRelativeNode().setLocalScale(scale);
+        rep.setModelOffset(modelOffset);
+        schematic.getBackground().addRepresentation(rep);
+
         rep = modelNode.extractElement(body, "VisualSceneNode/Spiderwoman");
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);
@@ -150,5 +173,7 @@ public class SpiderwomanExercise extends FrameExercise {
         rep.getRelativeNode().setLocalScale(scale);
         rep.setModelOffset(modelOffset);
         schematic.getBackground().addRepresentation(rep);
+
+        addTask(new SolveConnectorTask("Solve B", jointB));
     }
 }

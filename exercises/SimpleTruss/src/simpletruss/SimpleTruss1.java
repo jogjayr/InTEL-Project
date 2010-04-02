@@ -10,6 +10,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
+import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -24,6 +25,8 @@ import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
+import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +46,10 @@ public class SimpleTruss1 extends TrussExercise {
         description.setTitle("Gambrel roof truss");
         description.setGoals(
                 "Determine the tension or compression in each member.");
+
+//        description.addImage("spiderwoman/assets/brick.png");
+//        description.addImage("spiderwoman/assets/brickDark.png");
+//        description.addImage("spiderwoman/assets/window.png");
 
         return description;
     }
@@ -183,7 +190,7 @@ public class SimpleTruss1 extends TrussExercise {
         pinH.createDefaultSchematicRepresentation();
 
         for (TwoForceMember bar : bars) {
-            bar.createDefaultSchematicRepresentation();
+            //bar.createDefaultSchematicRepresentation();
             getSchematic().add(bar);
         }
 
@@ -253,11 +260,39 @@ public class SimpleTruss1 extends TrussExercise {
         pFH.setBaseName("FH");
         pGH.setBaseName("GH");
 
+
+        // ADD REPRESENTATIONS
+
+
+        ModelNode modelNode = ModelNode.load("simpletruss/assets/", "simpletruss/assets/roof.dae");
+        modelNode.extractLights();
+
+        ModelRepresentation rep;
+
+        rep = modelNode.extractElement(A, "VisualSceneNode/polySurface28/A");
+        A.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(B, "VisualSceneNode/polySurface28/B");
+        B.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(AB, "VisualSceneNode/polySurface28/AB");
+        AB.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+
+        //getSchematic().getBackground().addRepresentation(modelNode.getRemainder(getSchematic().getBackground()));
+
+
         // create default schematic representations for the redundant bars.
-        AC.createDefaultSchematicRepresentation();
-        CE.createDefaultSchematicRepresentation();
-        EG.createDefaultSchematicRepresentation();
-        GH.createDefaultSchematicRepresentation();
+//        AC.createDefaultSchematicRepresentation();
+//        CE.createDefaultSchematicRepresentation();
+//        EG.createDefaultSchematicRepresentation();
+//        GH.createDefaultSchematicRepresentation();
         pAB.addRepresentations(AB);
         pAC.addRepresentations(AC);
         pBC.addRepresentations(BC);
