@@ -1,0 +1,1813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>admin</author>
+      <authoring_tool>COLLADA Maya2008</authoring_tool>
+      <comments>ColladaMaya export options: bakeTransforms=0;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
+curveConstrainSampling=0;removeStaticCurves=1;exportCameraAsLookat=0;
+exportLights=1;exportCameras=1;exportJointsAndSkin=1;
+exportAnimations=1;exportTriangles=0;exportInvisibleNodes=0;
+exportNormals=1;exportTexCoords=1;
+exportVertexColors=1;exportVertexColorsAnimation=0;exportTangents=0;
+exportTexTangents=0;
+exportConstraints=1;exportPhysics=1;
+exportXRefs=1;dereferenceXRefs=1;
+cameraXFov=0;cameraYFov=1</comments>
+      <source_data>file:///C:/Users/admin/Desktop/Statics/Trusses/untitled</source_data>
+    </contributor>
+    <contributor>
+      <author>Calvin Ashmore</author>
+      <authoring_tool>Maya2009 | ColladaMaya v3.05B</authoring_tool>
+      <comments>ColladaMaya export options: bakeTransforms=1;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
+curveConstrainSampling=0;removeStaticCurves=1;exportCameraAsLookat=0;
+exportLights=1;exportCameras=1;exportJointsAndSkin=1;
+exportAnimations=1;exportTriangles=1;exportInvisibleNodes=0;
+exportNormals=1;exportTexCoords=1;
+exportVertexColors=1;exportVertexColorsAnimation=0;exportTangents=0;
+exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
+dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
+      <source_data>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/brianmodels/thedaethatworks/Easy%20Trusses_21.dae</source_data>
+    </contributor>
+    <contributor>
+      <author>Calvin Ashmore</author>
+      <authoring_tool>Maya2009 | ColladaMaya v3.05B</authoring_tool>
+      <comments>ColladaMaya export options: bakeTransforms=1;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
+curveConstrainSampling=0;removeStaticCurves=1;exportCameraAsLookat=0;
+exportLights=1;exportCameras=1;exportJointsAndSkin=1;
+exportAnimations=1;exportTriangles=1;exportInvisibleNodes=0;
+exportNormals=1;exportTexCoords=1;
+exportVertexColors=1;exportVertexColorsAnimation=0;exportTangents=0;
+exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
+dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
+      <source_data>file:///C:/Documents%20and%20Settings/Calvin%20Ashmore/Desktop/roof1.dae</source_data>
+    </contributor>
+    <created>2010-03-18T20:48:55Z</created>
+    <modified>2010-04-01T20:25:31Z</modified>
+    <unit meter="0.01" name="centimeter"/>
+    <up_axis>Y_UP</up_axis>
+  </asset>
+  <library_physics_scenes>
+    <physics_scene id="MayaNativePhysicsScene">
+      <technique_common>
+        <gravity>0 -980 0</gravity>
+        <time_step>0.083</time_step>
+      </technique_common>
+    </physics_scene>
+  </library_physics_scenes>
+  <library_lights>
+    <light id="directionalLightShape1" name="directionalLightShape1">
+      <technique_common>
+        <directional>
+          <color>0.99255 1 0.794</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>5</falloff_angle>
+          <falloff_exponent>1</falloff_exponent>
+          <intensity>1</intensity>
+          <outer_cone>5</outer_cone>
+        </technique>
+      </extra>
+    </light>
+    <light id="directionalLightShape2" name="directionalLightShape2">
+      <technique_common>
+        <directional>
+          <color>0.847 0.905522 1</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>5</falloff_angle>
+          <falloff_exponent>1</falloff_exponent>
+          <intensity>1</intensity>
+          <outer_cone>5</outer_cone>
+        </technique>
+      </extra>
+    </light>
+    <light id="directionalLightShape3" name="directionalLightShape3">
+      <technique_common>
+        <directional>
+          <color>0.99255 1 0.794</color>
+        </directional>
+      </technique_common>
+      <extra>
+        <technique profile="FCOLLADA">
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0</quadratic_attenuation>
+          <falloff_angle>5</falloff_angle>
+          <falloff_exponent>1</falloff_exponent>
+          <intensity>1</intensity>
+          <outer_cone>5</outer_cone>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
+  <library_images>
+    <image id="file3" name="file3">
+      <init_from>file:///C:/Users/admin/Desktop/Statics/Trusses/scenes/wood2.jpg</init_from>
+      <extra>
+        <technique profile="MAYA">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+        </technique>
+      </extra>
+    </image>
+    <image id="file1" name="file1">
+      <init_from>file:///C:/Users/admin/Desktop/Statics/Trusses/scenes/roof1.jpg</init_from>
+      <extra>
+        <technique profile="MAYA">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+        </technique>
+      </extra>
+    </image>
+    <image id="file2" name="file2">
+      <init_from>file:///C:/Users/admin/Desktop/Statics/Trusses/scenes/wood3.jpg</init_from>
+      <extra>
+        <technique profile="MAYA">
+          <dgnode_type>kFile</dgnode_type>
+          <image_sequence>0</image_sequence>
+        </technique>
+      </extra>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="blinn6SG1" name="blinn6SG1">
+      <instance_effect url="#blinn6SG1-fx"/>
+    </material>
+    <material id="blinn4SG1" name="blinn4SG1">
+      <instance_effect url="#blinn4SG1-fx"/>
+    </material>
+    <material id="blinn5SG1" name="blinn5SG1">
+      <instance_effect url="#blinn5SG1-fx"/>
+    </material>
+    <material id="lambert1" name="lambert2">
+      <instance_effect url="#lambert1-fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="blinn6SG1-fx">
+      <profile_COMMON>
+        <newparam sid="file3-surface">
+          <surface type="2D">
+            <init_from>file3</init_from>
+            <format>A8R8G8B8</format>
+          </surface>
+        </newparam>
+        <newparam sid="file3-sampler">
+          <sampler2D>
+            <source>file3-surface</source>
+            <wrap_s>WRAP</wrap_s>
+            <wrap_t>WRAP</wrap_t>
+            <minfilter>NONE</minfilter>
+            <magfilter>NONE</magfilter>
+            <mipfilter>NONE</mipfilter>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="file3-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="MAYA">
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <rotateFrame>0</rotateFrame>
+                    <stagger>0</stagger>
+                    <fast>0</fast>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <rotateUV>0</rotateUV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <blend_mode>NONE</blend_mode>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float>20</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>0.5</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+          </phong>
+          <extra>
+            <technique profile="FCOLLADA"/>
+          </extra>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="blinn4SG1-fx">
+      <profile_COMMON>
+        <newparam sid="file1-surface">
+          <surface type="2D">
+            <init_from>file1</init_from>
+            <format>A8R8G8B8</format>
+          </surface>
+        </newparam>
+        <newparam sid="file1-sampler">
+          <sampler2D>
+            <source>file1-surface</source>
+            <wrap_s>WRAP</wrap_s>
+            <wrap_t>WRAP</wrap_t>
+            <minfilter>NONE</minfilter>
+            <magfilter>NONE</magfilter>
+            <mipfilter>NONE</mipfilter>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="file1-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="MAYA">
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <rotateFrame>0</rotateFrame>
+                    <stagger>0</stagger>
+                    <fast>0</fast>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <rotateUV>0</rotateUV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <blend_mode>NONE</blend_mode>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float>20</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>0.5</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+          </phong>
+          <extra>
+            <technique profile="FCOLLADA"/>
+          </extra>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="blinn5SG1-fx">
+      <profile_COMMON>
+        <newparam sid="file2-surface">
+          <surface type="2D">
+            <init_from>file2</init_from>
+            <format>A8R8G8B8</format>
+          </surface>
+        </newparam>
+        <newparam sid="file2-sampler">
+          <sampler2D>
+            <source>file2-surface</source>
+            <wrap_s>WRAP</wrap_s>
+            <wrap_t>WRAP</wrap_t>
+            <minfilter>NONE</minfilter>
+            <magfilter>NONE</magfilter>
+            <mipfilter>NONE</mipfilter>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="file2-sampler" texcoord="TEX0">
+                <extra>
+                  <technique profile="MAYA">
+                    <wrapU>1</wrapU>
+                    <wrapV>1</wrapV>
+                    <mirrorU>0</mirrorU>
+                    <mirrorV>0</mirrorV>
+                    <coverageU>1</coverageU>
+                    <coverageV>1</coverageV>
+                    <translateFrameU>0</translateFrameU>
+                    <translateFrameV>0</translateFrameV>
+                    <rotateFrame>0</rotateFrame>
+                    <stagger>0</stagger>
+                    <fast>0</fast>
+                    <repeatU>1</repeatU>
+                    <repeatV>1</repeatV>
+                    <offsetU>0</offsetU>
+                    <offsetV>0</offsetV>
+                    <rotateUV>0</rotateUV>
+                    <noiseU>0</noiseU>
+                    <noiseV>0</noiseV>
+                    <blend_mode>NONE</blend_mode>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color>0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float>20</float>
+            </shininess>
+            <reflective>
+              <color>0 0 0 1</color>
+            </reflective>
+            <reflectivity>
+              <float>0.5</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+          </phong>
+          <extra>
+            <technique profile="FCOLLADA"/>
+          </extra>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="lambert1-fx">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color>0.4 0.4 0.4 1</color>
+            </diffuse>
+            <transparent opaque="RGB_ZERO">
+              <color>0 0 0 1</color>
+            </transparent>
+            <transparency>
+              <float>1</float>
+            </transparency>
+          </lambert>
+          <extra>
+            <technique profile="FCOLLADA"/>
+          </extra>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="BShape" name="BShape">
+      <mesh>
+        <source id="BShape-positions" name="position">
+          <float_array id="BShape-positions-array" count="72">3.80798 2.52704 0.012651 3.80798 2.52704 -0.230506 4.14224 2.52704 0.012651 4.14224 2.52704 -0.230506 4.15343 2.53822 -0.230506 4.15343 2.87248 -0.230506 4.15343 2.53822 0.012651 4.15343 2.87248 0.012651 4.14224 2.87248 0.024807 3.80798 2.87248 0.024807 4.14224 2.53822 0.024807 3.80798 2.53822 0.024807 3.80798 2.53822 -0.242661 3.80798 2.87248 -0.242661 4.14224 2.53822 -0.242662 4.14224 2.87248 -0.242662 4.14224 2.88366 -0.230506 3.80798 2.88366 -0.230506 4.14224 2.88366 0.012651 3.80798 2.88366 0.012651 3.7968 2.87248 -0.230506 3.7968 2.53822 -0.230506 3.7968 2.87248 0.012651 3.7968 2.53822 0.012651</float_array>
+          <technique_common>
+            <accessor source="#BShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BShape-normals" name="normal">
+          <float_array id="BShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 -0.000001 1 0 -0.000001 1 0 -0.000001 1 0 -0.000001 0 0 1 0 0 1 0 0 1 0 0 1 -0.000001 0 -1 -0.000001 0 -1 -0.000001 0 -1 -0.000001 0 -1 0 1 0 0 1 0.000000 0 1 0.000000 0 1 0.000001 -1 0 0.000000 -1 0 0.000000 -1 0 0.000000 -1 0 0.000000 -0.000000 -0.735942 0.677044 -0.000000 -0.735949 0.677037 -0.000000 -0.735949 0.677037 0 -0.735955 0.677031 0.707064 -0.70715 -0.000001 0.707079 -0.707134 -0.000000 0.707079 -0.707134 -0.000000 0.707095 -0.707119 0 0.735927 0 0.677061 0.735927 0 0.677061 0.735927 0 0.677061 0.735927 0 0.677061 -0.000000 -0.735956 -0.67703 -0.000000 -0.735957 -0.677029 -0.000000 -0.735957 -0.677029 -0.000001 -0.735958 -0.677028 0.735955 0 -0.677031 0.735955 0 -0.677031 0.735955 0 -0.677031 0.735955 0 -0.677031 0 0.735921 0.677067 -0.000000 0.735941 0.677045 -0.000000 0.735941 0.677045 -0.000000 0.735962 0.677023 0.707102 0.707111 0 0.707087 0.707127 0 0.707087 0.707127 0 0.707071 0.707142 0 -0.000000 0.735956 -0.677029 -0.000000 0.735948 -0.677038 -0.000000 0.735948 -0.677038 -0.000001 0.735939 -0.677048 -0.735948 0 0.677038 -0.735947 0 0.677039 -0.735947 0 0.677039 -0.735947 0 0.677039 -0.707116 0.707097 0.000000 -0.707109 0.707105 -0.000000 -0.707109 0.707105 -0.000000 -0.707101 0.707113 -0.000001 -0.735947 0 -0.677039 -0.735947 0 -0.677039 -0.735947 0 -0.677039 -0.735947 0 -0.677039 -0.707109 -0.707105 -0.000000 -0.707101 -0.707112 0.000000 -0.707101 -0.707112 0.000000 -0.707093 -0.70712 0.000000 0.592709 -0.592739 0.545304 0.592709 -0.592739 0.545304 0.592709 -0.592739 0.545304 0.592735 -0.592741 -0.545274 0.592735 -0.592741 -0.545274 0.592735 -0.592741 -0.545274 0.592717 0.592734 0.5453 0.592717 0.592734 0.5453 0.592717 0.592734 0.5453 0.592732 0.592726 -0.545293 0.592732 0.592726 -0.545293 0.592732 0.592726 -0.545293 -0.592744 0.592705 0.545303 -0.592744 0.592705 0.545303 -0.592744 0.592705 0.545303 -0.592734 0.592728 -0.545288 -0.592734 0.592728 -0.545288 -0.592734 0.592728 -0.545288 -0.592741 -0.592715 0.545296 -0.592741 -0.592715 0.545296 -0.592741 -0.592715 0.545296 -0.59273 -0.592736 -0.545285 -0.59273 -0.592736 -0.545285 -0.59273 -0.592736 -0.545285</float_array>
+          <technique_common>
+            <accessor source="#BShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="BShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#BShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BShape-vertices">
+          <input semantic="POSITION" source="#BShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#BShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="CShape" name="CShape">
+      <mesh>
+        <source id="CShape-positions" name="position">
+          <float_array id="CShape-positions-array" count="72">3.77602 -0.128457 0.012651 3.77602 -0.128457 -0.230506 4.0685 -0.128457 0.012651 4.0685 -0.128457 -0.230506 4.07828 -0.118674 -0.230506 4.07828 0.173808 -0.230506 4.07828 -0.118674 0.012651 4.07828 0.173808 0.012651 4.0685 0.173808 0.024807 3.77602 0.173808 0.024807 4.0685 -0.118674 0.024807 3.77602 -0.118674 0.024807 3.77602 -0.118674 -0.242661 3.77602 0.173808 -0.242661 4.0685 -0.118674 -0.242662 4.0685 0.173808 -0.242662 4.0685 0.183591 -0.230506 3.77602 0.183591 -0.230506 4.0685 0.183591 0.012651 3.77602 0.183591 0.012651 3.76624 0.173808 -0.230506 3.76624 -0.118674 -0.230506 3.76624 0.173808 0.012651 3.76624 -0.118674 0.012651</float_array>
+          <technique_common>
+            <accessor source="#CShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="CShape-normals" name="normal">
+          <float_array id="CShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 -0.000001 1 0 -0.000001 1 0 -0.000001 1 0 -0.000001 0 0 1 0 0 1 0 0 1 0 0 1 -0.000001 0 -1 -0.000001 0 -1 -0.000001 0 -1 -0.000001 0 -1 0 1 0 0 1 0 0 1 0 0 1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -0.000001 -0.779046 0.626967 -0.000000 -0.779053 0.626958 -0.000000 -0.779053 0.626958 0 -0.77906 0.626949 0.707166 -0.707047 -0.000001 0.707157 -0.707056 -0.000001 0.707157 -0.707056 -0.000001 0.707149 -0.707065 -0.000001 0.779103 0 0.626895 0.779103 0 0.626895 0.779103 0 0.626895 0.779103 0 0.626895 -0.000001 -0.779059 -0.626951 -0.000001 -0.779059 -0.626951 -0.000001 -0.779059 -0.626951 -0.000001 -0.779058 -0.626951 0.77913 0 -0.626862 0.77913 0 -0.626862 0.77913 0 -0.626862 0.77913 0 -0.626862 0 0.779047 0.626966 -0.000000 0.779054 0.626957 -0.000000 0.779054 0.626957 -0.000001 0.77906 0.626949 0.707148 0.707065 -0.000001 0.707157 0.707057 -0.000001 0.707157 0.707057 -0.000001 0.707166 0.707048 -0.000001 -0.000001 0.779059 -0.626951 -0.000001 0.779059 -0.62695 -0.000001 0.779059 -0.62695 -0.000001 0.77906 -0.626949 -0.779115 0 0.626881 -0.779115 0 0.626881 -0.779115 0 0.626881 -0.779115 0 0.62688 -0.707182 0.707031 0 -0.707173 0.70704 0 -0.707173 0.70704 0 -0.707164 0.707049 0 -0.779123 0 -0.626871 -0.779123 0 -0.626871 -0.779123 0 -0.626871 -0.779123 0 -0.626871 -0.707165 -0.707049 0 -0.707174 -0.70704 0 -0.707174 -0.70704 0 -0.707183 -0.707031 0 0.614634 -0.614522 0.494558 0.614634 -0.614522 0.494558 0.614634 -0.614522 0.494558 0.614642 -0.614544 -0.494521 0.614642 -0.614544 -0.494521 0.614642 -0.614544 -0.494521 0.614634 0.614522 0.494557 0.614634 0.614522 0.494557 0.614634 0.614522 0.494557 0.614641 0.614545 -0.494521 0.614641 0.614545 -0.494521 0.614641 0.614545 -0.494521 -0.614649 0.614513 0.49455 -0.614649 0.614513 0.49455 -0.614649 0.614513 0.49455 -0.614652 0.614517 -0.494541 -0.614652 0.614517 -0.494541 -0.614652 0.614517 -0.494541 -0.614649 -0.614512 0.494551 -0.614649 -0.614512 0.494551 -0.614649 -0.614512 0.494551 -0.614653 -0.614516 -0.494542 -0.614653 -0.614516 -0.494542 -0.614653 -0.614516 -0.494542</float_array>
+          <technique_common>
+            <accessor source="#CShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="CShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="CShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#CShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="CShape-vertices">
+          <input semantic="POSITION" source="#CShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#CShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#CShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#CShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="AShape" name="AShape">
+      <mesh>
+        <source id="AShape-positions" name="position">
+          <float_array id="AShape-positions-array" count="72">-0.021798 -0.121061 0.012651 -0.021798 -0.121061 -0.230506 0.41763 -0.121061 0.012651 0.41763 -0.121061 -0.230506 0.428777 -0.112677 -0.230506 0.428777 0.150941 -0.230506 0.428777 -0.112677 0.012651 0.428777 0.150941 0.012651 0.41763 0.150941 0.024807 -0.021798 0.150941 0.024807 0.41763 -0.112677 0.024807 -0.021798 -0.112677 0.024807 -0.021798 -0.112677 -0.242661 -0.021798 0.150941 -0.242661 0.41763 -0.112677 -0.242661 0.41763 0.150941 -0.242661 0.41763 0.159325 -0.230506 -0.021798 0.159325 -0.230506 0.41763 0.159325 0.012651 -0.021798 0.159325 0.012651 -0.032995 0.150941 -0.230506 -0.032995 -0.112677 -0.230506 -0.032995 0.150941 0.012651 -0.032995 -0.112677 0.012651</float_array>
+          <technique_common>
+            <accessor source="#AShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="AShape-normals" name="normal">
+          <float_array id="AShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 0 1 0 0 1 0 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 0 1 0 0 1 0 0 1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -0.823168 0.567798 0 -0.823168 0.567798 0 -0.823168 0.567798 0 -0.823168 0.567797 0.601118 -0.79916 0 0.601119 -0.799159 0 0.601119 -0.799159 0 0.60112 -0.799159 0 0.737025 0 0.675865 0.737025 0 0.675865 0.737025 0 0.675865 0.737025 0 0.675865 0 -0.823169 -0.567797 0 -0.823168 -0.567797 0 -0.823168 -0.567797 0 -0.823168 -0.567798 0.737024 0 -0.675867 0.737024 0 -0.675867 0.737024 0 -0.675867 0.737024 0 -0.675867 0 0.823167 0.567799 0 0.823167 0.567799 0 0.823167 0.567799 0 0.823167 0.567799 0.601122 0.799157 0 0.601121 0.799158 0 0.601121 0.799158 0 0.60112 0.799159 0 0 0.823168 -0.567798 0 0.823168 -0.567798 0 0.823168 -0.567798 0 0.823167 -0.567799 -0.7355 0 0.677524 -0.7355 0 0.677524 -0.7355 0 0.677524 -0.7355 0 0.677525 -0.599385 0.800461 0 -0.599385 0.800461 0 -0.599385 0.800461 0 -0.599385 0.800461 0 -0.7355 0 -0.677524 -0.7355 0 -0.677524 -0.7355 0 -0.677524 -0.7355 0 -0.677524 -0.599383 -0.800462 0 -0.599383 -0.800462 0 -0.599383 -0.800462 0 -0.599383 -0.800462 0 0.526434 -0.699871 0.48275 0.526434 -0.699871 0.48275 0.526434 -0.699871 0.48275 0.526437 -0.699868 -0.482752 0.526437 -0.699868 -0.482752 0.526437 -0.699868 -0.482752 0.526436 0.69987 0.48275 0.526436 0.69987 0.48275 0.526436 0.69987 0.48275 0.526437 0.699866 -0.482754 0.526437 0.699866 -0.482754 0.526437 0.699866 -0.482754 -0.524716 0.700742 0.483356 -0.524716 0.700742 0.483356 -0.524716 0.700742 0.483356 -0.524716 0.700743 -0.483355 -0.524716 0.700743 -0.483355 -0.524716 0.700743 -0.483355 -0.524715 -0.700744 0.483355 -0.524715 -0.700744 0.483355 -0.524715 -0.700744 0.483355 -0.524716 -0.700744 -0.483354 -0.524716 -0.700744 -0.483354 -0.524716 -0.700744 -0.483354</float_array>
+          <technique_common>
+            <accessor source="#AShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="AShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="AShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#AShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="AShape-vertices">
+          <input semantic="POSITION" source="#AShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#AShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#AShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#AShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ABShape" name="ABShape">
+      <mesh>
+        <source id="ABShape-positions" name="position">
+          <float_array id="ABShape-positions-array" count="120">0.936903 0.835058 -0.21914 -0.02659 0.151992 -0.219141 0.936903 0.835058 0.001285 -0.02659 0.151992 0.001285 1.90045 1.51812 -0.21914 1.90045 1.51812 0.001285 2.86394 2.20118 -0.21914 2.86394 2.20118 0.001285 3.82746 2.88424 -0.21914 3.82746 2.88424 0.001285 3.02827 1.96938 -0.21914 3.99179 2.65245 -0.21914 3.02827 1.96938 0.001285 3.99179 2.65245 0.001285 2.06478 1.28632 -0.21914 2.06478 1.28632 0.001285 1.10123 0.603259 -0.21914 1.10123 0.603259 0.001285 0.137741 -0.079805 -0.21914 0.137741 -0.079805 0.001285 3.02081 1.97992 0.012304 3.98432 2.66298 0.012304 2.8714 2.19065 0.012304 3.83493 2.87371 0.012304 2.05731 1.29686 0.012304 1.90791 1.50759 0.012304 1.09377 0.613791 0.012304 0.944368 0.824521 0.012304 0.130276 -0.069271 0.012304 -0.019124 0.141458 0.012304 3.98432 2.66298 -0.230159 3.02081 1.97992 -0.23016 3.83493 2.87371 -0.23016 2.8714 2.19065 -0.23016 2.05731 1.29686 -0.23016 1.90791 1.50759 -0.23016 1.09377 0.613791 -0.23016 0.944368 0.824521 -0.23016 0.130276 -0.069271 -0.23016 -0.019124 0.141458 -0.230159</float_array>
+          <technique_common>
+            <accessor source="#ABShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ABShape-normals" name="normal">
+          <float_array id="ABShape-normals-array" count="264">-0.578335 0.815799 -0.000000 -0.578351 0.815788 0 -0.578343 0.815794 0 -0.578351 0.815788 0 -0.578343 0.815794 0.000000 -0.578335 0.815799 0.000000 -0.578342 0.815794 0.000000 -0.578346 0.815791 0.000000 -0.578338 0.815798 0.000001 -0.578337 0.815798 0.000000 0.578347 -0.815791 -0.000000 0.57834 -0.815796 -0.000000 0.578344 -0.815793 -0.000000 0.57834 -0.815796 -0.000001 0.578335 -0.815799 0 0.578343 -0.815794 -0.000000 0.578343 -0.815794 0 0.578335 -0.815799 0 0.57835 -0.815789 0 0.57835 -0.815789 0 0 0 1 -0.000000 0.000000 1 -0.000000 0.000000 1 -0.000001 0.000001 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0.000001 -0.000001 -1 0.000000 -0.000000 -1 0.000000 -0.000000 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0.000000 0.000000 -1 -0.000001 0.000001 -1 -0.000002 0.000002 -1 -0.815903 -0.578188 0 -0.815842 -0.578275 0.000036 -0.815841 -0.578276 -0.000006 -0.815823 -0.578302 0.000076 -0.815823 -0.578302 0.000076 -0.815843 -0.578274 0.000036 -0.815905 -0.578186 0 -0.815842 -0.578275 -0.000006 -0.375422 0.52955 -0.76068 -0.375427 0.529555 -0.760675 -0.375423 0.529559 -0.760674 -0.375444 0.5296 -0.760635 -0.375468 0.529634 -0.7606 -0.375471 0.529629 -0.760602 -0.375443 0.529578 0.760651 -0.375425 0.529554 0.760676 -0.375415 0.52955 0.760684 -0.375423 0.52957 0.760666 -0.375447 0.529604 0.760631 -0.375452 0.529602 0.76063 -0.375443 0.529586 -0.760645 -0.375424 0.529563 -0.760671 -0.375429 0.529566 0.760666 -0.37541 0.529545 0.76069 -0.375423 0.529568 -0.760667 -0.375443 0.529596 -0.760639 -0.375411 0.52955 0.760686 -0.375424 0.529568 0.760667 0.375437 -0.529581 -0.760652 0.375463 -0.529619 -0.760612 0.375474 -0.529632 -0.760597 0.375473 -0.529626 -0.760602 0.375416 -0.529554 0.760681 0.37545 -0.529601 0.760631 0.375459 -0.52961 0.760621 0.375457 -0.529603 0.760626 0.375448 -0.529597 -0.760635 0.375443 -0.529599 -0.760636 0.375426 -0.529567 0.760667 0.375423 -0.529571 0.760666 0.375464 -0.529629 -0.760605 0.37548 -0.529642 -0.760588 0.375446 -0.529602 0.760633 0.375462 -0.529616 0.760615 0.375479 -0.52963 -0.760597 0.375463 -0.529606 -0.760622 0.37546 -0.529605 0.760624 0.375442 -0.52958 0.76065</float_array>
+          <technique_common>
+            <accessor source="#ABShape-normals-array" count="88" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ABShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="ABShape-polySurface28Shape-map1-array" count="420">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 1 0 0 1 0.999998 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0.041853 0.739297 1 0 0 1 0 0.182596 1 0 0.120864 1 0.942191 0 1 0.034109 0 1 0 0.965885 1 0 0.057809 1 0.958147 0.260728 0 1 1 0 0.87914 0 1 0.817399 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#ABShape-polySurface28Shape-map1-array" count="210" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ABShape-vertices">
+          <input semantic="POSITION" source="#ABShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="70">
+          <input semantic="VERTEX" source="#ABShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#ABShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#ABShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 6 6 19 9 9 20 9 9 21 6 6 22 7 7 23 10 10 24 11 11 25 12 12 26 12 12 27 11 11 28 13 13 29 14 14 30 10 10 31 15 15 32 15 15 33 10 10 34 12 12 35 16 16 36 14 14 37 17 17 38 17 17 39 14 14 40 15 15 41 18 18 42 16 16 43 19 19 44 19 19 45 16 16 46 17 17 47 20 20 48 21 21 49 22 22 50 22 22 51 21 21 52 23 23 53 24 24 54 20 20 55 25 25 56 25 25 57 20 20 58 22 22 59 26 26 60 24 24 61 27 27 62 27 27 63 24 24 64 25 25 65 28 28 66 26 26 67 29 29 68 29 29 69 26 26 70 27 27 71 30 30 72 31 31 73 32 32 74 32 32 75 31 31 76 33 33 77 31 31 78 34 34 79 33 33 80 33 33 81 34 34 82 35 35 83 34 34 84 36 36 85 35 35 86 35 35 87 36 36 88 37 37 89 36 36 90 38 38 91 37 37 92 37 37 93 38 38 94 39 39 95 18 40 96 19 41 97 38 42 98 38 42 99 19 41 100 39 43 101 19 41 102 28 44 103 39 43 104 39 43 105 28 44 106 1 45 107 3 46 108 1 45 109 29 47 110 28 44 111 29 47 112 1 45 113 39 48 114 1 49 115 37 50 116 37 50 117 1 49 118 0 51 119 37 50 120 0 51 121 35 52 122 35 52 123 0 51 124 4 53 125 3 54 126 29 55 127 2 56 128 2 56 129 29 55 130 27 57 131 2 56 132 27 57 133 5 58 134 5 58 135 27 57 136 25 59 137 35 52 138 4 53 139 33 60 140 33 60 141 4 53 142 6 61 143 5 58 144 25 59 145 7 62 146 7 62 147 25 59 148 22 63 149 33 60 150 6 61 151 32 64 152 32 64 153 6 61 154 8 65 155 7 62 156 22 63 157 9 66 158 9 66 159 22 63 160 23 67 161 30 68 162 11 69 163 31 70 164 31 70 165 11 69 166 10 71 167 13 72 168 21 73 169 12 74 170 12 74 171 21 73 172 20 75 173 31 70 174 10 71 175 34 76 176 34 76 177 10 71 178 14 77 179 12 74 180 20 75 181 15 78 182 15 78 183 20 75 184 24 79 185 34 76 186 14 77 187 36 80 188 36 80 189 14 77 190 16 81 191 15 78 192 24 79 193 17 82 194 17 82 195 24 79 196 26 83 197 36 80 198 16 81 199 38 84 200 38 84 201 16 81 202 18 85 203 17 82 204 26 83 205 19 86 206 19 86 207 26 83 208 28 87 209</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="BCShape" name="BCShape">
+      <mesh>
+        <source id="BCShape-positions" name="position">
+          <float_array id="BCShape-positions-array" count="72">3.78414 1.31672 -0.221312 3.78414 -0.02755 -0.221312 3.78414 1.31672 0.003457 3.78414 -0.02755 0.003457 3.78414 2.76214 -0.221312 3.78414 2.76214 0.003457 4.06827 1.31672 -0.221312 4.06827 2.76214 -0.221312 4.06827 1.31672 0.003457 4.06827 2.76214 0.003457 4.06827 -0.02755 -0.221312 4.06827 -0.02755 0.003457 4.05536 1.31672 0.014693 4.05536 2.76214 0.014693 3.79705 1.31672 0.014693 3.79705 2.76214 0.014693 4.05536 -0.02755 0.014693 3.79705 -0.02755 0.014693 4.05536 2.76214 -0.232548 4.05536 1.31672 -0.232548 3.79705 2.76214 -0.232548 3.79705 1.31672 -0.232548 4.05536 -0.02755 -0.232548 3.79705 -0.02755 -0.232548</float_array>
+          <technique_common>
+            <accessor source="#BCShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BCShape-normals" name="normal">
+          <float_array id="BCShape-normals-array" count="144">-1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 -0.000001 0.000007 1 0 0 1 -0.000001 0 1 0 0 1 0 0.000021 1 -0.000001 0.00001 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0.656449 0 -0.75437 -0.656449 0 -0.75437 -0.656449 0 -0.75437 -0.656449 0 -0.75437 -0.656456 0 0.754364 -0.656456 0 0.754364 -0.656456 0 0.754364 -0.656456 0 0.754364 -0.65645 0 -0.75437 -0.656449 0 -0.754371 -0.656456 0 0.754364 -0.656456 0 0.754364 0.656297 0 -0.754503 0.656297 0 -0.754503 0.656297 0 -0.754502 0.656297 0 -0.754503 0.656297 0 0.754502 0.656297 0 0.754502 0.656297 -0.000000 0.754502 0.656343 -0.000000 0.754462 0.656297 0 -0.754503 0.656296 0 -0.754503 0.656366 -0.000001 0.754442 0.656435 0 0.754382</float_array>
+          <technique_common>
+            <accessor source="#BCShape-normals-array" count="48" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BCShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="BCShape-polySurface28Shape-map1-array" count="192">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#BCShape-polySurface28Shape-map1-array" count="96" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BCShape-vertices">
+          <input semantic="POSITION" source="#BCShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="32">
+          <input semantic="VERTEX" source="#BCShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BCShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BCShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 7 7 13 8 8 14 8 8 15 7 7 16 9 9 17 10 10 18 6 6 19 11 11 20 11 11 21 6 6 22 8 8 23 12 12 24 13 13 25 14 14 26 14 14 27 13 13 28 15 15 29 16 16 30 12 12 31 17 17 32 17 17 33 12 12 34 14 14 35 18 18 36 19 19 37 20 20 38 20 20 39 19 19 40 21 21 41 19 19 42 22 22 43 21 21 44 21 21 45 22 22 46 23 23 47 23 24 48 1 25 49 21 26 50 21 26 51 1 25 52 0 27 53 3 28 54 17 29 55 2 30 56 2 30 57 17 29 58 14 31 59 21 26 60 0 27 61 20 32 62 20 32 63 0 27 64 4 33 65 2 30 66 14 31 67 5 34 68 5 34 69 14 31 70 15 35 71 18 36 72 7 37 73 19 38 74 19 38 75 7 37 76 6 39 77 9 40 78 13 41 79 8 42 80 8 42 81 13 41 82 12 43 83 19 38 84 6 39 85 22 44 86 22 44 87 6 39 88 10 45 89 8 42 90 12 43 91 11 46 92 11 46 93 12 43 94 16 47 95</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="BEShape" name="BEShape">
+      <mesh>
+        <source id="BEShape-positions" name="position">
+          <float_array id="BEShape-positions-array" count="120">6.97598 0.575215 -0.21914 7.99481 -0.080995 -0.21914 6.97598 0.575215 0.001285 7.99481 -0.080995 0.001285 5.95715 1.23143 -0.219141 5.95715 1.23143 0.001285 4.93832 1.88764 -0.219141 4.93832 1.88764 0.001285 3.91949 2.54385 -0.21914 3.91949 2.54385 0.001285 5.09217 2.12652 -0.219141 4.07335 2.78273 -0.219141 5.09217 2.12652 0.001285 4.07335 2.78273 0.001285 6.111 1.47031 -0.21914 6.111 1.47031 0.001285 7.12983 0.814095 -0.21914 7.12983 0.814095 0.001285 8.14866 0.157882 -0.21914 8.14866 0.157882 0.001285 5.08518 2.11566 0.012304 4.06635 2.77187 0.012304 4.94531 1.8985 0.012304 3.92649 2.55471 0.012304 6.10401 1.45945 0.012304 5.96414 1.24229 0.012304 7.12284 0.803241 0.012304 6.98297 0.586074 0.012304 8.14167 0.147026 0.012304 8.0018 -0.070139 0.012304 4.06635 2.77187 -0.230159 5.08518 2.11566 -0.230159 3.92649 2.55471 -0.23016 4.94531 1.8985 -0.230159 6.10401 1.45945 -0.230159 5.96414 1.24229 -0.230159 7.12284 0.803241 -0.230159 6.98297 0.586074 -0.230159 8.14167 0.147026 -0.230159 8.0018 -0.070139 -0.230159</float_array>
+          <technique_common>
+            <accessor source="#BEShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BEShape-normals" name="normal">
+          <float_array id="BEShape-normals-array" count="264">-0.541488 -0.840708 -0.000001 -0.541486 -0.84071 -0.000001 -0.541487 -0.840709 -0.000001 -0.541486 -0.84071 -0.000001 -0.541488 -0.840709 -0.000001 -0.541489 -0.840708 -0.000001 -0.541487 -0.840709 -0.000000 -0.541487 -0.840709 -0.000001 -0.541486 -0.84071 0.000001 -0.541486 -0.84071 0 0.541487 0.840709 0.000000 0.541489 0.840708 0.000000 0.541488 0.840709 0.000000 0.541489 0.840708 0.000001 0.541487 0.840709 0.000001 0.541487 0.840709 0.000000 0.541488 0.840709 0.000001 0.541487 0.840709 0.000001 0.541488 0.840708 0.000002 0.541488 0.840709 0.000001 0 0 1 -0.000000 -0.000000 1 -0.000000 -0.000000 1 -0.000001 -0.000001 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0.000000 0.000001 -1 0.000000 0.000000 -1 0.000000 0.000000 -1 0 0 -1 0 0 -1 0 0.000000 -1 0 0.000000 -1 0 0.000000 -1 0 0.000000 -1 0 0 -1 0.840712 -0.541483 -0.000001 0.840709 -0.541487 0.000004 0.840709 -0.541487 -0.000001 0.840718 -0.541473 -0.000005 0.840719 -0.541471 -0.000003 0.840728 -0.541458 -0.000008 0.840734 -0.541448 0.000001 0.840722 -0.541467 0.000002 -0.351495 -0.545729 -0.760678 -0.351475 -0.545699 -0.760709 -0.351469 -0.545689 -0.760719 -0.351477 -0.5457 -0.760707 -0.351497 -0.54573 -0.760677 -0.351518 -0.545764 -0.760642 -0.35149 -0.545722 0.760686 -0.35147 -0.54569 0.760718 -0.351464 -0.545678 0.760729 -0.351473 -0.545693 0.760714 -0.351496 -0.545729 0.760678 -0.351519 -0.545767 0.76064 -0.351522 -0.545769 -0.760637 -0.351488 -0.545716 -0.76069 -0.351521 -0.545769 0.760638 -0.351484 -0.54571 0.760697 -0.351472 -0.545689 -0.760718 -0.351413 -0.545602 -0.760807 -0.351466 -0.54568 0.760726 -0.351409 -0.545588 0.760819 0.351465 0.545683 -0.760725 0.351492 0.545723 -0.760684 0.351499 0.545734 -0.760673 0.351516 0.54576 -0.760646 0.351481 0.545704 0.760703 0.351506 0.545745 0.760661 0.351513 0.545756 0.76065 0.351526 0.545778 0.760629 0.351515 0.54576 -0.760647 0.351515 0.54576 -0.760647 0.351523 0.545773 0.760634 0.351521 0.545769 0.760637 0.351514 0.545758 -0.760649 0.351504 0.545742 -0.760664 0.351521 0.545769 0.760637 0.351512 0.545754 0.760652 0.351501 0.545736 -0.760671 0.351487 0.545715 -0.760692 0.351508 0.545748 0.760658 0.351495 0.545727 0.76068</float_array>
+          <technique_common>
+            <accessor source="#BEShape-normals-array" count="88" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BEShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="BEShape-polySurface28Shape-map1-array" count="420">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 1 0 0 1 0.999998 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0.041853 0.739297 1 0 0 1 0 0.182596 1 0 0.120864 1 0.942191 0 1 0.034109 0 1 0 0.965885 1 0 0.057809 1 0.958147 0.260728 0 1 1 0 0.87914 0 1 0.817399 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#BEShape-polySurface28Shape-map1-array" count="210" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BEShape-vertices">
+          <input semantic="POSITION" source="#BEShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="70">
+          <input semantic="VERTEX" source="#BEShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BEShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BEShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 6 6 19 9 9 20 9 9 21 6 6 22 7 7 23 10 10 24 11 11 25 12 12 26 12 12 27 11 11 28 13 13 29 14 14 30 10 10 31 15 15 32 15 15 33 10 10 34 12 12 35 16 16 36 14 14 37 17 17 38 17 17 39 14 14 40 15 15 41 18 18 42 16 16 43 19 19 44 19 19 45 16 16 46 17 17 47 20 20 48 21 21 49 22 22 50 22 22 51 21 21 52 23 23 53 24 24 54 20 20 55 25 25 56 25 25 57 20 20 58 22 22 59 26 26 60 24 24 61 27 27 62 27 27 63 24 24 64 25 25 65 28 28 66 26 26 67 29 29 68 29 29 69 26 26 70 27 27 71 30 30 72 31 31 73 32 32 74 32 32 75 31 31 76 33 33 77 31 31 78 34 34 79 33 33 80 33 33 81 34 34 82 35 35 83 34 34 84 36 36 85 35 35 86 35 35 87 36 36 88 37 37 89 36 36 90 38 38 91 37 37 92 37 37 93 38 38 94 39 39 95 18 40 96 19 41 97 38 42 98 38 42 99 19 41 100 39 43 101 19 41 102 28 44 103 39 43 104 39 43 105 28 44 106 1 45 107 3 46 108 1 45 109 29 47 110 28 44 111 29 47 112 1 45 113 39 48 114 1 49 115 37 50 116 37 50 117 1 49 118 0 51 119 37 50 120 0 51 121 35 52 122 35 52 123 0 51 124 4 53 125 3 54 126 29 55 127 2 56 128 2 56 129 29 55 130 27 57 131 2 56 132 27 57 133 5 58 134 5 58 135 27 57 136 25 59 137 35 52 138 4 53 139 33 60 140 33 60 141 4 53 142 6 61 143 5 58 144 25 59 145 7 62 146 7 62 147 25 59 148 22 63 149 33 60 150 6 61 151 32 64 152 32 64 153 6 61 154 8 65 155 7 62 156 22 63 157 9 66 158 9 66 159 22 63 160 23 67 161 30 68 162 11 69 163 31 70 164 31 70 165 11 69 166 10 71 167 13 72 168 21 73 169 12 74 170 12 74 171 21 73 172 20 75 173 31 70 174 10 71 175 34 76 176 34 76 177 10 71 178 14 77 179 12 74 180 20 75 181 15 78 182 15 78 183 20 75 184 24 79 185 34 76 186 14 77 187 36 80 188 36 80 189 14 77 190 16 81 191 15 78 192 24 79 193 17 82 194 17 82 195 24 79 196 26 83 197 36 80 198 16 81 199 38 84 200 38 84 201 16 81 202 18 85 203 17 82 204 26 83 205 19 86 206 19 86 207 26 83 208 28 87 209</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="BDShape" name="BDShape">
+      <mesh>
+        <source id="BDShape-positions" name="position">
+          <float_array id="BDShape-positions-array" count="96">5.20527 3.21653 -0.219141 3.82063 2.88397 -0.21914 5.20527 3.21653 0.001285 3.82063 2.88397 0.001285 6.58991 3.54909 -0.21914 6.58991 3.54909 0.001285 7.86482 3.88086 -0.21914 7.86482 3.88086 0.001285 6.65627 3.27281 -0.21914 7.93118 3.60458 -0.21914 6.65627 3.27281 0.001285 7.93118 3.60458 0.001285 5.27163 2.94025 -0.219141 5.27163 2.94025 0.001285 3.88699 2.60769 -0.21914 3.88699 2.60769 0.001285 6.65325 3.28537 0.012304 7.92816 3.61714 0.012304 6.59293 3.53654 0.012304 7.86784 3.86831 0.012304 5.26861 2.95281 0.012304 5.20829 3.20398 0.012304 3.88397 2.62025 0.012304 3.82364 2.87142 0.012304 6.65325 3.28537 -0.230159 6.59293 3.53654 -0.230159 7.92816 3.61714 -0.230159 7.86783 3.86831 -0.230159 5.26861 2.95281 -0.230159 5.20829 3.20398 -0.230159 3.88397 2.62025 -0.23016 3.82364 2.87142 -0.23016</float_array>
+          <technique_common>
+            <accessor source="#BDShape-positions-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BDShape-normals" name="normal">
+          <float_array id="BDShape-normals-array" count="192">-0.233538 0.972348 -0.000000 -0.233537 0.972348 0 -0.233538 0.972348 0 -0.233537 0.972348 0 -0.245748 0.969334 -0.000000 -0.239648 0.97086 0.000000 -0.251839 0.967769 -0.000002 -0.251839 0.967769 0.000000 0.239649 -0.97086 0.000000 0.251843 -0.967768 0.000001 0.245751 -0.969333 0.000000 0.251843 -0.967768 0 0.233538 -0.972348 0.000000 0.233538 -0.972348 0.000000 0.233538 -0.972348 0 0.233538 -0.972348 0.000000 0 0 1 0 0 1 0 0 1 0 0 1 -0.000000 0 1 0 0 1 -0.000000 0 1 -0.000000 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.000000 0 -1 0.000000 0 -1 0.000000 0 -1 -0.151606 0.63122 -0.760642 -0.151605 0.631215 -0.760647 -0.151603 0.631213 -0.760649 -0.15159 0.631159 -0.760696 -0.151603 0.631208 0.760653 -0.151602 0.631205 0.760655 -0.151602 0.631205 0.760656 -0.15159 0.631158 0.760697 -0.155546 0.630147 -0.760737 -0.159513 0.62918 -0.760716 -0.155547 0.630156 0.760729 -0.159514 0.629185 0.760711 -0.163482 0.628225 -0.760662 -0.163502 0.628307 -0.76059 -0.163483 0.628229 0.760659 -0.163501 0.628294 0.760601 0.163504 -0.628307 -0.76059 0.163503 -0.628301 -0.760594 0.159537 -0.629271 -0.760636 0.155569 -0.630236 -0.760658 0.16351 -0.628327 0.760572 0.163505 -0.628309 0.760588 0.159541 -0.629288 0.76062 0.155571 -0.630246 0.760649 0.151598 -0.63119 -0.760669 0.151591 -0.631159 -0.760696 0.151604 -0.631213 0.760649 0.151589 -0.631155 0.760699 0.151585 -0.631138 -0.760715 0.151573 -0.631087 -0.760759 0.151584 -0.631133 0.760719 0.151561 -0.631042 0.760799</float_array>
+          <technique_common>
+            <accessor source="#BDShape-normals-array" count="64" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="BDShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="BDShape-polySurface28Shape-map1-array" count="288">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#BDShape-polySurface28Shape-map1-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="BDShape-vertices">
+          <input semantic="POSITION" source="#BDShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="48">
+          <input semantic="VERTEX" source="#BDShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#BDShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#BDShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 9 9 19 10 10 20 10 10 21 9 9 22 11 11 23 12 12 24 8 8 25 13 13 26 13 13 27 8 8 28 10 10 29 14 14 30 12 12 31 15 15 32 15 15 33 12 12 34 13 13 35 16 16 36 17 17 37 18 18 38 18 18 39 17 17 40 19 19 41 20 20 42 16 16 43 21 21 44 21 21 45 16 16 46 18 18 47 22 22 48 20 20 49 23 23 50 23 23 51 20 20 52 21 21 53 24 24 54 25 25 55 26 26 56 26 26 57 25 25 58 27 27 59 24 24 60 28 28 61 25 25 62 25 25 63 28 28 64 29 29 65 28 28 66 30 30 67 29 29 68 29 29 69 30 30 70 31 31 71 31 32 72 1 33 73 29 34 74 29 34 75 1 33 76 0 35 77 3 36 78 23 37 79 2 38 80 2 38 81 23 37 82 21 39 83 29 34 84 0 35 85 25 40 86 25 40 87 0 35 88 4 41 89 2 38 90 21 39 91 5 42 92 5 42 93 21 39 94 18 43 95 25 40 96 4 41 97 27 44 98 27 44 99 4 41 100 6 45 101 5 42 102 18 43 103 7 46 104 7 46 105 18 43 106 19 47 107 26 48 108 9 49 109 24 50 110 24 50 111 9 49 112 8 51 113 11 52 114 17 53 115 10 54 116 10 54 117 17 53 118 16 55 119 24 50 120 8 51 121 28 56 122 28 56 123 8 51 124 12 57 125 10 54 126 16 55 127 13 58 128 13 58 129 16 55 130 20 59 131 28 56 132 12 57 133 30 60 134 30 60 135 12 57 136 14 61 137 13 58 138 20 59 139 15 62 140 15 62 141 20 59 142 22 63 143</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="DShape" name="DShape">
+      <mesh>
+        <source id="DShape-positions" name="position">
+          <float_array id="DShape-positions-array" count="72">8.13679 3.57518 -0.230506 8.13679 3.57518 0.012651 7.84431 3.57518 -0.230506 7.84431 3.57518 0.012651 7.83452 3.58496 0.012651 7.83452 3.87744 0.012651 7.83452 3.58496 -0.230506 7.83452 3.87744 -0.230506 7.84431 3.87744 -0.242662 8.13679 3.87744 -0.242662 7.84431 3.58496 -0.242662 8.13679 3.58496 -0.242662 8.13679 3.58496 0.024807 8.13679 3.87744 0.024807 7.84431 3.58496 0.024807 7.84431 3.87744 0.024807 7.84431 3.88723 0.012651 8.13679 3.88723 0.012651 7.84431 3.88723 -0.230506 8.13679 3.88723 -0.230506 8.14657 3.87744 0.012651 8.14657 3.58496 0.012651 8.14657 3.87744 -0.230506 8.14657 3.58496 -0.230506</float_array>
+          <technique_common>
+            <accessor source="#DShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DShape-normals" name="normal">
+          <float_array id="DShape-normals-array" count="288">0 -1 0 0 -1 0.000000 0 -1 0.000000 0 -1 0.000001 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 0 -1 0 0 -1 0 0 -1 -0.000000 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0.000001 0 1 0.000000 0 1 0.000000 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -0.779116 -0.62688 0 -0.779113 -0.626884 0 -0.779113 -0.626884 0 -0.779109 -0.626888 -0.707021 -0.707192 0 -0.707039 -0.707175 0 -0.707039 -0.707175 0 -0.707057 -0.707157 0 -0.779052 0 -0.626959 -0.779052 0 -0.626959 -0.779052 0 -0.626959 -0.779052 0 -0.626959 0 -0.779117 0.626878 0 -0.779123 0.626872 0 -0.779123 0.626872 0 -0.779128 0.626865 -0.779068 0 0.62694 -0.779068 0 0.62694 -0.779068 0 0.62694 -0.779068 0 0.62694 0 0.779143 -0.626846 0 0.779117 -0.626879 0 0.779117 -0.626879 0 0.77909 -0.626912 -0.707101 0.707113 0.000001 -0.707048 0.707166 0.000000 -0.707048 0.707166 0.000000 -0.706995 0.707219 0 0 0.779093 0.626908 0 0.779106 0.626892 0 0.779106 0.626892 0 0.779119 0.626876 0.779067 0 -0.626941 0.779067 0 -0.626941 0.779067 0 -0.626941 0.779067 0 -0.626941 0.70703 0.707184 0 0.707012 0.707201 -0.000001 0.707012 0.707201 -0.000001 0.706995 0.707219 -0.000002 0.779038 0 0.626976 0.779038 0 0.626977 0.779038 0 0.626977 0.779037 0 0.626977 0.70695 -0.707263 -0.000003 0.707004 -0.70721 -0.000001 0.707004 -0.70721 -0.000001 0.707057 -0.707157 0 -0.614556 -0.614553 -0.494616 -0.614556 -0.614553 -0.494616 -0.614556 -0.614553 -0.494616 -0.614539 -0.614613 0.494564 -0.614539 -0.614613 0.494564 -0.614539 -0.614613 0.494564 -0.614566 0.614577 -0.494574 -0.614566 0.614577 -0.494574 -0.614566 0.614577 -0.494574 -0.614548 0.614607 0.494559 -0.614548 0.614607 0.494559 -0.614548 0.614607 0.494559 0.61448 0.614718 -0.494507 0.61448 0.614718 -0.494507 0.61448 0.614718 -0.494507 0.614509 0.614645 0.494561 0.614509 0.614645 0.494561 0.614509 0.614645 0.494561 0.614482 -0.614735 -0.494482 0.614482 -0.614735 -0.494482 0.614482 -0.614735 -0.494482 0.614486 -0.614637 0.494598 0.614486 -0.614637 0.494598 0.614486 -0.614637 0.494598</float_array>
+          <technique_common>
+            <accessor source="#DShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="DShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#DShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="DShape-vertices">
+          <input semantic="POSITION" source="#DShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#DShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#DShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#DShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="HShape" name="HShape">
+      <mesh>
+        <source id="HShape-positions" name="position">
+          <float_array id="HShape-positions-array" count="72">16.0029 -0.121061 -0.230506 16.0029 -0.121061 0.012651 15.5635 -0.121061 -0.230506 15.5635 -0.121061 0.012651 15.5523 -0.112677 0.012651 15.5523 0.150941 0.012651 15.5523 -0.112677 -0.230506 15.5523 0.150941 -0.230506 15.5635 0.150941 -0.242661 16.0029 0.150941 -0.242661 15.5635 -0.112677 -0.242661 16.0029 -0.112677 -0.242661 16.0029 -0.112677 0.024807 16.0029 0.150941 0.024807 15.5635 -0.112677 0.024807 15.5635 0.150941 0.024807 15.5635 0.159325 0.012651 16.0029 0.159325 0.012651 15.5635 0.159325 -0.230506 16.0029 0.159325 -0.230506 16.0141 0.150941 0.012651 16.0141 -0.112677 0.012651 16.0141 0.150941 -0.230506 16.0141 -0.112677 -0.230506</float_array>
+          <technique_common>
+            <accessor source="#HShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="HShape-normals" name="normal">
+          <float_array id="HShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0 -0.823169 -0.567796 0 -0.823168 -0.567798 0 -0.823168 -0.567798 0 -0.823167 -0.567799 -0.601133 -0.799149 0 -0.601133 -0.799149 0.000001 -0.601133 -0.799149 0.000001 -0.601133 -0.799149 0.000002 -0.737005 0 -0.675887 -0.737005 0 -0.675887 -0.737005 0 -0.675887 -0.737005 0 -0.675887 0 -0.823168 0.567797 0 -0.823168 0.567798 0 -0.823168 0.567798 0 -0.823168 0.567798 -0.737034 0 0.675856 -0.737034 0 0.675856 -0.737034 0 0.675856 -0.737034 0 0.675855 0 0.823166 -0.5678 0 0.823167 -0.567799 0 0.823167 -0.567799 0 0.823168 -0.567798 -0.601135 0.799148 0.000002 -0.601135 0.799148 0.000001 -0.601135 0.799148 0.000001 -0.601135 0.799148 0 0 0.823166 0.5678 0 0.823167 0.5678 0 0.823167 0.5678 0 0.823167 0.5678 0.73548 0 -0.677547 0.73548 0 -0.677547 0.73548 0 -0.677547 0.73548 0 -0.677547 0.599382 0.800463 0 0.599349 0.800488 0 0.599349 0.800488 0 0.599315 0.800513 0 0.73548 0 0.677546 0.73548 0 0.677546 0.73548 0 0.677546 0.73548 0 0.677546 0.599313 -0.800515 0 0.599347 -0.800489 0 0.599347 -0.800489 0 0.59938 -0.800464 0 -0.5264 -0.699901 -0.482745 -0.5264 -0.699901 -0.482745 -0.5264 -0.699901 -0.482745 -0.526409 -0.699915 0.482714 -0.526409 -0.699915 0.482714 -0.526409 -0.699915 0.482714 -0.5264 0.699899 -0.482746 -0.5264 0.699899 -0.482746 -0.5264 0.699899 -0.482746 -0.526411 0.699913 0.482715 -0.526411 0.699913 0.482715 -0.526411 0.699913 0.482715 0.524658 0.700804 -0.48333 0.524658 0.700804 -0.48333 0.524658 0.700804 -0.48333 0.524658 0.700804 0.48333 0.524658 0.700804 0.48333 0.524658 0.700804 0.48333 0.524657 -0.700805 -0.483329 0.524657 -0.700805 -0.483329 0.524657 -0.700805 -0.483329 0.524656 -0.700806 0.48333 0.524656 -0.700806 0.48333 0.524656 -0.700806 0.48333</float_array>
+          <technique_common>
+            <accessor source="#HShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="HShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="HShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#HShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="HShape-vertices">
+          <input semantic="POSITION" source="#HShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#HShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#HShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#HShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="GShape" name="GShape">
+      <mesh>
+        <source id="GShape-positions" name="position">
+          <float_array id="GShape-positions-array" count="72">12.2051 -0.128457 -0.230506 12.2051 -0.128457 0.012651 11.9126 -0.128457 -0.230506 11.9126 -0.128457 0.012651 11.9028 -0.118674 0.012651 11.9028 0.173808 0.012651 11.9028 -0.118674 -0.230506 11.9028 0.173808 -0.230506 11.9126 0.173808 -0.242662 12.2051 0.173808 -0.242661 11.9126 -0.118674 -0.242662 12.2051 -0.118674 -0.242661 12.2051 -0.118674 0.024807 12.2051 0.173808 0.024807 11.9126 -0.118674 0.024807 11.9126 0.173808 0.024807 11.9126 0.183591 0.012651 12.2051 0.183591 0.012651 11.9126 0.183591 -0.230506 12.2051 0.183591 -0.230506 12.2149 0.173808 0.012651 12.2149 -0.118674 0.012651 12.2149 0.173808 -0.230506 12.2149 -0.118674 -0.230506</float_array>
+          <technique_common>
+            <accessor source="#GShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="GShape-normals" name="normal">
+          <float_array id="GShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0.000001 0 -1 0.000001 0 -1 0.000001 0 -1 0.000001 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0.000001 -0.779059 -0.626951 0.000001 -0.77906 -0.62695 0.000001 -0.77906 -0.62695 0.000001 -0.779061 -0.626949 -0.707131 -0.707083 0 -0.707166 -0.707047 0.000001 -0.707166 -0.707047 0.000001 -0.707202 -0.707012 0.000002 -0.7791 0 -0.626899 -0.7791 0 -0.626899 -0.7791 0 -0.626899 -0.7791 0 -0.626899 0 -0.779045 0.626968 0.000000 -0.779053 0.626958 0.000000 -0.779053 0.626958 0.000001 -0.779061 0.626948 -0.779118 0 0.626877 -0.779118 0 0.626877 -0.779118 0 0.626877 -0.779118 0 0.626877 0.000001 0.779059 -0.626951 0.000001 0.77906 -0.62695 0.000001 0.77906 -0.62695 0.000001 0.77906 -0.626949 -0.707201 0.707012 0.000002 -0.707166 0.707048 0.000001 -0.707166 0.707048 0.000001 -0.70713 0.707083 0 0.000001 0.779045 0.626968 0.000000 0.779053 0.626958 0.000000 0.779053 0.626958 0 0.779062 0.626947 0.77913 0 -0.626862 0.77913 0 -0.626862 0.77913 0 -0.626862 0.77913 0 -0.626862 0.707129 0.707085 0 0.707164 0.707049 -0.000001 0.707164 0.707049 -0.000001 0.7072 0.707014 -0.000002 0.779101 0 0.626899 0.779101 0 0.626899 0.779101 0 0.626899 0.7791 0 0.626899 0.707129 -0.707084 -0.000002 0.707165 -0.707049 -0.000001 0.707165 -0.707049 -0.000001 0.7072 -0.707013 0 -0.614642 -0.614505 -0.494569 -0.614642 -0.614505 -0.494569 -0.614642 -0.614505 -0.494569 -0.614642 -0.614529 0.49454 -0.614642 -0.614529 0.49454 -0.614642 -0.614529 0.49454 -0.614641 0.614506 -0.49457 -0.614641 0.614506 -0.49457 -0.614641 0.614506 -0.49457 -0.614642 0.61453 0.494539 -0.614642 0.61453 0.494539 -0.614642 0.61453 0.494539 0.614656 0.614521 -0.494532 0.614656 0.614521 -0.494532 0.614656 0.614521 -0.494532 0.614642 0.614506 0.494569 0.614642 0.614506 0.494569 0.614642 0.614506 0.494569 0.614657 -0.61452 -0.494532 0.614657 -0.61452 -0.494532 0.614657 -0.61452 -0.494532 0.614642 -0.614505 0.494569 0.614642 -0.614505 0.494569 0.614642 -0.614505 0.494569</float_array>
+          <technique_common>
+            <accessor source="#GShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="GShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="GShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#GShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="GShape-vertices">
+          <input semantic="POSITION" source="#GShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#GShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#GShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#GShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="FShape" name="FShape">
+      <mesh>
+        <source id="FShape-positions" name="position">
+          <float_array id="FShape-positions-array" count="72">12.1731 2.52704 -0.230506 12.1731 2.52704 0.012651 11.8388 2.52704 -0.230506 11.8388 2.52704 0.012651 11.8277 2.53822 0.012651 11.8277 2.87248 0.012651 11.8277 2.53822 -0.230506 11.8277 2.87248 -0.230506 11.8388 2.87248 -0.242662 12.1731 2.87248 -0.242661 11.8388 2.53822 -0.242662 12.1731 2.53822 -0.242661 12.1731 2.53822 0.024807 12.1731 2.87248 0.024807 11.8388 2.53822 0.024807 11.8388 2.87248 0.024807 11.8388 2.88366 0.012651 12.1731 2.88366 0.012651 11.8388 2.88366 -0.230506 12.1731 2.88366 -0.230506 12.1843 2.87248 0.012651 12.1843 2.53822 0.012651 12.1843 2.87248 -0.230506 12.1843 2.53822 -0.230506</float_array>
+          <technique_common>
+            <accessor source="#FShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FShape-normals" name="normal">
+          <float_array id="FShape-normals-array" count="288">0 -1 0.000001 0 -1 0.000000 0 -1 0.000000 0 -1 -0.000000 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0.000001 0 -1 0.000001 0 -1 0.000001 0 -1 0.000001 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 -0.000000 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0.000000 -0.735947 -0.677039 0.000000 -0.735954 -0.677032 0.000000 -0.735954 -0.677032 0.000001 -0.735961 -0.677024 -0.707064 -0.70715 0 -0.707126 -0.707088 0.000001 -0.707126 -0.707088 0.000001 -0.707188 -0.707026 0.000002 -0.73594 0 -0.677047 -0.73594 0 -0.677047 -0.73594 0 -0.677047 -0.73594 0 -0.677047 0 -0.735956 0.677029 0.000000 -0.735953 0.677032 0.000000 -0.735953 0.677032 0.000000 -0.73595 0.677036 -0.735956 0 0.67703 -0.735956 0 0.67703 -0.735956 0 0.67703 -0.735956 0 0.67703 0.000000 0.735948 -0.677038 0.000000 0.735951 -0.677034 0.000000 0.735951 -0.677034 0.000001 0.735955 -0.67703 -0.707195 0.707018 0.000004 -0.707133 0.70708 0.000002 -0.707133 0.70708 0.000002 -0.707071 0.707142 0 0.000000 0.735945 0.677041 0.000000 0.735945 0.677041 0.000000 0.735945 0.677041 0 0.735945 0.677041 0.735969 0 -0.677016 0.735969 0 -0.677016 0.735969 0 -0.677016 0.735969 0 -0.677016 0.70707 0.707144 0 0.707132 0.707082 -0.000001 0.707132 0.707082 -0.000001 0.707194 0.70702 -0.000003 0.73594 0 0.677047 0.73594 0 0.677047 0.73594 0 0.677047 0.73594 0 0.677047 0.707186 -0.707027 -0.000003 0.707124 -0.707089 -0.000001 0.707124 -0.707089 -0.000001 0.707062 -0.707151 0 -0.59277 -0.592646 -0.545338 -0.59277 -0.592646 -0.545338 -0.59277 -0.592646 -0.545338 -0.592771 -0.59267 0.545312 -0.592771 -0.59267 0.545312 -0.592771 -0.59267 0.545312 -0.592768 0.592631 -0.545357 -0.592768 0.592631 -0.545357 -0.592768 0.592631 -0.545357 -0.592784 0.592671 0.545296 -0.592784 0.592671 0.545296 -0.592784 0.592671 0.545296 0.592753 0.592747 -0.545247 0.592753 0.592747 -0.545247 0.592753 0.592747 -0.545247 0.592724 0.592718 0.54531 0.592724 0.592718 0.54531 0.592724 0.592718 0.54531 0.59274 -0.592746 -0.545262 0.59274 -0.592746 -0.545262 0.59274 -0.592746 -0.545262 0.592724 -0.592731 0.545297 0.592724 -0.592731 0.545297 0.592724 -0.592731 0.545297</float_array>
+          <technique_common>
+            <accessor source="#FShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="FShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#FShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="FShape-vertices">
+          <input semantic="POSITION" source="#FShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#FShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#FShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#FShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="EFShape" name="EFShape">
+      <mesh>
+        <source id="EFShape-positions" name="position">
+          <float_array id="EFShape-positions-array" count="120">9.00511 0.575215 0.001285 7.98629 -0.080995 0.001285 9.00511 0.575215 -0.21914 7.98629 -0.080995 -0.21914 10.0239 1.23143 0.001285 10.0239 1.23143 -0.21914 11.0428 1.88764 0.001285 11.0428 1.88764 -0.219141 12.0616 2.54385 0.001285 12.0616 2.54385 -0.219141 10.8889 2.12652 0.001285 11.9077 2.78273 0.001285 10.8889 2.12652 -0.219141 11.9077 2.78273 -0.219141 9.87009 1.47031 0.001285 9.87009 1.47031 -0.21914 8.85126 0.814095 0.001285 8.85126 0.814095 -0.21914 7.83243 0.157882 0.001285 7.83243 0.157882 -0.21914 10.8959 2.11566 -0.230159 11.9147 2.77187 -0.230159 11.0358 1.8985 -0.230159 12.0546 2.55471 -0.230159 9.87708 1.45945 -0.230159 10.017 1.24229 -0.230159 8.85825 0.803241 -0.230159 8.99812 0.586074 -0.230159 7.83942 0.147026 -0.230159 7.97929 -0.070139 -0.230159 11.9147 2.77187 0.012304 10.8959 2.11566 0.012304 12.0546 2.55471 0.012304 11.0358 1.8985 0.012304 9.87708 1.45945 0.012304 10.017 1.24229 0.012304 8.85825 0.803241 0.012304 8.99812 0.586074 0.012304 7.83942 0.147026 0.012304 7.97929 -0.070139 0.012304</float_array>
+          <technique_common>
+            <accessor source="#EFShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EFShape-normals" name="normal">
+          <float_array id="EFShape-normals-array" count="264">0.541488 -0.840708 0.000000 0.541486 -0.84071 0 0.541487 -0.840709 0 0.541486 -0.84071 0 0.541488 -0.840708 0.000001 0.541489 -0.840708 0.000001 0.541487 -0.840709 0.000000 0.541487 -0.840709 0.000000 0.541486 -0.84071 0.000002 0.541487 -0.840709 0.000001 -0.541487 0.840709 -0.000000 -0.541489 0.840708 -0.000000 -0.541488 0.840708 -0.000000 -0.541488 0.840708 -0.000001 -0.541487 0.840709 -0.000001 -0.541487 0.840709 -0.000001 -0.541488 0.840709 -0.000000 -0.541488 0.840709 -0.000000 -0.541487 0.840709 -0.000002 -0.541488 0.840708 -0.000001 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.000001 -0.000001 1 0.000000 -0.000000 1 0.000000 -0.000000 1 0 0 1 0 0 1 0 -0.000000 1 0.000000 -0.000000 1 0.000000 -0.000000 1 0.000000 -0.000000 1 0 0 1 -0.840726 -0.541461 0.000001 -0.84072 -0.541469 0.000001 -0.840717 -0.541475 0.000001 -0.840716 -0.541477 0.000011 -0.840717 -0.541475 0.00001 -0.840716 -0.541477 0.000009 -0.840725 -0.541462 0 -0.840717 -0.541474 -0.000000 0.351496 -0.545729 0.760678 0.351471 -0.545692 0.760716 0.351463 -0.54568 0.760728 0.351474 -0.545695 0.760712 0.3515 -0.545736 0.760671 0.351525 -0.545774 0.760632 0.351489 -0.545722 -0.760686 0.351474 -0.545697 -0.760711 0.351469 -0.545688 -0.76072 0.351478 -0.5457 -0.760707 0.351496 -0.545729 -0.760678 0.351517 -0.545763 -0.760644 0.351525 -0.545773 0.760633 0.351483 -0.545708 0.760698 0.351521 -0.545769 -0.760637 0.351485 -0.545711 -0.760696 0.351464 -0.545678 0.760729 0.351402 -0.545584 0.760825 0.351466 -0.545681 -0.760726 0.351405 -0.545581 -0.760825 -0.35148 0.545706 0.760702 -0.351506 0.545745 0.760661 -0.351512 0.545754 0.760652 -0.351524 0.545773 0.760633 -0.351472 0.545691 -0.760716 -0.351493 0.545725 -0.760682 -0.351499 0.545735 -0.760672 -0.351516 0.54576 -0.760646 -0.351519 0.545766 0.760641 -0.351517 0.545764 0.760643 -0.351518 0.545765 -0.760642 -0.351519 0.545765 -0.760641 -0.35152 0.545766 0.76064 -0.35151 0.545751 0.760656 -0.351516 0.545761 -0.760645 -0.351509 0.545748 -0.760658 -0.351505 0.545742 0.760664 -0.351487 0.545715 0.760692 -0.351507 0.545745 -0.760661 -0.351499 0.545733 -0.760673</float_array>
+          <technique_common>
+            <accessor source="#EFShape-normals-array" count="88" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EFShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="EFShape-polySurface28Shape-map1-array" count="420">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 1 0 0 1 0.999998 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0.041853 0.739297 1 0 0 1 0 0.182596 1 0 0.120864 1 0.942191 0 1 0.034109 0 1 0 0.965885 1 0 0.057809 1 0.958147 0.260728 0 1 1 0 0.87914 0 1 0.817399 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#EFShape-polySurface28Shape-map1-array" count="210" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="EFShape-vertices">
+          <input semantic="POSITION" source="#EFShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="70">
+          <input semantic="VERTEX" source="#EFShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#EFShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#EFShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 6 6 19 9 9 20 9 9 21 6 6 22 7 7 23 10 10 24 11 11 25 12 12 26 12 12 27 11 11 28 13 13 29 14 14 30 10 10 31 15 15 32 15 15 33 10 10 34 12 12 35 16 16 36 14 14 37 17 17 38 17 17 39 14 14 40 15 15 41 18 18 42 16 16 43 19 19 44 19 19 45 16 16 46 17 17 47 20 20 48 21 21 49 22 22 50 22 22 51 21 21 52 23 23 53 24 24 54 20 20 55 25 25 56 25 25 57 20 20 58 22 22 59 26 26 60 24 24 61 27 27 62 27 27 63 24 24 64 25 25 65 28 28 66 26 26 67 29 29 68 29 29 69 26 26 70 27 27 71 30 30 72 31 31 73 32 32 74 32 32 75 31 31 76 33 33 77 31 31 78 34 34 79 33 33 80 33 33 81 34 34 82 35 35 83 34 34 84 36 36 85 35 35 86 35 35 87 36 36 88 37 37 89 36 36 90 38 38 91 37 37 92 37 37 93 38 38 94 39 39 95 18 40 96 19 41 97 38 42 98 38 42 99 19 41 100 39 43 101 19 41 102 28 44 103 39 43 104 39 43 105 28 44 106 1 45 107 3 46 108 1 45 109 29 47 110 28 44 111 29 47 112 1 45 113 39 48 114 1 49 115 37 50 116 37 50 117 1 49 118 0 51 119 37 50 120 0 51 121 35 52 122 35 52 123 0 51 124 4 53 125 3 54 126 29 55 127 2 56 128 2 56 129 29 55 130 27 57 131 2 56 132 27 57 133 5 58 134 5 58 135 27 57 136 25 59 137 35 52 138 4 53 139 33 60 140 33 60 141 4 53 142 6 61 143 5 58 144 25 59 145 7 62 146 7 62 147 25 59 148 22 63 149 33 60 150 6 61 151 32 64 152 32 64 153 6 61 154 8 65 155 7 62 156 22 63 157 9 66 158 9 66 159 22 63 160 23 67 161 30 68 162 11 69 163 31 70 164 31 70 165 11 69 166 10 71 167 13 72 168 21 73 169 12 74 170 12 74 171 21 73 172 20 75 173 31 70 174 10 71 175 34 76 176 34 76 177 10 71 178 14 77 179 12 74 180 20 75 181 15 78 182 15 78 183 20 75 184 24 79 185 34 76 186 14 77 187 36 80 188 36 80 189 14 77 190 16 81 191 15 78 192 24 79 193 17 82 194 17 82 195 24 79 196 26 83 197 36 80 198 16 81 199 38 84 200 38 84 201 16 81 202 18 85 203 17 82 204 26 83 205 19 86 206 19 86 207 26 83 208 28 87 209</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="FGShape" name="FGShape">
+      <mesh>
+        <source id="FGShape-positions" name="position">
+          <float_array id="FGShape-positions-array" count="72">12.197 1.31672 0.003457 12.197 -0.02755 0.003457 12.197 1.31672 -0.221312 12.197 -0.02755 -0.221312 12.197 2.76214 0.003457 12.197 2.76214 -0.221312 11.9128 1.31672 0.003457 11.9128 2.76214 0.003457 11.9128 1.31672 -0.221312 11.9128 2.76214 -0.221312 11.9128 -0.02755 0.003457 11.9128 -0.02755 -0.221312 11.9257 1.31672 -0.232548 11.9257 2.76214 -0.232548 12.184 1.31672 -0.232548 12.184 2.76214 -0.232548 11.9257 -0.02755 -0.232548 12.184 -0.02755 -0.232548 11.9257 2.76214 0.014693 11.9257 1.31672 0.014693 12.184 2.76214 0.014693 12.184 1.31672 0.014693 11.9257 -0.02755 0.014693 12.184 -0.02755 0.014693</float_array>
+          <technique_common>
+            <accessor source="#FGShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FGShape-normals" name="normal">
+          <float_array id="FGShape-normals-array" count="144">1 0 0.000004 1 0 0.000004 1 0 0.000004 1 0 0.000004 1 0 0.000004 1 0 0.000004 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0.656463 0 0.754358 0.656463 0 0.754358 0.656463 0 0.754358 0.656463 0 0.754358 0.656435 0 -0.754382 0.656435 0 -0.754382 0.656435 0 -0.754382 0.656436 0 -0.754382 0.656463 0 0.754358 0.656463 0 0.754358 0.656436 0 -0.754382 0.656436 0 -0.754381 -0.656463 0 0.754358 -0.656463 0 0.754358 -0.656463 -0.000001 0.754358 -0.656408 -0.000001 0.754406 -0.656435 0 -0.754383 -0.656435 0 -0.754383 -0.656435 0 -0.754383 -0.656389 -0.000000 -0.754423 -0.65638 -0.000001 0.75443 -0.656297 0 0.754502 -0.656366 -0.000001 -0.754443 -0.656298 -0.000002 -0.754502</float_array>
+          <technique_common>
+            <accessor source="#FGShape-normals-array" count="48" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FGShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="FGShape-polySurface28Shape-map1-array" count="192">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#FGShape-polySurface28Shape-map1-array" count="96" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="FGShape-vertices">
+          <input semantic="POSITION" source="#FGShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="32">
+          <input semantic="VERTEX" source="#FGShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#FGShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#FGShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 7 7 13 8 8 14 8 8 15 7 7 16 9 9 17 10 10 18 6 6 19 11 11 20 11 11 21 6 6 22 8 8 23 12 12 24 13 13 25 14 14 26 14 14 27 13 13 28 15 15 29 16 16 30 12 12 31 17 17 32 17 17 33 12 12 34 14 14 35 18 18 36 19 19 37 20 20 38 20 20 39 19 19 40 21 21 41 19 19 42 22 22 43 21 21 44 21 21 45 22 22 46 23 23 47 23 24 48 1 25 49 21 26 50 21 26 51 1 25 52 0 27 53 3 28 54 17 29 55 2 30 56 2 30 57 17 29 58 14 31 59 21 26 60 0 27 61 20 32 62 20 32 63 0 27 64 4 33 65 2 30 66 14 31 67 5 34 68 5 34 69 14 31 70 15 35 71 18 36 72 7 37 73 19 38 74 19 38 75 7 37 76 6 39 77 9 40 78 13 41 79 8 42 80 8 42 81 13 41 82 12 43 83 19 38 84 6 39 85 22 44 86 22 44 87 6 39 88 10 45 89 8 42 90 12 43 91 11 46 92 11 46 93 12 43 94 16 47 95</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="FHShape" name="FHShape">
+      <mesh>
+        <source id="FHShape-positions" name="position">
+          <float_array id="FHShape-positions-array" count="120">15.0442 0.835058 0.001285 16.0077 0.151992 0.001285 15.0442 0.835058 -0.21914 16.0077 0.151992 -0.21914 14.0806 1.51812 0.001285 14.0806 1.51812 -0.21914 13.1172 2.20118 0.001285 13.1172 2.20118 -0.21914 12.1536 2.88424 0.001285 12.1536 2.88424 -0.21914 12.9528 1.96938 0.001285 11.9893 2.65245 0.001285 12.9528 1.96938 -0.21914 11.9893 2.65245 -0.219141 13.9163 1.28632 0.001285 13.9163 1.28632 -0.21914 14.8799 0.603259 0.001285 14.8799 0.603259 -0.21914 15.8434 -0.079805 0.001285 15.8434 -0.079805 -0.21914 12.9603 1.97992 -0.23016 11.9968 2.66298 -0.230159 13.1097 2.19065 -0.23016 12.1462 2.87371 -0.23016 13.9238 1.29686 -0.23016 14.0732 1.50759 -0.23016 14.8873 0.613791 -0.23016 15.0367 0.824521 -0.23016 15.8508 -0.069271 -0.23016 16.0002 0.141458 -0.23016 11.9968 2.66298 0.012304 12.9603 1.97992 0.012304 12.1462 2.87371 0.012304 13.1097 2.19065 0.012304 13.9238 1.29686 0.012304 14.0732 1.50759 0.012304 14.8873 0.613791 0.012304 15.0367 0.824521 0.012304 15.8508 -0.069271 0.012304 16.0002 0.141458 0.012304</float_array>
+          <technique_common>
+            <accessor source="#FHShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FHShape-normals" name="normal">
+          <float_array id="FHShape-normals-array" count="264">0.578335 0.815799 0 0.578351 0.815788 0 0.578343 0.815794 0 0.578351 0.815788 0 0.578343 0.815794 0 0.578335 0.815799 0 0.578342 0.815794 0 0.578346 0.815791 0 0.578337 0.815798 0 0.578337 0.815798 0 -0.578347 -0.815791 0 -0.578341 -0.815795 0 -0.578344 -0.815793 0 -0.578341 -0.815795 0 -0.578335 -0.8158 0 -0.578343 -0.815794 0 -0.578343 -0.815794 0 -0.578335 -0.815799 0 -0.57835 -0.815789 0 -0.578351 -0.815788 0 0 0 -1 -0.000000 -0.000000 -1 -0.000000 -0.000000 -1 -0.000001 -0.000001 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0.000001 0.000001 1 0.000000 0.000000 1 0.000000 0.000000 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0.815877 -0.578226 0 0.815816 -0.578312 -0.00002 0.815829 -0.578293 0.000005 0.815801 -0.578333 -0.000057 0.815801 -0.578333 -0.000057 0.815847 -0.578268 -0.000032 0.815927 -0.578155 0 0.815854 -0.578257 0.000005 0.375438 0.529574 0.760656 0.375423 0.52955 0.76068 0.375414 0.529547 0.760687 0.375423 0.529569 0.760667 0.375447 0.529606 0.760629 0.37545 0.529601 0.760631 0.375458 0.529599 -0.760629 0.375441 0.529577 -0.760653 0.37543 0.529573 -0.760661 0.375441 0.529596 -0.760639 0.375466 0.52963 -0.760603 0.375474 0.529633 -0.760597 0.375427 0.529562 0.76067 0.375408 0.52954 0.760695 0.375455 0.529602 -0.760628 0.375434 0.529579 -0.760654 0.375408 0.529546 0.76069 0.375424 0.52957 0.760666 0.375434 0.529583 -0.760652 0.375438 0.529588 -0.760646 -0.375444 -0.529591 0.760642 -0.375457 -0.52961 0.760621 -0.375464 -0.529618 0.760613 -0.375455 -0.529601 0.760629 -0.375413 -0.529551 -0.760684 -0.375451 -0.529603 -0.76063 -0.375465 -0.529618 -0.760612 -0.375468 -0.529619 -0.76061 -0.375432 -0.529573 0.76066 -0.375429 -0.529579 0.760657 -0.375441 -0.529588 -0.760645 -0.375437 -0.529593 -0.760643 -0.375452 -0.529611 0.760623 -0.375465 -0.529621 0.76061 -0.375461 -0.529624 -0.76061 -0.375475 -0.529634 -0.760596 -0.375462 -0.529607 0.760622 -0.37544 -0.529574 0.760655 -0.375472 -0.52962 -0.760607 -0.375449 -0.52959 -0.760639</float_array>
+          <technique_common>
+            <accessor source="#FHShape-normals-array" count="88" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="FHShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="FHShape-polySurface28Shape-map1-array" count="420">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 1 0 0 1 0.999998 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0.041853 0.739297 1 0 0 1 0 0.182596 1 0 0.120864 1 0.942191 0 1 0.034109 0 1 0 0.965885 1 0 0.057809 1 0.958147 0.260728 0 1 1 0 0.87914 0 1 0.817399 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#FHShape-polySurface28Shape-map1-array" count="210" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="FHShape-vertices">
+          <input semantic="POSITION" source="#FHShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="70">
+          <input semantic="VERTEX" source="#FHShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#FHShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#FHShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 6 6 19 9 9 20 9 9 21 6 6 22 7 7 23 10 10 24 11 11 25 12 12 26 12 12 27 11 11 28 13 13 29 14 14 30 10 10 31 15 15 32 15 15 33 10 10 34 12 12 35 16 16 36 14 14 37 17 17 38 17 17 39 14 14 40 15 15 41 18 18 42 16 16 43 19 19 44 19 19 45 16 16 46 17 17 47 20 20 48 21 21 49 22 22 50 22 22 51 21 21 52 23 23 53 24 24 54 20 20 55 25 25 56 25 25 57 20 20 58 22 22 59 26 26 60 24 24 61 27 27 62 27 27 63 24 24 64 25 25 65 28 28 66 26 26 67 29 29 68 29 29 69 26 26 70 27 27 71 30 30 72 31 31 73 32 32 74 32 32 75 31 31 76 33 33 77 31 31 78 34 34 79 33 33 80 33 33 81 34 34 82 35 35 83 34 34 84 36 36 85 35 35 86 35 35 87 36 36 88 37 37 89 36 36 90 38 38 91 37 37 92 37 37 93 38 38 94 39 39 95 18 40 96 19 41 97 38 42 98 38 42 99 19 41 100 39 43 101 19 41 102 28 44 103 39 43 104 39 43 105 28 44 106 1 45 107 3 46 108 1 45 109 29 47 110 28 44 111 29 47 112 1 45 113 39 48 114 1 49 115 37 50 116 37 50 117 1 49 118 0 51 119 37 50 120 0 51 121 35 52 122 35 52 123 0 51 124 4 53 125 3 54 126 29 55 127 2 56 128 2 56 129 29 55 130 27 57 131 2 56 132 27 57 133 5 58 134 5 58 135 27 57 136 25 59 137 35 52 138 4 53 139 33 60 140 33 60 141 4 53 142 6 61 143 5 58 144 25 59 145 7 62 146 7 62 147 25 59 148 22 63 149 33 60 150 6 61 151 32 64 152 32 64 153 6 61 154 8 65 155 7 62 156 22 63 157 9 66 158 9 66 159 22 63 160 23 67 161 30 68 162 11 69 163 31 70 164 31 70 165 11 69 166 10 71 167 13 72 168 21 73 169 12 74 170 12 74 171 21 73 172 20 75 173 31 70 174 10 71 175 34 76 176 34 76 177 10 71 178 14 77 179 12 74 180 20 75 181 15 78 182 15 78 183 20 75 184 24 79 185 34 76 186 14 77 187 36 80 188 36 80 189 14 77 190 16 81 191 15 78 192 24 79 193 17 82 194 17 82 195 24 79 196 26 83 197 36 80 198 16 81 199 38 84 200 38 84 201 16 81 202 18 85 203 17 82 204 26 83 205 19 86 206 19 86 207 26 83 208 28 87 209</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="DFShape" name="DFShape">
+      <mesh>
+        <source id="DFShape-positions" name="position">
+          <float_array id="DFShape-positions-array" count="96">10.7758 3.21653 0.001285 12.1605 2.88397 0.001285 10.7758 3.21653 -0.219141 12.1605 2.88397 -0.21914 9.39118 3.54909 0.001285 9.39118 3.54909 -0.21914 8.11627 3.88086 0.001285 8.11627 3.88086 -0.21914 9.32482 3.27281 0.001285 8.04992 3.60458 0.001285 9.32482 3.27281 -0.21914 8.04992 3.60458 -0.21914 10.7095 2.94025 0.001285 10.7095 2.94025 -0.219141 12.0941 2.60769 0.001285 12.0941 2.60769 -0.219141 9.32784 3.28537 -0.230159 8.05293 3.61714 -0.230159 9.38817 3.53654 -0.230159 8.11326 3.86831 -0.230159 10.7125 2.95281 -0.230159 10.7728 3.20398 -0.230159 12.0971 2.62025 -0.230159 12.1574 2.87142 -0.23016 9.32784 3.28537 0.012304 9.38817 3.53654 0.012304 8.05293 3.61714 0.012304 8.11326 3.86831 0.012304 10.7125 2.95281 0.012304 10.7728 3.20398 0.012304 12.0971 2.62025 0.012304 12.1574 2.87142 0.012304</float_array>
+          <technique_common>
+            <accessor source="#DFShape-positions-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DFShape-normals" name="normal">
+          <float_array id="DFShape-normals-array" count="192">0.233538 0.972348 0 0.233537 0.972348 0 0.233538 0.972348 0 0.233537 0.972348 0 0.245748 0.969334 0 0.239648 0.97086 0 0.251839 0.967769 0 0.251839 0.967769 0 -0.239649 -0.97086 0 -0.251843 -0.967768 0 -0.245751 -0.969333 0 -0.251843 -0.967768 0 -0.233538 -0.972348 -0.000000 -0.233538 -0.972348 0 -0.233538 -0.972348 -0.000000 -0.233538 -0.972348 -0.000000 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0.000000 -0.000000 -1 0 0 -1 -0.000000 -0.000001 -1 -0.000000 -0.000000 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0.000000 0 1 0.000000 0 1 0.000000 0 1 0.151594 0.631169 0.760687 0.1516 0.631196 0.760664 0.1516 0.631198 0.760662 0.151592 0.631164 0.760691 0.151611 0.631239 -0.760626 0.151605 0.631217 -0.760645 0.151606 0.63122 -0.760642 0.15159 0.631156 -0.760699 0.155548 0.630155 0.760729 0.159514 0.629183 0.760713 0.155547 0.630157 -0.760728 0.159512 0.629177 -0.760718 0.163482 0.628226 0.760661 0.163498 0.628289 0.760606 0.163482 0.628227 -0.760661 0.1635 0.628289 -0.760606 -0.163504 -0.628306 0.76059 -0.163504 -0.628306 0.76059 -0.159539 -0.62928 0.760627 -0.155573 -0.630251 0.760645 -0.163505 -0.628306 -0.76059 -0.163503 -0.628301 -0.760594 -0.159538 -0.629277 -0.76063 -0.155569 -0.630236 -0.760658 -0.151603 -0.63121 0.760651 -0.151591 -0.631163 0.760693 -0.1516 -0.631196 -0.760664 -0.151587 -0.631145 -0.760708 -0.151584 -0.631135 0.760718 -0.151566 -0.631055 0.760787 -0.151582 -0.631127 -0.760725 -0.151562 -0.631045 -0.760796</float_array>
+          <technique_common>
+            <accessor source="#DFShape-normals-array" count="64" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DFShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="DFShape-polySurface28Shape-map1-array" count="288">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#DFShape-polySurface28Shape-map1-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="DFShape-vertices">
+          <input semantic="POSITION" source="#DFShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="48">
+          <input semantic="VERTEX" source="#DFShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#DFShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#DFShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 9 9 19 10 10 20 10 10 21 9 9 22 11 11 23 12 12 24 8 8 25 13 13 26 13 13 27 8 8 28 10 10 29 14 14 30 12 12 31 15 15 32 15 15 33 12 12 34 13 13 35 16 16 36 17 17 37 18 18 38 18 18 39 17 17 40 19 19 41 20 20 42 16 16 43 21 21 44 21 21 45 16 16 46 18 18 47 22 22 48 20 20 49 23 23 50 23 23 51 20 20 52 21 21 53 24 24 54 25 25 55 26 26 56 26 26 57 25 25 58 27 27 59 24 24 60 28 28 61 25 25 62 25 25 63 28 28 64 29 29 65 28 28 66 30 30 67 29 29 68 29 29 69 30 30 70 31 31 71 31 32 72 1 33 73 29 34 74 29 34 75 1 33 76 0 35 77 3 36 78 23 37 79 2 38 80 2 38 81 23 37 82 21 39 83 29 34 84 0 35 85 25 40 86 25 40 87 0 35 88 4 41 89 2 38 90 21 39 91 5 42 92 5 42 93 21 39 94 18 43 95 25 40 96 4 41 97 27 44 98 27 44 99 4 41 100 6 45 101 5 42 102 18 43 103 7 46 104 7 46 105 18 43 106 19 47 107 26 48 108 9 49 109 24 50 110 24 50 111 9 49 112 8 51 113 11 52 114 17 53 115 10 54 116 10 54 117 17 53 118 16 55 119 24 50 120 8 51 121 28 56 122 28 56 123 8 51 124 12 57 125 10 54 126 16 55 127 13 58 128 13 58 129 16 55 130 20 59 131 28 56 132 12 57 133 30 60 134 30 60 135 12 57 136 14 61 137 13 58 138 20 59 139 15 62 140 15 62 141 20 59 142 22 63 143</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="EShape" name="EShape">
+      <mesh>
+        <source id="EShape-positions" name="position">
+          <float_array id="EShape-positions-array" count="72">8.20255 -0.129583 -0.230506 8.20255 -0.129583 0.012651 7.77855 -0.129583 -0.230506 7.77855 -0.129583 0.012651 7.76436 -0.115402 0.012651 7.76436 0.308597 0.012651 7.76436 -0.115402 -0.230506 7.76436 0.308597 -0.230506 7.77855 0.308597 -0.242662 8.20255 0.308597 -0.242662 7.77855 -0.115402 -0.242662 8.20255 -0.115402 -0.242662 8.20255 -0.115402 0.024807 8.20255 0.308597 0.024807 7.77855 -0.115402 0.024807 7.77855 0.308597 0.024807 7.77855 0.322781 0.012651 8.20255 0.322781 0.012651 7.77855 0.322781 -0.230506 8.20255 0.322781 -0.230506 8.21673 0.308597 0.012651 8.21673 -0.115402 0.012651 8.21673 0.308597 -0.230506 8.21673 -0.115402 -0.230506</float_array>
+          <technique_common>
+            <accessor source="#EShape-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EShape-normals" name="normal">
+          <float_array id="EShape-normals-array" count="288">0 -1 0 0 -1 0 0 -1 0 0 -1 0 -1 0 0.000001 -1 0 0.000001 -1 0 0.000001 -1 0 0.000001 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 -0.000003 1 0 -0.000003 1 0 -0.000003 1 0 -0.000003 0 -0.650796 -0.759252 0 -0.650797 -0.759252 0 -0.650797 -0.759252 0 -0.650798 -0.759251 -0.707105 -0.707108 0.000001 -0.707105 -0.707108 0.000001 -0.707105 -0.707108 0.000001 -0.707105 -0.707108 0.000001 -0.650783 0 -0.759264 -0.650782 0 -0.759264 -0.650782 0 -0.759264 -0.650782 0 -0.759265 0 -0.650798 0.759251 0 -0.650799 0.75925 0 -0.650799 0.75925 0 -0.6508 0.759249 -0.650796 0 0.759252 -0.650796 0 0.759253 -0.650796 0 0.759253 -0.650796 0 0.759253 0 0.650729 -0.75931 0 0.65073 -0.759309 0 0.65073 -0.759309 0 0.650731 -0.759308 -0.707169 0.707045 0.000001 -0.707169 0.707045 0.000001 -0.707169 0.707045 0.000001 -0.707169 0.707045 0.000001 0 0.650729 0.75931 0 0.650731 0.759308 0 0.650731 0.759308 0 0.650733 0.759306 0.650822 0 -0.759231 0.650821 0 -0.759231 0.650821 0 -0.759231 0.65082 0 -0.759232 0.707218 0.706996 -0.000002 0.707169 0.707045 -0.000001 0.707169 0.707045 -0.000001 0.70712 0.707094 0 0.650771 0 0.759274 0.650771 0 0.759274 0.650771 0 0.759274 0.650771 0 0.759274 0.707105 -0.707108 0 0.707105 -0.707108 -0.000001 0.707105 -0.707108 -0.000001 0.707105 -0.707108 -0.000002 -0.545448 -0.545451 -0.636372 -0.545448 -0.545451 -0.636372 -0.545448 -0.545451 -0.636372 -0.545457 -0.545458 0.636358 -0.545457 -0.545458 0.636358 -0.545457 -0.545458 0.636358 -0.545477 0.545385 -0.636404 -0.545477 0.545385 -0.636404 -0.545477 0.545385 -0.636404 -0.545486 0.545389 0.636393 -0.545486 0.545389 0.636393 -0.545486 0.545389 0.636393 0.545472 0.545471 -0.636334 0.545472 0.545471 -0.636334 0.545472 0.545471 -0.636334 0.545457 0.545408 0.636401 0.545457 0.545408 0.636401 0.545457 0.545408 0.636401 0.545442 -0.54554 -0.636301 0.545442 -0.54554 -0.636301 0.545442 -0.54554 -0.636301 0.545428 -0.545476 0.636368 0.545428 -0.545476 0.636368 0.545428 -0.545476 0.636368</float_array>
+          <technique_common>
+            <accessor source="#EShape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="EShape-polySurface28Shape-map1-array" count="264">0 0 1 0 0 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 1 1 0 1 1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 1 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#EShape-polySurface28Shape-map1-array" count="132" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="EShape-vertices">
+          <input semantic="POSITION" source="#EShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="44">
+          <input semantic="VERTEX" source="#EShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#EShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#EShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 5 5 7 6 6 8 6 6 9 5 5 10 7 7 11 8 8 12 9 9 13 10 10 14 10 10 15 9 9 16 11 11 17 12 12 18 13 13 19 14 14 20 14 14 21 13 13 22 15 15 23 16 16 24 17 17 25 18 18 26 18 18 27 17 17 28 19 19 29 20 20 30 21 21 31 22 22 32 22 22 33 21 21 34 23 23 35 2 24 36 10 25 37 0 26 38 0 26 39 10 25 40 11 27 41 6 28 42 2 29 43 4 30 44 4 30 45 2 29 46 3 31 47 10 32 48 6 33 49 8 34 50 8 34 51 6 33 52 7 35 53 14 36 54 3 37 55 12 38 56 12 38 57 3 37 58 1 39 59 4 40 60 14 41 61 5 42 62 5 42 63 14 41 64 15 43 65 8 44 66 18 45 67 9 46 68 9 46 69 18 45 70 19 47 71 18 48 72 7 49 73 16 50 74 16 50 75 7 49 76 5 51 77 16 52 78 15 53 79 17 54 80 17 54 81 15 53 82 13 55 83 9 56 84 22 57 85 11 58 86 11 58 87 22 57 88 23 59 89 22 60 90 19 61 91 20 62 92 20 62 93 19 61 94 17 63 95 20 64 96 13 65 97 21 66 98 21 66 99 13 65 100 12 67 101 0 68 102 23 69 103 1 70 104 1 70 105 23 69 106 21 71 107 10 72 108 2 73 109 6 74 110 3 75 111 14 76 112 4 77 113 18 78 114 8 79 115 7 80 116 15 81 117 16 82 118 5 83 119 22 84 120 9 85 121 19 86 122 13 87 123 20 88 124 17 89 125 0 90 126 11 91 127 23 92 128 12 93 129 1 94 130 21 95 131</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="DEShape" name="DEShape">
+      <mesh>
+        <source id="DEShape-positions" name="position">
+          <float_array id="DEShape-positions-array" count="96">7.84848 1.22022 -0.21914 7.84848 -0.118182 -0.21914 7.84848 1.22022 0.001285 7.84848 -0.118182 0.001285 7.84848 2.55862 -0.21914 7.84848 2.55862 0.001285 7.84848 3.88265 -0.21914 7.84848 3.88265 0.001285 8.13262 2.55862 -0.21914 8.13262 3.88265 -0.21914 8.13262 2.55862 0.001285 8.13262 3.88265 0.001285 8.13262 1.22022 -0.21914 8.13262 1.22022 0.001285 8.13262 -0.118181 -0.21914 8.13262 -0.118181 0.001285 8.1197 2.55862 0.012304 8.1197 3.88265 0.012304 7.86139 2.55862 0.012304 7.86139 3.88265 0.012304 8.1197 1.22022 0.012304 7.86139 1.22022 0.012304 8.1197 -0.118181 0.012304 7.86139 -0.118182 0.012304 8.1197 3.88265 -0.230159 8.1197 2.55862 -0.230159 7.86139 3.88265 -0.230159 7.86139 2.55862 -0.230159 8.1197 1.22022 -0.230159 7.86139 1.22022 -0.230159 8.1197 -0.118181 -0.230159 7.86139 -0.118182 -0.230159</float_array>
+          <technique_common>
+            <accessor source="#DEShape-positions-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DEShape-normals" name="normal">
+          <float_array id="DEShape-normals-array" count="216">-1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 -1 0 -0.000002 1 0.000000 0 1 0 0 1 0.000000 0 1 0 0 1 0 0 1 0.000000 0 1 0 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 -0.000000 0 -1 0 0 -1 -0.000000 0 -1 -0.000000 0 -1 0 0 -1 -0.000000 0 -1 -0.000000 0 -1 -0.00002 1 -0.000023 -0.000003 1 -0.000015 -0.00001 1 -0.000023 0.000006 1 -0.00002 0.000006 1 -0.000019 -0.000003 1 -0.000026 -0.00002 1 -0.000023 -0.00001 1 -0.000021 -0.649135 0 -0.760673 -0.649136 0 -0.760673 -0.649136 0 -0.760673 -0.649136 0 -0.760672 -0.649124 0 0.760683 -0.649124 0 0.760683 -0.649124 0 0.760683 -0.649124 0 0.760683 -0.649136 0 -0.760673 -0.649136 0 -0.760673 -0.649124 0 0.760683 -0.649124 0 0.760683 -0.649135 0 -0.760673 -0.649136 0 -0.760672 -0.649124 0 0.760683 -0.649124 0 0.760683 0.64915 0 -0.76066 0.649151 0 -0.76066 0.649151 0 -0.76066 0.649142 0 -0.760668 0.649132 0 -0.760676 0.649123 0 -0.760683 0.649123 0 0.760683 0.649123 0 0.760683 0.649123 0.000000 0.760683 0.649123 0.000000 0.760683 0.649123 0.000000 0.760683 0.649114 0 0.760691 0.649124 0 -0.760683 0.649124 0 -0.760682 0.649109 0 0.760695 0.649095 0 0.760707</float_array>
+          <technique_common>
+            <accessor source="#DEShape-normals-array" count="72" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="DEShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="DEShape-polySurface28Shape-map1-array" count="324">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.952391 0 0 1 1 0.047606 1 0 0 1 1 0 0.045446 0.047606 0 1 1 0.952394 1 0 0 1 0.954554 1 0.047609 1 1 0 0 0 0 0.952394 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#DEShape-polySurface28Shape-map1-array" count="162" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="DEShape-vertices">
+          <input semantic="POSITION" source="#DEShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="54">
+          <input semantic="VERTEX" source="#DEShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#DEShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#DEShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 8 8 18 9 9 19 10 10 20 10 10 21 9 9 22 11 11 23 12 12 24 8 8 25 13 13 26 13 13 27 8 8 28 10 10 29 14 14 30 12 12 31 15 15 32 15 15 33 12 12 34 13 13 35 16 16 36 17 17 37 18 18 38 18 18 39 17 17 40 19 19 41 20 20 42 16 16 43 21 21 44 21 21 45 16 16 46 18 18 47 22 22 48 20 20 49 23 23 50 23 23 51 20 20 52 21 21 53 24 24 54 25 25 55 26 26 56 26 26 57 25 25 58 27 27 59 25 25 60 28 28 61 27 27 62 27 27 63 28 28 64 29 29 65 28 28 66 30 30 67 29 29 68 29 29 69 30 30 70 31 31 71 6 32 72 7 33 73 26 34 74 26 34 75 7 33 76 24 35 77 7 33 78 19 36 79 24 35 80 24 35 81 19 36 82 9 37 83 11 38 84 9 37 85 17 39 86 19 36 87 17 39 88 9 37 89 31 40 90 1 41 91 29 42 92 29 42 93 1 41 94 0 43 95 3 44 96 23 45 97 2 46 98 2 46 99 23 45 100 21 47 101 29 42 102 0 43 103 27 48 104 27 48 105 0 43 106 4 49 107 2 46 108 21 47 109 5 50 110 5 50 111 21 47 112 18 51 113 27 48 114 4 49 115 26 52 116 26 52 117 4 49 118 6 53 119 5 50 120 18 51 121 7 54 122 7 54 123 18 51 124 19 55 125 24 56 126 9 57 127 25 58 128 25 58 129 9 57 130 8 59 131 25 58 132 8 59 133 28 60 134 28 60 135 8 59 136 12 61 137 11 62 138 17 63 139 10 64 140 10 64 141 17 63 142 16 65 143 10 64 144 16 65 145 13 66 146 13 66 147 16 65 148 20 67 149 28 60 150 12 61 151 30 68 152 30 68 153 12 61 154 14 69 155 13 66 156 20 67 157 15 70 158 15 70 159 20 67 160 22 71 161</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ACShape" name="ACShape">
+      <mesh>
+        <source id="ACShape-positions" name="position">
+          <float_array id="ACShape-positions-array" count="120">1.29855 0.152237 -0.21914 -0.039855 0.152237 -0.219141 1.29855 0.152237 0.001285 -0.039855 0.152237 0.001285 2.63696 0.152237 -0.21914 2.63696 0.152237 0.001285 2.63696 -0.131901 -0.21914 2.63696 -0.131901 0.001285 1.29855 -0.131901 -0.21914 1.29855 -0.131901 0.001285 -0.039855 -0.131901 -0.219141 -0.039855 -0.131901 0.001285 2.63696 -0.118988 0.012304 2.63696 0.139324 0.012304 1.29855 -0.118988 0.012304 1.29855 0.139324 0.012304 -0.039855 -0.118988 0.012304 -0.039855 0.139324 0.012304 2.63696 -0.118988 -0.23016 2.63696 0.139324 -0.23016 1.29855 -0.118988 -0.23016 1.29855 0.139324 -0.23016 -0.039855 -0.118988 -0.23016 -0.039855 0.139324 -0.23016 3.91322 0.152237 -0.21914 3.91322 0.152237 -0.008946 3.91322 0.152237 0.001285 3.91083 -0.131901 -0.21914 3.91083 -0.131901 -0.208515 3.91083 -0.131901 0.001285 3.91094 -0.118988 0.012304 3.91104 -0.106577 0.012304 3.91311 0.139324 0.012304 3.91094 -0.118988 -0.23016 3.91301 0.127293 -0.23016 3.91311 0.139324 -0.23016 3.91311 0.139924 -0.229647 3.91321 0.151638 0.001797 3.91083 -0.131278 -0.219671 3.91093 -0.11961 0.011775</float_array>
+          <technique_common>
+            <accessor source="#ACShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ACShape-normals" name="normal">
+          <float_array id="ACShape-normals-array" count="240">0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 -0.000000 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -1 0 0 -1 0.000000 0.000000 -1 0 0 -1 0 0.000000 -1 0 0.000000 -1 -0.000000 0 -1 -0.000000 0 -1 -0.000000 0 0 0.649106 -0.760698 0.000000 0.649123 -0.760684 0.000000 0.649128 -0.760679 0.000000 0.649139 -0.76067 0 0.649139 -0.76067 0.000002 0.649279 -0.760551 0 0.649106 0.760698 0 0.649106 0.760698 0 0.649106 0.760698 0 0.649106 0.760698 0 0.649246 0.760579 -0.000000 0.649097 0.760705 0.000005 0.649419 -0.760431 0.000005 0.649433 -0.760418 0 0.649664 0.760222 -0.000000 0.649283 0.760547 -0.000000 -0.649173 -0.760641 -0.000000 -0.649173 -0.760641 0 -0.649164 -0.760648 0 -0.649155 -0.760656 0 -0.648421 0.761282 -0.000000 -0.648948 0.760833 -0.000000 -0.648901 0.760873 -0.000000 -0.649135 0.760673 0 -0.649156 -0.760656 0.000000 -0.649145 -0.760665 0 -0.649123 0.760683 0 -0.649123 0.760683 0.000000 -0.649139 -0.76067 0.000000 -0.649123 -0.760684 0 -0.649123 0.760683 0 -0.649123 0.760683 0 1 -0.000000 0 1 0 0 1 -0.000002 0 0 -1 0 0 -1 0 0 -1 0 0.649109 -0.760695 0 0.649078 0.760722 0 -0.649155 -0.760656 0 -0.649159 0.760653</float_array>
+          <technique_common>
+            <accessor source="#ACShape-normals-array" count="80" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="ACShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="ACShape-polySurface28Shape-map1-array" count="340">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0.048204 0.048204 0.048204 1 1 1 1 0.048204 0.048204 1 0.048204 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0.048122 0.048045 0.048045 1 1 1 1 0.048045 0.048045 1 0.046501 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0.047607 0 1 0 0 1 0 0.047609 1 0 0 1 0.954552 0 1 0.047609 0 1 0 0.952391 1 0 0.045444 1 0.952388 1 0 1 1 0 1 0 1 0.952391 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0.046497 0.953503 0 0.953499 0 0 1 0 0.046423 0.953576 0 0.95358 0 1 0.9518 0.0482 1 0.048204 1 1 0 1 0.951873 0.048126 1 0.048122 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0.95358 0.95358 0 0.95358 0 0 1 0.95358 0.95358 0.95358 0 0 1 0 0.953423 0.953422 0 0.951877 0 0 1 0.953499 0.953423 0.953423 0 0 1 0 1 0.95358 0.046497 0.953503 1 0 1 0.953499 0.046423 0.953576 1 0 0 0.048123 0.9518 0.0482 0 1 0 0.048204 0.951873 0.048126 0 1</float_array>
+          <technique_common>
+            <accessor source="#ACShape-polySurface28Shape-map1-array" count="170" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ACShape-vertices">
+          <input semantic="POSITION" source="#ACShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="62">
+          <input semantic="VERTEX" source="#ACShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#ACShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#ACShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 4 4 6 0 0 7 5 5 8 5 5 9 0 0 10 2 2 11 27 6 13 28 7 14 6 8 12 6 8 12 28 7 14 7 9 15 7 9 16 28 7 17 29 10 18 8 11 19 6 8 20 9 12 21 9 12 22 6 8 23 7 9 24 10 13 25 8 11 26 11 14 27 11 14 28 8 11 29 9 12 30 30 15 32 31 16 33 12 17 31 12 17 31 31 16 33 13 18 34 13 18 35 31 16 36 32 19 37 14 20 38 12 17 39 15 21 40 15 21 41 12 17 42 13 18 43 16 22 44 14 20 45 17 23 46 17 23 47 14 20 48 15 21 49 18 24 50 20 25 51 19 26 52 19 26 53 20 25 54 21 27 55 20 25 56 22 28 57 21 27 58 21 27 59 22 28 60 23 29 61 10 30 62 11 31 63 22 32 64 22 32 65 11 31 66 23 33 67 11 31 68 16 34 69 23 33 70 23 33 71 16 34 72 1 35 73 3 36 74 1 35 75 17 37 76 16 34 77 17 37 78 1 35 79 23 38 80 1 39 81 21 40 82 21 40 83 1 39 84 0 41 85 21 40 86 0 41 87 19 42 88 19 42 89 0 41 90 4 43 91 3 44 92 17 45 93 2 46 94 2 46 95 17 45 96 15 47 97 2 46 98 15 47 99 5 48 100 5 48 101 15 47 102 13 49 103 36 50 106 35 51 107 4 43 105 19 42 104 4 43 105 35 51 107 26 52 111 5 48 108 37 53 110 5 48 108 13 49 109 37 53 110 38 54 113 27 55 114 18 56 112 18 56 112 27 55 114 6 57 115 30 58 118 12 59 119 39 60 117 7 61 116 39 60 117 12 59 119 18 56 120 6 57 121 20 62 122 20 62 123 6 57 124 8 63 125 7 61 126 12 59 127 9 64 128 9 64 129 12 59 130 14 65 131 20 62 132 8 63 133 22 66 134 22 66 135 8 63 136 10 67 137 9 64 138 14 65 139 11 68 140 11 68 141 14 65 142 16 69 143 25 70 144 24 71 145 4 4 146 26 72 147 25 70 148 5 5 150 25 70 148 4 4 149 5 5 150 34 73 151 33 74 152 18 24 153 35 75 154 34 73 155 19 26 157 34 73 155 18 24 156 19 26 157 24 76 158 36 50 159 4 43 160 32 77 161 37 53 162 13 49 163 33 78 164 38 54 165 18 56 166 29 79 167 39 60 168 7 61 169</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="CEShape" name="CEShape">
+      <mesh>
+        <source id="CEShape-positions" name="position">
+          <float_array id="CEShape-positions-array" count="120">3.97535 0.152237 -0.21914 3.97535 0.152237 0.001285 5.31374 0.152237 -0.219141 5.31374 0.152237 0.001285 6.65214 0.152237 -0.21914 6.65214 0.152237 0.001285 6.65215 -0.131901 -0.21914 6.65215 -0.131901 0.001285 5.31374 -0.131901 -0.219141 5.31374 -0.131901 0.001285 3.97535 -0.131901 -0.21914 3.97535 -0.131901 0.001285 6.65215 -0.118988 0.012304 6.65214 0.139324 0.012304 5.31374 -0.118988 0.012304 5.31374 0.139324 0.012304 3.97535 -0.118988 0.012304 3.97535 0.139324 0.012304 6.65215 -0.118988 -0.230159 6.65214 0.139324 -0.230159 5.31374 -0.118988 -0.230159 5.31374 0.139324 -0.230159 3.97535 -0.118988 -0.23016 3.97535 0.139324 -0.23016 7.91383 0.152237 -0.21914 7.91383 0.152237 -0.011348 7.91383 0.152237 0.001285 7.91786 -0.131901 -0.21914 7.91786 -0.131901 -0.20717 7.91786 -0.131901 0.001285 7.91768 -0.118988 0.012304 7.91748 -0.104886 0.012304 7.91402 0.139324 0.012304 7.91768 -0.118988 -0.230159 7.91422 0.124594 -0.230159 7.91402 0.139324 -0.230159 7.91401 0.140062 -0.229529 7.91384 0.151497 0.001917 7.91785 -0.131199 -0.219739 7.91769 -0.119691 0.011705</float_array>
+          <technique_common>
+            <accessor source="#CEShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="CEShape-normals" name="normal">
+          <float_array id="CEShape-normals-array" count="216">0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0.000000 0 -1 0 0 -1 0.000000 0 -1 0.000000 0 -1 0.000000 0 -1 0.000000 0.649138 -0.76067 0 0.649123 -0.760684 0 0.649117 -0.760688 0 0.649109 -0.760695 0 0.649123 0.760684 0 0.649123 0.760684 0 0.649122 0.760684 0 0.64912 0.760686 0 0.649093 -0.760709 0 0.649116 -0.76069 0 0.649117 0.760688 0 0.649121 0.760685 0 0.649036 -0.760758 0 0.64909 -0.760712 -0.000000 0.649127 0.76068 -0.000000 0.649128 0.760679 0 -0.64941 -0.760439 0 -0.649199 -0.760619 0 -0.649219 -0.760602 0 -0.649126 -0.760681 -0.000001 -0.649051 0.760745 -0.000001 -0.649046 0.760749 -0.000000 -0.649091 0.760711 0 -0.649134 0.760674 0.000000 -0.649126 -0.760681 0 -0.649134 -0.760674 0 -0.649136 0.760672 0 -0.649139 0.76067 0 -0.649139 -0.76067 -0.000000 -0.649155 -0.760656 0 -0.649139 0.76067 0 -0.64914 0.760669 0 1 0 0 1 0 0 1 0 0 0 -1 0 0 -1 0 0 -1 0 0.649119 -0.760687 0 0.649113 0.760692 0 -0.649115 -0.76069 0 -0.64914 0.760669</float_array>
+          <technique_common>
+            <accessor source="#CEShape-normals-array" count="72" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="CEShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="CEShape-polySurface28Shape-map1-array" count="304">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0.054306 0.054306 0.054306 1 1 1 1 0.054306 0.054306 1 0.054306 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0.054443 0.054592 0.054592 1 1 1 1 0.054592 0.054592 1 0.05718 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999997 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0.057188 0.942811 0 0.942819 0 0 1 0 0.057309 0.94269 0 0.942682 0 1 0.945686 0.054313 1 0.054306 1 1 0 1 0.945564 0.054435 1 0.054443 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0.942682 0.942682 0 0.942682 0 0 1 0.942682 0.942682 0.942682 0 0 1 0 0.942975 0.942975 0 0.945557 0 0 1 0.942819 0.942975 0.942975 0 0 1 0 1 0.942682 0.057188 0.942811 1 0 1 0.942819 0.057309 0.94269 1 0 0 0.054443 0.945686 0.054313 0 1 0 0.054306 0.945564 0.054435 0 1</float_array>
+          <technique_common>
+            <accessor source="#CEShape-polySurface28Shape-map1-array" count="152" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="CEShape-vertices">
+          <input semantic="POSITION" source="#CEShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="56">
+          <input semantic="VERTEX" source="#CEShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#CEShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#CEShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>2 0 0 0 1 1 3 2 2 3 2 3 0 1 4 1 3 5 4 4 6 2 0 7 5 5 8 5 5 9 2 0 10 3 2 11 27 6 13 28 7 14 6 8 12 6 8 12 28 7 14 7 9 15 7 9 16 28 7 17 29 10 18 8 11 19 6 8 20 9 12 21 9 12 22 6 8 23 7 9 24 10 13 25 8 11 26 11 14 27 11 14 28 8 11 29 9 12 30 30 15 32 31 16 33 12 17 31 12 17 31 31 16 33 13 18 34 13 18 35 31 16 36 32 19 37 14 20 38 12 17 39 15 21 40 15 21 41 12 17 42 13 18 43 16 22 44 14 20 45 17 23 46 17 23 47 14 20 48 15 21 49 18 24 50 20 25 51 19 26 52 19 26 53 20 25 54 21 27 55 20 25 56 22 28 57 21 27 58 21 27 59 22 28 60 23 29 61 23 30 62 0 31 63 21 32 64 21 32 65 0 31 66 2 33 67 1 34 68 17 35 69 3 36 70 3 36 71 17 35 72 15 37 73 21 32 74 2 33 75 19 38 76 19 38 77 2 33 78 4 39 79 3 36 80 15 37 81 5 40 82 5 40 83 15 37 84 13 41 85 35 42 89 19 38 86 36 43 88 19 38 86 4 39 87 36 43 88 37 44 92 26 45 93 13 41 91 5 40 90 13 41 91 26 45 93 27 46 96 6 47 97 38 48 95 18 49 94 38 48 95 6 47 97 39 50 99 30 51 100 7 52 98 7 52 98 30 51 100 12 53 101 18 49 102 6 47 103 20 54 104 20 54 105 6 47 106 8 55 107 7 52 108 12 53 109 9 56 110 9 56 111 12 53 112 14 57 113 20 54 114 8 55 115 22 58 116 22 58 117 8 55 118 10 59 119 9 56 120 14 57 121 11 60 122 11 60 123 14 57 124 16 61 125 25 62 126 24 63 127 4 4 128 26 64 129 25 62 130 5 5 132 25 62 130 4 4 131 5 5 132 34 65 133 33 66 134 18 24 135 35 67 136 34 65 137 19 26 139 34 65 137 18 24 138 19 26 139 24 68 140 36 43 141 4 39 142 32 69 143 37 44 144 13 41 145 33 70 146 38 48 147 18 49 148 29 71 149 39 50 150 7 52 151</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="EGShape" name="EGShape">
+      <mesh>
+        <source id="EGShape-positions" name="position">
+          <float_array id="EGShape-positions-array" count="96">7.99055 0.152237 -0.21914 7.99055 0.152237 0.001285 9.32895 0.152237 -0.21914 9.32895 0.152237 0.001285 10.6673 0.152237 -0.219141 10.6673 0.152237 0.001285 12.0057 0.152237 -0.219141 12.0057 0.152237 0.001285 12.0057 -0.131901 -0.219141 12.0057 -0.131901 0.001285 10.6673 -0.131901 -0.219141 10.6673 -0.131901 0.001285 9.32895 -0.131901 -0.21914 9.32895 -0.131901 0.001285 7.99055 -0.131901 -0.21914 7.99055 -0.131901 0.001285 12.0057 -0.118988 0.012304 12.0057 0.139324 0.012304 10.6673 -0.118988 0.012304 10.6673 0.139324 0.012304 9.32895 -0.118988 0.012304 9.32895 0.139324 0.012304 7.99055 -0.118988 0.012304 7.99055 0.139324 0.012304 12.0057 -0.118988 -0.230159 12.0057 0.139324 -0.230159 10.6673 -0.118988 -0.230159 10.6673 0.139324 -0.230159 9.32895 -0.118988 -0.230159 9.32895 0.139324 -0.230159 7.99055 -0.118988 -0.230159 7.99055 0.139324 -0.230159</float_array>
+          <technique_common>
+            <accessor source="#EGShape-positions-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EGShape-normals" name="normal">
+          <float_array id="EGShape-normals-array" count="192">0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0.649116 -0.76069 0 0.649115 -0.760691 0 0.649115 -0.76069 0 0.649111 -0.760693 0 0.649115 0.760691 0 0.649115 0.760691 0 0.649114 0.760691 0 0.649117 0.760688 0 0.649109 -0.760696 0 0.649106 -0.760698 0 0.64912 0.760686 0 0.649122 0.760684 0 0.649106 -0.760698 0 0.649106 -0.760698 0 0.649122 0.760684 0 0.649122 0.760684 0 -0.649124 -0.760683 0 -0.649123 -0.760683 0 -0.649123 -0.760683 0 -0.649126 -0.760681 0 -0.649139 0.76067 0 -0.649139 0.76067 0 -0.649139 0.76067 0 -0.649137 0.760672 0 -0.649129 -0.760679 0 -0.649131 -0.760676 0 -0.649134 0.760674 0 -0.649131 0.760677 0 -0.649131 -0.760677 0 -0.649131 -0.760677 0 -0.649131 0.760677 0 -0.649132 0.760676</float_array>
+          <technique_common>
+            <accessor source="#EGShape-normals-array" count="64" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="EGShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="EGShape-polySurface28Shape-map1-array" count="288">0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 0.999998 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#EGShape-polySurface28Shape-map1-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="EGShape-vertices">
+          <input semantic="POSITION" source="#EGShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="48">
+          <input semantic="VERTEX" source="#EGShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#EGShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#EGShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>2 0 0 0 1 1 3 2 2 3 2 3 0 1 4 1 3 5 4 4 6 2 0 7 5 5 8 5 5 9 2 0 10 3 2 11 6 6 12 4 4 13 7 7 14 7 7 15 4 4 16 5 5 17 10 8 18 8 9 19 11 10 20 11 10 21 8 9 22 9 11 23 12 12 24 10 8 25 13 13 26 13 13 27 10 8 28 11 10 29 14 14 30 12 12 31 15 15 32 15 15 33 12 12 34 13 13 35 18 16 36 16 17 37 19 18 38 19 18 39 16 17 40 17 19 41 20 20 42 18 16 43 21 21 44 21 21 45 18 16 46 19 18 47 22 22 48 20 20 49 23 23 50 23 23 51 20 20 52 21 21 53 24 24 54 26 25 55 25 26 56 25 26 57 26 25 58 27 27 59 26 25 60 28 28 61 27 27 62 27 27 63 28 28 64 29 29 65 28 28 66 30 30 67 29 29 68 29 29 69 30 30 70 31 31 71 31 32 72 0 33 73 29 34 74 29 34 75 0 33 76 2 35 77 1 36 78 23 37 79 3 38 80 3 38 81 23 37 82 21 39 83 29 34 84 2 35 85 27 40 86 27 40 87 2 35 88 4 41 89 3 38 90 21 39 91 5 42 92 5 42 93 21 39 94 19 43 95 27 40 96 4 41 97 25 44 98 25 44 99 4 41 100 6 45 101 5 42 102 19 43 103 7 46 104 7 46 105 19 43 106 17 47 107 24 48 108 8 49 109 26 50 110 26 50 111 8 49 112 10 51 113 9 52 114 16 53 115 11 54 116 11 54 117 16 53 118 18 55 119 26 50 120 10 51 121 28 56 122 28 56 123 10 51 124 12 57 125 11 54 126 18 55 127 13 58 128 13 58 129 18 55 130 20 59 131 28 56 132 12 57 133 30 60 134 30 60 135 12 57 136 14 61 137 13 58 138 20 59 139 15 62 140 15 62 141 20 59 142 22 63 143</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="GHShape" name="GHShape">
+      <mesh>
+        <source id="GHShape-positions" name="position">
+          <float_array id="GHShape-positions-array" count="120">13.3441 0.152237 -0.21914 13.3441 0.152237 0.001285 14.6825 0.152237 -0.21914 14.6825 0.152237 0.001285 16.0039 0.152237 -0.21914 16.0039 0.152237 0.001285 14.6825 -0.131901 -0.21914 16.0039 -0.131901 -0.21914 14.6825 -0.131901 0.001285 16.0039 -0.131901 0.001285 13.3441 -0.131901 -0.21914 13.3441 -0.131901 0.001285 14.6825 -0.118988 0.012304 16.0039 -0.118988 0.012304 14.6825 0.139324 0.012304 16.0039 0.139324 0.012304 13.3441 -0.118988 0.012304 13.3441 0.139324 0.012304 16.0039 -0.118988 -0.23016 14.6825 -0.118988 -0.23016 16.0039 0.139324 -0.23016 14.6825 0.139324 -0.23016 13.3441 -0.118988 -0.23016 13.3441 0.139324 -0.23016 12.0575 0.152237 -0.219141 12.0575 0.152237 -0.210624 12.0575 0.152237 0.001285 12.062 -0.131901 -0.219141 12.062 -0.131901 -0.007985 12.062 -0.131901 0.001285 12.0618 -0.118988 0.012304 12.0578 0.129272 0.012304 12.0577 0.139324 0.012304 12.0618 -0.118988 -0.230159 12.0617 -0.108197 -0.230159 12.0577 0.139324 -0.230159 12.0575 0.151738 -0.219566 12.0577 0.139825 0.011877 12.0618 -0.119529 -0.229697 12.062 -0.131357 0.001749</float_array>
+          <technique_common>
+            <accessor source="#GHShape-positions-array" count="40" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="GHShape-normals" name="normal">
+          <float_array id="GHShape-normals-array" count="240">0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -0.000000 0 -1 -0.000000 0 -1 -0.000000 0 -1 -0.000000 0 -1 -0.000000 0 -1 1 -0.000052 0 1 0.000009 0 1 -0.000026 0 1 0.000008 0 1 0.000008 0 1 -0.000004 0 1 0.000041 0 1 0.00002 0 0.000000 0.648781 -0.760975 0 0.649049 -0.760746 0 0.649013 -0.760777 0 0.649132 -0.760676 0.000001 0.649031 0.760762 0.000001 0.649028 0.760764 0.000000 0.649069 0.76073 0 0.649106 0.760698 0 0.649139 -0.76067 0 0.649139 -0.76067 0 0.649106 0.760698 0 0.649106 0.760698 0 0.649139 -0.76067 0 0.64914 -0.760669 0 0.649107 0.760698 0 0.649107 0.760698 0 -0.649157 -0.760655 0 -0.649155 -0.760656 0 -0.649156 -0.760656 0 -0.649155 -0.760656 -0.000000 -0.649193 -0.760624 0 -0.649142 -0.760667 0 -0.649122 0.760684 0 -0.649123 0.760684 0 -0.649123 0.760684 0 -0.649123 0.760683 0 -0.649123 0.760684 -0.000000 -0.649118 0.760688 -0.000000 -0.649304 -0.760529 -0.000000 -0.649192 -0.760625 -0.000000 -0.649112 0.760693 -0.000000 -0.64911 0.760694 0 -1 0 0 -1 0 0 -1 0 0 0 1 0 0 1 0 0 1 -0.000000 0.649119 -0.760687 0 0.649113 0.760692 0.000000 -0.649114 -0.760691 0 -0.649126 0.760681</float_array>
+          <technique_common>
+            <accessor source="#GHShape-normals-array" count="80" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="GHShape-polySurface28Shape-map1" name="polySurface28Shape-map1">
+          <float_array id="GHShape-polySurface28Shape-map1-array" count="340">0 1 0 0.038636 0.038636 0.038636 1 1 1 1 0.038636 0.038636 1 0.038636 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 0.999998 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 0 1 0 0.041904 0.041774 0.041774 1 1 1 1 0.041774 0.041774 1 0.038791 0 0.947496 1 0 0.656692 1 0 0.906763 0.024283 0 1 1 0 0.036873 0.054849 0 1 1 0.94515 1 0 0 1 0.963127 1 0.052504 0 1 0.343305 0 0 0 1 0.093237 0.975717 1 0 1 0.961358 0.038642 1 0.038636 1 1 0 1 0.961214 0.038785 1 0.038791 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0.041911 0.958089 0 0.958095 0 0 1 0 0.042053 0.957946 0 0.95794 0.95794 0.95794 0 0.95794 0 0 1 0.95794 0.95794 0.95794 0 0 1 0 0.961087 0.961087 0 0.958093 0 0 1 0.961208 0.961087 0.961087 0 0 1 0 0 0.038791 0.961358 0.038642 0 1 0 0.038636 0.961214 0.038785 0 1 1 0.95794 0.041911 0.958089 1 0 1 0.958095 0.042053 0.957946 1 0</float_array>
+          <technique_common>
+            <accessor source="#GHShape-polySurface28Shape-map1-array" count="170" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="GHShape-vertices">
+          <input semantic="POSITION" source="#GHShape-positions"/>
+        </vertices>
+        <triangles material="blinn6SG1SG" count="62">
+          <input semantic="VERTEX" source="#GHShape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#GHShape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#GHShape-polySurface28Shape-map1" offset="2" set="0"/>
+          <p>24 0 1 25 1 2 0 2 0 0 2 0 25 1 2 1 3 3 1 3 4 25 1 5 26 4 6 2 5 7 0 2 8 3 6 9 3 6 10 0 2 11 1 3 12 4 7 13 2 5 14 5 8 15 5 8 16 2 5 17 3 6 18 6 9 19 7 10 20 8 11 21 8 11 22 7 10 23 9 12 24 10 13 25 6 9 26 11 14 27 11 14 28 6 9 29 8 11 30 12 15 31 13 16 32 14 17 33 14 17 34 13 16 35 15 18 36 16 19 37 12 15 38 17 20 39 17 20 40 12 15 41 14 17 42 18 21 43 19 22 44 20 23 45 20 23 46 19 22 47 21 24 48 19 22 49 22 25 50 21 24 51 21 24 52 22 25 53 23 26 54 33 27 56 34 28 57 22 25 55 22 25 55 34 28 57 23 26 58 23 26 59 34 28 60 35 29 61 4 30 62 5 31 63 20 32 64 20 32 65 5 31 66 18 33 67 5 31 68 15 34 69 18 33 70 18 33 71 15 34 72 7 35 73 9 36 74 7 35 75 13 37 76 15 34 77 13 37 78 7 35 79 24 38 82 0 39 83 36 40 81 23 41 80 36 40 81 0 39 83 37 42 85 32 43 86 1 44 84 1 44 84 32 43 86 17 45 87 23 41 88 0 39 89 21 46 90 21 46 91 0 39 92 2 47 93 1 44 94 17 45 95 3 48 96 3 48 97 17 45 98 14 49 99 21 46 100 2 47 101 20 50 102 20 50 103 2 47 104 4 51 105 3 48 106 14 49 107 5 52 108 5 52 109 14 49 110 15 53 111 18 54 112 7 55 113 19 56 114 19 56 115 7 55 116 6 57 117 19 56 118 6 57 119 22 58 120 22 58 121 6 57 122 10 59 123 9 60 124 13 61 125 8 62 126 8 62 127 13 61 128 12 63 129 8 62 130 12 63 131 11 64 132 11 64 133 12 63 134 16 65 135 33 66 139 22 58 136 38 67 138 22 58 136 10 59 137 38 67 138 39 68 142 29 69 143 16 65 141 11 64 140 16 65 141 29 69 143 28 70 144 27 71 145 10 13 146 29 72 147 28 70 148 11 14 150 28 70 148 10 13 149 11 14 150 31 73 151 30 74 152 16 19 153 32 75 154 31 73 155 17 20 157 31 73 155 16 19 156 17 20 157 35 76 158 36 40 159 23 41 160 26 77 161 37 42 162 1 44 163 27 78 164 38 67 165 10 59 166 30 79 167 39 68 168 16 65 169</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="polySurface29Shape" name="polySurface29Shape">
+      <mesh>
+        <source id="polySurface29Shape-positions" name="position">
+          <float_array id="polySurface29Shape-positions-array" count="96">12.3021 3.02915 -4.54869 12.3028 3.03914 0.365699 12.3441 3.08873 -4.54882 12.3447 3.09874 0.365573 16.3614 0.258125 -4.54358 16.3621 0.268124 0.370808 16.3194 0.198535 -4.54346 16.3201 0.208534 0.370935 7.9817 4.11833 -4.57223 7.97082 4.11166 0.342155 7.9993 4.18907 -4.5721 7.98842 4.1824 0.34229 12.3409 3.10887 -4.56395 12.33 3.10219 0.35043 12.3233 3.03812 -4.56409 12.3124 3.03145 0.350295 7.99939 4.11833 0.346449 8.01027 4.11166 -4.56793 7.98179 4.18907 0.346315 7.99267 4.1824 -4.56807 3.6402 3.10887 0.338175 3.65108 3.10219 -4.57621 3.6578 3.03812 0.33831 3.66867 3.03145 -4.57608 3.67898 3.02915 0.341082 3.67834 3.03914 -4.57331 3.63699 3.08873 0.341208 3.63635 3.09874 -4.57318 -0.380321 0.258125 0.335974 -0.380978 0.268124 -4.57841 -0.338355 0.198535 0.335846 -0.339011 0.208534 -4.57854</float_array>
+          <technique_common>
+            <accessor source="#polySurface29Shape-positions-array" count="32" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="polySurface29Shape-normals" name="normal">
+          <float_array id="polySurface29Shape-normals-array" count="288">-0.81742 0.576041 -0.001065 -0.817443 0.576009 -0.001065 -0.817443 0.576009 -0.001065 -0.817465 0.575977 -0.001065 0.575986 0.817458 -0.001738 0.575985 0.817458 -0.001739 0.575985 0.817458 -0.001739 0.575984 0.817459 -0.001739 0.817588 -0.575802 0.001062 0.817594 -0.575794 0.001062 0.817594 -0.575794 0.001062 0.8176 -0.575785 0.001062 -0.575984 -0.817459 0.00174 -0.575983 -0.81746 0.001739 -0.575983 -0.81746 0.001739 -0.575982 -0.817461 0.001738 0.000123 0.002025 0.999998 0.000131 0.002035 0.999998 0.000131 0.002035 0.999998 0.000138 0.002046 0.999998 -0.000122 -0.002025 -0.999998 -0.000125 -0.002025 -0.999998 -0.000125 -0.002025 -0.999998 -0.000127 -0.002025 -0.999998 -0.970411 0.24145 -0.001819 -0.970409 0.241462 -0.001819 -0.970409 0.241462 -0.001819 -0.970406 0.241473 -0.001819 0.24144 0.970414 0.001852 0.24144 0.970414 0.001852 0.24144 0.970414 0.001852 0.24144 0.970414 0.001852 0.970418 -0.241424 0.001819 0.970414 -0.241438 0.001819 0.970414 -0.241438 0.001819 0.970411 -0.241452 0.001819 -0.24144 -0.970414 -0.001851 -0.24144 -0.970414 -0.001851 -0.24144 -0.970414 -0.001851 -0.24144 -0.970414 -0.001851 -0.002213 -0.001359 0.999997 -0.002213 -0.001361 0.999997 -0.002213 -0.001361 0.999997 -0.002214 -0.001363 0.999997 0.002201 0.001299 -0.999997 0.002198 0.001299 -0.999997 0.002198 0.001299 -0.999997 0.002196 0.001299 -0.999997 0.970415 0.241435 0.001819 0.970413 0.241444 0.001819 0.970413 0.241444 0.001819 0.970411 0.241453 0.001819 -0.24144 0.970414 -0.001852 -0.24144 0.970414 -0.001852 -0.24144 0.970414 -0.001852 -0.24144 0.970414 -0.001853 -0.97042 -0.241416 -0.001819 -0.970417 -0.241429 -0.001819 -0.970417 -0.241429 -0.001819 -0.970414 -0.241442 -0.001819 0.24144 -0.970414 0.001852 0.24144 -0.970414 0.001851 0.24144 -0.970414 0.001851 0.24144 -0.970414 0.001851 0.002214 -0.001369 -0.999997 0.002215 -0.001366 -0.999997 0.002215 -0.001366 -0.999997 0.002216 -0.001363 -0.999997 -0.002214 0.001363 0.999997 -0.002212 0.001358 0.999997 -0.002212 0.001358 0.999997 -0.002211 0.001353 0.999997 0.817432 0.576024 0.001065 0.817444 0.576008 0.001065 0.817444 0.576008 0.001065 0.817455 0.575991 0.001065 -0.575986 0.817458 0.001738 -0.575985 0.817458 0.001739 -0.575985 0.817458 0.001739 -0.575985 0.817459 0.00174 -0.817598 -0.575789 -0.001062 -0.817598 -0.575788 -0.001062 -0.817598 -0.575788 -0.001062 -0.817598 -0.575788 -0.001062 0.575984 -0.81746 -0.00174 0.575983 -0.81746 -0.001739 0.575983 -0.81746 -0.001739 0.575982 -0.817461 -0.001737 -0.000123 0.002025 -0.999998 -0.00012 0.002025 -0.999998 -0.00012 0.002025 -0.999998 -0.000117 0.002025 -0.999998 0.000138 -0.002046 0.999998 0.000135 -0.002041 0.999998 0.000135 -0.002041 0.999998 0.000131 -0.002035 0.999998</float_array>
+          <technique_common>
+            <accessor source="#polySurface29Shape-normals-array" count="96" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="polySurface29Shape-polySurface29Shape-map1" name="polySurface29Shape-map1">
+          <float_array id="polySurface29Shape-polySurface29Shape-map1-array" count="288">0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0</float_array>
+          <technique_common>
+            <accessor source="#polySurface29Shape-polySurface29Shape-map1-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="polySurface29Shape-vertices">
+          <input semantic="POSITION" source="#polySurface29Shape-positions"/>
+        </vertices>
+        <triangles material="blinn4SG1SG" count="48">
+          <input semantic="VERTEX" source="#polySurface29Shape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#polySurface29Shape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#polySurface29Shape-polySurface29Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 2 4 6 3 5 7 4 6 8 4 6 9 3 5 10 5 7 11 4 8 12 5 9 13 6 10 14 6 10 15 5 9 16 7 11 17 6 12 18 7 13 19 0 14 20 0 14 21 7 13 22 1 15 23 1 16 24 7 17 25 3 18 26 3 18 27 7 17 28 5 19 29 6 20 30 0 21 31 4 22 32 4 22 33 0 21 34 2 23 35 8 24 36 9 25 37 10 26 38 10 26 39 9 25 40 11 27 41 10 28 42 11 29 43 12 30 44 12 30 45 11 29 46 13 31 47 12 32 48 13 33 49 14 34 50 14 34 51 13 33 52 15 35 53 14 36 54 15 37 55 8 38 56 8 38 57 15 37 58 9 39 59 9 40 60 15 41 61 11 42 62 11 42 63 15 41 64 13 43 65 14 44 66 8 45 67 12 46 68 12 46 69 8 45 70 10 47 71 16 48 72 17 49 73 18 50 74 18 50 75 17 49 76 19 51 77 18 52 78 19 53 79 20 54 80 20 54 81 19 53 82 21 55 83 20 56 84 21 57 85 22 58 86 22 58 87 21 57 88 23 59 89 22 60 90 23 61 91 16 62 92 16 62 93 23 61 94 17 63 95 17 64 96 23 65 97 19 66 98 19 66 99 23 65 100 21 67 101 22 68 102 16 69 103 20 70 104 20 70 105 16 69 106 18 71 107 24 72 108 25 73 109 26 74 110 26 74 111 25 73 112 27 75 113 26 76 114 27 77 115 28 78 116 28 78 117 27 77 118 29 79 119 28 80 120 29 81 121 30 82 122 30 82 123 29 81 124 31 83 125 30 84 126 31 85 127 24 86 128 24 86 129 31 85 130 25 87 131 25 88 132 31 89 133 27 90 134 27 90 135 31 89 136 29 91 137 30 92 138 24 93 139 28 94 140 28 94 141 24 93 142 26 95 143</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="polySurface30Shape" name="polySurface30Shape">
+      <mesh>
+        <source id="polySurface30Shape-positions" name="position">
+          <float_array id="polySurface30Shape-positions-array" count="144">12.2003 2.85528 -4.51295 12.2006 2.86021 -2.08113 12.3249 3.03212 -4.51332 12.3252 3.03706 -2.08113 16.147 0.339037 -4.50834 16.1474 0.34396 -2.08113 16.0225 0.16219 -4.50796 16.0228 0.167115 -2.08113 12.2003 2.85528 0.350677 12.3249 3.03212 0.351053 16.147 0.339037 0.346073 16.0225 0.162189 0.345696 8.03674 3.90511 0.310914 8.04212 3.9018 -2.12963 7.9845 4.11504 0.310513 7.98989 4.11174 -2.12963 3.66394 3.03544 -2.12963 3.65857 3.03873 0.302403 3.71081 2.8288 0.302804 3.71617 2.8255 -2.12963 8.03674 3.90511 -4.57017 7.9845 4.11504 -4.56977 3.65857 3.03873 -4.56166 3.71081 2.8288 -4.56206 3.78079 2.85528 0.305335 3.78047 2.86021 -2.12648 3.65618 3.03212 0.305712 3.65586 3.03706 -2.12648 -0.165954 0.339037 0.300732 -0.166307 0.34396 -2.12648 -0.041368 0.16219 0.300355 -0.041671 0.167115 -2.12648 3.78079 2.85528 -4.55829 3.65618 3.03212 -4.55866 -0.165955 0.339037 -4.55368 -0.041368 0.162189 -4.55331 7.94652 3.89851 -4.54194 7.94113 3.90184 -2.10139 7.99876 4.10845 -4.54211 7.99337 4.11178 -2.10196 12.3193 3.03548 -2.09902 12.3247 3.03217 -4.53106 12.2725 2.82223 -4.53089 12.2671 2.82554 -2.09846 7.94651 3.91177 0.33913 7.99874 4.12171 0.338159 12.3247 3.04538 0.33299 12.2724 2.83544 0.33396</float_array>
+          <technique_common>
+            <accessor source="#polySurface30Shape-positions-array" count="48" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="polySurface30Shape-normals" name="normal">
+          <float_array id="polySurface30Shape-normals-array" count="480">-0.817464 0.575979 -0.001061 -0.817467 0.575975 -0.001061 -0.817467 0.575975 -0.001061 -0.81747 0.575971 -0.001062 0.575985 0.817458 -0.001735 0.575984 0.817459 -0.001738 0.575984 0.817459 -0.001738 0.575982 0.81746 -0.001741 0.817501 -0.575926 0.001049 0.817449 -0.576 0.001058 0.817449 -0.576 0.001058 0.817396 -0.576075 0.001066 -0.575984 -0.817459 0.001731 -0.575984 -0.817459 0.001732 -0.575984 -0.817459 0.001732 -0.575985 -0.817459 0.001733 -0.000137 -0.002044 -0.999998 -0.00013 -0.002034 -0.999998 -0.00013 -0.002034 -0.999998 -0.000124 -0.002024 -0.999998 -0.817462 0.575982 0.001061 -0.817466 0.575976 0.001061 -0.817466 0.575976 0.001061 -0.81747 0.575971 0.001062 0.575985 0.817458 0.001735 0.575984 0.817459 0.001738 0.575984 0.817459 0.001738 0.575982 0.81746 0.001741 0.817499 -0.575928 -0.001049 0.817448 -0.576002 -0.001057 0.817448 -0.576002 -0.001057 0.817396 -0.576075 -0.001066 -0.575984 -0.817459 -0.001731 -0.575984 -0.817459 -0.001732 -0.575984 -0.817459 -0.001732 -0.575984 -0.817459 -0.001733 -0.000132 -0.002037 0.999998 -0.00013 -0.002035 0.999998 -0.00013 -0.002035 0.999998 -0.000129 -0.002033 0.999998 0.970411 0.241451 0.001812 0.970412 0.241446 0.001813 0.970412 0.241446 0.001813 0.970414 0.241442 0.001813 -0.241441 0.970414 -0.001846 -0.241441 0.970414 -0.001846 -0.241441 0.970414 -0.001846 -0.241441 0.970414 -0.001846 -0.97041 -0.241458 -0.001814 -0.970413 -0.241446 -0.001813 -0.970413 -0.241446 -0.001813 -0.970416 -0.241433 -0.001812 0.24144 -0.970414 0.001846 0.24144 -0.970414 0.001846 0.24144 -0.970414 0.001846 0.24144 -0.970414 0.001846 -0.002212 0.001357 0.999997 -0.002212 0.001358 0.999997 -0.002212 0.001358 0.999997 -0.002212 0.001359 0.999997 0.970411 0.241451 -0.001812 0.970412 0.241446 -0.001813 0.970412 0.241446 -0.001813 0.970414 0.241442 -0.001813 -0.241441 0.970414 0.001846 -0.241441 0.970414 0.001846 -0.241441 0.970414 0.001846 -0.241441 0.970414 0.001846 -0.97041 -0.241457 0.001814 -0.970413 -0.241445 0.001813 -0.970413 -0.241445 0.001813 -0.970416 -0.241433 0.001812 0.24144 -0.970414 -0.001846 0.24144 -0.970414 -0.001846 0.24144 -0.970414 -0.001846 0.24144 -0.970414 -0.001846 -0.00221 0.001348 -0.999997 -0.002212 0.00136 -0.999997 -0.002212 0.00136 -0.999997 -0.002214 0.001372 -0.999997 0.817463 0.575981 0.001061 0.817465 0.575977 0.001062 0.817465 0.575977 0.001062 0.817468 0.575973 0.001062 -0.575985 0.817458 0.001735 -0.575984 0.817459 0.001738 -0.575984 0.817459 0.001738 -0.575982 0.81746 0.001741 -0.817508 -0.575916 -0.001049 -0.817451 -0.575997 -0.001058 -0.817451 -0.575997 -0.001058 -0.817394 -0.576078 -0.001067 0.575983 -0.81746 -0.00173 0.575984 -0.817459 -0.001732 0.575984 -0.817459 -0.001732 0.575985 -0.817459 -0.001733 0.000132 -0.002036 0.999998 0.000132 -0.002036 0.999998 0.000132 -0.002036 0.999998 0.000132 -0.002036 0.999998 0.817462 0.575982 -0.001061 0.817465 0.575977 -0.001062 0.817465 0.575977 -0.001062 0.817468 0.575973 -0.001062 -0.575985 0.817458 -0.001735 -0.575984 0.817459 -0.001738 -0.575984 0.817459 -0.001738 -0.575982 0.81746 -0.001741 -0.817509 -0.575915 0.001049 -0.817451 -0.575997 0.001058 -0.817451 -0.575997 0.001058 -0.817394 -0.576078 0.001067 0.575984 -0.817459 0.001731 0.575984 -0.817459 0.001732 0.575984 -0.817459 0.001732 0.575985 -0.817459 0.001733 0.000122 -0.002022 -0.999998 0.000128 -0.002031 -0.999998 0.000128 -0.002031 -0.999998 0.000135 -0.00204 -0.999998 -0.970412 0.24144 -0.002473 -0.970413 0.241439 -0.002473 -0.970413 0.241439 -0.002473 -0.970413 0.241438 -0.002473 0.24144 0.970415 -0.000788 0.24144 0.970415 -0.000788 0.24144 0.970415 -0.000788 0.24144 0.970415 -0.000788 0.970409 -0.241455 0.002475 0.970414 -0.241436 0.002473 0.970414 -0.241436 0.002473 0.970418 -0.241417 0.002471 -0.24144 -0.970415 0.000788 -0.24144 -0.970415 0.000789 -0.24144 -0.970415 0.000789 -0.241441 -0.970415 0.00079 0.002218 -0.001344 -0.999997 0.002216 -0.001356 -0.999997 0.002216 -0.001356 -0.999997 0.002214 -0.001368 -0.999997 -0.970411 0.241455 0.001153 -0.970413 0.24145 0.001153 -0.970413 0.24145 0.001153 -0.970414 0.241445 0.001153 0.24144 0.970405 -0.00448 0.24144 0.970405 -0.00448 0.24144 0.970405 -0.00448 0.24144 0.970405 -0.004481 0.97041 -0.241459 -0.001155 0.970415 -0.241442 -0.001153 0.970415 -0.241442 -0.001153 0.970419 -0.241425 -0.001152 -0.24144 -0.970405 0.004481 -0.24144 -0.970405 0.00448 -0.24144 -0.970405 0.00448 -0.241441 -0.970405 0.00448 0.002208 0.00407 0.999989 0.002208 0.004072 0.999989 0.002208 0.004072 0.999989 0.002209 0.004075 0.999989</float_array>
+          <technique_common>
+            <accessor source="#polySurface30Shape-normals-array" count="160" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="polySurface30Shape-polySurface30Shape-map1" name="polySurface30Shape-map1">
+          <float_array id="polySurface30Shape-polySurface30Shape-map1-array" count="480">0 0.07209 0 1 1 0 0.999948 0 0 1 1 0.928054 0 0 0.000109 1 0.999997 0.002202 1 0 0 0.99985 1 1 0 0 0 1 1 0.077837 1 0 0 0.922305 0.999949 1 0.028809 0.002447 1 0 0 1 0 1 0.983987 0 1 0.995375 0.508351 0 0 1 1 0.00168 1 0 0 0.997376 0.502637 1 0 0.07209 1 0 0 1 0 1 0.999948 0 1 0.928054 0 0 0.999997 0.002202 0.000109 1 0 0.99985 1 0 1 1 0 0 1 0.077837 0 1 0 0.922305 1 0 0.999949 1 0.028809 0.002447 0 1 1 0 0.983987 0 0 1 1 0.995375 0.508351 0 1 0.00168 0 1 0 0.997376 1 0 0.502637 1 0.508351 0 0 1 1 0.00168 1 0 0 0.997376 0.502637 1 0.508351 0 1 0.00168 0 1 0 0.997376 1 0 0.502637 1 0 0.07209 0 1 1 0 0.999948 0 0 1 1 0.928054 0 0 0.000109 1 0.999997 0.002202 1 0 0 0.99985 1 1 0 0 0 1 1 0.077837 1 0 0 0.922305 0.999949 1 0.028809 0.002447 1 0 0 1 0 1 0.983987 0 1 0.995375 0.508351 0 0 1 1 0.00168 1 0 0 0.997376 0.502637 1 0 0.07209 1 0 0 1 0 1 0.999948 0 1 0.928054 0 0 0.999997 0.002202 0.000109 1 0 0.99985 1 0 1 1 0 0 1 0.077837 0 1 0 0.922305 1 0 0.999949 1 0.028809 0.002447 0 1 1 0 0.983987 0 0 1 1 0.995375 0.508351 0 1 0.00168 0 1 0 0.997376 1 0 0.502637 1 0.508351 0 0 1 1 0.00168 1 0 0 0.997376 0.502637 1 0.508351 0 1 0.00168 0 1 0 0.997376 1 0 0.502637 1 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209 0 0.07209</float_array>
+          <technique_common>
+            <accessor source="#polySurface30Shape-polySurface30Shape-map1-array" count="240" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="polySurface30Shape-vertices">
+          <input semantic="POSITION" source="#polySurface30Shape-positions"/>
+        </vertices>
+        <triangles material="blinn5SG1SG" count="80">
+          <input semantic="VERTEX" source="#polySurface30Shape-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#polySurface30Shape-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#polySurface30Shape-polySurface30Shape-map1" offset="2" set="0"/>
+          <p>0 0 0 1 1 1 2 2 2 2 2 3 1 1 4 3 3 5 2 4 6 3 5 7 4 6 8 4 6 9 3 5 10 5 7 11 4 8 12 5 9 13 6 10 14 6 10 15 5 9 16 7 11 17 6 12 18 7 13 19 0 14 20 0 14 21 7 13 22 1 15 23 6 16 24 0 17 25 4 18 26 4 18 27 0 17 28 2 19 29 8 20 30 9 21 31 1 22 32 1 22 33 9 21 34 3 23 35 9 24 36 10 25 37 3 26 38 3 26 39 10 25 40 5 27 41 10 28 42 11 29 43 5 30 44 5 30 45 11 29 46 7 31 47 11 32 48 8 33 49 7 34 50 7 34 51 8 33 52 1 35 53 11 36 54 10 37 55 8 38 56 8 38 57 10 37 58 9 39 59 12 40 144 13 41 145 14 42 146 14 42 147 13 41 148 15 43 149 15 44 150 16 45 151 14 46 152 14 46 153 16 45 154 17 47 155 17 48 156 16 49 157 18 50 158 18 50 159 16 49 160 19 51 161 18 52 162 19 53 163 12 54 164 12 54 165 19 53 166 13 55 167 18 56 60 12 57 61 17 58 62 17 58 63 12 57 64 14 59 65 20 60 168 21 61 169 13 62 170 13 62 171 21 61 172 15 63 173 22 64 174 16 65 175 21 66 176 21 66 177 16 65 178 15 67 179 22 68 180 23 69 181 16 70 182 16 70 183 23 69 184 19 71 185 23 72 186 20 73 187 19 74 188 19 74 189 20 73 190 13 75 191 23 76 66 22 77 67 20 78 68 20 78 69 22 77 70 21 79 71 24 80 72 25 81 73 26 82 74 26 82 75 25 81 76 27 83 77 26 84 78 27 85 79 28 86 80 28 86 81 27 85 82 29 87 83 28 88 84 29 89 85 30 90 86 30 90 87 29 89 88 31 91 89 30 92 90 31 93 91 24 94 92 24 94 93 31 93 94 25 95 95 30 96 96 24 97 97 28 98 98 28 98 99 24 97 100 26 99 101 32 100 102 33 101 103 25 102 104 25 102 105 33 101 106 27 103 107 33 104 108 34 105 109 27 106 110 27 106 111 34 105 112 29 107 113 34 108 114 35 109 115 29 110 116 29 110 117 35 109 118 31 111 119 35 112 120 32 113 121 31 114 122 31 114 123 32 113 124 25 115 125 35 116 126 34 117 127 32 118 128 32 118 129 34 117 130 33 119 131 36 120 192 37 121 193 38 122 194 38 122 195 37 121 196 39 123 197 39 124 198 40 125 199 38 126 200 38 126 201 40 125 202 41 127 203 41 128 204 40 129 205 42 130 206 42 130 207 40 129 208 43 131 209 42 132 210 43 133 211 36 134 212 36 134 213 43 133 214 37 135 215 42 136 132 36 137 133 41 138 134 41 138 135 36 137 136 38 139 137 44 140 216 45 141 217 37 142 218 37 142 219 45 141 220 39 143 221 46 144 222 40 145 223 45 146 224 45 146 225 40 145 226 39 147 227 46 148 228 47 149 229 40 150 230 40 150 231 47 149 232 43 151 233 47 152 234 44 153 235 43 154 236 43 154 237 44 153 238 37 155 239 47 156 138 46 157 139 44 158 140 44 158 141 46 157 142 45 159 143</p>
+        </triangles>
+      </mesh>
+      <extra>
+        <technique profile="MAYA">
+          <double_sided>1</double_sided>
+          <dynamic_attributes>
+            <miShadingSamplesOverride short_name="mso" type="bool">0</miShadingSamplesOverride>
+            <miShadingSamples short_name="msh" type="float">0</miShadingSamples>
+            <miMaxDisplaceOverride short_name="mdo" type="bool">0</miMaxDisplaceOverride>
+            <miMaxDisplace short_name="mmd" type="float">0</miMaxDisplace>
+          </dynamic_attributes>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="VisualSceneNode" name="roof1">
+      <node id="directionalLight1" name="directionalLight1" type="NODE">
+        <matrix sid="transform">0.181786 0.267169 0.946348 0 -0.609922 0.785527 -0.104606 0 -0.771329 -0.558183 0.305751 0 0 0 0 1</matrix>
+        <instance_light url="#directionalLightShape1"/>
+      </node>
+      <node id="directionalLight2" name="directionalLight2" type="NODE">
+        <matrix sid="transform">0.035026 -0.97596 0.215118 0 0.369367 0.212651 0.904625 0 -0.928623 0.047771 0.367936 0 0 0 0 1</matrix>
+        <instance_light url="#directionalLightShape2"/>
+      </node>
+      <node id="directionalLight3" name="directionalLight3" type="NODE">
+        <matrix sid="transform">-0.527726 -0.363601 -0.767658 0 -0.805713 0.500427 0.316859 0 0.268947 0.785727 -0.557047 0 0 0 0 1</matrix>
+        <instance_light url="#directionalLightShape3"/>
+      </node>
+      <node id="polySurface28" name="truss" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <node id="B" name="B" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#BShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="C" name="C" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#CShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="A" name="A" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#AShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="AB" name="AB" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#ABShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="BC" name="BC" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#BCShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="BE" name="BE" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#BEShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="BD" name="BD" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#BDShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="D" name="D" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#DShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="H" name="H" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#HShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="G" name="G" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#GShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="F" name="F" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#FShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="EF" name="EF" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#EFShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="FG" name="FG" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#FGShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="FH" name="FH" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#FHShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="DF" name="DF" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#DFShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="E" name="E" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#EShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="DE" name="DE" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#DEShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="AC" name="AC" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#ACShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="CE" name="CE" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#CEShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="EG" name="EG" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#EGShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+        <node id="GH" name="GH" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <instance_geometry url="#GHShape">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="blinn6SG1SG" target="#blinn6SG1">
+                  <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                </instance_material>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+        </node>
+      </node>
+      <node id="polySurface29" name="polySurface29" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#polySurface29Shape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="blinn4SG1SG" target="#blinn4SG1">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="polySurface30" name="polySurface30" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#polySurface30Shape">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="blinn5SG1SG" target="#blinn5SG1">
+                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <extra>
+        <technique profile="FCOLLADA">
+          <start_time>0.041666</start_time>
+          <end_time>2</end_time>
+        </technique>
+      </extra>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_physics_scene url="#MayaNativePhysicsScene"/>
+    <instance_visual_scene url="#VisualSceneNode"/>
+  </scene>
+</COLLADA>
