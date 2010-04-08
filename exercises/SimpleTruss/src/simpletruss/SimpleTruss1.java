@@ -279,13 +279,105 @@ public class SimpleTruss1 extends TrussExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
+        rep = modelNode.extractElement(C, "VisualSceneNode/polySurface28/C");
+        C.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(D, "VisualSceneNode/polySurface28/D");
+        D.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+
+        rep = modelNode.extractElement(E, "VisualSceneNode/polySurface28/E");
+        E.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = modelNode.extractElement(F, "VisualSceneNode/polySurface28/F");
+        F.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        
+        rep = modelNode.extractElement(G, "VisualSceneNode/polySurface28/G");
+        G.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(H, "VisualSceneNode/polySurface28/H");
+        H.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
         rep = modelNode.extractElement(AB, "VisualSceneNode/polySurface28/AB");
         AB.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
+        rep = modelNode.extractElement(AC, "VisualSceneNode/polySurface28/AC");
+        AC.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
 
-        //getSchematic().getBackground().addRepresentation(modelNode.getRemainder(getSchematic().getBackground()));
+        rep = modelNode.extractElement(BC, "VisualSceneNode/polySurface28/BC");
+        BC.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(BD, "VisualSceneNode/polySurface28/BD");
+        BD.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(BE, "VisualSceneNode/polySurface28/BE");
+        BE.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(CE, "VisualSceneNode/polySurface28/CE");
+        CE.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(DE, "VisualSceneNode/polySurface28/DE");
+        DE.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(DF, "VisualSceneNode/polySurface28/DF");
+        DF.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(EF, "VisualSceneNode/polySurface28/EF");
+        EF.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(EG, "VisualSceneNode/polySurface28/EG");
+        EG.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(FG, "VisualSceneNode/polySurface28/FG");
+        FG.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(FH, "VisualSceneNode/polySurface28/FH");
+        FH.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(GH, "VisualSceneNode/polySurface28/GH");
+        GH.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+
+
+        getSchematic().getBackground().addRepresentation(modelNode.getRemainder(getSchematic().getBackground()));
 
 
         // create default schematic representations for the redundant bars.
