@@ -5,20 +5,23 @@
 package simpletruss;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.truss.TrussExercise;
-import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.AngleMeasurement;
+import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.PointAngleMeasurement;
+import edu.gatech.statics.objects.bodies.Background;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
@@ -27,7 +30,11 @@ import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.tasks.SolveFBDTask;
+import edu.gatech.statics.tasks.SolveZFMTask;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -44,12 +51,35 @@ public class SimpleTruss1 extends TrussExercise {
         Description description = new Description();
 
         description.setTitle("Gambrel roof truss");
-        description.setGoals(
-                "Determine the tension or compression in each member.");
+        description.setNarrative("Jodi is a civil engineering student at Georgia Tech and will be spending the summer in Wyoming "
+                + "visiting her older brother Nick, who is a Georgia Tech graduate with a degree in mechanical "
+                + "engineering.  Whenever she goes and visits with him, he always comes up with a project for her "
+                + "that involves engineering.  He owns over 50 acres of land and has a barn located on his"
+                + "property that is almost 100 years old.  Several of the beams in the structure have some rotting "
+                + "and will need to be replaced, but Nick is unsure of what size and kind of wood should be "
+                + "purchased to replace the beams and how large the screws need to be to ensure the integrity of "
+                + "the roof.  He has come up with a project for her this summer that involves renovating the roof "
+                + "structure of the barn on his property.  He has given her the task of drawing up the truss "
+                + "structure, which happens to be a Gambrel roof truss, and solve for the loads on each members "
+                + "of the truss.");
 
-//        description.addImage("spiderwoman/assets/brick.png");
-//        description.addImage("spiderwoman/assets/brickDark.png");
-//        description.addImage("spiderwoman/assets/window.png");
+        description.setProblemStatement("The roof can be drawn as a Gambrel roof truss and can be examined from a 2D perspective.  "
+                + "The truss has symmetric loading with vertical loads of 3kN at joints A and H and 6kN at points B, "
+                + "D, and F.  It is mandatory to first identify the zero force members in the truss and to create a "
+                + "FBD of the whole truss to solve for the supports before you can solve for the member forces.  "
+                + "Then continue to solve for the unknowns by using either method of sections (which is recommended) or the method of joints."
+                + "");
+
+        description.setGoals("Identify the zero force members in the entire structure.  Create a FBD of the whole truss and "
+                + "solve for the support forces.  Then solve for the following forces BD, BE, and, CE by the method"
+                + "of sections or joints.");
+
+
+
+        description.setLayout(new ScrollbarLayout());
+
+        description.addImage("simpletruss/assets/mainpicture.png");
+        description.addImage("simpletruss/assets/screenshot.png");
 
         return description;
     }
@@ -289,17 +319,16 @@ public class SimpleTruss1 extends TrussExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-
         rep = modelNode.extractElement(E, "VisualSceneNode/polySurface28/E");
         E.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         rep = modelNode.extractElement(F, "VisualSceneNode/polySurface28/F");
         F.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
-        
+
         rep = modelNode.extractElement(G, "VisualSceneNode/polySurface28/G");
         G.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
@@ -414,5 +443,24 @@ public class SimpleTruss1 extends TrussExercise {
         for (Point point : points) {
             point.createDefaultSchematicRepresentation();
         }
+
+
+        addTask(new SolveZFMTask("Solve zfms"));
+
+        List<Body> allBodies = new ArrayList<Body>();
+        for (Body body : getSchematic().allBodies()) {
+            if (body instanceof ZeroForceMember || body instanceof Background) {
+                continue;
+            }
+            allBodies.add(body);
+        }
+        BodySubset subset = new BodySubset(allBodies);
+        subset.setSpecialName("Whole Truss");
+        addTask(new SolveFBDTask("Solve whole truss", subset));
+
+
+        addTask(new Solve2FMTask("Solve BD", BD, BD.getConnector1()));
+        addTask(new Solve2FMTask("Solve BE", BE, BE.getConnector1()));
+        addTask(new Solve2FMTask("Solve CE", CE, CE.getConnector1()));
     }
 }

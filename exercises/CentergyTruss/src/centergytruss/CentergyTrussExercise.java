@@ -23,10 +23,28 @@ public class CentergyTrussExercise extends OrdinaryExercise {
     public Description getDescription() {
         Description description = new Description();
 
-        description.setNarrative("blah blah blah Centergy deck collapse");
+        description.setNarrative("As you may have heard, there was a partial collapse of the parking deck behind the Centergy" +
+                "Building in Technology Square on Monday, June 29, 2009, around noon time. Though not on" +
+                "Georgia Tech campus, some Tech employees do lease parking spaces within this deck." +
+                "Thankfully, nobody was injured.");
+
+        description.setProblemStatement("The first picture shows two different supports that the firefighters built to maintain stability of " +
+                "the floors adjacent to where the floors collapsed. We want to analyze the top structure in this" +
+                "problem. To simplify the analysis, let’s only look at the front plane which can be simplified as " +
+                "shown in the bottom picture. We can also simplify the analysis by assuming the entire structur" +
+                "is supporting 30 kips, which is the approximate weight of the slab of concrete and cars on top of" +
+                "it.  We can simplify the drawings slightly more by looking at strictly the bottom half which will" +
+                "help in our analysis of the truss. We can translate the forces from the top of the structure down to" +
+                "points B and C.");
+
         description.setGoals(
-                "Please solve for the forces BA, BD, CD using either the " +
-                "method of joints or the method of sections.");
+                "Solve for the forces in BA, BD, and CD using either the method of joints or the method of " +
+                "sections. Specify whether each member is in tension, compression or is a zero force member.");
+
+
+
+        description.addImage("centergytruss/assets/mainpicture.png");
+
 
         return description;
     }
