@@ -46,8 +46,11 @@ public class CentergyTrussExercise extends OrdinaryExercise {
 
 
 
-        description.addImage("centergytruss/assets/mainpicture.png");
         description.addImage("centergytruss/assets/screenshot.png");
+        description.addImage("centergytruss/assets/mainpicture.png");
+        description.addImage("centergytruss/assets/outsidebeam.png");
+        description.addImage("centergytruss/assets/insidedeck.png");
+        
         
 
 
