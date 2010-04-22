@@ -15,8 +15,10 @@ import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.modes.centroid.actions.SetAreaValue;
 import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
 import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
+import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     private static final float TOLERANCE = .01f;
 //    private CentroidPartObject cpObj;
     private CentroidBody body;
+    private CentroidPartObject currentlySelected;
 
     public CentroidDiagram(CentroidBody body) {
         super(body);
@@ -46,11 +49,17 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //            }
 //        }
     }
+    private SelectionFilter selector = new SelectionFilter() {
+
+        public boolean canSelect(SimulationObject obj) {
+            return obj instanceof CentroidPartObject;
+        }
+    };
 
     @Override
     public SelectionFilter getSelectionFilter() {
         //can select CentroidPartObjects. not the body
-        return super.getSelectionFilter();
+        return selector;
     }
 
     @Override
@@ -58,8 +67,31 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //somethind like that. also needs to be selectable = true
         //CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getModePanel(CentroiMode.instance.getModeName());
         //modePanel.onSelect((CentroidPartObject) obj);
-    }
+        //System.out.println("Oi!!! Clicked on: "+obj);
 
+        // no effect if we click on the same thing twice
+        if (currentlySelected == obj) {
+            return;
+        }
+
+        // if we are here, we know that currentlySelected != obj
+        // de-highlight the last selection
+        if (currentlySelected != null) {
+            currentlySelected.setDisplaySelected(false);
+            this.activate();
+        }
+
+        // switch the current selection
+        currentlySelected = (CentroidPartObject) obj;
+
+        if (currentlySelected != null) {
+            currentlySelected.setDisplaySelected(true);
+        }
+
+        // update the UI
+        CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+        modePanel.updateSelection(currentlySelected);
+    }
 
     public boolean check(String areaValue, String xValue, String yValue) {
         BigDecimal userArea = Parser.evaluate(areaValue);
@@ -99,17 +131,17 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     }
 
     public void setArea(String text) {
-        SetAreaValue action = new SetAreaValue(text);
+        SetAreaValue action = new SetAreaValue(text, currentlySelected);
         performAction(action);
     }
 
     public void setXPosition(String text) {
-        SetXPositionValue action = new SetXPositionValue(text);
+        SetXPositionValue action = new SetXPositionValue(text, currentlySelected);
         performAction(action);
     }
 
     public void setYPosition(String text) {
-        SetYPositionValue action = new SetYPositionValue(text);
+        SetYPositionValue action = new SetYPositionValue(text, currentlySelected);
         performAction(action);
     }
 
@@ -122,7 +154,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         if (isSolved()) {
             StaticsApplication.getApp().setDefaultUIFeedback("You have solved for the values for the centroid.");
         } else {
-            StaticsApplication.getApp().setDefaultUIFeedback("Enter the total area, the X, and Y position for the section.");
+            StaticsApplication.getApp().setDefaultUIFeedback("Select a part of the body to determine its centroid.");
         }
         StaticsApplication.getApp().resetUIFeedback();
 
@@ -160,7 +192,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     }
 
     protected CentroidPart getCentroidPart() {
-        return (CentroidPart) getKey();
+        return currentlySelected.getCentroidPart();//getKey();
     }
 
     @Override
@@ -196,6 +228,12 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     }
 
     public void updateCentroid() {
+//        for (SimulationObject cpo : getBaseObjects()) {
+//            if (cpo instanceof CentroidPartObject) {
+//                //System.out.println("#############"+((CentroidPartObject)cpo).getName());
+//                ((CentroidPartObject)cpo).setSelectable(true);
+//            }
+//        }
         //TODO FILL THIS OUT
         //Needs to update so that the centroid is displayed properly once the user solves,
         //but this might not be needed and we can do it like friction problems for mu

@@ -5,8 +5,9 @@
 package edu.gatech.statics.modes.centroid.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
+import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.CentroidState;
-import edu.gatech.statics.modes.centroid.CentroidState.Builder;
+import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 
 /**
  *
@@ -15,16 +16,33 @@ import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 public class SetYPositionValue implements DiagramAction<CentroidState> {
 
     final private String yValue;
+    final private CentroidPartObject currentlySelected;
 
-    public SetYPositionValue(String newYValue) {
+    public SetYPositionValue(String newYValue, CentroidPartObject currentlySelected) {
         //this.force = force;
         this.yValue = newYValue;
+        this.currentlySelected = currentlySelected;
     }
 
-    public CentroidState performAction(CentroidState oldState) {
-        Builder builder = oldState.getBuilder();
-        builder.setArea(yValue);
-        return builder.build();
+//    public CentroidPartState performAction(CentroidState oldState, CentroidPartObject part) {
+//        CentroidPartState.Builder builder = oldState.getMyPartState(part.getCentroidPart()).getBuilder();
+//        builder.setYPosition(yValue);
+//        return builder.build();
+//    }
+//
+//    public CentroidState performAction(CentroidState oldState) {
+//        CentroidState.Builder builder = oldState.getBuilder();
+//        builder.setYPosition(yValue);
+//        return builder.build();
+//    }
+
+     public CentroidState performAction(CentroidState oldState) {
+        CentroidPartState.Builder builder = oldState.getMyPartState(currentlySelected.getCentroidPart()).getBuilder();
+        builder.setYPosition(yValue);
+        CentroidState.Builder builder2 = oldState.getBuilder();
+        builder2.getMyParts().remove(currentlySelected.getCentroidPart());
+        builder2.getMyParts().put(currentlySelected.getCentroidPart(), builder.build());
+        return builder2.build();
     }
 
     @Override

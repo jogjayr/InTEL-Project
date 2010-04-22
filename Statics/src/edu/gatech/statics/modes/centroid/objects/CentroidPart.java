@@ -16,17 +16,19 @@ public class CentroidPart implements DiagramKey {
     final String yPosition;
     final String zPosition;
     final String partName;
-
+    final String surfaceArea;
     enum PartType {
 
         CIRCLE, RECTANGLE, TRIANGLE;
     }
 
-    public CentroidPart(String xPosition, String yPosition, String zPosition, String partName) {
+    public CentroidPart(String xPosition, String yPosition, String zPosition, String partName, String surfaceArea) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.zPosition = zPosition;
         this.partName = partName;
+        this.surfaceArea = surfaceArea;
+
     }
 
     public String getPartName() {
@@ -46,6 +48,6 @@ public class CentroidPart implements DiagramKey {
     }
 
     public String getSurfaceArea() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return surfaceArea;
     }
 }

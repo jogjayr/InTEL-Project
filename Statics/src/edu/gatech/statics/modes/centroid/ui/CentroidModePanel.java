@@ -14,11 +14,20 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
+import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidDiagram;
 import edu.gatech.statics.modes.centroid.CentroidMode;
+import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.CentroidState;
+import edu.gatech.statics.modes.centroid.CentroidState.Builder;
+import edu.gatech.statics.modes.centroid.objects.CentroidPart;
+import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.NextButton;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,72 +35,24 @@ import edu.gatech.statics.ui.components.NextButton;
  */
 public class CentroidModePanel extends ApplicationModePanel {
 
+    private BContainer mainContainer;
+    private BContainer equationContainer;
     private BTextField areaField;
     private BTextField xField;
     private BTextField yField;
+    private BLabel areaLabel;
+    private BLabel xLabel;
+    private BLabel yLabel;
     private BButton checkButton;
+    private CentroidPartObject currentlySelected;
 
     public CentroidModePanel() {
-
-        BContainer mainContainer = new BContainer(new BorderLayout(5, 0));
+        mainContainer = new BContainer(new BorderLayout(5, 0));
+        equationContainer = new BContainer(new TableLayout(2, 5, 5));
         add(mainContainer, BorderLayout.CENTER);
-
-        ActionListener listener = new ActionListener() {
-
-            public void actionPerformed(ActionEvent event) {
-                performCheck();
-            }
-        };
-
-        checkButton = new NextButton("Check", listener, "check");
-        mainContainer.add(checkButton, BorderLayout.EAST);
-
-        BContainer equationContainer = new BContainer(new TableLayout(2, 5, 5));
         mainContainer.add(equationContainer, BorderLayout.CENTER);
-
-        areaField = new BTextField() {
-
-            @Override
-            protected void lostFocus() {
-                super.lostFocus();
-                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setArea(getText());
-            }
-        };
-
-        equationContainer.add(new BLabel("Surface Area: "), BorderLayout.WEST);
-        equationContainer.add(areaField, BorderLayout.CENTER);
-        areaField.setPreferredWidth(200);
-        areaField.setStyleClass("textfield_appbar");
-
-        xField = new BTextField() {
-
-            @Override
-            protected void lostFocus() {
-                super.lostFocus();
-                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setXPosition(getText());
-            }
-        };
-        equationContainer.add(new BLabel("X Position: "), BorderLayout.WEST);
-        equationContainer.add(xField, BorderLayout.CENTER);
-        xField.setPreferredWidth(200);
-        xField.setStyleClass("textfield_appbar");
-
-        yField = new BTextField() {
-
-            @Override
-            protected void lostFocus() {
-                super.lostFocus();
-                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setYPosition(getText());
-            }
-        };
-        equationContainer.add(new BLabel("Y Position: "), BorderLayout.WEST);
-        equationContainer.add(yField, BorderLayout.CENTER);
-        yField.setPreferredWidth(200);
-        yField.setStyleClass("textfield_appbar");
-        
+        generateUI();
+        //SimulationObject o = (SimulationObject) getDiagram().allObjects().get(0);
     }
 
     protected void performCheck() {
@@ -115,7 +76,7 @@ public class CentroidModePanel extends ApplicationModePanel {
     public void stateChanged() {
         super.stateChanged();
 
-        // lock the input fields if the diagram is locked
+//         lock the input fields if the diagram is locked
         if (getDiagram().isLocked()) {
             areaField.setEnabled(false);
             xField.setEnabled(false);
@@ -131,17 +92,130 @@ public class CentroidModePanel extends ApplicationModePanel {
 
     @Override
     public void activate() {
-        CentroidState state = (CentroidState) getDiagram().getCurrentState();
+        if (getDiagram() != null && currentlySelected != null) {
+            CentroidState state = (CentroidState) getDiagram().getCurrentState();
+            if (state.getBuilder().getMyParts().containsKey(currentlySelected.getCentroidPart())) {//state.getMyPartState(currentlySelected.getCentroidPart()) != null) {
+                areaField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getArea());
+                xField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getXPosition());
+                yField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getYPosition());
+            } else {
+                CentroidPartState.Builder partBuilder = new CentroidPartState.Builder();
+                partBuilder.setArea("");
+                partBuilder.setXPosition("");
+                partBuilder.setYPosition("");
+                partBuilder.setSolved(false);
+                partBuilder.setMyPart(currentlySelected.getCentroidPart());
 
-        areaField.setText(state.getArea());
-        xField.setText(state.getXPosition());
-        yField.setText(state.getYPosition());
+                Builder builder = state.getBuilder();
+                Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
+                partsMap.put(partBuilder.getMyPart(), partBuilder.build());
 
-        stateChanged();
+                getDiagram().pushState(builder.build());
+                //((CentroidState)getDiagram().getCurrentState()).getEquationStates().containsKey(currentlySelected.getCentroidPart());
+                areaField.setText("");
+                xField.setText("");
+                yField.setText("");
+            }
+            stateChanged();
+        }
     }
 
     @Override
     public DiagramType getDiagramType() {
         return CentroidMode.instance.getDiagramType();
+    }
+
+    public void updateSelection(CentroidPartObject currentlySelected) {
+        this.currentlySelected = currentlySelected;
+        if (currentlySelected != null) {
+            if (!checkButton.isAdded()) {
+                mainContainer.add(checkButton, BorderLayout.EAST);
+            }
+            if (!areaField.isAdded()) {
+                equationContainer.add(areaLabel, BorderLayout.WEST);
+                equationContainer.add(areaField, BorderLayout.CENTER);
+            }
+            if (!xField.isAdded()) {
+                equationContainer.add(xLabel, BorderLayout.WEST);
+                equationContainer.add(xField, BorderLayout.CENTER);
+            }
+            if (!yField.isAdded()) {
+                equationContainer.add(yLabel, BorderLayout.WEST);
+                equationContainer.add(yField, BorderLayout.CENTER);
+            }
+            areaField.setText("");
+            xField.setText("");
+            yField.setText("");
+
+            activate();
+        } else {
+            mainContainer.remove(checkButton);
+            areaField.setText("");
+            xField.setText("");
+            yField.setText("");
+            equationContainer.removeAll();
+        }
+        InterfaceRoot.getInstance().getApplicationBar().updateSize();
+    }
+
+    private void generateUI() {
+        ActionListener listener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                performCheck();
+            }
+        };
+
+        checkButton = new NextButton("Get Centroid", listener, "check");
+
+
+        areaField = new BTextField() {
+
+            @Override
+            protected void lostFocus() {
+                super.lostFocus();
+                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
+                diagram.setArea(getText());
+            }
+        };
+
+        areaField.setPreferredWidth(200);
+        areaField.setStyleClass("textfield_appbar");
+
+        areaLabel = new BLabel("Surface Area: ");
+
+
+
+        xField = new BTextField() {
+
+            @Override
+            protected void lostFocus() {
+                super.lostFocus();
+                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
+                diagram.setXPosition(getText());
+            }
+        };
+
+        xField.setPreferredWidth(200);
+        xField.setStyleClass("textfield_appbar");
+
+        xLabel = new BLabel("X Position: ");
+
+
+
+        yField = new BTextField() {
+
+            @Override
+            protected void lostFocus() {
+                super.lostFocus();
+                CentroidDiagram diagram = (CentroidDiagram) getDiagram();
+                diagram.setYPosition(getText());
+            }
+        };
+
+        yField.setPreferredWidth(200);
+        yField.setStyleClass("textfield_appbar");
+
+        yLabel = new BLabel("Y Position: ");
     }
 }

@@ -2,45 +2,31 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.gatech.statics.modes.centroid;
 
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.util.Builder;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  *
  * @author Jimmy Truesdell
  */
-public class CentroidState implements DiagramState<CentroidDiagram> {
-
-    //final private Map<AnchoredVector, String> terms;
+public class CentroidPartState implements DiagramState<CentroidDiagram>{
 
     final private boolean solved;
     final private String area;
     final private String xPosition;
     final private String yPosition;
-    final private Map<CentroidPart, CentroidPartState> myParts;
+    final private CentroidPart myPart;
 
-    private CentroidState(Builder builder) {
+    private CentroidPartState(Builder builder) {
         this.solved = builder.solved;
         this.area = builder.area;
         this.xPosition = builder.xPosition;
         this.yPosition = builder.yPosition;
-        this.myParts = Collections.unmodifiableMap(builder.getMyParts());
-    }
-
-    public Map<CentroidPart, CentroidPartState> getEquationStates() {
-        return myParts;
-    }
-
-    public CentroidPartState getMyPartState(CentroidPart part){
-        return myParts.get(part);
+        this.myPart = builder.myPart;
     }
 
     public boolean isLocked() {
@@ -59,30 +45,27 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         return yPosition;
     }
 
+    public CentroidPart getMyPart() {
+        return myPart;
+    }
 
-
-    public static class Builder implements edu.gatech.statics.util.Builder<CentroidState> {
+    public static class Builder implements edu.gatech.statics.util.Builder<CentroidPartState> {
 
         private boolean solved;
         private String area;
         private String xPosition;
         private String yPosition;
-        private Map<CentroidPart, CentroidPartState> myParts;
+        private CentroidPart myPart;
 
         public Builder() {
-            this.solved = false;
-            this.area = "";
-            this.xPosition = "";
-            this.yPosition = "";
-            this.myParts = new HashMap<CentroidPart, CentroidPartState>();
         }
 
-        public Builder(CentroidState state) {
+        public Builder(CentroidPartState state) {
             this.solved = state.solved;
             this.area = state.area;
             this.xPosition = state.xPosition;
             this.yPosition = state.yPosition;
-            this.myParts = new HashMap<CentroidPart, CentroidPartState>(state.getEquationStates());
+            this.myPart = state.myPart;
         }
 
         public boolean isLocked() {
@@ -101,17 +84,8 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             return yPosition;
         }
 
-        public Map<CentroidPart, CentroidPartState> getMyParts() {
-            return myParts;
-        }
-
-        public void putEquationState(CentroidPartState myPartState) {
-            myParts.put(myPartState.getMyPart(), myPartState);
-        }
-
-        public void setEquationStates(Map<CentroidPart, CentroidPartState> myPartStates) {
-            this.myParts.clear();
-            this.myParts.putAll(myPartStates);
+        public CentroidPart getMyPart() {
+            return myPart;
         }
 
         public void setSolved(boolean solved) {
@@ -130,14 +104,18 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             this.yPosition = yPosition;
         }
 
-        public CentroidState build() {
-            return new CentroidState(this);
+        public void setMyPart(CentroidPart myPart) {
+            this.myPart = myPart;
+        }
+
+        public CentroidPartState build() {
+            return new CentroidPartState(this);
         }
     }
 
     @Override
     public String toString() {
-        return "CentroidState: {solved=" + solved + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myParts + "\"}";
+        return "CentroidPartState: {solved=" + solved + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myPart + "\"}";
     }
 
     public Builder getBuilder() {

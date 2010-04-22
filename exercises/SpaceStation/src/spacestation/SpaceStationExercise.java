@@ -99,13 +99,13 @@ public class SpaceStationExercise extends CentroidExercise {
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
-        CentroidPartObject A = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part A"));
+        CentroidPartObject A = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part A", "0.0"));
         A.setName("Part A");
-        CentroidPartObject B = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part B"));
+        CentroidPartObject B = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part B", "0.0"));
         B.setName("Part B");
-        CentroidPartObject C = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part C"));
+        CentroidPartObject C = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part C", "0.0"));
         C.setName("Part C");
-        CentroidPartObject D = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part D"));
+        CentroidPartObject D = new CentroidPartObject(new CentroidPart("0.0", "0.0", "0.0", "Part D", "0.0"));
         D.setName("Part D");
         Point p = new Point("Centroid", new Vector3bd("451", "381", "0"));
         p.setName("Centroid");
@@ -233,7 +233,7 @@ public class SpaceStationExercise extends CentroidExercise {
         Vector3f modelTranslation = new Vector3f(0, 0, 0);
         float modelScale = .4f;
 
-        ModelRepresentation rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel1");
+        ModelRepresentation rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/solarpanel1");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -243,7 +243,7 @@ public class SpaceStationExercise extends CentroidExercise {
         MimicRepresentation mimic = new MimicRepresentation(A, rep);
         A.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel2");
+        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/solarpanel2");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -253,7 +253,7 @@ public class SpaceStationExercise extends CentroidExercise {
         mimic = new MimicRepresentation(B, rep);
         B.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "RootNode/completespacestation/mainBody");
+        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/mainBody");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -263,7 +263,7 @@ public class SpaceStationExercise extends CentroidExercise {
         mimic = new MimicRepresentation(C, rep);
         C.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "RootNode/completespacestation/truss");
+        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/truss");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
