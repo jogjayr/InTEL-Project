@@ -8,6 +8,7 @@ package centergytruss;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.representations.ModelNode;
@@ -41,9 +42,13 @@ public class CentergyTrussExercise extends OrdinaryExercise {
                 "Solve for the forces in BA, BD, and CD using either the method of joints or the method of " +
                 "sections. Specify whether each member is in tension, compression or is a zero force member.");
 
+        description.setLayout(new ScrollbarLayout());
+
 
 
         description.addImage("centergytruss/assets/mainpicture.png");
+        description.addImage("centergytruss/assets/screenshot.png");
+        
 
 
         return description;
