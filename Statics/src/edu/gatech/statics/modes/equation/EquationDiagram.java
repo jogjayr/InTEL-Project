@@ -458,7 +458,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
 
         // make sure that the state is okay with the underlying diagram.
-        validateState();
+        uncheckSingularEquations(); // this marks singular equations as unchecked
+        validateState(); // this checks to make sure no underlying stuff has changed
 
         // mark the state as changed so that the UI updates.
         stateChanged();
@@ -494,10 +495,11 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             }
 
             // each unsolved contact point is an unknown
-            if(simulationObject instanceof ContactPoint) {
+            if (simulationObject instanceof ContactPoint) {
                 ContactPoint contact = (ContactPoint) simulationObject;
-                if(!contact.getFrictionCoefficient().getQuantity().isKnown())
+                if (!contact.getFrictionCoefficient().getQuantity().isKnown()) {
                     unknowns++;
+                }
             }
         }
         int maxUnknowns = 3;
@@ -518,6 +520,47 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             TooManyUnknownsPopup popup = new TooManyUnknownsPopup();
             popup.popup(0, 0, true);
             popup.center();
+        }
+    }
+
+    /**
+     * This makes sure that singular equations are unchecked. 
+     * Singular equations are ones that are of the form 0 = 0, or .001 = 0.
+     */
+    private void uncheckSingularEquations() {
+
+        boolean changed = false;
+
+        EquationState.Builder builder = new EquationState.Builder(getCurrentState());
+        for (EquationMathState state : getCurrentState().getEquationStates().values()) {
+
+            if (state instanceof ArbitraryEquationMathState) {
+                // pass on this
+            } else if (state instanceof TermEquationMathState) {
+                TermEquationMathState termState = (TermEquationMathState) state;
+                TermEquationMathState.Builder termBuilder = new TermEquationMathState.Builder(termState);
+
+                boolean singular = true;
+                for (AnchoredVector anchoredVector : termState.getTerms().keySet()) {
+                    if (anchoredVector.isSymbol()) {
+                        singular = false;
+                    }
+                }
+
+                if (singular) {
+                    termBuilder.setLocked(false);
+                    builder.putEquationState(termBuilder.build());
+                    changed = true;
+                }
+            }
+        }
+
+        if (changed) {
+            // build the result.
+            pushState(builder.build());
+
+            // clear the states
+            clearStateStack();
         }
     }
 
