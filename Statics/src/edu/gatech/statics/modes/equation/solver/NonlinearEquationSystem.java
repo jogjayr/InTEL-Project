@@ -52,6 +52,17 @@ public class NonlinearEquationSystem implements EquationSystem {
     private void process() {
 
         List<Polynomial> polys = new ArrayList<Polynomial>(system.values());
+        List<Polynomial> polysToRemove = new ArrayList<Polynomial>();
+
+        // get rid of things that will corrupt the equations.
+        // ie, things that are like .017 = 0
+        for (Polynomial polynomial : polys) {
+            if (polynomial.isSingular() && polynomial.getLeadingTerm().getSymbols().isEmpty()) {
+                polysToRemove.add(polynomial);
+            }
+        }
+        polys.removeAll(polysToRemove);
+
         List<Polynomial> basis = null;
 
         try {
