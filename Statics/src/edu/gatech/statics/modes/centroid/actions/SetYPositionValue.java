@@ -47,6 +47,6 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
 
     @Override
     public String toString() {
-        return "ChangeAreaValue [" + yValue + "]";
+        return "ChangeYPositionValue [" + yValue + "]";
     }
 }

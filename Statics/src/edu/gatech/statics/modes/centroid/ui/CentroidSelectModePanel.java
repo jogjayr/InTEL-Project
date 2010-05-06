@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Calvin Ashmore
+ * @author Jimmy Truesdell
  */
 public class CentroidSelectModePanel extends SelectModePanel {
 

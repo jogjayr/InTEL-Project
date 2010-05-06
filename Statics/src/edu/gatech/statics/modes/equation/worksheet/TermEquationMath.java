@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * ArbitraryEquationMath is the logical end of managing the equations in the equation mode.
+ * TermEquationMath is the logical end of managing the equations in the equation mode.
  * Specifically, the job of this class is to perform the equation check, to make sure
  * that the terms that the user has added are all correct.
  * This class should not contain any state data. Instead, it should communicate with

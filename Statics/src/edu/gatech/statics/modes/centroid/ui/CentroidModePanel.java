@@ -202,7 +202,7 @@ public class CentroidModePanel extends ApplicationModePanel {
         xLabel = new BLabel("X Position: ");
 
 
-
+        
         yField = new BTextField() {
 
             @Override

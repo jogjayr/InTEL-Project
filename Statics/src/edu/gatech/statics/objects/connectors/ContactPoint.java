@@ -1,11 +1,3 @@
-/*
- * Pin.java
- *
- * Created on June 11, 2007, 12:25 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 package edu.gatech.statics.objects.connectors;
 
 import edu.gatech.statics.math.Unit;

@@ -1,11 +1,3 @@
-/*
- * PointSelector.java
- *
- * Created on July 27, 2007, 11:38 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 package edu.gatech.statics.modes.equation.ui;
 
 import edu.gatech.statics.objects.SimulationObject;
