@@ -148,7 +148,6 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     @Override
     public void activate() {
         super.activate();
-        //TODO: ADD THE SPECIFIC CODE THAT RECONSTRUCTS THE DIAGRAM
         updateCentroid();
 
         if (isSolved()) {

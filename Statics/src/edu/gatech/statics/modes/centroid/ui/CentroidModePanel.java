@@ -65,7 +65,20 @@ public class CentroidModePanel extends ApplicationModePanel {
             areaField.setEnabled(false);
             xField.setEnabled(false);
             yField.setEnabled(false);
-            diagram.setSolved();
+            //((CentroidState)getDiagram().getCurrentState()).getMyPartState(currentlySelected.getCentroidPart()).getBuilder().setSolved(true);
+            CentroidState state = (CentroidState) getDiagram().getCurrentState();
+            Builder builder = state.getBuilder();
+            Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
+            CentroidPartState.Builder newPart = partsMap.get(currentlySelected.getCentroidPart()).getBuilder();
+
+            newPart.setSolved(true);
+            partsMap.remove(currentlySelected.getCentroidPart());
+            partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
+            partsMap.get(currentlySelected.getCentroidPart()).isLocked();
+            getDiagram().pushState(builder.build());
+
+            //TODO Do we need to do this?
+            //diagram.setSolved();
         } else {
             // should we give any more detailed feedback?
             StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
@@ -77,7 +90,8 @@ public class CentroidModePanel extends ApplicationModePanel {
         super.stateChanged();
 
 //         lock the input fields if the diagram is locked
-        if (getDiagram().isLocked()) {
+        Map<CentroidPart, CentroidPartState> partsMap = ((CentroidState)getDiagram().getCurrentState()).getBuilder().getMyParts();
+        if (partsMap.containsKey(currentlySelected.getCentroidPart()) && partsMap.get(currentlySelected.getCentroidPart()).isLocked() == true) {
             areaField.setEnabled(false);
             xField.setEnabled(false);
             yField.setEnabled(false);
@@ -202,7 +216,7 @@ public class CentroidModePanel extends ApplicationModePanel {
         xLabel = new BLabel("X Position: ");
 
 
-        
+
         yField = new BTextField() {
 
             @Override
