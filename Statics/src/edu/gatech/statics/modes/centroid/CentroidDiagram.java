@@ -21,6 +21,7 @@ import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,10 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //            }
 //        }
     }
+
+    public CentroidBody getBody() {
+        return body;
+    }
     private SelectionFilter selector = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -69,6 +74,8 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //modePanel.onSelect((CentroidPartObject) obj);
         //System.out.println("Oi!!! Clicked on: "+obj);
 
+        int totalSolved = 0;
+
         // no effect if we click on the same thing twice
         if (currentlySelected == obj) {
             return;
@@ -88,9 +95,15 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             currentlySelected.setDisplaySelected(true);
         }
 
-        // update the UI
-        CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-        modePanel.updateSelection(currentlySelected);
+        if (((CentroidState) getCurrentState()).allPartsSolved(this) && currentlySelected != null) {
+            CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+            //this.setSolved();
+            modePanel.displayBodySolver();
+        } else {
+            // update the UI
+            CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
+            modePanel.updateSelection(currentlySelected);
+        }
     }
 
     public boolean check(String areaValue, String xValue, String yValue) {
@@ -130,18 +143,58 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         return success;
     }
 
-    public void setArea(String text) {
-        SetAreaValue action = new SetAreaValue(text, currentlySelected);
+    public boolean checkBody(String areaValue, String xValue, String yValue) {
+        BigDecimal userArea = Parser.evaluate(areaValue);
+        BigDecimal userXPosition = Parser.evaluate(xValue);
+        BigDecimal userYPosition = Parser.evaluate(yValue);
+
+        if (userArea == null || userXPosition == null || userYPosition == null) {
+            return false;
+        }
+
+        BigDecimal desiredArea = new BigDecimal("0.0");
+        BigDecimal desiredX = new BigDecimal(body.getCenterOfMass().getPosition().getX() + "");
+        BigDecimal desiredY = new BigDecimal(body.getCenterOfMass().getPosition().getY() + "");
+
+        for (CentroidPartObject cpo : body.getParts()) {
+            desiredArea.add(new BigDecimal(cpo.getCentroidPart().getSurfaceArea()));
+        }
+
+        // debugging messages
+        System.out.println("user area: \"" + areaValue + "\" " + userArea);
+        System.out.println("user xpos: \"" + xValue + "\" " + userXPosition);
+        System.out.println("user ypos: \"" + yValue + "\" " + userYPosition);
+        System.out.println("area: " + desiredArea);
+        System.out.println("xpos: " + desiredX);
+        System.out.println("ypos: " + desiredY);
+
+        boolean success = true;
+
+        float areaTolerance = TOLERANCE * Math.max(1, Math.abs(desiredArea.floatValue()));
+        float xPositionTolerance = TOLERANCE * Math.max(1, Math.abs(desiredX.floatValue()));
+        float yPositionTolerance = TOLERANCE * Math.max(1, Math.abs(desiredY.floatValue()));
+
+        success &= Math.abs(desiredArea.subtract(userArea).floatValue()) < areaTolerance;
+        success &= Math.abs(desiredX.subtract(userXPosition).floatValue()) < xPositionTolerance;
+        success &= Math.abs(desiredY.subtract(userYPosition).floatValue()) < yPositionTolerance;
+
+        System.out.println("success: " + success);
+
+        return success;
+    }
+
+    public void setArea(String text, boolean allSolved) {
+        SetAreaValue action = new SetAreaValue(text, currentlySelected, allSolved);
         performAction(action);
     }
 
-    public void setXPosition(String text) {
-        SetXPositionValue action = new SetXPositionValue(text, currentlySelected);
+    public void setXPosition(String text, boolean allSolved) {
+        SetXPositionValue action = new SetXPositionValue(text, currentlySelected, allSolved);
         performAction(action);
     }
 
-    public void setYPosition(String text) {
-        SetYPositionValue action = new SetYPositionValue(text, currentlySelected);
+    public void setYPosition(String text, boolean allSolved) {
+        SetYPositionValue action = new SetYPositionValue(text, currentlySelected, allSolved);
         performAction(action);
     }
 
@@ -151,11 +204,11 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         updateCentroid();
 
         if (isSolved()) {
-            StaticsApplication.getApp().setDefaultUIFeedback("You have solved for the values for the centroid.");
+            StaticsApplication.getApp().setUIFeedback("You have solved for the values for the centroid.");
         } else {
-            StaticsApplication.getApp().setDefaultUIFeedback("Select a part of the body to determine its centroid.");
+            StaticsApplication.getApp().setUIFeedback("Select a part of the body to determine its centroid.");
         }
-        StaticsApplication.getApp().resetUIFeedback();
+        //StaticsApplication.getApp().resetUIFeedback();
 
         // activate the mimic representations
         for (SimulationObject obj : getBaseObjects()) {

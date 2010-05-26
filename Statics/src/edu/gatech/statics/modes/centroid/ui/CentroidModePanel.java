@@ -54,34 +54,61 @@ public class CentroidModePanel extends ApplicationModePanel {
         generateUI();
         //SimulationObject o = (SimulationObject) getDiagram().allObjects().get(0);
     }
+    //calls check() in the CentroidDiagram to verify that the users input is correct
+    //if correct we lock the part's state and push it to be the current one
 
     protected void performCheck() {
         CentroidDiagram diagram = (CentroidDiagram) getDiagram();
+        CentroidState state = (CentroidState) diagram.getCurrentState();
         // check to see if the distributed check succeeds
-        if (diagram.check(areaField.getText(), xField.getText(), yField.getText())) {
-            // distributed check is successful!
-            StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_success");
-            checkButton.setEnabled(false);
-            areaField.setEnabled(false);
-            xField.setEnabled(false);
-            yField.setEnabled(false);
-            //((CentroidState)getDiagram().getCurrentState()).getMyPartState(currentlySelected.getCentroidPart()).getBuilder().setSolved(true);
-            CentroidState state = (CentroidState) getDiagram().getCurrentState();
-            Builder builder = state.getBuilder();
-            Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
-            CentroidPartState.Builder newPart = partsMap.get(currentlySelected.getCentroidPart()).getBuilder();
+        if (!allSolved()) {
+            if (diagram.check(areaField.getText(), xField.getText(), yField.getText())) {
+                // distributed check is successful!
+                StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_success");
 
-            newPart.setSolved(true);
-            partsMap.remove(currentlySelected.getCentroidPart());
-            partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
-            partsMap.get(currentlySelected.getCentroidPart()).isLocked();
-            getDiagram().pushState(builder.build());
+                //set the fields and check button to unclickable
+                checkButton.setEnabled(false);
+                areaField.setEnabled(false);
+                xField.setEnabled(false);
+                yField.setEnabled(false);
 
-            //TODO Do we need to do this?
-            //diagram.setSolved();
+                //get the current CentroidState and then grab the partsMap so we can begin to lock the part
+                Builder builder = state.getBuilder();
+                Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
+                CentroidPartState.Builder newPart = partsMap.get(currentlySelected.getCentroidPart()).getBuilder();
+
+                //solve the part and then remove the old one from the list and replace it with the new locked one, then push to state
+                //this doesn't feel like a particularly efficient method but it works
+                newPart.setSolved(true);
+                partsMap.remove(currentlySelected.getCentroidPart());
+                partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
+                getDiagram().pushState(builder.build());
+
+                //do we need to do set diagram to solved?
+                //diagram.setSolved();
+            } else {
+                // should we give any more detailed feedback?
+                StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
+            }
         } else {
-            // should we give any more detailed feedback?
-            StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
+            if (diagram.checkBody(areaField.getText(), xField.getText(), yField.getText())) {
+                // distributed check is successful!
+                StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_success");
+
+                //set the fields and check button to unclickable
+                checkButton.setEnabled(false);
+                areaField.setEnabled(false);
+                xField.setEnabled(false);
+                yField.setEnabled(false);
+
+                CentroidState.Builder builder = ((CentroidState) getDiagram().getCurrentState()).getBuilder();
+                builder.setSolved(true);
+                getDiagram().pushState(builder.build());
+                diagram.setSolved();
+            } else {
+                // should we give any more detailed feedback?
+                StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
+            }
         }
     }
 
@@ -89,14 +116,28 @@ public class CentroidModePanel extends ApplicationModePanel {
     public void stateChanged() {
         super.stateChanged();
 
-//         lock the input fields if the diagram is locked
-        Map<CentroidPart, CentroidPartState> partsMap = ((CentroidState)getDiagram().getCurrentState()).getBuilder().getMyParts();
-        if (partsMap.containsKey(currentlySelected.getCentroidPart()) && partsMap.get(currentlySelected.getCentroidPart()).isLocked() == true) {
+        //lock the input fields if the state of the currently selected part is locked, otherwise make them clickable
+        Map<CentroidPart, CentroidPartState> partsMap = ((CentroidState) getDiagram().getCurrentState()).getBuilder().getMyParts();
+        if (getDiagram().isLocked()) {
+            //if the diagram is locked (problem is over) then lock the UI
+            areaField.setEnabled(false);
+            xField.setEnabled(false);
+            yField.setEnabled(false);
+            checkButton.setEnabled(false);
+        } else if (!((CentroidState) getDiagram().getCurrentState()).isLocked() && allSolved()) {
+            //if all the other parts have been solved but the main centroid is still unsolved
+            areaField.setEnabled(true);
+            xField.setEnabled(true);
+            yField.setEnabled(true);
+            checkButton.setEnabled(true);
+        } else if (partsMap.containsKey(currentlySelected.getCentroidPart()) && partsMap.get(currentlySelected.getCentroidPart()).isLocked()) {
+            //if the partsMap contains the key and the part is locked (solved) and the problem is not over then lock the UI
             areaField.setEnabled(false);
             xField.setEnabled(false);
             yField.setEnabled(false);
             checkButton.setEnabled(false);
         } else {
+            //otherwise the part is not in the map or at the very least it is not locked so the UI should be left unlocked
             areaField.setEnabled(true);
             xField.setEnabled(true);
             yField.setEnabled(true);
@@ -106,13 +147,22 @@ public class CentroidModePanel extends ApplicationModePanel {
 
     @Override
     public void activate() {
+        //needed because activate() gets called sometimes before we're ready
         if (getDiagram() != null && currentlySelected != null) {
             CentroidState state = (CentroidState) getDiagram().getCurrentState();
-            if (state.getBuilder().getMyParts().containsKey(currentlySelected.getCentroidPart())) {//state.getMyPartState(currentlySelected.getCentroidPart()) != null) {
+            if (!allSolved() && state.getBuilder().getMyParts().containsKey(currentlySelected.getCentroidPart())) {
+                //if the state contains our part already then we simply populate the three text boxes
+                //with the information about area, x, and y that is instate
                 areaField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getArea());
                 xField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getXPosition());
                 yField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getYPosition());
+            } else if (allSolved()) {
+                //i think this is unnecessary because once you set the diagram to solved currentlyselectd can no longer be anything but null
+                areaField.setText(state.getArea());
+                xField.setText(state.getXPosition());
+                yField.setText(state.getYPosition());
             } else {
+                //otherwise we create a new CentroidPartState and set its variables to the default values
                 CentroidPartState.Builder partBuilder = new CentroidPartState.Builder();
                 partBuilder.setArea("");
                 partBuilder.setXPosition("");
@@ -120,17 +170,25 @@ public class CentroidModePanel extends ApplicationModePanel {
                 partBuilder.setSolved(false);
                 partBuilder.setMyPart(currentlySelected.getCentroidPart());
 
+                //push the CentroidPartState to CentroidState
                 Builder builder = state.getBuilder();
                 Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
                 partsMap.put(partBuilder.getMyPart(), partBuilder.build());
 
+                //push the current CentroidState to be the current state
                 getDiagram().pushState(builder.build());
-                //((CentroidState)getDiagram().getCurrentState()).getEquationStates().containsKey(currentlySelected.getCentroidPart());
+
+                //set the text boxes to be empty
                 areaField.setText("");
                 xField.setText("");
                 yField.setText("");
             }
             stateChanged();
+        } else if (getDiagram() != null && allSolved()) {
+            CentroidState state = (CentroidState) getDiagram().getCurrentState();
+            areaField.setText(state.getArea());
+            xField.setText(state.getXPosition());
+            yField.setText(state.getYPosition());
         }
     }
 
@@ -139,9 +197,14 @@ public class CentroidModePanel extends ApplicationModePanel {
         return CentroidMode.instance.getDiagramType();
     }
 
+    //generates the UI to reflect the text fields for the particular part selected
+    //if you click in the background of the exercise it removes the UI components
+    //if you click on a part it only generates the parts if they don't exist and
+    //always calls activate() to populate the text boxes with the proper state information
     public void updateSelection(CentroidPartObject currentlySelected) {
         this.currentlySelected = currentlySelected;
         if (currentlySelected != null) {
+            StaticsApplication.getApp().setUIFeedback("Enter the surface area, x, and y values for the centroid of " + currentlySelected.getName());
             if (!checkButton.isAdded()) {
                 mainContainer.add(checkButton, BorderLayout.EAST);
             }
@@ -172,6 +235,38 @@ public class CentroidModePanel extends ApplicationModePanel {
         InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
+    public void displayBodySolver() {
+//        mainContainer.setEnabled(true);
+//        mainContainer.remove(checkButton);
+//        areaField.setText("");
+//        xField.setText("");
+//        yField.setText("");
+        StaticsApplication.getApp().setUIFeedback("Enter the surface area, x, and y values for the centroid of " + getDiagram().getName());
+        if (!checkButton.isAdded()) {
+            mainContainer.add(checkButton, BorderLayout.EAST);
+        }
+        if (!areaField.isAdded()) {
+            equationContainer.add(areaLabel, BorderLayout.WEST);
+            equationContainer.add(areaField, BorderLayout.CENTER);
+        }
+        if (!xField.isAdded()) {
+            equationContainer.add(xLabel, BorderLayout.WEST);
+            equationContainer.add(xField, BorderLayout.CENTER);
+        }
+        if (!yField.isAdded()) {
+            equationContainer.add(yLabel, BorderLayout.WEST);
+            equationContainer.add(yField, BorderLayout.CENTER);
+        }
+        areaField.setText("");
+        xField.setText("");
+        yField.setText("");
+        activate();
+        //equationContainer.add(new BLabel("SIXTY"), BorderLayout.WEST);
+        InterfaceRoot.getInstance().getApplicationBar().updateSize();
+        stateChanged();
+    }
+
+    //initializes all of the UI components
     private void generateUI() {
         ActionListener listener = new ActionListener() {
 
@@ -180,56 +275,57 @@ public class CentroidModePanel extends ApplicationModePanel {
             }
         };
 
+        //the big "get centroid" button
         checkButton = new NextButton("Get Centroid", listener, "check");
 
-
+        //text field for the surface area
         areaField = new BTextField() {
 
             @Override
             protected void lostFocus() {
                 super.lostFocus();
                 CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setArea(getText());
+                diagram.setArea(getText(), allSolved());
             }
         };
-
         areaField.setPreferredWidth(200);
         areaField.setStyleClass("textfield_appbar");
 
         areaLabel = new BLabel("Surface Area: ");
 
-
-
+        //text field for the x axis
         xField = new BTextField() {
 
             @Override
             protected void lostFocus() {
                 super.lostFocus();
                 CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setXPosition(getText());
+                diagram.setXPosition(getText(), allSolved());
             }
         };
-
         xField.setPreferredWidth(200);
         xField.setStyleClass("textfield_appbar");
 
         xLabel = new BLabel("X Position: ");
 
-
-
+        //text field for the y axis
         yField = new BTextField() {
 
             @Override
             protected void lostFocus() {
                 super.lostFocus();
                 CentroidDiagram diagram = (CentroidDiagram) getDiagram();
-                diagram.setYPosition(getText());
+                diagram.setYPosition(getText(), allSolved());
             }
         };
-
         yField.setPreferredWidth(200);
         yField.setStyleClass("textfield_appbar");
 
         yLabel = new BLabel("Y Position: ");
+    }
+
+    //utility method to let us know if everything is solved
+    private boolean allSolved() {
+        return ((CentroidState) getDiagram().getCurrentState()).allPartsSolved((CentroidDiagram) getDiagram());
     }
 }

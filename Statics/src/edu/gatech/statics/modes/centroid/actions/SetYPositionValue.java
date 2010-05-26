@@ -17,11 +17,19 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
 
     final private String yValue;
     final private CentroidPartObject currentlySelected;
+    final private boolean allSolved;
 
     public SetYPositionValue(String newYValue, CentroidPartObject currentlySelected) {
         //this.force = force;
         this.yValue = newYValue;
         this.currentlySelected = currentlySelected;
+        this.allSolved = false;
+    }
+
+    public SetYPositionValue(String newYValue, CentroidPartObject currentlySelected, boolean allSolved) {
+        this.yValue = newYValue;
+        this.currentlySelected = currentlySelected;
+        this.allSolved = allSolved;
     }
 
 //    public CentroidPartState performAction(CentroidState oldState, CentroidPartObject part) {
@@ -35,14 +43,19 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
 //        builder.setYPosition(yValue);
 //        return builder.build();
 //    }
-
-     public CentroidState performAction(CentroidState oldState) {
-        CentroidPartState.Builder builder = oldState.getMyPartState(currentlySelected.getCentroidPart()).getBuilder();
-        builder.setYPosition(yValue);
-        CentroidState.Builder builder2 = oldState.getBuilder();
-        builder2.getMyParts().remove(currentlySelected.getCentroidPart());
-        builder2.getMyParts().put(currentlySelected.getCentroidPart(), builder.build());
-        return builder2.build();
+    public CentroidState performAction(CentroidState oldState) {
+        if (allSolved) {
+            CentroidState.Builder builder = oldState.getBuilder();
+            builder.setYPosition(yValue);
+            return builder.build();
+        } else {
+            CentroidPartState.Builder builder = oldState.getMyPartState(currentlySelected.getCentroidPart()).getBuilder();
+            builder.setYPosition(yValue);
+            CentroidState.Builder builder2 = oldState.getBuilder();
+            builder2.getMyParts().remove(currentlySelected.getCentroidPart());
+            builder2.getMyParts().put(currentlySelected.getCentroidPart(), builder.build());
+            return builder2.build();
+        }
     }
 
     @Override

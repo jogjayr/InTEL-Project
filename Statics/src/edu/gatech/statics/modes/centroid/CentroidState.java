@@ -20,7 +20,6 @@ import java.util.TreeMap;
 public class CentroidState implements DiagramState<CentroidDiagram> {
 
     //final private Map<AnchoredVector, String> terms;
-
     final private boolean solved;
     final private String area;
     final private String xPosition;
@@ -39,7 +38,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         return myParts;
     }
 
-    public CentroidPartState getMyPartState(CentroidPart part){
+    public CentroidPartState getMyPartState(CentroidPart part) {
         return myParts.get(part);
     }
 
@@ -59,7 +58,20 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         return yPosition;
     }
 
-
+    public boolean allPartsSolved(CentroidDiagram diagram) {
+        int totalSolved = 0;
+        for (CentroidPartState cps : getBuilder().getMyParts().values()) {
+            if (!cps.isLocked()) {
+                continue;
+            }
+            totalSolved++;
+        }
+        if (diagram.getBody().getParts().size() == totalSolved) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static class Builder implements edu.gatech.statics.util.Builder<CentroidState> {
 
