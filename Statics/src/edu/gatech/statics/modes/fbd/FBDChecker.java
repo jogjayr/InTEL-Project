@@ -112,7 +112,7 @@ public class FBDChecker {
                         // attempt to find an equivalent that might have been stored in the symbol manager.
                         // only do this if the load is symbolic.
                         if (given.isSymbol()) {
-                            AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoadDirect(given.getAnchoredVector());
+                            AnchoredVector symbolEquivalent = Exercise.getExercise().getSymbolManager().getLoad(given.getAnchoredVector(), null);
 
                             if (symbolEquivalent != null) {
                                 // treat the given as a symbolic load.
@@ -520,7 +520,7 @@ public class FBDChecker {
                 }
 
                 // get a AnchoredVector and result corresponding to this check.
-                AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction);
+                AnchoredVector loadFromSymbolManager = Exercise.getExercise().getSymbolManager().getLoad(reaction, connector);
 
                 if (markedLoads.contains(loadFromSymbolManager)) {
                     // we have already checked against this load from the symbol manager, so it was likely one
@@ -596,13 +596,13 @@ public class FBDChecker {
                     debugInfo("    there is: " + candidate);
                     debugInfo("    checking to see if its name is OK...");
                     NameCheckResult nameResult;
-                    if (connector instanceof Connector2ForceMember2d) {
-                        nameResult = checkAnchoredVectorName2FM(candidate, (Connector2ForceMember2d) connector);
-                        debugInfo("    doing a 2FM name check. Result: " + nameResult);
-                    } else {
-                        nameResult = checkLoadName(candidate);
+//                    if (connector instanceof Connector2ForceMember2d) {
+//                        nameResult = checkAnchoredVectorName2FM(candidate, (Connector2ForceMember2d) connector);
+//                        debugInfo("    doing a 2FM name check. Result: " + nameResult);
+//                    } else {
+                        nameResult = checkLoadName(candidate, connector);
                         debugInfo("    doing a normal name check. Result: " + nameResult);
-                    }
+//                    }
 
                     if (nameResult == NameCheckResult.passed) {
                         // we're okay!!
@@ -741,7 +741,7 @@ public class FBDChecker {
             case wrongSymbol:
                 // user has given a symbol that does not match the symbol of the given AnchoredVector.
                 // this is generally okay, but we want there to be consistency if the user has already put a name down.
-                if (Exercise.getExercise().getSymbolManager().getLoad(candidate) == null) {
+                if (Exercise.getExercise().getSymbolManager().getLoad(candidate, null) == null) {
                     // we're okay
                     addedAnchoredVectors.remove(candidate);
                     break;
@@ -752,8 +752,8 @@ public class FBDChecker {
         }
 
         // user candidate is a symbolic value
-        if (candidate.isSymbol() && Exercise.getExercise().getSymbolManager().getLoad(candidate) == null) {
-            NameCheckResult nameResult = checkLoadName(candidate);
+        if (candidate.isSymbol() && Exercise.getExercise().getSymbolManager().getLoad(candidate, null) == null) {
+            NameCheckResult nameResult = checkLoadName(candidate, null);
             if (nameResult != NameCheckResult.passed) {
                 complainAboutName(nameResult, candidate);
                 return false;
@@ -821,8 +821,8 @@ public class FBDChecker {
         }
 
         // user candidate is a symbolic value
-        if (candidate.isSymbol() && Exercise.getExercise().getSymbolManager().getLoad(candidate) == null) {
-            NameCheckResult nameResult = checkLoadName(candidate);
+        if (candidate.isSymbol() && Exercise.getExercise().getSymbolManager().getLoad(candidate, null) == null) {
+            NameCheckResult nameResult = checkLoadName(candidate, null);
             if (nameResult != NameCheckResult.passed) {
                 complainAboutName(nameResult, candidate);
                 return false;
@@ -910,7 +910,7 @@ public class FBDChecker {
      * @param candidate
      * @return
      */
-    protected NameCheckResult checkLoadName(AnchoredVector candidate) {
+    protected NameCheckResult checkLoadName(AnchoredVector candidate, Connector connector) {
         String name = candidate.getSymbolName();
 
         for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
@@ -932,7 +932,7 @@ public class FBDChecker {
 
         // there is a case in which the candidate being checked is in the symbol manager
         // check to see if it is there, and if so, return a pass.
-        if (Exercise.getExercise().getSymbolManager().getLoad(candidate) != null) {
+        if (Exercise.getExercise().getSymbolManager().getLoad(candidate, connector) != null) {
             return NameCheckResult.passed;
         }
 
@@ -955,94 +955,94 @@ public class FBDChecker {
         return NameCheckResult.passed;
     }
 
-    /**
-     * This is an extension of the checkAnchoredVectorName() method, which applies specifically
-     * to AnchoredVectors which are reactions to Two Force Members. This method assumes that the candidate provided is 
-     * actually the reaction force to the 2fm.
-     * @param candidate
-     * @param connector
-     * @return
-     */
-    protected NameCheckResult checkAnchoredVectorName2FM(AnchoredVector candidate, Connector2ForceMember2d connector) {
-        NameCheckResult result = checkLoadName(candidate);
-
-        //if we passed, which we usually want, this means that the AnchoredVectors' labels
-        //do not match, which is bad
-        if (result == NameCheckResult.passed) {
-            // what we want to do here is to check and see if a symbolic load exists
-            // on the opposite end of the connector.
-            // if it does exist, it should be in the symbol manager
-            AnchoredVector toCheck = Exercise.getExercise().getSymbolManager().getLoad(candidate);
-            if (toCheck != null) {
-                if (!toCheck.isKnown() && toCheck.isSymbol()) {
-                    if (!toCheck.getSymbolName().equals(candidate.getSymbolName())) {
-                        return NameCheckResult.shouldMatch2FM;
-                    }
-                }
-            }
-
-            /*for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
-            if (!(obj instanceof Load)) {
-            continue;
-            }
-            // ******
-            // THERE IS A PROBLEM HERE
-            // This check is testing if there is ANY load present at this other point. It does not check
-            // to see if it is the joint, or if it is a relevant point!!
-            if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
-            return NameCheckResult.shouldMatch2FM;
-            }
-            }*/
-        }
-
-        // if the result of the standard check is anything but "there is a duplicate in this diagram"
-        // then we can return that result. We are only interested in the case where there
-        // might be a second AnchoredVector with the same name, which implies a duplicate.
-        if (result != NameCheckResult.duplicateInThisDiagram) {
-            return result;
-        }
-
-        TwoForceMember member = connector.getMember();
-        if (!diagram.allBodies().contains(member)) {
-            return result;
-        }
-
-        Connector2ForceMember2d otherConnector;
-        if (member.getConnector1() == connector) {
-            otherConnector = member.getConnector2();
-        } else if (member.getConnector2() == connector) {
-            otherConnector = member.getConnector1();
-        } else {
-            // shouldn't get here, but fail gracefully
-            return result;
-        }
-
-        // get the other AnchoredVector that satisfies the reactions of the otherConnector
-        List<AnchoredVector> AnchoredVectorsAtOtherReaction = getLoadsAtPoint(otherConnector.getAnchor());
-        List<AnchoredVector> otherConnectorReactions = getReactionAnchoredVectors(connector, otherConnector.getReactions());
-        AnchoredVector otherReactionTarget = otherConnectorReactions.get(0);
-        AnchoredVector otherReaction = null;
-        // iterate through the list and look for the one that should do it.
-        // we want to find something that could be a reaction on the other end of the 2fm,
-        // and we want it to match the name of our current AnchoredVector.
-        for (AnchoredVector otherAnchoredVector : AnchoredVectorsAtOtherReaction) {
-            if (isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue()) ||
-                    isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue().negate())) {
-                if (candidate.getSymbolName().equalsIgnoreCase(otherAnchoredVector.getSymbolName())) {
-                    otherReaction = otherAnchoredVector;
-                }
-            }
-        }
-
-        // okay, we found it. That means that this AnchoredVector should have an appropriate name.
-        // in the case that there is some case that is invalid and escapes the above, it should
-        // be caught by other parts of the check (for instance, if the user was especially
-        // difficult and put two reactions at one end of a 2fm or something like that)
-        if (otherReaction != null) {
-            return NameCheckResult.passed;
-        }
-        return result;
-    }
+//    /**
+//     * This is an extension of the checkAnchoredVectorName() method, which applies specifically
+//     * to AnchoredVectors which are reactions to Two Force Members. This method assumes that the candidate provided is
+//     * actually the reaction force to the 2fm.
+//     * @param candidate
+//     * @param connector
+//     * @return
+//     */
+//    protected NameCheckResult checkAnchoredVectorName2FM(AnchoredVector candidate, Connector2ForceMember2d connector) {
+//        NameCheckResult result = checkLoadName(candidate);
+//
+//        //if we passed, which we usually want, this means that the AnchoredVectors' labels
+//        //do not match, which is bad
+//        if (result == NameCheckResult.passed) {
+//            // what we want to do here is to check and see if a symbolic load exists
+//            // on the opposite end of the connector.
+//            // if it does exist, it should be in the symbol manager
+//            AnchoredVector toCheck = Exercise.getExercise().getSymbolManager().getLoad(candidate, connector);
+//            if (toCheck != null) {
+//                if (!toCheck.isKnown() && toCheck.isSymbol()) {
+//                    if (!toCheck.getSymbolName().equals(candidate.getSymbolName())) {
+//                        return NameCheckResult.shouldMatch2FM;
+//                    }
+//                }
+//            }
+//
+//            /*for (SimulationObject obj : connector.getMember().getAttachedObjects()) {
+//            if (!(obj instanceof Load)) {
+//            continue;
+//            }
+//            // ******
+//            // THERE IS A PROBLEM HERE
+//            // This check is testing if there is ANY load present at this other point. It does not check
+//            // to see if it is the joint, or if it is a relevant point!!
+//            if (connector.getMember().containsPoints(candidate.getAnchor(), ((Load) obj).getAnchor())) {
+//            return NameCheckResult.shouldMatch2FM;
+//            }
+//            }*/
+//        }
+//
+//        // if the result of the standard check is anything but "there is a duplicate in this diagram"
+//        // then we can return that result. We are only interested in the case where there
+//        // might be a second AnchoredVector with the same name, which implies a duplicate.
+//        if (result != NameCheckResult.duplicateInThisDiagram) {
+//            return result;
+//        }
+//
+//        TwoForceMember member = connector.getMember();
+//        if (!diagram.allBodies().contains(member)) {
+//            return result;
+//        }
+//
+//        Connector2ForceMember2d otherConnector;
+//        if (member.getConnector1() == connector) {
+//            otherConnector = member.getConnector2();
+//        } else if (member.getConnector2() == connector) {
+//            otherConnector = member.getConnector1();
+//        } else {
+//            // shouldn't get here, but fail gracefully
+//            return result;
+//        }
+//
+//        // get the other AnchoredVector that satisfies the reactions of the otherConnector
+//        List<AnchoredVector> AnchoredVectorsAtOtherReaction = getLoadsAtPoint(otherConnector.getAnchor());
+//        List<AnchoredVector> otherConnectorReactions = getReactionAnchoredVectors(connector, otherConnector.getReactions());
+//        AnchoredVector otherReactionTarget = otherConnectorReactions.get(0);
+//        AnchoredVector otherReaction = null;
+//        // iterate through the list and look for the one that should do it.
+//        // we want to find something that could be a reaction on the other end of the 2fm,
+//        // and we want it to match the name of our current AnchoredVector.
+//        for (AnchoredVector otherAnchoredVector : AnchoredVectorsAtOtherReaction) {
+//            if (isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue()) ||
+//                    isCloseEnough(otherAnchoredVector.getVectorValue(), otherReactionTarget.getVectorValue().negate())) {
+//                if (candidate.getSymbolName().equalsIgnoreCase(otherAnchoredVector.getSymbolName())) {
+//                    otherReaction = otherAnchoredVector;
+//                }
+//            }
+//        }
+//
+//        // okay, we found it. That means that this AnchoredVector should have an appropriate name.
+//        // in the case that there is some case that is invalid and escapes the above, it should
+//        // be caught by other parts of the check (for instance, if the user was especially
+//        // difficult and put two reactions at one end of a 2fm or something like that)
+//        if (otherReaction != null) {
+//            return NameCheckResult.passed;
+//        }
+//        return result;
+//    }
 
     /**
      * A convenience method to get all of the loads at a given point. This goes through

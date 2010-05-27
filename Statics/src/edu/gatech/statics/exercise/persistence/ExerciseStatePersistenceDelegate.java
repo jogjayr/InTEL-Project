@@ -34,7 +34,7 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
         newState.setEncoding(true);
 
         // write out the SymbolManager
-        out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
+//        out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
 
         // write out the exerciseParameters
         out.writeStatement(new Statement(oldState, "initParameters", new Object[]{new HashMap(oldState.getParameters())}));

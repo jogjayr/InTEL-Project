@@ -47,6 +47,7 @@ import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.representations.CurveUtil;
 import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.util.Pair;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -256,9 +257,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     //vObj.getAnchoredVector().setKnown(true);
 
                     AnchoredVector oldLoad = vObj.getAnchoredVector();
-
                     // retrieve the load from the symbol manager
-                    AnchoredVector newLoad = Exercise.getExercise().getSymbolManager().getLoad(oldLoad);
+                    Pair<Connector, AnchoredVector> loadPair = Exercise.getExercise().getSymbolManager().getLoadPair(oldLoad.getSymbolName());
+                    AnchoredVector newLoad = loadPair.getRight();
 
                     // make a copy of it
                     newLoad = new AnchoredVector(newLoad);
@@ -286,7 +287,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     }
 
                     // update the load in the symbol manager
-                    Exercise.getExercise().getSymbolManager().addSymbol(newLoad);
+                    Exercise.getExercise().getSymbolManager().addSymbol(newLoad, loadPair.getLeft());
 
                     // *****
                     // instead of trying to set the value on the load in the diagram, what we are doing

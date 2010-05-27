@@ -350,23 +350,44 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
             setCheckIcon(bar);
             //InterfaceRoot.getInstance().setAdvice("yay, it worked!");
 
+            performSolve(true);
             //boolean allSolved = true;
-            int numberSolved = 0;
-            for (EquationMath math : uiMap.keySet()) {
-                if (math.isLocked()) {
-                    //allSolved = false;
-                    numberSolved++;
-                }
-            }
-
-            if (numberSolved >= getDiagram().getNumberUnknowns()) {
-                //if (allSolved) {
-                performSolve(true);
-            }
+//            int numberSolved = 0;
+//            for (EquationMath math : uiMap.keySet()) {
+//                if (math.isLocked()) {
+//                    //allSolved = false;
+//                    numberSolved++;
+//                }
+//            }
+//
+//            if (numberSolved >= getDiagram().getNumberUnknowns()) {
+//                //if (allSolved) {
+//                performSolve(true);
+//            }
         }
     }
 
+    /**
+     * Returns true if enough unknowns have been solved for.
+     * @return
+     */
+    private boolean enoughSolved() {
+        int numberSolved = 0;
+        for (EquationMath math : uiMap.keySet()) {
+            if (math.isLocked()) {
+                //allSolved = false;
+                numberSolved++;
+            }
+        }
+
+        return numberSolved >= getDiagram().getNumberUnknowns();
+    }
+
     private void performSolve(boolean updateDiagram) {
+
+        if(!enoughSolved())
+            return;
+
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         //boolean firstTime = !diagram.getCurrentState().isLocked();
         //!diagram.getWorksheet().isSolved();

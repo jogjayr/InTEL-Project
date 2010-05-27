@@ -16,6 +16,7 @@ import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
@@ -255,22 +256,89 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         clearStateStack();
 
         if (solved) {
-            for (SimulationObject obj : allObjects()) {
-                if (!(obj instanceof Load)) {
-                    continue;
-                }
-                Load loadObject = (Load) obj;
-                if (!loadObject.isSymbol()) {
-                    continue;
-                }
-                Exercise.getExercise().getSymbolManager().addSymbol(loadObject.getAnchoredVector());
-            }
+//            for (SimulationObject obj : allObjects()) {
+//                if (!(obj instanceof Load)) {
+//                    continue;
+//                }
+//                Load loadObject = (Load) obj;
+//                if (!loadObject.isSymbol()) {
+//                    continue;
+//                }
+//
+//                Connector connector = findConnector(loadObject.getAnchoredVector());
+//                Exercise.getExercise().getSymbolManager().addSymbol(loadObject.getAnchoredVector(), connector);
+//            }
+            storeLoads();
 
             String advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("fbd_feedback_check_success");
             StaticsApplication.getApp().setStaticsFeedback(advice);
             StaticsApplication.getApp().setDefaultUIFeedback(advice);
             StaticsApplication.getApp().resetUIFeedback();
         } else {
+        }
+    }
+
+    /**
+     * This stores to the symbol manager the symbolic loads that have been identified in this FBD.
+     */
+    private void storeLoads() {
+        List<AnchoredVector> loadsToAccountFor = new ArrayList<AnchoredVector>();
+
+        for (SimulationObject simulationObject : allObjects()) {
+            if (simulationObject instanceof Load) {
+                Load load = (Load) simulationObject;
+                if (!load.isSymbol() || load.getAnchoredVector().isKnown()) {
+                    continue;
+                }
+                loadsToAccountFor.add(load.getAnchoredVector());
+            }
+        }
+
+        // go through the edge connectors. These will be the ones that have the loads we have identified.
+        for (SimulationObject simulationObject : getCentralObjects()) {
+            if (!(simulationObject instanceof Connector)) {
+                continue;
+            }
+            Connector connector = (Connector) simulationObject;
+            if (connector.isSolved()) {
+                continue;
+            }
+
+            // ^ is java's XOR operator
+            // we want the joint IF it connects a body in the body list
+            // to a body that is not in the body list. This means xor.
+            if (!(getBodySubset().getBodies().contains(connector.getBody1()) ^
+                    getBodySubset().getBodies().contains(connector.getBody2()))) {
+                continue;
+            }
+
+            // we now know the connector is an edge connector.
+            for (Vector vector : connector.getReactions()) {
+                AnchoredVector match = null;
+                for (AnchoredVector anchoredVector : loadsToAccountFor) {
+                    if (anchoredVector.getAnchor() == connector.getAnchor() &&
+                            (vector.getVectorValue().equals(anchoredVector.getVectorValue()) ||
+                            (connector.isForceDirectionNegatable() && vector.getVectorValue().negate().equals(anchoredVector.getVectorValue())))) {
+                        // found.
+                        match = anchoredVector;
+                        break;
+                    }
+                }
+                // this should not happen
+                if (match == null) {
+                    throw new IllegalStateException("Something odd happened...");
+                }
+
+                // remove it from checking and store it.
+                loadsToAccountFor.remove(match);
+                Exercise.getExercise().getSymbolManager().addSymbol(match, connector);
+            }
+        }
+
+        // these remain and have not yet been accounted for.
+        // they should represent givens.
+        for (AnchoredVector anchoredVector : loadsToAccountFor) {
+            Exercise.getExercise().getSymbolManager().addSymbol(anchoredVector, null);
         }
     }
 

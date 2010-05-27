@@ -53,7 +53,7 @@ public class KnownsContainer extends BContainer implements SolveListener {
             }
         } else {
             for (Vector force : connector.getReactions(connector.getBody1())) {
-                writeReaction(force, connector.getAnchor());
+                writeReaction(force, connector.getAnchor(), connector);
             }
         }
     }
@@ -86,7 +86,7 @@ public class KnownsContainer extends BContainer implements SolveListener {
         // look at free vectors
         if (obj instanceof Load) {
             Load vObj = (Load) obj;
-            writeReaction(vObj.getVector(), vObj.getAnchor(), vObj.getName());
+            writeReaction(vObj.getVector(), vObj.getAnchor(), null, vObj.getName());
         }
 
         if (obj instanceof Body) {
@@ -137,7 +137,7 @@ public class KnownsContainer extends BContainer implements SolveListener {
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
 
-        AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction));
+        AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction), connector);
         if (reaction1 != null) {
             reaction = reaction1.getVector();
         }
@@ -162,14 +162,14 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint) {
+    protected void writeReaction(Vector load, Point applicationPoint, Connector connector) {
 
-        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), null);
         if (load1 != null) {
             load = load1.getVector();
         }
 
-        writeReaction(load, applicationPoint, load.getSymbolName());
+        writeReaction(load, applicationPoint, connector, load.getSymbolName());
     }
 
     protected void writeConstantObject(ConstantObject constObj) {
@@ -186,10 +186,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, String name) {
+    protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
 
         if (!isGivenLoad(load) || load.isSymbol()) {
-            AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+            AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
             if (load1 != null) {
                 load = load1.getVector();
             }

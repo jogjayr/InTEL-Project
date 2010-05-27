@@ -68,7 +68,7 @@ public class KnownsWindow extends TitledDraggablePopupWindow implements SolveLis
             }
         } else {
             for (Vector force : connector.getReactions(connector.getBody1())) {
-                writeReaction(force, connector.getAnchor(), contents);
+                writeReaction(force, connector.getAnchor(), contents, connector);
             }
         }
     }
@@ -111,7 +111,7 @@ public class KnownsWindow extends TitledDraggablePopupWindow implements SolveLis
         // look at free vectors
         if (obj instanceof Load) {
             Load vObj = (Load) obj;
-            writeReaction(vObj.getVector(), vObj.getAnchor(), contents, vObj.getName());
+            writeReaction(vObj.getVector(), vObj.getAnchor(), contents, null, vObj.getName());
         }
 
         if (obj instanceof Body) {
@@ -155,7 +155,7 @@ public class KnownsWindow extends TitledDraggablePopupWindow implements SolveLis
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
 
-        AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction));
+        AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction), connector);
         if (reaction1 != null) {
             reaction = reaction1.getVector();
         }
@@ -174,20 +174,20 @@ public class KnownsWindow extends TitledDraggablePopupWindow implements SolveLis
         contents.append("</td></tr>");
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents) {
+    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, Connector connector) {
 
-        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+        AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
         if (load1 != null) {
             load = load1.getVector();
         }
 
-        writeReaction(load, applicationPoint, contents, load.getSymbolName());
+        writeReaction(load, applicationPoint, contents, connector, load.getSymbolName());
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, String name) {
+    protected void writeReaction(Vector load, Point applicationPoint, StringBuffer contents, Connector connector, String name) {
 
         if (!isGivenLoad(load) || load.isSymbol()) {
-            AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load));
+            AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
             if (load1 != null) {
                 load = load1.getVector();
             }

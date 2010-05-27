@@ -212,16 +212,16 @@ public class ExerciseState implements State {
      * This is for persistence and deserialization. This should never be called directly!
      * @param loads
      */
-    @Deprecated
-    public void initSymbolManager(List<AnchoredVector> loads) {
-        if (encoding) {
-            return;
-        }
-        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + loads);
-        for (AnchoredVector load : loads) {
-            Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
-        }
-    }
+//    @Deprecated
+//    public void initSymbolManager(List<AnchoredVector> loads) {
+//        if (encoding) {
+//            return;
+//        }
+//        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + loads);
+//        for (AnchoredVector load : loads) {
+//            Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
+//        }
+//    }
 
     /**
      * This is for persistence and deserialization. This should never be called directly!
