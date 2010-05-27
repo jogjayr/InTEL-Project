@@ -157,7 +157,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         BigDecimal desiredY = new BigDecimal(body.getCenterOfMass().getPosition().getY() + "");
 
         for (CentroidPartObject cpo : body.getParts()) {
-            desiredArea.add(new BigDecimal(cpo.getCentroidPart().getSurfaceArea()));
+            desiredArea = desiredArea.add(new BigDecimal(cpo.getCentroidPart().getSurfaceArea()));
         }
 
         // debugging messages
