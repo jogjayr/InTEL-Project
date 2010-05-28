@@ -15,6 +15,8 @@ import edu.gatech.statics.modes.centroid.CentroidExercise;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.CoordinateAxis;
+import edu.gatech.statics.objects.CoordinateAxis.Direction;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
@@ -24,6 +26,7 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  *
@@ -74,7 +77,7 @@ public class SpaceStationExercise extends CentroidExercise {
 
         Schematic schematic = getSchematic();
 
-        Point A1,A2,A3,A4,B1,B2,B3,B4,B5,B6,C1,C2,C3,C4,C5,D1,D2,D3,D4;
+        Point A1,A2,A3,A4,B1,B2,B3,B4,B5,B6,C1,C2,C3,C4,C5,D1,D2,D3,D4,origin;
         A1 = new Point("A1","-0.05","1.25","0.0"); //topleft
         A2 = new Point("A2","1.82","1.25","0.0"); //topright
         A3 = new Point("A3","-0.05","0.95","0.0"); //bottomleft
@@ -93,10 +96,12 @@ public class SpaceStationExercise extends CentroidExercise {
         C4 = new Point("C4","2.6","0.0","0.0"); //bottom
         C5 = new Point("C5","2.6","0.90","0.0");
 
-        D1 = new Point("A1","2.55","1.85","0.0"); //topleft
-        D2 = new Point("A2","2.85","1.85","0.0");  //topright
-        D3 = new Point("A3","2.55","0","0.0");  //bottom left
-        D4 = new Point("A4","2.85","0","0.0");  //bottom right
+        D1 = new Point("D1","2.55","1.85","0.0"); //topleft
+        D2 = new Point("D2","2.85","1.85","0.0");  //topright
+        D3 = new Point("D3","2.55","0","0.0");  //bottom left
+        D4 = new Point("D4","2.85","0","0.0");  //bottom right
+
+        origin = new Point("Origin", "-0.05", "0.0", "0.0");
 //        A1.createDefaultSchematicRepresentation();
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
@@ -221,7 +226,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //HORIZONTAL
         DistanceMeasurement distance11 = new DistanceMeasurement(D1,D2);
         distance11.setName("Measure D1-D2");
-        distance11.createDefaultSchematicRepresentation(0f);
+        distance11.createDefaultSchematicRepresentation(-0.2f);
         distance11.forceHorizontal();
         //distance1.addPoint(A);
         schematic.add(distance11);
@@ -233,6 +238,18 @@ public class SpaceStationExercise extends CentroidExercise {
         distance12.forceVertical();
         //distance1.addPoint(A);
         schematic.add(distance12);
+
+        CoordinateAxis xAxis = new CoordinateAxis(origin, Direction.horizontal);//new Point("xAxis","0.0","0.0","0.0"));
+        xAxis.setName("xAxis");
+        xAxis.setDistance(new BigDecimal("4.0"));
+        xAxis.createDefaultSchematicRepresentation(0f);
+        schematic.add(xAxis);
+
+        CoordinateAxis yAxis = new CoordinateAxis(origin, Direction.vertical);//new Point("xAxis","0.0","0.0","0.0"));
+        yAxis.setName("yAxis");
+        yAxis.setDistance(new BigDecimal("2.5"));
+        yAxis.createDefaultSchematicRepresentation(0f);
+        schematic.add(yAxis);
 
         schematic.add(station);
 
