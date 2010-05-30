@@ -45,6 +45,15 @@ import edu.gatech.newbeans.Expression;
 import edu.gatech.newbeans.PersistenceDelegate;
 import edu.gatech.newbeans.Statement;
 import edu.gatech.newbeans.XMLEncoder;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.ContactPoint;
+import edu.gatech.statics.objects.connectors.Fix2d;
+import edu.gatech.statics.objects.connectors.Hinge;
+import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
+import edu.gatech.statics.objects.connectors.Roller2d;
+import edu.gatech.statics.objects.connectors.Roller3d;
+import edu.gatech.statics.util.Pair;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -184,6 +193,15 @@ public class StaticsXMLEncoder extends XMLEncoder {
         //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
         //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
 
+        setPersistenceDelegate(Connector2ForceMember2d.class, namedPersistenceDelegate);
+        setPersistenceDelegate(ContactPoint.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Fix2d.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Hinge.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Pin2d.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Pin2dKnownDirection.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Roller2d.class, namedPersistenceDelegate);
+        setPersistenceDelegate(Roller3d.class, namedPersistenceDelegate);
+
         PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
 
             @Override
@@ -264,6 +282,14 @@ public class StaticsXMLEncoder extends XMLEncoder {
             }
         });
 
+        setPersistenceDelegate(Pair.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                Pair pair = (Pair) oldInstance;
+                return new Expression(oldInstance, Pair.class, "new", new Object[]{pair.getLeft(), pair.getRight()});
+            }
+        });
 
         // set up an exception listener
         setExceptionListener(new ExceptionListener() {

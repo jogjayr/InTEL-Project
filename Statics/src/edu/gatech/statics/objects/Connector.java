@@ -74,6 +74,9 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
 
     @Override
     public Vector3f getTranslation() {
+        // this is a special case that occurs during persistence
+        if(anchor == null)
+            return new Vector3f();
         return anchor.getTranslation();
     }
 
@@ -126,6 +129,16 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
      * so if we are observing from body2, the force will be reversed.
      */
     abstract public List<Vector> getReactions();
+
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Connector(String name) {
+        setName(name);
+    }
 
     /** Creates a new instance of Joint */
     public Connector(Point point) {

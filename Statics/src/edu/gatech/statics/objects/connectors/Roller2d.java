@@ -33,6 +33,16 @@ public class Roller2d extends Connector {
         this.direction = direction.normalize();
     }
 
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Roller2d(String name) {
+        super(name);
+    }
+
     /** Creates a new instance of Roller */
     public Roller2d(Point point) {
         super(point);

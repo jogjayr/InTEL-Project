@@ -22,6 +22,16 @@ import java.util.List;
  */
 public class Fix2d extends Connector {
 
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Fix2d(String name) {
+        super(name);
+    }
+
     /** Creates a new instance of Fix */
     public Fix2d(Point point) {
         super(point);

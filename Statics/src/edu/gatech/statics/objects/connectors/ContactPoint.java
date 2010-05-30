@@ -40,11 +40,15 @@ public class ContactPoint extends Connector {
         this.normalDirection = direction.normalize();
     }
 
-    /** Creates a new instance of ContactPoint */
-//    public ContactPoint(Point point) {
-//        super(point);
-//        this.frictionCoefficient = new ConstantObject("mu", new BigDecimal("1.0"), Unit.none);
-//    }
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public ContactPoint(String name) {
+        super(name);
+    }
 
     public ContactPoint(Point point, ConstantObject frictionCoefficient) {
         super(point);

@@ -30,6 +30,16 @@ public class Roller3d extends Connector {
         this.normal = normal;
     }
 
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Roller3d(String name) {
+        super(name);
+    }
+
     /** Creates a new instance of Roller3d */
     public Roller3d(Point point) {
         super(point);

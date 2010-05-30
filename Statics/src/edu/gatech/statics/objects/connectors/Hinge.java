@@ -30,6 +30,16 @@ public class Hinge extends Connector {
         this.axis = axis;
     }
 
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Hinge(String name) {
+        super(name);
+    }
+
     /** Creates a new instance of Hinge */
     public Hinge(Point point) {
         super(point);

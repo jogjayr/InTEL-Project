@@ -12,7 +12,9 @@ import edu.gatech.statics.exercise.SymbolManager;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.objects.Connector;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.tasks.Task;
+import edu.gatech.statics.util.Pair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -212,6 +214,22 @@ public class ExerciseState implements State {
      * This is for persistence and deserialization. This should never be called directly!
      * @param loads
      */
+    @Deprecated
+    public void initSymbolManager(List<Pair<Connector, AnchoredVector>> symbolicLoads, List<ConstantObject> symbolicConstants) {
+        if (encoding) {
+            return;
+        }
+        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + symbolicLoads);
+        for (Pair<Connector, AnchoredVector> pair : symbolicLoads) {
+            Exercise.getExercise().getState().getSymbolManager().addSymbol(pair.getRight(), pair.getLeft());
+        }
+
+        Logger.getLogger("Statics").info("initSymbolManager: adding constants to symbol manager: " + symbolicConstants);
+        for (ConstantObject constantObject : symbolicConstants) {
+            Exercise.getExercise().getState().getSymbolManager().addSymbol(constantObject);
+        }
+    }
+
 //    @Deprecated
 //    public void initSymbolManager(List<AnchoredVector> loads) {
 //        if (encoding) {

@@ -128,23 +128,10 @@ public abstract class Exercise {
         taskListeners.add(listener);
     }
 
-    /**
-     * This is meant to be called only once by StaticsApplication, after the exercise is loaded.
-     * This method locks the schematic.
-     */
-    //public void lockSchematic() {
-    //    schematic.lock();
-    //}
-    /**
-     * This method is called when the user tries to submit the exercise.
-     * Do nothing here, it should be overridden.
-     */
-    //public void onSubmit() {
-    //}
     public void removeTaskListener(TaskStatusListener listener) {
         taskListeners.remove(listener);
     }
-//    private String name = "Exercise";
+
     private String appletExerciseName = "";
     private int problemID;
 
@@ -167,40 +154,7 @@ public abstract class Exercise {
     public void setProblemID(int problemID) {
         this.problemID = problemID;
     }
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//    private String description;
-//    public String getFullDescription() {
-//
-//        StringBuffer taskString = new StringBuffer();
-//        //taskString.append("<ol>");
-//        taskString.append("<br>");
-//        for (Task task : tasks) {
-//            //taskString.append("<li>");
-//            taskString.append("->");
-//            taskString.append("<b>").append(task.getDescription()).append("</b>");
-//            if (task.isSatisfied()) {
-//                taskString.append(": DONE!!");
-//            }
-//            taskString.append("<br/>");
-//            //taskString.append("</li>");
-//        }
-//        //taskString.append("</ol>");
-//
-//        return "<html><body>" +
-//                "<center><font size=\"6\">" + getName() + "</font></center>" +
-//                description + "<br/>" +
-//                taskString +
-//                "</body></html>";
-//    }
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+
     private Schematic schematic;
 
     public Schematic getSchematic() {

@@ -318,7 +318,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 for (AnchoredVector anchoredVector : loadsToAccountFor) {
                     if (anchoredVector.getAnchor() == connector.getAnchor() &&
                             (vector.getVectorValue().equals(anchoredVector.getVectorValue()) ||
-                            (connector.isForceDirectionNegatable() && vector.getVectorValue().negate().equals(anchoredVector.getVectorValue())))) {
+                            vector.getVectorValue().negate().equals(anchoredVector.getVectorValue()))) {
                         // found.
                         match = anchoredVector;
                         break;

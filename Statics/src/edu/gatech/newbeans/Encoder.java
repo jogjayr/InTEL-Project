@@ -84,7 +84,7 @@ public class Encoder {
             return (exp == null) ? null : exp.getValue(); 
         }
         catch (Exception e) { 
-            getExceptionListener().exceptionThrown(e); 
+            getExceptionListener().exceptionThrown(e);
             throw new RuntimeException("failed to evaluate: " + exp.toString()); 
         }
     }

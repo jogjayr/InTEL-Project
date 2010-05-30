@@ -7,12 +7,12 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.exercise.state.ExerciseState;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.newbeans.DefaultPersistenceDelegate;
 import edu.gatech.newbeans.Encoder;
 import edu.gatech.newbeans.Statement;
+import edu.gatech.statics.exercise.state.DiagramState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,7 +34,10 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
         newState.setEncoding(true);
 
         // write out the SymbolManager
-//        out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
+        //out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{new ArrayList(oldState.getSymbolManager().getLoads())}));
+        out.writeStatement(new Statement(oldState, "initSymbolManager", new Object[]{
+                    new ArrayList(oldState.getSymbolManager().getSymbolicLoads()),
+                    new ArrayList(oldState.getSymbolManager().getSymbolicConstants())}));
 
         // write out the exerciseParameters
         out.writeStatement(new Statement(oldState, "initParameters", new Object[]{new HashMap(oldState.getParameters())}));
@@ -49,23 +52,24 @@ public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate
 
         // build a list of all of the diagrams.
         List<Diagram> allDiagrams = new ArrayList<Diagram>();
-        
+
         for (Map.Entry<DiagramKey, Map<DiagramType, Diagram>> entry : oldState.allDiagrams().entrySet()) {
             Map<DiagramType, Diagram> map = entry.getValue();
             for (Map.Entry<DiagramType, Diagram> entry1 : map.entrySet()) {
                 Diagram diagram = entry1.getValue();
-                
+
                 allDiagrams.add(diagram);
             }
         }
 
         // sort the list
         Collections.sort(allDiagrams, new Comparator<Diagram>() {
+
             public int compare(Diagram o1, Diagram o2) {
                 return o1.getType().getPriority() - o2.getType().getPriority();
             }
         });
-        
+
         // write out the diagrams
         for (Diagram diagram : allDiagrams) {
             DiagramKey diagramKey = diagram.getKey();

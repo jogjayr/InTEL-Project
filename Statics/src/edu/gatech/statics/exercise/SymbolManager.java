@@ -26,15 +26,18 @@ public class SymbolManager {
     private List<String> symbols = new ArrayList<String>();
     private List<ConstantObject> symbolicConstants = new ArrayList<ConstantObject>();
 
+    public List<Pair<Connector, AnchoredVector>> getSymbolicLoads() {
+        return Collections.unmodifiableList(symbolicLoads);
+    }
+
+    public List<ConstantObject> getSymbolicConstants() {
+        return Collections.unmodifiableList(symbolicConstants);
+    }
+
     @Override
     public String toString() {
         return "SymbolManager: {symbols=" + symbols + ", symbolicLoads=" + symbolicLoads + ", symbolicConstants=" + symbolicConstants + "}";
     }
-//
-//    public List<AnchoredVector> getLoads() {
-//        return Collections.unmodifiableList(symbolicLoads);
-//    }
-//
 
     public List<String> getSymbols() {
         return Collections.unmodifiableList(symbols);

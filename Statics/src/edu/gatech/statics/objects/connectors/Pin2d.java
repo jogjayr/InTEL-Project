@@ -23,6 +23,16 @@ import java.util.List;
  */
 public class Pin2d extends Connector {
 
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Pin2d(String name) {
+        super(name);
+    }
+
     /** Creates a new instance of Pin */
     public Pin2d(Point point) {
         super(point);

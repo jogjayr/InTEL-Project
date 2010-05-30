@@ -16,6 +16,7 @@ import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.modes.truss.zfm.PotentialZFM;
 import edu.gatech.statics.modes.truss.zfm.ZeroForceMember;
 import edu.gatech.statics.objects.AngleMeasurement;
+import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
@@ -82,13 +83,13 @@ public class BridgeExercise extends TrussExercise {
                 return new KnownsContainer() {
 
                     @Override
-                    protected void writeReaction(Vector load, Point applicationPoint, String name) {
+                    protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
 
                         // ignore these given loads.
                         if(isGivenLoad(load) && name.startsWith("load-U"))
                             return;
 
-                        super.writeReaction(load, applicationPoint, name);
+                        super.writeReaction(load, applicationPoint, connector, name);
                     }
 
                 };

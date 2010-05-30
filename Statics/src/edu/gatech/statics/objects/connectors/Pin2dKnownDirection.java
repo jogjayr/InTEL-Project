@@ -17,7 +17,17 @@ import edu.gatech.statics.objects.representations.ConnectorRepresentation;
 public class Pin2dKnownDirection extends Roller2d {
 
     private boolean negatable;
-    
+
+    /**
+     * For persistence
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public Pin2dKnownDirection(String name) {
+        super(name);
+    }
+
     public Pin2dKnownDirection(Point point) {
         this(point, false);
     }
