@@ -80,7 +80,7 @@ public class Polynomial {
 
     static class Term implements Comparable<Term> {
 
-        private static final Term unitTerm = new Term(Collections.<Symbol>emptyList());
+        public static final Term unitTerm = new Term(Collections.<Symbol>emptyList());
         private final List<Symbol> symbols; // empty list means unit term.
 
         public Term(List<Symbol> symbols) {
@@ -504,6 +504,20 @@ public class Polynomial {
         }
     }
 
+    /**
+     * This is used for cleaning up polynomials in which the unit term is too small.
+     * @return
+     */
+    Polynomial stripUnit() {
+        if (Math.abs(getCoefficient(Term.unitTerm)) < .01) {
+            Polynomial copy = new Polynomial(this);
+            copy.terms.remove(Term.unitTerm);
+            return copy;
+        } else {
+            return this;
+        }
+    }
+
 //    void normalize() {
 //        double lc = getLeadingCoefficient();
 //
@@ -516,7 +530,7 @@ public class Polynomial {
         String s = "";
         int i = 0;
         for (Term term : terms.keySet()) {
-        //for (Term term : terms.descendingKeySet()) {
+            //for (Term term : terms.descendingKeySet()) {
 
             if (i != 0) {
                 s += " + ";

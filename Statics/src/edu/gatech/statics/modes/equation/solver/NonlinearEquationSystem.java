@@ -63,6 +63,15 @@ public class NonlinearEquationSystem implements EquationSystem {
         }
         polys.removeAll(polysToRemove);
 
+        // sometimes there will be a small mathematical margin where something is set to equal some
+        // value that is nonzero because of a rounding error. Ie, cx + .008 = 0. In this case, 
+        // cx is actually supposed to be 0. Here we strip off unit terms that are too close to zero.
+        List<Polynomial> refinedPolys = new ArrayList<Polynomial>();
+        for (Polynomial polynomial : polys) {
+            refinedPolys.add(polynomial.stripUnit());
+        }
+        polys = refinedPolys;
+
         List<Polynomial> basis = null;
 
         try {
