@@ -82,6 +82,10 @@ public class CentroidModePanel extends ApplicationModePanel {
                 newPart.setSolved(true);
                 partsMap.remove(currentlySelected.getCentroidPart());
                 partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
+
+                currentlySelected.setDisplaySelected(false);
+                currentlySelected.setDisplayGrayed(true);
+
                 getDiagram().pushState(builder.build());
 
                 //do we need to do set diagram to solved?
@@ -183,6 +187,7 @@ public class CentroidModePanel extends ApplicationModePanel {
                 xField.setText("");
                 yField.setText("");
             }
+            //currentlySelected.setDisplayGrayed(true);
             stateChanged();
         } else if (getDiagram() != null && allSolved()) {
             CentroidState state = (CentroidState) getDiagram().getCurrentState();

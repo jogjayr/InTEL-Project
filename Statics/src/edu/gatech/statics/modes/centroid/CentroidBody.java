@@ -21,6 +21,17 @@ public class CentroidBody extends Body implements DiagramKey {
     private List<CentroidPartObject> parts;
     private final Point centerOfMass;
 
+    /**
+     * For persistence, do not call directly.
+     * @param name
+     * @deprecated
+     */
+    @Deprecated
+    public CentroidBody(String name) {
+        super(name);
+        this.centerOfMass = null;
+    }
+
     public CentroidBody(String name, Point centerOfMass) {
         super(name);
         this.centerOfMass = centerOfMass;

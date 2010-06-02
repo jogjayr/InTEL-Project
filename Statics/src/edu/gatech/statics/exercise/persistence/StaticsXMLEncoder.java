@@ -45,6 +45,7 @@ import edu.gatech.newbeans.Expression;
 import edu.gatech.newbeans.PersistenceDelegate;
 import edu.gatech.newbeans.Statement;
 import edu.gatech.newbeans.XMLEncoder;
+import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Fix2d;
@@ -176,12 +177,10 @@ public class StaticsXMLEncoder extends XMLEncoder {
             }
         });
 
+        // bodies
         setPersistenceDelegate(Point.class, namedPersistenceDelegate);
         setPersistenceDelegate(Body.class, namedPersistenceDelegate);
-
         setPersistenceDelegate(ConstantObject.class, namedPersistenceDelegate);
-
-        // we should have some general approach so that this nonsense is not necessary
         setPersistenceDelegate(Beam.class, namedPersistenceDelegate);
         setPersistenceDelegate(Cable.class, namedPersistenceDelegate);
         setPersistenceDelegate(Bar.class, namedPersistenceDelegate);
@@ -190,9 +189,9 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Plate.class, namedPersistenceDelegate);
         setPersistenceDelegate(ZeroForceMember.class, namedPersistenceDelegate);
         setPersistenceDelegate(PotentialZFM.class, namedPersistenceDelegate);
-        //setPersistenceDelegate(Point.class, new DefaultPersistenceDelegate(new String[]{"name"}));
-        //setPersistenceDelegate(Body.class, new DefaultPersistenceDelegate(new String[]{"name"}));
+        setPersistenceDelegate(CentroidBody.class, namedPersistenceDelegate);
 
+        // connectors
         setPersistenceDelegate(Connector2ForceMember2d.class, namedPersistenceDelegate);
         setPersistenceDelegate(ContactPoint.class, namedPersistenceDelegate);
         setPersistenceDelegate(Fix2d.class, namedPersistenceDelegate);
@@ -313,7 +312,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         } catch (RuntimeException ex) {
             // pick up an exception that might have been thrown and adds some logging
             Logger.getLogger("Statics").log(Level.WARNING, "Persistence of " + o.getClass().getName() + " (" + o + ") caused an exception...");
-            throw ex;
+            throw ex;   
         }
     }
 

@@ -8,9 +8,12 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.modes.centroid.CentroidDiagram;
+import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.ConstantObject;
@@ -98,6 +101,11 @@ public class KnownsContainer extends BContainer implements SolveListener {
             ConstantObject constObj = (ConstantObject) obj;
             writeConstantObject(constObj);
         }
+
+        if (obj instanceof CentroidPartObject) {
+            CentroidPartObject cpo = (CentroidPartObject) obj;
+            writeCentroidPartObject(cpo);
+        }
     }
 
     protected void writeWeightReaction(Body body) {
@@ -131,8 +139,8 @@ public class KnownsContainer extends BContainer implements SolveListener {
             text1 = "??? ";
         }
 
-        text1 += member.getConnector1().getAnchor().getName() +
-                member.getConnector2().getAnchor().getName();
+        text1 += member.getConnector1().getAnchor().getName()
+                + member.getConnector2().getAnchor().getName();
 
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
@@ -186,8 +194,30 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
+    protected void writeCentroidPartObject(CentroidPartObject cpo) {
 
+        // only write known constants
+//        if (!cpo) {
+//            return;
+//        }
+
+//        "Weight of @=b(" + body.getName() + ") at @=b(" + body.getCenterOfMassPoint().getName() + "): ";
+
+
+//        CentroidDiagram d = (CentroidDiagram) Exercise.getExercise().getDiagram(cpo.getCentroidPart(), DiagramType.getType(cpo.getCentroidPart().getPartName()));
+//        if (d != null && d.getCurrentState().isLocked()) {
+            BLabel label1 = new BLabel(" @=b#ff0000(" + cpo.getName() + ")");
+            BLabel label2 = new BLabel("Surface area: @=b(" + cpo.getCentroidPart().getSurfaceArea() + ")");
+            BLabel label3 = new BLabel("Center X: @=b(" + cpo.getCentroidPart().getxPosition() + ")");
+            BLabel label4 = new BLabel("Center Y: @=b(" + cpo.getCentroidPart().getyPosition() + ")");
+            add(label1);
+            add(label2);
+            add(label3);
+            add(label4);
+//        }
+    }
+
+    protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
         if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
             if (load1 != null) {

@@ -50,6 +50,11 @@ public class CentroidSelectDiagram extends SelectDiagram {
     }
 
     @Override
+    public void deactivate() {
+        super.deactivate();
+    }
+
+    @Override
     public void completed() {
         List<SimulationObject> selected = getCurrentState().getCurrentlySelected();
 

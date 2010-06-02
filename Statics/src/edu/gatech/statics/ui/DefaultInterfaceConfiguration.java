@@ -13,7 +13,6 @@ import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.coordinates.SimpleCoordinateSystemWindow;
 import edu.gatech.statics.ui.windows.knownforces.KnownsSidebarWindow;
-import edu.gatech.statics.ui.windows.knownforces.KnownsWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.Navigation2DWindow;
@@ -138,7 +137,4 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         return new DiagramDisplayCalculator();
     }
 
-    protected KnownsWindow createKnownLoadsWindow() {
-        return new KnownsWindow();
-    }
 }

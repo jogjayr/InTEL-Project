@@ -7,7 +7,9 @@ package edu.gatech.statics.modes.centroid;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
@@ -16,6 +18,7 @@ import edu.gatech.statics.modes.centroid.actions.SetAreaValue;
 import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
 import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
 import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
+import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -49,6 +52,12 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //                }
 //            }
 //        }
+    }
+
+    @Override
+    protected void stateChanged() {
+        super.stateChanged();
+        //see which are locked/solved and gray accordingly
     }
 
     public CentroidBody getBody() {
@@ -274,6 +283,13 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //objects.add(cpObj);
         objects.addAll(body.getParts());
 
+        //indeed, measurements
+
+        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {
+            if (measurement instanceof Measurement) {
+                objects.add(measurement);
+            }
+        }
 
         //measurements?
         return objects;
