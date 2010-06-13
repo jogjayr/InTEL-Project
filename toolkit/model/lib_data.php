@@ -313,44 +313,68 @@ function getStatus() {
     return $results;
 }
 
-function getSubmissions() {
-//retrieves all active submissions
+function getUsersByName($userName) {
 
     global $db;
+    $userName = mysql_escape_string($userName);
 
-    $query = "SELECT app_user.first_name, app_user.last_name, app_user.email, app_problem.name, app_assignment.class_id, app_submission_status.status, app_user_assignment.updated_on
-  FROM app_user, app_assignment, app_submission_status, app_user_assignment, app_problem 
-  WHERE app_user_assignment.is_active=1 
-  AND app_assignment.is_active=1 
-  AND app_user.id=app_user_assignment.user_id
-  AND app_assignment.id=app_user_assignment.assignment_id 
-  AND app_problem.id=app_assignment.problem_id 
-  AND app_submission_status.id=app_user_assignment.submission_status_id 
-  ORDER BY app_assignment.class_id, app_user_assignment.assignment_id, app_user_assignment.updated_on DESC";
-
+    $query = "SELECT * FROM app_users WHERE 
+      first_name LIKE CONVERT( _utf8 '$userName' USING latin1 ) OR
+      last_name LIKE CONVERT( _utf8 '$userName' USING latin1 )";
     $results = aquery($query, $db);
 
     return $results;
-
 }
 
-function getSubmissionsByOwner($uuid) {
+function getSubmissions($ownerUuid, $problem, $class, $userName) {
 //retrieves all active submissions by this owner
 
     global $db;
 
-    $user = getUserByUUID($uuid);
+    $ownerLine = "";
+    if($ownerUuid != NULL) {
+        $owner = getUserByUUID($ownerUuid);
+        $ownerLine = "AND app_class.owner_user_id={$owner['id']} ";
+    }
 
-    $query = "SELECT app_user.first_name, app_user.last_name, app_user.email, app_problem.name, app_assignment.class_id, app_submission_status.status, app_user_assignment.updated_on
+    $problemLine = "";
+    if($problem != -1) {
+        $problem = mysql_escape_string($problem);
+        $problemLine = "AND app_problem.id = $problem ";
+    }
+
+    $classLine = "";
+    if($class != -1) {
+        $class = mysql_escape_string($class);
+        $classLine = "AND app_class.id = $class ";
+    }
+
+    $userLine = "";
+    if($userName != NULL) {
+
+        // attempt to find the user by name
+        $users = getUsersByName($userName);
+
+        if(sizeof($users) == 0) {
+            // couldn't find them
+            return array(); // return an empty array
+        }
+        // line to search for users....
+        //$userLine = ????
+    }
+
+    $query = "SELECT app_user.first_name, app_user.last_name, app_user.email, app_problem.name,
+        app_assignment.class_id, app_submission_status.status, app_user_assignment.updated_on,
+        app_user_assignment.submission_status_id, app_user_assignment.user_id, app_user_assignment.assignment_id
   FROM app_user, app_assignment, app_submission_status, app_user_assignment, app_class, app_problem 
-  WHERE app_user_assignment.is_active=1 
+  WHERE app_user_assignment.is_active=1
+  $ownerLine $problemLine $classLine $userLine
   AND app_assignment.is_active=1 
   AND app_user.id=app_user_assignment.user_id
   AND app_assignment.id=app_user_assignment.assignment_id 
   AND app_submission_status.id=app_user_assignment.submission_status_id 
   AND app_class.id=app_assignment.class_id 
   AND app_problem.id=app_assignment.problem_id 
-  AND app_class.owner_user_id={$user['id']} 
   ORDER BY app_assignment.class_id, app_user_assignment.assignment_id, app_user_assignment.updated_on DESC";
 
     $results = aquery($query, $db);

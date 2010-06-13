@@ -1,7 +1,7 @@
 <?php
 
 require_once('admin/initvars.php');
-$title = 'Manage Assignments';
+$title = 'View Submission';
 
 requireLogin(); 
 
