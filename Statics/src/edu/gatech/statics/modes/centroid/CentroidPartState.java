@@ -19,7 +19,7 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
     final private String area;
     final private String xPosition;
     final private String yPosition;
-    final private CentroidPart myPart;
+    final private String myPart;
 
     private CentroidPartState(Builder builder) {
         this.locked = builder.locked;
@@ -45,7 +45,7 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
         return yPosition;
     }
 
-    public CentroidPart getMyPart() {
+    public String getMyPart() {
         return myPart;
     }
 
@@ -55,7 +55,7 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
         private String area;
         private String xPosition;
         private String yPosition;
-        private CentroidPart myPart;
+        private String myPart;
 
         public Builder() {
         }
@@ -84,7 +84,7 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
             return yPosition;
         }
 
-        public CentroidPart getMyPart() {
+        public String getMyPart() {
             return myPart;
         }
 
@@ -104,7 +104,7 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
             this.yPosition = yPosition;
         }
 
-        public void setMyPart(CentroidPart myPart) {
+        public void setMyPart(String myPart) {
             this.myPart = myPart;
         }
 

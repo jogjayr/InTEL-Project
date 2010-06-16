@@ -54,11 +54,11 @@ public class SetXPositionValue implements DiagramAction<CentroidState> {
             builder.setXPosition(xValue);
             return builder.build();
         } else {
-            CentroidPartState.Builder builder = oldState.getMyPartState(currentlySelected.getCentroidPart()).getBuilder();
+            CentroidPartState.Builder builder = oldState.getMyPartState(currentlySelected.getCentroidPart().getPartName()).getBuilder();
             builder.setXPosition(xValue);
             CentroidState.Builder builder2 = oldState.getBuilder();
-            builder2.getMyParts().remove(currentlySelected.getCentroidPart());
-            builder2.getMyParts().put(currentlySelected.getCentroidPart(), builder.build());
+            builder2.getMyParts().remove(currentlySelected.getCentroidPart().getPartName());
+            builder2.getMyParts().put(currentlySelected.getCentroidPart().getPartName(), builder.build());
             return builder2.build();
         }
     }

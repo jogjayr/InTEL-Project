@@ -197,9 +197,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
     protected void writeCentroidPartObject(CentroidPartObject cpo) {
 
         // only write known constants
-//        if (!cpo) {
-//            return;
-//        }
+        if (cpo.getState() == null || !cpo.getState().isLocked()) {
+            return;
+        }
+
 
 //        "Weight of @=b(" + body.getName() + ") at @=b(" + body.getCenterOfMassPoint().getName() + "): ";
 

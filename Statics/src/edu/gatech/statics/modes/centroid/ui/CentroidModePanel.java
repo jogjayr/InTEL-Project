@@ -14,19 +14,16 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.DiagramType;
-import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidDiagram;
 import edu.gatech.statics.modes.centroid.CentroidMode;
 import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.CentroidState;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.NextButton;
-import java.util.List;
+import edu.gatech.statics.util.SolveListener;
 import java.util.Map;
 
 /**
@@ -74,14 +71,14 @@ public class CentroidModePanel extends ApplicationModePanel {
 
                 //get the current CentroidState and then grab the partsMap so we can begin to lock the part
                 Builder builder = state.getBuilder();
-                Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
-                CentroidPartState.Builder newPart = partsMap.get(currentlySelected.getCentroidPart()).getBuilder();
+                Map<String, CentroidPartState> partsMap = builder.getMyParts();
+                CentroidPartState.Builder newPart = partsMap.get(currentlySelected.getCentroidPart().getPartName()).getBuilder();
 
                 //solve the part and then remove the old one from the list and replace it with the new locked one, then push to state
                 //this doesn't feel like a particularly efficient method but it works
                 newPart.setLocked(true);
-                partsMap.remove(currentlySelected.getCentroidPart());
-                partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
+                partsMap.remove(currentlySelected.getCentroidPart().getPartName());
+                partsMap.put(currentlySelected.getCentroidPart().getPartName(), newPart.build());
 
                 currentlySelected.setDisplaySelected(false);
                 currentlySelected.setDisplayGrayed(true);
@@ -114,6 +111,11 @@ public class CentroidModePanel extends ApplicationModePanel {
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
             }
         }
+
+        // just update the knowns container anyway
+        for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
+            listener.onLoadSolved(null);
+        }
     }
 
     @Override
@@ -121,7 +123,7 @@ public class CentroidModePanel extends ApplicationModePanel {
         super.stateChanged();
 
         //lock the input fields if the state of the currently selected part is locked, otherwise make them clickable
-        Map<CentroidPart, CentroidPartState> partsMap = ((CentroidState) getDiagram().getCurrentState()).getBuilder().getMyParts();
+        Map<String, CentroidPartState> partsMap = ((CentroidState) getDiagram().getCurrentState()).getBuilder().getMyParts();
         if (getDiagram().isLocked()) {
             //if the diagram is locked (problem is over) then lock the UI
             areaField.setEnabled(false);
@@ -134,7 +136,8 @@ public class CentroidModePanel extends ApplicationModePanel {
             xField.setEnabled(true);
             yField.setEnabled(true);
             checkButton.setEnabled(true);
-        } else if (partsMap.containsKey(currentlySelected.getCentroidPart()) && partsMap.get(currentlySelected.getCentroidPart()).isLocked()) {
+        } else if (partsMap.containsKey(currentlySelected.getCentroidPart().getPartName())
+                && partsMap.get(currentlySelected.getCentroidPart().getPartName()).isLocked()) {
             //if the partsMap contains the key and the part is locked (solved) and the problem is not over then lock the UI
             areaField.setEnabled(false);
             xField.setEnabled(false);
@@ -154,12 +157,12 @@ public class CentroidModePanel extends ApplicationModePanel {
         //needed because activate() gets called sometimes before we're ready
         if (getDiagram() != null && currentlySelected != null) {
             CentroidState state = (CentroidState) getDiagram().getCurrentState();
-            if (!allSolved() && state.getBuilder().getMyParts().containsKey(currentlySelected.getCentroidPart())) {
+            if (!allSolved() && state.getBuilder().getMyParts().containsKey(currentlySelected.getCentroidPart().getPartName())) {
                 //if the state contains our part already then we simply populate the three text boxes
                 //with the information about area, x, and y that is instate
-                areaField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getArea());
-                xField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getXPosition());
-                yField.setText(state.getMyPartState(currentlySelected.getCentroidPart()).getYPosition());
+                areaField.setText(state.getMyPartState(currentlySelected.getCentroidPart().getPartName()).getArea());
+                xField.setText(state.getMyPartState(currentlySelected.getCentroidPart().getPartName()).getXPosition());
+                yField.setText(state.getMyPartState(currentlySelected.getCentroidPart().getPartName()).getYPosition());
             } else if (allSolved()) {
                 //i think this is unnecessary because once you set the diagram to solved currentlyselectd can no longer be anything but null
                 areaField.setText(state.getArea());
@@ -172,11 +175,11 @@ public class CentroidModePanel extends ApplicationModePanel {
                 partBuilder.setXPosition("");
                 partBuilder.setYPosition("");
                 partBuilder.setLocked(false);
-                partBuilder.setMyPart(currentlySelected.getCentroidPart());
+                partBuilder.setMyPart(currentlySelected.getCentroidPart().getPartName());
 
                 //push the CentroidPartState to CentroidState
                 Builder builder = state.getBuilder();
-                Map<CentroidPart, CentroidPartState> partsMap = builder.getMyParts();
+                Map<String, CentroidPartState> partsMap = builder.getMyParts();
                 partsMap.put(partBuilder.getMyPart(), partBuilder.build());
 
                 //push the current CentroidState to be the current state

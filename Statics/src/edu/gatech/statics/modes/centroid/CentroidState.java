@@ -24,7 +24,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
     final private String area;
     final private String xPosition;
     final private String yPosition;
-    final private Map<CentroidPart, CentroidPartState> myParts;
+    final private Map<String, CentroidPartState> myParts;
 
     private CentroidState(Builder builder) {
         this.locked = builder.locked;
@@ -34,12 +34,12 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         this.myParts = Collections.unmodifiableMap(builder.getMyParts());
     }
 
-    public Map<CentroidPart, CentroidPartState> getMyParts() {
+    public Map<String, CentroidPartState> getMyParts() {
         return myParts;
     }
 
-    public CentroidPartState getMyPartState(CentroidPart part) {
-        return myParts.get(part);
+    public CentroidPartState getMyPartState(String partName) {
+        return myParts.get(partName);
     }
 
     public boolean isLocked() {
@@ -79,14 +79,14 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         private String area;
         private String xPosition;
         private String yPosition;
-        private Map<CentroidPart, CentroidPartState> myParts;
+        private Map<String, CentroidPartState> myParts;
 
         public Builder() {
             this.locked = false;
             this.area = "";
             this.xPosition = "";
             this.yPosition = "";
-            this.myParts = new HashMap<CentroidPart, CentroidPartState>();
+            this.myParts = new HashMap<String, CentroidPartState>();
         }
 
         public Builder(CentroidState state) {
@@ -94,7 +94,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             this.area = state.area;
             this.xPosition = state.xPosition;
             this.yPosition = state.yPosition;
-            this.myParts = new HashMap<CentroidPart, CentroidPartState>(state.getMyParts());
+            this.myParts = new HashMap<String, CentroidPartState>(state.getMyParts());
         }
 
         public boolean isLocked() {
@@ -113,7 +113,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             return yPosition;
         }
 
-        public Map<CentroidPart, CentroidPartState> getMyParts() {
+        public Map<String, CentroidPartState> getMyParts() {
             return myParts;
         }
 
@@ -121,7 +121,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             myParts.put(myPartState.getMyPart(), myPartState);
         }
 
-        public void setMyParts(Map<CentroidPart, CentroidPartState> myPartStates) {
+        public void setMyParts(Map<String, CentroidPartState> myPartStates) {
             this.myParts.clear();
             this.myParts.putAll(myPartStates);
         }

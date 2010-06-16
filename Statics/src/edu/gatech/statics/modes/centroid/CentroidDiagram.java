@@ -57,6 +57,11 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     @Override
     protected void stateChanged() {
         super.stateChanged();
+
+        for (CentroidPartObject cpo : body.getParts()) {
+            cpo.setState(getCurrentState().getMyPartState(cpo.getCentroidPart().getPartName()));
+        }
+
         //see which are locked/solved and gray accordingly
     }
 
