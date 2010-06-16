@@ -14,6 +14,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.CentroidPartMarker;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -113,6 +114,7 @@ public class KeyboardFrictionExercise extends FrameExercise {
     Point A, B, C, D, E;
     Pin2d jointC;
     ContactPoint jointB, jointE;
+//    CentroidPartMarker cpm;
     //Roller2d jointE;
     Body leftLeg, rightLeg;
     Bar bar;
@@ -149,6 +151,8 @@ public class KeyboardFrictionExercise extends FrameExercise {
         jointE = new ContactPoint(E, frictionObjectE);
         jointE.setNormalDirection(new Vector3bd("0.0","1.0","0.0"));
         jointE.setFrictionDirection(new Vector3bd("1.0","0.0","0.0"));
+//        cpm = new CentroidPartMarker("zoomj", "0", "5", "0");
+//        cpm.createDefaultSchematicRepresentation();
 
         DistanceMeasurement distance1 = new DistanceMeasurement(D, A);
         distance1.setName("Measure AD");

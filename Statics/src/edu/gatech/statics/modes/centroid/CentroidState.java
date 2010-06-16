@@ -20,21 +20,21 @@ import java.util.TreeMap;
 public class CentroidState implements DiagramState<CentroidDiagram> {
 
     //final private Map<AnchoredVector, String> terms;
-    final private boolean solved;
+    final private boolean locked;
     final private String area;
     final private String xPosition;
     final private String yPosition;
     final private Map<CentroidPart, CentroidPartState> myParts;
 
     private CentroidState(Builder builder) {
-        this.solved = builder.solved;
+        this.locked = builder.locked;
         this.area = builder.area;
         this.xPosition = builder.xPosition;
         this.yPosition = builder.yPosition;
         this.myParts = Collections.unmodifiableMap(builder.getMyParts());
     }
 
-    public Map<CentroidPart, CentroidPartState> getEquationStates() {
+    public Map<CentroidPart, CentroidPartState> getMyParts() {
         return myParts;
     }
 
@@ -43,7 +43,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
     }
 
     public boolean isLocked() {
-        return solved;
+        return locked;
     }
 
     public String getArea() {
@@ -75,14 +75,14 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
 
     public static class Builder implements edu.gatech.statics.util.Builder<CentroidState> {
 
-        private boolean solved;
+        private boolean locked;
         private String area;
         private String xPosition;
         private String yPosition;
         private Map<CentroidPart, CentroidPartState> myParts;
 
         public Builder() {
-            this.solved = false;
+            this.locked = false;
             this.area = "";
             this.xPosition = "";
             this.yPosition = "";
@@ -90,15 +90,15 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         }
 
         public Builder(CentroidState state) {
-            this.solved = state.solved;
+            this.locked = state.locked;
             this.area = state.area;
             this.xPosition = state.xPosition;
             this.yPosition = state.yPosition;
-            this.myParts = new HashMap<CentroidPart, CentroidPartState>(state.getEquationStates());
+            this.myParts = new HashMap<CentroidPart, CentroidPartState>(state.getMyParts());
         }
 
         public boolean isLocked() {
-            return solved;
+            return locked;
         }
 
         public String getArea() {
@@ -121,13 +121,13 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
             myParts.put(myPartState.getMyPart(), myPartState);
         }
 
-        public void setEquationStates(Map<CentroidPart, CentroidPartState> myPartStates) {
+        public void setMyParts(Map<CentroidPart, CentroidPartState> myPartStates) {
             this.myParts.clear();
             this.myParts.putAll(myPartStates);
         }
 
-        public void setSolved(boolean solved) {
-            this.solved = solved;
+        public void setLocked(boolean solved) {
+            this.locked = solved;
         }
 
         public void setArea(String area) {
@@ -149,7 +149,7 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
 
     @Override
     public String toString() {
-        return "CentroidState: {solved=" + solved + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myParts + "\"}";
+        return "CentroidState: {solved=" + locked + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myParts + "\"}";
     }
 
     public Builder getBuilder() {

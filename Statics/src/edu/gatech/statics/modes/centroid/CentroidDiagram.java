@@ -106,7 +106,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
         if (((CentroidState) getCurrentState()).allPartsSolved(this) && currentlySelected != null) {
             CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
-            //this.setSolved();
+            //this.setLocked();
             modePanel.displayBodySolver();
         } else {
             // update the UI
@@ -243,7 +243,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     public void setSolved() {
         //updateResultant();
         Builder builder = getCurrentState().getBuilder();
-        builder.setSolved(true);
+        builder.setLocked(true);
         pushState(builder.build());
         clearStateStack();
     }

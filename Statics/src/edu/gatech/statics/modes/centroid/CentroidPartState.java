@@ -5,24 +5,24 @@
 
 package edu.gatech.statics.modes.centroid;
 
-import edu.gatech.statics.exercise.state.DiagramState;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
+import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 
 /**
  *
  * @author Jimmy Truesdell
  */
-public class CentroidPartState implements DiagramState<CentroidDiagram>{
+public class CentroidPartState implements Buildable<CentroidPartState>{
 
-    final private boolean solved;
+    final private boolean locked;
     final private String area;
     final private String xPosition;
     final private String yPosition;
     final private CentroidPart myPart;
 
     private CentroidPartState(Builder builder) {
-        this.solved = builder.solved;
+        this.locked = builder.locked;
         this.area = builder.area;
         this.xPosition = builder.xPosition;
         this.yPosition = builder.yPosition;
@@ -30,7 +30,7 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
     }
 
     public boolean isLocked() {
-        return solved;
+        return locked;
     }
 
     public String getArea() {
@@ -51,7 +51,7 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
 
     public static class Builder implements edu.gatech.statics.util.Builder<CentroidPartState> {
 
-        private boolean solved;
+        private boolean locked;
         private String area;
         private String xPosition;
         private String yPosition;
@@ -61,7 +61,7 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
         }
 
         public Builder(CentroidPartState state) {
-            this.solved = state.solved;
+            this.locked = state.locked;
             this.area = state.area;
             this.xPosition = state.xPosition;
             this.yPosition = state.yPosition;
@@ -69,7 +69,7 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
         }
 
         public boolean isLocked() {
-            return solved;
+            return locked;
         }
 
         public String getArea() {
@@ -88,8 +88,8 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
             return myPart;
         }
 
-        public void setSolved(boolean solved) {
-            this.solved = solved;
+        public void setLocked(boolean solved) {
+            this.locked = solved;
         }
 
         public void setArea(String area) {
@@ -115,7 +115,7 @@ public class CentroidPartState implements DiagramState<CentroidDiagram>{
 
     @Override
     public String toString() {
-        return "CentroidPartState: {solved=" + solved + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myPart + "\"}";
+        return "CentroidPartState: {solved=" + locked + ", area=\"" + area + "\", xPosition=\"" + xPosition + "\", yPosition=\"" + yPosition + "\", myPart=\"" + myPart + "\"}";
     }
 
     public Builder getBuilder() {

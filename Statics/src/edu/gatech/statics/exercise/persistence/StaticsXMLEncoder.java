@@ -46,6 +46,7 @@ import edu.gatech.newbeans.PersistenceDelegate;
 import edu.gatech.newbeans.Statement;
 import edu.gatech.newbeans.XMLEncoder;
 import edu.gatech.statics.modes.centroid.CentroidBody;
+import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Fix2d;
@@ -190,6 +191,8 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(ZeroForceMember.class, namedPersistenceDelegate);
         setPersistenceDelegate(PotentialZFM.class, namedPersistenceDelegate);
         setPersistenceDelegate(CentroidBody.class, namedPersistenceDelegate);
+
+//        setPersistenceDelegate(CentroidPart.class, namedPersistenceDelegate);
 
         // connectors
         setPersistenceDelegate(Connector2ForceMember2d.class, namedPersistenceDelegate);

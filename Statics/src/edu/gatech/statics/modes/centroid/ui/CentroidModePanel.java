@@ -79,7 +79,7 @@ public class CentroidModePanel extends ApplicationModePanel {
 
                 //solve the part and then remove the old one from the list and replace it with the new locked one, then push to state
                 //this doesn't feel like a particularly efficient method but it works
-                newPart.setSolved(true);
+                newPart.setLocked(true);
                 partsMap.remove(currentlySelected.getCentroidPart());
                 partsMap.put(currentlySelected.getCentroidPart(), newPart.build());
 
@@ -89,7 +89,7 @@ public class CentroidModePanel extends ApplicationModePanel {
                 getDiagram().pushState(builder.build());
 
                 //do we need to do set diagram to solved?
-                //diagram.setSolved();
+                //diagram.setLocked();
             } else {
                 // should we give any more detailed feedback?
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
@@ -106,7 +106,7 @@ public class CentroidModePanel extends ApplicationModePanel {
                 yField.setEnabled(false);
 
                 CentroidState.Builder builder = ((CentroidState) getDiagram().getCurrentState()).getBuilder();
-                builder.setSolved(true);
+                builder.setLocked(true);
                 getDiagram().pushState(builder.build());
                 diagram.setSolved();
             } else {
@@ -171,7 +171,7 @@ public class CentroidModePanel extends ApplicationModePanel {
                 partBuilder.setArea("");
                 partBuilder.setXPosition("");
                 partBuilder.setYPosition("");
-                partBuilder.setSolved(false);
+                partBuilder.setLocked(false);
                 partBuilder.setMyPart(currentlySelected.getCentroidPart());
 
                 //push the CentroidPartState to CentroidState

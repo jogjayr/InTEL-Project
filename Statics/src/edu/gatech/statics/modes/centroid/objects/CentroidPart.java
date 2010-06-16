@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.centroid.objects;
 
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 
 /**
  *
@@ -21,6 +22,24 @@ public class CentroidPart implements DiagramKey {
 
         CIRCLE, RECTANGLE, TRIANGLE;
     }
+
+//    public String getName() {
+//        return partName;
+//    }
+//
+//    /**
+//     * For persistence, do not call directly.
+//     * @param name
+//     * @deprecated
+//     */
+//    @Deprecated
+//    public CentroidPart(String name) {
+//        this.partName = name;
+//        xPosition = null;
+//        yPosition = null;
+//        zPosition = null;
+//        surfaceArea = null;
+//    }
 
     public CentroidPart(String xPosition, String yPosition, String zPosition, String partName, String surfaceArea) {
         this.xPosition = xPosition;
