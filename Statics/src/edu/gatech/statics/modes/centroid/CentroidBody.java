@@ -20,7 +20,7 @@ public class CentroidBody extends Body implements DiagramKey {
 
     private List<CentroidPartObject> parts;
     private final Point centerOfMass;
-
+    
     /**
      * For persistence, do not call directly.
      * @param name

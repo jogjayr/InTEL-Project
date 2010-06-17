@@ -24,6 +24,7 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveCentroidTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -35,6 +36,8 @@ import java.math.BigInteger;
  * @author Jimmy Truesdell
  */
 public class SpaceStationExercise extends CentroidExercise {
+
+    private CentroidBody station;
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
@@ -141,7 +144,7 @@ public class SpaceStationExercise extends CentroidExercise {
 //        livingQuarters.createDefaultSchematicRepresentation();
 //        panelExtender.createDefaultSchematicRepresentation();
 
-        CentroidBody station = new CentroidBody("Space Station", p);
+        station = new CentroidBody("Space Station", p);
         station.setName("Space Station");
         station.addObject(A);
         station.addObject(B);
@@ -320,7 +323,6 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
 
-//        addTask(new SolveConnectorTask("Solve A", end1));
-//        addTask(new SolveConnectorTask("Solve B", end2));
+        addTask(new SolveCentroidTask("Solve the ISS' centroid", station));
     }
 }
