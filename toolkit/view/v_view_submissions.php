@@ -108,6 +108,7 @@ if (isset($submissions)) {
         <th class="startsort">Last</th>
         <th>Email Address</th>
         <th>Assignment</th>
+        <th>Type</th>
         <th>Class</th>
         <th>Status</th>
         <th>Date Submitted</th>
@@ -128,12 +129,14 @@ if (isset($submissions)) {
                 $statusId = $sub['submission_status_id'];
                 $userId = $sub['user_id'];
                 $assignmentId = $sub['assignment_id'];
+                $type = $sub['type'];
 
                 echo '<tr class="record">';
                 echo '<td>' .t2h($first). '</td>';
                 echo '<td>' . t2h($last) . '</td>';
                 echo '<td>' . t2h($email) . '</td>';
                 echo '<td>' . t2h($assignment) . '</td>';
+                echo '<td>' . t2h($type) . '</td>';
                 echo '<td>' . t2h($className) . '</td>';
                 if($statusId != 1) {
                     $testProblemLink = "testProblem.php?exercise_id=$assignmentId&user_id=$userId";

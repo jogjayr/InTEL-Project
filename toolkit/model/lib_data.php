@@ -365,8 +365,9 @@ function getSubmissions($ownerUuid, $problem, $class, $userName) {
 
     $query = "SELECT app_user.first_name, app_user.last_name, app_user.email, app_problem.name,
         app_assignment.class_id, app_submission_status.status, app_user_assignment.updated_on,
-        app_user_assignment.submission_status_id, app_user_assignment.user_id, app_user_assignment.assignment_id
-  FROM app_user, app_assignment, app_submission_status, app_user_assignment, app_class, app_problem 
+        app_user_assignment.submission_status_id, app_user_assignment.user_id, app_user_assignment.assignment_id,
+        app_assignment_type.type
+  FROM app_user, app_assignment, app_submission_status, app_user_assignment, app_class, app_problem, app_assignment_type
   WHERE app_user_assignment.is_active=1
   $ownerLine $problemLine $classLine $userLine
   AND app_assignment.is_active=1 
@@ -374,7 +375,8 @@ function getSubmissions($ownerUuid, $problem, $class, $userName) {
   AND app_assignment.id=app_user_assignment.assignment_id 
   AND app_submission_status.id=app_user_assignment.submission_status_id 
   AND app_class.id=app_assignment.class_id 
-  AND app_problem.id=app_assignment.problem_id 
+  AND app_problem.id=app_assignment.problem_id
+  AND app_assignment.assignment_type_id=app_assignment_type.id
   ORDER BY app_assignment.class_id, app_user_assignment.assignment_id, app_user_assignment.updated_on DESC";
 
     $results = aquery($query, $db);
