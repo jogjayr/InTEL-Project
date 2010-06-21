@@ -16,7 +16,14 @@ function isLoggedIn() {
 function requireLogin() {
 
     if (!isLoggedIn()) {
-        redirectRel('login.php');
+        redirect('login.php');
+    }
+}
+
+function requireInstructor() {
+
+    if (!isAdmin() && !isInstructor()) {
+        redirect('index.php');
     }
 }
 
@@ -25,7 +32,7 @@ function prohibitLogin() {
 //    global $base_address;
 
     if (isLoggedIn ()) {
-        redirectRel('');
+        redirect('index.php');
     }
 }
 
@@ -80,7 +87,7 @@ function logout() {
 
     unset($_SESSION);
     session_destroy();
-    redirectRel('login.php');
+    redirect('login.php');
 }
 
 function login($emailAddress, $password) {

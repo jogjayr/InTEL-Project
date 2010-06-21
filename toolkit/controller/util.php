@@ -4,17 +4,15 @@ require_once('util_email.php');
 require_once('util_ftp.php');
 
 //redirects a webpage based on a relative address
-function redirectRel($rel_address) {
+function redirect($address, $relative = true) {
 
     global $base_address;
 
-    header("Location: " . $base_address . $rel_address); /* Redirect browser */
-    exit;
-}
-
-function redirectURL($url) {
-
-    header("Location: " . $url); /* Redirect browser */
+    if ($relative) {
+        header("Location: " . $base_address . $address); /* Redirect browser */
+    } else {
+        header("Location: " . $address); /* Redirect browser */
+    }
     exit;
 }
 

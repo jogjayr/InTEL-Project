@@ -26,12 +26,12 @@ if (isset($_POST['submit'])) {
 
             //para('from register complete');
 
-            redirectURL($base_address);
+            redirect($base_address, false);
         } else {
 
             //para('not from register complete');
 
-            redirectURL($rURL);
+            redirect($rURL, false);
         }
     } else {
         $err = 'Invalid username or password.';

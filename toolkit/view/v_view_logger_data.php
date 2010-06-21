@@ -7,7 +7,7 @@ requireLogin();
 
 //verify that user is admin
 if (!isAdmin()) {
-  redirectRel('index.php');
+  redirect('index.php');
 }
 
 require_once('header.php');

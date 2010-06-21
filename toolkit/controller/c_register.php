@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
         if (login(trim($emailAddress), $password)) {
 
             // go to the assignments page.
-            redirectRel('myAssignments.php'); 
+            redirect('myAssignments.php');
 
             //redirect page to the url before the login
 //            $rURL = $_SESSION['r_login_url'];

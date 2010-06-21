@@ -6,11 +6,7 @@ require_once('admin/initvars.php');
 $title = 'Add Assignment';
 
 requireLogin();
-
-//verify that user is instructor or admin
-if (!isInstructor() && !isAdmin()) {
-    redirectRel('index.php');
-}
+requireInstructor();
 
 require_once('header.php');
 
@@ -71,33 +67,33 @@ if (!$success) {
     <form method="post" action="">
         <p>Problem:
             <select name="problem_id">
-<?php
-    foreach ($problems as $prob) {
-        echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
-    }
-?>
+            <?php
+            foreach ($problems as $prob) {
+                echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
+            }
+            ?>
         </select>
     </p>
     <p>Class:
         <select name="class_id">
-<?php
-    foreach ($classes as $cls) {
-        echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
-    }
-?>
+            <?php
+            foreach ($classes as $cls) {
+                echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
+            }
+            ?>
         </select>
     </p>
     <p>Assignment Type:
         <select name="assignment_type_id">
-<?php
-    foreach ($assignmentTypes as $at) {
-        if ($at['id'] == 3) {
-            echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
-        } else {
-            echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
-        }
-    }
-?>
+            <?php
+            foreach ($assignmentTypes as $at) {
+                if ($at['id'] == 3) {
+                    echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
+                } else {
+                    echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
+                }
+            }
+            ?>
         </select>
     </p>
     <p>Open Date (mm/dd/yyyy): <input type="text" name="open_date" value="" /></p>
@@ -105,8 +101,8 @@ if (!$success) {
     <p><input type="submit" name="submit" value="Update" /></p>
 </form>
 <?php
-} else {
-    para('Your assignment has been created');
-}//end if
-require_once('footer.php')
+        } else {
+            para('Your assignment has been created');
+        }//end if
+        require_once('footer.php')
 ?>

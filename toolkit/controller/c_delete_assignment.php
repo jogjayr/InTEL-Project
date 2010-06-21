@@ -2,11 +2,7 @@
 
 require_once('admin/initvars.php');
 requireLogin();
-
-//verify rights
-if (!isInstructor() && !isAdmin()) {
-    redirectRel('index.php');
-}
+requireInstructor();
 
 //if get data set the assignment id
 $permission = false;
@@ -17,11 +13,11 @@ if (isset($_GET['id'])) {
         $permission = true;
     } else {
         //user shouldn't be here
-        redirectRel('index.php');
+        redirect('index.php');
     }
 }
 if ($permission) {
     deleteAssignment($assignmentId);
-    redirectRel('manageAssignments.php');
+    redirect('manageAssignments.php');
 }
 ?>
