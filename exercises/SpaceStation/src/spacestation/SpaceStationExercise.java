@@ -24,7 +24,8 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
-import edu.gatech.statics.tasks.SolveCentroidTask;
+import edu.gatech.statics.tasks.SolveCentroidBodyTask;
+import edu.gatech.statics.tasks.SolveCentroidPartTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -38,6 +39,7 @@ import java.math.BigInteger;
 public class SpaceStationExercise extends CentroidExercise {
 
     private CentroidBody station;
+    private CentroidPartObject A, B, C, D;
 
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
@@ -118,13 +120,13 @@ public class SpaceStationExercise extends CentroidExercise {
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
-        CentroidPartObject A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "Solar Panel A", "5610.0"));
+        A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "Solar Panel A", "5610.0"));
         A.setName("Solar Panel A");
-        CentroidPartObject B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "Solar Panel B", "5550.0"));
+        B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "Solar Panel B", "5550.0"));
         B.setName("Solar Panel B");
-        CentroidPartObject C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "Living Quarters", "920.0"));
+        C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "Living Quarters", "920.0"));
         C.setName("Living Quarters");
-        CentroidPartObject D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "Panel Extender", "775.0"));
+        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "Panel Extender", "775.0"));
         D.setName("Panel Extender");
         Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
         p.setName("Centroid");
@@ -323,6 +325,10 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
 
-        addTask(new SolveCentroidTask("Solve the ISS' centroid", station));
+        addTask(new SolveCentroidPartTask("Solve for solar panel A's centroid", A));
+        addTask(new SolveCentroidPartTask("Solve for solar panel B's centroid", B));
+        addTask(new SolveCentroidPartTask("Solve for the living quarter's centroid", C));
+        addTask(new SolveCentroidPartTask("Solve for the panel extender's centroid", D));
+        addTask(new SolveCentroidBodyTask("Solve the ISS' centroid", station));
     }
 }

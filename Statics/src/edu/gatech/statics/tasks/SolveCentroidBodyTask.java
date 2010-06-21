@@ -16,7 +16,7 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
  * This is to determine if a particular body is solved.
  * @author Jimmy Truesdell
  */
-public class SolveCentroidTask extends Task {
+public class SolveCentroidBodyTask extends Task {
 
     CentroidBody body;
 
@@ -26,11 +26,11 @@ public class SolveCentroidTask extends Task {
      * @deprecated
      */
     @Deprecated
-    public SolveCentroidTask(String name) {
+    public SolveCentroidBodyTask(String name) {
         super(name);
     }
 
-    public SolveCentroidTask(String name, CentroidBody body) {
+    public SolveCentroidBodyTask(String name, CentroidBody body) {
         super(name);
         this.body = body;
 
@@ -50,16 +50,18 @@ public class SolveCentroidTask extends Task {
         //if there is currently a diagram
         if (StaticsApplication.getApp().getCurrentDiagram() != null) {
             //if the current diagram is a CentroidDiagram
-            if (StaticsApplication.getApp().getCurrentDiagram() instanceof CentroidSelectDiagram) {
-                //if the current diagram is not locked
-                return false;
-            }
+//            if (StaticsApplication.getApp().getCurrentDiagram() instanceof CentroidSelectDiagram) {
+//                //if the current diagram is not locked
+//                return false;
+//            }
             if (StaticsApplication.getApp().getCurrentDiagram() instanceof CentroidDiagram) {
                 //if the current diagram is not locked
                 if (!StaticsApplication.getApp().getCurrentDiagram().isLocked()) {
                     //the conditions are not satisfied
                     return false;
                 }
+            } else {
+                return false;
             }
         }
         return true;
