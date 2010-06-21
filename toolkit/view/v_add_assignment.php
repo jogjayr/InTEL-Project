@@ -5,7 +5,7 @@ require_once('admin/initvars.php');
 
 $title = 'Add Assignment';
 
-requireLogin(); 
+requireLogin();
 
 //verify that user is instructor or admin
 if (!isInstructor() && !isAdmin()) {
@@ -23,10 +23,10 @@ if (isset($_SESSION['uuid'])) {
 //get assignments & classes that belong to this user, or all for admin
 $assignments = '';
 $classes = '';
-if (isInstructor()) {
+if (isInstructor ()) {
     $classes = getClassesByOwner($uuid);
 }
-if (isAdmin()) {
+if (isAdmin ()) {
     $classes = getClasses();
 }
 //get problems
@@ -63,42 +63,41 @@ if (isset($_POST['submit'])) {
         $err = 'Please enter valid dates in the form of mm/dd/yyyy.';
     }
 }
-
 ?>
-<?php 
+<?php
 if (!$success) {
     paraErr($err);
-    ?>
-<form method="post" action="">
-    <p>Problem:
-        <select name="problem_id">
-                <?php
-                foreach ($problems as $prob) {
-                    echo '<option value="'.$prob['id'].'">'.$prob['name'].'</option>';
-                }
-                ?>
+?>
+    <form method="post" action="">
+        <p>Problem:
+            <select name="problem_id">
+<?php
+    foreach ($problems as $prob) {
+        echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
+    }
+?>
         </select>
     </p>
     <p>Class:
         <select name="class_id">
-                <?php
-                foreach ($classes as $cls) {
-                    echo '<option value="'.$cls['id'].'">'.$cls['description'].'</option>';
-                }
-                ?>
+<?php
+    foreach ($classes as $cls) {
+        echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
+    }
+?>
         </select>
     </p>
     <p>Assignment Type:
         <select name="assignment_type_id">
-                <?php
-                foreach ($assignmentTypes as $at) {
-                    if ($at['id']==3) {
-                        echo '<option value="'.$at['id'].'" selected="selected">'.$at['type'].'</option>';
-                    }else {
-                        echo '<option value="'.$at['id'].'">'.$at['type'].'</option>';
-                    }
-                }
-                ?>
+<?php
+    foreach ($assignmentTypes as $at) {
+        if ($at['id'] == 3) {
+            echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
+        } else {
+            echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
+        }
+    }
+?>
         </select>
     </p>
     <p>Open Date (mm/dd/yyyy): <input type="text" name="open_date" value="" /></p>
@@ -106,8 +105,8 @@ if (!$success) {
     <p><input type="submit" name="submit" value="Update" /></p>
 </form>
 <?php
-}  else {
+} else {
     para('Your assignment has been created');
 }//end if
-require_once('footer.php') 
+require_once('footer.php')
 ?>

@@ -5,10 +5,9 @@ function getAssignments($uuid) {
 
     global $db;
 
-    if (isAnonymous()) {
+    if (isAnonymous ()) {
         $query = "SELECT id AS problem_id, name, description FROM app_problem WHERE is_active=1 ORDER BY name DESC";
-    }
-    else {
+    } else {
         $class = getClassByUUID($uuid);
         $dateTime = mktime();
         $user = getUserByUUID($uuid);
@@ -181,7 +180,7 @@ function isAssignmentOwner($uuid, $assignmentId) {
   FROM app_assignment, app_class 
   WHERE app_assignment.id={$assignmentId} 
   AND app_class.owner_user_id={$user['id']} 
-  AND app_assignment.is_active=1"; 
+  AND app_assignment.is_active=1";
 
     $results = aquery($query, $db);
 
@@ -218,7 +217,7 @@ function isClassOwner($uuid, $classId) {
   FROM app_class 
   WHERE app_class.id={$classId} 
   AND app_class.owner_user_id={$user['id']} 
-  AND app_class.is_active=1"; 
+  AND app_class.is_active=1";
 
     $results = aquery($query, $db);
 
@@ -228,7 +227,6 @@ function isClassOwner($uuid, $classId) {
         return false;
     }
 }
-
 
 function getClassByOwner($uuid) {
 //retrieves classes owned by user
@@ -265,7 +263,6 @@ function updateClass($classId, $ownerId, $description) {
     query($query, $db);
 
     return true;
-
 }
 
 function deleteClass($classId) {
@@ -293,7 +290,7 @@ function addClass($ownerId, $description) {
     $q_updated_on = $q_created_on;
     $q_description = t2sql($description);
     $user = getUserById($ownerId);
-    $name = $user['first_name'].' '.$user['last_name'];
+    $name = $user['first_name'] . ' ' . $user['last_name'];
     //add assignment
     $query2 = "INSERT INTO app_class (owner_user_id, teacher, description, created_on, updated_on)
   VALUES ({$ownerId}, '{$name}', '{$q_description}', '{$q_created_on}', '{$q_updated_on}')";
@@ -332,30 +329,30 @@ function getSubmissions($ownerUuid, $problem, $class, $userName) {
     global $db;
 
     $ownerLine = "";
-    if($ownerUuid != NULL) {
+    if ($ownerUuid != NULL) {
         $owner = getUserByUUID($ownerUuid);
         $ownerLine = "AND app_class.owner_user_id={$owner['id']} ";
     }
 
     $problemLine = "";
-    if($problem != -1) {
+    if ($problem != -1) {
         $problem = mysql_escape_string($problem);
         $problemLine = "AND app_problem.id = $problem ";
     }
 
     $classLine = "";
-    if($class != -1) {
+    if ($class != -1) {
         $class = mysql_escape_string($class);
         $classLine = "AND app_class.id = $class ";
     }
 
     $userLine = "";
-    if($userName != NULL) {
+    if ($userName != NULL) {
 
         // attempt to find the user by name
         $users = getUsersByName($userName);
 
-        if(sizeof($users) == 0) {
+        if (sizeof($users) == 0) {
             // couldn't find them
             return array(); // return an empty array
         }
@@ -382,8 +379,8 @@ function getSubmissions($ownerUuid, $problem, $class, $userName) {
     $results = aquery($query, $db);
 
     return $results;
-
 }
+
 function retrieveAssignments($classId) {
 
     global $db;
@@ -447,7 +444,6 @@ function updateAssignment($assignmentId, $problemId, $classId, $typeId, $openDat
     query($query, $db);
 
     return true;
-
 }
 
 function addAssignment($problemId, $classId, $typeId, $openDate, $closeDate) {
@@ -491,7 +487,6 @@ function deleteAssignment($assignmentId) {
     query($query, $db);
 
     return true;
-
 }
 
 function getAssignmentTypes() {
@@ -522,5 +517,4 @@ function getUsersbyClass($classId) {
 
     return $results;
 }
-
 ?>
