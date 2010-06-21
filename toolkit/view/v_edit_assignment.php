@@ -64,7 +64,7 @@ $problems = getAllProblems();
 if (isAdmin ()) {
     $classes = getClasses();
 } else {
-    $classes = getClassByOwner($_SESSION['uuid']);
+    $classes = getClassesByOwner($_SESSION['uuid']);
 }
 //get the assignment types
 $assignmentTypes = getAssignmentTypes();
@@ -75,7 +75,7 @@ require_once('header.php');
 if ($success) {
     para('The assignment has been updated.');
 } else {
-    paraErr($err);
+    para($err, 'errorMessage');
 }
 ?>
 <form method="post" action="">

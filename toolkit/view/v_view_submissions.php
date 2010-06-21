@@ -16,6 +16,7 @@ if (isset($_SESSION['uuid'])) {
 //get assignments & classes that belong to this user, or all for admin
 $assignments = '';
 $classes = '';
+$ownerUuid = '';
 if (isInstructor ()) {
     $assignments = getAssignmentByClassOwner($uuid);
     $classes = getClassesByOwner($uuid);
@@ -26,14 +27,13 @@ if (isAdmin ()) {
     $assignments = getAllAssignments();
     $classes = getClasses();
     //    $submissions = getSubmissions();
-    $all_status = getStatus();
+    $all_status = getSubmissionTypes();
     $problems = getAllProblems();
-    $ownerUuid = NULL;
 }
 
 $search_class = -1;
 $search_problem = -1;
-$search_user = NULL;
+$search_user = '';
 
 if (isset($_GET['class_id']))
     $search_class = $_GET['class_id'];

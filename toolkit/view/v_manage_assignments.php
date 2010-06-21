@@ -89,7 +89,7 @@ if (isAdmin ()) {
 // report message from action.
 if ($hasAction) {
     if (!$actionSuccess) {
-        paraErr($message);
+        para($err, 'errorMessage');
     } else {
         para($message);
     }
@@ -102,33 +102,33 @@ if ($hasAction) {
 <form method="post" action="">
     <p>Problem:
         <select name="problem_id">
-<?php
-foreach ($problems as $prob) {
-    echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
-}
-?>
+            <?php
+            foreach ($problems as $prob) {
+                echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
+            }
+            ?>
         </select>
     </p>
     <p>Class:
         <select name="class_id">
-<?php
-foreach ($classes as $cls) {
-    echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
-}
-?>
+            <?php
+            foreach ($classes as $cls) {
+                echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
+            }
+            ?>
         </select>
     </p>
     <p>Assignment Type:
         <select name="assignment_type_id">
-<?php
-foreach ($assignmentTypes as $at) {
-    if ($at['id'] == 3) {
-        echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
-    } else {
-        echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
-    }
-}
-?>
+            <?php
+            foreach ($assignmentTypes as $at) {
+                if ($at['id'] == 3) {
+                    echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
+                } else {
+                    echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
+                }
+            }
+            ?>
         </select>
     </p>
     <p>Open Date (mm/dd/yyyy): <input type="text" name="open_date" value="" /></p>
@@ -140,51 +140,51 @@ foreach ($assignmentTypes as $at) {
 
 
 <?php
-if (count($assignments) > 0) {
+            if (count($assignments) > 0) {
 ?>
-    <table class="sortable" id="sortabletable">
-        <tr>
-            <th class="startsort">Class</th>
-            <th>Problem</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Open Date</th>
-            <th>Close Date</th>
-            <th class="unsortable"></th>
-            <th class="unsortable"></th>
-        </tr>
-<?php
-    foreach ($assignments as $app) {
-        $class = getClassById($app['class_id']);
-        $classDescription = $class['description'];
-        $name = $app['name'];
-        $description = $app['description'];
-        $type = $app['type'];
-        $openDate = date("m.d.y", $app['open_date']);
-        $closeDate = date("m.d.y", $app['close_date']);
-        $urlEdit = 'editAssignment.php?id=' . $app['id'];
-        $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+                <table class="sortable" id="sortabletable">
+                    <tr>
+                        <th class="startsort">Class</th>
+                        <th>Problem</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Open Date</th>
+                        <th>Close Date</th>
+                        <th class="unsortable"></th>
+                        <th class="unsortable"></th>
+                    </tr>
+    <?php
+                foreach ($assignments as $app) {
+                    $class = getClassById($app['class_id']);
+                    $classDescription = $class['description'];
+                    $name = $app['name'];
+                    $description = $app['description'];
+                    $type = $app['type'];
+                    $openDate = date("m.d.y", $app['open_date']);
+                    $closeDate = date("m.d.y", $app['close_date']);
+                    $urlEdit = 'editAssignment.php?id=' . $app['id'];
+                    $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
 
 
-        echo '<tr>';
-        echo '<td>' . t2h($classDescription) . '</td>';
-        echo '<td>' . t2h($name) . '</td>';
-        echo '<td>' . t2h($description) . '</td>';
-        echo '<td>' . t2h($type) . '</td>';
-        echo '<td>' . t2h($openDate) . '</td>';
-        echo '<td>' . t2h($closeDate) . '</td>';
-        echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-        echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
-        echo '</tr>';
-    }
-?>
-</table>
+                    echo '<tr>';
+                    echo '<td>' . t2h($classDescription) . '</td>';
+                    echo '<td>' . t2h($name) . '</td>';
+                    echo '<td>' . t2h($description) . '</td>';
+                    echo '<td>' . t2h($type) . '</td>';
+                    echo '<td>' . t2h($openDate) . '</td>';
+                    echo '<td>' . t2h($closeDate) . '</td>';
+                    echo '<td><a href="' . $urlEdit . '">edit</a></td>';
+                    echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
+                    echo '</tr>';
+                }
+    ?>
+            </table>
 <?php
-} else {
-    para('No Assignments available.');
-}//end if
+            } else {
+                para('No Assignments available.');
+            }//end if
 ?>
 
 <?php
-require_once('footer.php')
+            require_once('footer.php')
 ?>

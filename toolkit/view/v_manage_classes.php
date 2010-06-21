@@ -16,7 +16,7 @@ if (isset($_SESSION['uuid'])) {
 //get classes that belong to this user, or all for admin
 $classes = '';
 if (isInstructor ()) {
-    $classes = getClassByOwner($uuid);
+    $classes = getClassesByOwner($uuid);
 }
 if (isAdmin ()) {
     $classes = getClasses();

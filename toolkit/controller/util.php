@@ -4,6 +4,14 @@ require_once('util_email.php');
 require_once('util_ftp.php');
 
 //redirects a webpage based on a relative address
+
+/**
+ * Redirects to the given address. By default, the redirect is relative.
+ * If the second parameter is false, then the redirect is absolute.
+ * @global string $base_address
+ * @param string $address the page or URL to redirect to.
+ * @param string $relative 
+ */
 function redirect($address, $relative = true) {
 
     global $base_address;
@@ -16,43 +24,48 @@ function redirect($address, $relative = true) {
     exit;
 }
 
-//encodes special characters from stirng so that is safe to pass in as an SQL statement
+/**
+ * Encodes special characters from stirng so that is safe to pass in as an SQL statement.
+ * This method should be called to convert any argument that goes into a SQL call.
+ * @param string $s
+ * @return string
+ */
 function t2sql($s) {
-
     return mysql_real_escape_string($s);
 }
 
-//formats text for html
+/**
+ * Converts plain text into text suitable for HTML.
+ * This is used to display text from the database.
+ * @param string $s
+ * @return string
+ */
 function t2h($s) {
-    return htmlentities($s, ENT_QUOTES, "UTF-8");
+    return htmlentities(trim($s), ENT_QUOTES, "UTF-8");
 }
 
-//formats html special characters back into regular text characters
-function h2t($s) {
-    return html_entity_decode($s, ENT_QUOTES, "UTF-8");
-}
+//prints
 
-//prints the string wrapped in a html paragraph. you may supply an optional class name for the text
+/**
+ * This prints out the string wrapped in a html paragraph.
+ * The optional argument $sClass is a style class that is applied to the paragraph.
+ * @param string $s
+ * @param string $sClass
+ */
 function para($s, $sClass='') {
     if ($sClass == '') {
         echo '<p>' . t2h($s) . '</p>';
     } else {
-        echo '<p><span class="' . $sClass . '">' . t2h($s) . '</span></p>';
+        echo '<p class="' . $sClass . '">' . t2h($s) . '</p>';
     }
 }
 
-//prints an error string in a paragraph if the error is nonempty.  you may supply an optional class name for the text
-function paraErr($err, $errClass='errorMessage') {
-    $err = trim($err);
-    if ($err != '') {
-        para($err, $errClass);
-    }
-}
-
-function getRandomInt($maxn) {
-    return rand(0, $maxn);
-}
-
+/**
+ * Returns a random password consisting of lowercase, uppercase, and numeric characters.
+ * The password has as many characters as the specified length. This is currently used for building the password salt.
+ * @param int $len
+ * @return string
+ */
 function getRandomPassword($len) {
 
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
@@ -70,40 +83,26 @@ function getRandomPassword($len) {
     return $pass;
 }
 
-function isAlphaNumeric($text) {
-
-    if (ereg('[^A-Za-z0-9]', $text)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function isInteger($text) {
-
-    if (ereg('[^0-9]', $text)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function formatDate($s) {
-    $f = "m.d.y g:i a";
-    return date($f, strtotime($s));
-}
-
-function isProfanity($s) {
-    //determines if a string has a profane word in it
-    //returns true if string has profane word in it, else returns false
-
-    $badWords = array('fuck', 'shit', 'cunt', 'pussy', 'nigger', 'faggot', 'asshole');
-    foreach ($badWords as $badWord) {
-        if (strstr(strtolower(trim($s)), strtolower(trim($badWord)))) {
-            return true;
-        }
-    }
-
-    return false;
-}
+//function isAlphaNumeric($text) {
+//
+//    if (ereg('[^A-Za-z0-9]', $text)) {
+//        return false;
+//    } else {
+//        return true;
+//    }
+//}
+//
+//function isInteger($text) {
+//
+//    if (ereg('[^0-9]', $text)) {
+//        return false;
+//    } else {
+//        return true;
+//    }
+//}
+//
+//function formatDate($s) {
+//    $f = "m.d.y g:i a";
+//    return date($f, strtotime($s));
+//}
 ?>

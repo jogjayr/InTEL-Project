@@ -26,7 +26,7 @@
 if ($success == false) {	 
 ?>
 <form method="post" action="">
-	<?php paraErr($err); ?>
+	<?php para($err, 'errorMessage'); ?>
 	<p>Password: <input type="password" name="password" /></p>
 	<p>Password (again): <input type="password" name="password2" /></p>
 	<p><input type="submit" name="submit" value="Change Password" /></p>

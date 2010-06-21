@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 }
 ?>
 <?php
-paraErr($err);
+para($err, 'errorMessage');
 if (!$success) {
     $owners = getOwners();
 ?>

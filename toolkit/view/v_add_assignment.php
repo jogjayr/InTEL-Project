@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
 ?>
 <?php
 if (!$success) {
-    paraErr($err);
+    para($err, 'errorMessage');
 ?>
     <form method="post" action="">
         <p>Problem:

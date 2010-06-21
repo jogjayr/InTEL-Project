@@ -11,9 +11,8 @@ if (isset($_POST['submit'])) {
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
-    $gtPrismId = $_POST['gt_prism_id'];
     $classId = $_POST['class_id'];
-    if (updateAccount($_SESSION['uuid'], $firstName, $lastName, $email, $gtPrismId, $classId, $err)) {
+    if (updateAccount($_SESSION['uuid'], $firstName, $lastName, $email, $classId)) {
         $success = true;
     }
 }
@@ -22,6 +21,6 @@ if (isset($_POST['submit'])) {
 if ($success) {
     para('Your profile has been updated.');
 } else {
-    paraErr($err);
+    para($err, 'errorMessage');
 }
 ?>

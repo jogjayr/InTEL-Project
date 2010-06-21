@@ -32,6 +32,6 @@ if (isset($_POST['submit'])) {
 if ($success) {
     para('Your profile has been updated.');
 } else {
-    paraErr($err);
+    para($err, 'errorMessage');
 }
 ?>
