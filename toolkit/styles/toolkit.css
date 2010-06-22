@@ -1,134 +1,141 @@
 html {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 #header {
-  width: 100%;
-  border-bottom: solid 4px #5FC806;
+    width: 100%;
+    border-bottom: solid 4px #5FC806;
 }
 
 #main_nav{
-  position: relative;
-  float: left;
-  text-align: left;
-  width: 230px;
-  height: 400px;
-  border-bottom: solid 2px #F1F1F1;
-  border-right: solid 2px #F1F1F1;
-  background-color: #AEC3FF;
+    position: relative;
+    float: left;
+    text-align: left;
+    width: 230px;
+    height: 400px;
+    border-bottom: solid 2px #F1F1F1;
+    border-right: solid 2px #F1F1F1;
+    background-color: #AEC3FF;
 }
 #compact_nav{
-  position: relative;
-  float: left;
-  text-align: left;
-  width: 100%;
-  height: auto;
-  border-bottom: solid 2px #F1F1F1;
-  border-right: solid 2px #F1F1F1;
-  background-color: #AEC3FF;
+    position: relative;
+    float: left;
+    text-align: left;
+    width: 100%;
+    height: auto;
+    border-bottom: solid 2px #F1F1F1;
+    border-right: solid 2px #F1F1F1;
+    background-color: #AEC3FF;
 }
-.button{
-  height: 21px;
-  width: 45px;
-  padding: 2px 2px 2px 2px;
-  background-color: #AEC3FF;
-  position: relative;
-  float: left;
-  border: #000 1px solid;
-  text-align: center;
+
+.loginpanel {
+    float: right;
+    border: 2px solid #AEC3FF;
+    padding: 4px;
+}
+
+.button {
+    height: 21px;
+    width: 45px;
+    padding: 2px 2px 2px 2px;
+    background-color: #AEC3FF;
+    position: relative;
+    float: left;
+    border: #000 1px solid;
+    text-align: center;
 }
 .form_area{
-  height: auto;
-  width: auto;
-  margin: 0 10px 10px 0px;
-  position: relative;
-  float: left;
+    height: auto;
+    width: auto;
+    margin: 0 10px 10px 0px;
+    position: relative;
+    float: left;
 }
 .info {
-font-size: 10px;
+    font-size: 10px;
 }
 .errorMessage {
-  color: #C80000;
+    color: #C80000;
 }
 .nav_button {
-  position: relative;
-  float: left;
-  text-align: left;
-  width: 220px;
-  height: 25px;
-  padding: 4px 0px 0px 5px;
-  background-color: #AEC3FF;
-  border-style: solid;
-  border-color: #F1F1F1;
+    position: relative;
+    float: left;
+    text-align: left;
+    width: 220px;
+    height: 25px;
+    padding: 4px 0px 0px 5px;
+    background-color: #AEC3FF;
+    border-style: solid;
+    border-color: #F1F1F1;
 }
 
 #content {
-  position: relative;
-  text-align: left;
-  float:left;
-  width: auto;
-  padding-left: 10px;
+    position: relative;
+    text-align: left;
+    float:left;
+    width: auto;
+    padding-left: 10px;
 }
 
 #content_text{
-  position: relative;
-  text-align: left;
-  float:left;
-  width: 525px;
+    position: relative;
+    text-align: left;
+    float:left;
+    width: 525px;
 }
 table, input, textarea, select, li {
-	font: 100% Verdana, Arial, Helvetica, Sans-Serif;
-	line-height: 160%;
-	color: #333;
+    font: 100% Verdana, Arial, Helvetica, Sans-Serif;
+    line-height: 160%;
+    color: #333;
 }
 
 form p{
-clear: left;
+    clear: left;
 }
 
 a img {
-	border: 0;
+    border: 0;
 }
 table.sortable {
-	border-spacing: 0;
-	border-style: solid;
-	border-color: #aaa;
-	border-width: 1px;
-	border-collapse: seperate;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	/*width: 90%;*/
-	margin: 0 auto 10px;
-  float: left;
+    border-spacing: 0;
+    border-style: solid;
+    border-color: #aaa;
+    border-width: 1px;
+    border-collapse: separate;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    /*width: 90%;*/
+    margin: 0 auto 10px;
+    float: left;
 }
 table.sortable th, table.sortable td {
-	text-align: left;
-	padding: 2px 4px 2px 4px;
-	/*width: 100px;*/
-	border-style: solid;
-	border-color: #aaa;
-	font-size: 11px;
+    text-align: left;
+    padding: 2px 4px 2px 4px;
+    /*width: 100px;*/
+    border-style: solid;
+    border-color: #aaa;
+    font-size: 11px;
 }
 table.sortable th {
-	border-width: 1px 0px 1px 0px;
-	background-color: #ccc;
+    border-width: 1px 0px 1px 0px;
+    background-color: #ccc;
 }
 table.sortable th a {
-	text-decoration: none;
-	color: #000;
+    text-decoration: none;
+    color: #000;
 }
 table.sortable td {
-	border-width: 0px;
+    border-width: 0px;
 }
 table.sortable tr.odd td {
-	background-color: #fff;
-  border-top: 1px solid #ddd;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
 }
 table.sortable tr.even td {
-	background-color: #fff;
-  border-top: 1px solid #ddd;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
 }
 table.sortable tr.sortbottom td {
-	border-width: 1px 0px 1px 0px;
-	background-color: #ccc;
-	font-weight: bold;
+    border-width: 1px 0px 1px 0px;
+    background-color: #ccc;
+    font-weight: bold;
 }

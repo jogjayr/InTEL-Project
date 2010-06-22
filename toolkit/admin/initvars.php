@@ -13,7 +13,7 @@ require_once('controller/c_lib_accounts.php');
 require_once('controller/util.php');
 
 $site_title = "Interactive Toolkit for Engineering Learning";
-$site_email_address = "dupton3@gatech.edu";
+$site_email_address = "eschechter3@gatech.edu";
 
 $base_address = 'http://intel.gatech.edu/toolkit/';
 $base_file_path = '/www/virtual/intel/toolkit/';
@@ -23,7 +23,10 @@ $dbpassword = 'gt00www';
 $dbname = 'intel';
 $dbserver = 'localhost';
 
-$smtp_server = "";$smtp_username = "";$smtp_password = "";$smtp_default_from = $site_email_address;
+$smtp_server = "";
+$smtp_username = "";
+$smtp_password = "";
+$smtp_default_from = $site_email_address;
 
 $ftp_server = '';
 $ftp_user_name = '';

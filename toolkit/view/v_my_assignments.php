@@ -1,5 +1,9 @@
 <?php
 $title = 'Problems';
+if(!isAnonymous()) {
+    $title = 'My Assignments';
+}
+
 
 require_once('header.php');
 
