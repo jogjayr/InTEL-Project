@@ -33,7 +33,8 @@ if ($title != '') {
             if (isLoggedIn ()) {
                 echo "Welcome, {$user['first_name']} {$user['last_name']}<br/>";
                 $userClass = getClassByUUID($uuid);
-                echo "You are in section: {$userClass['description']}";
+                $class = getClassById($userClass['class_id']);
+                echo "You are in section: {$class['description']}<br/>";
                 echo '<a href="logout.php">Logout</a>';
             } else {
                 echo '<form method="post" action="">';
