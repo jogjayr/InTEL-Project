@@ -25,13 +25,6 @@ $type = 'compact';
 require_once('header.php');
 
 
-$uuid = '';
-if(isset($_SESSION['uuid'])) {
-    $uuid = $_SESSION['uuid'];
-}
-
-$user = getUserByUUID($uuid);
-
 $problemId = addslashes($_GET['problem_id']);
 $assignmentId = 0;
 if(isset($_GET['exercise_id'])) {

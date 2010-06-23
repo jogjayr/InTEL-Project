@@ -6,11 +6,7 @@ $maxUploadFileSizeInMegabytes = '50';
 
 ini_set('post_max_size', $maxUploadFileSizeInMegabytes . 'M');
 
-require_once('model/mysql.php');
-require_once('model/lib_data.php');
-require_once('model/m_lib_accounts.php');
-require_once('controller/c_lib_accounts.php');
-require_once('controller/util.php');
+require_once('model/baseinclude.php');
 
 $site_title = "Interactive Toolkit for Engineering Learning";
 $site_email_address = "eschechter3@gatech.edu";

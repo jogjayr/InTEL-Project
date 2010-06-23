@@ -18,15 +18,15 @@ if (isset($_GET['exercise_id'])) {
     $assignmentId = addslashes($_GET['exercise_id']);
 }
 
-$userId = addslashes($_GET['user_id']);
-$user = getUserById($userId);
-$userUuid = $user['uuid'];
+$studentId = addslashes($_GET['user_id']);
+$student = getUserById($studentId);
+$studentUuid = $student['uuid'];
 
-$userId = -1; // assign value to user id to prevent changes accidentally being made to the student's state.
+$studentId = -1; // assign value to user id to prevent changes accidentally being made to the student's state.
 // instead of looking for assignments for the current user (the instructor/admin),
 // we look for assignments for the given user (the student).
 
-$assignments = getAllAssignmentsByUuid($userUuid);
+$assignments = getAllAssignmentsByUuid($studentUuid);
 $thisAssignment = null;
 foreach ($assignments as $assignment) {
     if (isset($assignment['id'])) {
@@ -48,7 +48,7 @@ $problemName = $problem['name'];
 
 
 echo "<h1>Testing Mode</h1>";
-echo "User: " . $user['first_name'] . " " . $user['last_name'] . "<br/>";
+echo "Student: " . $student['first_name'] . " " . $student['last_name'] . "<br/>";
 echo "Problem name: $problemName<br/>";
 
 
@@ -92,11 +92,11 @@ if ($problem["type"] == "java") {
     }
 
     //$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
-    $preHash = "$userId:$problemId:$problemName:$state";
+    $preHash = "$studentId:$problemId:$problemName:$state";
     $verifierKey = substr(md5($preHash), 0, 8);
 ?>
 
-<?php if ($userId == 0) { ?>
+<?php if ($studentId == 0) { ?>
         <em>Note:</em> You are not logged in. If you work on this problem right now, you will not get credit.
 <?php } ?>
 
@@ -118,7 +118,7 @@ if ($problem["type"] == "java") {
             <param name="height" value="<?php echo $resHeight ?>"/>
             <param name="problemID" value="<?php echo $problemId ?>"/>
             <param name="assignmentID" value="<?php echo $assignmentId ?>"/>
-            <param name="userID" value="<?php echo $userId ?>"/>
+            <param name="userID" value="<?php echo $studentId ?>"/>
             <param name="problemName" value="<?php echo $problemName ?>"/>
             <param name="exerciseState" value="<?php echo $state; ?>">
             <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>

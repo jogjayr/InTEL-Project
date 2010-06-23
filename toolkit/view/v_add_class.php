@@ -8,13 +8,6 @@ requireInstructor();
 
 require_once('header.php');
 
-//retrieve uuid
-$uuid = '';
-if (isset($_SESSION['uuid'])) {
-    $uuid = $_SESSION['uuid'];
-}
-$user = getUserByUUID($uuid);
-
 //initialize post variables
 $success = false;
 $err = '';
