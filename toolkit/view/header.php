@@ -30,12 +30,14 @@ if ($title != '') {
 
         <div class="loginpanel">
             <?php
+            // this is the login panel; the user can login and logout from this panel.
             if (isLoggedIn ()) {
                 echo "Welcome, {$user['first_name']} {$user['last_name']}<br/>";
                 $userClass = getClassByUUID($uuid);
                 $class = getClassById($userClass['class_id']);
                 echo "You are in section: {$class['description']}<br/>";
-                echo '<a href="account.php">Account</a> <a href="logout.php">Logout</a>';
+                //echo '<a href="account.php">Account</a> <a href="logout.php">Logout</a>';
+                echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
             } else {
                 echo '<form method="post" action="">';
                 if ($err != '')
@@ -53,7 +55,10 @@ if ($title != '') {
             <h1>Statics Toolkit</h1>
         </div>
 
-        <div id="compact_nav">
+        <?php
+            // primary navigation:
+        ?>
+            <div id="compact_nav">
             <?php
             if (isAnonymous ()) {
             ?>

@@ -27,6 +27,10 @@ if (isset($_POST['login'])) {
     }
 }
 
+// the user has logged out.
+if (isset($_POST['logout'])) {
+    logout();
+}
 
 
 
