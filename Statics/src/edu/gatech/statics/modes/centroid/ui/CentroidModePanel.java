@@ -20,6 +20,8 @@ import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.CentroidState;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.objects.CentroidPartMarker;
+import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.components.NextButton;
@@ -81,7 +83,12 @@ public class CentroidModePanel extends ApplicationModePanel {
                 partsMap.put(currentlySelected.getCentroidPart().getPartName(), newPart.build());
 
                 currentlySelected.setDisplaySelected(false);
-                currentlySelected.setDisplayGrayed(true);
+//                currentlySelected.setDisplayGrayed(true);
+                for(SimulationObject obj : getDiagram().getSchematic().allObjects()) {
+                    if(obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()){
+                        ((CentroidPartMarker)obj).destroy();
+                    }
+                }
 
                 getDiagram().pushState(builder.build());
 

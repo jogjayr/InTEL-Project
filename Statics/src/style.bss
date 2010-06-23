@@ -25,6 +25,13 @@ label_hovering_coefficient {
     border: 1 solid #000000;
 }
 
+label_hovering_centroid_part {
+    color: #000000;
+    font: "Arial" plain 10;
+    background: solid #ffffff88;
+    border: 1 solid #000000;
+}
+
 label_measurement {
     color: #000000;
     font: "Arial" bold 18;

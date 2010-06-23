@@ -131,20 +131,25 @@ public class SpaceStationExercise extends CentroidExercise {
         Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
         p.setName("Centroid");
 
-        solarPanelA = new CentroidPartMarker("SolarPanelA", "0.89", "1.10", "0.0");
-        solarPanelB = new CentroidPartMarker("SolarPanelB", "2.7", "0.925", "0.0");
-        livingQuarters = new CentroidPartMarker("LivingQuarters", "1.92", "1.175", "0.0");
-        panelExtender = new CentroidPartMarker("PanelExtender", "1.955", "0.93", "0.0");
+        Point centerA = new Point("CenterA", "0.89", "1.10", "0.0");
+        Point centerB = new Point("CenterB", "2.7", "0.925", "0.0");
+        Point centerC = new Point("CenterC", "1.92", "1.175", "0.0");
+        Point centerD = new Point("CenterD", "1.955", "0.93", "0.0");
 
-//        schematic.add(solarPanelA);
-//        schematic.add(solarPanelB);
-//        schematic.add(livingQuarters);
-//        schematic.add(panelExtender);
-//
-//        solarPanelA.createDefaultSchematicRepresentation();
-//        solarPanelB.createDefaultSchematicRepresentation();
-//        livingQuarters.createDefaultSchematicRepresentation();
-//        panelExtender.createDefaultSchematicRepresentation();
+        solarPanelA = new CentroidPartMarker("SolarPanelA", centerA, A);
+        solarPanelB = new CentroidPartMarker("SolarPanelB", centerB, B);
+        livingQuarters = new CentroidPartMarker("LivingQuarters", centerC, C);
+        panelExtender = new CentroidPartMarker("PanelExtender", centerD, D);
+
+        schematic.add(solarPanelA);
+        schematic.add(solarPanelB);
+        schematic.add(livingQuarters);
+        schematic.add(panelExtender);
+
+        solarPanelA.createDefaultSchematicRepresentation();
+        solarPanelB.createDefaultSchematicRepresentation();
+        livingQuarters.createDefaultSchematicRepresentation();
+        panelExtender.createDefaultSchematicRepresentation();
 
         station = new CentroidBody("Space Station", p);
         station.setName("Space Station");

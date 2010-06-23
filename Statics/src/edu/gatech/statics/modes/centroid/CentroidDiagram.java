@@ -60,8 +60,10 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
         for (CentroidPartObject cpo : body.getParts()) {
             cpo.setState(getCurrentState().getMyPartState(cpo.getCentroidPart().getPartName()));
+            if(cpo.getState()!= null && cpo.getState().isLocked()){
+                cpo.setDisplayGrayed(true);
+            }
         }
-
         //see which are locked/solved and gray accordingly
     }
 
