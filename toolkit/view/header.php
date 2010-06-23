@@ -35,14 +35,14 @@ if ($title != '') {
                 $userClass = getClassByUUID($uuid);
                 $class = getClassById($userClass['class_id']);
                 echo "You are in section: {$class['description']}<br/>";
-                echo '<a href="logout.php">Logout</a>';
+                echo '<a href="account.php">Account</a> <a href="logout.php">Logout</a>';
             } else {
                 echo '<form method="post" action="">';
                 if ($err != '')
                     para($err, 'errorMessage');
                 echo '<p>Email Address: <input type="text" style = "width:300px" name="email" /></p>';
                 echo '<p>Password: <input type="password" name="password" /></p>';
-                echo '<p><input type="submit" name="submit" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>';
+                echo '<p><input type="submit" name="login" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>';
                 echo '</form>';
             }
             ?>
@@ -65,31 +65,19 @@ if ($title != '') {
             <?php
             } elseif (isInstructor ()) {
             ?>
+                <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
                 <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
                 <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
-                <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
             <?php
             } elseif (isAdmin ()) {
             ?>
-                <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
-                <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
-                <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
                 <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
+                <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
+                <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
+                <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
                 <div class='nav_button'><a href="viewLoggerData.php">LoggerData</a></div>
             <?php
             } // end user type switch
-
-            if (isLoggedIn ()) {
-            ?>
-                <div class='nav_button'><a href="logout.php"> Logout</a></div>
-                <div class='nav_button'><a href="account.php">Account</a></div>
-            <?php
-            } else {
-            ?>
-                <div class='nav_button'><a href="register.php">Register</a></div>
-                <div class='nav_button'><a href="login.php">Login</a></div>
-            <?php
-            } //end if
             ?>
             <div class='nav_button'><a href="help.php">Instructions</a></div>
             <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Contact</a></div>

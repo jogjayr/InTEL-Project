@@ -27,6 +27,9 @@ if (isset($_SESSION['uuid'])) {
 }
 $user = getUserByUUID($uuid);
 
-
-
+if (isset($_POST['login'])) {
+    if (login(trim($_POST['email']), $_POST['password'])) {
+        // login ok?
+    }
+}
 ?>
