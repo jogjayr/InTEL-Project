@@ -31,14 +31,17 @@ if ($title != '') {
         <div class="loginpanel">
             <?php
             if (isLoggedIn ()) {
-                echo "Welcome, {$user['name']}<br/>";
+                echo "Welcome, {$user['first_name']} {$user['last_name']}<br/>";
+                $userClass = getClassByUUID($uuid);
+                echo "You are in section: {$userClass['description']}";
                 echo '<a href="logout.php">Logout</a>';
             } else {
                 echo '<form method="post" action="">';
-                para($err, 'errorMessage');
+                if ($err != '')
+                    para($err, 'errorMessage');
                 echo '<p>Email Address: <input type="text" style = "width:300px" name="email" /></p>';
                 echo '<p>Password: <input type="password" name="password" /></p>';
-                echo '<p><input type="submit" name="submit" value="Login" /> <a href="help.php">Forgot your password?</a></p>';
+                echo '<p><input type="submit" name="submit" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>';
                 echo '</form>';
             }
             ?>
@@ -77,7 +80,7 @@ if ($title != '') {
 
             if (isLoggedIn ()) {
             ?>
-                <div class='nav_button'><a href="logout.php">Logout</a></div>
+                <div class='nav_button'><a href="logout.php"> Logout</a></div>
                 <div class='nav_button'><a href="account.php">Account</a></div>
             <?php
             } else {

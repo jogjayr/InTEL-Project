@@ -6,15 +6,21 @@ require_once('controller/c_lib_accounts.php');
 require_once('controller/util.php');
 
 
+// information for titling and contact information
 $site_title = "Interactive Toolkit for Engineering Learning";
 $site_email_address = "eschechter3@gatech.edu";
 
-$base_address = 'http://intel.gatech.edu/toolkit/';
-$base_file_path = '/www/virtual/intel/toolkit/';
+// addresses used for redirects
+$base_address = 'http://intel.gatech.edu/toolkit-dev/';
+$base_file_path = '/www/virtual/intel/toolkit-dev/';
+
+// error string if present.
+$err = '';
 
 
-// setup user variables.
 
+
+// setup user variable
 $uuid = '';
 if (isset($_SESSION['uuid'])) {
     $uuid = $_SESSION['uuid'];
