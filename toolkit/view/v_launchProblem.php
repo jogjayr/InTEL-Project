@@ -1,6 +1,14 @@
 <?php
 //require "null";
 
+// ****************
+//  IMPORTANT TODO:
+//  Check the type of user, and the type of problem;
+//  on load, if the user is logged in, and there is not an assignment id, redirect to the "my assignments" page
+//  Conversely, redirect if the user is not logged in and there is an assignment id.
+// ****************
+
+
 $headExtra = "<script type=\"text/javascript\">
 function changeScreenSize()
      {
@@ -21,7 +29,6 @@ function changeScreenSize()
 $bodyExtra = 'onLoad="javascript:changeScreenSize()"';
 
 $title = 'Launch Problem';
-$type = 'compact';
 require_once('header.php');
 
 
@@ -30,8 +37,6 @@ $assignmentId = 0;
 if(isset($_GET['exercise_id'])) {
     $assignmentId = addslashes($_GET['exercise_id']);
 }
-
-$isOldUI = isset($_GET['oldui']);
 
 if($problemId != null) {
     $problem = retrieveProblem($problemId);
@@ -67,9 +72,6 @@ if(isset($problem["extra"])) {
 if ($problem["type"]=="java") {
     $exerciseJar = $problem["java_jar_name"];//"PurseProblem.jar";
     $jarPath = "../applet/";
-    if($isOldUI) {
-        $jarPath = "../appletold/";
-    }
 
     $loader = "edu.gatech.statics.applet.AppletLoader";
     $loaderArchive = $jarPath."AppletLoader.jar";

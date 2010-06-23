@@ -19,6 +19,16 @@ $err = '';
 
 
 
+// The user may attempt to log in at any page.
+// this attempts to log the user in and retrieve the user variable
+if (isset($_POST['login'])) {
+    if (login(trim($_POST['email']), $_POST['password'])) {
+        // login ok
+    }
+}
+
+
+
 
 // setup user variable
 $uuid = '';
@@ -27,9 +37,5 @@ if (isset($_SESSION['uuid'])) {
 }
 $user = getUserByUUID($uuid);
 
-if (isset($_POST['login'])) {
-    if (login(trim($_POST['email']), $_POST['password'])) {
-        // login ok?
-    }
-}
+
 ?>
