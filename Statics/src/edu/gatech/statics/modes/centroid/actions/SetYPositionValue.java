@@ -10,7 +10,7 @@ import edu.gatech.statics.modes.centroid.CentroidState;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 
 /**
- *
+ * Necessary for updating the y-position state for the EquationModePanel.
  * @author Jimmy Truesdell
  */
 public class SetYPositionValue implements DiagramAction<CentroidState> {

@@ -15,7 +15,10 @@ import edu.gatech.statics.modes.select.SelectDiagram;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 
 /**
- *
+ * The specific implementation of the OrdinaryExercise for centroids. It is
+ * where the diagram gets set to the CentroidDiagram, the selectDiagram gets set
+ * to the CentroidSelectDiagram, and the AbstractInterfaceConfiguration gets set
+ * to the CentroidInterfaceConfiguration.
  * @author Jimmy Truesdell
  */
 abstract public class CentroidExercise extends OrdinaryExercise {

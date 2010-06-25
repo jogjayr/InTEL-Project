@@ -13,7 +13,7 @@ import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 
 /**
- *
+ * The specific implementation of the Mode class for use with centroids.
  * @author Jimmy Truesdell
  */
 public class CentroidMode extends Mode{

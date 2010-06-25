@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * This class is the specific implementation of the SelectDiagram class for centroid mode.
  * @author Jimmy Truesdell
  */
 public class CentroidSelectDiagram extends SelectDiagram {

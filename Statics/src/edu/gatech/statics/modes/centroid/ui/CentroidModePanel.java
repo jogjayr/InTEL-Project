@@ -29,7 +29,9 @@ import edu.gatech.statics.util.SolveListener;
 import java.util.Map;
 
 /**
- *
+ * This class sets up the specific implementation of ApplicationModePanel for
+ * use in centroid problems. It creates the UI elements for the equation mode of
+ * the centroid problems.
  * @author Jimmy Truesdell
  */
 public class CentroidModePanel extends ApplicationModePanel {

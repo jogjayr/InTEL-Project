@@ -12,7 +12,10 @@ import edu.gatech.statics.objects.SimulationObject;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class sets up the specific implementation of SelectModePanel for use in
+ * Centroid problems. Mostly this is a UI change to alter the text on the button
+ * in the menu to allow for the FBD functionality necessary for problems like
+ * the SmithMachine.
  * @author Jimmy Truesdell
  */
 public class CentroidSelectModePanel extends SelectModePanel {

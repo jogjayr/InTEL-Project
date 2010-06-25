@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Sets up the main Body class for centroids. It allows us to have one large
+ * body that represents all of the centroid parts in one group at first so that
+ * we can then select it and divide it into its individual parts for solving.
  * @author Jimmy Truesdell
  */
 public class CentroidBody extends Body implements DiagramKey {

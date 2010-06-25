@@ -11,7 +11,7 @@ import edu.gatech.statics.modes.centroid.CentroidState;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 
 /**
- *
+ * Necessary for updating the x-position state for the EquationModePanel.
  * @author Jimmy Truesdell
  */
 public class SetXPositionValue implements DiagramAction<CentroidState> {

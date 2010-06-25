@@ -12,7 +12,7 @@ import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 
 /**
- *
+ * Necessary for updating the surface area state for the EquationModePanel.
  * @author Jimmy Truesdell
  */
 public class SetAreaValue implements DiagramAction<CentroidState> {

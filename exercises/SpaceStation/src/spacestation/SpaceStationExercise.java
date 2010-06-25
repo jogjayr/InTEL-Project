@@ -120,36 +120,36 @@ public class SpaceStationExercise extends CentroidExercise {
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
-        A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "Solar Panel A", "5610.0"));
-        A.setName("Solar Panel A");
-        B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "Solar Panel B", "5550.0"));
-        B.setName("Solar Panel B");
-        C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "Living Quarters", "920.0"));
-        C.setName("Living Quarters");
-        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "Panel Extender", "775.0"));
-        D.setName("Panel Extender");
+        A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "SolarPanelA", "5610.0"));
+        A.setName("SolarPanelA");
+        B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "SolarPanelB", "5550.0"));
+        B.setName("SolarPanelB");
+        C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "LivingQuarters", "920.0"));
+        C.setName("LivingQuarters");
+        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "PanelExtender", "775.0"));
+        D.setName("PanelExtender");
         Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
         p.setName("Centroid");
 
-        Point centerA = new Point("CenterA", "0.89", "1.10", "0.0");
-        Point centerB = new Point("CenterB", "2.7", "0.925", "0.0");
-        Point centerC = new Point("CenterC", "1.92", "1.175", "0.0");
-        Point centerD = new Point("CenterD", "1.955", "0.93", "0.0");
-
-        solarPanelA = new CentroidPartMarker("SolarPanelA", centerA, A);
-        solarPanelB = new CentroidPartMarker("SolarPanelB", centerB, B);
-        livingQuarters = new CentroidPartMarker("LivingQuarters", centerC, C);
-        panelExtender = new CentroidPartMarker("PanelExtender", centerD, D);
-
-        schematic.add(solarPanelA);
-        schematic.add(solarPanelB);
-        schematic.add(livingQuarters);
-        schematic.add(panelExtender);
-
-        solarPanelA.createDefaultSchematicRepresentation();
-        solarPanelB.createDefaultSchematicRepresentation();
-        livingQuarters.createDefaultSchematicRepresentation();
-        panelExtender.createDefaultSchematicRepresentation();
+//        Point centerA = new Point("CenterA", "0.89", "1.10", "0.0");
+//        Point centerB = new Point("CenterB", "2.7", "0.925", "0.0");
+//        Point centerC = new Point("CenterC", "1.92", "1.175", "0.0");
+//        Point centerD = new Point("CenterD", "1.955", "0.93", "0.0");
+//
+//        solarPanelA = new CentroidPartMarker("SolarPanelA", centerA, A);
+//        solarPanelB = new CentroidPartMarker("SolarPanelB", centerB, B);
+//        livingQuarters = new CentroidPartMarker("LivingQuarters", centerC, C);
+//        panelExtender = new CentroidPartMarker("PanelExtender", centerD, D);
+//
+//        schematic.add(solarPanelA);
+//        schematic.add(solarPanelB);
+//        schematic.add(livingQuarters);
+//        schematic.add(panelExtender);
+//
+//        solarPanelA.createDefaultSchematicRepresentation();
+//        solarPanelB.createDefaultSchematicRepresentation();
+//        livingQuarters.createDefaultSchematicRepresentation();
+//        panelExtender.createDefaultSchematicRepresentation();
 
         station = new CentroidBody("Space Station", p);
         station.setName("Space Station");

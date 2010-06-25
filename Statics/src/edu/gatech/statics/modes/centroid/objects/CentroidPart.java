@@ -8,7 +8,8 @@ import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 
 /**
- *
+ * CentroidPart serves as a data class that contains the x, y, z, name, and
+ * surface area of each part of the centroid body.
  * @author Jimmy Truesdell
  */
 public class CentroidPart implements DiagramKey {

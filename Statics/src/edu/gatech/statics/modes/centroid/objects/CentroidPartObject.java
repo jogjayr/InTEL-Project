@@ -9,7 +9,10 @@ import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.objects.SimulationObject;
 
 /**
- *
+ * The CentroidPartObject is the UI representation of the parts that make up a
+ * centroid body. Each CentroidPartObject also contains its specific
+ * CentroidPart which serves as the positional and surface area data container
+ * for the CPO.
  * @author Jimmy Truesdell
  */
 public class CentroidPartObject extends SimulationObject implements ResolvableByName {

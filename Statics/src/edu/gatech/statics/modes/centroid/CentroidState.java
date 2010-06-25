@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *
+ * The main state class for the centroid mode. It contains the x,y,z, surface
+ * area, and solved status for the main centroid body as well as a map
+ * containing the states for the specific CentroidParts.
  * @author Jimmy Truesdell
  */
 public class CentroidState implements DiagramState<CentroidDiagram> {

@@ -10,6 +10,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.Exercise;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
@@ -18,7 +19,9 @@ import edu.gatech.statics.modes.centroid.actions.SetAreaValue;
 import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
 import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
 import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
+import edu.gatech.statics.objects.CentroidPartMarker;
 import edu.gatech.statics.objects.Measurement;
+import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Sets up the main Diagram class for centroids.
  * @author Jimmy Truesdell
  */
 public class CentroidDiagram extends Diagram<CentroidState> {
@@ -60,7 +63,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
         for (CentroidPartObject cpo : body.getParts()) {
             cpo.setState(getCurrentState().getMyPartState(cpo.getCentroidPart().getPartName()));
-            if(cpo.getState()!= null && cpo.getState().isLocked()){
+            if (cpo.getState() != null && cpo.getState().isLocked()) {
                 cpo.setDisplayGrayed(true);
             }
         }
@@ -290,7 +293,18 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //objects.add(cpObj);
         objects.addAll(body.getParts());
 
-        //indeed, measurements
+        for (CentroidPartObject part : body.getParts()) {
+            BigDecimal displayScale = Unit.distance.getDisplayScale();
+            if (part.getState() != null && part.getState().isLocked() == true) {
+                Point pt = new Point(part.getName()+"Center",
+                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getxPosition())).toString(),
+                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getyPosition())).toString(),
+                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getzPosition())).toString());
+                CentroidPartMarker cpm = new CentroidPartMarker("SolarPanelAMarker", pt, part);
+                cpm.createDefaultSchematicRepresentation();
+                objects.add(cpm);
+            }
+        }
 
         for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {
             if (measurement instanceof Measurement) {
@@ -298,7 +312,6 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             }
         }
 
-        //measurements?
         return objects;
     }
 

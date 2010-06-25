@@ -10,7 +10,8 @@ import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 
 /**
- *
+ * This is the state class that manages the information for each specific
+ * CentroidPart.
  * @author Jimmy Truesdell
  */
 public class CentroidPartState implements Buildable<CentroidPartState>{
