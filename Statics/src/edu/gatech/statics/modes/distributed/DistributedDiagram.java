@@ -74,7 +74,6 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
-
         baseObjects.add(dlObj);
         baseObjects.add(getDistributedForce().getSurface());
         baseObjects.add(getDistributedForce().getEndPoint());

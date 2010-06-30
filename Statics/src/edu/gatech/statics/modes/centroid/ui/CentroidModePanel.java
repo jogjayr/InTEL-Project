@@ -13,6 +13,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.centroid.CentroidDiagram;
 import edu.gatech.statics.modes.centroid.CentroidMode;
@@ -86,19 +87,22 @@ public class CentroidModePanel extends ApplicationModePanel {
 
                 currentlySelected.setDisplaySelected(false);
 //                currentlySelected.setDisplayGrayed(true);
-                for(SimulationObject obj : getDiagram().getSchematic().allObjects()) {
-                    if(obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()){
-                        ((CentroidPartMarker)obj).destroy();
+                for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
+                    if (obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()) {
+                        ((CentroidPartMarker) obj).destroy();
                     }
                 }
 
                 getDiagram().pushState(builder.build());
-
+                getDiagram().activate();
                 //do we need to do set diagram to solved?
                 //diagram.setLocked();
             } else {
                 // should we give any more detailed feedback?
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
+            }
+            if (allSolved()) {
+//                StaticsApplication.getApp().setCurrentDiagram(this);
             }
         } else {
             if (diagram.checkBody(areaField.getText(), xField.getText(), yField.getText())) {

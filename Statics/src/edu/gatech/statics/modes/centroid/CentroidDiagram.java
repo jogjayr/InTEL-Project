@@ -294,13 +294,20 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         objects.addAll(body.getParts());
 
         for (CentroidPartObject part : body.getParts()) {
+
+            for (SimulationObject obj : this.allObjects()) {
+                if (obj instanceof CentroidPartMarker && ((CentroidPartMarker) obj).getName().equals(part.getName() + "Marker")) {
+                    break;
+                }
+            }
+
             BigDecimal displayScale = Unit.distance.getDisplayScale();
             if (part.getState() != null && part.getState().isLocked() == true) {
-                Point pt = new Point(part.getName()+"Center",
+                Point pt = new Point(part.getName() + "Center",
                         displayScale.multiply(new BigDecimal(part.getCentroidPart().getxPosition())).toString(),
                         displayScale.multiply(new BigDecimal(part.getCentroidPart().getyPosition())).toString(),
                         displayScale.multiply(new BigDecimal(part.getCentroidPart().getzPosition())).toString());
-                CentroidPartMarker cpm = new CentroidPartMarker("SolarPanelAMarker", pt, part);
+                CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
                 cpm.createDefaultSchematicRepresentation();
                 objects.add(cpm);
             }
