@@ -89,8 +89,21 @@ if (isAdmin ()) {
     }
 
     function show_edit(id) {
-        var editContents = "<tr><td colspan=\"8\">BLAH</td></tr>";
+        var editContents = "<tr id=\"rowedit"+id+"\">"+
+            "<td id=\"editClass\"/>"+
+            "<td id=\"editProblem\"/>"+
+            "<td id=\"editOpen\"/>"+
+            "<td id=\"editClose\"/>"+
+            "<td colspan=\"2\"><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+            "</tr>";
         $("#row"+id).after(editContents);
+        $("#row"+id).hide();
+        $("#rowedit"+id+" editClass").append("here's some text");
+    }
+
+    function cancel_edit(id) {
+        $("#row"+id).show();
+        $("#rowedit"+id).remove();
     }
 
 </script>
@@ -192,7 +205,7 @@ if (count($assignments) > 0) {
         <tr>
             <th class="startsort">Class</th>
             <th>Problem</th>
-            <th>Description</th>
+            <!--<th>Description</th>-->
             <th>Type</th>
             <th>Open Date</th>
             <th>Close Date</th>
@@ -215,7 +228,7 @@ if (count($assignments) > 0) {
         echo '<tr id="row'.$app['id'].'">';
         echo '<td>' . t2h($classDescription) . '</td>';
         echo '<td>' . t2h($name) . '</td>';
-        echo '<td>' . t2h($description) . '</td>';
+        //echo '<td>' . t2h($description) . '</td>';
         echo '<td>' . t2h($type) . '</td>';
         echo '<td>' . t2h($openDate) . '</td>';
         echo '<td>' . t2h($closeDate) . '</td>';
