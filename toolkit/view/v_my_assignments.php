@@ -1,4 +1,5 @@
 <?php
+require_once ('admin/iniitvars.php');
 $title = 'Problems';
 if(!isAnonymous()) {
     $title = 'My Assignments';

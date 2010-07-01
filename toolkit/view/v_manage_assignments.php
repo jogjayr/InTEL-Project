@@ -100,19 +100,6 @@ if ($hasAction) {
 ?>
 
 <form method="post" action="">
-    <p>Problem:
-        <select name="problem_id">
-            <?php
-            foreach ($problems as $problem) {
-                $selectedString = '';
-                if(($hasAction && $problem['id']==$problemId)) {
-                    $selectedString = ' selected="selected"';
-                }
-                echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
-            }
-            ?>
-        </select>
-    </p>
     <p>Class:
         <select name="class_id">
             <?php
@@ -122,6 +109,19 @@ if ($hasAction) {
                     $selectedString = ' selected="selected"';
                 }
                 echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
+            }
+            ?>
+        </select>
+    </p>
+    <p>Problem:
+        <select name="problem_id">
+            <?php
+            foreach ($problems as $problem) {
+                $selectedString = '';
+                if(($hasAction && $problem['id']==$problemId)) {
+                    $selectedString = ' selected="selected"';
+                }
+                echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
             }
             ?>
         </select>
@@ -139,8 +139,8 @@ if ($hasAction) {
             ?>
         </select>
     </p>
-    <p>Open Date (mm/dd/yyyy): <input type="text" name="open_date" value="" /></p>
-    <p>Close Date (mm/dd/yyyy): <input type="text" name="close_date" value="" /></p>
+    <p>Open Date (mm/dd/yyyy): <input type="text" name="open_date" value="<?php if($hasAction) echo $openDate; ?>" /></p>
+    <p>Close Date (mm/dd/yyyy): <input type="text" name="close_date" value="<?php if($hasAction) echo $closeDate; ?>" /></p>
     <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
 </form>
 
