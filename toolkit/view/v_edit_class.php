@@ -44,7 +44,7 @@ if (isAdmin ()) {
 } else {
     $classes = getClassesByOwner($_SESSION['uuid']);
 }
-$owners = getOwners();
+$owners = getInstructors();
 
 $title = 'Edit Class';
 require_once('header.php');

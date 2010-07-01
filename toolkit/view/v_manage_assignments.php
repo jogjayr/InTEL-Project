@@ -103,8 +103,12 @@ if ($hasAction) {
     <p>Problem:
         <select name="problem_id">
             <?php
-            foreach ($problems as $prob) {
-                echo '<option value="' . $prob['id'] . '">' . $prob['name'] . '</option>';
+            foreach ($problems as $problem) {
+                $selectedString = '';
+                if(($hasAction && $problem['id']==$problemId)) {
+                    $selectedString = ' selected="selected"';
+                }
+                echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
             }
             ?>
         </select>
@@ -112,8 +116,12 @@ if ($hasAction) {
     <p>Class:
         <select name="class_id">
             <?php
-            foreach ($classes as $cls) {
-                echo '<option value="' . $cls['id'] . '">' . $cls['description'] . '</option>';
+            foreach ($classes as $class) {
+                $selectedString = '';
+                if(($hasAction && $class['id']==$classId)) {
+                    $selectedString = ' selected="selected"';
+                }
+                echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
             }
             ?>
         </select>
@@ -122,11 +130,11 @@ if ($hasAction) {
         <select name="assignment_type_id">
             <?php
             foreach ($assignmentTypes as $at) {
-                if ($at['id'] == 3) {
-                    echo '<option value="' . $at['id'] . '" selected="selected">' . $at['type'] . '</option>';
-                } else {
-                    echo '<option value="' . $at['id'] . '">' . $at['type'] . '</option>';
+                $selectedString = '';
+                if(($hasAction && $at['id']==$typeId) || (!$hasAction && $at['id']==3)) {
+                    $selectedString = ' selected="selected"';
                 }
+                echo '<option value="' . $at['id'] . '"' . $selectedString . '>' . $at['type'] . '</option>';
             }
             ?>
         </select>
@@ -153,7 +161,7 @@ if ($hasAction) {
                         <th class="unsortable"></th>
                         <th class="unsortable"></th>
                     </tr>
-    <?php
+<?php
                 foreach ($assignments as $app) {
                     $class = getClassById($app['class_id']);
                     $classDescription = $class['description'];
@@ -177,7 +185,7 @@ if ($hasAction) {
                     echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
                     echo '</tr>';
                 }
-    ?>
+?>
             </table>
 <?php
             } else {

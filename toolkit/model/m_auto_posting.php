@@ -16,16 +16,16 @@ require_once("model/mysql.php");
  */
 function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $level, $message, $timestamp) {
 
-  global $db;
+    global $db;
 
-  //add logger entry
-  $query =
-    "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, level, message, created_on)
+    //add logger entry
+    $query =
+            "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, level, message, created_on)
     VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', now())";
 
-  query($query, $db);
+    query($query, $db);
 
-  return true;
+    return true;
 }
 
 /**
@@ -40,60 +40,57 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
  */
 function post_exercise($assignmentId, $userId, $exerciseStatus, $stateData, $verifierKey, $timestamp) {
 
-  global $db;
+    global $db;
 
-  // first, check the verifier key:
-  $preHash = "$userId:$assignmentId:$exerciseStatus:$stateData";
-  $verifierKeyCheck = substr(md5($preHash),0,8);
+    // first, check the verifier key:
+    $preHash = "$userId:$assignmentId:$exerciseStatus:$stateData";
+    $verifierKeyCheck = substr(md5($preHash), 0, 8);
 
-  //echo "checking verifier...\n";
+    //echo "checking verifier...\n";
 
-  if($verifierKeyCheck != $verifierKey) {
-    // the verifier test failed!
-    return false;
-  }
-
-  //echo "verifier ok!\n";
-
-  // now check to see if we are updating, or inserting
-  $query = "SELECT id, submission_status_id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
-  $result = aquery($query, $db);
-
-  //echo "checking if we have a result:\n";
-  //echo "error: "+mysql_error();
-  
-  if(sizeof($result) == 0) {
-    // new entry, we insert
-    $query =
-      "INSERT INTO app_user_assignment (user_id, assignment_id, submission_status_id, state, created_on, updated_on)
-      VALUES ({$userId}, {$assignmentId}, {$exerciseStatus}, '{$stateData}', {$timestamp}, {$timestamp})";
-    query($query, $db);
-
-    echo "inserting new record\n";
-    //echo "error: " +mysql_error();
-
-  } else {
-    // update
-    $id = $result[0]['id'];
-
-    $previousStatus = $result[0]['submission_status_id'];
-    if($previousStatus > $exerciseStatus) {
-      // do not overwrite their old successful score
-      echo "exercise has been previously saved at a higher point of progress\n";
-      echo "no update\n";
-      return true;
+    if ($verifierKeyCheck != $verifierKey) {
+        // the verifier test failed!
+        return false;
     }
-    
-    $query =
-    "UPDATE app_user_assignment SET
+
+    //echo "verifier ok!\n";
+    // now check to see if we are updating, or inserting
+    $query = "SELECT id, submission_status_id FROM app_user_assignment WHERE user_id=$userId AND assignment_id=$assignmentId";
+    $result = aquery($query, $db);
+
+    //echo "checking if we have a result:\n";
+    //echo "error: "+mysql_error();
+
+    if (sizeof($result) == 0) {
+        // new entry, we insert
+        $query =
+                "INSERT INTO app_user_assignment (user_id, assignment_id, submission_status_id, state, created_on, updated_on)
+      VALUES ({$userId}, {$assignmentId}, {$exerciseStatus}, '{$stateData}', {$timestamp}, {$timestamp})";
+        query($query, $db);
+
+        echo "inserting new record\n";
+        //echo "error: " +mysql_error();
+    } else {
+        // update
+        $id = $result[0]['id'];
+
+        $previousStatus = $result[0]['submission_status_id'];
+        if ($previousStatus > $exerciseStatus) {
+            // do not overwrite their old successful score
+            echo "exercise has been previously saved at a higher point of progress\n";
+            echo "no update\n";
+            return true;
+        }
+
+        $query =
+                "UPDATE app_user_assignment SET
       submission_status_id={$exerciseStatus}, state='$stateData' WHERE id=$id";
-    query($query, $db);
+        query($query, $db);
 
-    echo "updating record\n";
-    //echo "error: " +mysql_error();
-  }
-  
-  return true;
+        echo "updating record\n";
+        //echo "error: " +mysql_error();
+    }
+
+    return true;
 }
-
 ?>

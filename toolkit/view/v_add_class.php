@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
 <?php
 para($err, 'errorMessage');
 if (!$success) {
-    $owners = getOwners();
+    $owners = getInstructors();
 ?>
     <form method="post" action="">
         <p>Owner:

@@ -1,10 +1,11 @@
 <?php
 
-require_once('model/lib_data.php');
-require_once('model/m_lib_accounts.php');
-require_once('controller/c_lib_accounts.php');
-require_once('controller/util.php');
-
+// This loads all of the library functions that are used by the PHP backend.
+require_once('model/lib_accounts.php');
+require_once('model/lib_assignments.php');
+require_once('model/lib_classes.php');
+require_once('model/lib_submissions.php');
+require_once('model/util.php');
 
 // information for titling and contact information
 $site_title = "Interactive Toolkit for Engineering Learning";
@@ -16,8 +17,6 @@ $base_file_path = '/www/virtual/intel/toolkit-dev/';
 
 // error string if present.
 $err = '';
-
-
 
 // The user may attempt to log in at any page.
 // this attempts to log the user in and retrieve the user variable
@@ -31,8 +30,6 @@ if (isset($_POST['login'])) {
 if (isset($_POST['logout'])) {
     logout();
 }
-
-
 
 // setup user variable
 $uuid = '';
