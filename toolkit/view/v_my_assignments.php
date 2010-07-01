@@ -1,5 +1,5 @@
 <?php
-require_once ('admin/iniitvars.php');
+require_once ('admin/initvars.php');
 $title = 'Problems';
 if(!isAnonymous()) {
     $title = 'My Assignments';
