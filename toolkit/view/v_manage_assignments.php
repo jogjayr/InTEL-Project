@@ -108,7 +108,7 @@ if ($hasAction) {
 <div id="addButton">
     <button onclick="show_add_form();">Add Assignment</button>
 </div>
-<div id="addEntry" style="visibility: hidden;">
+<div id="addEntry" style="display: none;">
     <form method="post" action="">
         <table>
             <tr>
