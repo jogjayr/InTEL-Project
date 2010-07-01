@@ -48,7 +48,7 @@ if (isset($_POST['addAssignment'])) {
     $typeId = $_POST['assignment_type_id'];
     $openDate = $_POST['open_date'];
     $closeDate = $_POST['close_date'];
-
+    
     //check for valid dates
     if (strtotime($openDate) && strtotime($closeDate)) {
         if (addAssignment($problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
@@ -102,7 +102,7 @@ if ($hasAction) {
 }
 
 // DEBUG
-//print_r($_POST);
+print_r($_POST);
 ?>
 
 <div id="addButton">
@@ -112,7 +112,7 @@ if ($hasAction) {
     <form method="post" action="">
         <table>
             <tr>
-                <td>Class:</td>
+                <td>Class:<br/>(You can select multiple sections)</td>
                 <td>Problem:</td>
                 <td>Assignment Type:</td>
                 <td>Open Date:</td>
@@ -120,7 +120,7 @@ if ($hasAction) {
             </tr>
             <tr>
                 <td>
-                    <select name="class_id">
+                    <select name="class_id" multiple="true">
                         <?php
                         foreach ($classes as $class) {
                             $selectedString = '';

@@ -14,6 +14,7 @@ require_once('admin/initvars.php');
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="js/jquery.js"></script>
         <title><?php
 echo t2h($site_title);
 if ($title != '') {
