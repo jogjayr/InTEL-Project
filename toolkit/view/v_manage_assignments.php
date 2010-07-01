@@ -54,9 +54,9 @@ if (isset($_POST['addAssignment'])) {
         foreach ($classIds as $classId) {
             if (addAssignment($problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
                 $actionSuccess = true;
-                $message = 'Your assignment has been created';
+                $message = 'Your assignments have been created';
             } else {
-                $message = 'Your assignment was not added. Please try again later.';
+                $message = 'Your assignments were not added. Please contact <a href="mailto:'.$site_email_address.'">support</a> as soon as possible.';
             }
         }
     } else {
@@ -104,7 +104,7 @@ if ($hasAction) {
 }
 
 // DEBUG
-print_r($_POST);
+//print_r($_POST);
 ?>
 
 <div id="addButton">
@@ -179,53 +179,53 @@ print_r($_POST);
         <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
     </form>
 </div>
-
+    
 <?php
-                           if (count($assignments) > 0) {
+if (count($assignments) > 0) {
 ?>
-                               <table class="sortable" id="sortabletable">
-                                   <tr>
-                                       <th class="startsort">Class</th>
-                                       <th>Problem</th>
-                                       <th>Description</th>
-                                       <th>Type</th>
-                                       <th>Open Date</th>
-                                       <th>Close Date</th>
-                                       <th class="unsortable"></th>
-                                       <th class="unsortable"></th>
-                                   </tr>
+    <table class="sortable" id="sortabletable">
+        <tr>
+            <th class="startsort">Class</th>
+            <th>Problem</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Open Date</th>
+            <th>Close Date</th>
+            <th class="unsortable"></th>
+            <th class="unsortable"></th>
+        </tr>
     <?php
-                               foreach ($assignments as $app) {
-                                   $class = getClassById($app['class_id']);
-                                   $classDescription = $class['description'];
-                                   $name = $app['name'];
-                                   $description = $app['description'];
-                                   $type = $app['type'];
-                                   $openDate = date("m.d.y", $app['open_date']);
-                                   $closeDate = date("m.d.y", $app['close_date']);
-                                   $urlEdit = 'editAssignment.php?id=' . $app['id'];
-                                   $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+    foreach ($assignments as $app) {
+        $class = getClassById($app['class_id']);
+        $classDescription = $class['description'];
+        $name = $app['name'];
+        $description = $app['description'];
+        $type = $app['type'];
+        $openDate = date("g:i a m.d.y", $app['open_date']);
+        $closeDate = date("g:i a m.d.y", $app['close_date']);
+        $urlEdit = 'editAssignment.php?id=' . $app['id'];
+        $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
 
 
-                                   echo '<tr>';
-                                   echo '<td>' . t2h($classDescription) . '</td>';
-                                   echo '<td>' . t2h($name) . '</td>';
-                                   echo '<td>' . t2h($description) . '</td>';
-                                   echo '<td>' . t2h($type) . '</td>';
-                                   echo '<td>' . t2h($openDate) . '</td>';
-                                   echo '<td>' . t2h($closeDate) . '</td>';
-                                   echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-                                   echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
-                                   echo '</tr>';
-                               }
+        echo '<tr>';
+        echo '<td>' . t2h($classDescription) . '</td>';
+        echo '<td>' . t2h($name) . '</td>';
+        echo '<td>' . t2h($description) . '</td>';
+        echo '<td>' . t2h($type) . '</td>';
+        echo '<td>' . t2h($openDate) . '</td>';
+        echo '<td>' . t2h($closeDate) . '</td>';
+        echo '<td><a href="' . $urlEdit . '">edit</a></td>';
+        echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
+        echo '</tr>';
+    }
     ?>
-                           </table>
+</table>
 <?php
-                           } else {
-                               para('No Assignments available.');
-                           }//end if
+} else {
+    para('No Assignments available.');
+}//end if
 ?>
 
 <?php
-                           require_once('footer.php')
+require_once('footer.php')
 ?>
