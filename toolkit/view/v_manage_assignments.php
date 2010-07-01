@@ -92,13 +92,14 @@ if (isAdmin ()) {
         var editContents = "<tr id=\"rowedit"+id+"\">"+
             "<td id=\"editClass\"/>"+
             "<td id=\"editProblem\"/>"+
+            "<td id=\"editType\"/>"+
             "<td id=\"editOpen\"/>"+
             "<td id=\"editClose\"/>"+
             "<td colspan=\"2\"><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
             "</tr>";
         $("#row"+id).after(editContents);
         $("#row"+id).hide();
-        $("#rowedit"+id+" editClass").append("here's some text");
+        $("#rowedit"+id+" #editClass").append("here's some text");
     }
 
     function cancel_edit(id) {
