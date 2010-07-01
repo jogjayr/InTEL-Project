@@ -88,6 +88,11 @@ if (isAdmin ()) {
         $("#addButton").hide();
     }
 
+    function show_edit(id) {
+        var editContents = "<tr><td colspan=\"8\">BLAH</td></tr>";
+        $("#row"+id).after(editContents);
+    }
+
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
 <!--<p><a href="addAssignment.php">Add Assignment</a></p>-->
@@ -203,11 +208,11 @@ if (count($assignments) > 0) {
         $type = $app['type'];
         $openDate = date("g:i a m.d.y", $app['open_date']);
         $closeDate = date("g:i a m.d.y", $app['close_date']);
-        $urlEdit = 'editAssignment.php?id=' . $app['id'];
+        //$urlEdit = 'editAssignment.php?id=' . $app['id'];
+        $urlEdit = "javascript:show_edit({$app['id']})";
         $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
 
-
-        echo '<tr>';
+        echo '<tr id="row'.$app['id'].'">';
         echo '<td>' . t2h($classDescription) . '</td>';
         echo '<td>' . t2h($name) . '</td>';
         echo '<td>' . t2h($description) . '</td>';
