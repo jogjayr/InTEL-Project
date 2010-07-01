@@ -80,6 +80,12 @@ if (isAdmin ()) {
             window.location = dest;
         }
     }
+
+    function show_add_form() {
+        $("#addEntry").show("slow");
+        $("#addButton").hide();
+    }
+
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
 <!--<p><a href="addAssignment.php">Add Assignment</a></p>-->
@@ -99,112 +105,125 @@ if ($hasAction) {
 //print_r($_POST);
 ?>
 
-<form method="post" action="">
-    <table>
-        <tr>
-            <td>Class:</td>
-            <td>Problem:</td>
-            <td>Assignment Type:</td>
-            <td>Open Date:</td>
-            <td>Close Date:</td>
-        </tr>
-        <tr>
-            <td>
-                <select name="class_id">
-                    <?php
-                    foreach ($classes as $class) {
-                        $selectedString = '';
-                        if (($hasAction && $class['id'] == $classId)) {
-                            $selectedString = ' selected="selected"';
+<div id="addButton">
+    <button onclick="show_add_form();">Add Assignment</button>
+</div>
+<div id="addEntry" style="visibility: hidden;">
+    <form method="post" action="">
+        <table>
+            <tr>
+                <td>Class:</td>
+                <td>Problem:</td>
+                <td>Assignment Type:</td>
+                <td>Open Date:</td>
+                <td>Close Date:</td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="class_id">
+                        <?php
+                        foreach ($classes as $class) {
+                            $selectedString = '';
+                            if (($hasAction && $class['id'] == $classId)) {
+                                $selectedString = ' selected="selected"';
+                            }
+                            echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
                         }
-                        echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </td>
-            <td>
-                <select name="problem_id">
-                    <?php
-                    foreach ($problems as $problem) {
-                        $selectedString = '';
-                        if (($hasAction && $problem['id'] == $problemId)) {
-                            $selectedString = ' selected="selected"';
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <select name="problem_id">
+                        <?php
+                        foreach ($problems as $problem) {
+                            $selectedString = '';
+                            if (($hasAction && $problem['id'] == $problemId)) {
+                                $selectedString = ' selected="selected"';
+                            }
+                            echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
                         }
-                        echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </td>
-            <td>
-                <select name="assignment_type_id">
-                    <?php
-                    foreach ($assignmentTypes as $at) {
-                        $selectedString = '';
-                        if (($hasAction && $at['id'] == $typeId) || (!$hasAction && $at['id'] == 3)) {
-                            $selectedString = ' selected="selected"';
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <select name="assignment_type_id">
+                        <?php
+                        foreach ($assignmentTypes as $at) {
+                            $selectedString = '';
+                            if (($hasAction && $at['id'] == $typeId) || (!$hasAction && $at['id'] == 3)) {
+                                $selectedString = ' selected="selected"';
+                            }
+                            echo '<option value="' . $at['id'] . '"' . $selectedString . '>' . $at['type'] . '</option>';
                         }
-                        echo '<option value="' . $at['id'] . '"' . $selectedString . '>' . $at['type'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </td>
-            <td>
-                <input type="text" name="open_date" value="<?php if ($hasAction){echo $openDate;} ?>" />
-            </td>
-            <td>
-                <input type="text" name="close_date" value="<?php if ($hasAction){echo $closeDate;} ?>" />
-            </td>
-        </tr>
-    </table>
-    <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
-</form>
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="open_date" value="<?php
+                        if ($hasAction) {
+                            echo $openDate;
+                        }
+                        ?>" />
+                </td>
+                <td>
+                    <input type="text" name="close_date" value="<?php
+                           if ($hasAction) {
+                               echo $closeDate;
+                           }
+                        ?>" />
+                </td>
+            </tr>
+        </table>
+        <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
+    </form>
+</div>
 
 <?php
-if (count($assignments) > 0) {
+                           if (count($assignments) > 0) {
 ?>
-    <table class="sortable" id="sortabletable">
-        <tr>
-            <th class="startsort">Class</th>
-            <th>Problem</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Open Date</th>
-            <th>Close Date</th>
-            <th class="unsortable"></th>
-            <th class="unsortable"></th>
-        </tr>
+                               <table class="sortable" id="sortabletable">
+                                   <tr>
+                                       <th class="startsort">Class</th>
+                                       <th>Problem</th>
+                                       <th>Description</th>
+                                       <th>Type</th>
+                                       <th>Open Date</th>
+                                       <th>Close Date</th>
+                                       <th class="unsortable"></th>
+                                       <th class="unsortable"></th>
+                                   </tr>
     <?php
-    foreach ($assignments as $app) {
-        $class = getClassById($app['class_id']);
-        $classDescription = $class['description'];
-        $name = $app['name'];
-        $description = $app['description'];
-        $type = $app['type'];
-        $openDate = date("m.d.y", $app['open_date']);
-        $closeDate = date("m.d.y", $app['close_date']);
-        $urlEdit = 'editAssignment.php?id=' . $app['id'];
-        $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+                               foreach ($assignments as $app) {
+                                   $class = getClassById($app['class_id']);
+                                   $classDescription = $class['description'];
+                                   $name = $app['name'];
+                                   $description = $app['description'];
+                                   $type = $app['type'];
+                                   $openDate = date("m.d.y", $app['open_date']);
+                                   $closeDate = date("m.d.y", $app['close_date']);
+                                   $urlEdit = 'editAssignment.php?id=' . $app['id'];
+                                   $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
 
 
-        echo '<tr>';
-        echo '<td>' . t2h($classDescription) . '</td>';
-        echo '<td>' . t2h($name) . '</td>';
-        echo '<td>' . t2h($description) . '</td>';
-        echo '<td>' . t2h($type) . '</td>';
-        echo '<td>' . t2h($openDate) . '</td>';
-        echo '<td>' . t2h($closeDate) . '</td>';
-        echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-        echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
-        echo '</tr>';
-    }
+                                   echo '<tr>';
+                                   echo '<td>' . t2h($classDescription) . '</td>';
+                                   echo '<td>' . t2h($name) . '</td>';
+                                   echo '<td>' . t2h($description) . '</td>';
+                                   echo '<td>' . t2h($type) . '</td>';
+                                   echo '<td>' . t2h($openDate) . '</td>';
+                                   echo '<td>' . t2h($closeDate) . '</td>';
+                                   echo '<td><a href="' . $urlEdit . '">edit</a></td>';
+                                   echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
+                                   echo '</tr>';
+                               }
     ?>
-</table>
+                           </table>
 <?php
-} else {
-    para('No Assignments available.');
-}//end if
+                           } else {
+                               para('No Assignments available.');
+                           }//end if
 ?>
 
 <?php
-require_once('footer.php')
+                           require_once('footer.php')
 ?>
