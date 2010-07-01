@@ -34,7 +34,7 @@ $hasAction = false;
 $actionSuccess = false;
 $message = '';
 $problemId = '';
-$classId = '';
+$classIds = '';
 $typeId = '';
 $openDate = '';
 $closeDate = '';
@@ -44,18 +44,20 @@ if (isset($_POST['addAssignment'])) {
 
     $hasAction = true;
     $problemId = $_POST['problem_id'];
-    $classId = $_POST['class_id'];
+    $classIds = $_POST['class_id'];
     $typeId = $_POST['assignment_type_id'];
     $openDate = $_POST['open_date'];
     $closeDate = $_POST['close_date'];
-    
+
     //check for valid dates
     if (strtotime($openDate) && strtotime($closeDate)) {
-        if (addAssignment($problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
-            $actionSuccess = true;
-            $message = 'Your assignment has been created';
-        } else {
-            $message = 'Your assignment was not added. Please try again later.';
+        foreach ($classIds as $classId) {
+            if (addAssignment($problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
+                $actionSuccess = true;
+                $message = 'Your assignment has been created';
+            } else {
+                $message = 'Your assignment was not added. Please try again later.';
+            }
         }
     } else {
         $message = 'Please enter valid dates in the form of mm/dd/yyyy.';
@@ -120,11 +122,11 @@ print_r($_POST);
             </tr>
             <tr>
                 <td>
-                    <select name="class_id" multiple="true">
+                    <select name="class_id[]" multiple="true">
                         <?php
                         foreach ($classes as $class) {
                             $selectedString = '';
-                            if (($hasAction && $class['id'] == $classId)) {
+                            if ($hasAction && in_array($class['id'], $classIds)) {
                                 $selectedString = ' selected="selected"';
                             }
                             echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
@@ -137,7 +139,7 @@ print_r($_POST);
                         <?php
                         foreach ($problems as $problem) {
                             $selectedString = '';
-                            if (($hasAction && $problem['id'] == $problemId)) {
+                            if ($hasAction && $problem['id'] == $problemId) {
                                 $selectedString = ' selected="selected"';
                             }
                             echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
