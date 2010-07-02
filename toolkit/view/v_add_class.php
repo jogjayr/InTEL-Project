@@ -58,7 +58,7 @@ if (!$success) {
 </form>
 <?php
         } else {
-            para('Your class has been created');
+            para('Your class has been created', 'infoMessage');
         }//end if
         require_once('footer.php')
 ?>

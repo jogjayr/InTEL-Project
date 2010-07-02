@@ -55,37 +55,37 @@ if ($search_class != -1 || $search_problem != -1) {
     <div class="form_area">
         Class
         <select id="class_id" name="class_id">
-<?php
-$selectedString = "";
-if ($search_class == -1)
-    $selectedString = ' selected="true"';
+            <?php
+            $selectedString = "";
+            if ($search_class == -1)
+                $selectedString = ' selected="true"';
 
-echo '<option value="-1"' . $selectedString . '>All Classes</option>';
-foreach ($classes as $class) {
-    $selectedString = "";
-    if ($class['id'] == $search_class)
-        $selectedString = ' selected="true"';
-    echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
-}
-?>
+            echo '<option value="-1"' . $selectedString . '>All Classes</option>';
+            foreach ($classes as $class) {
+                $selectedString = "";
+                if ($class['id'] == $search_class)
+                    $selectedString = ' selected="true"';
+                echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
+            }
+            ?>
         </select>
     </div>
     <div class="form_area">
         Problem
         <select id="problem_id" name="problem_id">
-<?php
-$selectedString = "";
-if ($search_problem == -1)
-    $selectedString = ' selected="true"';
+            <?php
+            $selectedString = "";
+            if ($search_problem == -1)
+                $selectedString = ' selected="true"';
 
-echo '<option value="-1"' . $selectedString . '>All Problems</option>';
-foreach ($problems as $problem) {
-    $selectedString = "";
-    if ($problem['id'] == $search_problem)
-        $selectedString = ' selected="true"';
-    echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
-}
-?>
+            echo '<option value="-1"' . $selectedString . '>All Problems</option>';
+            foreach ($problems as $problem) {
+                $selectedString = "";
+                if ($problem['id'] == $search_problem)
+                    $selectedString = ' selected="true"';
+                echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
+            }
+            ?>
         </select>
     </div>
     <input type="submit" value="Search"/>
@@ -93,69 +93,69 @@ foreach ($problems as $problem) {
 
 
 <?php
-if (isset($submissions)) {
-    if (count($submissions) > 0) {
+            if (isset($submissions)) {
+                if (count($submissions) > 0) {
 ?>
 
-        <table class="sortable" id="sortabletable">
-            <tr class="table_title">
-                <th>First</th>
-                <th class="startsort">Last</th>
-                <th>Email Address</th>
-                <th>Assignment</th>
-                <th>Type</th>
-                <th>Class</th>
-                <th>Status</th>
-                <th>Date Submitted</th>
-                <th>Time Submitted</th>
-            </tr>
-<?php
-        foreach ($submissions as $sub) {
-
-            $first = $sub['first_name'];
-            $last = $sub['last_name'];
-            $email = $sub['email'];
-            $assignment = $sub['name'];
-            $class = getClassById($sub['class_id']);
-            $className = $class['description'];
-            $status = $sub['status'];
-            $date = date("m/d/y", $sub['updated_on']);
-            $time = date("g:i a", $sub['updated_on']);
-            $statusId = $sub['submission_status_id'];
-            $userId = $sub['user_id'];
-            $assignmentId = $sub['assignment_id'];
-            $type = $sub['type'];
-
-            echo '<tr class="record">';
-            echo '<td>' . t2h($first) . '</td>';
-            echo '<td>' . t2h($last) . '</td>';
-            echo '<td>' . t2h($email) . '</td>';
-            echo '<td>' . t2h($assignment) . '</td>';
-            echo '<td>' . t2h($type) . '</td>';
-            echo '<td>' . t2h($className) . '</td>';
-            if ($statusId != 1) {
-                $testProblemLink = "testProblem.php?exercise_id=$assignmentId&user_id=$userId";
-                echo '<td><a href="' . $testProblemLink . '">' . t2h($status) . '</a></td>';
-            } else {
-                echo '<td>' . t2h($status) . '</td>';
-            }
-            echo '<td>' . t2h($date) . '</td>';
-            echo '<td>' . t2h($time) . '</td>';
-            echo '</tr>';
-        }
-?>
-    </table>
+                    <table class="sortable" id="sortabletable">
+                        <tr class="table_title">
+                            <th>First</th>
+                            <th class="startsort">Last</th>
+                            <th>Email Address</th>
+                            <th>Assignment</th>
+                            <th>Type</th>
+                            <th>Class</th>
+                            <th>Status</th>
+                            <th>Date Submitted</th>
+                            <th>Time Submitted</th>
+                        </tr>
     <?php
-    } else {
-        // submissions is empty.
-        para('No submissions available.');
-    }
-} else {
-// submissions is not set.
-    para('Please select a class and/or problem.');
-}
+                    foreach ($submissions as $sub) {
+
+                        $first = $sub['first_name'];
+                        $last = $sub['last_name'];
+                        $email = $sub['email'];
+                        $assignment = $sub['name'];
+                        $class = getClassById($sub['class_id']);
+                        $className = $class['description'];
+                        $status = $sub['status'];
+                        $date = date("m/d/y", $sub['updated_on']);
+                        $time = date("g:i a", $sub['updated_on']);
+                        $statusId = $sub['submission_status_id'];
+                        $userId = $sub['user_id'];
+                        $assignmentId = $sub['assignment_id'];
+                        $type = $sub['type'];
+
+                        echo '<tr class="record">';
+                        echo '<td>' . t2h($first) . '</td>';
+                        echo '<td>' . t2h($last) . '</td>';
+                        echo '<td>' . t2h($email) . '</td>';
+                        echo '<td>' . t2h($assignment) . '</td>';
+                        echo '<td>' . t2h($type) . '</td>';
+                        echo '<td>' . t2h($className) . '</td>';
+                        if ($statusId != 1) {
+                            $testProblemLink = "testProblem.php?exercise_id=$assignmentId&user_id=$userId";
+                            echo '<td><a href="' . $testProblemLink . '">' . t2h($status) . '</a></td>';
+                        } else {
+                            echo '<td>' . t2h($status) . '</td>';
+                        }
+                        echo '<td>' . t2h($date) . '</td>';
+                        echo '<td>' . t2h($time) . '</td>';
+                        echo '</tr>';
+                    }
     ?>
+                </table>
+<?php
+                } else {
+                    // submissions is empty.
+                    para('No submissions available.', infoMessage);
+                }
+            } else {
+// submissions is not set.
+                para('Please select a class and/or problem.');
+            }
+?>
 
 <?php
-require_once('footer.php')
+            require_once('footer.php')
 ?>

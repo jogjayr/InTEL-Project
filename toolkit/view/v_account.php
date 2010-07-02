@@ -44,7 +44,7 @@ if (count($classes) > 0) {
     </table>
         <?php
     } else {
-        para('No classes available.');
+        para('No classes available.', 'errorMessage');
     }//end if
         ?>
     <p>First Name: <input type="text" name="first_name" value="<?php echo $_SESSION['user_first_name']; ?>" /></p>

@@ -69,7 +69,7 @@ if (count($assignments) > 0) {
 </table>
     <?php
 } else {
-    para('No problems available.');
+    para('No problems available.','infoMessage');
 }//end if
     ?>
 

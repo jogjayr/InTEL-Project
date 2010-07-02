@@ -61,7 +61,7 @@ if (count($classes) > 0) {
 </table>
     <?php
 } else {
-    para('No Classes available.');
+    para('No Classes available.','errorMessage');
 }//end if
     ?>
 

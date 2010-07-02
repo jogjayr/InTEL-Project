@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
 
 
 if ($success) {
-    para('Your profile has been updated.');
+    para('Your profile has been updated.', 'infoMessage');
 } else {
     para($err, 'errorMessage');
 }

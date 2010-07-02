@@ -56,6 +56,15 @@ html {
 }
 .errorMessage {
     color: #C80000;
+    border: 2px solid #c80000;
+    background-color: #fee;
+    padding: 5px;
+}
+.infoMessage {
+    color: #000;
+    border: 2px solid #008;
+    background-color: #eef;
+    padding: 5px;
 }
 .nav_button {
     position: relative;
