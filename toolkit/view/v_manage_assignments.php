@@ -121,21 +121,21 @@ echo '<select name=\"class_id\">';
 foreach ($classes as $class) {
     echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
 }
-echo '</select>";\n';
+echo '</select>";'."\n";
 
 echo 'var problemStuff = "';
 echo '<select name=\"problem_id\">';
 foreach ($problems as $problem) {
     echo '<option value=\"' . $problem['id'] . '\">' . $problem['name'] . '</option>';
 }
-echo '</select>";\n';
+echo '</select>";'."\n";
 
 echo 'var assignmentTypeStuff = "';
 echo '<select name=\"problem_id\">';
 foreach ($assignmentTypes as $at) {
     echo '<option value=\"' . $at['id'] . '\">' . $at['type'] . '</option>';
 }
-echo '</select>";\n';
+echo '</select>";'."\n";
 ?>
 
         $("#rowedit"+id+" #editClass").append(classStuff);
