@@ -108,34 +108,41 @@ if (isAdmin ()) {
         }
     }
 
-    function show_add_form() {
-        $("#addEntry").show("slow");
-        $("#addButton").hide();
-    }
+function show_add_form() {
+    $("#addEntry").show("slow");
+    $("#addButton").hide();
+}
 
-    function show_edit(id) {
-        var editContents = "<tr id=\"rowedit"+id+"\">"+
-            "<form method=\"post\" action=\"\">"+
-            "<input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
-            "<td id=\"editClass\"/>"+
-            "<td id=\"editProblem\"/>"+
-            "<td id=\"editType\"/>"+
-            "<td id=\"editOpen\"/>"+
-            "<td id=\"editClose\"/>"+
-            "<td><input type=\"submit\" name=\"editAssignment\"></td>"+
-            "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
-            "</form>"+
-            "</tr>";
-        $("#row"+id).after(editContents);
-        $("#row"+id).hide();
+var existingEdit = -1;
+function show_edit(id) {
 
-        // the order is class, problem, type.
-        // these variables contain the text of the old values.
-        var oldClass = $("#row"+id+" td:nth-child(1)").text();
-        var oldProblem = $("#row"+id+" td:nth-child(2)").text();
-        var oldType = $("#row"+id+" td:nth-child(3)").text();
-        var oldOpenDate = $("#row"+id+" td:nth-child(4)").text();
-        var oldCloseDate = $("#row"+id+" td:nth-child(5)").text();
+    if(existingEdit != -1)
+        cancel_edit(existingEdit);
+    existingEdit = id;
+
+    var editContents =
+        "<tr id=\"rowedit"+id+"\">"+
+        //"<form method=\"post\" action=\"\">"+
+    "<input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
+        "<td id=\"editClass\"/>"+
+        "<td id=\"editProblem\"/>"+
+        "<td id=\"editType\"/>"+
+        "<td id=\"editOpen\"/>"+
+        "<td id=\"editClose\"/>"+
+        "<td><input type=\"submit\" name=\"editAssignment\"></td>"+
+        "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+        //"</form>"+
+    "</tr>";
+    $("#row"+id).after(editContents);
+    $("#row"+id).hide();
+
+    // the order is class, problem, type.
+    // these variables contain the text of the old values.
+    var oldClass = $("#row"+id+" td:nth-child(1)").text();
+    var oldProblem = $("#row"+id+" td:nth-child(2)").text();
+    var oldType = $("#row"+id+" td:nth-child(3)").text();
+    var oldOpenDate = $("#row"+id+" td:nth-child(4)").text();
+    var oldCloseDate = $("#row"+id+" td:nth-child(5)").text();
    
 <?php
 // not doing any string replacement here.
@@ -163,21 +170,22 @@ foreach ($assignmentTypes as $at) {
 echo '</select>";' . "\n";
 ?>
 
-        $("#rowedit"+id+" #editClass").append(classStuff);
-        $("#rowedit"+id+" #editProblem").append(problemStuff);
-        $("#rowedit"+id+" #editType").append(assignmentTypeStuff);
-        $("#rowedit"+id+" #editOpen").append("<input type=\"text\" name=\"open_date\" value=\""+oldOpenDate+"\"/>");
-        $("#rowedit"+id+" #editClose").append("<input type=\"text\" name=\"close_date\" value=\""+oldCloseDate+"\"/>");
+    $("#rowedit"+id+" #editClass").append(classStuff);
+    $("#rowedit"+id+" #editProblem").append(problemStuff);
+    $("#rowedit"+id+" #editType").append(assignmentTypeStuff);
+    $("#rowedit"+id+" #editOpen").append("<input type=\"text\" name=\"open_date\" value=\""+oldOpenDate+"\"/>");
+    $("#rowedit"+id+" #editClose").append("<input type=\"text\" name=\"close_date\" value=\""+oldCloseDate+"\"/>");
 
-        $("#rowedit"+id+" #editClass option:contains('"+oldClass+"')").attr("selected","selected");
-        $("#rowedit"+id+" #editProblem option:contains('"+oldProblem+"')").attr("selected","selected");
-        $("#rowedit"+id+" #editType option:contains('"+oldType+"')").attr("selected","selected");
-    }
+    $("#rowedit"+id+" #editClass option:contains('"+oldClass+"')").attr("selected","selected");
+    $("#rowedit"+id+" #editProblem option:contains('"+oldProblem+"')").attr("selected","selected");
+    $("#rowedit"+id+" #editType option:contains('"+oldType+"')").attr("selected","selected");
+}
 
-    function cancel_edit(id) {
-        $("#row"+id).show();
-        $("#rowedit"+id).remove();
-    }
+function cancel_edit(id) {
+    $("#row"+id).show();
+    $("#rowedit"+id).remove();
+    existing_edit = -1;
+}
 
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
@@ -271,51 +279,53 @@ if ($hasAction) {
 </div>
 
 <?php
-                           if (count($assignments) > 0) {
+if (count($assignments) > 0) {
 ?>
-                               <table class="sortable" id="sortabletable">
-                                   <tr>
-                                       <th class="startsort">Class</th>
-                                       <th>Problem</th>
-                                       <!--<th>Description</th>-->
-                                       <th>Type</th>
-                                       <th>Open Date</th>
-                                       <th>Close Date</th>
-                                       <th class="unsortable"></th>
-                                       <th class="unsortable"></th>
-                                   </tr>
-    <?php
-                               foreach ($assignments as $app) {
-                                   $class = getClassById($app['class_id']);
-                                   $classDescription = $class['description'];
-                                   $name = $app['name'];
-                                   $description = $app['description'];
-                                   $type = $app['type'];
-                                   $openDate = date("g:i a m/d/y", $app['open_date']);
-                                   $closeDate = date("g:i a m/d/y", $app['close_date']);
-                                   //$urlEdit = 'editAssignment.php?id=' . $app['id'];
-                                   $urlEdit = "javascript:show_edit({$app['id']})";
-                                   $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+    <form method="post" action="">
+        <table class="sortable" id="sortabletable">
+            <tr>
+                <th class="startsort">Class</th>
+                <th>Problem</th>
+                <!--<th>Description</th>-->
+                <th>Type</th>
+                <th>Open Date</th>
+                <th>Close Date</th>
+                <th class="unsortable"></th>
+                <th class="unsortable"></th>
+            </tr>
+        <?php
+        foreach ($assignments as $app) {
+            $class = getClassById($app['class_id']);
+            $classDescription = $class['description'];
+            $name = $app['name'];
+            $description = $app['description'];
+            $type = $app['type'];
+            $openDate = date("g:i a m/d/y", $app['open_date']);
+            $closeDate = date("g:i a m/d/y", $app['close_date']);
+            //$urlEdit = 'editAssignment.php?id=' . $app['id'];
+            $urlEdit = "javascript:show_edit({$app['id']})";
+            $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
 
-                                   echo '<tr id="row' . $app['id'] . '">';
-                                   echo '<td>' . t2h($classDescription) . '</td>';
-                                   echo '<td>' . t2h($name) . '</td>';
-                                   //echo '<td>' . t2h($description) . '</td>';
-                                   echo '<td>' . t2h($type) . '</td>';
-                                   echo '<td>' . t2h($openDate) . '</td>';
-                                   echo '<td>' . t2h($closeDate) . '</td>';
-                                   echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-                                   echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
-                                   echo '</tr>';
-                               }
-    ?>
-                           </table>
+            echo '<tr id="row' . $app['id'] . '">';
+            echo '<td>' . t2h($classDescription) . '</td>';
+            echo '<td>' . t2h($name) . '</td>';
+            //echo '<td>' . t2h($description) . '</td>';
+            echo '<td>' . t2h($type) . '</td>';
+            echo '<td>' . t2h($openDate) . '</td>';
+            echo '<td>' . t2h($closeDate) . '</td>';
+            echo '<td><a href="' . $urlEdit . '">edit</a></td>';
+            echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
+            echo '</tr>';
+        }
+        ?>
+    </table>
+</form>
 <?php
-                           } else {
-                               para('No Assignments available.', 'errorMessage');
-                           }//end if
+    } else {
+        para('No Assignments available.', 'errorMessage');
+    }//end if
 ?>
 
 <?php
-                           require_once('footer.php')
+    require_once('footer.php')
 ?>
