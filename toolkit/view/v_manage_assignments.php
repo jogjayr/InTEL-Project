@@ -56,7 +56,7 @@ if (isset($_POST['addAssignment'])) {
                 $actionSuccess = true;
                 $message = 'Your assignments have been created';
             } else {
-                $message = 'Your assignments were not added. Please contact <a href="mailto:'.$site_email_address.'">support</a> as soon as possible.';
+                $message = 'Your assignments were not added. Please contact <a href="mailto:' . $site_email_address . '">support</a> as soon as possible.';
             }
         }
     } else {
@@ -90,16 +90,63 @@ if (isAdmin ()) {
 
     function show_edit(id) {
         var editContents = "<tr id=\"rowedit"+id+"\">"+
+            "<form method=\"post\" action=\"\">"+
+            "<input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
             "<td id=\"editClass\"/>"+
             "<td id=\"editProblem\"/>"+
             "<td id=\"editType\"/>"+
             "<td id=\"editOpen\"/>"+
             "<td id=\"editClose\"/>"+
-            "<td colspan=\"2\"><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+            "<td><input type=\"submit\" name=\"editAssignment\"></td>"+
+            "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+            "</form>"+
             "</tr>";
         $("#row"+id).after(editContents);
         $("#row"+id).hide();
-        $("#rowedit"+id+" #editClass").append("here's some text");
+
+        // the order is class, problem, type.
+        // these variables contain the text of the old values.
+        var oldClass = $("#row"+id+" td:nth-child(1)").text();
+        var oldProblem = $("#row"+id+" td:nth-child(2)").text();
+        var oldType = $("#row"+id+" td:nth-child(3)").text();
+        var oldOpenDate = $("#row"+id+" td:nth-child(4)").text();
+        var oldCloseDate = $("#row"+id+" td:nth-child(5)").text();
+   
+<?php
+// not doing any string replacement here.
+// this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
+// that will mess up the javascript and produce something strange.
+echo 'var classStuff = "';
+echo '<select name=\"class_id\">';
+foreach ($classes as $class) {
+    echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
+}
+echo '</select>";\n';
+
+echo 'var problemStuff = "';
+echo '<select name=\"problem_id\">';
+foreach ($problems as $problem) {
+    echo '<option value=\"' . $problem['id'] . '\">' . $problem['name'] . '</option>';
+}
+echo '</select>";\n';
+
+echo 'var assignmentTypeStuff = "';
+echo '<select name=\"problem_id\">';
+foreach ($assignmentTypes as $at) {
+    echo '<option value=\"' . $at['id'] . '\">' . $at['type'] . '</option>';
+}
+echo '</select>";\n';
+?>
+
+        $("#rowedit"+id+" #editClass").append(classStuff);
+        $("#rowedit"+id+" #editProblem").append(problemStuff);
+        $("#rowedit"+id+" #editType").append(assignmentTypeStuff);
+        $("#rowedit"+id+" #editOpen").append("<input type=\"text\" name=\"open_date\" value=\""+oldOpenDate+"\"/>");
+        $("#rowedit"+id+" #editClose").append("<input type=\"text\" name=\"close_date\" value=\""+oldCloseDate+"\"/>");
+
+        $("#rowedit"+id+" #editClass option:contains('"+oldClass+"')").attr("selected","selected");
+        $("#rowedit"+id+" #editProblem option:contains('"+oldProblem+"')").attr("selected","selected");
+        $("#rowedit"+id+" #editType option:contains('"+oldType+"')").attr("selected","selected");
     }
 
     function cancel_edit(id) {
@@ -142,41 +189,41 @@ if ($hasAction) {
             <tr>
                 <td>
                     <select name="class_id[]" multiple="true">
-                        <?php
-                        foreach ($classes as $class) {
-                            $selectedString = '';
-                            if ($hasAction && in_array($class['id'], $classIds)) {
-                                $selectedString = ' selected="selected"';
-                            }
-                            echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
-                        }
-                        ?>
+<?php
+foreach ($classes as $class) {
+    $selectedString = '';
+    if ($hasAction && in_array($class['id'], $classIds)) {
+        $selectedString = ' selected="selected"';
+    }
+    echo '<option value="' . $class['id'] . '"' . $selectedString . '>' . $class['description'] . '</option>';
+}
+?>
                     </select>
                 </td>
                 <td>
                     <select name="problem_id">
-                        <?php
-                        foreach ($problems as $problem) {
-                            $selectedString = '';
-                            if ($hasAction && $problem['id'] == $problemId) {
-                                $selectedString = ' selected="selected"';
-                            }
-                            echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
-                        }
-                        ?>
+<?php
+foreach ($problems as $problem) {
+    $selectedString = '';
+    if ($hasAction && $problem['id'] == $problemId) {
+        $selectedString = ' selected="selected"';
+    }
+    echo '<option value="' . $problem['id'] . '"' . $selectedString . '>' . $problem['name'] . '</option>';
+}
+?>
                     </select>
                 </td>
                 <td>
                     <select name="assignment_type_id">
-                        <?php
-                        foreach ($assignmentTypes as $at) {
-                            $selectedString = '';
-                            if (($hasAction && $at['id'] == $typeId) || (!$hasAction && $at['id'] == 3)) {
-                                $selectedString = ' selected="selected"';
-                            }
-                            echo '<option value="' . $at['id'] . '"' . $selectedString . '>' . $at['type'] . '</option>';
-                        }
-                        ?>
+<?php
+foreach ($assignmentTypes as $at) {
+    $selectedString = '';
+    if (($hasAction && $at['id'] == $typeId) || (!$hasAction && $at['id'] == 3)) {
+        $selectedString = ' selected="selected"';
+    }
+    echo '<option value="' . $at['id'] . '"' . $selectedString . '>' . $at['type'] . '</option>';
+}
+?>
                     </select>
                 </td>
                 <td>
@@ -184,67 +231,67 @@ if ($hasAction) {
                         if ($hasAction) {
                             echo $openDate;
                         }
-                        ?>" />
-                </td>
-                <td>
-                    <input type="text" name="close_date" value="<?php
-                           if ($hasAction) {
-                               echo $closeDate;
-                           }
-                        ?>" />
-                </td>
-            </tr>
-        </table>
-        <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
-    </form>
-</div>
-    
-<?php
-if (count($assignments) > 0) {
-?>
-    <table class="sortable" id="sortabletable">
-        <tr>
-            <th class="startsort">Class</th>
-            <th>Problem</th>
-            <!--<th>Description</th>-->
-            <th>Type</th>
-            <th>Open Date</th>
-            <th>Close Date</th>
-            <th class="unsortable"></th>
-            <th class="unsortable"></th>
-        </tr>
-    <?php
-    foreach ($assignments as $app) {
-        $class = getClassById($app['class_id']);
-        $classDescription = $class['description'];
-        $name = $app['name'];
-        $description = $app['description'];
-        $type = $app['type'];
-        $openDate = date("g:i a m.d.y", $app['open_date']);
-        $closeDate = date("g:i a m.d.y", $app['close_date']);
-        //$urlEdit = 'editAssignment.php?id=' . $app['id'];
-        $urlEdit = "javascript:show_edit({$app['id']})";
-        $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
-
-        echo '<tr id="row'.$app['id'].'">';
-        echo '<td>' . t2h($classDescription) . '</td>';
-        echo '<td>' . t2h($name) . '</td>';
-        //echo '<td>' . t2h($description) . '</td>';
-        echo '<td>' . t2h($type) . '</td>';
-        echo '<td>' . t2h($openDate) . '</td>';
-        echo '<td>' . t2h($closeDate) . '</td>';
-        echo '<td><a href="' . $urlEdit . '">edit</a></td>';
-        echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
-        echo '</tr>';
-    }
-    ?>
-</table>
-<?php
-} else {
-    para('No Assignments available.');
-}//end if
-?>
+?>" />
+                    </td>
+                    <td>
+                        <input type="text" name="close_date" value="<?php
+                        if ($hasAction) {
+                            echo $closeDate;
+                        }
+?>" />
+                    </td>
+                </tr>
+            </table>
+            <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
+        </form>
+    </div>
 
 <?php
-require_once('footer.php')
+                        if (count($assignments) > 0) {
+?>
+                            <table class="sortable" id="sortabletable">
+                                <tr>
+                                    <th class="startsort">Class</th>
+                                    <th>Problem</th>
+                                    <!--<th>Description</th>-->
+                                    <th>Type</th>
+                                    <th>Open Date</th>
+                                    <th>Close Date</th>
+                                    <th class="unsortable"></th>
+                                    <th class="unsortable"></th>
+                                </tr>
+<?php
+                            foreach ($assignments as $app) {
+                                $class = getClassById($app['class_id']);
+                                $classDescription = $class['description'];
+                                $name = $app['name'];
+                                $description = $app['description'];
+                                $type = $app['type'];
+                                $openDate = date("g:i a m.d.y", $app['open_date']);
+                                $closeDate = date("g:i a m.d.y", $app['close_date']);
+                                //$urlEdit = 'editAssignment.php?id=' . $app['id'];
+                                $urlEdit = "javascript:show_edit({$app['id']})";
+                                $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+
+                                echo '<tr id="row' . $app['id'] . '">';
+                                echo '<td>' . t2h($classDescription) . '</td>';
+                                echo '<td>' . t2h($name) . '</td>';
+                                //echo '<td>' . t2h($description) . '</td>';
+                                echo '<td>' . t2h($type) . '</td>';
+                                echo '<td>' . t2h($openDate) . '</td>';
+                                echo '<td>' . t2h($closeDate) . '</td>';
+                                echo '<td><a href="' . $urlEdit . '">edit</a></td>';
+                                echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
+                                echo '</tr>';
+                            }
+?>
+                        </table>
+<?php
+                        } else {
+                            para('No Assignments available.');
+                        }//end if
+?>
+
+<?php
+                        require_once('footer.php')
 ?>
