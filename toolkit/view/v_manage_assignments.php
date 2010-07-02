@@ -68,7 +68,7 @@ if (isset($_POST['addAssignment'])) {
     // we are attempting to edit an existing assignment.
     $hasAction = true;
     $problemId = $_POST['problem_id'];
-    $classIds = $_POST['class_id'];
+    $classId = $_POST['class_id'];
     $typeId = $_POST['assignment_type_id'];
     $openDate = $_POST['open_date'];
     $closeDate = $_POST['close_date'];
@@ -76,13 +76,11 @@ if (isset($_POST['addAssignment'])) {
 
     //check for valid dates
     if (strtotime($openDate) && strtotime($closeDate)) {
-        foreach ($classIds as $classId) {
-            if (updateAssignment($assignmentId, $problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
-                $actionSuccess = true;
-                $message = 'Your assignment has been modified';
-            } else {
-                $message = 'Your assignment was not modified. Please contact <a href="mailto:' . $site_email_address . '">support</a> as soon as possible.';
-            }
+        if (updateAssignment($assignmentId, $problemId, $classId, $typeId, strtotime($openDate), strtotime($closeDate))) {
+            $actionSuccess = true;
+            $message = 'Your assignment has been modified';
+        } else {
+            $message = 'Your assignment was not modified. Please contact <a href="mailto:' . $site_email_address . '">support</a> as soon as possible.';
         }
     } else {
         $message = 'Please enter valid dates in the form of mm/dd/yyyy.';
@@ -122,16 +120,14 @@ function show_edit(id) {
 
     var editContents =
         "<tr id=\"rowedit"+id+"\">"+
-        //"<form method=\"post\" action=\"\">"+
-    "<input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
         "<td id=\"editClass\"/>"+
         "<td id=\"editProblem\"/>"+
         "<td id=\"editType\"/>"+
         "<td id=\"editOpen\"/>"+
         "<td id=\"editClose\"/>"+
-        "<td><input type=\"submit\" name=\"editAssignment\"></td>"+
+        "<td><input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
+        "<input type=\"submit\" name=\"editAssignment\"></td>"+
         "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
-        //"</form>"+
     "</tr>";
     $("#row"+id).after(editContents);
     $("#row"+id).hide();
@@ -163,7 +159,7 @@ foreach ($problems as $problem) {
 echo '</select>";' . "\n";
 
 echo 'var assignmentTypeStuff = "';
-echo '<select name=\"problem_id\">';
+echo '<select name=\"assignment_type_id\">';
 foreach ($assignmentTypes as $at) {
     echo '<option value=\"' . $at['id'] . '\">' . $at['type'] . '</option>';
 }
