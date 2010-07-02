@@ -318,7 +318,7 @@ if (count($assignments) > 0) {
 
             $rowStyle = "";
             if($updateTime == $highlightTime) {
-                $rowStyle = ' style="highlightRow"';
+                $rowStyle = ' class="highlightRow"';
             }
                 
             echo '<tr id="row' . $app['id'] . '"' . $rowStyle . '>';

@@ -53,9 +53,9 @@ function ts_makeSortable(t) {
 			cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this, '+i+');return false;">'+txt+'<span class="sortarrow">&nbsp;&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;" border=0/></span></a>';
 		}
 	}
-	if (alternate_row_colors) {
-		alternate(t);
-	}
+//	if (alternate_row_colors) {
+//		alternate(t);
+//	}
 }
 
 function ts_getInnerText(el) {
@@ -104,7 +104,7 @@ function ts_resortTable(lnk, clid) {
 	sortfn = ts_sort_caseinsensitive;
 	if (itm.match(/^\d\d[\/\.-][a-zA-z][a-zA-Z][a-zA-Z][\/\.-]\d\d\d\d$/)) sortfn = ts_sort_date;
 	if (itm.match(/^\d\d[\/\.-]\d\d[\/\.-]\d\d\d{2}?$/)) sortfn = ts_sort_date;
-	if (itm.match(/^-?[£$€Û¢´]\d/)) sortfn = ts_sort_numeric;
+	if (itm.match(/^-?[ï¿½$ï¿½Û¢ï¿½]\d/)) sortfn = ts_sort_numeric;
 	if (itm.match(/^-?(\d+[,\.]?)+(E[-+][\d]+)?%?$/)) sortfn = ts_sort_numeric;
 	SORT_COLUMN_INDEX = column;
 	var firstRow = new Array();
@@ -158,7 +158,7 @@ function ts_resortTable(lnk, clid) {
 		}
 	}		
 	span.innerHTML = ARROW;
-	alternate(t);
+	//alternate(t);
 }
 
 function getParent(el, pTagName) {
@@ -290,34 +290,34 @@ function clean_num(str) {
 function trim(s) {
 	return s.replace(/^\s+|\s+$/g, "");
 }
-function alternate(table) {
-	// Take object table and get all it's tbodies.
-	var tableBodies = table.getElementsByTagName("tbody");
-	// Loop through these tbodies
-	for (var i = 0; i < tableBodies.length; i++) {
-		// Take the tbody, and get all it's rows
-		var tableRows = tableBodies[i].getElementsByTagName("tr");
-		// Loop through these rows
-		// Start at 1 because we want to leave the heading row untouched
-		for (var j = 0; j < tableRows.length; j++) {
-			// Check if j is even, and apply classes for both possible results
-			if ( (j % 2) == 0  ) {
-				if ( !(tableRows[j].className.indexOf('odd') == -1) ) {
-					tableRows[j].className = tableRows[j].className.replace('odd', 'even');
-				} else {
-					if ( tableRows[j].className.indexOf('even') == -1 ) {
-						tableRows[j].className += " even";
-					}
-				}
-			} else {
-				if ( !(tableRows[j].className.indexOf('even') == -1) ) {
-					tableRows[j].className = tableRows[j].className.replace('even', 'odd');
-				} else {
-					if ( tableRows[j].className.indexOf('odd') == -1 ) {
-						tableRows[j].className += " odd";
-					}
-				}
-			} 
-		}
-	}
-}
+//function alternate(table) {
+//	// Take object table and get all it's tbodies.
+//	var tableBodies = table.getElementsByTagName("tbody");
+//	// Loop through these tbodies
+//	for (var i = 0; i < tableBodies.length; i++) {
+//		// Take the tbody, and get all it's rows
+//		var tableRows = tableBodies[i].getElementsByTagName("tr");
+//		// Loop through these rows
+//		// Start at 1 because we want to leave the heading row untouched
+//		for (var j = 0; j < tableRows.length; j++) {
+//			// Check if j is even, and apply classes for both possible results
+//			if ( (j % 2) == 0  ) {
+//				if ( !(tableRows[j].className.indexOf('odd') == -1) ) {
+//					tableRows[j].className = tableRows[j].className.replace('odd', 'even');
+//				} else {
+//					if ( tableRows[j].className.indexOf('even') == -1 ) {
+//						tableRows[j].className += " even";
+//					}
+//				}
+//			} else {
+//				if ( !(tableRows[j].className.indexOf('even') == -1) ) {
+//					tableRows[j].className = tableRows[j].className.replace('even', 'odd');
+//				} else {
+//					if ( tableRows[j].className.indexOf('odd') == -1 ) {
+//						tableRows[j].className += " odd";
+//					}
+//				}
+//			}
+//		}
+//	}
+//}

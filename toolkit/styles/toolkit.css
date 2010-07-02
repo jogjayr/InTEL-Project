@@ -144,10 +144,10 @@ table.sortable td {
     border-right: 0px;
     border-bottom: 0px;
 }
-table.sortable tr.odd td {
-    background-color: #f8f8ff;
+table.sortable tr:nth-child(odd) {
+    background-color: #f0f0f0;
 }
-table.sortable tr.even td {
+table.sortable tr:nth-child(even) {
     background-color: #fff;
 }
 table.sortable tr.sortbottom td {
