@@ -291,10 +291,11 @@ if (count($assignments) > 0) {
             </tr>
         <?php
         
-        // if we modified or added rows,
+        // if we successfully modified or added rows,
         // highlight all rows whose update time equals this value.
+        // precisely, this highlights the rows whose update times are the most recent.
         $highlightTime = -1;
-        if ($hasAction) {
+        if ($actionSuccess) {
             foreach ($assignments as $app) {
                 $updateTime = $app['updated_on'];
                 if ($updateTime > $highlightTime) {
@@ -303,6 +304,7 @@ if (count($assignments) > 0) {
             }
         }
 
+        // loop through the assignments and populate the table.
         foreach ($assignments as $app) {
             $class = getClassById($app['class_id']);
             $classDescription = $class['description'];
