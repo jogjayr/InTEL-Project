@@ -191,7 +191,7 @@ function cancel_edit(id) {
 // if the user attempted to do something, post the message.
 if ($hasAction) {
     if (!$actionSuccess) {
-        para($err, 'errorMessage');
+        para($message, 'errorMessage');
     } else {
         para($message, 'infoMessage');
     }
@@ -290,6 +290,19 @@ if (count($assignments) > 0) {
                 <th class="unsortable"></th>
             </tr>
         <?php
+        
+        // if we modified or added rows,
+        // highlight all rows whose update time equals this value.
+        $highlightTime = -1;
+        if ($hasAction) {
+            foreach ($assignments as $app) {
+                $updateTime = $app['updated_on'];
+                if ($updateTime > $highlightTime) {
+                    $highlightTime = $updateTime;
+                }
+            }
+        }
+
         foreach ($assignments as $app) {
             $class = getClassById($app['class_id']);
             $classDescription = $class['description'];
@@ -301,8 +314,14 @@ if (count($assignments) > 0) {
             //$urlEdit = 'editAssignment.php?id=' . $app['id'];
             $urlEdit = "javascript:show_edit({$app['id']})";
             $urlDelete = 'deleteAssignment.php?id=' . $app['id'];
+            $updateTime = $app['updated_on'];
 
-            echo '<tr id="row' . $app['id'] . '">';
+            $rowStyle = "";
+            if($updateTime == $highlightTime) {
+                $rowStyle = ' style="highlightRow"';
+            }
+                
+            echo '<tr id="row' . $app['id'] . '"' . $rowStyle . '>';
             echo '<td>' . t2h($classDescription) . '</td>';
             echo '<td>' . t2h($name) . '</td>';
             //echo '<td>' . t2h($description) . '</td>';

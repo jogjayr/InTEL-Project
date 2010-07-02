@@ -105,6 +105,11 @@ form p{
 a img {
     border: 0;
 }
+
+table.sortable tr.highlightRow {
+    background-color: #ddf;
+}
+
 table.sortable {
     border-spacing: 0;
     border-style: solid;
@@ -133,15 +138,17 @@ table.sortable th a {
     color: #000;
 }
 table.sortable td {
-    border-width: 0px;
+    /*border-width: 0px;*/
+    border-top: 1px solid #ddd;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0px;
 }
 table.sortable tr.odd td {
-    background-color: #fff;
-    border-top: 1px solid #ddd;
+    background-color: #f8f8ff;
 }
 table.sortable tr.even td {
     background-color: #fff;
-    border-top: 1px solid #ddd;
 }
 table.sortable tr.sortbottom td {
     border-width: 1px 0px 1px 0px;
