@@ -107,7 +107,7 @@ a img {
 }
 
 table.sortable tr.highlightRow {
-    background-color: #ddf;
+    background-color: #ddf !important;
 }
 
 table.sortable {
@@ -145,7 +145,7 @@ table.sortable td {
     border-bottom: 0px;
 }
 table.sortable tr:nth-child(odd) {
-    background-color: #f0f0f0;
+    background-color: #f8f8f8;
 }
 table.sortable tr:nth-child(even) {
     background-color: #fff;
