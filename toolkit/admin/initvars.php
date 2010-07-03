@@ -10,7 +10,7 @@ require_once('model/mysql.php');
 
 $dbusername = 'idtweb';
 $dbpassword = 'gt00www';
-$dbname = 'intel';
+$dbname = 'intel_dev';
 $dbserver = 'localhost';
 
 $db = connect($dbserver, $dbusername, $dbpassword, $dbname);
