@@ -51,7 +51,7 @@ if (count($assignments) > 0) {
 
 
         echo '<tr>';
-        echo '<td><img src="'.$app['image'].'"/></td>';
+        echo '<td><img src="images/'.$app['image'].'"/></td>';
         echo '<td><strong>' . t2h($type) . ': </strong></td>';
         //echo '<td><a href="' . $url . '">View</a></td>';
         //echo '<td>' . t2h($name) . '</td>';
