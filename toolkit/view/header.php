@@ -37,7 +37,7 @@ if ($title != '') {
                 $userClass = getClassByUUID($uuid);
                 $class = getClassById($userClass['class_id']);
                 echo "You are in section: {$class['description']}<br/>";
-                //echo '<a href="account.php">Account</a> <a href="logout.php">Logout</a>';
+                echo '<a href="account.php">Account</a> ';
                 echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
             } else {
                 echo '<form method="post" action="">';

@@ -24,8 +24,9 @@ if (count($assignments) > 0) {
     <script type="text/javascript" src="js/sortable.js"></script>
     <table class="sortable" id="sortabletable">
         <tr>
+            <th></th>
             <th>Type</th>
-            <th>Problem</th>
+            <!--<th>Problem</th>-->
             <th class="startsort">Name</th>
             <th>Description</th>
 <?php
@@ -50,9 +51,11 @@ if (count($assignments) > 0) {
 
 
         echo '<tr>';
+        echo '<td><img src="'.$app['image'].'"/></td>';
         echo '<td><strong>' . t2h($type) . ': </strong></td>';
-        echo '<td><a href="' . $url . '">View</a></td>';
-        echo '<td>' . t2h($name) . '</td>';
+        //echo '<td><a href="' . $url . '">View</a></td>';
+        //echo '<td>' . t2h($name) . '</td>';
+        echo '<td><a href="' . $url . '">' . t2h($name) . '</a></td>';
         echo '<td>' . t2h($description) . '</td>';
 
 
