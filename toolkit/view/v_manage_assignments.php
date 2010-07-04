@@ -197,8 +197,8 @@ foreach ($problems as $problem) {
 }
 ?>
     $("#problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
-    $("#problemDescription").text(problemDescriptions[id]);
-    $("#problemDescription2").text(problemDescriptions2[id]);
+    $("#problemDescription").html(problemDescriptions[id]);
+    $("#problemDescription2").html(problemDescriptions2[id]);
 }
 
 </script>
