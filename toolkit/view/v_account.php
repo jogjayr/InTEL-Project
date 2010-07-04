@@ -26,14 +26,14 @@ if (isset($_POST['changePassword'])) {
     $newPassword2 = $_POST['password2'];
 
     //authenticate the user
-    $uuid = authenticate($user['email'], $oldPassword);
-    if ($uuid > 0) {
+    $testUuid = authenticate($user['email'], $oldPassword);
+    if ($testUuid > 0) {
 
         //check password and change
         if ($newPassword == $newPassword2) {
-            if (changePassword($uuid, $newPassword)) {
+            if (changePassword($testUuid, $newPassword)) {
                 $success = true;
-                $user = getUserByUUID($uuid);
+                $user = getUserByUUID($testUuid);
             }
         } else {
             $err = 'The new passwords do not match.';
