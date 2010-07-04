@@ -19,29 +19,29 @@ if (isset($_POST['changeAccount'])) {
     }
 }
 
-//if (isset($_POST['changePassword'])) {
-//    $hasAction = true;
-//    $oldPassword = $_POST['old_password'];
-//    $newPassword = $_POST['password'];
-//    $newPassword2 = $_POST['password2'];
-//
-//    //authenticate the user
-//    $uuid = authenticate($user['email'], $oldPassword);
-//    if ($uuid > 0) {
-//
-//        //check password and change
-//        if ($newPassword == $newPassword2) {
-//            if (changePassword($uuid, $newPassword)) {
-//                $success = true;
-//                $user = getUserByUUID($uuid);
-//            }
-//        } else {
-//            $err = 'The new passwords do not match.';
-//        }
-//    } else {
-//        $err = 'The old passwords is are not correct.';
-//    }
-//}
+if (isset($_POST['changePassword'])) {
+    $hasAction = true;
+    $oldPassword = $_POST['old_password'];
+    $newPassword = $_POST['password'];
+    $newPassword2 = $_POST['password2'];
+
+    //authenticate the user
+    $uuid = authenticate($user['email'], $oldPassword);
+    if ($uuid > 0) {
+
+        //check password and change
+        if ($newPassword == $newPassword2) {
+            if (changePassword($uuid, $newPassword)) {
+                $success = true;
+                $user = getUserByUUID($uuid);
+            }
+        } else {
+            $err = 'The new passwords do not match.';
+        }
+    } else {
+        $err = 'The old password is are not correct.';
+    }
+}
 
 
 $title = 'Account';
