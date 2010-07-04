@@ -28,18 +28,19 @@ if (isset($_POST['changePassword'])) {
     //authenticate the user
     $testUuid = authenticate($user['email'], $oldPassword);
     if ($testUuid > 0) {
-
         //check password and change
         if ($newPassword == $newPassword2) {
             if (changePassword($testUuid, $newPassword)) {
                 $success = true;
                 $user = getUserByUUID($testUuid);
+            } else {
+                $err = 'Could not change the password! Please contact support.';
             }
         } else {
             $err = 'The new passwords do not match.';
         }
     } else {
-        $err = 'The old password is are not correct.';
+        $err = 'Your old password is not correct.';
     }
 }
 
