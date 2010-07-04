@@ -185,18 +185,18 @@ function cancel_edit(id) {
 
 function select_problem(id) {
 <?php
-echo "var problemThumbnails = array();\n";
-echo "var problemDescriptions = array();\n";
-echo "var problemDescriptions2 = array();\n";
+echo "var problemThumbnails = Array();\n";
+echo "var problemDescriptions = Array();\n";
+echo "var problemDescriptions2 = Array();\n";
 foreach ($problems as $problem) {
-    echo "problemThumbnails[{$problem['id']}] = '{$problem['image']}';\n";
-    echo "problemDescriptions[{$problem['id']}] = '{$problem['description']}';\n";
-    echo "problemDescriptions2[{$problem['id']}] = '{$problem['instructor_description']}';\n";
+    echo "problemThumbnails[{$problem['id']}] = \"{$problem['image']}\";\n";
+    echo "problemDescriptions[{$problem['id']}] = \"{$problem['description']}\";\n";
+    echo "problemDescriptions2[{$problem['id']}] = \"{$problem['instructor_description']}\";\n";
 }
 ?>
-    $("problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
-    $("problemDescription").text(problemDescriptions[id]);
-    $("problemDescription2").text(problemDescriptions2[id]);
+    $("#problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
+    $("#problemDescription").text(problemDescriptions[id]);
+    $("#problemDescription2").text(problemDescriptions2[id]);
 }
 
 </script>
