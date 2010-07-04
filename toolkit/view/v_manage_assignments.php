@@ -190,8 +190,8 @@ echo "var problemDescriptions = Array();\n";
 echo "var problemDescriptions2 = Array();\n";
 foreach ($problems as $problem) {
     echo "problemThumbnails[{$problem['id']}] = \"{$problem['image']}\";\n";
-    $description = str_replace("\n", "", $problem['description']);
-    $description2 = str_replace("\n", "", $problem['instructor_description']);
+    $description = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['description']);
+    $description2 = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['instructor_description']);
     echo "problemDescriptions[{$problem['id']}] = \"{$description}\";\n";
     echo "problemDescriptions2[{$problem['id']}] = \"{$description2}\";\n";
 }
