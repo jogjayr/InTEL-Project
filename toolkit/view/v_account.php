@@ -10,10 +10,12 @@ requireLogin();
 //get all classes
 $classes = getClasses();
 
-if ($hasAction && $success) {
-    para('Your profile has been updated.', 'infoMessage');
-} else {
-    para($err, 'errorMessage');
+if ($hasAction) {
+    if ($success) {
+        para('Your profile has been updated.', 'infoMessage');
+    } else {
+        para($err, 'errorMessage');
+    }
 }
 ?>
 
