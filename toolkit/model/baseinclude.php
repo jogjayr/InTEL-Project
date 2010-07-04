@@ -23,6 +23,8 @@ $err = '';
 if (isset($_POST['login'])) {
     if (login(trim($_POST['email']), $_POST['password'])) {
         // login ok
+    } else {
+        $err = 'Either your email or your password is incorrect.';
     }
 }
 
