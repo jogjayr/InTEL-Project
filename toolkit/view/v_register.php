@@ -8,14 +8,17 @@ require_once('header.php');
 
 if ($hasAction && $success) {
 ?>
-    <p>Thank you for registering. Go to the <a href='myAssignments.php'>My Assignments</a> page to see your assigned problems.</p>    
+    <p>Thank you for registering. Go to the <a href='myAssignments.php'>My Assignments</a> page to see your assigned problems.</p>
 <?php
 } else {
 ?>
     <script type="text/javascript" src="js/sortable.js"></script>
     <form method="post" action="">
     <?php
-    para($err, 'errorMessage');
+    if ($hasAction && !$success) {
+        para($err, 'errorMessage');
+    }
+    $classes = getClasses();
     if (count($classes) > 0) {
     ?>
         <p>Class you belong to:</p>
