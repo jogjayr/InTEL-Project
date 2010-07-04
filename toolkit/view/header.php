@@ -41,7 +41,8 @@ if ($title != '') {
                 echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
             } else {
                 echo '<form method="post" action="">';
-                if ($err != '')
+                // if there was an attempted login and there is an error message, display it here.
+                if (isset($_POST['login']) && $err != '')
                     para($err, 'errorMessage');
                 echo '<p>Email Address: <input type="text" style = "width:300px" name="email" /></p>';
                 echo '<p>Password: <input type="password" name="password" /></p>';

@@ -31,29 +31,29 @@ if (isset($_POST['submit'])) {
 
     $success = true;
 
-    if ($success && $classId != 0) {
+    if ($success && $classId == 0) {
         $err = 'Please choose which class you belong to.';
         $success = false;
     }
     //check for valid email address
-    if ($success && isEmailAddress($emailAddress)) {
+    if ($success && !isEmailAddress($emailAddress)) {
         $err = 'Please enter a valid email address.';
         $success = false;
     }
     //check if passwords match
-    if ($success && $password == $password2) {
+    if ($success && $password != $password2) {
         $err = 'The passwords do not match.';
         $success = false;
     }
 
     //check that the fields are not empty
-    if ($success && $password != '' && $firstName != '' && $lastName != '') {
+    if ($success && ($password == '' || $firstName == '' || $lastName == '')) {
         $err = 'Please enter a password.';
         $success = false;
     }
 
     if ($success && !registerUser($emailAddress, $password, $firstName, $lastName, $classId)) {
-        $err = 'Please enter another email address.';
+        $err = 'There is already an account with this email address. Please contact <a href="mailto:' . $site_email_address . '">support</a> if you need to reset your password!';
         $success = false;
     }
 
@@ -63,30 +63,8 @@ if (isset($_POST['submit'])) {
         if (login(trim($emailAddress), $password)) {
 
             // go to the assignments page.
+            // Should have a "registration successful" message
             redirect('myAssignments.php');
-
-            //redirect page to the url before the login
-//            $rURL = $_SESSION['r_login_url'];
-//            if (isStudent ()) {
-//                $rURL = 'myAssignments.php';
-//            }
-//            unset($_SESSION['r_login_url']);
-//
-//            //redirect user to referring url, unless the referring url is the registration complete page
-//            //para($rURL);
-//
-//            if (strstr($rURL, 'register_complete.php') || strstr($rURL, 'change_password.php')) {
-//
-//                //para('from register complete');
-//
-//                redirectURL($base_address);
-//            } else {
-//
-//                //para('not from register complete');
-//
-//                redirectURL($rURL);
-//            }
-            //end login
         } else {
             // registration succeeded, but login failed for some reason.
             // this should not be the case...
