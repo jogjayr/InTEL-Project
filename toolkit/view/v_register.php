@@ -6,7 +6,11 @@ require_once('controller/c_register.php');
 require_once('header.php');
 
 
-if ($success == false) {
+if ($hasAction && $success) {
+?>
+    <p>Thank you for registering. Go to the <a href='myAssignments.php'>My Assignments</a> page to see your assigned problems.</p>    
+<?php
+} else {
 ?>
     <script type="text/javascript" src="js/sortable.js"></script>
     <form method="post" action="">
@@ -50,12 +54,6 @@ if ($success == false) {
     <p><input type="submit" name="submit" value="Register" />
 </form>
 <?php
-} else {
-?>
-    <p>Thank you for registering. Go to the <a href='myAssignments.php'>My Assignments</a> page to see you assigned problems.</p>
-<?php
 }
-?>
-<?php
 require_once('footer.php')
 ?>

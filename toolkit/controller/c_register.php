@@ -12,8 +12,11 @@ $lastName = '';
 $password = '';
 $classId = 0;
 
+$hasAction = false;
+
 //check for post data
 if (isset($_POST['submit'])) {
+    $hasAction = true;
 
     $emailAddress = $_POST['email'];
     $password = $_POST['password'];
