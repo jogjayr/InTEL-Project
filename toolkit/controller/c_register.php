@@ -13,6 +13,7 @@ $password = '';
 $classId = 0;
 
 $hasAction = false;
+$success = false;
 
 //check for post data
 if (isset($_POST['submit'])) {
