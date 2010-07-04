@@ -247,7 +247,9 @@ if ($hasAction) {
                     </select>
                 </td>
                 <td>
-                    <select name="problem_id" onchange="select_problem(this.options[this.selectedIndex].value)">
+                    <select name="problem_id" 
+                            onchange="select_problem(this.options[this.selectedIndex].value)"
+                            onkeypress="select_problem(this.options[this.selectedIndex].value)">
                         <?php
                         foreach ($problems as $problem) {
                             $selectedString = '';
@@ -288,22 +290,22 @@ if ($hasAction) {
                 </td>
             </tr>
         </table>
+        <table>
+            <tr>
+                <td>Thumbnail</td>
+                <td>Description</td>
+                <td>Description2 (not visible to students)</td>
+            </tr>
+            <tr>
+                <td>
+                    <img id="problemThumbnail" src=""/>
+                </td>
+                <td><div id="problemDescription"/></td>
+                <td><div id="problemDescription2"/></td>
+            </tr>
+        </table>
         <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
     </form>
-    <table>
-        <tr>
-            <td>Thumbnail</td>
-            <td>Description</td>
-            <td>Description2 (not visible to students)</td>
-        </tr>
-        <tr>
-            <td>
-                <img id="problemThumbnail" src=""/>
-            </td>
-            <td><div id="problemDescription"/></td>
-            <td><div id="problemDescription2"/></td>
-        </tr>
-    </table>
 </div>
 
 <?php
