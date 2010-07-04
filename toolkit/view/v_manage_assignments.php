@@ -183,6 +183,22 @@ function cancel_edit(id) {
     existing_edit = -1;
 }
 
+function select_problem(id) {
+<?php
+echo "var problemThumbnails = array();\n";
+echo "var problemDescriptions = array();\n";
+echo "var problemDescriptions2 = array();\n";
+foreach ($problems as $problem) {
+    echo "problemThumbnails[{$problem['id']}] = '{$problem['image']}';\n";
+    echo "problemDescriptions[{$problem['id']}] = '{$problem['description']}';\n";
+    echo "problemDescriptions2[{$problem['id']}] = '{$problem['instructor_description']}';\n";
+}
+?>
+    $("problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
+    $("problemDescription").text(problemDescriptions[id]);
+    $("problemDescription2").text(problemDescriptions2[id]);
+}
+
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
 
@@ -229,7 +245,7 @@ if ($hasAction) {
                     </select>
                 </td>
                 <td>
-                    <select name="problem_id">
+                    <select name="problem_id" onchange="select_problem(this.options[this.selectedIndex].value)">
                         <?php
                         foreach ($problems as $problem) {
                             $selectedString = '';
@@ -272,6 +288,20 @@ if ($hasAction) {
         </table>
         <p><input type="submit" name="addAssignment" value="Add Assignment" /></p>
     </form>
+    <table>
+        <tr>
+            <td>Thumbnail</td>
+            <td>Description</td>
+            <td>Description2 (not visible to students)</td>
+        </tr>
+        <tr>
+            <td>
+                <img id="problemThumbnail" src=""/>
+            </td>
+            <td><div id="problemDescription"/></td>
+            <td><div id="problemDescription2"/></td>
+        </tr>
+    </table>
 </div>
 
 <?php
