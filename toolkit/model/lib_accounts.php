@@ -238,7 +238,7 @@ function changePassword($uuid, $new_password) {
  * @global resource $db
  * @param string $emailAddress
  * @param string $password
- * @return string The UUID of the user if successful, false on failure.
+ * @return string The UUID of the user if successful, the empty string on failure.
  */
 function authenticate($emailAddress, $password) {
     // takes emailAddress and password
@@ -258,7 +258,7 @@ function authenticate($emailAddress, $password) {
         }
     }
 
-    return 0;
+    return '';
 }
 
 /**

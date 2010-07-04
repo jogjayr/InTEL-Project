@@ -27,7 +27,7 @@ if (isset($_POST['changePassword'])) {
 
     //authenticate the user
     $testUuid = authenticate($user['email'], $oldPassword);
-    if ($testUuid > 0) {
+    if ($testUuid != '') {
         //check password and change
         if ($newPassword == $newPassword2) {
             if (changePassword($testUuid, $newPassword)) {
