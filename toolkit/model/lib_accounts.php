@@ -281,7 +281,7 @@ function updateAccount($uuid, $firstName, $lastName, $email, $classId) {
     $q_classId = $classId;
 
     $query = "UPDATE app_user
-              SET first_name='{$q_firstName}', last_name='{$q_lastName}', email='{$q_email}',
+              SET first_name='{$q_firstName}', last_name='{$q_lastName}', email='{$q_email}'
               WHERE uuid='{$q_uuid}'";
 
     query($query, $db);
@@ -294,8 +294,8 @@ function updateAccount($uuid, $firstName, $lastName, $email, $classId) {
 
     query($query2, $db);
 
-    $_SESSION['user_first_name'] = $firstName;
-    $_SESSION['user_last_name'] = $lastName;
+//    $_SESSION['user_first_name'] = $firstName;
+//    $_SESSION['user_last_name'] = $lastName;
 
     return true;
 }
@@ -424,8 +424,8 @@ function login($emailAddress, $password) {
         $_SESSION['uuid'] = $uuid;
 
         $user = getUserByUUId($uuid);
-        $_SESSION['user_first_name'] = $user['first_name'];
-        $_SESSION['user_last_name'] = $user['last_name'];
+//        $_SESSION['user_first_name'] = $user['first_name'];
+//        $_SESSION['user_last_name'] = $user['last_name'];
 
         return true;
     } else {
@@ -445,8 +445,8 @@ function loginByResetPasswordCode($resetPasswordCode) {
 
         $_SESSION['is_logged_in'] = true;
         $_SESSION['uuid'] = $results[0]['uuid'];
-        $_SESSION['user_first_name'] = $results[0]['user_first_name'];
-        $_SESSION['user_last_name'] = $results[0]['user_last_name'];
+//        $_SESSION['user_first_name'] = $results[0]['user_first_name'];
+//        $_SESSION['user_last_name'] = $results[0]['user_last_name'];
 
         $q_id = t2sql($results[0]['uuid']);
         $query = "UPDATE users SET reset_password_code='' WHERE id='{$q_id}'";

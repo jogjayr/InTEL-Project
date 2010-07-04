@@ -55,8 +55,8 @@ if ($hasAction) {
         para('No classes available.', 'errorMessage');
     }//end if
     ?>
-    <p>First Name: <input type="text" name="first_name" value="<?php echo $_SESSION['user_first_name']; ?>" /></p>
-    <p>Last Name: <input type="text" name="last_name" value="<?php echo $_SESSION['user_last_name']; ?>" /></p>
+    <p>First Name: <input type="text" name="first_name" value="<?php echo $user['first_name']; ?>" /></p>
+    <p>Last Name: <input type="text" name="last_name" value="<?php echo $user['last_name']; ?>" /></p>
     <p>Email Address: <input type="text" name="email" value="<?php echo $user['email']; ?>" /></p>
     <p><input type="submit" name="submit" value="Update" /></p>
 </form>
