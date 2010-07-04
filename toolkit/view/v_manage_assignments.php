@@ -249,7 +249,7 @@ if ($hasAction) {
                 <td>
                     <select name="problem_id" 
                             onchange="select_problem(this.options[this.selectedIndex].value)"
-                            onkeypress="select_problem(this.options[this.selectedIndex].value)">
+                            onkeyup="select_problem(this.options[this.selectedIndex].value)">
                         <?php
                         foreach ($problems as $problem) {
                             $selectedString = '';
