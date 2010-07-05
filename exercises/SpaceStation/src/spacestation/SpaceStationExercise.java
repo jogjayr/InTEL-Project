@@ -126,7 +126,7 @@ public class SpaceStationExercise extends CentroidExercise {
         B.setName("SolarPanelB");
         C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "LivingQuarters", "920.0"));
         C.setName("LivingQuarters");
-        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "PanelExtender", "775.0"));
+        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "PanelExtender", "755.0"));
         D.setName("PanelExtender");
         Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
         p.setName("Centroid");
