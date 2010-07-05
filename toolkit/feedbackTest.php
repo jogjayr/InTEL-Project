@@ -11,10 +11,10 @@ require_once('view/header.php');
             type: "POST",
             data: {feedback: $("#feedback").val()},
             success: function(msg) {
-                $("#form").addClass("infoMessage").html("Feedback Submitted! "+msg);
+                $("#feedbackResponse").addClass("infoMessage").html("Thank you! Your feedback has been submitted!");
             },
             error: function(msg) {
-                $("#form").addClass("errorMessage").html("Error! "+msg);
+                $("#feedbackResponse").addClass("errorMessage").html("Error! Please contact support!");
             }
         });
 
@@ -23,10 +23,10 @@ require_once('view/header.php');
     }
 </script>
 
-
-<div id="form">
+<div class="feedbackBox">
     <textarea rows="10" cols="100" id="feedback"></textarea><br/>
     <input id="submitButton" type="button" onclick="onSubmit()" value="submit"/>
+    <div id="feedbackResponse" />
 </div>
 
 
