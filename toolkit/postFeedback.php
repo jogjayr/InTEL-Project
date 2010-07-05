@@ -8,7 +8,7 @@ if ($user)
 
 $feedback = t2sql($_POST['feedback']);
 
-$query = "INSERT INTO app_feedback (user_id, contents) VALUES ($userId, $feedback)";
+$query = "INSERT INTO app_feedback (user_id, contents) VALUES ($userId, '$feedback')";
 query($query, $db);
 
 header("Content-Type: text/xml");
