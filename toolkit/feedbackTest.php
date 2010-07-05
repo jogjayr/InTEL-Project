@@ -11,7 +11,10 @@ require_once('view/header.php');
             type: "POST",
             data: {feedback: $("#feedback").text()},
             success: function(msg) {
-                $("form").addClass("infoMessage").html("Feedback Submitted!");
+                $("#form").addClass("infoMessage").html("Feedback Submitted! "+msg);
+            },
+            error: function(msg) {
+                $("#form").addClass("errorMessage").html("Error! "+msg);
             }
         });
 
