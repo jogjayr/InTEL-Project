@@ -9,7 +9,7 @@ require_once('view/header.php');
         $.ajax({
             url: "postFeedback.php",
             type: "POST",
-            data: {feedback: $("#feedback").text()},
+            data: {feedback: "stuff: "+$("#feedback").text()},
             success: function(msg) {
                 $("#form").addClass("infoMessage").html("Feedback Submitted! "+msg);
             },
