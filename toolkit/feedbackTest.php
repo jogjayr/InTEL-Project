@@ -9,7 +9,7 @@ require_once('view/header.php');
         $.ajax({
             url: "postFeedback.php",
             type: "POST",
-            data: {feedback: "stuff: "+$("#feedback").text()},
+            data: {feedback: $("#feedback").val()},
             success: function(msg) {
                 $("#form").addClass("infoMessage").html("Feedback Submitted! "+msg);
             },
@@ -20,14 +20,12 @@ require_once('view/header.php');
 
         $("#feedback").attr("readonly", "true");
         $("#submitButton").attr("disabled", "true");
-
-
     }
 </script>
 
 
 <div id="form">
-    <textarea rows="10" cols="100" id="feedback"></textarea>
+    <textarea rows="10" cols="100" id="feedback"></textarea><br/>
     <input id="submitButton" type="button" onclick="onSubmit()" value="submit"/>
 </div>
 
