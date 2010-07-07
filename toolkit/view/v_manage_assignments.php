@@ -106,100 +106,100 @@ if (isAdmin ()) {
         }
     }
 
-function show_add_form() {
-    $("#addEntry").show("slow");
-    $("#addButton").hide();
-}
+    function show_add_form() {
+        $("#addEntry").show("slow");
+        $("#addButton").hide();
+    }
 
-var existingEdit = -1;
-function show_edit(id) {
+    var existingEdit = -1;
+    function show_edit(id) {
 
-    if(existingEdit != -1)
-        cancel_edit(existingEdit);
-    existingEdit = id;
+        if(existingEdit != -1)
+            cancel_edit(existingEdit);
+        existingEdit = id;
 
-    var editContents =
-        "<tr id=\"rowedit"+id+"\">"+
-        "<td id=\"editClass\"/>"+
-        "<td id=\"editProblem\"/>"+
-        "<td id=\"editType\"/>"+
-        "<td id=\"editOpen\"/>"+
-        "<td id=\"editClose\"/>"+
-        "<td><input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
-        "<input type=\"submit\" name=\"editAssignment\"></td>"+
-        "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
-    "</tr>";
-    $("#row"+id).after(editContents);
-    $("#row"+id).hide();
+        var editContents =
+            "<tr id=\"rowedit"+id+"\">"+
+            "<td id=\"editClass\"/>"+
+            "<td id=\"editProblem\"/>"+
+            "<td id=\"editType\"/>"+
+            "<td id=\"editOpen\"/>"+
+            "<td id=\"editClose\"/>"+
+            "<td><input type=\"hidden\" name=\"assignment_id\" value=\""+id+"\">"+
+            "<input type=\"submit\" name=\"editAssignment\"></td>"+
+            "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+            "</tr>";
+        $("#row"+id).after(editContents);
+        $("#row"+id).hide();
 
-    // the order is class, problem, type.
-    // these variables contain the text of the old values.
-    var oldClass = $("#row"+id+" td:nth-child(1)").text();
-    var oldProblem = $("#row"+id+" td:nth-child(2)").text();
-    var oldType = $("#row"+id+" td:nth-child(3)").text();
-    var oldOpenDate = $("#row"+id+" td:nth-child(4)").text();
-    var oldCloseDate = $("#row"+id+" td:nth-child(5)").text();
-   
+        // the order is class, problem, type.
+        // these variables contain the text of the old values.
+        var oldClass = $("#row"+id+" td:nth-child(1)").text();
+        var oldProblem = $("#row"+id+" td:nth-child(2)").text();
+        var oldType = $("#row"+id+" td:nth-child(3)").text();
+        var oldOpenDate = $("#row"+id+" td:nth-child(4)").text();
+        var oldCloseDate = $("#row"+id+" td:nth-child(5)").text();
+
 <?php
-// not doing any string replacement here.
-// this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
-// that will mess up the javascript and produce something strange.
-echo 'var classStuff = "';
-echo '<select name=\"class_id\">';
-foreach ($classes as $class) {
-    echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
-}
-echo '</select>";' . "\n";
+        // not doing any string replacement here.
+        // this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
+        // that will mess up the javascript and produce something strange.
+        echo 'var classStuff = "';
+        echo '<select name=\"class_id\">';
+        foreach ($classes as $class) {
+            echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
+        }
+        echo '</select>";' . "\n";
 
-echo 'var problemStuff = "';
-echo '<select name=\"problem_id\">';
-foreach ($problems as $problem) {
-    echo '<option value=\"' . $problem['id'] . '\">' . $problem['name'] . '</option>';
-}
-echo '</select>";' . "\n";
+        echo 'var problemStuff = "';
+        echo '<select name=\"problem_id\">';
+        foreach ($problems as $problem) {
+            echo '<option value=\"' . $problem['id'] . '\">' . $problem['name'] . '</option>';
+        }
+        echo '</select>";' . "\n";
 
-echo 'var assignmentTypeStuff = "';
-echo '<select name=\"assignment_type_id\">';
-foreach ($assignmentTypes as $at) {
-    echo '<option value=\"' . $at['id'] . '\">' . $at['type'] . '</option>';
-}
-echo '</select>";' . "\n";
+        echo 'var assignmentTypeStuff = "';
+        echo '<select name=\"assignment_type_id\">';
+        foreach ($assignmentTypes as $at) {
+            echo '<option value=\"' . $at['id'] . '\">' . $at['type'] . '</option>';
+        }
+        echo '</select>";' . "\n";
 ?>
 
-    $("#rowedit"+id+" #editClass").append(classStuff);
-    $("#rowedit"+id+" #editProblem").append(problemStuff);
-    $("#rowedit"+id+" #editType").append(assignmentTypeStuff);
-    $("#rowedit"+id+" #editOpen").append("<input type=\"text\" name=\"open_date\" value=\""+oldOpenDate+"\"/>");
-    $("#rowedit"+id+" #editClose").append("<input type=\"text\" name=\"close_date\" value=\""+oldCloseDate+"\"/>");
+        $("#rowedit"+id+" #editClass").append(classStuff);
+        $("#rowedit"+id+" #editProblem").append(problemStuff);
+        $("#rowedit"+id+" #editType").append(assignmentTypeStuff);
+        $("#rowedit"+id+" #editOpen").append("<input type=\"text\" name=\"open_date\" value=\""+oldOpenDate+"\"/>");
+        $("#rowedit"+id+" #editClose").append("<input type=\"text\" name=\"close_date\" value=\""+oldCloseDate+"\"/>");
 
-    $("#rowedit"+id+" #editClass option:contains('"+oldClass+"')").attr("selected","selected");
-    $("#rowedit"+id+" #editProblem option:contains('"+oldProblem+"')").attr("selected","selected");
-    $("#rowedit"+id+" #editType option:contains('"+oldType+"')").attr("selected","selected");
-}
+        $("#rowedit"+id+" #editClass option:contains('"+oldClass+"')").attr("selected","selected");
+        $("#rowedit"+id+" #editProblem option:contains('"+oldProblem+"')").attr("selected","selected");
+        $("#rowedit"+id+" #editType option:contains('"+oldType+"')").attr("selected","selected");
+    }
 
-function cancel_edit(id) {
-    $("#row"+id).show();
-    $("#rowedit"+id).remove();
-    existing_edit = -1;
-}
+    function cancel_edit(id) {
+        $("#row"+id).show();
+        $("#rowedit"+id).remove();
+        existing_edit = -1;
+    }
 
-function select_problem(id) {
+    function select_problem(id) {
 <?php
-echo "var problemThumbnails = Array();\n";
-echo "var problemDescriptions = Array();\n";
-echo "var problemDescriptions2 = Array();\n";
-foreach ($problems as $problem) {
-    echo "problemThumbnails[{$problem['id']}] = \"{$problem['image']}\";\n";
-    $description = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['description']);
-    $description2 = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['instructor_description']);
-    echo "problemDescriptions[{$problem['id']}] = \"{$description}\";\n";
-    echo "problemDescriptions2[{$problem['id']}] = \"{$description2}\";\n";
-}
+        echo "var problemThumbnails = Array();\n";
+        echo "var problemDescriptions = Array();\n";
+        echo "var problemDescriptions2 = Array();\n";
+        foreach ($problems as $problem) {
+            echo "problemThumbnails[{$problem['id']}] = \"{$problem['image']}\";\n";
+            $description = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['description']);
+            $description2 = str_replace(array("\r\n", "\r", "\n"), "<br/>", $problem['instructor_description']);
+            echo "problemDescriptions[{$problem['id']}] = \"{$description}\";\n";
+            echo "problemDescriptions2[{$problem['id']}] = \"{$description2}\";\n";
+        }
 ?>
-    $("#problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
-    $("#problemDescription").html(problemDescriptions[id]);
-    $("#problemDescription2").html(problemDescriptions2[id]);
-}
+        $("#problemThumbnail").attr("src", "images/"+problemThumbnails[id]);
+        $("#problemDescription").html(problemDescriptions[id]);
+        $("#problemDescription2").html(problemDescriptions2[id]);
+    }
 
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>

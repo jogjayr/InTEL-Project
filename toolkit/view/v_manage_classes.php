@@ -21,6 +21,33 @@ if (isInstructor ()) {
 if (isAdmin ()) {
     $classes = getClasses();
 }
+
+// Handle add action, if action is present.
+//initialize post variables
+$hasAction = false;
+$actionSuccess = false;
+$ownerId = '';
+$description = '';
+
+if (isset($_POST['submit'])) {
+    $hasAction = true;
+    $ownerId = $_POST['owner_user_id'];
+    $description = $_POST['description'];
+
+    //check for valid data
+    if ($description != '') {
+        if (addClass($ownerId, $description)) {
+            $success = true;
+            $message = 'The class has been added.';
+        } else {
+            $message = 'Your class was not added. Please try again later.';
+        }
+    } else {
+        $message = 'Please enter a class description.';
+    }
+}
+
+
 ?>
 <script type="text/javascript">
     function confirm_delete(dest){
@@ -29,9 +56,55 @@ if (isAdmin ()) {
             window.location = dest;
         }
     }
+
+    function show_add_form() {
+        $("#addEntry").show("slow");
+        $("#addButton").hide();
+    }
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
-<p><a href="addClass.php">Add Class</a></p>
+
+<?php
+// report message from action.
+// if the user attempted to do something, post the message.
+if ($hasAction) {
+    if (!$actionSuccess) {
+        para($message, 'errorMessage');
+    } else {
+        para($message, 'infoMessage');
+    }
+}
+
+// DEBUG
+//print_r($_POST);
+?>
+
+<div id="addButton">
+    <button onclick="show_add_form();">Add Assignment</button>
+</div>
+<div id="addEntry" style="display: none;">
+    <form method="post" action="">
+        <p>Owner:
+            <select name="owner_user_id">
+                <?php
+                foreach ($owners as $owner) {
+                    if ($owner['id'] == $user['id']) {
+                        echo '<option value="' . $owner['id'] . '" selected="selected">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+                    } else {
+                        if (isAdmin ()) {
+                            echo '<option value="' . $owner['id'] . '">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+                        }
+                    }
+                }
+                ?>
+            </select>
+        </p>
+        <p>For the class name, please include the school, the year, the semester, and the section, eg. <em>GaTech Fall 2009: Section L</em></p>
+        <p>Class Name: <input type="text" name="description" value="" /></p>
+        <p><input type="submit" name="addClass" value="Update" /></p>
+    </form>
+</div>
+
 <?php
 if (count($classes) > 0) {
 ?>
@@ -42,7 +115,7 @@ if (count($classes) > 0) {
             <th class="unsortable"></th>
             <th class="unsortable"></th>
         </tr>
-<?php
+    <?php
     foreach ($classes as $cls) {
         $classId = $cls['id'];
         $description = $cls['description'];
@@ -57,13 +130,13 @@ if (count($classes) > 0) {
         echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
         echo '</tr>';
     }
-?>
-</table>
-    <?php
-} else {
-    para('No Classes available.','errorMessage');
-}//end if
     ?>
+</table>
+<?php
+} else {
+    para('No Classes available.', 'errorMessage');
+}//end if
+?>
 
 <?php
 require_once('footer.php')
