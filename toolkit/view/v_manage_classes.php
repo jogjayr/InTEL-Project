@@ -87,6 +87,7 @@ if ($hasAction) {
         <p>Owner:
             <select name="owner_user_id">
                 <?php
+                $owners = getInstructors();
                 foreach ($owners as $owner) {
                     if ($owner['id'] == $user['id']) {
                         echo '<option value="' . $owner['id'] . '" selected="selected">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
@@ -101,7 +102,7 @@ if ($hasAction) {
         </p>
         <p>For the class name, please include the school, the year, the semester, and the section, eg. <em>GaTech Fall 2009: Section L</em></p>
         <p>Class Name: <input type="text" name="description" value="" /></p>
-        <p><input type="submit" name="addClass" value="Update" /></p>
+        <p><input type="submit" name="addClass" value="Add Class" /></p>
     </form>
 </div>
 
