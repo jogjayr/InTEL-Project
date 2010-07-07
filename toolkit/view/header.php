@@ -41,14 +41,19 @@ if ($title != '') {
                 echo '<a href="account.php">Manage account</a><br/>';
                 echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
             } else {
-                echo '<form method="post" action="">';
+                
                 // if there was an attempted login and there is an error message, display it here.
                 if (isset($_POST['login']) && $err != '')
                     para($err, 'errorMessage');
-                echo '<p>Email Address: <input type="text" style = "width:300px" name="email" /></p>';
-                echo '<p>Password: <input type="password" name="password" /></p>';
-                echo '<p><input type="submit" name="login" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>';
-                echo '</form>';
+                ?>
+                <form method="post" action="">
+                    <table>
+                        <tr><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
+                        <tr><td>Password: </td><td><input type="password"  name="password" /></td></tr>
+                    </table>
+                    <p><input type="submit" name="login" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+                </form>
+                <?
             }
             ?>
         </div>
