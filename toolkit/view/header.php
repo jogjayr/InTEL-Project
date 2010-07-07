@@ -33,7 +33,7 @@ if ($title != '') {
             <?php
             // this is the login panel; the user can login and logout from this panel.
             if (isLoggedIn ()) {
-                echo "Welcome, {$user['first_name']} {$user['last_name']}<br/>";
+                echo "Welcome, <strong>{$user['first_name']} {$user['last_name']}</strong><br/>";
                 $userClass = getClassByUUID($uuid);
                 $class = getClassById($userClass['class_id']);
                 echo "You are in section: {$class['description']}<br/>";
