@@ -462,7 +462,7 @@ function loginByResetPasswordCode($resetPasswordCode) {
         $_SESSION['uuid'] = $results[0]['uuid'];
 
         $q_id = t2sql($results[0]['uuid']);
-        $query = "UPDATE app_user SET reset_password_code='' WHERE id='{$q_id}'";
+        $query = "UPDATE app_user SET reset_password_code='' WHERE id={$q_id}";
         query($query, $db);
         return true;
     } else {
