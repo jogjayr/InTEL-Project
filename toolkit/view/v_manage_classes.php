@@ -112,21 +112,27 @@ if (count($classes) > 0) {
     <table class="sortable" id="sortabletable">
         <tr>
             <th class="startsort">Class</th>
-            <th>Last Updated</th>
+<!--            <th>Last Updated</th>-->
+            <th>Instructor</th>
             <th class="unsortable"></th>
             <th class="unsortable"></th>
         </tr>
     <?php
     foreach ($classes as $cls) {
         $classId = $cls['id'];
-        $description = $cls['description'];
+        $description = t2h($cls['description']);
         $updatedDate = date("m.d.y", $cls['updated_on']);
         $urlEdit = 'editClass.php?id=' . $classId;
         $urlDelete = 'deleteClass.php?id=' . $classId;
 
+        $ownerId = $cls['owner_user_id'];
+        $owner = getUserById($ownerId);
+        $ownerName = $owner['first_name'] . ' ' . $owner['last_name'];
+
         echo '<tr>';
-        echo '<td>' . t2h($description) . '</td>';
-        echo '<td>' . t2h($updatedDate) . '</td>';
+        echo "<td>$description</td>";
+        echo "<td>$ownerName</td>";
+//        echo '<td>' . t2h($updatedDate) . '</td>';
         echo '<td><a href="' . $urlEdit . '">edit</a></td>';
         echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
         echo '</tr>';
