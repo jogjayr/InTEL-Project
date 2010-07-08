@@ -1,8 +1,5 @@
 <?php
 
-require_once('util_email.php');
-require_once('util_ftp.php');
-
 /**
  * Redirects to the given address. By default, the redirect is relative.
  * If the second parameter is false, then the redirect is absolute.
