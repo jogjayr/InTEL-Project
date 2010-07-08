@@ -40,10 +40,10 @@ if (isset($_POST['submit'])) {
             $success = true;
             $message = 'The class has been added.';
         } else {
-            $message = 'Your class was not added. Please try again later.';
+            $message = 'Your class was not added. Please contact support!';
         }
     } else {
-        $message = 'Please enter a class description.';
+        $message = 'Please enter a class name.';
     }
 }
 
@@ -60,6 +60,60 @@ if (isset($_POST['submit'])) {
     function show_add_form() {
         $("#addEntry").show("slow");
         $("#addButton").hide();
+    }
+
+
+    var existingEdit = -1;
+    function show_edit(id) {
+
+        if(existingEdit != -1)
+            cancel_edit(existingEdit);
+        existingEdit = id;
+
+        var editContents =
+            "<tr id=\"rowedit"+id+"\">"+
+            "<td id=\"editDescription\"/>"+
+            "<td id=\"editOwner\"/>"+
+            "<td/>"+
+            "<td><input type=\"hidden\" name=\"class_id\" value=\""+id+"\">"+
+            "<input type=\"submit\" name=\"editClass\"></td>"+
+            "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
+            "</tr>";
+        $("#row"+id).after(editContents);
+        $("#row"+id).hide();
+
+        // the order is class, problem, type.
+        // these variables contain the text of the old values.
+        var oldDescription = $("#row"+id+" td:nth-child(1)").text();
+        var oldOwner = $("#row"+id+" td:nth-child(2)").text();
+
+<?php
+        // not doing any string replacement here.
+        // this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
+        // that will mess up the javascript and produce something strange.
+        echo 'var ownerStuff = "';
+        echo '<select name=\"owner_user_id\">';
+        foreach ($classes as $class) {
+            echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
+        }
+        foreach ($owners as $owner) {
+            if ($owner['id'] == $user['id'] || isAdmin()) {
+                echo '<option value=\"' . $owner['id'] . '\">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+            }
+        }
+        echo '</select>";' . "\n";
+?>
+
+        $("#rowedit"+id+" #editOwner").append(ownerStuff);
+        $("#rowedit"+id+" #editDescription").append("<input type=\"text\" name=\"description\" value=\""+oldDescription+"\"/>");
+
+        $("#rowedit"+id+" #editOwner option:contains('"+oldOwner+"')").attr("selected","selected");
+    }
+
+    function cancel_edit(id) {
+        $("#row"+id).show();
+        $("#rowedit"+id).remove();
+        existing_edit = -1;
     }
 </script>
 <script type="text/javascript" src="js/sortable.js"></script>
@@ -112,27 +166,47 @@ if (count($classes) > 0) {
     <table class="sortable" id="sortabletable">
         <tr>
             <th class="startsort">Class</th>
-<!--            <th>Last Updated</th>-->
             <th>Instructor</th>
+            <th>Last Updated</th>
             <th class="unsortable"></th>
             <th class="unsortable"></th>
         </tr>
     <?php
+
+    // if we successfully modified or added rows,
+    // highlight all rows whose update time equals this value.
+    // precisely, this highlights the rows whose update times are the most recent.
+    $highlightTime = -1;
+    if ($actionSuccess) {
+        foreach ($classes as $cls) {
+            $updateTime = $cls['updated_on'];
+            if ($updateTime > $highlightTime) {
+                $highlightTime = $updateTime;
+            }
+        }
+    }
+
     foreach ($classes as $cls) {
         $classId = $cls['id'];
         $description = t2h($cls['description']);
-        $updatedDate = date("m.d.y", $cls['updated_on']);
+        $updatedDate = t2h(date("m.d.y", $cls['updated_on']));
         $urlEdit = 'editClass.php?id=' . $classId;
         $urlDelete = 'deleteClass.php?id=' . $classId;
 
         $ownerId = $cls['owner_user_id'];
         $owner = getUserById($ownerId);
         $ownerName = $owner['first_name'] . ' ' . $owner['last_name'];
+        $updateTime = $cls['updated_on'];
 
-        echo '<tr>';
+        $rowStyle = "";
+        if($updateTime == $highlightTime) {
+            $rowStyle = ' class="highlightRow"';
+        }
+
+        echo '<tr id="row' . $app['id'] . '"' . $rowStyle . '>';
         echo "<td>$description</td>";
         echo "<td>$ownerName</td>";
-//        echo '<td>' . t2h($updatedDate) . '</td>';
+        echo "<td>$updatedDate</td>";
         echo '<td><a href="' . $urlEdit . '">edit</a></td>';
         echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
         echo '</tr>';
@@ -143,12 +217,6 @@ if (count($classes) > 0) {
 } else {
     para('No Classes available.', 'errorMessage');
 }//end if
-?>
 
-<?php
 require_once('footer.php')
 ?>
-
-
-
-
