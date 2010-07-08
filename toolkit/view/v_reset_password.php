@@ -21,8 +21,6 @@ if (isset($_POST['submitReset'])) {
         $message = "Could not find a user with the email address \"$email\". Have you <a href=\"register.php\">registered</a>?";
     }
 }
-$title = 'Reset Password';
-require_once ('header.php');
 
 $resetCode = "";
 if (isset($_POST['changePassword'])) {
@@ -51,8 +49,8 @@ if (isset($_GET['reset_password_code'])) {
     $resetCode = $_GET['reset_password_code'];
 }
 
-
-
+$title = 'Reset Password';
+require_once ('header.php');
 
 if ($hasAction) {
     if ($success) {
