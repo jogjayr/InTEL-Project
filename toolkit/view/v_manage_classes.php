@@ -235,5 +235,5 @@ if (count($classes) > 0) {
     para('No Classes available.', 'errorMessage');
 }//end if
 
-require_once('footer.php')
-S?>
+require_once('footer.php');
+?>
