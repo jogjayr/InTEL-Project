@@ -190,7 +190,8 @@ if (count($classes) > 0) {
         $classId = $cls['id'];
         $description = t2h($cls['description']);
         $updatedDate = t2h(date("m.d.y", $cls['updated_on']));
-        $urlEdit = 'editClass.php?id=' . $classId;
+//        $urlEdit = 'editClass.php?id=' . $classId;
+        $urlEdit = "javascript:show_edit({$cls['id']})";
         $urlDelete = 'deleteClass.php?id=' . $classId;
 
         $ownerId = $cls['owner_user_id'];
@@ -203,7 +204,7 @@ if (count($classes) > 0) {
             $rowStyle = ' class="highlightRow"';
         }
 
-        echo '<tr id="row' . $app['id'] . '"' . $rowStyle . '>';
+        echo '<tr id="row' . $cls['id'] . '"' . $rowStyle . '>';
         echo "<td>$description</td>";
         echo "<td>$ownerName</td>";
         echo "<td>$updatedDate</td>";
