@@ -8,7 +8,7 @@ require_once('view/header.php');
     function showFeedbackBox() {
 
         $("body").append('<div class="feedbackBox">'+
-                         '<textarea rows="10" cols="100" id="feedback"></textarea><br/>'+
+                         '<textarea rows="10" style="width: 100%" id="feedback"></textarea><br/>'+
                          '<input id="submitFeedbackButton" type="button" onclick="onSubmitFeedback()" value="submit"/>'+
                          '<input id="cancelFeedbackButton" type="button" onclick="onCancelFeedback()" value="cancel"/>'+
                          '<div id="feedbackResponse" />'+
@@ -22,6 +22,7 @@ require_once('view/header.php');
             data: {feedback: $("#feedback").val()},
             success: function(msg) {
                 $("#feedbackResponse").addClass("infoMessage").html("Thank you! Your feedback has been submitted!");
+                $("#cancelFeedbackButton").attr("value","OK");
             },
             error: function(msg) {
                 $("#feedbackResponse").addClass("errorMessage").html("Error! Please contact support!");
