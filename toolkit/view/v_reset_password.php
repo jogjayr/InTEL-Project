@@ -36,7 +36,7 @@ if (isset($_POST['changePassword'])) {
         loginByResetPasswordCode($resetCode);
         changePassword($_SESSION['uuid'], $password);
         $success = true;
-        $message = "Your password has been reset and you are now logged in. <a href=\"index.php\">Continue</a>.";
+        $message = "Your password has been reset and you are now logged in.";
 
         // set up our globals.
         $uuid = $_SESSION['uuid'];
