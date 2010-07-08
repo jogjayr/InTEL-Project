@@ -31,7 +31,7 @@ $actionSuccess = false;
 $ownerId = '';
 $description = '';
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['addClass'])) {
     $hasAction = true;
     $ownerId = $_POST['owner_user_id'];
     $description = $_POST['description'];
@@ -43,6 +43,24 @@ if (isset($_POST['submit'])) {
             $message = 'The class has been added.';
         } else {
             $message = 'Your class was not added. Please contact support!';
+        }
+    } else {
+        $message = 'Please enter a class name.';
+    }
+}
+if (isset($_POST['editClass'])) {
+    $hasAction = true;
+    $classId = $_POST['class_id'];
+    $ownerId = $_POST['owner_user_id'];
+    $description = $_POST['description'];
+
+    //check for valid data
+    if ($description != '') {
+        if (updateClass($classId, $ownerId, $description)) {
+            $success = true;
+            $message = 'The class has been updated.';
+        } else {
+            $message = 'Your class was not updated. Please contact support!';
         }
     } else {
         $message = 'Please enter a class name.';
@@ -133,7 +151,7 @@ if ($hasAction) {
 ?>
 
 <div id="addButton">
-    <button onclick="show_add_form();">Add Assignment</button>
+    <button onclick="show_add_form();">Add Class</button>
 </div>
 <div id="addEntry" style="display: none;">
     <form method="post" action="">
