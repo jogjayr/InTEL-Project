@@ -144,6 +144,25 @@ function getUserById($userId) {
 }
 
 /**
+ * Fetches the user by email address. Returns false if the user does not exist.
+ * @global resource $db
+ * @param string $email 
+ */
+function getUserByEmail($email) {
+    global $db;
+
+    $q_userEmail = t2sql(trim($email));
+    $query = "SELECT * FROM app_user WHERE email='{$q_userEmail}'";
+    $results = aquery($query, $db);
+
+    if (count($results) > 0) {
+        return $results[0];
+    } else {
+        return false;
+    }
+}
+
+/**
  * Fetches the user by uuid. Returns false if the uuid does not correspond to a user.
  * @global resource $db
  * @param string $uuid
@@ -294,9 +313,6 @@ function updateAccount($uuid, $firstName, $lastName, $email, $classId) {
 
     query($query2, $db);
 
-//    $_SESSION['user_first_name'] = $firstName;
-//    $_SESSION['user_last_name'] = $lastName;
-
     return true;
 }
 
@@ -367,7 +383,6 @@ function isInstructor() {
 
     return false;
 }
-
 
 /**
  * Returns true if the current user is anonymous (typically if the user is not logged in)
@@ -514,24 +529,28 @@ function sendResetPassword($to_email_address) {
     global $base_address;
     global $db;
 
-    $reset_password_file = 'reset_password.php';
-
     //generate confirmation id
     $reset_password = $to_email_address . getRandomPassword(8);
     $reset_password_code = md5($reset_password);
 
     //store confirmation id
-    $o_reset_password_code = mysql_real_escape_string($reset_password_code);
-    $o_to_email_address = mysql_real_escape_string($to_email_address);
+    $o_reset_password_code = t2sql($reset_password_code);
+    $o_to_email_address = t2sql($to_email_address);
 
     $query = "UPDATE app_user SET reset_password_code='{$o_reset_password_code}' WHERE email='{$o_to_email_address}'";
     $results = query($query, $db);
 
     $to = $to_email_address;
     $from = $site_title . ' <' . $site_email_address . '>';
-    $subject = 'Reset Password';
-    $message = "Your password has been reset on the " . $site_title . "\r\n\r\n" . "Click the following link to login and reset your new password:\r\n\r\n" . $base_address . $reset_password_file . "?reset_password_code=" . $reset_password_code;
-    secureEmail($to, $from, $subject, $message);
+    $subject = 'InTEL: Reset Password';
+    $message = "Your password has been reset on the $site_title\r\n\r\n" .
+            "Click the following link to login and reset your new password:\r\n" .
+            $base_address . "resetPassword.php?reset_password_code=$reset_password_code";
+    //secureEmail($to, $from, $subject, $message);
+    $headers = "From: $site_email_address\r\n" .
+            "Reply-To: $site_email_address\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+    mail($to, $subject, $message, $headers);
 }
 
 /**
@@ -552,5 +571,4 @@ function getUsersByName($userName) {
 
     return $results;
 }
-
 ?>

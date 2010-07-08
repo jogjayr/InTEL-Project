@@ -3,8 +3,6 @@
 require_once('util_email.php');
 require_once('util_ftp.php');
 
-//redirects a webpage based on a relative address
-
 /**
  * Redirects to the given address. By default, the redirect is relative.
  * If the second parameter is false, then the redirect is absolute.
@@ -83,26 +81,4 @@ function getRandomPassword($len) {
     return $pass;
 }
 
-//function isAlphaNumeric($text) {
-//
-//    if (ereg('[^A-Za-z0-9]', $text)) {
-//        return false;
-//    } else {
-//        return true;
-//    }
-//}
-//
-//function isInteger($text) {
-//
-//    if (ereg('[^0-9]', $text)) {
-//        return false;
-//    } else {
-//        return true;
-//    }
-//}
-//
-//function formatDate($s) {
-//    $f = "m.d.y g:i a";
-//    return date($f, strtotime($s));
-//}
 ?>

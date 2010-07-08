@@ -92,7 +92,7 @@ if ($title != '') {
                         <tr><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
                         <tr><td>Password: </td><td><input type="password"  name="password" /></td></tr>
                     </table>
-                    <p><input type="submit" name="login" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+                    <p><input type="submit" name="login" value="Login" /> <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
                 </form>
             <?
             }
