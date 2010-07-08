@@ -22,6 +22,8 @@ if (isAdmin ()) {
     $classes = getClasses();
 }
 
+$owners = getInstructors();
+
 // Handle add action, if action is present.
 //initialize post variables
 $hasAction = false;
@@ -93,9 +95,6 @@ if (isset($_POST['submit'])) {
         // that will mess up the javascript and produce something strange.
         echo 'var ownerStuff = "';
         echo '<select name=\"owner_user_id\">';
-        foreach ($classes as $class) {
-            echo '<option value=\"' . $class['id'] . '\">' . $class['description'] . '</option>';
-        }
         foreach ($owners as $owner) {
             if ($owner['id'] == $user['id'] || isAdmin()) {
                 echo '<option value=\"' . $owner['id'] . '\">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
@@ -141,7 +140,6 @@ if ($hasAction) {
         <p>Owner:
             <select name="owner_user_id">
                 <?php
-                $owners = getInstructors();
                 foreach ($owners as $owner) {
                     if ($owner['id'] == $user['id']) {
                         echo '<option value="' . $owner['id'] . '" selected="selected">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
