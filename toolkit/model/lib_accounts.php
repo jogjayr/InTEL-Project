@@ -460,8 +460,6 @@ function loginByResetPasswordCode($resetPasswordCode) {
 
         $_SESSION['is_logged_in'] = true;
         $_SESSION['uuid'] = $results[0]['uuid'];
-//        $_SESSION['user_first_name'] = $results[0]['user_first_name'];
-//        $_SESSION['user_last_name'] = $results[0]['user_last_name'];
 
         $q_id = t2sql($results[0]['uuid']);
         $query = "UPDATE users SET reset_password_code='' WHERE id='{$q_id}'";
@@ -543,12 +541,12 @@ function sendResetPassword($to_email_address) {
     $to = $to_email_address;
     $from = $site_title . ' <' . $site_email_address . '>';
     $subject = 'InTEL: Reset Password';
-    $message = "Your password has been reset on the $site_title\r\n\r\n" .
+    $message = "This is an automatically generated email.\r\n\r\n".
+            "Your password has been reset on the web site \"$site_title\"\r\n\r\n" .
             "Click the following link to login and reset your new password:\r\n" .
             $base_address . "resetPassword.php?reset_password_code=$reset_password_code";
     //secureEmail($to, $from, $subject, $message);
-    $headers = "From: $site_email_address\r\n" .
-            "Reply-To: $site_email_address\r\n" .
+    $headers = "Reply-To: $site_email_address\r\n" .
             'X-Mailer: PHP/' . phpversion();
     mail($to, $subject, $message, $headers);
 }
