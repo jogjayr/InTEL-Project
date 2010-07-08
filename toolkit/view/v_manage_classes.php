@@ -13,17 +13,6 @@ if (isset($_SESSION['uuid'])) {
     $uuid = $_SESSION['uuid'];
 }
 
-//get classes that belong to this user, or all for admin
-$classes = '';
-if (isInstructor ()) {
-    $classes = getClassesByOwner($uuid);
-}
-if (isAdmin ()) {
-    $classes = getClasses();
-}
-
-$owners = getInstructors();
-
 // Handle add action, if action is present.
 //initialize post variables
 $hasAction = false;
@@ -39,7 +28,7 @@ if (isset($_POST['addClass'])) {
     //check for valid data
     if ($description != '') {
         if (addClass($ownerId, $description)) {
-            $success = true;
+            $actionSuccess = true;
             $message = 'The class has been added.';
         } else {
             $message = 'Your class was not added. Please contact support!';
@@ -48,6 +37,7 @@ if (isset($_POST['addClass'])) {
         $message = 'Please enter a class name.';
     }
 }
+// handle edit action, if present
 if (isset($_POST['editClass'])) {
     $hasAction = true;
     $classId = $_POST['class_id'];
@@ -57,7 +47,7 @@ if (isset($_POST['editClass'])) {
     //check for valid data
     if ($description != '') {
         if (updateClass($classId, $ownerId, $description)) {
-            $success = true;
+            $actionSuccess = true;
             $message = 'The class has been updated.';
         } else {
             $message = 'Your class was not updated. Please contact support!';
@@ -66,6 +56,17 @@ if (isset($_POST['editClass'])) {
         $message = 'Please enter a class name.';
     }
 }
+
+//get classes that belong to this user, or all for admin
+$classes = '';
+if (isInstructor ()) {
+    $classes = getClassesByOwner($uuid);
+}
+if (isAdmin ()) {
+    $classes = getClasses();
+}
+
+$owners = getInstructors();
 
 
 ?>
