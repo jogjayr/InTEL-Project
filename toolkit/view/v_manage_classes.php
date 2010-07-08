@@ -67,8 +67,6 @@ if (isAdmin ()) {
 }
 
 $owners = getInstructors();
-
-
 ?>
 <script type="text/javascript">
     function confirm_delete(dest){
@@ -109,17 +107,17 @@ $owners = getInstructors();
         var oldOwner = $("#row"+id+" td:nth-child(2)").text();
 
 <?php
-        // not doing any string replacement here.
-        // this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
-        // that will mess up the javascript and produce something strange.
-        echo 'var ownerStuff = "';
-        echo '<select name=\"owner_user_id\">';
-        foreach ($owners as $owner) {
-            if ($owner['id'] == $user['id'] || isAdmin()) {
-                echo '<option value=\"' . $owner['id'] . '\">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
-            }
-        }
-        echo '</select>";' . "\n";
+// not doing any string replacement here.
+// this is kind of dangerous, if the name of a class or a problem contains some peculiar characters, ie double-quotes,
+// that will mess up the javascript and produce something strange.
+echo 'var ownerStuff = "';
+echo '<select name=\"owner_user_id\">';
+foreach ($owners as $owner) {
+    if ($owner['id'] == $user['id'] || isAdmin()) {
+        echo '<option value=\"' . $owner['id'] . '\">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+    }
+}
+echo '</select>";' . "\n";
 ?>
 
         $("#rowedit"+id+" #editOwner").append(ownerStuff);
@@ -158,17 +156,17 @@ if ($hasAction) {
     <form method="post" action="">
         <p>Owner:
             <select name="owner_user_id">
-                <?php
-                foreach ($owners as $owner) {
-                    if ($owner['id'] == $user['id']) {
-                        echo '<option value="' . $owner['id'] . '" selected="selected">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
-                    } else {
-                        if (isAdmin ()) {
-                            echo '<option value="' . $owner['id'] . '">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
-                        }
-                    }
-                }
-                ?>
+<?php
+foreach ($owners as $owner) {
+    if ($owner['id'] == $user['id']) {
+        echo '<option value="' . $owner['id'] . '" selected="selected">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+    } else {
+        if (isAdmin ()) {
+            echo '<option value="' . $owner['id'] . '">' . $owner['first_name'] . ' ' . $owner['last_name'] . '</option>';
+        }
+    }
+}
+?>
             </select>
         </p>
         <p>For the class name, please include the school, the year, the semester, and the section, eg. <em>GaTech Fall 2009: Section L</em></p>
@@ -180,16 +178,16 @@ if ($hasAction) {
 <?php
 if (count($classes) > 0) {
 ?>
-    <table class="sortable" id="sortabletable">
-        <tr>
-            <th class="startsort">Class</th>
-            <th>Instructor</th>
-            <th>Last Updated</th>
-            <th class="unsortable"></th>
-            <th class="unsortable"></th>
-        </tr>
-    <?php
-
+    <form method="post" action="">
+        <table class="sortable" id="sortabletable">
+            <tr>
+                <th class="startsort">Class</th>
+                <th>Instructor</th>
+                <th>Last Updated</th>
+                <th class="unsortable"></th>
+                <th class="unsortable"></th>
+            </tr>
+<?php
     // if we successfully modified or added rows,
     // highlight all rows whose update time equals this value.
     // precisely, this highlights the rows whose update times are the most recent.
@@ -217,7 +215,7 @@ if (count($classes) > 0) {
         $updateTime = $cls['updated_on'];
 
         $rowStyle = "";
-        if($updateTime == $highlightTime) {
+        if ($updateTime == $highlightTime) {
             $rowStyle = ' class="highlightRow"';
         }
 
@@ -229,12 +227,13 @@ if (count($classes) > 0) {
         echo '<td><a href="#" onclick="confirm_delete(\'' . $urlDelete . '\')">delete</a></td>';
         echo '</tr>';
     }
-    ?>
-</table>
+?>
+    </table>
+</form>
 <?php
 } else {
     para('No Classes available.', 'errorMessage');
 }//end if
 
 require_once('footer.php')
-?>
+S?>
