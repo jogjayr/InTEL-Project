@@ -15,6 +15,47 @@ require_once('admin/initvars.php');
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript">
+            var feedbackBoxVisible = false;
+            function showFeedbackBox() {
+                if(!feedbackBoxVisible) {
+                    $("body").append('<div class="feedbackBox">'+
+                        '<p>Please give us feedback! We want to know what we did right, what we did wrong, how the software helped, and how it didn\'t.</p>'+
+                        '<textarea rows="10" style="width: 100%" id="feedback"></textarea><br/>'+
+                        '<div id="feedbackResponse" /><br/>'+
+                        '<input id="submitFeedbackButton" type="button" onclick="onSubmitFeedback()" value="submit"/>'+
+                        '<input id="cancelFeedbackButton" type="button" onclick="onCancelFeedback()" value="cancel"/>'+
+                        '</div>');
+                    feedbackBoxVisible = true;
+                }
+            }
+            function onSubmitFeedback() {
+                $.ajax({
+                    url: "postFeedback.php",
+                    type: "POST",
+                    data: {feedback: $("#feedback").val()},
+                    success: function(msg) {
+                        $("#feedbackResponse").addClass("infoMessage").html("Thank you! Your feedback has been submitted!");
+                        $("#cancelFeedbackButton").attr("value","OK");
+                    },
+                    error: function(msg) {
+                        $("#feedbackResponse").addClass("errorMessage").html("Error! Please contact support!");
+                    }
+                });
+
+                $("#feedback").attr("readonly", "true");
+                //$("#submitButton").attr("disabled", "true");
+                $("#submitFeedbackButton").remove();
+            }
+
+            function onCancelFeedback() {
+                $(".feedbackBox").fadeOut("slow", function() {
+                    $(".feedbackBox").remove();
+                    feedbackBoxVisible = false;
+                });
+            }
+        </script>
+
         <title><?php
 echo t2h($site_title);
 if ($title != '') {
@@ -41,11 +82,11 @@ if ($title != '') {
                 echo '<a href="account.php">Manage account</a><br/>';
                 echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
             } else {
-                
+
                 // if there was an attempted login and there is an error message, display it here.
                 if (isset($_POST['login']) && $err != '')
                     para($err, 'errorMessage');
-                ?>
+            ?>
                 <form method="post" action="">
                     <table>
                         <tr><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
@@ -53,7 +94,7 @@ if ($title != '') {
                     </table>
                     <p><input type="submit" name="login" value="Login" /> <a href="help.php">Forgot your password?</a> <a href="register.php">Register</a></p>
                 </form>
-                <?
+            <?
             }
             ?>
         </div>
@@ -93,6 +134,7 @@ if ($title != '') {
             } // end user type switch
             ?>
             <div class='nav_button'><a href="help.php">Instructions</a></div>
+            <div class='nav_button'><a href="javascript:showFeedbackBox()">Give us feedback!</a></div>
             <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Contact</a></div>
             <!--            </ul>-->
         </div>

@@ -5,16 +5,18 @@ require_once('view/header.php');
 ?>
 
 <script type="text/javascript">
+    var feedbackBoxVisible = false;
     function showFeedbackBox() {
-
-        $("body").append('<div class="feedbackBox">'+
-                         '<textarea rows="10" style="width: 100%" id="feedback"></textarea><br/>'+
-                         '<input id="submitFeedbackButton" type="button" onclick="onSubmitFeedback()" value="submit"/>'+
-                         '<input id="cancelFeedbackButton" type="button" onclick="onCancelFeedback()" value="cancel"/>'+
-                         '<div id="feedbackResponse" />'+
-                         '</div>');
+        if(!feedbackBoxVisible) {
+            $("body").append('<div class="feedbackBox">'+
+                '<textarea rows="10" style="width: 100%" id="feedback"></textarea><br/>'+
+                '<div id="feedbackResponse" /><br/>'+
+                '<input id="submitFeedbackButton" type="button" onclick="onSubmitFeedback()" value="submit"/>'+
+                '<input id="cancelFeedbackButton" type="button" onclick="onCancelFeedback()" value="cancel"/>'+
+                '</div>');
+            feedbackBoxVisible = true;
+        }
     }
-
     function onSubmitFeedback() {
         $.ajax({
             url: "postFeedback.php",
@@ -37,6 +39,7 @@ require_once('view/header.php');
     function onCancelFeedback() {
         $(".feedbackBox").fadeOut("slow", function() {
             $(".feedbackBox").remove();
+            feedbackBoxVisible = false;
         });
     }
 </script>
