@@ -26,7 +26,7 @@ require_once('header.php');
 <?php
 
 $query = "SELECT * FROM app_users";
-$allUsers = aquery($query);
+$allUsers = aquery($query, $db);
 foreach ($allUsers as $userEntry) {
     echo "<tr>";
     echo "<td>{$userEntry['id']}</td>";
