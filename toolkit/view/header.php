@@ -129,7 +129,9 @@ if ($title != '') {
                 <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
                 <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
                 <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
-                <div class='nav_button'><a href="viewLoggerData.php">LoggerData</a></div>
+                <div class='nav_button'><a href="manageAccounts.php">Manage Accounts</a></div>
+                <div class='nav_button'><a href="viewLoggerData.php">Logger Data</a></div>
+                <div class='nav_button'><a href="viewFeedback.php">View Feedback</a></div>
             <?php
             } // end user type switch
             ?>

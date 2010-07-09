@@ -8,10 +8,7 @@ if(!isAnonymous()) {
 
 require_once('header.php');
 
-//retrieve uuid
-$uuid = '';
-if (isset($_SESSION['uuid'])) {
-    $uuid = $_SESSION['uuid'];
+if (isLoggedIn ()) {
     //update class assignments for user
     updateUserSubmissions($uuid);
 }

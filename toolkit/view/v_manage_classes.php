@@ -7,12 +7,6 @@ requireInstructor();
 
 require_once('header.php');
 
-//retrieve uuid
-$uuid = '';
-if (isset($_SESSION['uuid'])) {
-    $uuid = $_SESSION['uuid'];
-}
-
 // Handle add action, if action is present.
 //initialize post variables
 $hasAction = false;

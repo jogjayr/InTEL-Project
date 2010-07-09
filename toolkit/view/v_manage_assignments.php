@@ -7,12 +7,6 @@ requireInstructor();
 
 require_once('header.php');
 
-//retrieve uuid
-$uuid = '';
-if (isset($_SESSION['uuid'])) {
-    $uuid = $_SESSION['uuid'];
-}
-
 //get assignments & classes that belong to this user, or all for admin
 $classes = '';
 if (isInstructor ()) {
