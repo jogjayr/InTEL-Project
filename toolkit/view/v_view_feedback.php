@@ -13,7 +13,7 @@ if (!isAdmin()) {
 require_once('header.php');
 
 $startIndex = 0;
-$totalRecords = 30;
+$totalRecords = 5;
 if (isset($_GET['start_index']))
     $startIndex = t2sql($_GET['start_index']);
 
