@@ -13,7 +13,7 @@ if (!isAdmin()) {
 require_once('header.php');
 
 $startIndex = 0;
-$totalRecords = 5;
+$totalRecords = 30;
 if (isset($_GET['start_index']))
     $startIndex = t2sql($_GET['start_index']);
 
@@ -22,7 +22,7 @@ $records = aquery($query, $db);
 $numberRecords = sizeof($records);
 
 if ($numberRecords > 0) {
-    echo "<p>Showing feedback entries from " . ($startIndex + 1) . " to " . ($startIndex + 1 + $numberRecords) . "</p>";
+    echo "<p>Showing feedback entries from " . ($startIndex + 1) . " to " . ($startIndex + $numberRecords) . "</p>";
 
     echo "<table class=\"sortable\">";
     echo "<tr><th>id</th><th>user</th><th>timestamp</th><th>feedback</th></tr>";
