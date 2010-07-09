@@ -24,13 +24,21 @@ $numberRecords = sizeof($records);
 if ($numberRecords > 0) {
     echo "<p>Showing feedback entries from " . ($startIndex + 1) . " to " . ($startIndex + 1 + $numberRecords) . "</p>";
 
-    echo "<table>";
-    echo "<tr><th>id</th><th>user id</th><th>timestamp</th><th>feedback</th></tr>";
+    echo "<table class=\"sortable\">";
+    echo "<tr><th>id</th><th>user</th><th>timestamp</th><th>feedback</th></tr>";
 
     foreach ($records as $record) {
+
+        $commenterName = "Anonymous";
+        $commenterId = $record['user_id'];
+        if($commenterId > 0) {
+            $commenter = getUserById($commenterId);
+            $commenterName = "{$commenter['first_name']} {$commenter['last_name']}";
+        }
+
         echo "<tr>";
         echo "<td>{$record['id']}</td>";
-        echo "<td>{$record['user_id']}</td>";
+        echo "<td>{$commenterName}</td>";
         echo "<td>{$record['timestamp']}</td>";
         echo "<td>{$record['contents']}</td>";
         echo "</tr>";
