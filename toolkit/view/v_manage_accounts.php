@@ -33,7 +33,10 @@ require_once('header.php');
         $entryUuid = $userEntry['uuid'];
 
         $userClass = getClassByUUID($entryUuid);
-        $class = getClassById($userClass['class_id']);
+        if ($userClass === false)
+            $class = "NONE";
+        else
+            $class = getClassById($userClass['class_id']);
 
         echo "<tr>";
         echo "<td>{$userEntry['id']}</td>";
