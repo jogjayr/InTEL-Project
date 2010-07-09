@@ -135,7 +135,7 @@ if ($title != '') {
             ?>
             <div class='nav_button'><a href="help.php">Instructions</a></div>
             <div class='nav_button'><a href="javascript:showFeedbackBox()">Give us feedback!</a></div>
-            <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Contact</a></div>
+            <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Email Site Support</a></div>
             <!--            </ul>-->
         </div>
         <div id="content">
