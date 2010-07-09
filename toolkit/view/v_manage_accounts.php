@@ -22,25 +22,34 @@ require_once('header.php');
         <th>Last Name</th>
         <th>Account Type</th>
         <th>Section</th>
+        <th class="unsortable"></th>
+        <th class="unsortable"></th>
     </tr>
-<?php
+    <?php
+    $query = "SELECT * FROM app_user";
+    $allUsers = aquery($query, $db);
+    foreach ($allUsers as $userEntry) {
 
-$query = "SELECT * FROM app_user";
-$allUsers = aquery($query, $db);
-foreach ($allUsers as $userEntry) {
-    echo "<tr>";
-    echo "<td>{$userEntry['id']}</td>";
-    echo "<td>{$userEntry['email']}</td>";
-    echo "<td>{$userEntry['first_name']}</td>";
-    echo "<td>{$userEntry['last_name']}</td>";
-    echo "<td>{$userEntry['user_type_id']}</td>";
-    echo "<td>---</td>";
-    echo "</tr>";
-}
-?>
+        $entryUuid = $userEntry['uuid'];
+
+        $userClass = getClassByUUID($entryUuid);
+        $class = getClassById($userClass['class_id']);
+
+        echo "<tr>";
+        echo "<td>{$userEntry['id']}</td>";
+        echo "<td>{$userEntry['email']}</td>";
+        echo "<td>{$userEntry['first_name']}</td>";
+        echo "<td>{$userEntry['last_name']}</td>";
+        echo "<td>" . getUserType($entryUuid) . "</td>";
+        echo "<td>{$class['description']}</td>";
+        echo "<td>edit</td>";
+        echo "<td>delete</td>";
+        echo "</tr>";
+    }
+    ?>
 </table>
 
 
 <?php
-require_once ('footer.php');
+    require_once ('footer.php');
 ?>
