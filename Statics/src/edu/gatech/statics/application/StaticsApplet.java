@@ -17,10 +17,13 @@ public class StaticsApplet extends BaseStaticsApplet {
     private StaticsApplication application;
 
     public StaticsApplet() {
-        application = new StaticsApplication();
         instance = this;
+        application = new StaticsApplication();
     }
 
+    public String getUrlBase() {
+        return getParameter("urlBase");
+    }
 
     @Override
     protected void update(float interpolation) {

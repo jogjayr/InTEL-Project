@@ -15,7 +15,11 @@ import java.util.logging.LogRecord;
  */
 public class DatabaseLogHandler extends Handler {
 
-    private PostLogger poster = new PostLogger();
+    private PostLogger poster;
+
+    public DatabaseLogHandler(String urlBase) {
+        poster = new PostLogger(urlBase);
+    }
 
     @Override
     public void publish(LogRecord record) {

@@ -4,9 +4,12 @@
  */
 package edu.gatech.statics.exercise.submitting;
 
+import edu.gatech.statics.application.StaticsApplet;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.StateIO;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -19,10 +22,22 @@ import java.util.logging.Logger;
  */
 public class PostAssignment extends Poster {
 
-    private static final String URL = "http://intel.gatech.edu/toolkit/auto_postAssignment.php";
+//    private static final String defaultURL = "http://intel.gatech.edu/toolkit/auto_postAssignment.php";
+    private static final String destination = "auto_postAssignment.php";
 
-    public PostAssignment() {
-        super(URL, "assignment_id", "user_id", "exercise_status", "state_data", "verifier_key", "timestamp");
+//    private static String getTargetPage() {
+//        if (StaticsApplet.getInstance() != null) {
+//            URL documentBase = StaticsApplet.getInstance().getDocumentBase();
+//            try {
+//                return new java.net.URL(documentBase, destination).toString();
+//            } catch (MalformedURLException ex) {
+//                Logger.getLogger(PostAssignment.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        return defaultURL;
+//    }
+    public PostAssignment(String urlBase) {
+        super(urlBase + destination, "assignment_id", "user_id", "exercise_status", "state_data", "verifier_key", "timestamp");
     }
 
     public void postState() {

@@ -35,6 +35,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
+import edu.gatech.statics.exercise.submitting.PostLogger;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
@@ -79,7 +80,7 @@ public class StaticsApplication {
     private List<DiagramListener> diagramListeners = new ArrayList<DiagramListener>();
     private boolean graded;
     private boolean applet;
-    private PostAssignment postAssignment = new PostAssignment();
+    private PostAssignment postAssignment;
     private DatabaseLogHandler logHandler;
     private boolean initialized = false; // this is set after init() completes
     private boolean drawLabels = true;
@@ -402,7 +403,7 @@ public class StaticsApplication {
 
         // this is called whenever the state gets changed
         if (stateChanged) {
-            if (isGraded()) {
+            if (isGraded() && postAssignment != null) {
                 // if the assignment is graded, send the state and status
                 // to our assignment post page
                 postAssignment.postState();
@@ -549,7 +550,10 @@ public class StaticsApplication {
             Logger.getLogger("com.jme.scene.Node").setLevel(Level.WARNING);
 
             if (isApplet()) {
-                logHandler = new DatabaseLogHandler();
+                if (isGraded()) {
+                    postAssignment = new PostAssignment(StaticsApplet.getInstance().getUrlBase());
+                }
+                logHandler = new DatabaseLogHandler(StaticsApplet.getInstance().getUrlBase());
                 Logger.getLogger("Statics").addHandler(logHandler);
             }
             Logger.getLogger("Statics").info("Application init");
@@ -558,9 +562,9 @@ public class StaticsApplication {
                 Properties systemProperties = System.getProperties();
                 StringBuilder sb = new StringBuilder();
                 for (Entry<Object, Object> entry : systemProperties.entrySet()) {
-                    sb.append("  "+entry.getKey()+"="+entry.getValue()+",\n");
+                    sb.append("  " + entry.getKey() + "=" + entry.getValue() + ",\n");
                 }
-                Logger.getLogger("Statics").info("system properties: {\n"+sb+"}");
+                Logger.getLogger("Statics").info("system properties: {\n" + sb + "}");
             } catch (SecurityException ex) {
                 Logger.getLogger("Statics").info("Cannot record system properties");
             }
