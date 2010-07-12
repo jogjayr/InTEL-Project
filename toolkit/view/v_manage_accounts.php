@@ -9,7 +9,7 @@ if (!isAdmin()) {
     redirect('index.php');
 }
 
-if($_GET['action']=='delete') {
+if(isset($_GET['action']) && $_GET['action']=='delete') {
     $id = t2sql($_GET['id']);
     deleteUser($id);
     redirect("manageAccounts.php");
