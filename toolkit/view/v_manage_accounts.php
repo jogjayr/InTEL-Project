@@ -15,6 +15,14 @@ if (!isAdmin()) {
 //    redirect("manageAccounts.php");
 //}
 
+if (isset($_POST['editAccount'])) {
+    $id = t2sql($_POST['id']);
+    $accountType = t2sql($_POST['accountType']);
+
+    $query = "UPDATE app_user SET account_type='$accountType' WHERE id='$id'";
+    query($query, $db);
+}
+
 
 require_once('header.php');
 ?>
@@ -100,45 +108,45 @@ require_once('header.php');
             <th class="unsortable"></th>
     <!--        <th class="unsortable"></th>-->
         </tr>
-        <?php
-        $query = "SELECT * FROM app_user WHERE is_active=1";
-        $allUsers = aquery($query, $db);
-        foreach ($allUsers as $userEntry) {
+<?php
+$query = "SELECT * FROM app_user WHERE is_active=1";
+$allUsers = aquery($query, $db);
+foreach ($allUsers as $userEntry) {
 
-            $entryUuid = $userEntry['uuid'];
+    $entryUuid = $userEntry['uuid'];
 
-            $userClass = getClassByUUID($entryUuid);
-            if ($userClass === false) {
-                $class = "NONE";
-            } else {
-                $class = getClassById($userClass['class_id']);
-                $class = $class['description'];
-            }
+    $userClass = getClassByUUID($entryUuid);
+    if ($userClass === false) {
+        $class = "NONE";
+    } else {
+        $class = getClassById($userClass['class_id']);
+        $class = $class['description'];
+    }
 
-            $createdTime = date("g:i a m/d/y", $userEntry['created_on']);
-            $lastLogin = date("g:i a m/d/y", $userEntry['last_login']);
+    $createdTime = date("g:i a m/d/y", $userEntry['created_on']);
+    $lastLogin = date("g:i a m/d/y", $userEntry['last_login']);
 
-            $urlEdit = "javascript:show_edit({$userEntry['id']})";
+    $urlEdit = "javascript:show_edit({$userEntry['id']})";
 
-            echo '<tr id="row' . $userEntry['id'] . '">';
-            echo "<td>{$userEntry['id']}</td>";
-            echo "<td>{$userEntry['email']}</td>";
-            echo "<td>{$userEntry['first_name']}</td>";
-            echo "<td>{$userEntry['last_name']}</td>";
-            echo "<td>" . getUserType($entryUuid) . "</td>";
-            echo "<td>{$class}</td>";
-            echo "<td>{$createdTime}</td>";
-            echo "<td>{$lastLogin}</td>";
+    echo '<tr id="row' . $userEntry['id'] . '">';
+    echo "<td>{$userEntry['id']}</td>";
+    echo "<td>{$userEntry['email']}</td>";
+    echo "<td>{$userEntry['first_name']}</td>";
+    echo "<td>{$userEntry['last_name']}</td>";
+    echo "<td>" . getUserType($entryUuid) . "</td>";
+    echo "<td>{$class}</td>";
+    echo "<td>{$createdTime}</td>";
+    echo "<td>{$lastLogin}</td>";
 //            echo "<td>edit</td>";
-            echo "<td><a href=\"$urlEdit\">edit</a></td>";
-            //echo "<td>delete</td>";
+    echo "<td><a href=\"$urlEdit\">edit</a></td>";
+    //echo "<td>delete</td>";
 //        echo '<td><a href="#" onclick="confirm_delete(' . $userEntry['id'] . ')">delete</a></td>';
-            echo "</tr>";
-        }
-        ?>
+    echo "</tr>";
+}
+?>
     </table>
 </form>
 
 <?php
-        require_once ('footer.php');
+require_once ('footer.php');
 ?>
