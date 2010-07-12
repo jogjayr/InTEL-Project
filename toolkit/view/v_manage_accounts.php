@@ -19,7 +19,7 @@ if (isset($_POST['editAccount'])) {
     $id = t2sql($_POST['user_id']);
     $accountType = t2sql($_POST['accountType']);
 
-    $query = "UPDATE app_user SET account_type='$accountType' WHERE id='$id'";
+    $query = "UPDATE app_user SET user_type_id='$accountType' WHERE id='$id'";
     query($query, $db);
 }
 
