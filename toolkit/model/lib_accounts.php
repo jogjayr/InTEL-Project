@@ -440,7 +440,7 @@ function login($emailAddress, $password) {
         $_SESSION['uuid'] = $uuid;
 
         $time = mktime();
-        $query = "UPDATE app_user WHERE uuid='$uuid' SET last_login=$time";
+        $query = "UPDATE app_user SET last_login='$time' WHERE uuid='$uuid'";
         query($query, $db);
 
 //        $user = getUserByUUId($uuid);
