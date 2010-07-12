@@ -163,6 +163,7 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
     void onCancel() {
         currentCut = null;
+        onStartSection();
     }
 
     private void drawCut(Renderer r, SectionCut sectionCut) {

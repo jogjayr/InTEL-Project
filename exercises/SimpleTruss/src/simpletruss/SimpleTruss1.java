@@ -67,8 +67,8 @@ public class SimpleTruss1 extends TrussExercise {
                 + "The truss has symmetric loading with vertical loads of 3kN at joints A and H and 6kN at points B, "
                 + "D, and F.  It is mandatory to first identify the zero force members in the truss and to create a "
                 + "FBD of the whole truss to solve for the supports before you can solve for the member forces.  "
-                + "Then continue to solve for the unknowns by using either method of sections (which is recommended) or the method of joints."
-                + "");
+                + "Then continue to solve for the unknowns by using either method of sections (which is recommended) or the method of joints. "
+                + "Treat A as a pin, and H as a roller.");
 
         description.setGoals("Identify the zero force members in the entire structure.  Create a FBD of the whole truss and "
                 + "solve for the support forces.  Then solve for the following forces BD, BE, and, CE by the method"
@@ -208,16 +208,18 @@ public class SimpleTruss1 extends TrussExercise {
         forceH.createDefaultSchematicRepresentation();
 
         // connect the truss to the world
-        Roller2d rollerA = new Roller2d(A);
-        rollerA.setName("roller A");
-        rollerA.setDirection(Vector3bd.UNIT_Y);
-        rollerA.attachToWorld(Ab);
-        rollerA.createDefaultSchematicRepresentation();
+        Roller2d rollerH = new Roller2d(H);
+        rollerH.setName("roller H");
+        rollerH.setDirection(Vector3bd.UNIT_Y);
+        rollerH.attachToWorld(Hb);
+        rollerH.createDefaultSchematicRepresentation();
+        getSchematic().add(rollerH);
 
-        Pin2d pinH = new Pin2d(H);
-        pinH.setName("pin H");
-        pinH.attachToWorld(Hb);
-        pinH.createDefaultSchematicRepresentation();
+        Pin2d pinA = new Pin2d(A);
+        pinA.setName("pin A");
+        pinA.attachToWorld(Ab);
+        pinA.createDefaultSchematicRepresentation();
+        getSchematic().add(pinA);
 
         for (TwoForceMember bar : bars) {
             //bar.createDefaultSchematicRepresentation();
