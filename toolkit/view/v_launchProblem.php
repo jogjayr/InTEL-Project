@@ -140,7 +140,7 @@ if ($problem["type"]=="java") {
         <param name="problemName" value="<?php echo $problemName ?>"/>
         <param name="exerciseState" value="<?php echo $state; ?>">
         <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
-        <param name="urlBase" value="<?php echo  ?>"/>
+        <param name="urlBase" value="<?php echo $urlBase; ?>"/>
         Java 1.6 or higher is required to run this applet. Please download a JRE from <a href="http://www.java.com">www.java.com</a>.
     </applet>
 </div>
