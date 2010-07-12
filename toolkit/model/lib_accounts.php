@@ -432,13 +432,18 @@ function logout() {
  */
 function login($emailAddress, $password) {
     //sets the session variables to indicate that the user is logged in
+    global $db;
 
     $uuid = authenticate($emailAddress, $password);
     if ($uuid != '') {
         $_SESSION['is_logged_in'] = true;
         $_SESSION['uuid'] = $uuid;
 
-        $user = getUserByUUId($uuid);
+        $time = mktime();
+        $query = "UPDATE app_user WHERE uuid='$uuid' SET last_login=$time";
+        query($query, $db);
+
+//        $user = getUserByUUId($uuid);
 //        $_SESSION['user_first_name'] = $user['first_name'];
 //        $_SESSION['user_last_name'] = $user['last_name'];
 
