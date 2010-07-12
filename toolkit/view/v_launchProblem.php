@@ -108,6 +108,10 @@ if ($problem["type"]=="java") {
     //$preHash = "$userId:$problemId:$assignmentId:$problemName:$state";
     $preHash = "$userId:$problemId:$problemName:$state";
     $verifierKey = substr(md5($preHash),0,8);
+
+    $urlBase = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $urlBase = substr($urlBase, 0, 1+strrpos($urlBase, '/'));
+
     ?>
 
     <?php if($userId == 0) { ?>
@@ -136,6 +140,7 @@ if ($problem["type"]=="java") {
         <param name="problemName" value="<?php echo $problemName ?>"/>
         <param name="exerciseState" value="<?php echo $state; ?>">
         <param name="verifierKey" value="<?php echo $verifierKey; ?>"/>
+        <param name="urlBase" value="<?php echo  ?>"/>
         Java 1.6 or higher is required to run this applet. Please download a JRE from <a href="http://www.java.com">www.java.com</a>.
     </applet>
 </div>
