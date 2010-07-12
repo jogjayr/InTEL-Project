@@ -9,15 +9,22 @@ if (!isAdmin()) {
     redirect('index.php');
 }
 
+if($_GET['action']=='delete') {
+    $id = t2sql($_GET['id']);
+    deleteUser($id);
+    redirect("manageAccounts.php");
+}
+
+
 require_once('header.php');
 ?>
 <script type="text/javascript">
-    //    function confirm_delete(dest){
-    //        var r=confirm("Are you sure you want to delete this account?");
-    //        if (r==true){
-    //            window.location = dest;
-    //        }
-    //    }
+    function confirm_delete(id){
+        var r=confirm("Are you sure you want to delete this account?");
+        if (r==true){
+            window.location = "manageAccounts.php?action=delete&id="+id;
+        }
+    }
 
     var existingEdit = -1;
     function show_edit(id) {
@@ -34,6 +41,7 @@ require_once('header.php');
         <th>Last Name</th>
         <th>Account Type</th>
         <th>Section</th>
+        <th>Account Created</th>
         <th>Last Login</th>
         <th class="unsortable"></th>
         <th class="unsortable"></th>
@@ -53,6 +61,7 @@ require_once('header.php');
             $class = $class['description'];
         }
 
+        $createdTime = date("g:i a m/d/y", $userEntry['created_on']);
         $lastLogin = date("g:i a m/d/y", $userEntry['last_login']);
 
         echo "<tr>";
@@ -62,9 +71,11 @@ require_once('header.php');
         echo "<td>{$userEntry['last_name']}</td>";
         echo "<td>" . getUserType($entryUuid) . "</td>";
         echo "<td>{$class}</td>";
+        echo "<td>{$createdTime}</td>";
         echo "<td>{$lastLogin}</td>";
         echo "<td>edit</td>";
-        echo "<td>delete</td>";
+        //echo "<td>delete</td>";
+        echo '<td><a href="#" onclick="confirm_delete(' . $userEntry['id'] . ')">delete</a></td>';
         echo "</tr>";
     }
     ?>

@@ -574,4 +574,25 @@ function getUsersByName($userName) {
 
     return $results;
 }
+
+/**
+ * Attempts to delete the given user.
+ * @global resource $db
+ * @param int $userId
+ * @return boolean
+ */
+function deleteUser($userId) {
+    global $db;
+
+    $date = mktime();
+
+    $query = "UPDATE app_user
+              SET is_active=0, updated_on='{$date}'
+              WHERE id={$userId}";
+
+    query($query, $db);
+
+    return true;
+}
+
 ?>
