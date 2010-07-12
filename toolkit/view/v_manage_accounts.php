@@ -16,7 +16,7 @@ if (!isAdmin()) {
 //}
 
 if (isset($_POST['editAccount'])) {
-    $id = t2sql($_POST['id']);
+    $id = t2sql($_POST['user_id']);
     $accountType = t2sql($_POST['accountType']);
 
     $query = "UPDATE app_user SET account_type='$accountType' WHERE id='$id'";
@@ -52,7 +52,8 @@ require_once('header.php');
             "<td id=\"section\"/>"+
             "<td id=\"accountCreated\"/>"+
             //            "<td id=\"lastLogin\"/>"+
-        "<td><input type=\"submit\" name=\"editAccount\"></td>"+
+            "<td><input type=\"hidden\" name=\"user_id\" value=\""+id+"\">"+
+            "<input type=\"submit\" name=\"editAccount\"></td>"+
             "<td><a href=\"javascript:cancel_edit("+id+")\">cancel</a></td>"+
             "</tr>";
         $("#row"+id).after(editContents);
