@@ -34,6 +34,7 @@ require_once('header.php');
         <th>Last Name</th>
         <th>Account Type</th>
         <th>Section</th>
+        <th>Last Login</th>
         <th class="unsortable"></th>
         <th class="unsortable"></th>
     </tr>
@@ -52,6 +53,8 @@ require_once('header.php');
             $class = $class['description'];
         }
 
+        $lastLogin = date("g:i a m/d/y", $userEntry['last_login']);
+
         echo "<tr>";
         echo "<td>{$userEntry['id']}</td>";
         echo "<td>{$userEntry['email']}</td>";
@@ -59,6 +62,7 @@ require_once('header.php');
         echo "<td>{$userEntry['last_name']}</td>";
         echo "<td>" . getUserType($entryUuid) . "</td>";
         echo "<td>{$class}</td>";
+        echo "<td>{$lastLogin}</td>";
         echo "<td>edit</td>";
         echo "<td>delete</td>";
         echo "</tr>";
