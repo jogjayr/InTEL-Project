@@ -118,6 +118,8 @@ require_once('header.php');
             $createdTime = date("g:i a m/d/y", $userEntry['created_on']);
             $lastLogin = date("g:i a m/d/y", $userEntry['last_login']);
 
+            $urlEdit = "javascript:show_edit({$userEntry['id']})";
+
             echo '<tr id="row' . $userEntry['id'] . '">';
             echo "<td>{$userEntry['id']}</td>";
             echo "<td>{$userEntry['email']}</td>";
@@ -127,7 +129,8 @@ require_once('header.php');
             echo "<td>{$class}</td>";
             echo "<td>{$createdTime}</td>";
             echo "<td>{$lastLogin}</td>";
-            echo "<td>edit</td>";
+//            echo "<td>edit</td>";
+            echo "<td><a href=\"$urlEdit\">edit</a></td>";
             //echo "<td>delete</td>";
 //        echo '<td><a href="#" onclick="confirm_delete(' . $userEntry['id'] . ')">delete</a></td>';
             echo "</tr>";
