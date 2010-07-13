@@ -18,10 +18,33 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
 
     global $db;
 
+    // first, get the session id.
+    $query = "SELECT * FROM app_problem_usage_sessions WHERE java_problem_session_id = {$sessionId}";
+    $results = aquery($query, $db);
+    if (sizeof($results) == 0) {
+        // insert a new row.
+        $query = "INSERT INTO app_problem_usage_sessions (problem_id, user_id, java_session_id, start_time, end_time)
+            VALUES ({$problemId}, {$userId}, {$sessionId}, now(), now())";
+        query($query, $db);
+
+        // try the select again
+        $query = "SELECT * FROM app_problem_usage_sessions WHERE java_problem_session_id = {$sessionId}";
+        $results = aquery($query, $db);
+        $sessionData = $results[0];
+    } else {
+        $sessionData = $results[0];
+        $query = "UPDATE app_problem_usage_sessions SET end_time=now() WHERE id={$sessionData['id']}";
+        query($query, $db);
+    }
+
     //add logger entry
-    $query =
-            "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, level, message, created_on)
-    VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', now())";
+
+    $query = "INSERT INTO app_problem_usage_log (session_id, java_class, java_method, level, message, created_on)
+        VALUES ({$sessionData['id']} ,'{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', now())";
+
+//    $query =
+//            "INSERT INTO app_problem_usage_log (problem_id, user_id, java_problem_session_id, java_class, java_method, level, message, created_on)
+//    VALUES ({$problemId}, {$userId}, {$sessionId}, '{$javaClass}', '{$javaMethod}', '{$level}', '{$message}', now())";
 
     query($query, $db);
 
