@@ -21,10 +21,10 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
     // first, get the session id.
     $query = "SELECT * FROM app_problem_usage_sessions WHERE java_problem_session_id = {$sessionId}";
     $results = aquery($query, $db);
-    if (sizeof($results) == 0) {
+    if (count($results) == 0) {
         // insert a new row.
         $query = "INSERT INTO app_problem_usage_sessions (problem_id, user_id, java_session_id, start_time, end_time)
-            VALUES ({$problemId}, {$userId}, {$sessionId}, now(), now())";
+            VALUES ({$problemId}, {$userId}, '{$sessionId}', now(), now())";
         query($query, $db);
 
         // try the select again
