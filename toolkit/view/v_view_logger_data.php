@@ -1,6 +1,5 @@
 <?php
 require_once('admin/initvars.php');
-$title = 'Logger Data';
 
 requireLogin();
 
@@ -9,75 +8,40 @@ if (!isAdmin()) {
     redirect('index.php');
 }
 
+$title = 'Logger Data';
 require_once('header.php');
 
-// *******
-// function declarations
 
-function getSessionTime($sessionId) {
-    global $db;
-    $sessionTimeResult = aquery("SELECT MAX(created_on)-MIN(created_on) as time FROM app_problem_usage_log WHERE java_problem_session_id=$sessionId", $db);
-    $sessionTime = $sessionTimeResult[0]['time'];
-    return $sessionTime;
-}
 
-$sessionId = '';
-if (isset($_GET['session'])) {
-    $sessionId = addslashes($_GET['session']);
-}
-
-if ($sessionId == '') {
-
-    // following is index of sessions
-    $sessionResults = aquery("SELECT DISTINCT java_problem_session_id FROM app_problem_usage_log", $db);
+$query = "SELECT * FROM app_problem_usage_sessions, app_user, app_problem WHERE 
+    app_user.id = user_id AND app_problem.id = problem_id";
+$results = aquery($query, $db);
 ?>
 
-    <h1>All Log Sessions</h1>
-    <table>
-        <tr>
-            <th>Session ID</th>
-            <th>Time spent</th>
-        </tr>
+<h2>Session index</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>user</th>
+        <th>problem</th>
+        <th>start time</th>
+        <th>end time</th>
+        <th>duration</th>
+    </tr>
     <?php
-    foreach ($sessionResults as $result) {
-        $sessionId = $result['java_problem_session_id'];
-        $sessionTime = getSessionTime($sessionId);
-
+    foreach ($results as $appSession) {
         echo "<tr>";
-        echo "<td><a href=\"viewLoggerData.php?session=$sessionId\">$sessionId</a></td>";
-        echo "<td>$sessionTime</td>";
+        echo "<td>{$appSession['id']}</td>";
+        echo "<td>{$appSession['first_name']} {$appSession['last_name']}</td>";
+        echo "<td>{$appSession['name']}</td>";
+        echo "<td>{$appSession['start_time']}</td>";
+        echo "<td>{$appSession['end_time']}</td>";
+        echo "<td></td>";
         echo "</tr>";
     }
     ?>
 </table>
 
 <?php
-} else {
-    // following is query of specific session
-    $results = aquery("SELECT * FROM app_problem_usage_log WHERE java_problem_session_id = $sessionId ORDER BY created_on", $db);
-?>
-
-    <h1>Log Session: <?php echo $sessionId; ?></h1>
-    <table>
-        <tr>
-            <th>Class</th>
-            <th>Method</th>
-            <th>Message</th>
-        </tr>
-    <?php
-    foreach ($results as $result) {
-        echo "<tr>";
-        echo "<td>{$result['java_class']}</td>";
-        echo "<td>{$result['java_method']}</td>";
-        echo "<td>{$result['message']}</td>";
-        echo "</tr>";
-    }
-    ?>
-</table>
-
-
-<?php
-}
-
 require_once('footer.php');
 ?>
