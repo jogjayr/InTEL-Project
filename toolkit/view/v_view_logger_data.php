@@ -33,12 +33,9 @@ $results = aquery($query, $db);
     foreach ($results as $appSession) {
         echo "<tr>";
 
-        $startTimestamp = strtotime($appSession['start_time']);
-        $endTimestamp = strtotime($appSession['end_time']);
-
-        $startTime = date("g:i a m/d/y", $startTimestamp);
-        $endTime = date("g:i a m/d/y", $endTimestamp);
-        $duration = date_diff($startTimestamp, $endTimestamp);
+        $startTime = date("g:i a m/d/y", strtotime($appSession['start_time']));
+        $endTime = date("g:i a m/d/y", strtotime($appSession['end_time']));
+        $duration = date_diff($appSession['start_time'], $appSession['end_time']);
 
         echo "<td>{$appSession['session_id']}</td>";
         echo "<td>{$appSession['first_name']} {$appSession['last_name']}</td>";
