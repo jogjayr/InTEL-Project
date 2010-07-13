@@ -19,7 +19,8 @@ $results = aquery($query, $db);
 ?>
 
 <h2>Session index</h2>
-<table>
+<script type="text/javascript" src="js/sortable.js"></script>
+<table class="sortable" id="sortabletable">
     <tr>
         <th>id</th>
         <th>user</th>
@@ -31,6 +32,7 @@ $results = aquery($query, $db);
     <?php
     foreach ($results as $appSession) {
         echo "<tr>";
+        print_r($appSession);
         echo "<td>{$appSession['id']}</td>";
         echo "<td>{$appSession['first_name']} {$appSession['last_name']}</td>";
         echo "<td>{$appSession['name']}</td>";
