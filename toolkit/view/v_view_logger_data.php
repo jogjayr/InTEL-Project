@@ -40,7 +40,6 @@ $results = aquery($query, $db);
         $endTime = date("g:i a m/d/y", $endTimestamp);
         $duration = date_diff($startTimestamp, $endTimestamp);
 
-        print_r($appSession);
         echo "<td>{$appSession['session_id']}</td>";
         echo "<td>{$appSession['first_name']} {$appSession['last_name']}</td>";
         echo "<td>{$appSession['name']}</td>";
