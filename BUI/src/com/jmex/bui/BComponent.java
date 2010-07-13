@@ -780,9 +780,9 @@ public class BComponent {
             //if (_colors[ii] == null) {
             _colors[ii] = style.getColor(this, getStatePseudoClass(ii));
             //}
-            if (_insets[ii] == null) {
+//            if (_insets[ii] == null) {
                 _insets[ii] = style.getInsets(this, getStatePseudoClass(ii));
-            }
+//            }
 
             if (_borders[ii] == null) {
                 _borders[ii] = style.getBorder(this, getStatePseudoClass(ii));
