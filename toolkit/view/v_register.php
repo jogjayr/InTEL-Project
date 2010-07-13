@@ -35,10 +35,10 @@ if (isset($_POST['submit'])) {
         $success = false;
     }
     //check for valid email address
-    if ($success && !isEmailAddress($emailAddress)) {
-        $err = 'Please enter a valid email address.';
-        $success = false;
-    }
+//    if ($success && !isEmailAddress($emailAddress)) {
+//        $err = 'Please enter a valid email address.';
+//        $success = false;
+//    }
     //check if passwords match
     if ($success && $password != $password2) {
         $err = 'The passwords do not match.';
