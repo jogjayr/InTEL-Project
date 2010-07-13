@@ -19,7 +19,7 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
     global $db;
 
     // first, get the session id.
-    $query = "SELECT * FROM app_problem_usage_sessions WHERE java_problem_session_id = {$sessionId}";
+    $query = "SELECT * FROM app_problem_usage_sessions WHERE java_session_id = '$sessionId'";
     $results = aquery($query, $db);
     if (count($results) == 0) {
         // insert a new row.
@@ -28,7 +28,7 @@ function post_logger($problemId, $userId, $sessionId, $javaClass, $javaMethod, $
         query($query, $db);
 
         // try the select again
-        $query = "SELECT * FROM app_problem_usage_sessions WHERE java_problem_session_id = {$sessionId}";
+        $query = "SELECT * FROM app_problem_usage_sessions WHERE java_session_id = {$sessionId}";
         $results = aquery($query, $db);
         $sessionData = $results[0];
     } else {
