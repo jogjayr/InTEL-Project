@@ -13,7 +13,7 @@ require_once('header.php');
 
 
 
-$query = "SELECT * FROM app_problem_usage_sessions, app_user, app_problem WHERE 
+$query = "SELECT *,app_problem_usage_sessions.id AS session_id  FROM app_problem_usage_sessions, app_user, app_problem WHERE
     app_user.id = user_id AND app_problem.id = problem_id";
 $results = aquery($query, $db);
 ?>
@@ -32,13 +32,21 @@ $results = aquery($query, $db);
     <?php
     foreach ($results as $appSession) {
         echo "<tr>";
+
+        $startTimestamp = strtotime($appSession['start_time']);
+        $endTimestamp = strtotime($appSession['end_time']);
+
+        $startTime = date("g:i a m/d/y", $startTimestamp);
+        $endTime = date("g:i a m/d/y", $endTimestamp);
+        $duration = date_diff($startTimestamp, $endTimestamp);
+
         print_r($appSession);
-        echo "<td>{$appSession['id']}</td>";
+        echo "<td>{$appSession['session_id']}</td>";
         echo "<td>{$appSession['first_name']} {$appSession['last_name']}</td>";
         echo "<td>{$appSession['name']}</td>";
-        echo "<td>{$appSession['start_time']}</td>";
-        echo "<td>{$appSession['end_time']}</td>";
-        echo "<td></td>";
+        echo "<td>{$startTime}</td>";
+        echo "<td>{$endTime}</td>";
+        echo "<td>{$duration}</td>";
         echo "</tr>";
     }
     ?>
