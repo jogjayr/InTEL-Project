@@ -17,7 +17,6 @@ import edu.gatech.statics.util.SolveListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,7 +36,7 @@ abstract public class Connector extends SimulationObject implements ResolvableBy
             return;
         }
 
-        Logger.getLogger("Statics").info("Solving the reactions in " + this + ": " + reactions + " from " + solveBody);
+        StaticsApplication.logger.info("Solving the reactions in " + this + ": " + reactions + " from " + solveBody);
 
         //solvedReactions = reactions;
         List<Vector> negatedReactions = new ArrayList<Vector>();

@@ -4,12 +4,12 @@
  */
 package edu.gatech.statics.exercise.persistence;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.tasks.Task;
 import java.beans.Expression;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 /**
  *
@@ -48,13 +48,13 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
                     if (result instanceof SimulationObject) {
                         SimulationObject obj = Exercise.getExercise().getSchematic().getByName(name);
                         if(obj == null) {
-                            Logger.getLogger("Statics").warning("Could not find an object by name: \""+name+"\"");
+                            StaticsApplication.logger.warning("Could not find an object by name: \""+name+"\"");
                         }
                         return obj;
                     } else if(result instanceof Task) {
                         return Exercise.getExercise().getTask(name);
                     } else {
-                        Logger.getLogger("Statics").warning("Could not find an object by name: \""+name+"\"");
+                        StaticsApplication.logger.warning("Could not find an object by name: \""+name+"\"");
                     }
                 }
                 return result;

@@ -15,7 +15,6 @@ import edu.gatech.statics.modes.equation.actions.SetMomentPoint;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.util.SelectionFilter;
-import java.util.logging.Logger;
 
 /**
  *
@@ -55,7 +54,7 @@ public class PointSelector extends Tool {
             return;
         }
 
-        Logger.getLogger("Statics").info("Selected... " + obj);
+        StaticsApplication.logger.info("Selected... " + obj);
 
         if (obj != null) {
 

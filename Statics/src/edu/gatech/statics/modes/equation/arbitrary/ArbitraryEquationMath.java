@@ -14,9 +14,7 @@ import edu.gatech.statics.modes.equation.*;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.actions.LockEquation;
-import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import java.util.List;
-import java.util.logging.Logger;
 /**
  * EquationMath is the logical end of managing the equations in the equation mode.
  * Specifically, the job of this class is to perform the equation check, to make sure
@@ -48,12 +46,12 @@ public class ArbitraryEquationMath extends EquationMath {
         //List<Load> allLoads = getDiagramLoads();
         List<AnchoredVector> allLoads = diagram.getDiagramLoads();
 
-        Logger.getLogger("Statics").info("check: allForces: " + allLoads);
+        StaticsApplication.logger.info("check: allForces: " + allLoads);
 
         FrictionEquationRecognizer fer = new FrictionEquationRecognizer();
 
         if(!fer.isValid(state, diagram.getFBD())){
-            Logger.getLogger("Statics").info("check: arbitrary equation" + state + " does not evaluate correctly \n");
+            StaticsApplication.logger.info("check: arbitrary equation" + state + " does not evaluate correctly \n");
             return false;
         }
 
@@ -65,10 +63,10 @@ public class ArbitraryEquationMath extends EquationMath {
 //
 //            if (error != TermError.none) {
 //
-//                Logger.getLogger("Statics").info("check: term does not evaluate correctly: \"" + coefficient + "\"");
-//                Logger.getLogger("Statics").info("check: for vector: \"" + load.toString() + "\"");
-//                //Logger.getLogger("Statics").info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
-//                //Logger.getLogger("Statics").info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
+//                StaticsApplication.logger.info("check: term does not evaluate correctly: \"" + coefficient + "\"");
+//                StaticsApplication.logger.info("check: for vector: \"" + load.toString() + "\"");
+//                //StaticsApplication.logger.info("check: evaluates to: " + (term.coefficientAffineValue == null ? term.coefficientValue : term.coefficientAffineValue));
+//                //StaticsApplication.logger.info("check: should be: " + (term.targetValue == null ? term.targetAffineValue : term.targetValue));
 //
 //                reportError(error, load, coefficient);
 //                return false;
@@ -79,7 +77,7 @@ public class ArbitraryEquationMath extends EquationMath {
         LockEquation lockEquationAction = new LockEquation(name, true);
         diagram.performAction(lockEquationAction);
 
-        Logger.getLogger("Statics").info("check: PASSED!");
+        StaticsApplication.logger.info("check: PASSED!");
         StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_success");
         return true;
     }

@@ -15,7 +15,6 @@ import com.jmex.bui.background.TintedBackground;
 import com.jmex.bui.border.LineBorder;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.event.ComponentListener;
 import com.jmex.bui.event.KeyEvent;
 import com.jmex.bui.event.KeyListener;
 import com.jmex.bui.event.MouseAdapter;
@@ -46,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 /**
  *
@@ -391,7 +389,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         //boolean firstTime = !diagram.getCurrentState().isLocked();
         //!diagram.getWorksheet().isSolved();
-        Logger.getLogger("Statics").info("Attempting to solve the equations...");
+        StaticsApplication.logger.info("Attempting to solve the equations...");
         Map<Quantity, Float> solution = diagram.getWorksheet().solve();
         if (solution != null) {
 
@@ -428,9 +426,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
         // do a little check here for submission.
         if (solution == null) {
-            Logger.getLogger("Statics").info("system solve: no result (incomplete or no solution)");
+            StaticsApplication.logger.info("system solve: no result (incomplete or no solution)");
         } else {
-            Logger.getLogger("Statics").info("system solve: PASSED!");
+            StaticsApplication.logger.info("system solve: PASSED!");
             //StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved");
             if (Exercise.getExercise().isExerciseFinished()) {
                 StaticsApplication.getApp().setStaticsFeedbackKey("equation_system_solved_done");

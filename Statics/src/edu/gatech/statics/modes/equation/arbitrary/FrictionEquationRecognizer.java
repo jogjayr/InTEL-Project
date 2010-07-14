@@ -49,8 +49,8 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                         nodeMap.put("N", opNode.getRightNode());
 
                     } else {
-                        Logger.getLogger("Statics").info("check: improper friction equation");
-                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.logger.info("check: improper friction equation");
+                        StaticsApplication.logger.info("check: FAILED");
 
                         StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                         return null;
@@ -64,22 +64,22 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                         nodeMap.put("mu", opNode.getRightNode());
 
                     } else {
-                        Logger.getLogger("Statics").info("check: improper friction equation");
-                        Logger.getLogger("Statics").info("check: FAILED");
+                        StaticsApplication.logger.info("check: improper friction equation");
+                        StaticsApplication.logger.info("check: FAILED");
 
                         StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                         return null;
                     }
                 } else {
-                    Logger.getLogger("Statics").info("check: improper friction equation");
-                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.logger.info("check: improper friction equation");
+                    StaticsApplication.logger.info("check: FAILED");
 
                     StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
                 }
             } else {
-                Logger.getLogger("Statics").info("check: improper friction equation");
-                Logger.getLogger("Statics").info("check: FAILED");
+                StaticsApplication.logger.info("check: improper friction equation");
+                StaticsApplication.logger.info("check: FAILED");
 
                 StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                 return null;
@@ -97,8 +97,8 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                     nodeMap.put("N", opNode.getRightNode());
 
                 } else {
-                    Logger.getLogger("Statics").info("check: improper friction equation");
-                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.logger.info("check: improper friction equation");
+                    StaticsApplication.logger.info("check: FAILED");
 
                     StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
@@ -112,15 +112,15 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                     nodeMap.put("mu", opNode.getRightNode());
 
                 } else {
-                    Logger.getLogger("Statics").info("check: improper friction equation");
-                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.logger.info("check: improper friction equation");
+                    StaticsApplication.logger.info("check: FAILED");
 
                     StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                     return null;
                 }
             } else {
-                Logger.getLogger("Statics").info("check: improper friction equation");
-                Logger.getLogger("Statics").info("check: FAILED");
+                StaticsApplication.logger.info("check: improper friction equation");
+                StaticsApplication.logger.info("check: FAILED");
 
                 StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
                 return null;
@@ -130,8 +130,8 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
                 nodeMap.put("f", state.getRightSide());
             }
         } else {
-            Logger.getLogger("Statics").info("check: improper friction equation");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: improper friction equation");
+            StaticsApplication.logger.info("check: FAILED");
 
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_validate");
             return null;
@@ -176,8 +176,8 @@ public class FrictionEquationRecognizer extends EquationRecognizer {
         }
 
         if (!muNode.getSymbol().equals(cp.getFrictionCoefficient().getName())) {
-            Logger.getLogger("Statics").info("check: wrong friction coefficient selected. Expected: " + cp.getFrictionCoefficient());
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: wrong friction coefficient selected. Expected: " + cp.getFrictionCoefficient());
+            StaticsApplication.logger.info("check: FAILED");
 
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_friction_equation_coefficient");
             return false;

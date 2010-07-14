@@ -45,8 +45,8 @@ import edu.gatech.newbeans.Expression;
 import edu.gatech.newbeans.PersistenceDelegate;
 import edu.gatech.newbeans.Statement;
 import edu.gatech.newbeans.XMLEncoder;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.centroid.CentroidBody;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Fix2d;
@@ -297,7 +297,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setExceptionListener(new ExceptionListener() {
 
             public void exceptionThrown(Exception e) {
-                Logger.getLogger("Statics").log(Level.WARNING, "Persistence failed!", e);
+                StaticsApplication.logger.log(Level.WARNING, "Persistence failed!", e);
             }
         });
     }
@@ -314,7 +314,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
             super.writeObject(o);
         } catch (RuntimeException ex) {
             // pick up an exception that might have been thrown and adds some logging
-            Logger.getLogger("Statics").log(Level.WARNING, "Persistence of " + o.getClass().getName() + " (" + o + ") caused an exception...");
+            StaticsApplication.logger.log(Level.WARNING, "Persistence of " + o.getClass().getName() + " (" + o + ") caused an exception...");
             throw ex;   
         }
     }

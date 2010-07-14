@@ -8,11 +8,9 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AffineQuantity;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import java.math.BigDecimal;
-import java.util.logging.Logger;
 
 /**
  *
@@ -81,8 +79,8 @@ public class EquationMathForces extends TermEquationMath {
 
         if (error == TermError.doesNotBelong && load.getUnit() == Unit.moment) {
 
-            Logger.getLogger("Statics").info("check: equation has unnecessary moment term: " + load);
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: equation has unnecessary moment term: " + load);
+            StaticsApplication.logger.info("check: FAILED");
 
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessaryMoment", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;

@@ -63,6 +63,8 @@ import java.util.logging.Logger;
  */
 public class StaticsApplication {
 
+    public static final Logger logger = Logger.getLogger("Statics");
+
     private static StaticsApplication app;
     private static Lock cleanupLock = new ReentrantLock();
 
@@ -152,7 +154,7 @@ public class StaticsApplication {
 
         if (diagram == null) {
             // this is an exceptional condition?
-            Logger.getLogger("Statics").info("key does not have a diagram? " + key);
+            logger.info("key does not have a diagram? " + key);
         } else {
             setCurrentDiagram(diagram);
             Mode newMode = diagram.getMode();
@@ -199,28 +201,28 @@ public class StaticsApplication {
     private String defaultUIFeedback = java.util.ResourceBundle.getBundle("rsrc/Strings").getString("advice_StaticsApplication_welcome");
 
     public void setStaticsFeedbackKey(String key, Object... formatTerms) {
-        Logger.getLogger("Statics").info("Setting advice key: " + key);
+        logger.info("Setting advice key: " + key);
         String advice;
         if (formatTerms == null || formatTerms.length == 0) {
             advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
         } else {
             advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
-        Logger.getLogger("Statics").info("Setting advice: " + advice);
+        logger.info("Setting advice: " + advice);
         if (iRoot != null) {
             iRoot.setStaticsFeedback(advice);
         }
     }
 
     public void setUIFeedbackKey(String key, Object... formatTerms) {
-        Logger.getLogger("Statics").info("Setting advice key: " + key);
+        logger.info("Setting advice key: " + key);
         String advice;
         if (formatTerms == null || formatTerms.length == 0) {
             advice = java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key);
         } else {
             advice = String.format(java.util.ResourceBundle.getBundle("rsrc/Strings").getString(key), formatTerms);
         }
-        Logger.getLogger("Statics").info("Setting advice: " + advice);
+        logger.info("Setting advice: " + advice);
         if (iRoot != null) {
             iRoot.setUIFeedback(advice);
         }
@@ -288,9 +290,9 @@ public class StaticsApplication {
     }
 
     public void setCurrentDiagram(Diagram diagram) {
-        Logger.getLogger("Statics").info("Loading diagram: " + diagram);
+        logger.info("Loading diagram: " + diagram);
         if (diagram instanceof SubDiagram) {
-            Logger.getLogger("Statics").info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
+            logger.info("Diagram bodies: " + ((SubDiagram) diagram).getBodySubset());
         }
 
         // complain if the diagram is null
@@ -554,9 +556,9 @@ public class StaticsApplication {
                     postAssignment = new PostAssignment(StaticsApplet.getInstance().getUrlBase());
                 }
                 logHandler = new DatabaseLogHandler(StaticsApplet.getInstance().getUrlBase());
-                Logger.getLogger("Statics").addHandler(logHandler);
+                logger.addHandler(logHandler);
             }
-            Logger.getLogger("Statics").info("Application init");
+            logger.info("Application init");
 
             try {
                 Properties systemProperties = System.getProperties();
@@ -564,9 +566,9 @@ public class StaticsApplication {
                 for (Entry<Object, Object> entry : systemProperties.entrySet()) {
                     sb.append("  " + entry.getKey() + "=" + entry.getValue() + ",\n");
                 }
-                Logger.getLogger("Statics").info("system properties: {\n" + sb + "}");
+                logger.info("system properties: {\n" + sb + "}");
             } catch (SecurityException ex) {
-                Logger.getLogger("Statics").info("Cannot record system properties");
+                logger.info("Cannot record system properties");
             }
 
             // initialization of the exercise
@@ -576,15 +578,15 @@ public class StaticsApplication {
             // if the application is being run without display, such as in unit tests,
             // then do not initialize the input
             if (display != null) {
-                Logger.getLogger("Statics").info("Application init: input");
+                logger.info("Application init: input");
                 initInput();
             } else {
-                Logger.getLogger("Statics").info("Application init: no display, forgoing input");
+                logger.info("Application init: no display, forgoing input");
             }
 
             //initExercise();
 
-            Logger.getLogger("Statics").info("Finished application init");
+            logger.info("Finished application init");
         } catch (Exception ex) {
             throw new Error("Error in loading the application!", ex);
         }
@@ -598,10 +600,10 @@ public class StaticsApplication {
         try {
 
             // load exercise here
-            Logger.getLogger("Statics").info("Application init: loading exercise");
+            logger.info("Application init: loading exercise");
             getExercise().loadExercise();
             getExercise().applyParameters();
-            Logger.getLogger("Statics").info("Application init: finished loading exercise!");
+            logger.info("Application init: finished loading exercise!");
 
             // initialize the exercise's specific interface configuration.
             // do not do this if the interface has not been initialized, of course.
@@ -618,7 +620,7 @@ public class StaticsApplication {
 
 
             getExercise().postLoadExercise();
-            Logger.getLogger("Statics").info("Application init: finished post loading exercise!");
+            logger.info("Application init: finished post loading exercise!");
 
             // load the state if this is an applet.
             if (StaticsApplet.getInstance() != null) {
@@ -704,7 +706,7 @@ public class StaticsApplication {
         JoystickInput.destroyIfInitalized();
 
         if (logHandler != null) {
-            Logger.getLogger("Statics").removeHandler(logHandler);
+            logger.removeHandler(logHandler);
         }
         display.close();
     }

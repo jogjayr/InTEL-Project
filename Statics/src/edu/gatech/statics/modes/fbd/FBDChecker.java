@@ -18,7 +18,6 @@ import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.bodies.Cable;
-import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
@@ -27,7 +26,6 @@ import edu.gatech.statics.util.Pair;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -141,7 +139,7 @@ public class FBDChecker {
 
     private void logInfo(String info) {
         if (verbose) {
-            Logger.getLogger("Statics").info(info);
+            StaticsApplication.logger.info(info);
         }
     }
 

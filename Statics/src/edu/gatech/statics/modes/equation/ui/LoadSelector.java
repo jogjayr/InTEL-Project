@@ -11,7 +11,6 @@ import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.util.SelectionFilter;
-import java.util.logging.Logger;
 
 /**
  *
@@ -51,7 +50,7 @@ public class LoadSelector extends Tool {
             return;
         }
 
-        Logger.getLogger("Statics").info("Selected... " + obj);
+        StaticsApplication.logger.info("Selected... " + obj);
 
         // when we have selected the object, attempt to add it
         EquationNode toReplaceWith;

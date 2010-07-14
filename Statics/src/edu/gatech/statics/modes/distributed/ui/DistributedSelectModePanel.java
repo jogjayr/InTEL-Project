@@ -4,12 +4,12 @@
  */
 package edu.gatech.statics.modes.distributed.ui;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.select.SelectState;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,7 +29,7 @@ public class DistributedSelectModePanel extends SelectModePanel {
             } else if (firstSelected instanceof DistributedForceObject) {
                 nextButton.setText("Find Resultant");
             } else {
-                Logger.getLogger("Statics").info("Unknown selection: " + firstSelected);
+                StaticsApplication.logger.info("Unknown selection: " + firstSelected);
             }
         }
     }

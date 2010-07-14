@@ -23,7 +23,6 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -174,7 +173,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             dlObj.setDisplayGrayed(true);
             resultant.setDisplayGrayed(false);
 
-            Logger.getLogger("Statics").info("Setting the resultant to solved");
+            StaticsApplication.logger.info("Setting the resultant to solved");
 
             // ************ NON STATE CHANGE
             getDistributedForce().getSurface().addObject(resultant);
@@ -207,7 +206,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
             for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
                 listener.onLoadSolved(resultant);
             }
-            Logger.getLogger("Statics").info("Setting the resultant to solved: done");
+            StaticsApplication.logger.info("Setting the resultant to solved: done");
         } else {
             dlObj.setDisplayGrayed(false);
             resultant.setDisplayGrayed(true);

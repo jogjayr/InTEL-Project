@@ -14,7 +14,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,25 +38,25 @@ public class AppletLauncher extends StaticsApplet {
 
             configureAppletData(exercise);
 
-            Logger.getLogger("Statics").info("Exercise loaded!");
+            StaticsApplication.logger.info("Exercise loaded!");
 
             super.init();
             getApplication().setExercise(exercise);
 
         } catch (NullPointerException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Could not load exercise", ex);
             showError();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Could not load exercise", ex);
             showError();
         } catch (ClassCastException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Could not load exercise", ex);
             showError();
         } catch (IllegalAccessException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Could not load exercise", ex);
             showError();
         } catch (InstantiationException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Could not load exercise", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Could not load exercise", ex);
             showError();
         }
     }
@@ -79,12 +78,12 @@ public class AppletLauncher extends StaticsApplet {
 
         String exerciseState = getParameter("exerciseState");
         if (exerciseState != null && !exerciseState.trim().equals("")) {
-            Logger.getLogger("Statics").info("Loading state...");
+            StaticsApplication.logger.info("Loading state...");
             try {
                 StateIO.loadState(exerciseState);
-                Logger.getLogger("Statics").info("Finished loading state!");
+                StaticsApplication.logger.info("Finished loading state!");
             } catch (Exception ex) {
-                Logger.getLogger("Statics").log(Level.SEVERE, "Loading state failed. Continuing...", ex);
+                StaticsApplication.logger.log(Level.SEVERE, "Loading state failed. Continuing...", ex);
             }
         }
     }
@@ -104,14 +103,14 @@ public class AppletLauncher extends StaticsApplet {
         }
 
         if (userIDString == null || assignmentIDString == null) {
-            Logger.getLogger("Statics").info("Applet loaded, but user ID not recorded. Continuing anonymously.");
+            StaticsApplication.logger.info("Applet loaded, but user ID not recorded. Continuing anonymously.");
             return;
         }
-        Logger.getLogger("Statics").info("Applet loaded, user ID recorded. Continuing for credit.");
+        StaticsApplication.logger.info("Applet loaded, user ID recorded. Continuing for credit.");
 
         if (!checkVerifierKey()) {
             // this should also post an error message of some sort as well.
-            Logger.getLogger("Statics").severe("Verifier key does not check!! This is a problem. Continuing anonymously.");
+            StaticsApplication.logger.severe("Verifier key does not check!! This is a problem. Continuing anonymously.");
         }
 
         int exerciseID = Integer.valueOf(assignmentIDString);
@@ -144,7 +143,7 @@ public class AppletLauncher extends StaticsApplet {
             md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException ex) {
             // if this fails, we're in a bit of a snit.
-            Logger.getLogger("Statics").log(Level.SEVERE, "cannot find an MD5 digest!", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "cannot find an MD5 digest!", ex);
             return false;
         }
 
@@ -152,7 +151,7 @@ public class AppletLauncher extends StaticsApplet {
         try {
             digestBytes = md5.digest(preHash.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "cannot encode into UTF-8!", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "cannot encode into UTF-8!", ex);
             return false;
         }
 

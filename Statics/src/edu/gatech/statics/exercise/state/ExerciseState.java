@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.exercise.state;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -168,7 +168,7 @@ public class ExerciseState implements State {
 
             if (connectorReactions.isEmpty()) {
                 Exception ex = new IllegalArgumentException("attempting to call initReactions with an empty list!");
-                Logger.getLogger("Statics").log(Level.SEVERE, "Reactions for connector " + connectorName + " are empty!", ex);
+                StaticsApplication.logger.log(Level.SEVERE, "Reactions for connector " + connectorName + " are empty!", ex);
             // allow program to continue, but do not attempt to add the reaction.
             } else {
                 Connector connector = (Connector) Exercise.getExercise().getSchematic().getByName(connectorName);
@@ -188,7 +188,7 @@ public class ExerciseState implements State {
             return;
         }
 
-        Logger.getLogger("Statics").info("initParameters: setting parameters: " + parameters);
+        StaticsApplication.logger.info("initParameters: setting parameters: " + parameters);
         Exercise.getExercise().getState().exerciseParameters.putAll(parameters);
         Exercise.getExercise().applyParameters();
     }
@@ -203,7 +203,7 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
-        Logger.getLogger("Statics").info("initTasks: setting tasks: " + tasks);
+        StaticsApplication.logger.info("initTasks: setting tasks: " + tasks);
         for (Task task : tasks) {
             satisfyTask(task);
         }
@@ -219,12 +219,12 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
-        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + symbolicLoads);
+        StaticsApplication.logger.info("initSymbolManager: adding loads to symbol manager: " + symbolicLoads);
         for (Pair<Connector, AnchoredVector> pair : symbolicLoads) {
             Exercise.getExercise().getState().getSymbolManager().addSymbol(pair.getRight(), pair.getLeft());
         }
 
-        Logger.getLogger("Statics").info("initSymbolManager: adding constants to symbol manager: " + symbolicConstants);
+        StaticsApplication.logger.info("initSymbolManager: adding constants to symbol manager: " + symbolicConstants);
         for (ConstantObject constantObject : symbolicConstants) {
             Exercise.getExercise().getState().getSymbolManager().addSymbol(constantObject);
         }
@@ -235,7 +235,7 @@ public class ExerciseState implements State {
 //        if (encoding) {
 //            return;
 //        }
-//        Logger.getLogger("Statics").info("initSymbolManager: adding loads to symbol manager: " + loads);
+//        StaticsApplication.logger.info("initSymbolManager: adding loads to symbol manager: " + loads);
 //        for (AnchoredVector load : loads) {
 //            Exercise.getExercise().getState().getSymbolManager().addSymbol(load);
 //        }
@@ -252,7 +252,7 @@ public class ExerciseState implements State {
         if (encoding) {
             return;
         }
-        Logger.getLogger("Statics").info("initDiagram: key: " + key + " type: " + type + " state: " + state);
+        StaticsApplication.logger.info("initDiagram: key: " + key + " type: " + type + " state: " + state);
         Diagram diagram = Exercise.getExercise().createNewDiagram(key, type);
         diagram.pushState(state);
         diagram.clearStateStack();

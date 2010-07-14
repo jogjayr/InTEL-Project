@@ -110,7 +110,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     final public void undo() {
         states.undo();
-        Logger.getLogger("Statics").info("undo");
+        StaticsApplication.logger.info("undo");
         stateChanged();
         updateDiagram();
     }
@@ -120,7 +120,7 @@ public abstract class Diagram<StateType extends DiagramState> {
      */
     final public void redo() {
         states.redo();
-        Logger.getLogger("Statics").info("redo");
+        StaticsApplication.logger.info("redo");
         stateChanged();
         updateDiagram();
     }
@@ -176,13 +176,13 @@ public abstract class Diagram<StateType extends DiagramState> {
         if (isLocked() || !states.canPush()) {
             return;
         }
-        Logger.getLogger("Statics").info("perform action: " + action);
+        StaticsApplication.logger.info("perform action: " + action);
         StateType newState = action.performAction(getCurrentState());
 
         // only push the state if it is a change.
         if (!newState.equals(getCurrentState())) {
-            Logger.getLogger("Statics").info("state changed");
-            Logger.getLogger("Statics").info("  " + newState);
+            StaticsApplication.logger.info("state changed");
+            StaticsApplication.logger.info("  " + newState);
             states.push(newState);
             stateChanged();
         }
@@ -197,8 +197,8 @@ public abstract class Diagram<StateType extends DiagramState> {
      * @param state
      */
     final public void pushState(StateType state) {
-        Logger.getLogger("Statics").info("state changed");
-        Logger.getLogger("Statics").info("  " + state);
+        StaticsApplication.logger.info("state changed");
+        StaticsApplication.logger.info("  " + state);
         states.push(state);
         stateChanged();
     }
@@ -320,7 +320,7 @@ public abstract class Diagram<StateType extends DiagramState> {
         this.key = key;
 
         states = new StateStack<StateType>(createInitialState());
-        Logger.getLogger("Statics").info("Diagram created: " + this + " state: " + getCurrentState());
+        StaticsApplication.logger.info("Diagram created: " + this + " state: " + getCurrentState());
         //setSelectableFilterDefault();
 
         for (DiagramListener listener : StaticsApplication.getApp().getDiagramListeners()) {
@@ -346,7 +346,7 @@ public abstract class Diagram<StateType extends DiagramState> {
         if (nodesUpdated) {
             return;
         }
-        //Logger.getLogger("Statics").info("*** updating nodes");
+        //StaticsApplication.logger.info("*** updating nodes");
 
         nodesUpdated = true;
 
@@ -457,8 +457,8 @@ public abstract class Diagram<StateType extends DiagramState> {
      * By default this clears the state stack, and refreshes the display.
      */
     public void activate() {
-        Logger.getLogger("Statics").info("diagram activated (" + this + ")");
-        Logger.getLogger("Statics").info("  state is: " + getCurrentState().toString());
+        StaticsApplication.logger.info("diagram activated (" + this + ")");
+        StaticsApplication.logger.info("  state is: " + getCurrentState().toString());
         //setSelectableFilterDefault();
         clearStateStack();
         invalidateNodes();

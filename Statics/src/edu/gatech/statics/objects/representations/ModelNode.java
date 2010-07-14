@@ -17,6 +17,7 @@ import com.jmex.model.converters.AseToJme;
 import com.jmex.model.converters.MaxToJme;
 import com.jmex.model.converters.MilkToJme;
 import edu.gatech.statics.RepresentationLayer;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.SimulationObject;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -27,7 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -65,8 +65,8 @@ public class ModelNode {
         Node nextNode = rootNode;
         for (int i = 0; i < path.length; i++) {
             if (nextNode.getChild(path[i]) == null) {
-                Logger.getLogger("Statics").info("Cannot find element: \"" + path[i] + "\" within path " + elementPath);
-                Logger.getLogger("Statics").info("There do exist siblings " + nextNode.getChildren() + " at that level, though.");
+                StaticsApplication.logger.info("Cannot find element: \"" + path[i] + "\" within path " + elementPath);
+                StaticsApplication.logger.info("There do exist siblings " + nextNode.getChildren() + " at that level, though.");
                 throw new NullPointerException();
             }
             nextNode = (Node) nextNode.getChild(path[i]);
@@ -119,7 +119,7 @@ public class ModelNode {
                 SimpleResourceLocator locator = new SimpleResourceLocator(textureUrl.toURI());
                 ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, locator);
             } catch (URISyntaxException ex) {
-                Logger.getLogger("Statics").log(Level.SEVERE, null, ex);
+                StaticsApplication.logger.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -168,11 +168,11 @@ public class ModelNode {
 
             } else {
                 // ???
-                Logger.getLogger("Statics").warning("ModelRepresentation: Unrecognized file format: " + extension);
+                StaticsApplication.logger.warning("ModelRepresentation: Unrecognized file format: " + extension);
             }
 
         } catch (IOException e) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "IO error while loading file \"" + filename + "\"", e);
+            StaticsApplication.logger.log(Level.SEVERE, "IO error while loading file \"" + filename + "\"", e);
         }
         if (rootNode != null) {
             ModelNode modelNode = new ModelNode(rootNode);

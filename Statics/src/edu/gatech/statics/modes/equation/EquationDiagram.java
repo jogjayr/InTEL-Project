@@ -54,7 +54,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -173,7 +172,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             if (!anythingEntered) {
                 // we have a problem.
                 // there is nothing at all entered in the state itself, so we commit a new empty state.
-                Logger.getLogger("Statics").log(Level.SEVERE, "Encountered push for invalid state in the equation state");
+                StaticsApplication.logger.log(Level.SEVERE, "Encountered push for invalid state in the equation state");
                 pushState(createInitialState());
                 clearStateStack();
             }
@@ -225,7 +224,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
      * @param values
      */
     public void performSolve(Map<Quantity, Float> values) {
-        Logger.getLogger("Statics").info("Performing the solve (updating other diagrams with the solution)");
+        StaticsApplication.logger.info("Performing the solve (updating other diagrams with the solution)");
 
         // first, get the builder
         // lock the diagram

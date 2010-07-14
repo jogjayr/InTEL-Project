@@ -15,10 +15,7 @@ import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.math.expressionparser.Parser;
-import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.UnknownPoint;
 import java.math.BigDecimal;
-import java.util.logging.Logger;
 
 /**
  *
@@ -35,8 +32,8 @@ public class EquationMathMoments extends TermEquationMath {
     public boolean check() {
 
         if (getState().getMomentPoint() == null) {
-            Logger.getLogger("Statics").info("check: Moment point is not set!");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: Moment point is not set!");
+            StaticsApplication.logger.info("check: FAILED");
 
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_moment_point_not_set");
             return false;
@@ -204,33 +201,33 @@ public class EquationMathMoments extends TermEquationMath {
     protected void reportError(TermError error, AnchoredVector load,
             String coefficient) {
         if (error == TermError.shouldNotBeSymbolic) {
-            Logger.getLogger("Statics").info("check: should not be symbolic");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: should not be symbolic");
+            StaticsApplication.logger.info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_not_be_symbolic", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.shouldBeSymbolic) {
-            Logger.getLogger("Statics").info("check: should be symbolic");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: should be symbolic");
+            StaticsApplication.logger.info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_should_be_symbolic", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.wrongSymbol) {
-            Logger.getLogger("Statics").info("check: wrong symbol");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: wrong symbol");
+            StaticsApplication.logger.info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_symbol", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.missingInclination) {
-            Logger.getLogger("Statics").info("check: missing the inclination in the term");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: missing the inclination in the term");
+            StaticsApplication.logger.info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_inclination", load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.wrongUnits) {
-            Logger.getLogger("Statics").info("check: user used wrong units");
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: user used wrong units");
+            StaticsApplication.logger.info("check: FAILED");
             StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_wrong_units", Unit.distance.getSuffix(), load.getVector().getPrettyName(), load.getAnchor().getName());
             return;
         } else if (error == TermError.missedALoad) {
-            Logger.getLogger("Statics").info("check: equation has not added all terms: " + load);
-            Logger.getLogger("Statics").info("check: FAILED");
+            StaticsApplication.logger.info("check: equation has not added all terms: " + load);
+            StaticsApplication.logger.info("check: FAILED");
             if (load.getUnit() == Unit.moment) {
                 StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_couples");
                 return;

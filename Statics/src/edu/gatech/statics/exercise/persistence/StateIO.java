@@ -7,9 +7,7 @@ package edu.gatech.statics.exercise.persistence;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.state.ExerciseState;
-import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.windows.knownforces.KnownsContainer;
-import edu.gatech.statics.ui.windows.knownforces.KnownsSidebarWindow;
 import edu.gatech.statics.util.Base64;
 import edu.gatech.statics.util.SolveListener;
 import java.io.ByteArrayInputStream;
@@ -18,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -54,7 +51,7 @@ public class StateIO {
 
             loadState(s);
         } catch (Exception ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Exception in loading state", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Exception in loading state", ex);
         }
     }
 

@@ -10,8 +10,6 @@ package edu.gatech.statics.application;
 
 import com.jme.app.BaseGame;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,7 +40,7 @@ public class StaticsGame extends BaseGame {
         } catch (IllegalStateException ex) {
             // record
             //error.printStackTrace();
-            Logger.getLogger("Statics").log(Level.SEVERE, "Crash in update()", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Crash in update()", ex);
             finished = true;
             //alive = false;
 
@@ -56,7 +54,7 @@ public class StaticsGame extends BaseGame {
 
             // record
             //error.printStackTrace();
-            Logger.getLogger("Statics").log(Level.SEVERE, "Crash in update()", error);
+            StaticsApplication.logger.log(Level.SEVERE, "Crash in update()", error);
             finished = true;
 
 //            JOptionPane.showMessageDialog(StaticsApplet.this,

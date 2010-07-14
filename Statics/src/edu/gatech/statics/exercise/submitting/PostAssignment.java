@@ -4,17 +4,14 @@
  */
 package edu.gatech.statics.exercise.submitting;
 
-import edu.gatech.statics.application.StaticsApplet;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.exercise.persistence.StateIO;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -69,7 +66,7 @@ public class PostAssignment extends Poster {
             md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException ex) {
             // if this fails, we're in a bit of a snit.
-            Logger.getLogger("Statics").log(Level.SEVERE, "cannot find an MD5 digest!", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "cannot find an MD5 digest!", ex);
             return "ERROR";
         }
 
@@ -77,7 +74,7 @@ public class PostAssignment extends Poster {
         try {
             digestBytes = md5.digest(preHash.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "cannot encode into UTF-8!", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "cannot encode into UTF-8!", ex);
             return "ERROR";
         }
 
@@ -88,7 +85,7 @@ public class PostAssignment extends Poster {
 
     @Override
     protected void failedPost(Exception ex) {
-        Logger.getLogger("Statics").log(Level.SEVERE, "Cannot submit assignment progress!", ex);
+        StaticsApplication.logger.log(Level.SEVERE, "Cannot submit assignment progress!", ex);
 
         SubmittingErrorPopup popup = new SubmittingErrorPopup();
         popup.popup(0, 0, true);

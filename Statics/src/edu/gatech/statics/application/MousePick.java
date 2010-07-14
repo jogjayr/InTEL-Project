@@ -50,7 +50,6 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * <code>MousePick</code>
@@ -188,7 +187,7 @@ public class MousePick extends MouseInputAction {
     public void click(SimulationObject obj) {
         // check to see that the mouse is free first
         if (!InterfaceRoot.getInstance().hasMouse()) {
-            Logger.getLogger("Statics").info("Clicked on " + obj);
+            StaticsApplication.logger.info("Clicked on " + obj);
 
             if (StaticsApplication.getApp().getCurrentTool() != null) {
                 StaticsApplication.getApp().getCurrentTool().onClick(obj);

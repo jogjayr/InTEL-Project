@@ -37,8 +37,8 @@ public class DistributedFBDChecker extends FBDChecker {
                 DistributedDiagram distributedDiagram = (DistributedDiagram) Exercise.getExercise().getDiagram(dl, DistributedMode.instance.getDiagramType());
                 if (distributedDiagram == null || !distributedDiagram.getCurrentState().isLocked()) {
 
-                    Logger.getLogger("Statics").info("check: not all Distributed loads are solved");
-                    Logger.getLogger("Statics").info("check: FAILED");
+                    StaticsApplication.logger.info("check: not all Distributed loads are solved");
+                    StaticsApplication.logger.info("check: FAILED");
                     StaticsApplication.getApp().setStaticsFeedbackKey("distributed_feedback_fbd_check_unsolved_loads");
                     return false;
                 }

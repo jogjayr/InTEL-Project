@@ -4,17 +4,15 @@
  */
 package edu.gatech.statics.exercise;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Quantity;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.ConstantObject;
-import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.util.Pair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -79,7 +77,7 @@ public class SymbolManager {
             symbolicLoads.remove(old);
         }
 
-        Logger.getLogger("Statics").info("Adding to SymbolManager: " + load + " at connector: " + connector);
+        StaticsApplication.logger.info("Adding to SymbolManager: " + load + " at connector: " + connector);
 
         // add the new load
         symbols.add(load.getSymbolName());
@@ -141,7 +139,7 @@ public class SymbolManager {
 //                symbolicLoads.remove(old);
 //            }
 //
-//            Logger.getLogger("Statics").info("Adding to SymbolManager: " + load);
+//            StaticsApplication.logger.info("Adding to SymbolManager: " + load);
 //
 //            // add the new load
 //            symbols.add(load.getSymbolName());

@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.exercise.submitting;
 
+import edu.gatech.statics.application.StaticsApplication;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This posts messages to a web form
@@ -78,6 +78,7 @@ public class Poster {
 
     private void performPost(Map<String, String> data) {
 
+//        System.out.println("Poster: performing post");
         String postData = "";
         try {
             boolean first = true;
@@ -97,17 +98,19 @@ public class Poster {
                 postData += line;
             }
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger("Statics").log(Level.SEVERE, "Cannot use UTF encoding!?!", ex);
+            StaticsApplication.logger.log(Level.SEVERE, "Cannot use UTF encoding!?!", ex);
         }
 
         try {
             URL postURL = new URL(url);
 
+//            System.out.println("Poster: opening connection and sending data");
             URLConnection connection = postURL.openConnection();
             connection.setDoOutput(true);
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(postData);
             writer.flush();
+//            System.out.println("Poster: sent, getting response");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -116,6 +119,7 @@ public class Poster {
             }
 
             writer.close();
+//            System.out.println("Poster: done");
         } catch (IOException ex) {
             System.out.println("post failed!");
             failedPost(ex);

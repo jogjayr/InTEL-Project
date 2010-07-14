@@ -4,13 +4,13 @@
  */
 package edu.gatech.statics.modes.equation.solver;
 
+import edu.gatech.statics.application.StaticsApplication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -77,7 +77,7 @@ public class NonlinearEquationSystem implements EquationSystem {
         try {
             basis = new BuchbergerAlgorithm().findBasis(polys);
         } catch (ArithmeticException ex) {
-            Logger.getLogger("Statics").info("Could not process system due to arithmetic error: " + ex.getMessage());
+            StaticsApplication.logger.info("Could not process system due to arithmetic error: " + ex.getMessage());
         }
 
         if (basis == null) {

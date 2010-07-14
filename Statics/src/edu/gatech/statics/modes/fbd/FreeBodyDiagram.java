@@ -32,7 +32,6 @@ import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -185,7 +184,7 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
         if (getCurrentState().isLocked() && getCurrentState().getAddedLoads().isEmpty()) {
             // we have a problem.
             // there is nothing at all entered in the state itself, so we commit a new empty state.
-            Logger.getLogger("Statics").log(Level.SEVERE, "Encountered push for invalid state in the fbd state");
+            StaticsApplication.logger.log(Level.SEVERE, "Encountered push for invalid state in the fbd state");
             pushState(createInitialState());
             clearStateStack();
         }

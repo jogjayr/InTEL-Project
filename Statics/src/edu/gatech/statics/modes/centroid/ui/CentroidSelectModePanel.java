@@ -4,14 +4,13 @@
  */
 package edu.gatech.statics.modes.centroid.ui;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.centroid.CentroidBody;
-import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.select.SelectState;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
-import java.util.logging.Logger;
 
 /**
  * This class sets up the specific implementation of SelectModePanel for use in
@@ -39,7 +38,7 @@ public class CentroidSelectModePanel extends SelectModePanel {
             } else if (firstSelected instanceof Body) {
                 nextButton.setText("Create FBD");
             } else {
-                Logger.getLogger("Statics").info("Unknown selection: " + firstSelected);
+                StaticsApplication.logger.info("Unknown selection: " + firstSelected);
             }
         }
     }
