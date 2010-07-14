@@ -98,7 +98,7 @@ public class AppletLauncher extends StaticsApplet {
 
         // by default, have graded mode be true.
         // if testing mode is set, let graded be false.
-        if(testingMode == null && !userIDString.equals("0")) {
+        if (testingMode == null && !userIDString.equals("0")) {
             getApplication().setGraded(true);
         }
 
@@ -111,17 +111,23 @@ public class AppletLauncher extends StaticsApplet {
         if (!checkVerifierKey()) {
             // this should also post an error message of some sort as well.
             StaticsApplication.logger.severe("Verifier key does not check!! This is a problem. Continuing anonymously.");
+
+            JOptionPane.showMessageDialog(this,
+                    "There has been an error in decoding the state for the problem. The exercise will continue anonymously. "
+                    + "Please contact support if this is in error!",
+                    "Uh oh", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            int exerciseID = Integer.valueOf(assignmentIDString);
+            int userID = Integer.valueOf(userIDString);
+            int problemID = Integer.valueOf(problemIDString);
+
+            exercise.setAppletExerciseName(problemName);
+            exercise.setProblemID(problemID);
+            exercise.getState().setAssignmentID(exerciseID);
+            exercise.getState().setUserID(userID);
         }
-
-        int exerciseID = Integer.valueOf(assignmentIDString);
-        int userID = Integer.valueOf(userIDString);
-        int problemID = Integer.valueOf(problemIDString);
-
-        exercise.setAppletExerciseName(problemName);
-        exercise.setProblemID(problemID);
-        exercise.getState().setAssignmentID(exerciseID);
-        exercise.getState().setUserID(userID);
-
     }
 
     private boolean checkVerifierKey() {
@@ -135,7 +141,7 @@ public class AppletLauncher extends StaticsApplet {
         // change state to empty if it is null.
         exerciseState = exerciseState == null ? "" : exerciseState;
 
-        String preHash = userIDString + ":" + problemIDString + /*":" + assignmentIDString +*/ ":" + problemName + ":" + exerciseState;
+        String preHash = userIDString + ":" + problemIDString + /*":" + assignmentIDString +*/ ":" + problemName + ":" + exerciseState.replaceAll("\\s", "");
 
         // use MD5 to generate our key
         MessageDigest md5;
