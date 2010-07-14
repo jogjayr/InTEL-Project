@@ -50,8 +50,8 @@ public class CentroidPartLabel extends LabelRepresentation {
         if (cpo != null) {
             return cpo.getCentroidPart().getPartName()
                     + "\nSurface Area: " + cpo.getCentroidPart().getSurfaceArea()
-                    + "\nX Position: " + cpo.getCentroidPart().getxPosition()
-                    + "\nY Position: " + cpo.getCentroidPart().getyPosition();
+                    + "\nX Position: " + cpo.getCentroidPart().getCentroid().getX()
+                    + "\nY Position: " + cpo.getCentroidPart().getCentroid().getY();
         }
         return "something went wrong";
     }

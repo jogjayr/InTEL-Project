@@ -14,6 +14,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidExercise;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
+import edu.gatech.statics.modes.centroid.objects.CentroidPart.PartType;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.CentroidPartMarker;
@@ -21,7 +22,6 @@ import edu.gatech.statics.objects.CoordinateAxis;
 import edu.gatech.statics.objects.CoordinateAxis.Direction;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
-import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveCentroidBodyTask;
@@ -89,7 +89,7 @@ public class SpaceStationExercise extends CentroidExercise {
 
         Point A1, A2, A3, A4, B1, B2, B3, B4, B5, B6, C1, C2, C3, C4, C5, D1, D2, D3, D4, origin;
 
-        CentroidPartMarker solarPanelA, solarPanelB, livingQuarters, panelExtender;
+//        CentroidPartMarker solarPanelA, solarPanelB, livingQuarters, panelExtender;
 
         A1 = new Point("A1", "-0.05", "1.25", "0.0"); //topleft
         A2 = new Point("A2", "1.82", "1.25", "0.0"); //topright
@@ -120,36 +120,18 @@ public class SpaceStationExercise extends CentroidExercise {
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
-        A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "SolarPanelA", "5610.0"));
+        //A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "SolarPanelA", "5610.0"));
+        A = new CentroidPartObject(new CentroidPart(new Vector3bd("93.5", "110.0", "0.0"), "187.0", "30.0", "SolarPanelA", PartType.RECTANGLE));
         A.setName("SolarPanelA");
-        B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "SolarPanelB", "5550.0"));
+        //B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "SolarPanelB", "5550.0"));
+        B = new CentroidPartObject(new CentroidPart(new Vector3bd("276.0", "92.5", "0.0"), "30.0", "185.0", "SolarPanelB", PartType.RECTANGLE));
         B.setName("SolarPanelB");
-        C = new CentroidPartObject(new CentroidPart("194.0", "117.5", "0.0", "LivingQuarters", "920.0"));
+        C = new CentroidPartObject(new CentroidPart(new Vector3bd("194.0", "117.5", "0.0"), "8.0", "115.0", "LivingQuarters", PartType.RECTANGLE));
         C.setName("LivingQuarters");
-        D = new CentroidPartObject(new CentroidPart("200.5", "92.5", "0.0", "PanelExtender", "755.0"));
+        D = new CentroidPartObject(new CentroidPart(new Vector3bd("200.5", "92.5", "0.0"), "151.0", "5.0", "PanelExtender", PartType.RECTANGLE));
         D.setName("PanelExtender");
         Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
         p.setName("Centroid");
-
-//        Point centerA = new Point("CenterA", "0.89", "1.10", "0.0");
-//        Point centerB = new Point("CenterB", "2.7", "0.925", "0.0");
-//        Point centerC = new Point("CenterC", "1.92", "1.175", "0.0");
-//        Point centerD = new Point("CenterD", "1.955", "0.93", "0.0");
-//
-//        solarPanelA = new CentroidPartMarker("SolarPanelA", centerA, A);
-//        solarPanelB = new CentroidPartMarker("SolarPanelB", centerB, B);
-//        livingQuarters = new CentroidPartMarker("LivingQuarters", centerC, C);
-//        panelExtender = new CentroidPartMarker("PanelExtender", centerD, D);
-//
-//        schematic.add(solarPanelA);
-//        schematic.add(solarPanelB);
-//        schematic.add(livingQuarters);
-//        schematic.add(panelExtender);
-//
-//        solarPanelA.createDefaultSchematicRepresentation();
-//        solarPanelB.createDefaultSchematicRepresentation();
-//        livingQuarters.createDefaultSchematicRepresentation();
-//        panelExtender.createDefaultSchematicRepresentation();
 
         station = new CentroidBody("Space Station", p);
         station.setName("Space Station");
@@ -158,6 +140,10 @@ public class SpaceStationExercise extends CentroidExercise {
         station.addObject(C);
         station.addObject(D);
 
+        A.createDefaultSchematicRepresentation(1f / 30);
+        B.createDefaultSchematicRepresentation(1f / 30);
+        C.createDefaultSchematicRepresentation(1f / 30);
+        D.createDefaultSchematicRepresentation(1f / 30);
         ////////////////////
         //LEFT SOLAR PANEL//
         ////////////////////
@@ -292,8 +278,8 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
 
-        MimicRepresentation mimic = new MimicRepresentation(A, rep);
-        A.addRepresentation(mimic);
+//        MimicRepresentation mimic = new MimicRepresentation(A, rep);
+//        A.addRepresentation(mimic);
 
         rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/solarpanel2");
         rep.setSynchronizeRotation(false);
@@ -302,8 +288,8 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
 
-        mimic = new MimicRepresentation(B, rep);
-        B.addRepresentation(mimic);
+//        mimic = new MimicRepresentation(B, rep);
+//        B.addRepresentation(mimic);
 
         rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/mainBody");
         rep.setSynchronizeRotation(false);
@@ -312,8 +298,8 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
 
-        mimic = new MimicRepresentation(C, rep);
-        C.addRepresentation(mimic);
+//        mimic = new MimicRepresentation(C, rep);
+//        C.addRepresentation(mimic);
 
         rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/truss");
         rep.setSynchronizeRotation(false);
@@ -322,18 +308,18 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
 
-        mimic = new MimicRepresentation(D, rep);
-        D.addRepresentation(mimic);
+//        mimic = new MimicRepresentation(D, rep);
+//        D.addRepresentation(mimic);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setModelOffset(modelTranslation);
         rep.setModelScale(modelScale);
         schematic.getBackground().addRepresentation(rep);
 
-        addTask(new SolveCentroidPartTask("Solve for solar panel A's centroid", A));
-        addTask(new SolveCentroidPartTask("Solve for solar panel B's centroid", B));
-        addTask(new SolveCentroidPartTask("Solve for the living quarter's centroid", C));
-        addTask(new SolveCentroidPartTask("Solve for the panel extender's centroid", D));
+//        addTask(new SolveCentroidPartTask("Solve for solar panel A's centroid", A));
+//        addTask(new SolveCentroidPartTask("Solve for solar panel B's centroid", B));
+//        addTask(new SolveCentroidPartTask("Solve for the living quarter's centroid", C));
+//        addTask(new SolveCentroidPartTask("Solve for the panel extender's centroid", D));
         addTask(new SolveCentroidBodyTask("Solve the ISS' centroid", station));
     }
 }

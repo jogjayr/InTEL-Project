@@ -23,7 +23,6 @@ import edu.gatech.statics.objects.CentroidPartMarker;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.representations.MimicRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
@@ -135,9 +134,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
 
         CentroidPart part = getCentroidPart();
-        BigDecimal desiredArea = new BigDecimal(part.getSurfaceArea());
-        BigDecimal desiredX = new BigDecimal(part.getxPosition());
-        BigDecimal desiredY = new BigDecimal(part.getyPosition());
+        BigDecimal desiredArea = part.getSurfaceArea();
+        BigDecimal desiredX = part.getCentroid().getX();
+        BigDecimal desiredY = part.getCentroid().getY();
 
         // debugging messages
         System.out.println("user area: \"" + areaValue + "\" " + userArea);
@@ -176,7 +175,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         BigDecimal desiredY = new BigDecimal(body.getCenterOfMass().getPosition().getY() + "");
 
         for (CentroidPartObject cpo : body.getParts()) {
-            desiredArea = desiredArea.add(new BigDecimal(cpo.getCentroidPart().getSurfaceArea()));
+            desiredArea = desiredArea.add(cpo.getCentroidPart().getSurfaceArea());
         }
 
         // debugging messages
@@ -230,11 +229,11 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //StaticsApplication.getApp().resetUIFeedback();
 
         // activate the mimic representations
-        for (SimulationObject obj : getBaseObjects()) {
-            if (obj instanceof CentroidPartObject) {
-                setCentroidPartActive((CentroidPartObject) obj, true);
-            }
-        }
+//        for (SimulationObject obj : getBaseObjects()) {
+//            if (obj instanceof CentroidPartObject) {
+//                setCentroidPartActive((CentroidPartObject) obj, true);
+//            }
+//        }
     }
 
     @Override
@@ -243,11 +242,11 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //TODO: ADD THE SPECIFIC CODE THAT DECONSTRUCTS THE DIAGRAM
 
         // deactivate the mimic representations
-        for (SimulationObject obj : getBaseObjects()) {
-            if (obj instanceof CentroidPartObject) {
-                setCentroidPartActive((CentroidPartObject) obj, false);
-            }
-        }
+//        for (SimulationObject obj : getBaseObjects()) {
+//            if (obj instanceof CentroidPartObject) {
+//                setCentroidPartActive((CentroidPartObject) obj, false);
+//            }
+//        }
     }
 
     public void setSolved() {
@@ -304,9 +303,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             BigDecimal displayScale = Unit.distance.getDisplayScale();
             if (part.getState() != null && part.getState().isLocked() == true) {
                 Point pt = new Point(part.getName() + "Center",
-                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getxPosition())).toString(),
-                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getyPosition())).toString(),
-                        displayScale.multiply(new BigDecimal(part.getCentroidPart().getzPosition())).toString());
+                        displayScale.multiply(part.getCentroidPart().getCentroid().getX()).toString(),
+                        displayScale.multiply(part.getCentroidPart().getCentroid().getY()).toString(),
+                        displayScale.multiply(part.getCentroidPart().getCentroid().getZ()).toString());
                 CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
                 cpm.createDefaultSchematicRepresentation();
                 objects.add(cpm);
@@ -334,16 +333,16 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //but this might not be needed and we can do it like friction problems for mu
     }
 
-    private void setCentroidPartActive(CentroidPartObject part, boolean active) {
-        for (Representation representation : part.allRepresentations()) {
-            if (representation instanceof MimicRepresentation) {
-                MimicRepresentation mimic = (MimicRepresentation) representation;
-                if (active) {
-                    mimic.activate();
-                } else {
-                    mimic.deactivate();
-                }
-            }
-        }
-    }
+//    private void setCentroidPartActive(CentroidPartObject part, boolean active) {
+//        for (Representation representation : part.allRepresentations()) {
+//            if (representation instanceof MimicRepresentation) {
+//                MimicRepresentation mimic = (MimicRepresentation) representation;
+//                if (active) {
+//                    mimic.activate();
+//                } else {
+//                    mimic.deactivate();
+//                }
+//            }
+//        }
+//    }
 }

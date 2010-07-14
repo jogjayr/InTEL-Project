@@ -209,8 +209,8 @@ public class KnownsContainer extends BContainer implements SolveListener {
 //        if (d != null && d.getCurrentState().isLocked()) {
             BLabel label1 = new BLabel(" @=b#ff0000(" + cpo.getName() + ")");
             BLabel label2 = new BLabel("Surface area: @=b(" + cpo.getCentroidPart().getSurfaceArea() + ")");
-            BLabel label3 = new BLabel("Center X: @=b(" + cpo.getCentroidPart().getxPosition() + ")");
-            BLabel label4 = new BLabel("Center Y: @=b(" + cpo.getCentroidPart().getyPosition() + ")");
+            BLabel label3 = new BLabel("Center X: @=b(" + cpo.getCentroidPart().getCentroid().getX().toString() + ")");
+            BLabel label4 = new BLabel("Center Y: @=b(" + cpo.getCentroidPart().getCentroid().getY().toString() + ")");
             add(label1);
             add(label2);
             add(label3);

@@ -6,6 +6,8 @@ package edu.gatech.statics.modes.centroid.objects;
 
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
+import edu.gatech.statics.math.Vector3bd;
+import java.math.BigDecimal;
 
 /**
  * CentroidPart serves as a data class that contains the x, y, z, name, and
@@ -14,60 +16,49 @@ import edu.gatech.statics.exercise.persistence.ResolvableByName;
  */
 public class CentroidPart implements DiagramKey {
 
-    final String xPosition;
-    final String yPosition;
-    final String zPosition;
-    final String partName;
-    final String surfaceArea;
-    enum PartType {
+    final private Vector3bd centroid;
+    final private String partName;
+    final private BigDecimal width;
+    final private BigDecimal height;
+    final private BigDecimal surfaceArea;
+
+    public enum PartType {
 
         CIRCLE, RECTANGLE, TRIANGLE;
     }
 
-//    public String getName() {
-//        return partName;
-//    }
-//
-//    /**
-//     * For persistence, do not call directly.
-//     * @param name
-//     * @deprecated
-//     */
-//    @Deprecated
-//    public CentroidPart(String name) {
-//        this.partName = name;
-//        xPosition = null;
-//        yPosition = null;
-//        zPosition = null;
-//        surfaceArea = null;
-//    }
-
-    public CentroidPart(String xPosition, String yPosition, String zPosition, String partName, String surfaceArea) {
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.zPosition = zPosition;
+    public CentroidPart(Vector3bd centroid, String width, String height, String partName, PartType part) {
+        this.centroid = centroid;
         this.partName = partName;
-        this.surfaceArea = surfaceArea;
+        this.width = new BigDecimal(width);
+        this.height = new BigDecimal(height);
 
+        if (part == PartType.CIRCLE) { //PI*r^2
+            this.surfaceArea = new BigDecimal(Math.PI).multiply(this.width.divide(new BigDecimal("2.0")).pow(2));
+        } else if (part == PartType.RECTANGLE) { //w*h
+            this.surfaceArea = this.width.multiply(this.height);
+        } else { //w*h/2
+            this.surfaceArea = this.width.multiply(this.height).divide(new BigDecimal("2.0"));
+        }
     }
 
     public String getPartName() {
         return partName;
     }
 
-    public String getxPosition() {
-        return xPosition;
+    public Vector3bd getCentroid() {
+        return centroid;
     }
 
-    public String getyPosition() {
-        return yPosition;
+    public BigDecimal getHeight() {
+        return height;
     }
 
-    public String getzPosition() {
-        return zPosition;
-    }
-
-    public String getSurfaceArea() {
+    public BigDecimal getSurfaceArea() {
         return surfaceArea;
+    }
+
+    public BigDecimal getWidth() {
+        return width;
     }
 }

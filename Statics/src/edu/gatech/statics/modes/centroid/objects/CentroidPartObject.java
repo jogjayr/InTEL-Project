@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.centroid.objects;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.objects.SimulationObject;
+import java.math.BigDecimal;
 
 /**
  * The CentroidPartObject is the UI representation of the parts that make up a
@@ -31,7 +32,12 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
+        createDefaultSchematicRepresentation(5.0f);
+    }
+
+    public void createDefaultSchematicRepresentation(float displayScale) {
+        addRepresentation(new CentroidPartRepresentation(this, 30, displayScale));
     }
 
     public void setState(CentroidPartState myPartState) {

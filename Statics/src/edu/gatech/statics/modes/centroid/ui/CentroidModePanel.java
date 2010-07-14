@@ -87,11 +87,11 @@ public class CentroidModePanel extends ApplicationModePanel {
 
                 currentlySelected.setDisplaySelected(false);
 //                currentlySelected.setDisplayGrayed(true);
-                for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
-                    if (obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()) {
-                        ((CentroidPartMarker) obj).destroy();
-                    }
-                }
+//                for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
+//                    if (obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()) {
+//                        ((CentroidPartMarker) obj).destroy();
+//                    }
+//                }
 
                 getDiagram().pushState(builder.build());
                 getDiagram().activate();
@@ -118,6 +118,7 @@ public class CentroidModePanel extends ApplicationModePanel {
                 CentroidState.Builder builder = ((CentroidState) getDiagram().getCurrentState()).getBuilder();
                 builder.setLocked(true);
                 getDiagram().pushState(builder.build());
+
                 diagram.setSolved();
             } else {
                 // should we give any more detailed feedback?
