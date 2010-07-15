@@ -14,8 +14,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.math.Vector3bd;
-import java.math.BigDecimal;
+import edu.gatech.statics.math.Unit;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -27,9 +26,9 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
 
     private TriMesh surface;
 
-    public CentroidPartRepresentation(CentroidPartObject target, int samples, float displayScale) {
+    public CentroidPartRepresentation(CentroidPartObject target) {
         super(target);
-        surface = createSurface(samples);
+        surface = createSurface();
         getRelativeNode().attachChild(surface);
 //        temp = temp.subtract(new BigDecimal(target.getCentroidPart().width).divide(new BigDecimal("2.0")));
 
@@ -46,7 +45,11 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         //Vector3bd center = startPoint.add(endPoint).divide(new BigDecimal("2"));
 
         //make width and height bigdecimals
-        surface.setLocalScale(new Vector3f(target.getCentroidPart().getWidth().multiply(new BigDecimal(displayScale)).intValue(), target.getCentroidPart().getHeight().multiply(new BigDecimal(displayScale)).intValue(), 1));
+        // *** The .5f is necessary because the surface object has a size of 2.
+        surface.setLocalScale(new Vector3f(
+                .5f*target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+                .5f*target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+                1));
 
         Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
         BlendState as = renderer.createBlendState();
@@ -72,39 +75,27 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
     }
 
-    protected TriMesh createSurface(int samples) {
+    protected TriMesh createSurface() {
 
-        int numberPoints = (1 + samples) * 2;
-        int numberTriangles = samples * 2;
+        int numberPoints = 4;
+        int numberTriangles = 2;
 
         FloatBuffer vertices = BufferUtils.createFloatBuffer(numberPoints * 3);
         IntBuffer indices = BufferUtils.createIntBuffer(numberTriangles * 3);
 
-        for (int i = 0; i <= samples; i++) {
+        // y
+        // ^13
+        // |02
+        // + -> x
+        // vertices here range from -1 to 1
 
-            float x = (float) i / samples;
+        vertices.put(-1).put(-1).put(0); // 0: lower left <-1, -1, 0>
+        vertices.put(-1).put(1).put(0); // 1: upper left <-1, 1, 0>
+        vertices.put(1).put(-1).put(0); // 2: lower right <1, -1, 0>
+        vertices.put(1).put(1).put(0); // 3: upper right <1, 1, 0>
 
-            // first point, the base
-            vertices.put(2 * x - 1).put(0).put(0);
-
-            // second point, the elevated value
-            vertices.put(2 * x - 1).put(1).put(0);
-
-            // y
-            // ^13
-            // |02
-            // + -> x
-
-            if (i > 0) {
-                // the triangles rotate counter-clockwise
-                // but the material should turn off culling later.
-                // first triangle (021)
-                indices.put(2 * i - 2).put(2 * i).put(2 * i - 1);
-                // the second triangle (132)
-                indices.put(2 * i - 1).put(2 * i + 1).put(2 * i);
-            }
-        }
-
+        indices.put(0).put(2).put(1); // first triangle: 0,2,1
+        indices.put(1).put(3).put(2); // second triangle: 1,3,2
         ColorRGBA color = new ColorRGBA(1, 0, 0, .5f);
 
         TriMesh mesh = new TriMesh("", vertices, null, null, null, indices);

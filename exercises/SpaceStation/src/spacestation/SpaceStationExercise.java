@@ -7,7 +7,6 @@ package spacestation;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
@@ -17,7 +16,6 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart.PartType;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.description.Description;
-import edu.gatech.statics.objects.CentroidPartMarker;
 import edu.gatech.statics.objects.CoordinateAxis;
 import edu.gatech.statics.objects.CoordinateAxis.Direction;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -25,12 +23,10 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveCentroidBodyTask;
-import edu.gatech.statics.tasks.SolveCentroidPartTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  *
@@ -140,10 +136,10 @@ public class SpaceStationExercise extends CentroidExercise {
         station.addObject(C);
         station.addObject(D);
 
-        A.createDefaultSchematicRepresentation(1f / 30);
-        B.createDefaultSchematicRepresentation(1f / 30);
-        C.createDefaultSchematicRepresentation(1f / 30);
-        D.createDefaultSchematicRepresentation(1f / 30);
+        A.createDefaultSchematicRepresentation();
+        B.createDefaultSchematicRepresentation();
+        C.createDefaultSchematicRepresentation();
+        D.createDefaultSchematicRepresentation();
         ////////////////////
         //LEFT SOLAR PANEL//
         ////////////////////
