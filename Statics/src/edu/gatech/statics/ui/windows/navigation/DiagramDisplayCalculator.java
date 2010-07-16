@@ -39,13 +39,13 @@ public class DiagramDisplayCalculator {
         BoundingVolume volume = createViewVolume(diagram);
         if (volume == null) {
             return null;
-        //representationNode.getWorldBound();
+            //representationNode.getWorldBound();
 
-        // try the bound for the model bodies
+            // try the bound for the model bodies
         /*if (volume == null) {
-        representationNode = diagram.getNode(RepresentationLayer.modelBodies);
-        volume = representationNode.getWorldBound();
-        }*/
+            representationNode = diagram.getNode(RepresentationLayer.modelBodies);
+            volume = representationNode.getWorldBound();
+            }*/
         }
         return calculate(volume);
     }
@@ -74,8 +74,12 @@ public class DiagramDisplayCalculator {
             }
         }
 
-        if(vectorNode.getWorldBound() != null) {
-            volume.mergeLocal(vectorNode.getWorldBound());
+        if (vectorNode.getWorldBound() != null) {
+            if (volume != null) {
+                volume.mergeLocal(vectorNode.getWorldBound());
+            } else {
+                volume = vectorNode.getWorldBound();
+            }
         }
 
         if (volume == null) {

@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.centroid.objects;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
@@ -70,6 +71,8 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
 
         setLayer(RepresentationLayer.vectors);
 
+        surface.setModelBound(new BoundingBox());
+        surface.updateModelBound();
         surface.updateRenderState();
 
         setDiffuse(ColorRGBA.red);
