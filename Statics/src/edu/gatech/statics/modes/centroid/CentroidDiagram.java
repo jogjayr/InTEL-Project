@@ -236,8 +236,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
                 continue;
             }
             ModelRepresentation mRep = (ModelRepresentation) rep;
-
-            System.out.println();
+            mRep.setDisplayGrayed(true);
         }
 
 
@@ -260,6 +259,15 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //                setCentroidPartActive((CentroidPartObject) obj, false);
 //            }
 //        }
+
+        for (Representation rep : body.allRepresentations()) {
+            if (!(rep instanceof ModelRepresentation)) {
+                continue;
+            }
+            ModelRepresentation mRep = (ModelRepresentation) rep;
+            mRep.setDisplayGrayed(false);
+        }
+
     }
 
     public void setSolved() {
@@ -330,14 +338,6 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             for (Measurement m : cpo.getMeasurements()) {
                 objects.add(m);
             }
-        }
-
-        for (CentroidPartObject cpo : body.getParts()) {
-            for (Representation rep : cpo.allRepresentations()) {
-//                rep.setGrayColors(new ColorRGBA(.2f, .2f, .2f, .2f), new ColorRGBA(.40f, .40f, .40f, .2f));
-                rep.setDisplayGrayed(true);
-            }
-            //System.out.println();
         }
 
         return objects;
