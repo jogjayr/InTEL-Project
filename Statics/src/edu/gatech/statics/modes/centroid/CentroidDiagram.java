@@ -20,9 +20,11 @@ import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
 import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
 import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
 import edu.gatech.statics.objects.CentroidPartMarker;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
@@ -228,6 +230,16 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
         //StaticsApplication.getApp().resetUIFeedback();
 
+        for (Representation rep : body.allRepresentations()) {
+            if (!(rep instanceof ModelRepresentation)) {
+                continue;
+            }
+            ModelRepresentation mRep = (ModelRepresentation) rep;
+
+            System.out.println();
+        }
+
+
         // activate the mimic representations
 //        for (SimulationObject obj : getBaseObjects()) {
 //            if (obj instanceof CentroidPartObject) {
@@ -312,9 +324,10 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             }
         }
 
-        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {
-            if (measurement instanceof Measurement) {
-                objects.add(measurement);
+//        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {
+        for (CentroidPartObject cpo : body.getParts()) {
+            for (Measurement m : cpo.getMeasurements()) {
+                objects.add(m);
             }
         }
 
@@ -332,7 +345,6 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //Needs to update so that the centroid is displayed properly once the user solves,
         //but this might not be needed and we can do it like friction problems for mu
     }
-
 //    private void setCentroidPartActive(CentroidPartObject part, boolean active) {
 //        for (Representation representation : part.allRepresentations()) {
 //            if (representation instanceof MimicRepresentation) {

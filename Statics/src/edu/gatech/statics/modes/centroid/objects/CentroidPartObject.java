@@ -8,7 +8,9 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.centroid.CentroidPartState;
+import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.SimulationObject;
+import java.util.ArrayList;
 
 /**
  * The CentroidPartObject is the UI representation of the parts that make up a
@@ -22,6 +24,7 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
     private final CentroidPart part;
     // links to the currently existing state
     private CentroidPartState state;
+    private ArrayList<Measurement> measurements = new ArrayList<Measurement>();
 
     public CentroidPartObject(CentroidPart part) {
         this.part = part;
@@ -48,5 +51,13 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
 
     public CentroidPartState getState() {
         return state;
+    }
+
+    public void addMeasurement(Measurement distance) {
+        measurements.add(distance);
+    }
+
+    public ArrayList<Measurement> getMeasurements(){
+        return measurements;
     }
 }

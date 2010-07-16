@@ -44,7 +44,8 @@ public class CentroidSelectDiagram extends SelectDiagram {
     public void activate() {
         super.activate();
         //TODO IMPLEMENT THIS
-        CentroidUtil.unshadeSolvedCentroidPartObjects();
+        //Maybe not
+        //CentroidUtil.unshadeSolvedCentroidPartObjects();
 
         StaticsApplication.getApp().setDefaultUIFeedbackKey("exercise_tools_centroid_selection");
     }
