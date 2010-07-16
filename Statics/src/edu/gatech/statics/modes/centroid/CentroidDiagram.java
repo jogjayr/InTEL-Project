@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.centroid;
 
+import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.application.StaticsApplication;
@@ -329,6 +330,14 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             for (Measurement m : cpo.getMeasurements()) {
                 objects.add(m);
             }
+        }
+
+        for (CentroidPartObject cpo : body.getParts()) {
+            for (Representation rep : cpo.allRepresentations()) {
+//                rep.setGrayColors(new ColorRGBA(.2f, .2f, .2f, .2f), new ColorRGBA(.40f, .40f, .40f, .2f));
+                rep.setDisplayGrayed(true);
+            }
+            //System.out.println();
         }
 
         return objects;

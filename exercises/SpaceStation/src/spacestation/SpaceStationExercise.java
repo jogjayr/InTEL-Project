@@ -310,7 +310,7 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
-
+        A.addRepresentation(rep);
 //        MimicRepresentation mimic = new MimicRepresentation(A, rep);
 //        A.addRepresentation(mimic);
 
@@ -320,7 +320,7 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
-
+        B.addRepresentation(rep);
 //        mimic = new MimicRepresentation(B, rep);
 //        B.addRepresentation(mimic);
 
@@ -330,7 +330,7 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
-
+        C.addRepresentation(rep);
 //        mimic = new MimicRepresentation(C, rep);
 //        C.addRepresentation(mimic);
 
@@ -340,7 +340,7 @@ public class SpaceStationExercise extends CentroidExercise {
         rep.setModelScale(modelScale);
         rep.setModelOffset(modelTranslation);
         station.addRepresentation(rep);
-
+        D.addRepresentation(rep);
 //        mimic = new MimicRepresentation(D, rep);
 //        D.addRepresentation(mimic);
 

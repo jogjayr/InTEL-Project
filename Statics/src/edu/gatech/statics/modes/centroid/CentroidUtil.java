@@ -39,7 +39,7 @@ public class CentroidUtil {
         green = RGBConvert(temp1, temp2, green);
         blue = RGBConvert(temp1, temp2, blue);
 
-        return new ColorRGBA(red, green, blue, 1.0f);
+        return new ColorRGBA(red, green, blue, 0.650f);
     }
 
     private float adjustColor(float color) {
