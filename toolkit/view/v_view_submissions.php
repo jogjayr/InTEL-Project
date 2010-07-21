@@ -48,7 +48,7 @@ if ($search_class != -1 || $search_problem != -1) {
 }
 ?>
 
-<div style="font-size: 90%; background-color: #eee;">
+<div style="font-size: 90%; background-color: #eee; margin: 10px;">
     <p>Legend:</p>
     <table>
         <tr><td><em>not started</em></td><td>The student has not loaded the problem to start on it.</td></tr>
