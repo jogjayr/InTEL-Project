@@ -48,13 +48,15 @@ if ($search_class != -1 || $search_problem != -1) {
 }
 ?>
 
-<p>Legend:</p>
-<table>
-    <tr><td><em>not started</em></td><td>The student has not loaded the problem to start on it.</td></tr>
-    <tr><td><em>started</em></td><td>The student has loaded the problem, but not completed any tasks.</td></tr>
-    <tr><td><em>in progress</em></td><td>The student has completed at least one task, but has not finished the problem.</td></tr>
-    <tr><td><em>completed</em></td><td>The student has completed the entire problem.</td></tr>
-</table>
+<div style="font-size: 90%; background-color: #eee;">
+    <p>Legend:</p>
+    <table>
+        <tr><td><em>not started</em></td><td>The student has not loaded the problem to start on it.</td></tr>
+        <tr><td><em>started</em></td><td>The student has loaded the problem, but not completed any tasks.</td></tr>
+        <tr><td><em>in progress</em></td><td>The student has completed at least one task, but has not finished the problem.</td></tr>
+        <tr><td><em>completed</em></td><td>The student has completed the entire problem.</td></tr>
+    </table>
+</div>
 
 <script type="text/javascript" src="js/sortable.js"></script>
 

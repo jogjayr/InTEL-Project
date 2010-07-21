@@ -94,11 +94,12 @@ public class AppletLauncher extends StaticsApplet {
         String assignmentIDString = getParameter("assignmentID");
         String problemIDString = getParameter("problemID");
         String problemName = getParameter("problemName");
-        String testingMode = getParameter("testingMode");
+
 
         // by default, have graded mode be true.
         // if testing mode is set, let graded be false.
-        if (testingMode == null && !userIDString.equals("0")) {
+        // if the testing mode is set, then the user id is set to -1.
+        if (!"-1".equals(userIDString)) {
             getApplication().setGraded(true);
         }
 
@@ -108,8 +109,8 @@ public class AppletLauncher extends StaticsApplet {
         }
         StaticsApplication.logger.info("Applet loaded, user ID recorded. Continuing for credit.");
 
-        if (!checkVerifierKey()) {
-            // this should also post an error message of some sort as well.
+        if (!checkVerifierKey() && getApplication().isGraded()) {
+            // Only complain about the verifier failure if the problem is graded.
             StaticsApplication.logger.severe("Verifier key does not check!! This is a problem. Continuing anonymously.");
 
             JOptionPane.showMessageDialog(this,
