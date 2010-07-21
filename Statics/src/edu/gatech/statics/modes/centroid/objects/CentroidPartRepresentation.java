@@ -16,7 +16,7 @@ import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.modes.centroid.CentroidUtil;
+import edu.gatech.statics.modes.centroid.objects.CentroidUtil;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -27,6 +27,12 @@ import java.nio.IntBuffer;
 public class CentroidPartRepresentation extends Representation<CentroidPartObject> {
 
     private TriMesh surface;
+    private ColorRGBA color;
+    private CentroidUtil util;
+
+    public ColorRGBA getColor() {
+        return color;
+    }
 
     public CentroidPartRepresentation(CentroidPartObject target) {
         super(target);
@@ -84,7 +90,8 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         int numberPoints = 4;
         int numberTriangles = 2;
 
-        CentroidUtil util = new CentroidUtil();
+        util = new CentroidUtil();
+        
 
         FloatBuffer vertices = BufferUtils.createFloatBuffer(numberPoints * 3);
         IntBuffer indices = BufferUtils.createIntBuffer(numberTriangles * 3);
@@ -102,10 +109,24 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
 
         indices.put(0).put(2).put(1); // first triangle: 0,2,1
         indices.put(1).put(3).put(2); // second triangle: 1,3,2
-        ColorRGBA color = util.generatePastelColor();//= new ColorRGBA(1, 0, 0, .85f);
+        color = util.generatePastelColor();//= new ColorRGBA(1, 0, 0, .85f);
 
         TriMesh mesh = new TriMesh("", vertices, null, null, null, indices);
         mesh.setDefaultColor(color);
         return mesh;
     }
+
+    @Override
+    protected void updateMaterial() {
+        super.updateMaterial();
+
+
+        if(isSelected()) {
+            surface.setDefaultColor(util.highlight(color));
+        } else {
+            surface.setDefaultColor(color);
+        }
+    }
+
+
 }

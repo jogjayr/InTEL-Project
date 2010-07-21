@@ -63,12 +63,6 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     protected void stateChanged() {
         super.stateChanged();
 
-        for (CentroidPartObject cpo : body.getParts()) {
-            cpo.setState(getCurrentState().getMyPartState(cpo.getCentroidPart().getPartName()));
-            if (cpo.getState() != null && cpo.getState().isLocked()) {
-                cpo.setDisplayGrayed(true);
-            }
-        }
         //see which are locked/solved and gray accordingly
     }
 
@@ -231,13 +225,15 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
         //StaticsApplication.getApp().resetUIFeedback();
 
-        for (Representation rep : body.allRepresentations()) {
-            if (!(rep instanceof ModelRepresentation)) {
-                continue;
-            }
-            ModelRepresentation mRep = (ModelRepresentation) rep;
-            mRep.setDisplayGrayed(true);
-        }
+        body.setDisplayGrayed(true);
+
+//        for (Representation rep : body.allRepresentations()) {
+//            if (!(rep instanceof ModelRepresentation)) {
+//                continue;
+//            }
+//            ModelRepresentation mRep = (ModelRepresentation) rep;
+//            mRep.setDisplayGrayed(true);
+//        }
 
 
         // activate the mimic representations
@@ -259,14 +255,14 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //                setCentroidPartActive((CentroidPartObject) obj, false);
 //            }
 //        }
-
-        for (Representation rep : body.allRepresentations()) {
-            if (!(rep instanceof ModelRepresentation)) {
-                continue;
-            }
-            ModelRepresentation mRep = (ModelRepresentation) rep;
-            mRep.setDisplayGrayed(false);
-        }
+        body.setDisplayGrayed(false);
+//        for (Representation rep : body.allRepresentations()) {
+//            if (!(rep instanceof ModelRepresentation)) {
+//                continue;
+//            }
+//            ModelRepresentation mRep = (ModelRepresentation) rep;
+//            mRep.setDisplayGrayed(false);
+//        }
 
     }
 
@@ -311,6 +307,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
         //objects.add(cpObj);
+        objects.add(body);
         objects.addAll(body.getParts());
 
         for (CentroidPartObject part : body.getParts()) {
