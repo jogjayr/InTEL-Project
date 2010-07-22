@@ -7,6 +7,7 @@ package edu.gatech.statics.modes.centroid;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
@@ -63,7 +64,15 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     protected void stateChanged() {
         super.stateChanged();
 
-        //see which are locked/solved and gray accordingly
+        //if we remove this it leads to major headaches
+        //CentroidPartOBject.getState() is used by the knowns window AND the floating boxes
+        //so that they know what information to display.
+        //Honestly I don't know how I feel about what should be a UI class containing anything
+        //but a reference to it's state but there it is.
+        //Actually, this is very bad since this is a mutable location. Ask Calvin about it.
+        for (CentroidPartObject cpo : body.getParts()) {
+            cpo.setState(getCurrentState().getMyPartState(cpo.getCentroidPart().getPartName()));
+        }
     }
 
     public CentroidBody getBody() {
@@ -225,8 +234,11 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
         //StaticsApplication.getApp().resetUIFeedback();
 
+        
+        for(Representation r :body.getRepresentation(RepresentationLayer.modelBodies)){
+            r.setGrayColors(new ColorRGBA(.2f, .2f, .2f, 1f), new ColorRGBA(.65f, .65f, .65f, 1f));
+        }
         body.setDisplayGrayed(true);
-
 //        for (Representation rep : body.allRepresentations()) {
 //            if (!(rep instanceof ModelRepresentation)) {
 //                continue;
@@ -319,7 +331,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             }
 
             BigDecimal displayScale = Unit.distance.getDisplayScale();
-            if (part.getState() != null && part.getState().isLocked() == true) {
+            //if (part.getState() != null && part.getState().isLocked() == true) {
                 Point pt = new Point(part.getName() + "Center",
                         displayScale.multiply(part.getCentroidPart().getCentroid().getX()).toString(),
                         displayScale.multiply(part.getCentroidPart().getCentroid().getY()).toString(),
@@ -327,7 +339,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
                 CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
                 cpm.createDefaultSchematicRepresentation();
                 objects.add(cpm);
-            }
+            //}
         }
 
 //        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {

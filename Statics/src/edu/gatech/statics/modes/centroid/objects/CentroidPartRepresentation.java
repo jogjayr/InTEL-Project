@@ -29,6 +29,7 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
     private TriMesh surface;
     private ColorRGBA color;
     private CentroidUtil util;
+    private CentroidPartObject target;
 
     public ColorRGBA getColor() {
         return color;
@@ -38,6 +39,7 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         super(target);
         surface = createSurface();
         getRelativeNode().attachChild(surface);
+        this.target = target;
 //        temp = temp.subtract(new BigDecimal(target.getCentroidPart().width).divide(new BigDecimal("2.0")));
 
 //        Vector3bd startPoint = target.getCentroidPart().getCentroid();
@@ -121,7 +123,11 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         super.updateMaterial();
 
 
-        if(isSelected()) {
+        if(target.getState() != null && target.getState().isLocked()){
+            color = ColorRGBA.blue;
+        }
+
+        if(isSelected() && (target.getState() == null || !target.getState().isLocked())) {
             surface.setDefaultColor(util.highlight(color));
         } else {
             surface.setDefaultColor(color);

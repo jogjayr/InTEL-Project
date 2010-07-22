@@ -47,13 +47,16 @@ public class CentroidPartLabel extends LabelRepresentation {
 
     @Override
     protected String getLabelText() {
-        if (cpo != null) {
+        if (cpo != null && cpo.getState() != null && cpo.getState().isLocked()) {
             return cpo.getCentroidPart().getPartName()
                     + "\nSurface Area: " + cpo.getCentroidPart().getSurfaceArea()
                     + "\nX Position: " + cpo.getCentroidPart().getCentroid().getX()
                     + "\nY Position: " + cpo.getCentroidPart().getCentroid().getY();
+        } else if (cpo != null && (cpo.getState() == null || !cpo.getState().isLocked())) {
+            return cpo.getCentroidPart().getPartName();
+        } else {
+            return "something went wrong";
         }
-        return "something went wrong";
     }
 
     @Override
@@ -69,11 +72,11 @@ public class CentroidPartLabel extends LabelRepresentation {
 
         enabled = shouldEnable;
 
-        if (cpo != null && cpo.getState() != null && cpo.getState().isLocked()) {
+//        if (cpo != null && cpo.getState() != null) {
             setHidden(false);
-        } else {
-            setHidden(true);
-        }
+//        } else {
+//            setHidden(true);
+//        }
         super.update();
     }
 }

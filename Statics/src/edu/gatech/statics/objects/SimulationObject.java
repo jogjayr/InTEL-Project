@@ -160,6 +160,8 @@ abstract public class SimulationObject {
         return grayed;
     }
 
+
+
     public void setDisplayGrayed(boolean grayed) {
 
         if (this.grayed != grayed) {

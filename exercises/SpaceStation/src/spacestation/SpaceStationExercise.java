@@ -169,7 +169,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //BOTTOM HORIZONTAL
         DistanceMeasurement distance1 = new DistanceMeasurement(A1, A2);
         distance1.setName("Measure A1-A2");
-        distance1.createDefaultSchematicRepresentation(0.7f);
+        distance1.createDefaultSchematicRepresentation(-0.3f);
         distance1.forceHorizontal();
         A.addMeasurement(distance1);
         //distance1.addPoint(A);
@@ -229,7 +229,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //TOP VERTICAL
         DistanceMeasurement distance8 = new DistanceMeasurement(C1, C2);
         distance8.setName("Measure C1-C2");
-        distance8.createDefaultSchematicRepresentation(0.5f);
+        distance8.createDefaultSchematicRepresentation(0.33f);
         distance8.forceVertical();
         C.addMeasurement(distance8);
         //distance1.addPoint(A);
@@ -238,7 +238,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //TOP MIDDLE VERTICAL
         DistanceMeasurement distance9 = new DistanceMeasurement(C2, C3);
         distance9.setName("Measure C2-C3");
-        distance9.createDefaultSchematicRepresentation(0.5f);
+        distance9.createDefaultSchematicRepresentation(0.33f);
         distance9.forceVertical();
         C.addMeasurement(distance9);
         //distance1.addPoint(A);
@@ -247,7 +247,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //BOTTOM MIDDLE VERTICAL
         DistanceMeasurement distance13 = new DistanceMeasurement(C5, C2);
         distance13.setName("Measure C2-C5");
-        distance13.createDefaultSchematicRepresentation(0.15f);
+        distance13.createDefaultSchematicRepresentation(0.25f);
         distance13.forceVertical();
         C.addMeasurement(distance13);
 //        schematic.add(distance13);
@@ -255,7 +255,7 @@ public class SpaceStationExercise extends CentroidExercise {
         //BOTTOM VERTICAL
         DistanceMeasurement distance10 = new DistanceMeasurement(C3, C4);
         distance10.setName("Measure C3-C4");
-        distance10.createDefaultSchematicRepresentation(0.5f);
+        distance10.createDefaultSchematicRepresentation(0.33f);
         distance10.forceVertical();
         //distance1.addPoint(A);
         C.addMeasurement(distance10);
