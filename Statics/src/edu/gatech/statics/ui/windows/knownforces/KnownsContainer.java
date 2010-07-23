@@ -102,10 +102,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
             writeConstantObject(constObj);
         }
 
-        if (obj instanceof CentroidPartObject) {
-            CentroidPartObject cpo = (CentroidPartObject) obj;
-            writeCentroidPartObject(cpo);
-        }
+//        if (obj instanceof CentroidPartObject) {
+//            CentroidPartObject cpo = (CentroidPartObject) obj;
+//            writeCentroidPartObject(cpo);
+//        }
     }
 
     protected void writeWeightReaction(Body body) {
@@ -194,29 +194,29 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    protected void writeCentroidPartObject(CentroidPartObject cpo) {
-
-        // only write known constants
-        if (cpo.getState() == null || !cpo.getState().isLocked()) {
-            return;
-        }
-
-
-//        "Weight of @=b(" + body.getName() + ") at @=b(" + body.getCenterOfMassPoint().getName() + "): ";
-
-
-//        CentroidDiagram d = (CentroidDiagram) Exercise.getExercise().getDiagram(cpo.getCentroidPart(), DiagramType.getType(cpo.getCentroidPart().getPartName()));
-//        if (d != null && d.getCurrentState().isLocked()) {
-            BLabel label1 = new BLabel(" @=b#ff0000(" + cpo.getName() + ")");
-            BLabel label2 = new BLabel("Surface area: @=b(" + cpo.getCentroidPart().getSurfaceArea() + ")");
-            BLabel label3 = new BLabel("Center X: @=b(" + cpo.getCentroidPart().getCentroid().getX().toString() + ")");
-            BLabel label4 = new BLabel("Center Y: @=b(" + cpo.getCentroidPart().getCentroid().getY().toString() + ")");
-            add(label1);
-            add(label2);
-            add(label3);
-            add(label4);
+//    protected void writeCentroidPartObject(CentroidPartObject cpo) {
+//
+//        // only write known constants
+//        if (cpo.getState() == null || !cpo.getState().isLocked()) {
+//            return;
 //        }
-    }
+//
+//
+////        "Weight of @=b(" + body.getName() + ") at @=b(" + body.getCenterOfMassPoint().getName() + "): ";
+//
+//
+////        CentroidDiagram d = (CentroidDiagram) Exercise.getExercise().getDiagram(cpo.getCentroidPart(), DiagramType.getType(cpo.getCentroidPart().getPartName()));
+////        if (d != null && d.getCurrentState().isLocked()) {
+//            BLabel label1 = new BLabel(" @=b#ff0000(" + cpo.getName() + ")");
+//            BLabel label2 = new BLabel("Surface area: @=b(" + cpo.getCentroidPart().getSurfaceArea() + ")");
+//            BLabel label3 = new BLabel("Center X: @=b(" + cpo.getCentroidPart().getCentroid().getX().toString() + ")");
+//            BLabel label4 = new BLabel("Center Y: @=b(" + cpo.getCentroidPart().getCentroid().getY().toString() + ")");
+//            add(label1);
+//            add(label2);
+//            add(label3);
+//            add(label4);
+////        }
+//    }
 
     protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
         if (!isGivenLoad(load) || load.isSymbol()) {

@@ -103,6 +103,7 @@ public class CentroidModePanel extends ApplicationModePanel {
             }
             if (allSolved()) {
 //                StaticsApplication.getApp().setCurrentDiagram(this);
+                displayBodySolver();
             }
         } else {
             if (diagram.checkBody(areaField.getText(), xField.getText(), yField.getText())) {
