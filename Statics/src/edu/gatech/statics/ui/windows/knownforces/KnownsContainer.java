@@ -12,7 +12,9 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidDiagram;
+import edu.gatech.statics.modes.centroid.CentroidMode;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
@@ -25,6 +27,7 @@ import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.TwoForceMember;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.util.SolveListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +103,11 @@ public class KnownsContainer extends BContainer implements SolveListener {
         if (obj instanceof ConstantObject) {
             ConstantObject constObj = (ConstantObject) obj;
             writeConstantObject(constObj);
+        }
+
+        if (obj instanceof CentroidBody){
+            CentroidBody cb = (CentroidBody) obj;
+            writeCentroidBody(cb);
         }
 
 //        if (obj instanceof CentroidPartObject) {
@@ -192,6 +200,27 @@ public class KnownsContainer extends BContainer implements SolveListener {
 
         add(label1);
         add(label2);
+    }
+
+    protected void writeCentroidBody(CentroidBody cb){
+        CentroidDiagram cDiagram = (CentroidDiagram)Exercise.getExercise().getDiagram(cb, CentroidMode.instance.getDiagramType());
+
+        BigDecimal surfaceArea = new BigDecimal("0.0");
+
+        for (CentroidPartObject cpo : cb.getParts()) {
+            surfaceArea = surfaceArea.add(cpo.getCentroidPart().getSurfaceArea());
+        }
+
+        if(cDiagram != null && cDiagram.getCurrentState() != null && cDiagram.isSolved()) {
+            BLabel label1 = new BLabel(" @=b#ff0000(" + cb.getName() + ")");
+            BLabel label2 = new BLabel("Surface area: @=b(" + surfaceArea + ")");
+            BLabel label3 = new BLabel("Center X: @=b(" + cb.getCenterOfMass().getPosition().getX().toString() + ")");
+            BLabel label4 = new BLabel("Center Y: @=b(" + cb.getCenterOfMass().getPosition().getY().toString() + ")");
+            add(label1);
+            add(label2);
+            add(label3);
+            add(label4);
+        }
     }
 
 //    protected void writeCentroidPartObject(CentroidPartObject cpo) {
