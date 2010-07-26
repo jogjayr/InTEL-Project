@@ -5,7 +5,6 @@
 
 package edu.gatech.statics.modes.centroid;
 
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.util.Buildable;
 import edu.gatech.statics.util.Builder;
 

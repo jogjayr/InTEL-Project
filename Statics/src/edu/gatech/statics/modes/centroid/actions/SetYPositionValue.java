@@ -19,6 +19,9 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
     final private CentroidPartObject currentlySelected;
     final private boolean allSolved;
 
+    /**
+     * This functions but you should only use it when you know with 100% certainty that the CentroidParts are all solved
+     */
     public SetYPositionValue(String newYValue, CentroidPartObject currentlySelected) {
         //this.force = force;
         this.yValue = newYValue;

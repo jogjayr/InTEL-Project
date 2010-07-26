@@ -28,9 +28,6 @@ public class CentroidSelectModePanel extends SelectModePanel {
         SelectState currentState = getDiagram().getCurrentState();
         if (currentState.getCurrentlySelected().size() > 0) {
             SimulationObject firstSelected = currentState.getCurrentlySelected().get(0);
-            // TODO: Find out if the Centroid has been found, ie if the CentroidState for the given body is locked.
-            // If it is locked, say "Create FBD" just like normal, otherwise say "Find Centroid"
-            // maybe put this sort of check in CentroidUtil
             if (firstSelected instanceof CentroidBody && !allPartsSolved((CentroidBody)firstSelected)) {
                 nextButton.setText("Solve Centroid Parts");
             } else if (firstSelected instanceof CentroidBody && allPartsSolved((CentroidBody)firstSelected)) {

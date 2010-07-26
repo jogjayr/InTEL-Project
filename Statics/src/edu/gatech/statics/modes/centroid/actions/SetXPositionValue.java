@@ -20,10 +20,10 @@ public class SetXPositionValue implements DiagramAction<CentroidState> {
     final private CentroidPartObject currentlySelected;
     final boolean allSolved;
 
-    @Deprecated
-    /*
-     * This functions but you should only use it when you know with 100% certainty that the centroidparts are all solved
+    /**
+     * This functions but you should only use it when you know with 100% certainty that the CentroidParts are all solved
      */
+    @Deprecated
     public SetXPositionValue(String newXValue, CentroidPartObject currentlySelected) {
         //this.force = force;
         this.xValue = newXValue;

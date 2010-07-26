@@ -5,18 +5,16 @@
 package edu.gatech.statics.modes.centroid;
 
 import edu.gatech.statics.exercise.state.DiagramState;
-import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.util.Builder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * The main state class for the centroid mode. It contains the x,y,z, surface
  * area, and solved status for the main centroid body as well as a map
- * containing the states for the specific CentroidParts.
+ * containing the states for the specific CentroidParts. Provides a method by
+ * which it is possible to tell if all the CentroidParts have been solved for.
  * @author Jimmy Truesdell
  */
 public class CentroidState implements DiagramState<CentroidDiagram> {
@@ -60,6 +58,12 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         return yPosition;
     }
 
+    /**
+     * Returns a boolean that represents if all the CentroidParts in a
+     * CentroidDiagram have been solved for.
+     * @param diagram
+     * @return
+     */
     public boolean allPartsSolved(CentroidDiagram diagram) {
         int totalSolved = 0;
         for (CentroidPartState cps : getBuilder().getMyParts().values()) {

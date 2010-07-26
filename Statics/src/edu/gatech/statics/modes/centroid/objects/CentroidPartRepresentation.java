@@ -16,12 +16,15 @@ import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.modes.centroid.objects.CentroidUtil;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 /**
- *
+ * This class is responsible for drawing the colored regions that represent the
+ * particular type of centroid part the object is. Currently we only support
+ * rectangular shapes but it should be fairly easy to allow for other part
+ * shapes based on the PartType that gets passed into the CentroidPartObject
+ * upon creation.
  * @author Jimmy Truesdell
  */
 public class CentroidPartRepresentation extends Representation<CentroidPartObject> {
@@ -40,22 +43,7 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         surface = createSurface();
         getRelativeNode().attachChild(surface);
         this.target = target;
-//        temp = temp.subtract(new BigDecimal(target.getCentroidPart().width).divide(new BigDecimal("2.0")));
 
-//        Vector3bd startPoint = target.getCentroidPart().getCentroid();
-//        startPoint.setX(startPoint.getX().multiply(displayScale));
-//        startPoint.setY(startPoint.getY().multiply(displayScale));
-//        startPoint.setZ(startPoint.getZ().multiply(displayScale));
-//
-//        startPoint.setX(startPoint.getX().subtract(new BigDecimal(target.getCentroidPart().getWidth()).multiply(displayScale).divide(new BigDecimal("2.0")))); //= new Vector3bd(startPoint.getX().subtract(new BigDecimal(target.getCentroidPart().getWidth()).divide(new BigDecimal("2.0"))), startPoint.getY(), startPoint.getZ());//Vector3bd.ZERO;//new Vector3bd(getTarget().getCentroidPart().getxPosition(), getTarget().getCentroidPart().getyPosition(), getTarget().getCentroidPart().getzPosition());//getTarget().getStartPoint().getPosition();
-//        Vector3bd endPoint = startPoint;
-//        endPoint.setX(startPoint.getX().add(new BigDecimal(target.getCentroidPart().getWidth()).multiply(displayScale)));
-//        float distance = (float) startPoint.distance(endPoint);
-
-        //Vector3bd center = startPoint.add(endPoint).divide(new BigDecimal("2"));
-
-        //make width and height bigdecimals
-        // *** The .5f is necessary because the surface object has a size of 2.
         surface.setLocalScale(new Vector3f(
                 .5f*target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
                 .5f*target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
@@ -122,11 +110,15 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
     protected void updateMaterial() {
         super.updateMaterial();
 
-
+        //if the CentroidPartObject associated with this Representation has been
+        //solved set the colored region to blue
         if(target.getState() != null && target.getState().isLocked()){
             color = ColorRGBA.blue;
         }
 
+        //if the CentroidPartObject associated with this Representation has not
+        //been solved and has been clicked on the color of the region is set to be
+        //highlighted. If not clicked on it is the default color.
         if(isSelected() && (target.getState() == null || !target.getState().isLocked())) {
             surface.setDefaultColor(util.highlight(color));
         } else {

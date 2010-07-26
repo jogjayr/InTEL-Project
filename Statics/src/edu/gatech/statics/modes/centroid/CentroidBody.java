@@ -46,10 +46,18 @@ public class CentroidBody extends Body implements DiagramKey {
         this.parts = parts;
     }
 
+    /**
+     * Represents the XYZ coordinate of the centroid itself.
+     * @return
+     */
     public Point getCenterOfMass() {
         return centerOfMass;
     }
 
+    /**
+     * Gives access to all the centroid parts that make up the main centroid body.
+     * @return
+     */
     public List<CentroidPartObject> getParts() {
         return parts;
     }
@@ -72,9 +80,12 @@ public class CentroidBody extends Body implements DiagramKey {
         }
     }
 
+    /**
+     * Don't call me. Instead, add the 3d meshes to the body via addRepresentation()
+     * and then add the CentroidBody to the schematic.
+     */
     @Override
     public void createDefaultSchematicRepresentation() {
-        //TODO: CREATE THE NEW REPRESENTATION FOR CENTROIDS AND CALL IT
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

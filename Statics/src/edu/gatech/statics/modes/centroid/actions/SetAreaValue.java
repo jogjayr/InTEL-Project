@@ -5,10 +5,8 @@
 package edu.gatech.statics.modes.centroid.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
-import edu.gatech.statics.modes.centroid.CentroidDiagram;
 import edu.gatech.statics.modes.centroid.CentroidPartState;
 import edu.gatech.statics.modes.centroid.CentroidState;
-import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 
 /**
@@ -21,10 +19,10 @@ public class SetAreaValue implements DiagramAction<CentroidState> {
     final private CentroidPartObject currentlySelected;
     final private boolean allSolved;
 
-    @Deprecated
-    /*
-     * This functions but you should only use it when you know with 100% certainty that the centroidparts are all solved
+    /**
+     * This functions but you should only use it when you know with 100% certainty that the CentroidParts are all solved
      */
+    @Deprecated
     public SetAreaValue(String newAreaValue, CentroidPartObject currentlySelected) {
         //this.force = force;
         this.areaValue = newAreaValue;

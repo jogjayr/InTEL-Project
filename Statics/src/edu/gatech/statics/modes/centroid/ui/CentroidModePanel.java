@@ -56,19 +56,21 @@ public class CentroidModePanel extends ApplicationModePanel {
         generateUI();
         //SimulationObject o = (SimulationObject) getDiagram().allObjects().get(0);
     }
-    //calls check() in the CentroidDiagram to verify that the users input is correct
-    //if correct we lock the part's state and push it to be the current one
 
+    /**
+     * Main checking class for both centroid parts and centroid bodies.
+     */
     protected void performCheck() {
         CentroidDiagram diagram = (CentroidDiagram) getDiagram();
         CentroidState state = (CentroidState) diagram.getCurrentState();
-        // check to see if the distributed check succeeds
+        // if all parts are not solved the system knows to just check one part
+        // checkPart to see if the distributed checkPart succeeds
         if (!allSolved()) {
-            if (diagram.check(areaField.getText(), xField.getText(), yField.getText())) {
-                // distributed check is successful!
+            if (diagram.checkPart(areaField.getText(), xField.getText(), yField.getText())) {
+                // distributed checkPart is successful!
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_success");
 
-                //set the fields and check button to unclickable
+                //set the fields and checkPart button to unclickable
                 checkButton.setEnabled(false);
                 areaField.setEnabled(false);
                 xField.setEnabled(false);
@@ -86,17 +88,9 @@ public class CentroidModePanel extends ApplicationModePanel {
                 partsMap.put(currentlySelected.getCentroidPart().getPartName(), newPart.build());
 
                 currentlySelected.setDisplaySelected(false);
-//                currentlySelected.setDisplayGrayed(true);
-//                for (SimulationObject obj : Diagram.getSchematic().allObjects()) {
-//                    if (obj instanceof CentroidPartMarker && currentlySelected.getState().isLocked()) {
-//                        ((CentroidPartMarker) obj).destroy();
-//                    }
-//                }
 
                 getDiagram().pushState(builder.build());
                 getDiagram().activate();
-                //do we need to do set diagram to solved?
-                //diagram.setLocked();
             } else {
                 // should we give any more detailed feedback?
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
@@ -106,11 +100,12 @@ public class CentroidModePanel extends ApplicationModePanel {
                 displayBodySolver();
             }
         } else {
+            // since all the parts are not solved we know we should be checking the whole body
             if (diagram.checkBody(areaField.getText(), xField.getText(), yField.getText())) {
-                // distributed check is successful!
+                // distributed checkPart is successful!
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_success");
 
-                //set the fields and check button to unclickable
+                //set the fields and checkPart button to unclickable
                 checkButton.setEnabled(false);
                 areaField.setEnabled(false);
                 xField.setEnabled(false);
@@ -258,12 +253,8 @@ public class CentroidModePanel extends ApplicationModePanel {
         InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
+    // brings up the special UI elements in the bottom menu for solving bodies
     public void displayBodySolver() {
-//        mainContainer.setEnabled(true);
-//        mainContainer.remove(checkButton);
-//        areaField.setText("");
-//        xField.setText("");
-//        yField.setText("");
         StaticsApplication.getApp().setUIFeedback("Enter the surface area, x, and y values for the centroid of " + getDiagram().getName());
         if (!checkButton.isAdded()) {
             mainContainer.add(checkButton, BorderLayout.EAST);

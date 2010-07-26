@@ -9,33 +9,26 @@ import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Diagram;
-import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.expressionparser.Parser;
 import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
-import edu.gatech.statics.modes.centroid.actions.SetAreaValue;
-import edu.gatech.statics.modes.centroid.actions.SetXPositionValue;
-import edu.gatech.statics.modes.centroid.actions.SetYPositionValue;
+import edu.gatech.statics.modes.centroid.actions.*;
 import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
 import edu.gatech.statics.objects.CentroidPartMarker;
-import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
-import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.util.SelectionFilter;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sets up the main Diagram class for centroids.
+ * Sets up the main Diagram class for centroids. Also handles graying and displaying of the floating white boxes.
  * @author Jimmy Truesdell
  */
 public class CentroidDiagram extends Diagram<CentroidState> {
@@ -119,7 +112,8 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             currentlySelected.setDisplaySelected(true);
         }
 
-        if (((CentroidState) getCurrentState()).allPartsSolved(this) && currentlySelected != null) {
+        //if the student has clicked on the body and all the parts are solved then display the interface to solve the centroid body
+        if (((CentroidState) getCurrentState()).allPartsSolved(this)) {
             CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getApplicationBar().getModePanel();
             //this.setLocked();
             modePanel.displayBodySolver();
@@ -130,7 +124,14 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
     }
 
-    public boolean check(String areaValue, String xValue, String yValue) {
+    /**
+     * Checks to see if the currently selected part's desired values match the ones entered by the student.
+     * @param areaValue
+     * @param xValue
+     * @param yValue
+     * @return
+     */
+    public boolean checkPart(String areaValue, String xValue, String yValue) {
         BigDecimal userArea = Parser.evaluate(areaValue);
         BigDecimal userXPosition = Parser.evaluate(xValue);
         BigDecimal userYPosition = Parser.evaluate(yValue);
@@ -167,6 +168,13 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         return success;
     }
 
+    /**
+     * Checks to see if the centroid body matches the values entered by the user.
+     * @param areaValue
+     * @param xValue
+     * @param yValue
+     * @return
+     */
     public boolean checkBody(String areaValue, String xValue, String yValue) {
         BigDecimal userArea = Parser.evaluate(areaValue);
         BigDecimal userXPosition = Parser.evaluate(xValue);
@@ -234,7 +242,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
         //StaticsApplication.getApp().resetUIFeedback();
 
-        
+        //gray out the model when in the centroid diagram
         for(Representation r :body.getRepresentation(RepresentationLayer.modelBodies)){
             r.setGrayColors(new ColorRGBA(.2f, .2f, .2f, 1f), new ColorRGBA(.65f, .65f, .65f, 1f));
         }
@@ -330,6 +338,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
                 }
             }
 
+            //displays those floating white boxes that has the name, area, x, and y values of each part
             BigDecimal displayScale = Unit.distance.getDisplayScale();
             //if (part.getState() != null && part.getState().isLocked() == true) {
                 Point pt = new Point(part.getName() + "Center",

@@ -10,8 +10,9 @@ import edu.gatech.statics.math.Vector3bd;
 import java.math.BigDecimal;
 
 /**
- * CentroidPart serves as a data class that contains the x, y, z, name, and
- * surface area of each part of the centroid body.
+ * CentroidPart serves as a data class that contains the width, height,
+ * x/y/z position of the centroid, part name, and the surface area of each part
+ * of the centroid body.
  * @author Jimmy Truesdell
  */
 public class CentroidPart implements DiagramKey {
@@ -33,12 +34,15 @@ public class CentroidPart implements DiagramKey {
         this.width = new BigDecimal(width);
         this.height = new BigDecimal(height);
 
+        //automatically generates the surface area value based on the width and height of the part and what type of shape it is
         if (part == PartType.CIRCLE) { //PI*r^2
             this.surfaceArea = new BigDecimal(Math.PI).multiply(this.width.divide(new BigDecimal("2.0")).pow(2));
         } else if (part == PartType.RECTANGLE) { //w*h
             this.surfaceArea = this.width.multiply(this.height);
-        } else { //w*h/2
+        } else if (part == PartType.RECTANGLE) { //w*h/2
             this.surfaceArea = this.width.multiply(this.height).divide(new BigDecimal("2.0"));
+        } else {
+            throw new UnsupportedOperationException(part + " is not a valid part type.");
         }
     }
 
