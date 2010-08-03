@@ -40,10 +40,10 @@ public class CentroidPartMarker extends SimulationObject implements ResolvableBy
     @Override
     public void createDefaultSchematicRepresentation() {
         CentroidPartLabel rep = new CentroidPartLabel(this);
-        PointRepresentation rep2 = new PointRepresentation(pointCenter);
+//        PointRepresentation rep2 = new PointRepresentation(pointCenter);
         rep.setOffset(-15, -20);
         addRepresentation(rep);
-        addRepresentation(rep2);
+//        addRepresentation(rep2);
     }
 
     @Override

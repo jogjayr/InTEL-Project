@@ -17,6 +17,7 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
 import edu.gatech.statics.modes.centroid.CentroidState.Builder;
 import edu.gatech.statics.modes.centroid.actions.*;
 import edu.gatech.statics.modes.centroid.ui.CentroidModePanel;
+import edu.gatech.statics.objects.CentroidBodyMarker;
 import edu.gatech.statics.objects.CentroidPartMarker;
 import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Point;
@@ -243,7 +244,7 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //StaticsApplication.getApp().resetUIFeedback();
 
         //gray out the model when in the centroid diagram
-        for(Representation r :body.getRepresentation(RepresentationLayer.modelBodies)){
+        for (Representation r : body.getRepresentation(RepresentationLayer.modelBodies)) {
             r.setGrayColors(new ColorRGBA(.2f, .2f, .2f, 1f), new ColorRGBA(.65f, .65f, .65f, 1f));
         }
         body.setDisplayGrayed(true);
@@ -292,6 +293,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         builder.setLocked(true);
         pushState(builder.build());
         clearStateStack();
+        //needed to make the overall centroid position appear
+        //still might not be enough, need to look into this
+        getBaseObjects();
     }
 
     public boolean isSolved() {
@@ -341,14 +345,24 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             //displays those floating white boxes that has the name, area, x, and y values of each part
             BigDecimal displayScale = Unit.distance.getDisplayScale();
             //if (part.getState() != null && part.getState().isLocked() == true) {
-                Point pt = new Point(part.getName() + "Center",
-                        displayScale.multiply(part.getCentroidPart().getCentroid().getX()).toString(),
-                        displayScale.multiply(part.getCentroidPart().getCentroid().getY()).toString(),
-                        displayScale.multiply(part.getCentroidPart().getCentroid().getZ()).toString());
-                CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
-                cpm.createDefaultSchematicRepresentation();
-                objects.add(cpm);
+            Point pt = new Point(part.getName() + "Center",
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getX()).toString(),
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getY()).toString(),
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getZ()).toString());
+            CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
+            cpm.createDefaultSchematicRepresentation();
+            objects.add(cpm);
             //}
+        }
+
+        if (this.isLocked()) {
+            Point pt = new Point(body.getName() + "Center",
+                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getX()).toString(),
+                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getY()).toString(),
+                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getZ()).toString());
+            CentroidBodyMarker cbm = new CentroidBodyMarker(body.getName() + " Marker", pt, body);
+            cbm.createDefaultSchematicRepresentation();
+            objects.add(cbm);
         }
 
 //        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {

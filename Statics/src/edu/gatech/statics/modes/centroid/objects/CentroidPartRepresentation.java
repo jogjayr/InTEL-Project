@@ -40,13 +40,13 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
 
     public CentroidPartRepresentation(CentroidPartObject target) {
         super(target);
+        this.target = target;
         surface = createSurface();
         getRelativeNode().attachChild(surface);
-        this.target = target;
 
         surface.setLocalScale(new Vector3f(
-                .5f*target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
-                .5f*target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+                .5f * target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+                .5f * target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
                 1));
 
         Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
@@ -81,25 +81,35 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         int numberTriangles = 2;
 
         util = new CentroidUtil();
-        
 
         FloatBuffer vertices = BufferUtils.createFloatBuffer(numberPoints * 3);
         IntBuffer indices = BufferUtils.createIntBuffer(numberTriangles * 3);
 
-        // y
-        // ^13
-        // |02
-        // + -> x
-        // vertices here range from -1 to 1
+//        if (target != null) {
+        if (target.getCentroidPart().getPart() == CentroidPart.PartType.RECTANGLE) {
+            // y
+            // ^13
+            // |02
+            // + -> x
+            // vertices here range from -1 to 1
+            vertices.put(-1).put(-1).put(0); // 0: lower left <-1, -1, 0>
+            vertices.put(-1).put(1).put(0); // 1: upper left <-1, 1, 0>
+            vertices.put(1).put(-1).put(0); // 2: lower right <1, -1, 0>
+            vertices.put(1).put(1).put(0); // 3: upper right <1, 1, 0>
 
-        vertices.put(-1).put(-1).put(0); // 0: lower left <-1, -1, 0>
-        vertices.put(-1).put(1).put(0); // 1: upper left <-1, 1, 0>
-        vertices.put(1).put(-1).put(0); // 2: lower right <1, -1, 0>
-        vertices.put(1).put(1).put(0); // 3: upper right <1, 1, 0>
+            indices.put(0).put(2).put(1); // first triangle: 0,2,1
+            indices.put(1).put(3).put(2); // second triangle: 1,3,2
+        } else if (target.getCentroidPart().getPart() == CentroidPart.PartType.CIRCLE) {
+            throw new UnsupportedOperationException("Circle is an anticipated but not yet visually supported part type.");
 
-        indices.put(0).put(2).put(1); // first triangle: 0,2,1
-        indices.put(1).put(3).put(2); // second triangle: 1,3,2
-        color = util.generatePastelColor();//= new ColorRGBA(1, 0, 0, .85f);
+        } else if (target.getCentroidPart().getPart() == CentroidPart.PartType.TRIANGLE) {
+            throw new UnsupportedOperationException("Triangle is an anticipated but not yet visually supported part type.");
+        } else {
+            throw new UnsupportedOperationException(target.getCentroidPart().getPart().toString() + " is not a valid part type.");
+        }
+//        }
+
+        color = util.generatePastelColor();
 
         TriMesh mesh = new TriMesh("", vertices, null, null, null, indices);
         mesh.setDefaultColor(color);
@@ -112,19 +122,19 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
 
         //if the CentroidPartObject associated with this Representation has been
         //solved set the colored region to blue
-        if(target.getState() != null && target.getState().isLocked()){
+        if (target.getState() != null && target.getState().isLocked()) {
             color = ColorRGBA.blue;
         }
 
         //if the CentroidPartObject associated with this Representation has not
         //been solved and has been clicked on the color of the region is set to be
         //highlighted. If not clicked on it is the default color.
-        if(isSelected() && (target.getState() == null || !target.getState().isLocked())) {
+        if (isSelected() && (target.getState() == null || !target.getState().isLocked())) {
             surface.setDefaultColor(util.highlight(color));
+            surface.setLocalTranslation(0, 0, 0.01f);
         } else {
             surface.setDefaultColor(color);
+            surface.setLocalTranslation(0, 0, 0);
         }
     }
-
-
 }

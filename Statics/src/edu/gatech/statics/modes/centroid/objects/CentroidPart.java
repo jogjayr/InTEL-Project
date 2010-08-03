@@ -22,6 +22,7 @@ public class CentroidPart implements DiagramKey {
     final private BigDecimal width;
     final private BigDecimal height;
     final private BigDecimal surfaceArea;
+    final private PartType part;
 
     public enum PartType {
 
@@ -39,11 +40,17 @@ public class CentroidPart implements DiagramKey {
             this.surfaceArea = new BigDecimal(Math.PI).multiply(this.width.divide(new BigDecimal("2.0")).pow(2));
         } else if (part == PartType.RECTANGLE) { //w*h
             this.surfaceArea = this.width.multiply(this.height);
-        } else if (part == PartType.RECTANGLE) { //w*h/2
+        } else if (part == PartType.TRIANGLE) { //w*h/2
             this.surfaceArea = this.width.multiply(this.height).divide(new BigDecimal("2.0"));
         } else {
             throw new UnsupportedOperationException(part + " is not a valid part type.");
         }
+
+        this.part = part;
+    }
+
+    public PartType getPart() {
+        return part;
     }
 
     public String getPartName() {

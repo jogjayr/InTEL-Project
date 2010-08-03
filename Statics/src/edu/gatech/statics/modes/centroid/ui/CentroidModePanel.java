@@ -116,6 +116,8 @@ public class CentroidModePanel extends ApplicationModePanel {
                 getDiagram().pushState(builder.build());
 
                 diagram.setSolved();
+
+
             } else {
                 // should we give any more detailed feedback?
                 StaticsApplication.getApp().setStaticsFeedbackKey("centroid_feedback_check_fail");
@@ -255,7 +257,7 @@ public class CentroidModePanel extends ApplicationModePanel {
 
     // brings up the special UI elements in the bottom menu for solving bodies
     public void displayBodySolver() {
-        StaticsApplication.getApp().setUIFeedback("Enter the surface area, x, and y values for the centroid of " + getDiagram().getName());
+        StaticsApplication.getApp().setUIFeedback("Enter the total surface area, x, and y values for the centroid of " + getDiagram().getName());
         if (!checkButton.isAdded()) {
             mainContainer.add(checkButton, BorderLayout.EAST);
         }

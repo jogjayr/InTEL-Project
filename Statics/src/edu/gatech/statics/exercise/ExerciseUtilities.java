@@ -42,11 +42,11 @@ public class ExerciseUtilities {
 
         if (Exercise.getExercise().isExerciseFinished()) {
             if (StaticsApplication.getApp().isGraded()) {
-                textLabel = new BLabel("CONGRATULATIONS! You have solved this exercise. " +
+                textLabel = new BLabel("GOOD JOB! You have solved this exercise. " +
                         "Your work has automatically been submitted.");
 
             } else {
-                textLabel = new BLabel("CONGRATULATIONS! You have solved this exercise.");
+                textLabel = new BLabel("GOOD JOB! You have solved this exercise.");
             }
         } else {
             textLabel = new BLabel("");

@@ -49,7 +49,7 @@ public class SpaceStationExercise extends CentroidExercise {
         interfaceConfiguration.setViewConstraints(vc);
 //        DisplayConstants dc = new DisplayConstants();
 //        dc.setPointSize(0.5);
-        getDisplayConstants().setPointSize(.15f);
+//        getDisplayConstants().setPointSize(.15f);
         return interfaceConfiguration;
     }
 
