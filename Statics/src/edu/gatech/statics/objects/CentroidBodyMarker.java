@@ -13,9 +13,8 @@ import edu.gatech.statics.objects.representations.CentroidPartLabel;
 import edu.gatech.statics.objects.representations.PointRepresentation;
 
 /**
- * This class creates the floating white boxes that contain the part names
- * before the CentroidParts are solved for and then the name and derived data
- * after the part is solved for.
+ * This class creates the dot and name tag that represents the overall centroid
+ * position after the student solves the problem.
  * @author Jimmy Truesdell
  * jtrue@gatech.edu
  * 940-391-3200

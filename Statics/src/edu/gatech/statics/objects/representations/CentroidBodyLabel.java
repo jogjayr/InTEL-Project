@@ -14,9 +14,8 @@ import edu.gatech.statics.objects.CentroidBodyMarker;
 import edu.gatech.statics.objects.CentroidPartMarker;
 
 /**
- * This class creates the floating white boxes that contain the part names
- * before the CentroidParts are solved for and then the name and derived data
- * after the part is solved for.
+ * This class is what actually fills out and draws the white label that
+ * represents the name of the CentroidBody that has been solved.
  * @author Jimmy Truesdell
  * jtrue@gatech.edu
  * 940-391-3200
