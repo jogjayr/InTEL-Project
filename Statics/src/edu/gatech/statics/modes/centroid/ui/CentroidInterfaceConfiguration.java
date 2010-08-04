@@ -12,6 +12,8 @@ import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
  * This class replaces the standard SelectModePanel with the
  * CentroidSelectModePanel.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidInterfaceConfiguration extends DefaultInterfaceConfiguration{
     public CentroidInterfaceConfiguration() {

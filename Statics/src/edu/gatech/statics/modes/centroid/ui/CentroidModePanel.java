@@ -34,6 +34,8 @@ import java.util.Map;
  * use in centroid problems. It creates the UI elements for the equation mode of
  * the centroid problems.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidModePanel extends ApplicationModePanel {
 

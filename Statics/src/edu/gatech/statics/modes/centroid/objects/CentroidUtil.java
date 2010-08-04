@@ -12,6 +12,8 @@ import com.jme.renderer.ColorRGBA;
  * For an explanation for my HSL to RGB conversion please look here:
  * http://130.113.54.154/~monger/hsl-rgb.html
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 class CentroidUtil {
 

@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * This class is the specific implementation of the SelectDiagram class for centroid mode.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidSelectDiagram extends SelectDiagram {
 

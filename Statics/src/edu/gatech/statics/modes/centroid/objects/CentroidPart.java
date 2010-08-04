@@ -14,6 +14,8 @@ import java.math.BigDecimal;
  * x/y/z position of the centroid, part name, and the surface area of each part
  * of the centroid body.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidPart implements DiagramKey {
 

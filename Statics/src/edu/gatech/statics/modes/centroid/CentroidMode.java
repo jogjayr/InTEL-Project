@@ -15,6 +15,8 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPart;
 /**
  * The specific implementation of the Mode class for use with centroids.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidMode extends Mode{
 

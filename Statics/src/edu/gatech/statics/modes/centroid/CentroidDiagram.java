@@ -31,6 +31,8 @@ import java.util.List;
 /**
  * Sets up the main Diagram class for centroids. Also handles graying and displaying of the floating white boxes.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidDiagram extends Diagram<CentroidState> {
 
@@ -295,7 +297,15 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         clearStateStack();
         //needed to make the overall centroid position appear
         //still might not be enough, need to look into this
-        getBaseObjects();
+        Point pt = new Point(body.getName() + "Center",
+                Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getX()).toString(),
+                Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getY()).toString(),
+                Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getZ()).toString());
+        CentroidBodyMarker cbm = new CentroidBodyMarker(body.getName() + " Marker", pt, body);
+        cbm.createDefaultSchematicRepresentation();
+        body.addObject(cbm);
+        getSchematic().add(cbm);
+
     }
 
     public boolean isSolved() {
@@ -355,21 +365,17 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             //}
         }
 
-        if (this.isLocked()) {
-            Point pt = new Point(body.getName() + "Center",
-                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getX()).toString(),
-                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getY()).toString(),
-                    Unit.distance.getDisplayScale().multiply(body.getCenterOfMass().getPosition().getZ()).toString());
-            CentroidBodyMarker cbm = new CentroidBodyMarker(body.getName() + " Marker", pt, body);
-            cbm.createDefaultSchematicRepresentation();
-            objects.add(cbm);
-        }
-
 //        for (SimulationObject measurement : Exercise.getExercise().getSchematic().allObjects()) {
         for (CentroidPartObject cpo : body.getParts()) {
             for (Measurement m : cpo.getMeasurements()) {
                 objects.add(m);
             }
+        }
+
+        // add the centroid body marker, so the dot shows up in the centroid diagram.
+        for (SimulationObject obj : body.getAttachedObjects()) {
+            if(obj instanceof CentroidBodyMarker)
+                objects.add(obj);
         }
 
         return objects;

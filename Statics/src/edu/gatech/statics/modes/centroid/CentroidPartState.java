@@ -12,6 +12,8 @@ import edu.gatech.statics.util.Builder;
  * This is the state class that manages the information for each specific
  * CentroidPart.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidPartState implements Buildable<CentroidPartState>{
 

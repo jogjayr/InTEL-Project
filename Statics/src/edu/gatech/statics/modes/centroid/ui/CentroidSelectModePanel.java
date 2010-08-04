@@ -17,7 +17,9 @@ import edu.gatech.statics.objects.SimulationObject;
  * Centroid problems. Mostly this is a UI change to alter the text on the button
  * in the menu to allow for the FBD functionality necessary for problems like
  * the SmithMachine.
- * @author Jimmy Truesdell
+ * @author Jimmy Truesdell 
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidSelectModePanel extends SelectModePanel {
 

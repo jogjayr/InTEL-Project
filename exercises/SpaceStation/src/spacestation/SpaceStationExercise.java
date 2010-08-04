@@ -95,7 +95,7 @@ public class SpaceStationExercise extends CentroidExercise {
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".01"));
 
-        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setPointSize(0.25f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
     }
 

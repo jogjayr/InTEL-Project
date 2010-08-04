@@ -17,6 +17,8 @@ import java.util.List;
  * body that represents all of the centroid parts in one group at first so that
  * we can then select it and divide it into its individual parts for solving.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidBody extends Body implements DiagramKey {
 

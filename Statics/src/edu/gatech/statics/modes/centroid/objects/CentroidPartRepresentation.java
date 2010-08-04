@@ -26,6 +26,8 @@ import java.nio.IntBuffer;
  * shapes based on the PartType that gets passed into the CentroidPartObject
  * upon creation.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidPartRepresentation extends Representation<CentroidPartObject> {
 

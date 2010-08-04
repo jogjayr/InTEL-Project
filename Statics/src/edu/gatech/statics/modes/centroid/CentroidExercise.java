@@ -20,6 +20,8 @@ import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
  * to the CentroidSelectDiagram, and the AbstractInterfaceConfiguration gets set
  * to the CentroidInterfaceConfiguration.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 abstract public class CentroidExercise extends OrdinaryExercise {
 

@@ -16,6 +16,8 @@ import java.util.Map;
  * containing the states for the specific CentroidParts. Provides a method by
  * which it is possible to tell if all the CentroidParts have been solved for.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidState implements DiagramState<CentroidDiagram> {
 

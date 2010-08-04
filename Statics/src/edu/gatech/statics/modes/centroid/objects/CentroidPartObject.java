@@ -18,6 +18,8 @@ import java.util.ArrayList;
  * CentroidPart which serves as the positional and surface area data container
  * for the CPO.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CentroidPartObject extends SimulationObject implements ResolvableByName {
 

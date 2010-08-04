@@ -7,26 +7,29 @@ package edu.gatech.statics.objects.representations;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidSelectDiagram;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.objects.CentroidBodyMarker;
 import edu.gatech.statics.objects.CentroidPartMarker;
 
 /**
- * This class is what actually fills out and draws the white labels that
- * represent the data in the CentroidParts.
+ * This class creates the floating white boxes that contain the part names
+ * before the CentroidParts are solved for and then the name and derived data
+ * after the part is solved for.
  * @author Jimmy Truesdell
  * jtrue@gatech.edu
  * 940-391-3200
  */
-public class CentroidPartLabel extends LabelRepresentation {
+public class CentroidBodyLabel extends LabelRepresentation {
 
     private boolean enabled;
-    private CentroidPartObject cpo;
+    private CentroidBody body;
 
-    public CentroidPartLabel(CentroidPartMarker target) {
+    public CentroidBodyLabel(CentroidBodyMarker target) {
         super(target, "label_hovering_centroid_part");
 
-        this.cpo = target.getCpo();
+        this.body = target.getBody();
 
         setOffset(queueDistance, queueDistance);
 
@@ -49,15 +52,11 @@ public class CentroidPartLabel extends LabelRepresentation {
 
     @Override
     protected String getLabelText() {
-        if (cpo != null && cpo.getState() != null && cpo.getState().isLocked()) {
-            return cpo.getCentroidPart().getPartName()
-                    + "\nSurface Area: " + cpo.getCentroidPart().getSurfaceArea()
-                    + "\nX Position: " + cpo.getCentroidPart().getCentroid().getX()
-                    + "\nY Position: " + cpo.getCentroidPart().getCentroid().getY();
-        } else if (cpo != null && (cpo.getState() == null || !cpo.getState().isLocked())) {
-            return cpo.getCentroidPart().getPartName();
+
+        if (body == null) {
+            return "Not ready yet.";
         } else {
-            return "something went wrong";
+            return "Centroid position of " + body.getName();
         }
     }
 
@@ -75,7 +74,7 @@ public class CentroidPartLabel extends LabelRepresentation {
         enabled = shouldEnable;
 
 //        if (cpo != null && cpo.getState() != null) {
-            setHidden(false);
+        setHidden(false);
 //        } else {
 //            setHidden(true);
 //        }
