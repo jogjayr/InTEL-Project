@@ -16,8 +16,13 @@ import edu.gatech.statics.objects.representations.CoordinateAxisRepresentation;
 import java.math.BigDecimal;
 
 /**
- *
- * @author Calvin Ashmore
+ * Draws a straight line with a circle at the origin and an arrow at the other
+ * end. To make this display as a coordinate system you have to add two of them
+ * (one in each direction). A future change should maybe be to make it so that
+ * one class creates both lines.
+ * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class CoordinateAxis extends Measurement {
 

@@ -15,6 +15,8 @@ import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
  * A task for graded problems specifically for Centroid problems.
  * This is to determine if a particular body is solved.
  * @author Jimmy Truesdell
+ * jtrue@gatech.edu
+ * 940-391-3200
  */
 public class SolveCentroidBodyTask extends Task {
 
