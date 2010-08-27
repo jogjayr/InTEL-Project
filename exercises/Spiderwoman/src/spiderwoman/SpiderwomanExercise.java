@@ -46,7 +46,7 @@ public class SpiderwomanExercise extends FrameExercise {
                 "and scale up the side.  Will she be able to scale up the side of Tech Tower? ");
 
         description.setProblemStatement("Her weight is 700 N.  The tension in the spiderweb is 600 N.  The angle between the spiderweb and the " +
-                "vertical side of the building is 60 degrees.");
+                "horizontal is 60 degrees.");
 
         description.setGoals("Draw a free body diagram of Spiderwoman " +
                 "in equilibrium while scaling building.  Solve for the reaction forces at her feet.  Find the minimum " +
