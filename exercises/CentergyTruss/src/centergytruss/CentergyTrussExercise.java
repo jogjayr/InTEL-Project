@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -16,7 +16,7 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
 
 /**
  *
- * @author tflock
+ * @author Vignesh 
  */
 public class CentergyTrussExercise extends OrdinaryExercise {
 
@@ -42,19 +42,14 @@ public class CentergyTrussExercise extends OrdinaryExercise {
                 "Solve for the forces in BA, BD, and CD using either the method of joints or the method of " +
                 "sections. Specify whether each member is in tension, compression or is a zero force member.");
 
-        description.setLayout(new ScrollbarLayout());
+            description.setLayout(new ScrollbarLayout());
 
-
-
-        description.addImage("centergytruss/assets/screenshot.png");
-        description.addImage("centergytruss/assets/mainpicture.png");
-        description.addImage("centergytruss/assets/outsidebeam.png");
-        description.addImage("centergytruss/assets/insidedeck.png");
+            description.addImage("centergytruss/assets/screenshot.png");
+            description.addImage("centergytruss/assets/mainpicture.png");
+            description.addImage("centergytruss/assets/outsidebeam.png");
+            description.addImage("centergytruss/assets/insidedeck.png");
         
-        
-
-
-        return description;
+            return description;
     }
 
     @Override
@@ -76,11 +71,7 @@ public class CentergyTrussExercise extends OrdinaryExercise {
         B.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
         D.createDefaultSchematicRepresentation();
-//        AB.createDefaultSchematicRepresentation();
-//        BC.createDefaultSchematicRepresentation();
-//        CD.createDefaultSchematicRepresentation();
-//        DA.createDefaultSchematicRepresentation();
-//        BD.createDefaultSchematicRepresentation();
+
 
         schematic.add(A);
         schematic.add(B);
