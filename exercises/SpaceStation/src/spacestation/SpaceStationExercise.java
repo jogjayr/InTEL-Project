@@ -92,8 +92,8 @@ public class SpaceStationExercise extends CentroidExercise {
 
     @Override
     public void initExercise() {
-        Unit.setSuffix(Unit.distance, " ft");
-        Unit.setDisplayScale(Unit.distance, new BigDecimal(".01"));
+//        Unit.setSuffix(Unit.distance, " ft");
+        Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
 
         getDisplayConstants().setPointSize(0.25f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
@@ -106,50 +106,21 @@ public class SpaceStationExercise extends CentroidExercise {
 
         Schematic schematic = getSchematic();
 
-        Point A1, A2, A3, A4, B1, B2, B3, B4, B5, B6, C1, C2, C3, C4, C5, D1, D2, D3, D4, origin;
-
-//        CentroidPartMarker solarPanelA, solarPanelB, livingQuarters, panelExtender;
-
-        A1 = new Point("A1", "0.0", "1.25", "0.0"); //topleft
-        A2 = new Point("A2", "1.87", "1.25", "0.0"); //topright
-        A3 = new Point("A3", "0.0", "0.95", "0.0"); //bottomleft
-        A4 = new Point("A4", "2.2", "1.10", "0.0"); //centerright
-
-        B1 = new Point("B1", "0.0", "0.75", "0.0"); //left
-        B2 = new Point("B2", "1.25", "0.75", "0.0"); //2nd left
-        B3 = new Point("B3", "1.9", "0.75", "0.0"); //3rd left
-        B4 = new Point("B4", "2.76", "0.75", "0.0"); //4th left
-        B5 = new Point("B5", "1.98", "1.10", "0.0"); //topwidth
-        B6 = new Point("B6", "1.9", "1.25", "0.0");
-
-        C1 = new Point("C1", "2.65", "1.75", "0.0"); //top
-        C2 = new Point("C2", "2.65", "0.95", "0.0"); //2nd top
-        C3 = new Point("C3", "2.65", "0.6", "0.0"); //3rd top
-        C4 = new Point("C4", "2.65", "0.0", "0.0"); //bottom
-        C5 = new Point("C5", "2.65", "0.90", "0.0");
-
-        D1 = new Point("D1", "2.61", "1.85", "0.0"); //topleft
-        D2 = new Point("D2", "2.91", "1.85", "0.0");  //topright
-        D3 = new Point("D3", "2.60", "0", "0.0");  //bottom left
-        D4 = new Point("D4", "2.90", "0", "0.0");  //bottom right
-
-        origin = new Point("Origin", "0.0", "0.0", "0.0");
-
 //        A1.createDefaultSchematicRepresentation();
 //        A2.createDefaultSchematicRepresentation();
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
         //A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "SolarPanelA", "5610.0"));
-        A = new CentroidPartObject(new CentroidPart(new Vector3bd("93.5", "110.0", "0.0"), "187.0", "30.0", "SolarPanelA", PartType.RECTANGLE));
-        A.setName("SolarPanelA");
+        A = new CentroidPartObject(new CentroidPart(new Vector3bd("35.0", "50.75", "0.0"), "70.0", "11.5", "Solar Panel A", PartType.RECTANGLE));
+        A.setName("Solar Panel A");
         //B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "SolarPanelB", "5550.0"));
-        B = new CentroidPartObject(new CentroidPart(new Vector3bd("276.0", "92.5", "0.0"), "30.0", "185.0", "SolarPanelB", PartType.RECTANGLE));
-        B.setName("SolarPanelB");
-        C = new CentroidPartObject(new CentroidPart(new Vector3bd("194.0", "117.5", "0.0"), "8.0", "115.0", "LivingQuarters", PartType.RECTANGLE));
-        C.setName("LivingQuarters");
-        D = new CentroidPartObject(new CentroidPart(new Vector3bd("200.5", "92.5", "0.0"), "151.0", "5.0", "PanelExtender", PartType.RECTANGLE));
-        D.setName("PanelExtender");
-        Point p = new Point("Centroid", new Vector3bd("186.0", "102.0", "0.0"));
+        B = new CentroidPartObject(new CentroidPart(new Vector3bd("125.75", "35.0", "0.0"), "11.5", "70.0", "Solar Panel B", PartType.RECTANGLE));
+        B.setName("Solar Panel B");
+        C = new CentroidPartObject(new CentroidPart(new Vector3bd("72.3", "42.5", "0.0"), "4.6", "55.0", "Living Quarters", PartType.RECTANGLE));
+        C.setName("Living Quarters");
+        D = new CentroidPartObject(new CentroidPart(new Vector3bd("80.0", "35.5", "0.0"), "80.0", "3.0", "Support Truss", PartType.RECTANGLE));
+        D.setName("Support Truss");
+        Point p = new Point("Centroid", new Vector3bd("79.3246553", "41.9882311", "0.0"));
         p.setName("Centroid");
 
         station = new CentroidBody("Space Station", p);
@@ -163,9 +134,23 @@ public class SpaceStationExercise extends CentroidExercise {
         B.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
         D.createDefaultSchematicRepresentation();
+        
+        
+        
+        
+        Point A1, A2, A3, B1, B2, B3, B4, B5, B6, C1, C2, C3, C4, C5, D1, D2, D3, origin;
+        origin = new Point("Origin", "0.0", "0.0", "0.0");
+
+//        CentroidPartMarker solarPanelA, solarPanelB, livingQuarters, panelExtender;
+
+        A1 = new Point("A1", "0.0", "5.65", "0.0"); //topleft
+        A2 = new Point("A2", "7.0", "5.65", "0.0"); //topright
+        A3 = new Point("A3", "0.0", "4.5", "0.0"); //bottomleft
+        
         ////////////////////
         //LEFT SOLAR PANEL//
         ////////////////////
+        
         //BOTTOM HORIZONTAL
         DistanceMeasurement distance1 = new DistanceMeasurement(A1, A2);
         distance1.setName("Measure A1-A2");
@@ -184,17 +169,45 @@ public class SpaceStationExercise extends CentroidExercise {
 //        schematic.add(distance2);
         A.addMeasurement(distance2);
 
+
+        DistanceMeasurement distance1a = new DistanceMeasurement(origin, A3);
+        distance1a.setName("Measure origin-A3");
+        distance1a.createDefaultSchematicRepresentation(-0.3f);
+        distance1a.forceVertical();
+        A.addMeasurement(distance1a);
+
         ////////////////////
         //HORIZONTAL STICK//
         ////////////////////
+
+        B1 = new Point("B1", "4.0", "3.4", "0.0");
+        Point B1a = new Point("B1a", "4.0", "3.7", "0.0");
+
+        B2 = new Point("B2", "4.0", "0", "0.0"); //2nd left
+        B3 = new Point("B3", "7.0", "0", "0.0"); //3rd left
+        B4 = new Point("B4", "12.0", "0", "0.0"); //4th left
+        
         //BOTTOM LEFT HORIZONTAL
-        DistanceMeasurement distance4 = new DistanceMeasurement(B1, B2);
-        distance4.setName("Measure B1-B2");
+        DistanceMeasurement distance4 = new DistanceMeasurement(origin, B2);
+        distance4.setName("Measure origin-B2");
         distance4.createDefaultSchematicRepresentation(0.75f);
         distance4.forceHorizontal();
         D.addMeasurement(distance4);
         //distance1.addPoint(A);
 //        schematic.add(distance4);
+
+
+        DistanceMeasurement distance4a = new DistanceMeasurement(B1a, B1);
+        distance4a.setName("Measure B1-B1a");
+        distance4a.createDefaultSchematicRepresentation(0.75f);
+        distance4a.forceVertical();
+        D.addMeasurement(distance4a);
+
+        DistanceMeasurement distance4b = new DistanceMeasurement(B1, B4);
+        distance4b.setName("Measure B1-B1a");
+        distance4b.createDefaultSchematicRepresentation(0.75f);
+        distance4b.forceHorizontal();
+        D.addMeasurement(distance4b);
 
         //BOTTOM MIDDLE HORIZONTAL
         DistanceMeasurement distance5 = new DistanceMeasurement(B2, B3);
@@ -214,9 +227,28 @@ public class SpaceStationExercise extends CentroidExercise {
         //distance1.addPoint(A);
 //        schematic.add(distance6);
 
+        DistanceMeasurement distance6a = new DistanceMeasurement(B2, B1);
+        distance6a.setName("Measure B2-B1");
+        distance6a.createDefaultSchematicRepresentation(0.75f);
+        distance6a.forceVertical();
+        D.addMeasurement(distance6a);
+
+
+
         ///////////////////
         //LIVING QUARTERS//
         ///////////////////
+
+        
+        B5 = new Point("B5", "7.0", "7.0", "0.0"); //topwidth
+        B6 = new Point("B6", "7.46", "7.0", "0.0");
+
+//        B5.createDefaultSchematicRepresentation();
+//        B6.createDefaultSchematicRepresentation();
+//        schematic.add(B5);
+//        schematic.add(B6);
+
+
         //HORZONTAL
         DistanceMeasurement distance7 = new DistanceMeasurement(B6, B5);
         distance7.setName("Measure A2-B5");
@@ -225,31 +257,48 @@ public class SpaceStationExercise extends CentroidExercise {
         C.addMeasurement(distance7);
         //distance1.addPoint(A);
 //        schematic.add(distance7);
+        
+        C1 = new Point("C1", "7.0", "7.0", "0.0"); //top
+        C2 = new Point("C2", "7.0", "3.4", "0.0"); //2nd top
+        C3 = new Point("C3", "7.0", "1.5", "0.0"); //3rd top
+        C4 = new Point("C4", "7.0", "0.0", "0.0"); //bottom
+        C5 = new Point("C5", "7.0", "3.7", "0.0");
 
-        //TOP VERTICAL
-        DistanceMeasurement distance8 = new DistanceMeasurement(C1, C2);
-        distance8.setName("Measure C1-C2");
-        distance8.createDefaultSchematicRepresentation(0.33f);
-        distance8.forceVertical();
-        C.addMeasurement(distance8);
-        //distance1.addPoint(A);
+//        C1.createDefaultSchematicRepresentation();
+//        C2.createDefaultSchematicRepresentation();
+//        C3.createDefaultSchematicRepresentation();
+//        C4.createDefaultSchematicRepresentation();
+//        C5.createDefaultSchematicRepresentation();
+//        schematic.add(C1);
+//        schematic.add(C2);
+//        schematic.add(C3);
+//        schematic.add(C4);
+//        schematic.add(C5);
+
+//        //TOP VERTICAL
+//        DistanceMeasurement distance8 = new DistanceMeasurement(C1, C2);
+//        distance8.setName("Measure C1-C2");
+//        distance8.createDefaultSchematicRepresentation(0.33f);
+//        distance8.forceVertical();
+//        C.addMeasurement(distance8);
+//        //distance1.addPoint(A);
 //        schematic.add(distance8);
 
-        //TOP MIDDLE VERTICAL
-        DistanceMeasurement distance9 = new DistanceMeasurement(C2, C3);
-        distance9.setName("Measure C2-C3");
-        distance9.createDefaultSchematicRepresentation(0.33f);
-        distance9.forceVertical();
-        C.addMeasurement(distance9);
-        //distance1.addPoint(A);
-//        schematic.add(distance9);
-
-        //BOTTOM MIDDLE VERTICAL
-        DistanceMeasurement distance13 = new DistanceMeasurement(C5, C2);
-        distance13.setName("Measure C2-C5");
-        distance13.createDefaultSchematicRepresentation(0.25f);
-        distance13.forceVertical();
-        C.addMeasurement(distance13);
+//        //TOP MIDDLE VERTICAL
+//        DistanceMeasurement distance9 = new DistanceMeasurement(C2, C3);
+//        distance9.setName("Measure C2-C3");
+//        distance9.createDefaultSchematicRepresentation(0.33f);
+//        distance9.forceVertical();
+//        C.addMeasurement(distance9);
+//        //distance1.addPoint(A);
+////        schematic.add(distance9);
+//
+//        //BOTTOM MIDDLE VERTICAL
+//        DistanceMeasurement distance13 = new DistanceMeasurement(C5, C2);
+//        distance13.setName("Measure C2-C5");
+//        distance13.createDefaultSchematicRepresentation(0.25f);
+//        distance13.forceVertical();
+//        C.addMeasurement(distance13);
 //        schematic.add(distance13);
 
         //BOTTOM VERTICAL
@@ -261,9 +310,23 @@ public class SpaceStationExercise extends CentroidExercise {
         C.addMeasurement(distance10);
 //        schematic.add(distance10);
 
+        DistanceMeasurement distance10a = new DistanceMeasurement(C1, C3);
+        distance10a.setName("Measure C1-C3");
+        distance10a.createDefaultSchematicRepresentation(0.33f);
+        distance10a.forceVertical();
+        //distance1.addPoint(A);
+        C.addMeasurement(distance10a);
+//        schematic.add(distance10);
+
         /////////////////////
         //RIGHT SOLAR PANEL//
         /////////////////////
+        
+        
+        D1 = new Point("D1", "12.0", "7.0", "0.0"); //topleft
+        D2 = new Point("D2", "13.15", "7.0", "0.0");  //topright
+        D3 = new Point("D3", "13.15", "0", "0.0");  //bottom left
+        
         //HORIZONTAL
         DistanceMeasurement distance11 = new DistanceMeasurement(D1, D2);
         distance11.setName("Measure D1-D2");
@@ -281,7 +344,7 @@ public class SpaceStationExercise extends CentroidExercise {
         B.addMeasurement(distance12);
         //distance1.addPoint(A);
 //        schematic.add(distance12);
-
+        
         CoordinateAxis xAxis = new CoordinateAxis(origin, Direction.horizontal);//new Point("xAxis","0.0","0.0","0.0"));
         xAxis.setName("xAxis");
         xAxis.setDistance(new BigDecimal("4.0"));
@@ -302,9 +365,9 @@ public class SpaceStationExercise extends CentroidExercise {
         modelNode.extractLights();
 
         Vector3f modelTranslation = new Vector3f(0, 0, 0);
-        float modelScale = .4f;
+        float modelScale = 1f;
 
-        ModelRepresentation rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/solarpanel1");
+        ModelRepresentation rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel1");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -314,7 +377,7 @@ public class SpaceStationExercise extends CentroidExercise {
 //        MimicRepresentation mimic = new MimicRepresentation(A, rep);
 //        A.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/solarpanel2");
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/solarpanel2");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -324,7 +387,7 @@ public class SpaceStationExercise extends CentroidExercise {
 //        mimic = new MimicRepresentation(B, rep);
 //        B.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/mainBody");
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/mainBody");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
@@ -334,7 +397,7 @@ public class SpaceStationExercise extends CentroidExercise {
 //        mimic = new MimicRepresentation(C, rep);
 //        C.addRepresentation(mimic);
 
-        rep = modelNode.extractElement(station, "VisualSceneNode/completespacestation/truss");
+        rep = modelNode.extractElement(station, "RootNode/completespacestation/truss");
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setModelScale(modelScale);
