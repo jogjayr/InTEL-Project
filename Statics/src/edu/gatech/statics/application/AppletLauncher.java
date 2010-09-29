@@ -99,7 +99,7 @@ public class AppletLauncher extends StaticsApplet {
         // by default, have graded mode be true.
         // if testing mode is set, let graded be false.
         // if the testing mode is set, then the user id is set to -1.
-        if (!"-1".equals(userIDString)) {
+        if (!"-1".equals(userIDString) && !"0".equals(userIDString)) {
             getApplication().setGraded(true);
         }
 
