@@ -93,8 +93,23 @@ public class CentergyFrameExercise extends OrdinaryExercise {
         String prefix = "VisualSceneNode/everything/everything_group1/Scene/";
 
         //Attaching a model object to it's respective exercise element
-        rep = modelNode.extractElement(AC, prefix+"pCube21");
+        rep = modelNode.extractElement(AC, prefix+"pCube3");
         AC.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(CD, prefix + "pCube16");
+        CD.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(DF, prefix + "pCube2");
+        DF.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+        rep = modelNode.extractElement(BE, prefix + "pCube27");
+        BE.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
