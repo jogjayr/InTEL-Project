@@ -103,7 +103,7 @@ public class LeveeExercise extends DistributedExercise {
     @Override
     public void loadExercise() {
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.8f, .8f, .9f, 1.0f));
         //StaticsApplication.getApp().getCamera().setLocation(new Vector3f(10.0f, 6, 0f));
 //        StaticsApplication.getApp().getCamera().setDirection(new Vector3f(15, 1, 1).normalize());
 
@@ -138,7 +138,7 @@ public class LeveeExercise extends DistributedExercise {
         waterForceObject.removeRepresentation(labelRep);
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
-        measure.createDefaultSchematicRepresentation();
+        measure.createDefaultSchematicRepresentation(3);
         schematic.add(measure);
 
         Connector base = new Fix2d(A);
