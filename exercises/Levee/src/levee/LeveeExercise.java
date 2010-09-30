@@ -85,6 +85,7 @@ public class LeveeExercise extends DistributedExercise {
     @Override
     public void initExercise() {
 
+        Unit.setDisplayScale(Unit.distance, new BigDecimal("1"));
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.moment, " lb*ft");
         Unit.setSuffix(Unit.force, " lbs");
