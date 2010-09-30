@@ -27,6 +27,7 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
     // links to the currently existing state
     private CentroidPartState state;
     private ArrayList<Measurement> measurements = new ArrayList<Measurement>();
+    private Vector3f markerOffset = Vector3f.ZERO;
 
     public CentroidPartObject(CentroidPart part) {
         this.part = part;
@@ -55,11 +56,19 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
         return state;
     }
 
+    public Vector3f getMarkerOffset() {
+        return markerOffset;
+    }
+
+    public void setMarkerOffset(Vector3f markerOffset) {
+        this.markerOffset = markerOffset;
+    }
+
     public void addMeasurement(Measurement distance) {
         measurements.add(distance);
     }
 
-    public ArrayList<Measurement> getMeasurements(){
+    public ArrayList<Measurement> getMeasurements() {
         return measurements;
     }
 }

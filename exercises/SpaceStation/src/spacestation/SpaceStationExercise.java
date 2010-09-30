@@ -123,6 +123,8 @@ public class SpaceStationExercise extends CentroidExercise {
         Point p = new Point("Centroid", new Vector3bd("79.3246553", "41.9882311", "0.0"));
         p.setName("Centroid");
 
+        C.setMarkerOffset(new Vector3f(0, 1, 0));
+
         station = new CentroidBody("Space Station", p);
         station.setName("Space Station");
         station.addObject(A);

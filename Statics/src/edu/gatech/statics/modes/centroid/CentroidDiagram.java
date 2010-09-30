@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.centroid;
 
+import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.Representation;
@@ -355,10 +356,12 @@ public class CentroidDiagram extends Diagram<CentroidState> {
             //displays those floating white boxes that has the name, area, x, and y values of each part
             BigDecimal displayScale = Unit.distance.getDisplayScale();
             //if (part.getState() != null && part.getState().isLocked() == true) {
+
+            Vector3f markerOffset = part.getMarkerOffset();
             Point pt = new Point(part.getName() + "Center",
-                    displayScale.multiply(part.getCentroidPart().getCentroid().getX()).toString(),
-                    displayScale.multiply(part.getCentroidPart().getCentroid().getY()).toString(),
-                    displayScale.multiply(part.getCentroidPart().getCentroid().getZ()).toString());
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getX()).add(new BigDecimal(markerOffset.x)).toString(),
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getY()).add(new BigDecimal(markerOffset.y)).toString(),
+                    displayScale.multiply(part.getCentroidPart().getCentroid().getZ()).add(new BigDecimal(markerOffset.z)).toString());
             CentroidPartMarker cpm = new CentroidPartMarker(part.getName() + "Marker", pt, part);
             cpm.createDefaultSchematicRepresentation();
             objects.add(cpm);
