@@ -400,6 +400,7 @@ public class BImage extends Quad {
         blendState.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
         blendState.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
         blendState.setEnabled(true);
-        _supportsNonPowerOfTwo = GLContext.getCapabilities().GL_ARB_texture_non_power_of_two;
+//        _supportsNonPowerOfTwo = GLContext.getCapabilities().GL_ARB_texture_non_power_of_two;
+        _supportsNonPowerOfTwo = false;
     }
 }
