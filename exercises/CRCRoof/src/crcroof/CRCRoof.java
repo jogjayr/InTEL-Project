@@ -36,7 +36,7 @@ public class CRCRoof extends OrdinaryExercise {
         description.addImage("CRCRoof/assets/CRC1.png");
         description.addImage("CRCRoof/assets/CRC2.png");
 
-        return description();
+        return description;
 
 
     }
