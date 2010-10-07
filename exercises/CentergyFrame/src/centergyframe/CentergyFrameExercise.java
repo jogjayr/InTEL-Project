@@ -5,6 +5,7 @@
 
 package centergyframe;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
@@ -15,20 +16,51 @@ import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
+import edu.gatech.statics.modes.distributed.ui.DistributedSelectModePanel;
+import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
+import edu.gatech.statics.modes.frame.FrameSelectModePanel;
+import edu.gatech.statics.modes.frame.FrameUtil;
+import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.connectors.Pin2d;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveConnectorTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import java.math.BigDecimal;
 /**
  *
  * @author Vignesh
 */
 public class CentergyFrameExercise extends DistributedExercise {
+
+    // borrowed from FrameExercise
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+
+        // replace the mode default select mode panel with the frame one.
+        ic.replaceModePanel(DistributedSelectModePanel.class, new SpecialSelectModePanel());
+
+        return ic;
+    }
+
+    // borrowed from FrameExercise
+    @Override
+    protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodies) {
+
+        // set up the special name for the whole frame, in frame problems
+        if (FrameUtil.isWholeDiagram(bodies)) {
+            bodies.setSpecialName(FrameUtil.whatToCallTheWholeDiagram);
+        }
+
+        return super.createFreeBodyDiagram(bodies);
+    }
+
 
     @Override
     public Description getDescription() {
@@ -120,7 +152,8 @@ public class CentergyFrameExercise extends DistributedExercise {
         endA.setName("support A");
         endA.createDefaultSchematicRepresentation();
 
-        Pin2d endF = new Pin2d(F);
+        Roller2d endF = new Roller2d(F);
+        endF.setDirection(Vector3bd.UNIT_Y);
         endF.attachToWorld(CD);
         endF.setName("Support F");
         endF.createDefaultSchematicRepresentation();
