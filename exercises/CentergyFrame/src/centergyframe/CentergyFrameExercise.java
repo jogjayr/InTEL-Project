@@ -5,20 +5,30 @@
 
 package centergyframe;
 
-import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
+import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
+import edu.gatech.statics.modes.distributed.DistributedExercise;
+import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveConnectorTask;
+import java.math.BigDecimal;
 /**
  *
  * @author Vignesh
 */
-public class CentergyFrameExercise extends OrdinaryExercise {
+public class CentergyFrameExercise extends DistributedExercise {
 
     @Override
     public Description getDescription() {
@@ -48,6 +58,15 @@ public class CentergyFrameExercise extends OrdinaryExercise {
         return description;
     }
 
+    public void initExercise() {
+
+        Unit.setSuffix(Unit.distance, " ft");
+        Unit.setSuffix(Unit.moment, " kip*ft");
+        Unit.setSuffix(Unit.force, " kip");
+        Unit.setSuffix(Unit.forceOverDistance, " kip/ft");
+
+
+    }
 
     @Override
     public void loadExercise() {
@@ -78,6 +97,33 @@ public class CentergyFrameExercise extends OrdinaryExercise {
         Beam AC = new Beam("AC", A, C);
         Beam CD = new Beam("CD", C, D);
         Beam DF = new Beam("DF", D, F);
+
+
+        //adding distributed forces for beam CD
+        DistributedForce distributedtruss = new ConstantDistributedForce("centergyTrussForce", CD, C, D,
+                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("15")));
+        DistributedForceObject distributedtrussObject = new DistributedForceObject(distributedtruss, "1");
+        CD.addObject(distributedtrussObject);
+
+        //arrow graphic size and create schematic representation of arrows (adding to visual scene)
+        int arrowDensity = 2;
+        distributedtrussObject.createDefaultSchematicRepresentation(18f / 6, 2 * arrowDensity, 1.75f);
+
+        //creating distance measurement between points
+        DistanceMeasurement measureFull = new DistanceMeasurement(A, F);
+        measureFull.createDefaultSchematicRepresentation();
+        schematic.add(measureFull);
+
+        //Adding pins to end points
+        Pin2d endA = new Pin2d(A);
+        endA.attachToWorld(CD);
+        endA.setName("support A");
+        endA.createDefaultSchematicRepresentation();
+
+        Pin2d endF = new Pin2d(F);
+        endF.attachToWorld(CD);
+        endF.setName("Support F");
+        endF.createDefaultSchematicRepresentation();
 
         schematic.add(BE);
         schematic.add(AC);
@@ -113,9 +159,12 @@ public class CentergyFrameExercise extends OrdinaryExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
+
+        //Adding Tasks
+        addTask(new SolveConnectorTask("Solve A", endA));
+        addTask(new SolveConnectorTask("Solve F", endF));
     }
    
 }
