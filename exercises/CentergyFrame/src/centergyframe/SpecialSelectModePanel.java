@@ -2,27 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package centergyframe;
 
-import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.frame.FrameSelectModePanel;
+import edu.gatech.statics.modes.frame.FrameUtil;
 import edu.gatech.statics.modes.select.SelectState;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.SimulationObject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This synthesizes elements from FrameSelectModePanel and DistributedSelectModePanel
  * @author vignesh
  */
 public class SpecialSelectModePanel extends FrameSelectModePanel {
-
-
-
-    // special cases that need attention:
-    // 1) need to clear selection of bodies when DL is selected
-    // 2) need to correctly format text in "getContents" method to account for DLs
 
     // from DistributedSelectModePanel
     @Override
@@ -40,5 +35,21 @@ public class SpecialSelectModePanel extends FrameSelectModePanel {
 //                StaticsApplication.logger.info("Unknown selection: " + firstSelected);
             }
         }
+    }
+
+    // overriding and slightly changing behavior from the normal select behavior.
+    @Override
+    protected String getContents(List<SimulationObject> selection) {
+
+
+        if (selection.size() == 1 && selection.get(0) instanceof DistributedForceObject) {
+
+            String contents = "<font size=\"5\" color=\"white\">";
+            contents += selection.get(0).getName();
+            contents += "</font>";
+            return contents;
+        }
+
+        return super.getContents(selection);
     }
 }
