@@ -14,7 +14,7 @@ import com.jme.math.Vector3f;
  */
 public class ViewDiagramState {
 
-    private Vector3f cameraCenter = new Vector3f(Vector3f.UNIT_Z);
+    private Vector3f cameraCenter = (new Vector3f(Vector3f.UNIT_Z)).multLocal((float)2.0);
     private Vector3f cameraLookAtCenter = new Vector3f(Vector3f.ZERO);
     private Vector3f cameraSlideX = new Vector3f(Vector3f.UNIT_X);
     private Vector3f cameraSlideY = new Vector3f(Vector3f.UNIT_Y);

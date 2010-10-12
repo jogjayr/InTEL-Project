@@ -68,6 +68,20 @@ public class CameraControl {
         });
     }
 
+    public void panCamera(float dx, float dy, boolean is3D){
+        viewUserState.incrementXPos(dx * panSpeed);
+        viewUserState.incrementYPos(dy * panSpeed);
+
+        if (myInterpolator != null) {
+            myInterpolator.terminate();
+        }
+
+        // constrain
+        viewConstraints.constrain(viewUserState);
+
+        updateCamera();
+
+    }
     public void panCamera(float dx, float dy) {
         viewUserState.incrementXPos(dx * panSpeed);
         viewUserState.incrementYPos(dy * panSpeed);
@@ -96,6 +110,13 @@ public class CameraControl {
         }
         if (viewUserState.getYaw() > Math.PI) {
             viewUserState.incrementYaw(-2 * (float) Math.PI);
+        }
+
+        if(viewUserState.getPitch() < -Math.PI) {
+            viewUserState.incrementPitch(2 * (float) Math.PI);
+        }
+        if (viewUserState.getPitch() > Math.PI) {
+            viewUserState.incrementPitch(-2 * (float) Math.PI);
         }
 
         // constrain
@@ -134,9 +155,9 @@ public class CameraControl {
         leftContribution.normalizeLocal();
 
         // newPos = cos(yaw)*cos(pitch)*defaultPos + sin(yaw)*cos(pitch)*right+ sin(pitch)*up + lookAt
-        cameraDefaultDirVector.multLocal((float) (2 * Math.cos(yaw) * Math.cos(pitch)));
+        cameraDefaultDirVector.multLocal((float) (Math.cos(yaw) * Math.cos(pitch)));
         leftContribution.multLocal((float) (Math.sin(yaw) * Math.cos(pitch)));
-        upContribution.multLocal((float) Math.sin(pitch));
+        upContribution.multLocal((float)  Math.sin(pitch));
 //        Vector3f newDirection = cameraDefaultDirVector.add(cameraDefaultDirVector).add(cameraDefaultRightVector).add(up);
         Vector3f newDirection = cameraDefaultDirVector.add(leftContribution).add(upContribution);
         Vector3f newPosition = cameraLookAtCenter.add(newDirection.mult(zoom * distance));

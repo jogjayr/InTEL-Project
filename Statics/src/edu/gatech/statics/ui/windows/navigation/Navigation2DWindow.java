@@ -21,10 +21,10 @@ import edu.gatech.statics.ui.components.RepeatingButton;
 public class Navigation2DWindow extends NavigationWindow {
 
     private BButton up, down, left, right;
-    private BButton zoomIn, zoomOut, focus;
+    public BButton zoomIn, zoomOut, focus;
     private BContainer mainContainer;
     private int buttonSize;
-
+   
     protected BContainer getMainContainer() {
         return mainContainer;
     }
@@ -67,6 +67,7 @@ public class Navigation2DWindow extends NavigationWindow {
         ButtonUtil.setImageBackground(focus, "rsrc/interfaceTextures/navigation/nav_focus");
 
         buttonSize = 30;
+   
         up.setPreferredSize(buttonSize, buttonSize);
         down.setPreferredSize(buttonSize, buttonSize);
         left.setPreferredSize(buttonSize, buttonSize);
@@ -77,13 +78,13 @@ public class Navigation2DWindow extends NavigationWindow {
 
         int buttonSpacing = buttonSize + 3;
 
-        mainContainer.add(up, new Point(buttonSpacing, 2 * buttonSpacing));
-        mainContainer.add(down, new Point(buttonSpacing, 0));
-        mainContainer.add(left, new Point(0, 1 * buttonSpacing));
-        mainContainer.add(right, new Point(2 * buttonSpacing, 1 * buttonSpacing));
-        mainContainer.add(zoomIn, new Point(0, 2 * buttonSpacing));
-        mainContainer.add(zoomOut, new Point(2 * buttonSpacing, 2 * buttonSpacing));
-        mainContainer.add(focus, new Point(1 * buttonSpacing, 1 * buttonSpacing));
+        mainContainer.add(up, new Point(buttonSpacing, 9 * buttonSpacing));
+        mainContainer.add(down, new Point(buttonSpacing, 7 * buttonSpacing));
+        mainContainer.add(left, new Point(0, 8 * buttonSpacing));
+        mainContainer.add(right, new Point(2 * buttonSpacing, 8 * buttonSpacing));
+        mainContainer.add(zoomIn, new Point(0, 9 * buttonSpacing));
+        mainContainer.add(zoomOut, new Point(2 * buttonSpacing, 9 * buttonSpacing));
+        mainContainer.add(focus, new Point(1 * buttonSpacing, 8 * buttonSpacing));
     }
 
     private class NavigationListener2D implements ActionListener {
