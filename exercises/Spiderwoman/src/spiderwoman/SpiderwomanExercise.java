@@ -5,6 +5,7 @@
 package spiderwoman;
 
 import com.jme.math.Vector3f;
+import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.objects.Point;
 import java.math.BigDecimal;
@@ -12,24 +13,21 @@ import java.math.BigDecimal;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
-import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.connectors.ContactPoint;
-import edu.gatech.statics.objects.connectors.Pin2dKnownDirection;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveConnectorTask;
-import java.math.BigInteger;
 
 /**
  *
  * @author Calvin Ashmore
  */
-public class SpiderwomanExercise extends FrameExercise {
+public class SpiderwomanExercise extends OrdinaryExercise {
 
     @Override
     public Description getDescription() {
@@ -103,7 +101,7 @@ public class SpiderwomanExercise extends FrameExercise {
         B = new Point("B", "0", "0", "0");
         G = new Point("G", "-6", "5.5", "0");
 
-        body = new Potato("body");
+        body = new Potato("Spiderwoman");
         //wall = new Potato("wall");
         //rope = new Potato("rope");
 
