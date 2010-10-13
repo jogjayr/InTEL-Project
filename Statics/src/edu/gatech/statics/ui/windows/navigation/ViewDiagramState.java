@@ -18,11 +18,11 @@ public class ViewDiagramState {
     private Vector3f cameraLookAtCenter = new Vector3f(Vector3f.ZERO);
     private Vector3f cameraSlideX = new Vector3f(Vector3f.UNIT_X);
     private Vector3f cameraSlideY = new Vector3f(Vector3f.UNIT_Y);
-
+    private Vector3f cameraSlideZ = new Vector3f(Vector3f.UNIT_Z);
     @Override
     public String toString() {
         //return super.toString();
-        return "ViewDiagramState: { cameraCenter=" + cameraCenter + ", cameraLookAtCenter=" + cameraLookAtCenter + ", cameraSlideX=" + cameraSlideX + ", cameraSlideY=" + cameraSlideY + "}";
+        return "ViewDiagramState: { cameraCenter=" + cameraCenter + ", cameraLookAtCenter=" + cameraLookAtCenter + ", cameraSlideX=" + cameraSlideX + ", cameraSlideY=" + cameraSlideY + ", cameraSlideZ=" + cameraSlideZ + "}";
     }
 
     public ViewDiagramState() {
@@ -33,6 +33,7 @@ public class ViewDiagramState {
         this.cameraLookAtCenter = new Vector3f(viewDiagramState.cameraLookAtCenter);
         this.cameraSlideX = new Vector3f(viewDiagramState.cameraSlideX);
         this.cameraSlideY = new Vector3f(viewDiagramState.cameraSlideY);
+        this.cameraSlideZ = new Vector3f(viewDiagramState.cameraSlideZ);
     }
 
     /**
@@ -46,6 +47,7 @@ public class ViewDiagramState {
         cameraLookAtCenter.interpolate(state0.cameraLookAtCenter, state1.cameraLookAtCenter, t);
         cameraSlideX.interpolate(state0.cameraSlideX, state1.cameraSlideX, t);
         cameraSlideY.interpolate(state0.cameraSlideY, state1.cameraSlideY, t);
+        cameraSlideZ.interpolate(state0.cameraSlideZ, state1.cameraSlideZ, t);
     }
 
     public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter) {
@@ -54,11 +56,12 @@ public class ViewDiagramState {
     }
 
     public void setCameraFrame(Vector3f cameraCenter, Vector3f cameraLookAtCenter,
-            Vector3f cameraSlideX, Vector3f cameraSlideY) {
+            Vector3f cameraSlideX, Vector3f cameraSlideY, Vector3f cameraSlideZ) {
         this.cameraCenter = cameraCenter;
         this.cameraLookAtCenter = cameraLookAtCenter;
         this.cameraSlideX = cameraSlideX;
         this.cameraSlideY = cameraSlideY;
+        this.cameraSlideZ = cameraSlideZ;
     }
 
     public Vector3f getCameraCenter() {
@@ -75,5 +78,9 @@ public class ViewDiagramState {
 
     public Vector3f getCameraSlideY() {
         return cameraSlideY;
+    }
+
+    public Vector3f getCameraSlideZ() {
+        return cameraSlideZ;
     }
 }

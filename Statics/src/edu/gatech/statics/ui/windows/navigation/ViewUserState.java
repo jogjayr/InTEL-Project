@@ -12,14 +12,14 @@ package edu.gatech.statics.ui.windows.navigation;
  */
 public class ViewUserState {
 
-    private float xPos,  yPos;
+    private float xPos,  yPos, zPos;
     private float yaw,  pitch; // yaw corresponds to horizontal rotation, pitch to vertical
     private float zoom = 1;
 
     @Override
     public String toString() {
         //return super.toString();
-        return "ViewUserState: {xPos=" + xPos + ", yPos=" + yPos + ", yaw=" + yaw + ", pitch=" + pitch + ", zoom=" + zoom + "}";
+        return "ViewUserState: {xPos=" + xPos + ", yPos=" + yPos + ", zPos=" + zPos + ", yaw=" + yaw + ", pitch=" + pitch + ", zoom=" + zoom + "}";
     }
 
     public ViewUserState() {
@@ -28,6 +28,7 @@ public class ViewUserState {
     public ViewUserState(ViewUserState other) {
         this.xPos = other.xPos;
         this.yPos = other.yPos;
+        this.zPos = other.zPos;
         this.yaw = other.yaw;
         this.pitch = other.pitch;
         this.zoom = other.zoom;
@@ -42,6 +43,7 @@ public class ViewUserState {
     public void interpolate(ViewUserState state0, ViewUserState state1, float t) {
         this.xPos = state1.xPos * t + state0.xPos * (1 - t);
         this.yPos = state1.yPos * t + state0.yPos * (1 - t);
+        this.zPos = state1.zPos * t + state0.zPos * (1 - t);
         this.yaw = state1.yaw * t + state0.yaw * (1 - t);
         this.pitch = state1.pitch * t + state0.pitch * (1 - t);
         this.zoom = state1.zoom * t + state0.zoom * (1 - t);
@@ -65,6 +67,10 @@ public class ViewUserState {
 
     public void incrementYPos(float d) {
         yPos += d;
+    }
+
+     public void incrementZPos(float d) {
+        zPos += d;
     }
 
     public float getPitch() {
@@ -91,6 +97,13 @@ public class ViewUserState {
         this.yPos = yPos;
     }
 
+     public float getZPos() {
+        return zPos;
+    }
+
+    public void setZPos(float yPos) {
+        this.zPos = yPos;
+    }
     public float getYaw() {
         return yaw;
     }

@@ -69,8 +69,35 @@ public class CameraControl {
     }
 
     public void panCamera(float dx, float dy, boolean is3D){
-        viewUserState.incrementXPos(dx * panSpeed);
-        viewUserState.incrementYPos(dy * panSpeed);
+        Vector3f cameraCenter = viewDiagramState.getCameraCenter();
+        Vector3f cameraLookAtCenter = viewDiagramState.getCameraLookAtCenter();
+        float pitch = viewUserState.getPitch();
+        float yaw = viewUserState.getYaw();
+        Vector3f cameraDefaultDirVector = cameraCenter.subtract(cameraLookAtCenter);
+        Vector3f upContribution = new Vector3f(Vector3f.UNIT_Y);
+        Vector3f leftContribution = upContribution.cross(cameraDefaultDirVector);
+        Vector3f panVector = Vector3f.ZERO;
+        leftContribution.normalizeLocal();
+
+
+        // first horizontal component of pan, then vertical component of pan.
+        // for 2D panning, these should reduce to simply adding dx to the x component, and dy to the y component.
+        panVector = new Vector3f((float)(dx*Math.cos(yaw)), (float)0.0, (float)(-dx*Math.sin(yaw)));
+        panVector.addLocal((float)(-dy*Math.sin(pitch)*Math.sin(yaw)), (float)(dy*Math.cos(pitch)) ,(float)(-dy*Math.sin(pitch)*Math.cos(yaw)));
+//
+//        if(dx != 0) { //Pan left and right
+//
+//            panVector = new Vector3f((float)(dx*Math.cos(yaw)), (float)0.0, (float)(-dx*Math.sin(yaw)));
+//            //cameraDefaultDirVector.addLocal(panVector);
+//        } else if(dy != 0) {
+//            panVector = new Vector3f((float)(-dy*Math.sin(pitch)*Math.sin(yaw)), (float)(dy*Math.cos(pitch)) ,(float)(-dy*Math.sin(pitch)*Math.cos(yaw)));
+//            //cameraDefaultDirVector.addLocal(panVector);
+//        }
+        
+
+        viewUserState.incrementXPos(panVector.x * panSpeed);
+        viewUserState.incrementYPos(panVector.y * panSpeed);
+        viewUserState.incrementZPos(panVector.z * panSpeed);
 
         if (myInterpolator != null) {
             myInterpolator.terminate();
@@ -82,18 +109,22 @@ public class CameraControl {
         updateCamera();
 
     }
+
     public void panCamera(float dx, float dy) {
-        viewUserState.incrementXPos(dx * panSpeed);
-        viewUserState.incrementYPos(dy * panSpeed);
 
-        if (myInterpolator != null) {
-            myInterpolator.terminate();
-        }
+        this.panCamera(dx, dy, true);
 
-        // constrain
-        viewConstraints.constrain(viewUserState);
-
-        updateCamera();
+//        viewUserState.incrementXPos(dx * panSpeed);
+//        viewUserState.incrementYPos(dy * panSpeed);
+//        System.out.print("Dedinasdaoj");
+//        if (myInterpolator != null) {
+//            myInterpolator.terminate();
+//        }
+//
+//        // constrain
+//        viewConstraints.constrain(viewUserState);
+//
+//        updateCamera();
     }
 
     public void rotateCamera(float horizontal, float vertical) {
@@ -140,8 +171,10 @@ public class CameraControl {
         Vector3f cameraLookAtCenter = viewDiagramState.getCameraLookAtCenter();
         Vector3f cameraSlideX = viewDiagramState.getCameraSlideX();
         Vector3f cameraSlideY = viewDiagramState.getCameraSlideY();
+        Vector3f cameraSlideZ = viewDiagramState.getCameraSlideZ();
         float xpos = viewUserState.getXPos();
         float ypos = viewUserState.getYPos();
+        float zpos = viewUserState.getZPos();
         float pitch = viewUserState.getPitch();
         float yaw = viewUserState.getYaw();
         float zoom = viewUserState.getZoom();
@@ -166,13 +199,15 @@ public class CameraControl {
 
         newPosition.addLocal(cameraSlideX.mult(xpos));
         newPosition.addLocal(cameraSlideY.mult(ypos));
-
+        newPosition.addLocal(cameraSlideZ.mult(zpos));
+        
         camera.setLocation(newPosition);
         camera.setDirection(newDirection);
 
         // normalize the camera
         Vector3f up = new Vector3f(Vector3f.UNIT_Y);
         Vector3f left = up.cross(newDirection);
+        left.normalizeLocal();
         up = newDirection.cross(left);
         up.normalizeLocal();
 
