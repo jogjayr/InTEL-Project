@@ -16,10 +16,10 @@ public class Vector3bd {
     private BigDecimal x;
     private BigDecimal y;
     private BigDecimal z;
-    public final static Vector3bd ZERO = new Vector3bd("0", "0", "0");
-    public final static Vector3bd UNIT_X = new Vector3bd("1", "0", "0");
-    public final static Vector3bd UNIT_Y = new Vector3bd("0", "1", "0");
-    public final static Vector3bd UNIT_Z = new Vector3bd("0", "0", "1");
+    public final static Vector3bd ZERO = new UnmodifiableVector3bd("0", "0", "0");
+    public final static Vector3bd UNIT_X = new UnmodifiableVector3bd("1", "0", "0");
+    public final static Vector3bd UNIT_Y = new UnmodifiableVector3bd("0", "1", "0");
+    public final static Vector3bd UNIT_Z = new UnmodifiableVector3bd("0", "0", "1");
 
     public Vector3f toVector3f() {
         return new Vector3f(x.floatValue(), y.floatValue(), z.floatValue());
@@ -198,7 +198,7 @@ public class Vector3bd {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Vector3bd)) {
             return false;
         }
         final Vector3bd other = (Vector3bd) obj;
@@ -225,14 +225,61 @@ public class Vector3bd {
 
     public Vector3bd normalize() {
         double magnitude = Math.sqrt(
-                Math.pow(x.doubleValue(), 2) +
-                Math.pow(y.doubleValue(), 2) +
-                Math.pow(z.doubleValue(), 2));
+                Math.pow(x.doubleValue(), 2)
+                + Math.pow(y.doubleValue(), 2)
+                + Math.pow(z.doubleValue(), 2));
         BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
         BigDecimal xn = x.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal yn = y.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal zn = z.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
 
         return new Vector3bd(xn, yn, zn);
+    }
+
+    private static class UnmodifiableVector3bd extends Vector3bd {
+
+        public UnmodifiableVector3bd(String x, String y, String z) {
+            super(x,y,z);
+        }
+
+        @Override
+        public void setX(BigDecimal x) {
+            throw new UnsupportedOperationException("Cannot set on an unmodifiable vector");
+        }
+
+        @Override
+        public void setY(BigDecimal x) {
+            throw new UnsupportedOperationException("Cannot set on an unmodifiable vector");
+        }
+
+        @Override
+        public void setZ(BigDecimal x) {
+            throw new UnsupportedOperationException("Cannot set on an unmodifiable vector");
+        }
+
+        @Override
+        public Vector3bd addLocal(Vector3bd vec) {
+            throw new UnsupportedOperationException("Cannot do local ops on an unmodifiable vector");
+        }
+
+        @Override
+        public Vector3bd multLocal(BigDecimal scalar) {
+            throw new UnsupportedOperationException("Cannot do local ops on an unmodifiable vector");
+        }
+
+        @Override
+        public Vector3bd divideLocal(BigDecimal scalar) {
+            throw new UnsupportedOperationException("Cannot do local ops on an unmodifiable vector");
+        }
+
+        @Override
+        public Vector3bd negateLocal() {
+            throw new UnsupportedOperationException("Cannot do local ops on an unmodifiable vector");
+        }
+
+        @Override
+        public Vector3bd subtractLocal(Vector3bd vec) {
+            throw new UnsupportedOperationException("Cannot do local ops on an unmodifiable vector");
+        }
     }
 }
