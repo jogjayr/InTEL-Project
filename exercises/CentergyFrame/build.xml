@@ -10,6 +10,10 @@
 <project name="CentergyFrame" default="default" basedir=".">
     <description>Builds, tests, and runs the project CentergyFrame.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-post-jar">
+        <signjar jar="dist/CentergyFrame.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/CentergyFrame.jar" dest="../../applet/CentergyFrame.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

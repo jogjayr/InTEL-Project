@@ -10,6 +10,10 @@
 <project name="CentergyTruss" default="default" basedir=".">
     <description>Builds, tests, and runs the project CentergyTruss.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-post-jar">
+        <signjar jar="dist/CentergyTruss.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/CentergyTruss.jar" dest="../../applet/CentergyTruss.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
