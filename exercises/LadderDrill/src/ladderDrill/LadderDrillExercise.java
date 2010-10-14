@@ -12,6 +12,8 @@ import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 
 
 /**
@@ -74,10 +76,21 @@ public class LadderDrillExercise extends OrdinaryExercise {
         schematic.add(E);
 
         Beam AB = new Beam("AB", A, B);
-        
+        ModelNode modelNode = ModelNode.load("ladderDrill/assets/", "ladderDrill/assets/ladderDrill.dae");
+        modelNode.extractLights();
+
+        ModelRepresentation rep;
+        String prefix = "VisualSceneNode/CompleteScene/sceneObjects/ladder/"; //"RootNode/group1/Scene/completeStructure/";
 
         schematic.add(AB);
+        rep = modelNode.extractElement(AB, prefix + "ladderLtVertical");
+        AB.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
 
+        rep = modelNode.getRemainder(schematic.getBackground());
+        schematic.getBackground().addRepresentation(rep);
+        
         DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
         measureBC.createDefaultSchematicRepresentation();
         schematic.add(measureBC);
