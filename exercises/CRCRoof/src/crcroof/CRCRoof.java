@@ -6,8 +6,10 @@
 package crcroof;
 
 import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
+import edu.gatech.statics.objects.Point;
 
 /**
  *
@@ -37,7 +39,31 @@ public class CRCRoof extends OrdinaryExercise {
         description.addImage("CRCRoof/assets/CRC2.png");
 
         return description;
+    }
 
+    
+    @Override
+    public void loadExercise() {
+
+        Schematic schematic = getSchematic();
+
+        Point A = new Point("A", "0", "0", "0");
+        Point B = new Point("B", "0", "4.5", "0");
+        Point C = new Point("C", "0", "6", "0");
+        Point D = new Point("D", "-2", "4", "0");
+        Point E = new Point("E", "6", "5.47506802", "0");
+
+        A.createDefaultSchematicRepresentation();
+        B.createDefaultSchematicRepresentation();
+        C.createDefaultSchematicRepresentation();
+        D.createDefaultSchematicRepresentation();
+        E.createDefaultSchematicRepresentation();
+
+        schematic.add(A);
+        schematic.add(B);
+        schematic.add(C);
+        schematic.add(D);
+        schematic.add(E);
 
     }
 
