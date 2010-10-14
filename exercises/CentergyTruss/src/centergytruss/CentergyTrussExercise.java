@@ -4,10 +4,12 @@
  */
 package centergytruss;
 
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
+import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.modes.truss.TrussExercise;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
@@ -59,6 +61,16 @@ public class CentergyTrussExercise extends TrussExercise {
 
         return description;
     }
+
+    // DISABLE zero-force-member mode for this exercise
+
+    @Override
+    public Mode loadStartingMode() {
+        //return super.loadStartingMode();
+        SelectMode.instance.load();
+        return SelectMode.instance;
+    }
+
 
     @Override
     public void loadExercise() {

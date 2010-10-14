@@ -68,7 +68,7 @@ public class BridgeExercise extends TrussExercise {
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-100f, 100f, -40f, 40f);
         vc.setZoomConstraints(0.075f, 8.0f);
-        vc.setRotationConstraints(-1, 1);
+        vc.setRotationConstraints(-1, 1,-.5f,.5f);
         interfaceConfiguration.setViewConstraints(vc);
 
         // This complicated construction overrides behavior in the sidebar for this problem.

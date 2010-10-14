@@ -18,13 +18,13 @@ import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.modes.distributed.ui.DistributedSelectModePanel;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
-import edu.gatech.statics.modes.frame.FrameSelectModePanel;
 import edu.gatech.statics.modes.frame.FrameUtil;
-import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
+import edu.gatech.statics.objects.connectors.Fix2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
@@ -126,9 +126,9 @@ public class CentergyFrameExercise extends DistributedExercise {
         schematic.add(F);
 
         Bar BE = new Bar("BE", B, E);
-        Beam AC = new Beam("AC", A, C);
+        Beam ABC = new Beam("AC", A, C);
         Beam CD = new Beam("CD", C, D);
-        Beam DF = new Beam("DF", D, F);
+        Beam DEF = new Beam("DF", D, F);
 
 
         //adding distributed forces for beam CD
@@ -148,20 +148,33 @@ public class CentergyFrameExercise extends DistributedExercise {
 
         //Adding pins to end points
         Pin2d endA = new Pin2d(A);
-        endA.attachToWorld(CD);
+        endA.attachToWorld(ABC);
         endA.setName("support A");
         endA.createDefaultSchematicRepresentation();
 
         Roller2d endF = new Roller2d(F);
         endF.setDirection(Vector3bd.UNIT_Y);
-        endF.attachToWorld(CD);
+        endF.attachToWorld(DEF);
         endF.setName("Support F");
         endF.createDefaultSchematicRepresentation();
 
+        Connector2ForceMember2d connectorB = new Connector2ForceMember2d(B, BE);
+        connectorB.attach(ABC, BE);
+
+        Connector2ForceMember2d connectorE = new Connector2ForceMember2d(E, BE);
+        connectorE.attach(DEF, BE);
+
+        Fix2d fixC = new Fix2d(C);
+        fixC.attach(ABC, CD);
+        Fix2d fixD = new Fix2d(D);
+        fixD.attach(DEF, CD);
+
+
+
         schematic.add(BE);
-        schematic.add(AC);
+        schematic.add(ABC);
         schematic.add(CD);
-        schematic.add(DF);
+        schematic.add(DEF);
 
         //Importing Models
         ModelNode modelNode = ModelNode.load("centergyframe/assets/", "centergyframe/assets/CenturgyB_collada.dae");
@@ -172,8 +185,8 @@ public class CentergyFrameExercise extends DistributedExercise {
         String prefix = "VisualSceneNode/everything/everything_group1/Scene/";
 
         //Attaching a model object to it's respective exercise element
-        rep = modelNode.extractElement(AC, prefix+"pCube3");
-        AC.addRepresentation(rep);
+        rep = modelNode.extractElement(ABC, prefix+"pCube3");
+        ABC.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
@@ -182,8 +195,8 @@ public class CentergyFrameExercise extends DistributedExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-        rep = modelNode.extractElement(DF, prefix + "pCube2");
-        DF.addRepresentation(rep);
+        rep = modelNode.extractElement(DEF, prefix + "pCube2");
+        DEF.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 

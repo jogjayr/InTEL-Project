@@ -384,7 +384,6 @@ public class FBDChecker {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
                     setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
-                    //setStaticsFeedbackKey("Note: One or more of your loads is improperly named at %s. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
                     debugInfo("STEP 5: FAILED");
                     return false;
                 }
@@ -397,7 +396,6 @@ public class FBDChecker {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
                     setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
-                    //setStaticsFeedbackKey("Note: One or more of your loads at %s is improperly named. Loads lables on contact points must begin with N and F for normal and friction loads respectively.", cp.connectorName());
                     debugInfo("STEP 5: FAILED");
                     return false;
                 }
