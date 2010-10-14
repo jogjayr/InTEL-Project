@@ -55,11 +55,11 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
         Schematic schematic = getSchematic();
 
-        Point A = new Point("A", "0", "3.8", "0");
-        Point B = new Point("B", "3.1", "0", "0");
-        Point C = new Point("C", "1.5", "1.9", "0");
-        Point D = new Point("D", "0.6", "2.4", "0");
-        Point E = new Point("E", "0.", "3.1", "0");
+        Point A = new Point("A", "0", "4.6984631", "0");
+        Point B = new Point("B", "1.71010072", "0", "0");
+        Point C = new Point("C", "0.85505036", "2.34923155", "0");
+        Point D = new Point("D", "0.615636261", "3.00701639", "0");
+        Point E = new Point("E", "0.342020147", "3.75877048", "0");
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
