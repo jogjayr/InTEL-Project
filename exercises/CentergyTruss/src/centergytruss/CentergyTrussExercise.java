@@ -9,6 +9,7 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.truss.TrussExercise;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Bar;
@@ -90,6 +91,22 @@ public class CentergyTrussExercise extends TrussExercise {
         Cb.createDefaultSchematicRepresentation();
         Db.createDefaultSchematicRepresentation();
 
+        DistanceMeasurement measureAB = new DistanceMeasurement(A, B);
+        measureAB.createDefaultSchematicRepresentation();
+        schematic.add(measureAB);
+
+        DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
+        measureBC.createDefaultSchematicRepresentation();
+        schematic.add(measureBC);
+
+        DistanceMeasurement measureCD = new DistanceMeasurement(C, D);
+        measureCD.createDefaultSchematicRepresentation();
+        schematic.add(measureCD);
+
+        DistanceMeasurement measureAD = new DistanceMeasurement(A, D);
+        measureCD.createDefaultSchematicRepresentation();
+        schematic.add(measureAD);
+
         Force f1 = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal("15"));
         Force f2 = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal("15"));
         f1.setName("f1");
@@ -99,6 +116,9 @@ public class CentergyTrussExercise extends TrussExercise {
 
         Bb.addObject(f1);
         Cb.addObject(f2);
+
+        schematic.add(f1);
+        schematic.add(f2);
 
         Connector2ForceMember2d connector;
         connector = new Connector2ForceMember2d(A, AB);

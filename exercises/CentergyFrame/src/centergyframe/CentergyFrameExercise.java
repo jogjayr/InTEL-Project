@@ -133,7 +133,7 @@ public class CentergyFrameExercise extends DistributedExercise {
 
         //adding distributed forces for beam CD
         DistributedForce distributedtruss = new ConstantDistributedForce("centergyTrussForce", CD, C, D,
-                new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("15")));
+        new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("15")));
         DistributedForceObject distributedtrussObject = new DistributedForceObject(distributedtruss, "1");
         CD.addObject(distributedtrussObject);
 
