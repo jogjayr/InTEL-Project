@@ -10,6 +10,10 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.bodies.Cable;
+import edu.gatech.statics.objects.bodies.PointBody;
+import edu.gatech.statics.objects.representations.ModelNode;
 
 /**
  *
@@ -53,6 +57,11 @@ public class CRCRoof extends OrdinaryExercise {
         Point D = new Point("D", "-2", "4", "0");
         Point E = new Point("E", "6", "5.47506802", "0");
 
+        PointBody Bb;
+        Bb = new PointBody("Joint B", B );
+
+        Bb.createDefaultSchematicRepresentation();
+
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         C.createDefaultSchematicRepresentation();
@@ -65,7 +74,25 @@ public class CRCRoof extends OrdinaryExercise {
         schematic.add(D);
         schematic.add(E);
 
+        Beam DE = new Beam("DE", D, E);
+        Beam AC = new Beam("AC", A, C);
+
+        Cable CE = new Cable("CE", C, E);
+        Cable DA = new Cable("DA", D, A);
+
+        schematic.add(DE);
+        schematic.add(AC);
+
+        schematic.add(CE);
+        schematic.add(DA);
+
+        ModelNode modelNode = ModelNode.load("crcroof/assets/", "crcroof/assets/centergyDeck3.dae");
+        modelNode.extractLights();
+
+
     }
+
+
 
 
 }
