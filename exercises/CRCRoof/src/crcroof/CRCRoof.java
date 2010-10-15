@@ -86,9 +86,6 @@ public class CRCRoof extends OrdinaryExercise {
         schematic.add(CE);
         schematic.add(DA);
 
-        ModelNode modelNode = ModelNode.load("crcroof/assets/", "crcroof/assets/centergyDeck3.dae");
-        modelNode.extractLights();
-
 
     }
 
