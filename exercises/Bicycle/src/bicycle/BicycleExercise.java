@@ -9,10 +9,17 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import edu.gatech.statics.application.StaticsApplication;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationMode;
+import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -29,6 +36,7 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  *
@@ -98,6 +106,31 @@ public class BicycleExercise extends FrameExercise {
         //getDisplayConstants().setDrawScale(.5f);
         //getDisplayConstants().setForceLabelDistance(1);
         getDisplayConstants().setMeasurementBarSize(.25f);
+
+
+        // 10/21/2010 HOTFIX: THIS CORRECTS AN ISSUE IN WHICH OBSERVATION DIRECTION IS SET TO NULL IN EQUATIONS
+        for (Map<DiagramType, Diagram> diagramMap : getState().allDiagrams().values()) {
+            EquationDiagram eqDiagram = (EquationDiagram) diagramMap.get(EquationMode.instance.getDiagramType());
+            if(eqDiagram == null) continue;
+            EquationState.Builder builder = new EquationState.Builder(eqDiagram.getCurrentState());
+
+            TermEquationMathState.Builder xBuilder = new TermEquationMathState.Builder((TermEquationMathState) builder.getEquationStates().get("F[x]"));
+            xBuilder.setObservationDirection(Vector3bd.UNIT_X);
+
+            TermEquationMathState.Builder yBuilder = new TermEquationMathState.Builder((TermEquationMathState) builder.getEquationStates().get("F[y]"));
+            yBuilder.setObservationDirection(Vector3bd.UNIT_Y);
+
+            TermEquationMathState.Builder zBuilder = new TermEquationMathState.Builder((TermEquationMathState) builder.getEquationStates().get("M[p]"));
+            zBuilder.setObservationDirection(Vector3bd.UNIT_Z);
+
+            builder.putEquationState(xBuilder.build());
+            builder.putEquationState(yBuilder.build());
+            builder.putEquationState(zBuilder.build());
+            eqDiagram.pushState(builder.build());
+            eqDiagram.clearStateStack();
+        }
+
+
     }
     private Point A,  B,  C,  D,  E,  F,  G;
     private Roller2d rollerA;

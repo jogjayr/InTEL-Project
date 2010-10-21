@@ -236,10 +236,14 @@ public class Vector3bd {
         return new Vector3bd(xn, yn, zn);
     }
 
-    private static class UnmodifiableVector3bd extends Vector3bd {
+    public static class UnmodifiableVector3bd extends Vector3bd {
 
         public UnmodifiableVector3bd(String x, String y, String z) {
-            super(x,y,z);
+            super(x, y, z);
+        }
+
+        public UnmodifiableVector3bd(BigDecimal x, BigDecimal y, BigDecimal z) {
+            super(x, y, z);
         }
 
         @Override

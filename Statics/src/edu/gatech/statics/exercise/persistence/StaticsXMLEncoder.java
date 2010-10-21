@@ -120,6 +120,14 @@ public class StaticsXMLEncoder extends XMLEncoder {
                 out.writeStatement(new Statement(v, "setDiagramValue", new Object[]{v.getDiagramValue()}));
             }
         });
+        setPersistenceDelegate(Vector3bd.UnmodifiableVector3bd.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                Vector3bd v = (Vector3bd) oldInstance;
+                return new Expression(oldInstance, Vector3bd.UnmodifiableVector3bd.class, "new", new Object[]{v.getX(), v.getY(), v.getZ()});
+            }
+        });
         setPersistenceDelegate(Vector3bd.class, new DefaultPersistenceDelegate() {
 
             @Override
@@ -342,7 +350,7 @@ public class StaticsXMLEncoder extends XMLEncoder {
     /**
      * Here we force instances of DiagramState to use the DiagramStatePersistenceDelegate.
      * The reason why is because DiagramState is an interface, and cannot be used to determine a regular
-     * persistence delgate. This still requires the DiagramStatePersistenceDelegate to be set, though.
+     * persistence delegate. This still requires the DiagramStatePersistenceDelegate to be set, though.
      * @param type
      * @return
      */
