@@ -13,7 +13,6 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathForces;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
-import edu.gatech.statics.objects.Point;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;

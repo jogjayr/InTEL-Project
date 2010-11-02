@@ -23,6 +23,7 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
     private List<ApplicationModePanel> modePanels = new ArrayList<ApplicationModePanel>();
     private List<String> displayNames = new ArrayList<String>();
     private NavigationWindow navigationWindow;
+   
     private CoordinateSystemWindow coordinateSystemWindow;
     private ViewConstraints viewConstraints;
     private DiagramDisplayCalculator diagramDisplayCalculator;
@@ -69,6 +70,8 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
         this.navigationWindow = navigationWindow;
     }
 
+    
+
     public void setViewConstraints(ViewConstraints viewConstraints) {
         this.viewConstraints = viewConstraints;
     }
@@ -84,6 +87,7 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
         return navigationWindow;
     }
 
+  
     public CoordinateSystemWindow getCoordinateSystemWindow() {
         return coordinateSystemWindow;
     }

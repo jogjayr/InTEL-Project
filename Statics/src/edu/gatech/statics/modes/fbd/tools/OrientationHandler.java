@@ -33,6 +33,7 @@ public class OrientationHandler {
     private AnchoredVector oldVector;
     private boolean enabled;
 
+
     // the timestamp of when the handler was created.
     private long timestamp;
     private static final long CLICK_TIME = 100; // time in milliseconds; less than this registers a click

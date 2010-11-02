@@ -51,6 +51,8 @@ public class InterfaceRoot {
     private MainTabBar mainTabBar;
     private ApplicationBar applicationBar;
     private NavigationWindow navWindow;
+
+   
     private CoordinateSystemWindow coordinatesWindow;
     private Timer timer;
     private InputHandler input;
@@ -283,7 +285,9 @@ public class InterfaceRoot {
         navWindow.setCameraControl(cameraControl);
         cameraControl.updateCamera();
 
-
+     
+         
+        
         // ********** TODO:
         // PUSH THIS INTO THE CONFIGURATION
 //        CoordinateSystemWindow coordinateSystem = new CoordinateSystem3DWindow();
@@ -301,7 +305,7 @@ public class InterfaceRoot {
         buiNode.addWindow(coordinatesWindow);
         coordinatesWindow.pack();
         //coordinatesWindow.setLocation(5, ApplicationBar.APPLICATION_BAR_HEIGHT + navWindow.getPreferredSize(-1, -1).height + 10);
-        coordinatesWindow.setLocation(5, 200 + navWindow.getPreferredSize(-1, -1).height + 10);
+        coordinatesWindow.setLocation(5, 200 + navWindow.getPreferredSize(-1, -1).height + 10 );
     }
 
     public void unloadConfiguration() {

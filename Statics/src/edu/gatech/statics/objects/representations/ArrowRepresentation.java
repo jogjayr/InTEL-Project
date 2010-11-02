@@ -20,6 +20,7 @@ import edu.gatech.statics.objects.VectorObject;
  */
 public class ArrowRepresentation extends Representation<VectorObject> {
 
+    //private DoubleArrow arrow;
     private Arrow arrow;
     protected float axisOffset = 0;
 
@@ -42,6 +43,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
     public ArrowRepresentation(VectorObject target, boolean hasTip) {
         super(target);
         arrow = new Arrow(hasTip);
+        //arrow = new DoubleArrow(hasTip);
         setLayer(RepresentationLayer.vectors);
         getRelativeNode().attachChild(arrow);
 

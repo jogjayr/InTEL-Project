@@ -43,19 +43,15 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     @Override
     protected void onActivate() {
         super.onActivate();
-
         StaticsApplication.getApp().setUIFeedbackKey("fbd_tools_createForce1");
     }
-
     @Override
     protected void onFinish() {
         super.onFinish();
-
         VectorListener forceListener = new VectorOverlapDetector(getDiagram(), force);
         forceListener.valueChanged(force.getVectorValue());
         force.addListener(forceListener);
     }
-
     @Override
     protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), force, force.getAnchor().getTranslation());

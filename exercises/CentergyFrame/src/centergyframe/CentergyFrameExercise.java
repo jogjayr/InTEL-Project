@@ -135,7 +135,11 @@ public class CentergyFrameExercise extends DistributedExercise {
         DistributedForce distributedtruss = new ConstantDistributedForce("centergyTrussForce", CD, C, D,
         new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("15")));
         DistributedForceObject distributedtrussObject = new DistributedForceObject(distributedtruss, "1");
+        //Added by Jayraj to fix no name problem
+        //distributedtrussObject.setName("trussForce");
         CD.addObject(distributedtrussObject);
+
+
 
         //arrow graphic size and create schematic representation of arrows (adding to visual scene)
         int arrowDensity = 2;
@@ -144,6 +148,7 @@ public class CentergyFrameExercise extends DistributedExercise {
         //creating distance measurement between points
         DistanceMeasurement measureFull = new DistanceMeasurement(A, F);
         measureFull.createDefaultSchematicRepresentation();
+        measureFull.setName("Measure AF");
         schematic.add(measureFull);
 
         //Adding pins to end points

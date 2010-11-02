@@ -34,8 +34,9 @@ public class Arrow extends Node {
         
         this.hasTip = hasTip;
         if (hasTip) {
-            tip = new Cylinder("", 6, 12, 1f, 1f, true);
-            tip.setRadius1(0);
+            /*tip = new Cylinder("", 6, 12, 1f, 1f, true);
+            tip.setRadius1(0);*/
+            tip = new Cylinder("", 6, 12, 0, 1f, 1f, true, false);
             attachChild(tip);
         } else {
             detachChild(tip);

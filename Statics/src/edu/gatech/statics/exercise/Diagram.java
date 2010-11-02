@@ -609,6 +609,18 @@ public abstract class Diagram<StateType extends DiagramState> {
         return new ArrayList<Vector3f>(directions);
     }
 
+    /*
+     * Return possible snapping direction vectors for a moment, namely unit X, Y and Z vectors
+     */
+    public List<Vector3f> getSensibleDirections(Point point, boolean forMoment) {
+
+        ArrayList<Vector3f> directions = new ArrayList<Vector3f>();
+        directions.add(Vector3f.UNIT_X);
+        directions.add(Vector3f.UNIT_Y);
+        directions.add(Vector3f.UNIT_Z);
+        return directions;
+    }
+
     private void addCardinalDirectionsAroundMatrix(Matrix3f matrix, Set<Vector3f> directions) {
         directions.add(matrix.mult(new Vector3f(1, 0, 0)));
         directions.add(matrix.mult(new Vector3f(-1, 0, 0)));

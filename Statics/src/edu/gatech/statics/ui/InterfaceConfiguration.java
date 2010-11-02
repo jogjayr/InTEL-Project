@@ -23,6 +23,7 @@ public interface InterfaceConfiguration {
     //public List<TitledDraggablePopupWindow> getPopupWindows();
     public List<ApplicationModePanel> getModePanels();
     public NavigationWindow getNavigationWindow();
+  
     public CoordinateSystemWindow getCoordinateSystemWindow();
 
     public List<String> getDisplayNames();
