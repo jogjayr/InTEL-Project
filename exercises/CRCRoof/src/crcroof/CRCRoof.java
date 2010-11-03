@@ -14,6 +14,7 @@ import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.bodies.Cable;
 import edu.gatech.statics.objects.bodies.PointBody;
 import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 
 /**
  *
@@ -86,6 +87,25 @@ public class CRCRoof extends OrdinaryExercise {
         schematic.add(CE);
         schematic.add(DA);
 
+
+        ModelNode modelNode = ModelNode.load("crcroof/assets/", "crcroof/assets/crcScaled.dae");
+        modelNode.extractLights();
+
+
+        ModelRepresentation rep;
+        String prefix = "VisualSceneNode/";
+
+        
+        /*
+        rep = modelNode.extractElement(CE, prefix + "pCylinder11");
+        CE.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+         */
+
+
+        rep = modelNode.getRemainder(schematic.getBackground());
+        schematic.getBackground().addRepresentation(rep);
 
     }
 
