@@ -170,8 +170,10 @@ public class CentergyFrameExercise extends DistributedExercise {
         connectorE.attach(DEF, BE);
 
         Fix2d fixC = new Fix2d(C);
+        fixC.setName("fix C");
         fixC.attach(ABC, CD);
         Fix2d fixD = new Fix2d(D);
+        fixD.setName("fix D");
         fixD.attach(DEF, CD);
 
 
