@@ -6,7 +6,12 @@
 package pushup;
 
 import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.exercise.Schematic;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 
 
 
@@ -39,12 +44,74 @@ public class PushUpExercise extends OrdinaryExercise{
                 "Michael would likely do and pick one that Kathy is likely to do");
 
 
-        description.addImage("PushUp/assets/pushup.png");
+        description.addImage("pushupexercise/assets/pushup.png");
         
-        return description();
+        return description;
+
+    }
+
+    
+    public void initExercise() {
+
+        Unit.setSuffix(Unit.distance, " ft");
+        Unit.setSuffix(Unit.moment, " newton*ft");
+        Unit.setSuffix(Unit.force, "  newton");
+        Unit.setSuffix(Unit.forceOverDistance, " newton/ft");
 
     }
     
+    
+    @Override
+    public void loadExercise() {
 
+        Schematic schematic = getSchematic();
+
+        Point A = new Point("A", "0", "5", "0");
+        Point B = new Point("B", "5", "5", "0");
+        Point C = new Point("C", "15", "5", "0");
+
+        Point D = new Point("D", "0", "20", "0");
+        Point E = new Point("E", "5", "20", "0");
+        Point F = new Point("F", "15", "20", "0");
+
+        Point G = new Point("G", "25", "5", "0");
+        Point H = new Point("H", "30", "5", "0");
+        Point I = new Point("I", "40", "5", "0");
+
+        A.createDefaultSchematicRepresentation();
+        B.createDefaultSchematicRepresentation();
+        C.createDefaultSchematicRepresentation();
+        D.createDefaultSchematicRepresentation();
+        E.createDefaultSchematicRepresentation();
+        F.createDefaultSchematicRepresentation();
+        G.createDefaultSchematicRepresentation();
+        H.createDefaultSchematicRepresentation();
+        I.createDefaultSchematicRepresentation();
+
+        schematic.add(A);
+        schematic.add(B);
+        schematic.add(C);
+        schematic.add(D);
+        schematic.add(E);
+        schematic.add(F);
+        schematic.add(G);
+        schematic.add(H);
+        schematic.add(I);
+
+
+        
+        ModelNode modelNode = ModelNode.load("pushupexercise/assets/", "pushupexercise/assets/male_PushUp.dae");
+        modelNode.extractLights();
+
+
+        ModelRepresentation rep;
+        String prefix = "VisualSceneNode/";
+
+        rep = modelNode.getRemainder(schematic.getBackground());
+        schematic.getBackground().addRepresentation(rep);
+         
+         
+        
+    }
 
 }
