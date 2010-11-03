@@ -16,6 +16,12 @@ public abstract class FBDTools extends BContainer {
 
     private FBDModePanel modePanel;
     protected FBDModePanel getModePanel() {return modePanel;}
+
+    FBDTools(FBD3DModePanel modePanel)  {
+        super(GroupLayout.makeHoriz(GroupLayout.CENTER));
+
+        this.modePanel = modePanel;
+    }
     
     FBDTools(FBDModePanel modePanel) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));

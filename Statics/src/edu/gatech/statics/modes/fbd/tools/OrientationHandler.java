@@ -13,11 +13,13 @@ import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.actions.OrientLoad;
 import edu.gatech.statics.objects.Force;
+import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.manipulators.MousePressInputAction;
 import edu.gatech.statics.objects.manipulators.MousePressListener;
 import edu.gatech.statics.objects.manipulators.Orientation2DSnapManipulator;
 import edu.gatech.statics.objects.manipulators.OrientationListener;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ public class OrientationHandler {
     private InputHandler inputHandler;
     private FreeBodyDiagram diagram;
     private Force force;
+    private Moment moment;
     private Orientation2DSnapManipulator orientationManipulator;
     private AnchoredVector oldVector;
     private boolean enabled;
@@ -39,6 +42,33 @@ public class OrientationHandler {
     private static final long CLICK_TIME = 100; // time in milliseconds; less than this registers a click
     private boolean firstClick; // set to true if the user did not position the force before releasing the mouse, if the user simply released the mouse afterward
     private boolean secondClick; // set to true when the mouse has been clicked a second time.
+
+    /*
+     * An orientation handler for allowing orientation of moments. Added by Jayraj 11/2/2010
+     */
+
+    public OrientationHandler(FreeBodyDiagram diagram, InputHandler inputHandler, Moment moment) {
+        this.inputHandler = inputHandler;
+        this.diagram = diagram;
+        this.moment = moment;
+
+        // make a copy just in case.
+        oldVector = new AnchoredVector(moment.getAnchoredVector());
+
+        final List<Vector3f> snapDirections = diagram.getSensibleDirections(moment.getAnchor());
+        orientationManipulator = new Orientation2DSnapManipulator(moment.getAnchor(), Vector3f.UNIT_Z, snapDirections);
+        orientationManipulator.addListener(new MyOrientationListener());
+        inputHandler.addToAttachedHandlers(orientationManipulator);
+        //System.out.println("*** Created orientation handler for moment");
+
+        StaticsApplication.getApp().enableDrag(false);
+        enabled = true;
+
+        timestamp = System.currentTimeMillis();
+        MousePressInputAction clickAction = new MousePressInputAction();
+        clickAction.addListener(new ClickListener());
+        inputHandler.addAction(clickAction);
+    }
 
     /**
      * Constructs an OrientationHandler. This also activates and enables the OrientationHandler.
@@ -55,8 +85,13 @@ public class OrientationHandler {
         // make a copy just in case.
         oldVector = new AnchoredVector(force.getAnchoredVector());
 
-        final List<Vector3f> snapDirections = diagram.getSensibleDirections(force.getAnchor());
+        final List<Vector3f> snapDirections = new ArrayList<Vector3f>();
+       
+       
         orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);
+       
+       
+            
         orientationManipulator.addListener(new MyOrientationListener());
         inputHandler.addToAttachedHandlers(orientationManipulator);
 
@@ -114,7 +149,10 @@ public class OrientationHandler {
     private class MyOrientationListener implements OrientationListener {
 
         public void onRotate(Matrix3f rotation) {
-            force.setRotation(rotation);
+            if(force != null)
+                force.setRotation(rotation);
+            if(moment != null)
+                moment.setRotation(rotation);
         }
     }
 
@@ -169,7 +207,10 @@ public class OrientationHandler {
             OrientLoad orientLoad = new OrientLoad(oldVector, newVector);
             diagram.performAction(orientLoad);
 
-            force.setVectorValue(vbd);
+            if(force != null)
+                force.setVectorValue(vbd);
+            if(moment != null)
+                moment.setVectorValue(vbd);
 
             orientationManipulator.setEnabled(false);
             inputHandler.removeFromAttachedHandlers(orientationManipulator);

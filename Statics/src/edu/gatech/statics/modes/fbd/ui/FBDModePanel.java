@@ -27,9 +27,9 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
     public DiagramType getDiagramType() {
         return FBDMode.instance.getDiagramType();
     }
-    private FBDTools tools;
-    private BContainer checkContainer;
-    private BButton checkButton,  resetButton;
+    protected FBDTools tools;
+    protected BContainer checkContainer;
+    protected BButton checkButton,  resetButton;
 
     public FBDModePanel() {
         super();

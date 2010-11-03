@@ -4,6 +4,8 @@
  */
 package edu.gatech.statics.ui;
 
+import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
+import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import edu.gatech.statics.ui.sidebar.Sidebar;
 import edu.gatech.statics.ui.windows.coordinates.CoordinateSystemWindow;
@@ -129,4 +131,5 @@ abstract public class AbstractInterfaceConfiguration implements InterfaceConfigu
         }
         return false;
     }
+
 }
