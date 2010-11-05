@@ -85,7 +85,7 @@ public class OrientationHandler {
         // make a copy just in case.
         oldVector = new AnchoredVector(force.getAnchoredVector());
 
-        final List<Vector3f> snapDirections = new ArrayList<Vector3f>();
+        final List<Vector3f> snapDirections = diagram.getSensibleDirections(force.getAnchor());
        
        
         orientationManipulator = new Orientation2DSnapManipulator(force.getAnchor(), Vector3f.UNIT_Z, snapDirections);

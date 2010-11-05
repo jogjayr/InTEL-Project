@@ -16,6 +16,7 @@ import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.util.List;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.Default3DInterfaceConfiguration;
 
 /**
  *
@@ -73,16 +74,16 @@ public abstract class SimpleFBDExercise extends OrdinaryExercise {
         return new SimpleInterfaceConfiguration();
     }
 
-    private class SimpleInterfaceConfiguration extends DefaultInterfaceConfiguration {
+    private class SimpleInterfaceConfiguration extends Default3DInterfaceConfiguration {
 
         public SimpleInterfaceConfiguration() {
         }
 
         @Override
         public void createModePanels() {
-            List<ApplicationModePanel> r = getModePanels();
-            r.add(new SelectModePanel());
-            r.add(new FBDModePanel());
+            //List<ApplicationModePanel> r = getModePanels();
+            //r.add(new SelectModePanel());
+            //r.add(new FBDModePanel());
         }
     }
 }
