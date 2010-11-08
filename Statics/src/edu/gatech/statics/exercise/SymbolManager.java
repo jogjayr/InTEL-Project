@@ -89,15 +89,28 @@ public class SymbolManager {
 
     public AnchoredVector getLoad(AnchoredVector load, Connector connector) {
 
+        // check to see if this is a 2fm connector, and if it is, we want to check against
+        // the opposite connector.
         Connector other2FMConnector = null;
         if (connector != null && connector instanceof Connector2ForceMember2d) {
             other2FMConnector = ((Connector2ForceMember2d) connector).getOpposite();
         }
 
+        // go through all loads stored in the symbol manager and check against them
         for (Pair<Connector, AnchoredVector> pair : symbolicLoads) {
             if (pair.getLeft() == connector || (other2FMConnector != null && pair.getLeft() == other2FMConnector)) {
                 AnchoredVector test = pair.getRight();
 
+                if (connector == null) {
+                    // if this is a given load- that is, not attached to a connector,
+                    // then we need to make sure that the load anchor is correct, not just the vector itself
+                    // continue looking if it doesn't fit.
+                    if (test.getAnchor() != load.getAnchor()) {
+                        continue;
+                    }
+                }
+
+                // check the load direction
                 if (test.getVectorValue().equals(load.getVectorValue())) {
                     return test.getUnmodifiableAnchoredVector();
                 } else if (test.getVectorValue().negate().equals(load.getVectorValue())) {
