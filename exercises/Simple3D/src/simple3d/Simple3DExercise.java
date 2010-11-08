@@ -26,7 +26,7 @@ public class Simple3DExercise extends OrdinaryExercise {
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
-        interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4);
+        interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4, -1, 1);
         return interfaceConfiguration;
     }
 
