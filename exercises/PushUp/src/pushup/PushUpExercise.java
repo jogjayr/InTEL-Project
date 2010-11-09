@@ -5,13 +5,20 @@
 
 package pushup;
 
+import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.bodies.Potato;
+import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import java.math.BigDecimal;
 
 
 
@@ -54,9 +61,8 @@ public class PushUpExercise extends OrdinaryExercise{
     public void initExercise() {
 
         Unit.setSuffix(Unit.distance, " ft");
-        Unit.setSuffix(Unit.moment, " newton*ft");
-        Unit.setSuffix(Unit.force, "  newton");
-        Unit.setSuffix(Unit.forceOverDistance, " newton/ft");
+        Unit.setSuffix(Unit.moment, "kg*ft");
+        Unit.setSuffix(Unit.force, "kg");
 
     }
     
@@ -66,17 +72,39 @@ public class PushUpExercise extends OrdinaryExercise{
 
         Schematic schematic = getSchematic();
 
-        Point A = new Point("A", "0", "5", "0");
-        Point B = new Point("B", "5", "5", "0");
-        Point C = new Point("C", "15", "5", "0");
+        Point A = new Point("A", "1.61", "0", "0");
+        Point B = new Point("B", "3.02", "0", "0");
+        Point C = new Point("C", "5.83", "0", "0");
 
-        Point D = new Point("D", "0", "20", "0");
-        Point E = new Point("E", "5", "20", "0");
-        Point F = new Point("F", "15", "20", "0");
+        Point D = new Point("D", "8.18", "0", "0");
+        Point E = new Point("E", "9.04", "0", "0");
+        Point F = new Point("F", "10.77", "0", "0");
+        Point G = new Point("G", "11.2", "0", "0");
 
-        Point G = new Point("G", "25", "5", "0");
-        Point H = new Point("H", "30", "5", "0");
-        Point I = new Point("I", "40", "5", "0");
+        Point H = new Point("H", "14.27", "0", "0");
+        Point I = new Point("I", "15.99", "0", "0");
+        Point J = new Point("J", "18.83", "0", "0");
+
+        Roller2d rollerA = new Roller2d(A);
+        Roller2d rollerC = new Roller2d(C);
+        Roller2d rollerD = new Roller2d(D);
+        Roller2d rollerF = new Roller2d(F);
+        Roller2d rollerH = new Roller2d(H);
+        Roller2d rollerJ = new Roller2d(J);
+
+        rollerA.setName("Reaction A");
+        rollerC.setName("Reaction C");
+        rollerD.setName("Reaction D");
+        rollerF.setName("Reaction F");
+        rollerH.setName("Reaction H");
+        rollerJ.setName("Reaction J");
+
+        rollerA.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerC.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerD.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerF.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerH.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerJ.setDirection(Vector3bd.UNIT_Y.negate());
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
@@ -87,6 +115,8 @@ public class PushUpExercise extends OrdinaryExercise{
         G.createDefaultSchematicRepresentation();
         H.createDefaultSchematicRepresentation();
         I.createDefaultSchematicRepresentation();
+        J.createDefaultSchematicRepresentation();
+
 
         schematic.add(A);
         schematic.add(B);
@@ -97,18 +127,94 @@ public class PushUpExercise extends OrdinaryExercise{
         schematic.add(G);
         schematic.add(H);
         schematic.add(I);
+        schematic.add(J);
+
+        Force Bf = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal(60));
+        Force Ef = new Force(E, Vector3bd.UNIT_Y.negate(), new BigDecimal(54));
+        Force Gf = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(6));
+        Force If = new Force(I, Vector3bd.UNIT_Y.negate(), new BigDecimal(60));
+
+        Bf.setName("Force B");
+        Ef.setName("Force E");
+        Gf.setName("Force G");
+        If.setName("Force I");
+
+        Bf.createDefaultSchematicRepresentation();
+        Ef.createDefaultSchematicRepresentation();
+        Gf.createDefaultSchematicRepresentation();
+        If.createDefaultSchematicRepresentation();
+
+        Body kid1 = new Potato("kid1");
+        Body kid2 = new Potato("kid2");
+        Body kid3 = new Potato("kid3");
+
+        kid1.addObject(A);
+        kid1.addObject(B);
+        kid1.addObject(C);
+        kid1.addObject(Bf);
+        rollerA.attachToWorld(kid1);
+        rollerC.attachToWorld(kid1);
+
+        kid2.addObject(D);
+        kid2.addObject(E);
+        kid2.addObject(F);
+        kid2.addObject(G);
+        kid2.addObject(Ef);
+        kid2.addObject(Gf);
+        rollerD.attachToWorld(kid2);
+        rollerF.attachToWorld(kid2);
 
 
-        
-        ModelNode modelNode = ModelNode.load("pushupexercise/assets/", "pushupexercise/assets/male_PushUp.dae");
+        kid3.addObject(H);
+        kid3.addObject(I);
+        kid3.addObject(J);
+        kid3.addObject(If);
+        rollerH.attachToWorld(kid3);
+        rollerJ.attachToWorld(kid3);
+
+        schematic.add(kid1);
+        schematic.add(kid2);
+        schematic.add(kid3);
+
+
+        ModelNode modelNode = ModelNode.load("pushupexercise/assets/", "pushupexercise/assets/pushup.dae");
         modelNode.extractLights();
 
 
         ModelRepresentation rep;
         String prefix = "VisualSceneNode/";
 
+        float scale = 1;//50f;
+        Vector3f translation = new Vector3f();//(45, 5, 0);
+
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
+
+        rep = modelNode.extractElement(kid1, prefix + "group1/completebody");
+        kid1.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalScale(scale);
+        rep.getRelativeNode().setLocalTranslation(translation);
+
+        rep = modelNode.extractElement(kid2, prefix + "girl_group2");
+        kid2.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalScale(scale);
+        rep.getRelativeNode().setLocalTranslation(translation);
+
+        rep = modelNode.extractElement(kid3, prefix + "group3/character");
+        kid3.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalScale(scale);
+        rep.getRelativeNode().setLocalTranslation(translation);
+        
+        rep = modelNode.getRemainder(schematic.getBackground());
+        rep.getRelativeNode().setLocalScale(scale);
+        schematic.getBackground().addRepresentation(rep);
+        rep.getRelativeNode().setLocalTranslation(translation);
          
          
         
