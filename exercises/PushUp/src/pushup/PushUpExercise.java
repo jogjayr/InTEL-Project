@@ -12,6 +12,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
@@ -84,6 +85,37 @@ public class PushUpExercise extends OrdinaryExercise{
         Point H = new Point("H", "14.27", "0", "0");
         Point I = new Point("I", "15.99", "0", "0");
         Point J = new Point("J", "18.83", "0", "0");
+
+        DistanceMeasurement measureAB = new DistanceMeasurement(A, B);
+        measureAB.createDefaultSchematicRepresentation();
+        schematic.add(measureAB);
+//        measureAB.forceHorizontal();
+    
+        DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
+        measureBC.createDefaultSchematicRepresentation();
+        schematic.add(measureBC);
+//        measureBC.forceHorizontal();
+
+        DistanceMeasurement measureDE = new DistanceMeasurement(D, E);
+        measureDE.createDefaultSchematicRepresentation();
+        schematic.add(measureDE);
+        
+
+        DistanceMeasurement measureEF = new DistanceMeasurement(E, F);
+        measureEF.createDefaultSchematicRepresentation();
+        schematic.add(measureEF);
+
+        DistanceMeasurement measureFG = new DistanceMeasurement(F, G);
+        measureFG.createDefaultSchematicRepresentation();
+        schematic.add(measureFG);
+
+        DistanceMeasurement measureHI = new DistanceMeasurement(H, I);
+        measureHI.createDefaultSchematicRepresentation();
+        schematic.add(measureHI);
+
+        DistanceMeasurement measureIJ = new DistanceMeasurement(I, J);
+        measureIJ.createDefaultSchematicRepresentation();
+        schematic.add(measureIJ);
 
         Roller2d rollerA = new Roller2d(A);
         Roller2d rollerC = new Roller2d(C);
@@ -215,7 +247,7 @@ public class PushUpExercise extends OrdinaryExercise{
         rep.getRelativeNode().setLocalScale(scale);
         schematic.getBackground().addRepresentation(rep);
         rep.getRelativeNode().setLocalTranslation(translation);
-         
+
          
         
     }
