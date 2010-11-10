@@ -777,10 +777,19 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         builder.getEquationStates().put("F[y]", (new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build()));
         builder.getEquationStates().put("M[p]", (new TermEquationMathState.Builder("M[p]", true, null, Vector3bd.UNIT_Z).build()));
 
+        checkWorksheet();
+        return builder.build();
+    }
+
+    /**
+     * Creates the worksheet for this equation diagram if it does not exist
+     * This should be called in createInitialState.
+     */
+    protected void checkWorksheet() {
+
         if (worksheet == null) {
             worksheet = new Worksheet(this);
         }
-        return builder.build();
     }
 
     @Override

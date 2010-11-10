@@ -35,7 +35,7 @@ import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.SubDiagram;
 import edu.gatech.statics.exercise.submitting.DatabaseLogHandler;
 import edu.gatech.statics.exercise.submitting.PostAssignment;
-import edu.gatech.statics.exercise.submitting.PostLogger;
+
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.manipulators.Tool;
 import edu.gatech.statics.objects.representations.LabelRepresentation;
@@ -46,7 +46,7 @@ import edu.gatech.statics.util.SolveListener;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.IntBuffer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +87,7 @@ public class StaticsApplication {
     private boolean initialized = false; // this is set after init() completes
     private boolean drawLabels = true;
     private boolean drawInterface = true;
+
 
     public boolean getDrawInterface() {
         return drawInterface;
@@ -653,7 +654,7 @@ public class StaticsApplication {
 
         camera = display.getRenderer().createCamera(display.getWidth(), display.getHeight());
         camera.setFrustumPerspective(45.0f, (float) display.getWidth() / (float) display.getHeight(), 1, 1000);
-        camera.setParallelProjection(false);
+        camera.setParallelProjection(false); 
         camera.update();
 
         display.getRenderer().setCamera(camera);

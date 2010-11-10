@@ -4,10 +4,13 @@
  */
 package simple3d;
 
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.equation.Equation3DDiagram;
+import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
@@ -29,6 +32,15 @@ public class Simple3DExercise extends OrdinaryExercise {
         interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4, -1, 1);
         return interfaceConfiguration;
     }
+
+    @Override
+    protected EquationDiagram createEquationDiagram(BodySubset bodies) {
+        //return super.createEquationDiagram(bodies);
+        // instead of returning the basic EquationDiagram, returns EquationDiagram3d
+        return new Equation3DDiagram(bodies);
+    }
+
+
 
     @Override
     public Description getDescription() {
