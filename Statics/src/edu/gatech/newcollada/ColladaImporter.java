@@ -244,6 +244,58 @@ public class ColladaImporter {
         instance.load(source, textureDirectory);
     }
 
+    private void cloneMaterialState(String matKey, TriMesh triMesh, meshType mesh) {
+        ColladaMaterial cm = (ColladaMaterial) resourceLibrary
+                    .get(matKey);
+        if (cm != null) {
+            for (RenderState.StateType type : RenderState.StateType.values()) {
+                if (cm.getState(type) != null) {
+                    if (type == RenderState.StateType.Blend) {
+                        triMesh.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+                    } // different
+                    // attributes
+                    try {
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        BinaryExporter.getInstance().save(cm.getState(type), out);
+                        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+                        RenderState rs = (RenderState) BinaryImporter
+                                        .getInstance().load(in);
+                        triMesh.setRenderState(rs);
+                    } catch (IOException e) {
+                        logger.throwing(this.getClass().toString(), "processTriMesh(meshType mesh, geometryType geom)", e);
+                    }
+                }
+            }
+            ArrayList<Controller> cList = cm.getControllerList();
+            if (cList != null) {
+                for (int c = 0; c < cList.size(); c++) {
+                    if (cList.get(c) instanceof TextureKeyframeController) {
+                        TextureState ts = (TextureState) triMesh
+                                        .getRenderState(RenderState.StateType.Texture);
+                        if (ts != null) {
+                            // allow wrapping, as animated textures will
+                            // almost always need it.
+                            ts.getTexture().setWrap(Texture.WrapAxis.S, Texture.WrapMode.Repeat);
+                            ts.getTexture().setWrap(Texture.WrapAxis.T, Texture.WrapMode.Repeat);
+                            ((TextureKeyframeController) cList.get(c)).setTexture(ts.getTexture());
+                        }
+                    }
+                }
+            }
+            if (mesh.hasextra()) {
+                for (int i = 0; i < mesh.getextraCount(); i++) {
+                    try {
+                        ExtraPluginManager.processExtra(triMesh, mesh.getextraAt(i));
+                    } catch (Exception e) {
+                        if (!squelch) {
+                            logger.log(Level.INFO, "Error processing extra information for mesh", e);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * load is called by the static load method, creating an instance of the
      * model to be returned.
@@ -3064,70 +3116,7 @@ public class ColladaImporter {
                 String matKey = (String) resourceLibrary.get(tri.getmaterial()
                         .toString());
                 triMesh.setName(triMesh.getName()+"-"+tri.getmaterial().toString());
-                ColladaMaterial cm = (ColladaMaterial) resourceLibrary
-                    .get(matKey);
-
-                if (cm != null) {
-                	for (RenderState.StateType type : RenderState.StateType.values()) {
-                        if (cm.getState(type) != null) {
-                            if (type == RenderState.StateType.Blend) {
-                                triMesh.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-                            }
-                            // clone the state as different mesh's may have
-                            // different
-                            // attributes
-                            try {
-                                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                                BinaryExporter.getInstance().save(
-                                        cm.getState(type), out);
-                                ByteArrayInputStream in = new ByteArrayInputStream(
-                                        out.toByteArray());
-                                RenderState rs = (RenderState) BinaryImporter
-                                        .getInstance().load(in);
-                                triMesh.setRenderState(rs);
-                            } catch (IOException e) {
-                                logger
-                                        .throwing(
-                                                this.getClass().toString(),
-                                                "processTriMesh(meshType mesh, geometryType geom)",
-                                                e);
-                            }
-                        }
-                    }
-                    ArrayList<Controller> cList = cm.getControllerList();
-                    if (cList != null) {
-                        for (int c = 0; c < cList.size(); c++) {
-                            if (cList.get(c) instanceof TextureKeyframeController) {
-                                TextureState ts = (TextureState) triMesh
-                                        .getRenderState(RenderState.StateType.Texture);
-                                if (ts != null) {
-                                    // allow wrapping, as animated textures will
-                                    // almost always need it.
-                                    ts.getTexture().setWrap(Texture.WrapAxis.S, Texture.WrapMode.Repeat);
-                                    ts.getTexture().setWrap(Texture.WrapAxis.T, Texture.WrapMode.Repeat);
-                                    ((TextureKeyframeController) cList.get(c))
-                                            .setTexture(ts.getTexture());
-                                }
-                            }
-                        }
-                    }
-                    if (mesh.hasextra()) {
-                        for (int i = 0; i < mesh.getextraCount(); i++) {
-                            try {
-                                ExtraPluginManager.processExtra(triMesh, mesh
-                                        .getextraAt(i));
-                            } catch (Exception e) {
-                                if (!squelch) {
-                                    logger
-                                            .log(
-                                                    Level.INFO,
-                                                    "Error processing extra information for mesh",
-                                                    e);
-                                }
-                            }
-                        }
-                    }
-                }
+                cloneMaterialState(matKey, triMesh, mesh);
 
                 subMaterialLibrary.put(triMesh, tri.getmaterial().toString());
             }
@@ -3515,7 +3504,14 @@ public class ColladaImporter {
 
             if (poly.hasmaterial()) {
                 // note: this material reference is used later
-                triMesh.setName(poly.getmaterial().toString());
+//                triMesh.setName(poly.getmaterial().toString());
+                // first set the appropriate materials to this mesh.
+                String matKey = (String) resourceLibrary.get(poly.getmaterial()
+                        .toString());
+                triMesh.setName(triMesh.getName()+"-"+poly.getmaterial().toString());
+                cloneMaterialState(matKey, triMesh, mesh);
+
+                subMaterialLibrary.put(triMesh, poly.getmaterial().toString());
             }
 
             // build the index buffer, this is going to be easy as it's only
