@@ -14,8 +14,8 @@ exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
 dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       <source_data>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/CRC/crcScaledModel_deleted.mb</source_data>
     </contributor>
-    <created>2010-11-11T17:00:01Z</created>
-    <modified>2010-11-11T17:00:02Z</modified>
+    <created>2010-11-11T17:04:01Z</created>
+    <modified>2010-11-11T17:04:02Z</modified>
     <unit meter="0.01" name="centimeter"/>
     <up_axis>Y_UP</up_axis>
   </asset>
@@ -118,7 +118,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       </extra>
     </image>
     <image id="file2" name="file2">
-      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/concrete.tif</init_from>
+      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/concrete.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
