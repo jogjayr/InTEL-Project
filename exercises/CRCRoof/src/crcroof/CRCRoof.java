@@ -111,12 +111,12 @@ public class CRCRoof extends OrdinaryExercise {
         schematic.add(DF);
 
 
-        ModelNode modelNode = ModelNode.load("crcroof/assets/", "crcroof/assets/crcScaled.dae");
+        ModelNode modelNode = ModelNode.load("crcroof/assets/", "crcroof/assets/crcRoof.dae");
         modelNode.extractLights();
 
 
         ModelRepresentation rep;
-        String prefix = "totalScene/";
+        String prefix = "VisualSceneNode/totalScene/";
 
 
         Matrix3f rotation = new Matrix3f();
@@ -124,13 +124,17 @@ public class CRCRoof extends OrdinaryExercise {
         float scale = .45f;
 
 
-        rep = modelNode.extractElement(CE, prefix + "pCylinder11");
+        rep = modelNode.extractElement(CE, prefix + "CE");//pCylinder11
         CE.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.getRelativeNode().setLocalRotation(rotation);
         rep.getRelativeNode().setLocalScale(scale);
 
+        rep = modelNode.extractElement(DF, prefix + "DF");
+        DF.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.getRelativeNode().setLocalRotation(rotation);

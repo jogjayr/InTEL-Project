@@ -14,8 +14,8 @@ exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
 dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       <source_data>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/CRC/crcScaledModel_deleted.mb</source_data>
     </contributor>
-    <created>2010-11-10T19:30:14Z</created>
-    <modified>2010-11-10T19:30:15Z</modified>
+    <created>2010-11-11T17:00:01Z</created>
+    <modified>2010-11-11T17:00:02Z</modified>
     <unit meter="0.01" name="centimeter"/>
     <up_axis>Y_UP</up_axis>
   </asset>
@@ -109,7 +109,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
   </library_lights>
   <library_images>
     <image id="file1" name="file1">
-      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/CRC.tif</init_from>
+      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/CRC.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
@@ -127,7 +127,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       </extra>
     </image>
     <image id="file3" name="file3">
-      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/ground.tif</init_from>
+      <init_from>file:///C:/Intel%20Project/exercises/CRCRoof/src/crcroof/assets/ground.png</init_from>
       <extra>
         <technique profile="MAYA">
           <dgnode_type>kFile</dgnode_type>
@@ -567,6 +567,10 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
                 <EDK_GEOMETRY_MAYA short_name="EDK_GEOMETRY_MAYA" type="string">%3Cdouble_sided%3E0%3C/double_sided%3E%3Cdynamic_attributes%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CmiShadingSamplesOverride%20short_name=%22mso%22%20type=%22bool%22%3E0%3C/miShadingSamplesOverride%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CmiShadingSamples%20short_name=%22msh%22%20type=%22float%22%3E0%3C/miShadingSamples%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CmiMaxDisplaceOverride%20short_name=%22mdo%22%20type=%22bool%22%3E0%3C/miMaxDisplaceOverride%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CmiMaxDisplace%20short_name=%22mmd%22%20type=%22float%22%3E0%3C/miMaxDisplace%3E%0A%20%20%20%20%20%20%20%20%20%20%3C/dynamic_attributes%3E</EDK_GEOMETRY_MAYA>
               </EDK_GEOMETRY>
             </COLLADA>
+            <miShadingSamplesOverride short_name="mso" type="bool">0</miShadingSamplesOverride>
+            <miShadingSamples short_name="msh" type="float">0</miShadingSamples>
+            <miMaxDisplaceOverride short_name="mdo" type="bool">0</miMaxDisplaceOverride>
+            <miMaxDisplace short_name="mmd" type="float">0</miMaxDisplace>
           </dynamic_attributes>
         </technique>
       </extra>
