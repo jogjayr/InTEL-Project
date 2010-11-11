@@ -121,7 +121,7 @@ public class CRCRoof extends OrdinaryExercise {
 
         Matrix3f rotation = new Matrix3f();
         rotation.fromAngleAxis((float) -Math.PI / 2, Vector3f.UNIT_Y);
-        float scale = .45f;
+        float scale = .44444f;
 
 
         rep = modelNode.extractElement(CE, prefix + "CE");//pCylinder11
@@ -135,6 +135,22 @@ public class CRCRoof extends OrdinaryExercise {
         DF.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalRotation(rotation);
+        rep.getRelativeNode().setLocalScale(scale);
+
+        rep = modelNode.extractElement(AC, prefix + "column");
+        AC.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalRotation(rotation);
+        rep.getRelativeNode().setLocalScale(scale);
+
+        rep = modelNode.extractElement(DE, prefix + "totalScene_roof");
+        DE.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+        rep.getRelativeNode().setLocalRotation(rotation);
+        rep.getRelativeNode().setLocalScale(scale);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.getRelativeNode().setLocalRotation(rotation);
