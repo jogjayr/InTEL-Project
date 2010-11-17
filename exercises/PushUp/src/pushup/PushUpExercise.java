@@ -19,6 +19,7 @@ import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.SolveConnectorTask;
 import java.math.BigDecimal;
 
 
@@ -83,18 +84,18 @@ public class PushUpExercise extends OrdinaryExercise{
         Point G = new Point("G", "11.2", "0", "0");
 
         Point H = new Point("H", "14.27", "0", "0");
-        Point I = new Point("I", "15.99", "0", "0");
+        Point I = new Point("I", "15.41", "0", "0");
         Point J = new Point("J", "18.83", "0", "0");
 
         DistanceMeasurement measureAB = new DistanceMeasurement(A, B);
         measureAB.createDefaultSchematicRepresentation();
         schematic.add(measureAB);
-//        measureAB.forceHorizontal();
+
     
         DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
         measureBC.createDefaultSchematicRepresentation();
         schematic.add(measureBC);
-//        measureBC.forceHorizontal();
+
 
         DistanceMeasurement measureDE = new DistanceMeasurement(D, E);
         measureDE.createDefaultSchematicRepresentation();
@@ -131,12 +132,12 @@ public class PushUpExercise extends OrdinaryExercise{
         rollerH.setName("Reaction H");
         rollerJ.setName("Reaction J");
 
-        rollerA.setDirection(Vector3bd.UNIT_Y.negate());
-        rollerC.setDirection(Vector3bd.UNIT_Y.negate());
-        rollerD.setDirection(Vector3bd.UNIT_Y.negate());
-        rollerF.setDirection(Vector3bd.UNIT_Y.negate());
-        rollerH.setDirection(Vector3bd.UNIT_Y.negate());
-        rollerJ.setDirection(Vector3bd.UNIT_Y.negate());
+        rollerA.setDirection(Vector3bd.UNIT_Y);
+        rollerC.setDirection(Vector3bd.UNIT_Y);
+        rollerD.setDirection(Vector3bd.UNIT_Y);
+        rollerF.setDirection(Vector3bd.UNIT_Y);
+        rollerH.setDirection(Vector3bd.UNIT_Y);
+        rollerJ.setDirection(Vector3bd.UNIT_Y);
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
@@ -247,8 +248,17 @@ public class PushUpExercise extends OrdinaryExercise{
         rep.getRelativeNode().setLocalScale(scale);
         schematic.getBackground().addRepresentation(rep);
         rep.getRelativeNode().setLocalTranslation(translation);
+        
+        addTask(new SolveConnectorTask("Solve forces at A", rollerA));
+        addTask(new SolveConnectorTask("Solve forces at C", rollerC));
+        addTask(new SolveConnectorTask("Solve forces at D", rollerD));
+        addTask(new SolveConnectorTask("Solve forces at F", rollerF));
+        addTask(new SolveConnectorTask("Solve forces at H", rollerH));
+        addTask(new SolveConnectorTask("Solve forces at J", rollerJ));
 
-         
+
+
+
         
     }
 

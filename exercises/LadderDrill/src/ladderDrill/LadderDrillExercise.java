@@ -5,15 +5,24 @@
 
 package ladderDrill;
 
+import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.Body;
+import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.ContactPoint;
+import java.math.BigDecimal;
+
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+
 
 
 /**
@@ -49,7 +58,7 @@ public class LadderDrillExercise extends OrdinaryExercise {
         Unit.setSuffix(Unit.distance, "m");
         Unit.setSuffix(Unit.force, "N");
 
-
+        Unit.setPrecision(Unit.distance, 2);
     }
 
     @Override
@@ -75,22 +84,58 @@ public class LadderDrillExercise extends OrdinaryExercise {
         schematic.add(D);
         schematic.add(E);
 
-        Beam AB = new Beam("AB", A, B);
-        ModelNode modelNode = ModelNode.load("ladderDrill/assets/", "ladderDrill/assets/ladderDrill.dae");
-        modelNode.extractLights();
-
-        ModelRepresentation rep;
-        String prefix = "VisualSceneNode/CompleteScene/sceneObjects/ladder/"; //"RootNode/group1/Scene/completeStructure/";
-
-        schematic.add(AB);
-        rep = modelNode.extractElement(AB, prefix + "ladderLtVertical");
-        AB.addRepresentation(rep);
-        rep.setSynchronizeRotation(false);
-        rep.setSynchronizeTranslation(false);
-
-        rep = modelNode.getRemainder(schematic.getBackground());
-        schematic.getBackground().addRepresentation(rep);
+        Body ladder = new Beam("Ladder Body",A,B);
         
+        ladder.addObject(A);
+        ladder.addObject(B);
+        ladder.addObject(C);
+        ladder.addObject(D);
+        ladder.addObject(E);
+
+        Force forceD = new Force(D, Vector3bd.UNIT_Y.negate(), new BigDecimal(550));
+        forceD.setName("Weight D");
+        forceD.createDefaultSchematicRepresentation();
+
+        ladder.addObject(forceD);
+// Ladder Weight should be WEIGHT andnot force
+        Force forceC = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(200));
+        forceC.setName("Weight C");
+        forceC.createDefaultSchematicRepresentation();
+
+        Force forceE = new Force(E, Vector3bd.UNIT_X, "Drill Froce");
+        forceE.setName("Force E");
+        forceE.createDefaultSchematicRepresentation();
+
+
+        ladder.addObject(forceE);
+
+        ladder.addObject(forceC);
+        
+
+        ConstantObject frictionObjectB = new ConstantObject("Mu B", new BigDecimal(".5"), Unit.none);
+        schematic.add(frictionObjectB);
+
+        ConstantObject frictionObjectA = new ConstantObject("Mu A", new BigDecimal(".2"), Unit.none);
+        schematic.add(frictionObjectA);
+
+        ContactPoint jointB;
+        jointB = new ContactPoint(B, frictionObjectB);
+        jointB.setName("Contact B");
+        jointB.setNormalDirection(Vector3bd.UNIT_Y);
+        jointB.setFrictionDirection(Vector3bd.UNIT_X.negate());
+        jointB.createDefaultSchematicRepresentation();
+        jointB.attachToWorld(ladder);
+
+        ContactPoint jointA;
+        jointA = new ContactPoint(A, frictionObjectA);
+        jointA.setName("Contact A");
+        jointA.setNormalDirection(Vector3bd.UNIT_X);
+        jointA.setFrictionDirection(Vector3bd.UNIT_Y);
+        jointA.createDefaultSchematicRepresentation();
+        jointA.attachToWorld(ladder);
+
+        schematic.add(ladder);
+
         DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
         measureBC.createDefaultSchematicRepresentation();
         schematic.add(measureBC);
@@ -103,7 +148,27 @@ public class LadderDrillExercise extends OrdinaryExercise {
         measureBE.createDefaultSchematicRepresentation();
         schematic.add(measureBE);
 
+        float scale = 1.5f;
+        Vector3f translation = new Vector3f();
 
+        ModelNode modelNode = ModelNode.load("ladderDrill/assets/", "ladderDrill/assets/ladderDrill.dae");
+        modelNode.extractLights();
+
+        ModelRepresentation rep;
+        String prefix = "VisualSceneNode/CompleteScene/";
+
+
+
+        rep = modelNode.extractElement(ladder, prefix + "sceneObjects/ladder/");
+        rep.getRelativeNode().setLocalScale(scale);
+        ladder.addRepresentation(rep);
+        rep.setSynchronizeRotation(false);
+        rep.setSynchronizeTranslation(false);
+
+
+        rep = modelNode.getRemainder(schematic.getBackground());
+        rep.getRelativeNode().setLocalScale(scale);
+        schematic.getBackground().addRepresentation(rep);
     }
 
 }

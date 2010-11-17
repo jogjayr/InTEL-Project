@@ -90,6 +90,7 @@ public class CentergyFrameExercise extends DistributedExercise {
         return description;
     }
 
+    @Override
     public void initExercise() {
 
         Unit.setSuffix(Unit.distance, " ft");
