@@ -217,8 +217,8 @@ public class PushUpExercise extends OrdinaryExercise{
         ModelRepresentation rep;
         String prefix = "VisualSceneNode/";
 
-        float scale = 1;//50f;
-        Vector3f translation = new Vector3f();//(45, 5, 0);
+        float scale = 10;//50f;
+        Vector3f translation = new Vector3f(12,0,0);//(45, 5, 0);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
