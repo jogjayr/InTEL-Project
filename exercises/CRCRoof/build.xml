@@ -10,6 +10,10 @@
 <project name="CRCRoof" default="default" basedir=".">
     <description>Builds, tests, and runs the project CRCRoof.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-post-jar">
+        <signjar jar="dist/CRCRoof.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/CRCRoof.jar" dest="../../applet/CRCRoof.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

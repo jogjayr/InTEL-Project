@@ -52,8 +52,8 @@ public class CRCRoof extends FrameExercise {
 
         description.setLayout(new ScrollbarLayout());
 
-        description.addImage("CRCRoof/assets/CRC1.png");
-        description.addImage("CRCRoof/assets/CRC2.png");
+        description.addImage("crcroof/assets/CRC1.png");
+        description.addImage("crcroof/assets/CRC2.png");
 
         return description;
     }
