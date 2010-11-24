@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.ui.windows.navigation;
 
+import com.jme.math.Vector3f;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.event.ActionEvent;
@@ -126,9 +127,9 @@ public class Navigation3DWindow extends NavigationWindow {
         getMainContainer().add(rotateLeft, new Point(0 * buttonSpacing, 4 * buttonSpacing));
         getMainContainer().add(rotateUp, new Point(1 * buttonSpacing, 5 * buttonSpacing));
         getMainContainer().add(rotateDown, new Point(1 * buttonSpacing, 3 * buttonSpacing));
-        getMainContainer().add(ZX, new Point(1 * buttonSpacing, 1 * buttonSpacing));
-        getMainContainer().add(YZ, new Point(0 * buttonSpacing, 0 * buttonSpacing));
-        getMainContainer().add(XY, new Point(2 * buttonSpacing, 0 * buttonSpacing));
+        //getMainContainer().add(ZX, new Point(1 * buttonSpacing, 1 * buttonSpacing));
+        //getMainContainer().add(YZ, new Point(0 * buttonSpacing, 0 * buttonSpacing));
+        //getMainContainer().add(XY, new Point(2 * buttonSpacing, 0 * buttonSpacing));
         
 
     }
@@ -138,6 +139,7 @@ public class Navigation3DWindow extends NavigationWindow {
         public void actionPerformed(ActionEvent event) {
             String action = event.getAction();
             ViewUserState vw = getCameraControl().getViewUserState();
+            ViewDiagramState vs = getCameraControl().getViewDiagramState();
             boolean XY = false;
             if (action.equals("up")) {
                 getCameraControl().panCamera(0, 1, true);
@@ -164,41 +166,23 @@ public class Navigation3DWindow extends NavigationWindow {
                 getCameraControl().rotateCamera(0, -1);
             } else if (action.equals("XY")) {
                 //getCameraControl().rotateCamera(1, 0);
-                if(!XY) {
-                    vw.setYPos(10.0f);
+               
+                    //vs.setCameraFrame(Vector3f.UNIT_Z, Vector3f.ZERO);
                     //vw.setPitch((float)Math.PI/2);
                     //getCameraControl().setViewUserState(vw);
                     //getCameraControl().updateCamera();
-                    getCameraControl().rotateCamera(0, 10);
-                    XY = true;
-                }
+                    //getCameraControl().rotateCamera(0, 10);
+                    //getCameraControl().interpolate(vs);
+                  
             } else if (action.equals("YZ")) {
-                if(XY)
-                {
-                    XY = false;
-                    vw.setYPos(-10.0f);
-                    getCameraControl().rotateCamera(0, -10);
-                }
-                vw.setYaw((float)Math.PI/2);
-                getCameraControl().setViewUserState(vw);
-                getCameraControl().updateCamera();
+              
+                  
             } else if(action.equals("ZX")) {
-                if(XY)
-                {
-                    XY = false;
-                    vw.setYPos(-10.0f);
-                    getCameraControl().rotateCamera(0, -10);
-                }
-                vw.setYaw(-(float)Math.PI/2);
-                getCameraControl().setViewUserState(vw);
-                getCameraControl().updateCamera();
+               
+             
 
             } else if(action.equals("focus")) {
-                if(XY)
-                {
-                    XY = false;
-                    vw.setYPos(-10.0f);
-                }
+               
                 getCameraControl().focus();
             }
         }

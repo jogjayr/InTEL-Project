@@ -66,7 +66,10 @@ public class MouseDragAndZoom extends MouseInputAction {
         if(mouseWasDown && mouseIsDown && isControlDown) {
             float deltaX = -mouseSpeed * (currentX - lastX);
             float deltaY = -mouseSpeed * (currentY - lastY);
-//            System.out.println("This one happened");
+
+            
+
+
             InterfaceRoot.getInstance().getCameraControl().rotateCamera(deltaX, 0);
             InterfaceRoot.getInstance().getCameraControl().rotateCamera(0, deltaY);
             

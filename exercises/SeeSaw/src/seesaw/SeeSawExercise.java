@@ -24,9 +24,12 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
+import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.modes.equation.ui.Default3DInterfaceConfiguration;
 import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
@@ -76,7 +79,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         //AbstractInterfaceConfiguration ic = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         // ideally, we shouldn't need to create a subclass here.
         // we should just be able to modify the camera control directly, but so it goes.
-        AbstractInterfaceConfiguration ic = new DefaultInterfaceConfiguration() {
+        AbstractInterfaceConfiguration ic = new Default3DInterfaceConfiguration() {
 
             @Override
             public void setupCameraControl(CameraControl cameraControl) {
@@ -88,6 +91,8 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         vc.setPositionConstraints(-1, 1, 0, 3);
         vc.setZoomConstraints(0.5f, 0.8f);
         ic.setViewConstraints(vc);
+        //***Remove after testing pointiness of moment arrows
+        ic.replaceModePanel(FBDModePanel.class, new FBD3DModePanel());
         // this throws a null pointer
         //ic.getNavigationWindow().getCameraControl().setMovementSpeed(.2f, .02f, .05f);
         return ic;

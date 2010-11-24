@@ -19,7 +19,15 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 
     //private ApplicationTab tab;
     //private BLabel titleLabel;
-    private boolean active;
+    /** TODO Ask Calvin how to resolve this
+     * It is obviously wrong to make this member protected, but the grandchild class Equation3DModePanel's activate() method
+     * has no way of calling this class's activated method without using super.activate() which would cause the child class's
+     * EquationModePanel().activate() to be called. This intermediate call is undesirable since the grandchild class's implementation
+     * of activate() is desired to be completely overriding the child class's implementation of activate()
+     *
+     *
+     */
+    protected boolean active;
 
     /**
      * Returns the type of diagram that this panel is supposed to represent.

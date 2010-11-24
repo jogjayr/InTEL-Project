@@ -33,6 +33,7 @@ import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;
@@ -52,6 +53,28 @@ public class TermEquationBar extends EquationBar {
     //private BLabel sumOperand;
     private BButton momentButton; // present only for moment math, pressing this sets the moment point
 
+    public TermEquationBar(EquationMath math, Equation3DModePanel parent) {
+        super(math, parent);
+        this.math = math;
+        this.parent = parent;
+        setStyleClass("equation_bar");
+        //System.out.println("TermEquationBar constructor was called");
+        ImageIcon icon;
+
+        try {
+            // add sum icon
+            BContainer startContainer = makeStartContainer();
+            add(startContainer);
+
+            // add = 0 icon
+            icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/equalsZero.png")));
+            add(new BLabel(icon));
+
+        } catch (IOException e) {
+            // this is here in case there is a problem with loading the icon.
+            e.printStackTrace();
+        }
+    }
     /**
      * Removes all of the contents of the equation bar. This should be called
      * when the ui is freshly activated.
@@ -69,7 +92,7 @@ public class TermEquationBar extends EquationBar {
         this.math = math;
         this.parent = parent;
         setStyleClass("equation_bar");
-
+        //System.out.println("TermEquationBar constructor was called");
         ImageIcon icon;
 
         try {

@@ -53,7 +53,7 @@ import java.util.UUID;
 public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public static final String panelName = "equation";
-    private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
+    protected Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
     private BContainer equationBarContainer;
     //private BContainer equationButtonContainer;
     private BContainer solutionContainer;
@@ -153,7 +153,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         super();
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
         //add(fullEquationContainer, BorderLayout.CENTER);
-
+        //System.out.println("EquationModePanel was created");
         GroupLayout equationLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         equationLayout.setOffAxisJustification(GroupLayout.LEFT);
         equationBarContainer = new BContainer(equationLayout);
@@ -242,7 +242,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
-    private void addTermEquationRow(TermEquationMath math) {
+    protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
         data.equationBar = new TermEquationBar(math, this);
@@ -256,7 +256,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         addEquationData(math, data);
     }
 
-    private void addArbitraryEquationRow(ArbitraryEquationMath math) {
+    protected void addArbitraryEquationRow(ArbitraryEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
         data.equationBar = new ArbitraryEquationBar(math, this);
@@ -287,7 +287,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         addEquationData(math, data);
     }
 
-    private void addRowCreator() {
+    protected void addRowCreator() {
         final EquationUIData data = new EquationUIData();
         data.addButton = new BButton("Add new equation", new ActionListener() {
 
@@ -381,7 +381,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         return numberSolved >= getDiagram().getNumberUnknowns();
     }
 
-    private void performSolve(boolean updateDiagram) {
+    protected void performSolve(boolean updateDiagram) {
 
         if(!enoughSolved())
             return;
@@ -442,7 +442,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
      * Only add the row creator if there are contact points in this diagram.
      * @return
      */
-    private boolean shouldAddRowCreator() {
+    protected boolean shouldAddRowCreator() {
         for (SimulationObject obj : getDiagram().allObjects()) {
             if (obj instanceof ContactPoint) {
                 return true;
@@ -462,7 +462,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 //    protected ApplicationTab createTab() {
 //        return new ApplicationTab("Solve");
 //    }
-    private void clear() {
+    protected void clear() {
         for (EquationUIData eqdata : uiMap.values()) {
             eqdata.equationBar.clear();
         }
@@ -492,11 +492,14 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         diagram.getWorksheet().updateEquations();
 
         for (String mathName : diagram.getWorksheet().getEquationNames()) {
+            
             EquationMath math = diagram.getWorksheet().getMath(mathName);
             if (math instanceof TermEquationMath) {
                 addTermEquationRow((TermEquationMath) math);
+                //System.out.println("TermEquationRow added for equation: " + math.getName());
             } else if (math instanceof ArbitraryEquationMath) {
                 addArbitraryEquationRow((ArbitraryEquationMath) math);
+                //System.out.println("ArbitraryEquationRow added for equation: " + math.getName());
             } else {
                 throw new IllegalArgumentException("Unknown math type: " + math);
             }

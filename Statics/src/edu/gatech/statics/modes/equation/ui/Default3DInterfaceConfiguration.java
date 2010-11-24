@@ -3,8 +3,10 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.ui;
+package edu.gatech.statics.modes.equation.ui;
 
+import edu.gatech.statics.ui.*;
+import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
@@ -19,6 +21,7 @@ public class Default3DInterfaceConfiguration extends DefaultInterfaceConfigurati
     public Default3DInterfaceConfiguration() {
         super();
         replaceModePanel(FBDModePanel.class, new FBD3DModePanel());
+        replaceModePanel(EquationModePanel.class, new Equation3DModePanel()); 
         setNavigationWindow(createNavigationWindow());
     }
     @Override

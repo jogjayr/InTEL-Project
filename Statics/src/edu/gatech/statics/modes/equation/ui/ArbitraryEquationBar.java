@@ -25,6 +25,7 @@ import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.AnchoredVectorNode;
+import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.arbitrary.EmptyNode;
 import edu.gatech.statics.modes.equation.arbitrary.EquationNode;
@@ -49,6 +50,10 @@ public class ArbitraryEquationBar extends EquationBar {
     //private BButton rightButton;
     private BContainer leftContainer;
     private BContainer rightContainer;
+
+    public ArbitraryEquationBar(EquationMath math, Equation3DModePanel parent) {
+        super(math, parent);
+    }
 
     /**
      * Removes all of the contents of the equation bar. This should be called

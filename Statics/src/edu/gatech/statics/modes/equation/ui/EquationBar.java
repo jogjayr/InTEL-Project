@@ -43,6 +43,11 @@ public abstract class EquationBar extends BContainer {
         this.parent = parent;
     }
 
+    public EquationBar(EquationMath math, Equation3DModePanel parent) {
+        super(GroupLayout.makeHoriz(GroupLayout.CENTER));
+        this.math = math;
+        this.parent = parent;
+    }
 //    /**
 //     * This handles the *state change* aspect of removing a term. The UI change occurs in
 //     * removeBox, which is called by this method.
