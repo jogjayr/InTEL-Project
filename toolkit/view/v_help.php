@@ -144,7 +144,6 @@ require_once('header.php');
 
 
 $(document).ready(function() {
-//jquery for fancy page animations
 
 function hideAll(){
 $('div#instructions').hide();
