@@ -112,7 +112,7 @@ public class ViewerExercise extends Exercise {
 
                 constraints.setPositionConstraints(-30, 30, -30, 30);
                 constraints.setZoomConstraints(.5f, 50);
-                constraints.setRotationConstraints(-1.5f, 1.5f);
+                constraints.setRotationConstraints(-4f, 4f, -4, 4);
 
                 return constraints;
             }

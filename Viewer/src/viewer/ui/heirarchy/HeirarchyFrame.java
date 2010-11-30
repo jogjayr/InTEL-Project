@@ -29,6 +29,7 @@ public class HeirarchyFrame extends JFrame {
     //private JEditorPane textPane;
     private InfoPanel infoPanel;
     //private DefaultMutableTreeNode root;
+
     public HeirarchyFrame() {
 
         getContentPane().setLayout(new BorderLayout());
@@ -64,9 +65,7 @@ public class HeirarchyFrame extends JFrame {
         root.setUserObject(rootNode);
 
         for (Spatial child : rootNode.getChildren()) {
-            if (child instanceof Node) {
-                root.add(createChild(child));
-            }
+            root.add(createChild(child));
         }
 
         tree.setModel(new DefaultTreeModel(root));
@@ -80,9 +79,7 @@ public class HeirarchyFrame extends JFrame {
             Node node = (Node) spatial;
             if (node.getChildren() != null) {
                 for (Spatial child : node.getChildren()) {
-                    if (child instanceof Node) {
-                        treeNode.add(createChild(child));
-                    }
+                    treeNode.add(createChild(child));
                 }
             }
         }
@@ -95,9 +92,10 @@ public class HeirarchyFrame extends JFrame {
             //System.out.println(lastSelection);
 
             DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) lastSelection;
-            if(treeNode == null)
+            if (treeNode == null) {
                 return;
-            
+            }
+
             Object object = treeNode.getUserObject();
 
             if (object instanceof Spatial) {
