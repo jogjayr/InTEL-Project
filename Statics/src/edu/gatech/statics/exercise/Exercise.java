@@ -10,7 +10,6 @@ package edu.gatech.statics.exercise;
 
 import com.jme.image.Texture;
 import com.jme.util.TextureManager;
-import edu.gatech.statics.CoordinateSystem;
 import edu.gatech.statics.Mode;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.state.ExerciseState;
@@ -160,21 +159,21 @@ public abstract class Exercise {
     public Schematic getSchematic() {
         return schematic;
     }
-    private CoordinateSystem coordinateSystem = new CoordinateSystem();
-
-    public CoordinateSystem getCoordinateSystem() {
-        return coordinateSystem;
-    }
-
-    public void setCoordinateSystem(CoordinateSystem sys) {
-        this.coordinateSystem = sys;
-    }
+//    private CoordinateSystem coordinateSystem = new CoordinateSystem();
+//
+//    public CoordinateSystem getCoordinateSystem() {
+//        return coordinateSystem;
+//    }
+//
+//    public void setCoordinateSystem(CoordinateSystem sys) {
+//        this.coordinateSystem = sys;
+//    }
 
     public Exercise() {
         this(new Schematic());
     }
 
-    /** Creates a new instance of Exercize */
+    /** Creates a new instance of Exercise */
     public Exercise(Schematic world) {
         this.schematic = world;
         currentExercise = this;
