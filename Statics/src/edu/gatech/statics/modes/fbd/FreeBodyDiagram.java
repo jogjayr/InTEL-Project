@@ -20,6 +20,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.fbd.tools.LabelManipulator;
 import edu.gatech.statics.modes.fbd.tools.LabelSelector;
+import edu.gatech.statics.modes.fbd.tools.VectorOverlapDetector;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.Force;
@@ -28,6 +29,7 @@ import edu.gatech.statics.objects.Measurement;
 import edu.gatech.statics.objects.Moment;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
+import edu.gatech.statics.objects.VectorListener;
 import edu.gatech.statics.util.SelectionFilter;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,9 +208,19 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             load = new Moment(vector);
         } else {
             throw new IllegalArgumentException(
-                    "Have some sort of invalid type of load: " + vector +
-                    " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
+                    "Have some sort of invalid type of load: " + vector
+                    + " the unit is a " + vector.getUnit() + ". It should be either a force or moment.");
         }
+
+        // add the overlap detector.
+        // right now this is only for forces, but when we get 3d moments, we'll want
+        // to attach those here too.
+        if (vector.getUnit() == Unit.force) {
+            VectorListener forceListener = new VectorOverlapDetector(this, load);
+            forceListener.valueChanged(load.getVectorValue());
+            load.addListener(forceListener);
+        }
+
         load.createDefaultSchematicRepresentation();
         new LabelManipulator(load);
         return load;
@@ -306,8 +318,8 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             // ^ is java's XOR operator
             // we want the joint IF it connects a body in the body list
             // to a body that is not in the body list. This means xor.
-            if (!(getBodySubset().getBodies().contains(connector.getBody1()) ^
-                    getBodySubset().getBodies().contains(connector.getBody2()))) {
+            if (!(getBodySubset().getBodies().contains(connector.getBody1())
+                    ^ getBodySubset().getBodies().contains(connector.getBody2()))) {
                 continue;
             }
 
@@ -315,9 +327,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
             for (Vector vector : connector.getReactions()) {
                 AnchoredVector match = null;
                 for (AnchoredVector anchoredVector : loadsToAccountFor) {
-                    if (anchoredVector.getAnchor() == connector.getAnchor() &&
-                            (vector.getVectorValue().equals(anchoredVector.getVectorValue()) ||
-                            vector.getVectorValue().negate().equals(anchoredVector.getVectorValue()))) {
+                    if (anchoredVector.getAnchor() == connector.getAnchor()
+                            && (vector.getVectorValue().equals(anchoredVector.getVectorValue())
+                            || vector.getVectorValue().negate().equals(anchoredVector.getVectorValue()))) {
                         // found.
                         match = anchoredVector;
                         break;
@@ -365,9 +377,9 @@ public class FreeBodyDiagram extends SubDiagram<FBDState> {
                 if (obj instanceof Connector) {
                     // through each connector
                     Connector connector = (Connector) obj;
-                    if ((getBodySubset().getBodies().contains(connector.getBody1()) ||
-                            getBodySubset().getBodies().contains(connector.getBody2())) &&
-                            !centralObjects.contains(body) && !adjacentObjects.contains(body)) {
+                    if ((getBodySubset().getBodies().contains(connector.getBody1())
+                            || getBodySubset().getBodies().contains(connector.getBody2()))
+                            && !centralObjects.contains(body) && !adjacentObjects.contains(body)) {
                         // ok, the body is attached to a body in the diagram,
                         // but is not a body in the diagram
 

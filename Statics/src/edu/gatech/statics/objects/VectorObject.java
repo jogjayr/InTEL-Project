@@ -160,6 +160,9 @@ public class VectorObject extends SimulationObject {//implements Quantified {
         float distance = arrow.getLength() * 
                 DisplayConstants.getInstance().getForceSize() *
                 DisplayConstants.getInstance().getForceLabelDistance();
+
+        distance += arrow.getAxisOffset() * DisplayConstants.getInstance().getForceSize();
+
 //        1 + 2 * (arrow.getLength() + arrow.getAxisOffset());
         return getTranslation().add(getVector().getVectorValue().toVector3f().mult(distance));
     }

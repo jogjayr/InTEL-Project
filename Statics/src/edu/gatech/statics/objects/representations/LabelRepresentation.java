@@ -88,7 +88,7 @@ public class LabelRepresentation extends Representation {
         setSynchronizeTranslation(false);
 
         updateRenderState();
-        update();
+//        update();
     }
 
     protected Vector3f getDisplayCenter() {

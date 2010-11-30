@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Calvin Ashmore
  */
-class VectorOverlapDetector implements VectorListener {
+public class VectorOverlapDetector implements VectorListener {
 
     private VectorObject myVector;
     private FreeBodyDiagram world;

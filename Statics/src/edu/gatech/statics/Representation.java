@@ -66,7 +66,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
      */
     @Deprecated
     @Override
-    public void updateRenderState() {
+    public final void updateRenderState() {
         super.updateRenderState();
     }
     private MaterialState materialState;
@@ -102,7 +102,7 @@ abstract public class Representation<SimType extends SimulationObject> extends N
      */
     @Override
     @Deprecated
-    public int attachChild(Spatial child) {
+    public final int attachChild(Spatial child) {
         return super.attachChild(child);
     }
 

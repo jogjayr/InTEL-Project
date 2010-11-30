@@ -9,7 +9,6 @@
 
 package edu.gatech.statics.objects.representations;
 
-import edu.gatech.statics.exercise.DisplayConstants;
 import edu.gatech.statics.objects.VectorObject;
 
 /**

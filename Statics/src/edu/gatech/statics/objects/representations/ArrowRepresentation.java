@@ -55,7 +55,7 @@ public class ArrowRepresentation extends Representation<VectorObject> {
     }
 
     @Override
-    public void update() {
+    public final void update() {
 
         super.update();
         arrow.setLocalTranslation(0, 0, axisOffset);
