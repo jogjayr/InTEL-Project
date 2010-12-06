@@ -9,6 +9,7 @@ import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.representations.ModelNode;
+import edu.gatech.statics.objects.representations.ModelRepresentation;
 
 /**
  *
@@ -41,6 +42,9 @@ public class BookFrictionExercise extends OrdinaryExercise {
 
         ModelNode modelNode = ModelNode.load("bookfriction/assets/", "bookfriction/assets/bookfriction4.dae");
         modelNode.extractLights();
+
+        ModelRepresentation rep;
+        String prefix = "VisualSceneNode/scene/";
 
 
     }
