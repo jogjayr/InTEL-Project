@@ -29,7 +29,7 @@ import java.nio.IntBuffer;
  * jtrue@gatech.edu
  * 940-391-3200
  */
-public class CentroidPartRepresentation extends Representation<CentroidPartObject> {
+ class CentroidPartRepresentation extends Representation<CentroidPartObject> {
 
     private TriMesh surface;
     private ColorRGBA color;
@@ -39,17 +39,21 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
     public ColorRGBA getColor() {
         return color;
     }
+    
+    interface SurfaceBuilder {
+        TriMesh createMesh();
+    }
 
-    public CentroidPartRepresentation(CentroidPartObject target) {
+    CentroidPartRepresentation(CentroidPartObject target, SurfaceBuilder surfaceBuilder) {
         super(target);
         this.target = target;
-        surface = createSurface();
+        surface = createSurface(surfaceBuilder);
         getRelativeNode().attachChild(surface);
 
-        surface.setLocalScale(new Vector3f(
-                .5f * target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
-                .5f * target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
-                1));
+//        surface.setLocalScale(new Vector3f(
+//                .5f * target.getCentroidPart().getWidth().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+//                .5f * target.getCentroidPart().getHeight().floatValue() * Unit.distance.getDisplayScale().floatValue(),
+//                1));
 
         Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
         BlendState as = renderer.createBlendState();
@@ -77,43 +81,12 @@ public class CentroidPartRepresentation extends Representation<CentroidPartObjec
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
     }
 
-    protected TriMesh createSurface() {
+    private TriMesh createSurface(SurfaceBuilder surfaceBuilder) {
 
-        int numberPoints = 4;
-        int numberTriangles = 2;
+       TriMesh mesh = surfaceBuilder.createMesh();
 
         util = new CentroidUtil();
-
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(numberPoints * 3);
-        IntBuffer indices = BufferUtils.createIntBuffer(numberTriangles * 3);
-
-//        if (target != null) {
-        if (target.getCentroidPart().getPart() == CentroidPart.PartType.RECTANGLE) {
-            // y
-            // ^13
-            // |02
-            // + -> x
-            // vertices here range from -1 to 1
-            vertices.put(-1).put(-1).put(0); // 0: lower left <-1, -1, 0>
-            vertices.put(-1).put(1).put(0); // 1: upper left <-1, 1, 0>
-            vertices.put(1).put(-1).put(0); // 2: lower right <1, -1, 0>
-            vertices.put(1).put(1).put(0); // 3: upper right <1, 1, 0>
-
-            indices.put(0).put(2).put(1); // first triangle: 0,2,1
-            indices.put(1).put(3).put(2); // second triangle: 1,3,2
-        } else if (target.getCentroidPart().getPart() == CentroidPart.PartType.CIRCLE) {
-            throw new UnsupportedOperationException("Circle is an anticipated but not yet visually supported part type.");
-
-        } else if (target.getCentroidPart().getPart() == CentroidPart.PartType.TRIANGLE) {
-            throw new UnsupportedOperationException("Triangle is an anticipated but not yet visually supported part type.");
-        } else {
-            throw new UnsupportedOperationException(target.getCentroidPart().getPart().toString() + " is not a valid part type.");
-        }
-//        }
-
         color = util.generatePastelColor();
-
-        TriMesh mesh = new TriMesh("", vertices, null, null, null, indices);
         mesh.setDefaultColor(color);
         return mesh;
     }

@@ -45,7 +45,8 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        addRepresentation(new CentroidPartRepresentation(this));
+//        addRepresentation(new CentroidPartRepresentation(this));
+        addRepresentation(part.createRepresentation(this));
     }
 
     public void setState(CentroidPartState myPartState) {

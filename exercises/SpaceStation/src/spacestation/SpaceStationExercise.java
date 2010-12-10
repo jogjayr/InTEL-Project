@@ -7,15 +7,14 @@ package spacestation;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidExercise;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart.PartType;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.modes.centroid.objects.RectangleCentroidPart;
+import edu.gatech.statics.modes.centroid.objects.TriangleCentroidPart;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.CoordinateAxis;
 import edu.gatech.statics.objects.CoordinateAxis.Direction;
@@ -111,14 +110,14 @@ public class SpaceStationExercise extends CentroidExercise {
 //        A3.createDefaultSchematicRepresentation();
 //        A4.createDefaultSchematicRepresentation();
         //A = new CentroidPartObject(new CentroidPart("93.5", "110.0", "0.0", "SolarPanelA", "5610.0"));
-        A = new CentroidPartObject(new CentroidPart(new Vector3bd("35.0", "50.75", "0.0"), "70.0", "11.5", "Solar Panel A", PartType.RECTANGLE));
+        A = new CentroidPartObject(new RectangleCentroidPart("Solar Panel A", new Vector3bd("35.0", "50.75", "0.0"), 70.0, 11.5));
         A.setName("Solar Panel A");
         //B = new CentroidPartObject(new CentroidPart("276.0", "92.5", "0.0", "SolarPanelB", "5550.0"));
-        B = new CentroidPartObject(new CentroidPart(new Vector3bd("125.75", "35.0", "0.0"), "11.5", "70.0", "Solar Panel B", PartType.RECTANGLE));
+        B = new CentroidPartObject(new RectangleCentroidPart("Solar Panel B", new Vector3bd("125.75", "35.0", "0.0"), 11.5, 70.0));
         B.setName("Solar Panel B");
-        C = new CentroidPartObject(new CentroidPart(new Vector3bd("72.3", "42.5", "0.0"), "4.6", "55.0", "Living Quarters", PartType.RECTANGLE));
+        C = new CentroidPartObject(new RectangleCentroidPart("Living Quarters", new Vector3bd("72.3", "42.5", "0.0"), 4.6, 55.0));
         C.setName("Living Quarters");
-        D = new CentroidPartObject(new CentroidPart(new Vector3bd("80.0", "35.5", "0.0"), "80.0", "3.0", "Support Truss", PartType.RECTANGLE));
+        D = new CentroidPartObject(new RectangleCentroidPart("Support Truss", new Vector3bd("80.0", "35.5", "0.0"), 80.0, 3.0));
         D.setName("Support Truss");
         Point p = new Point("Centroid", new Vector3bd("79.3246553", "41.9882311", "0.0"));
         p.setName("Centroid");
@@ -148,7 +147,7 @@ public class SpaceStationExercise extends CentroidExercise {
         A1 = new Point("A1", "0.0", "5.65", "0.0"); //topleft
         A2 = new Point("A2", "7.0", "5.65", "0.0"); //topright
         A3 = new Point("A3", "0.0", "4.5", "0.0"); //bottomleft
-        
+
         ////////////////////
         //LEFT SOLAR PANEL//
         ////////////////////
