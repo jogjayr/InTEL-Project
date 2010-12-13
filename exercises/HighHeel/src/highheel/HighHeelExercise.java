@@ -13,9 +13,12 @@ import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
 import edu.gatech.statics.modes.distributed.objects.DistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForceObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import edu.gatech.statics.objects.connectors.Pin2d;
 import java.math.BigDecimal;
 
 /**
@@ -90,16 +93,47 @@ public class HighHeelExercise extends DistributedExercise {
         Beam GGO = new Beam("GGO", GG, O);
 
         AB.addObject(G);
+        AB.createDefaultSchematicRepresentation();
         GGO.addObject(H);
+        GGO.createDefaultSchematicRepresentation();
 
         schematic.add(AB);
         schematic.add(GGO);
 
         //Value for distributed force taken as unknown - ask for value later
-        DistributedForce distributedtreeswing = new ConstantDistributedForce(
+       DistributedForce distributedhighheel = new ConstantDistributedForce(
                    "highHeel", AB, A, B, new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y, new BigDecimal("22")));
 
-       Force weightG = new Force();
+       DistributedForceObject distributedhighheelObject = new DistributedForceObject(distributedhighheel, "1");
+
+       distributedhighheelObject.createDefaultSchematicRepresentation();
+       AB.addObject(distributedhighheelObject);
+       schematic.add(distributedhighheelObject);
+
+       DistributedForce distributedhighheelGGO = new ConstantDistributedForce(
+                   "highHeel GG'", GGO, GG, O, new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y, new BigDecimal("22")));
+
+       DistributedForceObject distributedhighheelGGOObject = new DistributedForceObject(distributedhighheelGGO, "1");
+
+       Pin2d pinH = new Pin2d(H);
+       pinH.setName("Pin H");
+       pinH.attachToWorld(GGO);
+
+       distributedhighheelGGOObject.createDefaultSchematicRepresentation();
+       GGO.addObject(distributedhighheelGGOObject);
+       schematic.add(distributedhighheelGGOObject);
+
+       Force weightG = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(65));
+       weightG.setName("Weight G");
+       weightG.createDefaultSchematicRepresentation();
+       schematic.add(weightG);
+       AB.addObject(weightG);
+
+       Force weightGG = new Force(GG, Vector3bd.UNIT_Y.negate(), new BigDecimal(65));
+       weightGG.setName("Weight GG");
+       weightGG.createDefaultSchematicRepresentation();
+       schematic.add(weightGG);
+       GGO.addObject(weightGG);
 
         DistanceMeasurement measureFullAB = new DistanceMeasurement(A, B);
         measureFullAB.createDefaultSchematicRepresentation();
