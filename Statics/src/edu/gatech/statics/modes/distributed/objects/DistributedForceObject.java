@@ -41,6 +41,12 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         this.dl = dl;
         this.suffix = suffix;
 
+        if (dl.getSurface() == null) {
+            // if this is the case, then we are persisting or loading a DFO
+            // do not try to initialize any important data this way.
+            return;
+        }
+
         // create the force and anchor
         //String anchorName = dl.getName() + " anchor";
         String anchorName = "C" + suffix;
@@ -51,7 +57,7 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         //resultantForce.setName(dl.getName() + " resultant");
 
         // this can occur during persistence...
-        if(dl.getSurface().getEnd1() != null) {
+        if (dl.getSurface().getEnd1() != null) {
             measure = new DistanceMeasurement(
                     //new Point(dl.getName() + " end1", dl.getSurface().getEndpoint1()), resultantAnchor);
                     dl.getSurface().getEnd1(), resultantAnchor);

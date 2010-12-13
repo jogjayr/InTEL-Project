@@ -19,7 +19,7 @@ import java.math.RoundingMode;
  *
  * @author Calvin Ashmore
  */
-abstract public class DistributedForce implements DiagramKey, ResolvableByName {
+abstract public class DistributedForce implements DiagramKey {
 
     private Beam surface;
     private Point startPoint;

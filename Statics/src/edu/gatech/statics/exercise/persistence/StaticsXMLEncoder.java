@@ -213,21 +213,30 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Roller2d.class, namedPersistenceDelegate);
         setPersistenceDelegate(Roller3d.class, namedPersistenceDelegate);
 
-//        PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
-//
-//            @Override
-//            protected Expression instantiate(Object oldInstance, Encoder out) {
-//                DistributedForce dl = (DistributedForce) oldInstance;
-//                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
-//                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
-//                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak()});
-//            }
-//        };
+        PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
 
-        setPersistenceDelegate(ConstantDistributedForce.class, namedPersistenceDelegate);
-        setPersistenceDelegate(QuarterEllipseDistributedForce.class, namedPersistenceDelegate);
-        setPersistenceDelegate(TriangularDistributedForce.class, namedPersistenceDelegate);
-        setPersistenceDelegate(TrapezoidalDistributedForce.class, namedPersistenceDelegate);
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                DistributedForce dl = (DistributedForce) oldInstance;
+                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
+                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak()});
+            }
+        };
+
+        setPersistenceDelegate(ConstantDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(QuarterEllipseDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(TriangularDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(TrapezoidalDistributedForce.class, new DefaultPersistenceDelegate() {
+
+            @Override
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                TrapezoidalDistributedForce dl = (TrapezoidalDistributedForce) oldInstance;
+                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
+                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak(), dl.getConstantAmount()});
+            }
+        });
 
 
         PersistenceDelegate distributedForceObjectPersistenceDelegate = new DefaultPersistenceDelegate() {

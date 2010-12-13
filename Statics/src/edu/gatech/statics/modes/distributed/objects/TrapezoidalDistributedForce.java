@@ -22,11 +22,11 @@ public class TrapezoidalDistributedForce extends DistributedForce {
     public TrapezoidalDistributedForce(String name) {
         super(name);
     }
-
     /**
      * The ratio of the constant amount to the whole
      */
     private double constantRatio;
+    private BigDecimal constantAmount;
 
     /**
      * Start point is the point of the peak.
@@ -40,6 +40,11 @@ public class TrapezoidalDistributedForce extends DistributedForce {
         super(name, surface, startPoint, endPoint, peak);
         BigDecimal totalAmount = peak.getDiagramValue();
         constantRatio = constantAmount.doubleValue() / totalAmount.doubleValue();
+        this.constantAmount = constantAmount;
+    }
+
+    public BigDecimal getConstantAmount() {
+        return constantAmount;
     }
 
     @Override
@@ -49,8 +54,8 @@ public class TrapezoidalDistributedForce extends DistributedForce {
 
     @Override
     protected BigDecimal getPositionMultiplier() {
-        double constantPosition = (1.0/2) * constantRatio;
-        double triangularPosition = (1.0/3) * (1-constantRatio);
+        double constantPosition = (1.0 / 2) * constantRatio;
+        double triangularPosition = (1.0 / 3) * (1 - constantRatio);
 
         return new BigDecimal(constantPosition + triangularPosition);
     }
@@ -58,8 +63,8 @@ public class TrapezoidalDistributedForce extends DistributedForce {
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         double constantMagnitude = (1.0) * constantRatio;
-        double triangularMagnitude = (1.0/2) * (1-constantRatio);
-        
+        double triangularMagnitude = (1.0 / 2) * (1 - constantRatio);
+
         return new BigDecimal(constantMagnitude + triangularMagnitude);
     }
 }
