@@ -92,38 +92,52 @@ public class BookFrictionExercise extends OrdinaryExercise {
 
         ContactPoint jointA = new ContactPoint(A, frictionObjectA);
         jointA.setName("ContactA");
-        jointA.setNormalDirection(Vector3bd.UNIT_X.negate());
-        jointA.setFrictionDirection(Vector3bd.UNIT_Y);
+        jointA.setFrictionDirection(Vector3bd.UNIT_X.negate());
+        jointA.setNormalDirection(Vector3bd.UNIT_Y);
+        jointA.createDefaultSchematicRepresentation();
         jointA.attachToWorld(book1);
+        schematic.add(jointA);
 
         ContactPoint jointB = new ContactPoint(B, frictionObjectB);
         jointB.setName("ContactB");
-        jointB.setNormalDirection(Vector3bd.UNIT_X.negate());
-        jointB.setFrictionDirection(Vector3bd.UNIT_Y);
-        jointB.attach(book1, book2);
+        jointB.setFrictionDirection(Vector3bd.UNIT_X.negate());
+        jointB.setNormalDirection(Vector3bd.UNIT_Y);
+        jointB.createDefaultSchematicRepresentation();
+        jointB.attach(book2, book1);
+        schematic.add(jointB);
         
 
         ContactPoint jointC = new ContactPoint(C, frictionObjectC);
         jointC.setName("ContactC");
-        jointC.setNormalDirection(Vector3bd.UNIT_X.negate());
-        jointC.setFrictionDirection(Vector3bd.UNIT_Y);
-        jointC.attach(book2, book3);
-        
+        jointC.setFrictionDirection(Vector3bd.UNIT_X.negate());
+        jointC.setNormalDirection(Vector3bd.UNIT_Y);
+        jointC.createDefaultSchematicRepresentation();
+        jointC.attach(book3, book2);
+        schematic.add(jointC);
+
+        Force forceB = new Force(B, Vector3bd.UNIT_X, "Force B");
+        forceB.setName("Force B");
+        forceB.createDefaultSchematicRepresentation();
+        schematic.add(forceB);
+        book2.addObject(forceB);
         
         Force weightA = new Force(A, Vector3bd.UNIT_Y.negate(), new BigDecimal("18"));
         weightA.setName("Weight A");
         weightA.createDefaultSchematicRepresentation();
         schematic.add(weightA);
+        book1.addObject(weightA);
 
         Force weightB = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal("15"));
         weightB.setName("Weight B");
         weightB.createDefaultSchematicRepresentation();
         schematic.add(weightB);
+        book2.addObject(weightB);
 
         Force weightC = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal("25"));
         weightC.setName("Weight C");
         weightC.createDefaultSchematicRepresentation();
         schematic.add(weightC);
+        book3.addObject(weightC);
 
         ModelNode modelNode = ModelNode.load("bookfriction/assets/", "bookfriction/assets/bookfriction4.dae");
         modelNode.extractLights();
@@ -139,12 +153,12 @@ public class BookFrictionExercise extends OrdinaryExercise {
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-        rep = modelNode.extractElement(book2, prefix + "furnture/books/books_thermodynamics_book/");
+        rep = modelNode.extractElement(book2, prefix + "furnture/books/books_statics_book/");
         book2.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
 
-        rep = modelNode.extractElement(book3, prefix + "furnture/books/books_statics_book/");
+        rep = modelNode.extractElement(book3, prefix + "furnture/books/books_thermodynamics_book/");
         book3.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
