@@ -7,11 +7,16 @@ package highheel;
 
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
+import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
+import edu.gatech.statics.modes.distributed.objects.DistributedForce;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
+import java.math.BigDecimal;
 
 /**
  *
@@ -84,8 +89,17 @@ public class HighHeelExercise extends DistributedExercise {
         Beam AB = new Beam("AB", A, B);
         Beam GGO = new Beam("GGO", GG, O);
 
+        AB.addObject(G);
+        GGO.addObject(H);
+
         schematic.add(AB);
         schematic.add(GGO);
+
+        //Value for distributed force taken as unknown - ask for value later
+        DistributedForce distributedtreeswing = new ConstantDistributedForce(
+                   "highHeel", AB, A, B, new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y, new BigDecimal("22")));
+
+       Force weightG = new Force();
 
         DistanceMeasurement measureFullAB = new DistanceMeasurement(A, B);
         measureFullAB.createDefaultSchematicRepresentation();

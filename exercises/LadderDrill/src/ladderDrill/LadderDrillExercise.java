@@ -11,9 +11,11 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.FixedAngleMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
@@ -22,6 +24,9 @@ import java.math.BigDecimal;
 
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 
 
 
@@ -30,6 +35,19 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
  * @author vignesh
  */
 public class LadderDrillExercise extends OrdinaryExercise {
+
+    /*
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-15f, 15f, -15f, 14f);
+        vc.setZoomConstraints(0.35f, 2f);
+        vc.setRotationConstraints(-4, 4,-4,4);
+        interfaceConfiguration.setViewConstraints(vc);
+        return interfaceConfiguration;
+    }*/
 
     @Override
     public Description getDescription() {
@@ -97,10 +115,23 @@ public class LadderDrillExercise extends OrdinaryExercise {
         forceD.createDefaultSchematicRepresentation();
 
         ladder.addObject(forceD);
+
+
+//        Vector3bd ladAngle = new Vector3bd(
+//                new BigDecimal(Math.cos(Math.PI / 3)),
+//                new BigDecimal(Math.sin(Math.PI / 3)),
+//                BigDecimal.ZERO);
+
+        AngleMeasurement ladderAngle = new FixedAngleMeasurement(B, A,Vector3f.UNIT_X.negate());
+//        AngleMeasurement ladderAngle = new FixedAngleMeasurement(B, Vector3bd.UNIT_X.negate(), ladAngle.toVector3f());
+        ladderAngle.setName("Ladder Angle");
+        getSchematic().add(ladderAngle);
+        ladderAngle.createDefaultSchematicRepresentation();
+
 // Ladder Weight should be WEIGHT andnot force
-        Force forceC = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(200));
-        forceC.setName("Weight C");
-        forceC.createDefaultSchematicRepresentation();
+        BigDecimal Weight = new BigDecimal(200);
+        ladder.getWeight().setDiagramValue(Weight);
+        ladder.setCenterOfMassPoint(C);
 
         Force forceE = new Force(E, Vector3bd.UNIT_X, "Drill Froce");
         forceE.setName("Force E");
@@ -109,7 +140,7 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
         ladder.addObject(forceE);
 
-        ladder.addObject(forceC);
+        
         
 
         ConstantObject frictionObjectB = new ConstantObject("Mu B", new BigDecimal(".5"), Unit.none);
@@ -136,20 +167,25 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
         schematic.add(ladder);
 
+        DistanceMeasurement measureAB = new DistanceMeasurement(A, B);
+        measureAB.createDefaultSchematicRepresentation();
+        schematic.add(measureAB);
+
         DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
-        measureBC.createDefaultSchematicRepresentation();
+        measureBC.createDefaultSchematicRepresentation(1.5f);
         schematic.add(measureBC);
 
         DistanceMeasurement measureBD = new DistanceMeasurement(B, D);
-        measureBD.createDefaultSchematicRepresentation();
+        measureBD.createDefaultSchematicRepresentation(1f);
         schematic.add(measureBD);
 
         DistanceMeasurement measureBE = new DistanceMeasurement(B, E);
-        measureBE.createDefaultSchematicRepresentation();
+        measureBE.createDefaultSchematicRepresentation(.5f);
         schematic.add(measureBE);
 
-        float scale = 1.5f;
-        Vector3f translation = new Vector3f();
+        float scale = 1.94f;
+        Vector3f translation = new Vector3f(.06f, .06f, -5.6f);
+
 
         ModelNode modelNode = ModelNode.load("ladderDrill/assets/", "ladderDrill/assets/ladderDrill.dae");
         modelNode.extractLights();
@@ -161,6 +197,8 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
         rep = modelNode.extractElement(ladder, prefix + "sceneObjects/ladder/");
         rep.getRelativeNode().setLocalScale(scale);
+        rep.getRelativeNode().setLocalTranslation(translation);
+
         ladder.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
@@ -168,6 +206,7 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.getRelativeNode().setLocalScale(scale);
+        rep.getRelativeNode().setLocalTranslation(translation);
         schematic.getBackground().addRepresentation(rep);
     }
 
