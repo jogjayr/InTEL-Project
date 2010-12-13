@@ -5,6 +5,7 @@
 package edu.gatech.statics.modes.distributed.objects;
 
 import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.persistence.ResolvableByName;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
@@ -18,7 +19,7 @@ import java.math.RoundingMode;
  *
  * @author Calvin Ashmore
  */
-abstract public class DistributedForce implements DiagramKey {
+abstract public class DistributedForce implements DiagramKey, ResolvableByName {
 
     private Beam surface;
     private Point startPoint;

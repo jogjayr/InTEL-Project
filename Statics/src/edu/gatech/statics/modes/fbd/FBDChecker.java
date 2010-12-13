@@ -346,6 +346,19 @@ public class FBDChecker {
             }
 
             ContactPoint cp = (ContactPoint) obj;
+            
+            // don't worry about any of this stuff if the connector has already been solved.
+            if(cp.isSolved())
+                continue;
+
+            // ALSO we do not check if both bodies are inside the diagram.
+            // ^ is java's XOR operator
+            // we want the joint IF it connects a body in the body list
+            // to a body that is not in the body list. This means xor.
+            if (!(diagram.getBodySubset().getBodies().contains(cp.getBody1()) ^
+                    diagram.getBodySubset().getBodies().contains(cp.getBody2()))) {
+                continue;
+            }
 
             debugInfo("*** CONTACT POINT TEST BEGIN ***");
             debugInfo("  Checking contact: " + cp);
@@ -362,7 +375,7 @@ public class FBDChecker {
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_too_few", cp.getAnchor().getName());
                 //setStaticsFeedbackKey("Note: There are loads missing at %s", cp.connectorName());
-                debugInfo("STEP 5: FAILED");
+                debugInfo("STEP 4: FAILED");
                 return false;
             }
             if (userAnchoredVectorsAtConnector.size() > 2) {
@@ -371,7 +384,7 @@ public class FBDChecker {
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_too_many", cp.getAnchor().getName());
                 //setStaticsFeedbackKey("Note: There are too many loads at %s", cp.connectorName());
-                debugInfo("STEP 5: FAILED");
+                debugInfo("STEP 4: FAILED");
                 return false;
             }
 
@@ -384,7 +397,7 @@ public class FBDChecker {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
                     setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
-                    debugInfo("STEP 5: FAILED");
+                    debugInfo("STEP 4: FAILED");
                     return false;
                 }
 
@@ -396,7 +409,7 @@ public class FBDChecker {
                     logInfo("check: has the user added loads with the right names");
                     logInfo("check: FAILED");
                     setAdviceKey("fbd_feedback_check_fail_wrong_names", cp.getAnchor().getName());
-                    debugInfo("STEP 5: FAILED");
+                    debugInfo("STEP 4: FAILED");
                     return false;
                 }
             } else {
@@ -404,7 +417,7 @@ public class FBDChecker {
                 logInfo("check: FAILED");
                 setAdviceKey("fbd_feedback_check_fail_wrong_direction", cp.getAnchor().getName());
                 //setStaticsFeedbackKey("Note: One or more of the loads at %s is pointing the wrong direction.", cp.connectorName());
-                debugInfo("STEP 5: FAILED");
+                debugInfo("STEP 4: FAILED");
                 return false;
             }
         }

@@ -47,6 +47,7 @@ import edu.gatech.newbeans.Statement;
 import edu.gatech.newbeans.XMLEncoder;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.centroid.CentroidBody;
+import edu.gatech.statics.modes.distributed.objects.TrapezoidalDistributedForce;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.connectors.Fix2d;
@@ -212,20 +213,21 @@ public class StaticsXMLEncoder extends XMLEncoder {
         setPersistenceDelegate(Roller2d.class, namedPersistenceDelegate);
         setPersistenceDelegate(Roller3d.class, namedPersistenceDelegate);
 
-        PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
+//        PersistenceDelegate distributedForcePersistenceDelegate = new DefaultPersistenceDelegate() {
+//
+//            @Override
+//            protected Expression instantiate(Object oldInstance, Encoder out) {
+//                DistributedForce dl = (DistributedForce) oldInstance;
+//                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
+//                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
+//                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak()});
+//            }
+//        };
 
-            @Override
-            protected Expression instantiate(Object oldInstance, Encoder out) {
-                DistributedForce dl = (DistributedForce) oldInstance;
-                //String name, Beam surface, Point startPoint, Point endPoint, Vector peak
-                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{
-                            dl.getName(), dl.getSurface(), dl.getStartPoint(), dl.getEndPoint(), dl.getPeak()});
-            }
-        };
-
-        setPersistenceDelegate(ConstantDistributedForce.class, distributedForcePersistenceDelegate);
-        setPersistenceDelegate(QuarterEllipseDistributedForce.class, distributedForcePersistenceDelegate);
-        setPersistenceDelegate(TriangularDistributedForce.class, distributedForcePersistenceDelegate);
+        setPersistenceDelegate(ConstantDistributedForce.class, namedPersistenceDelegate);
+        setPersistenceDelegate(QuarterEllipseDistributedForce.class, namedPersistenceDelegate);
+        setPersistenceDelegate(TriangularDistributedForce.class, namedPersistenceDelegate);
+        setPersistenceDelegate(TrapezoidalDistributedForce.class, namedPersistenceDelegate);
 
 
         PersistenceDelegate distributedForceObjectPersistenceDelegate = new DefaultPersistenceDelegate() {
