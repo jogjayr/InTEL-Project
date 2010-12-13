@@ -8,15 +8,22 @@ package knifechopstick;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
+import edu.gatech.statics.modes.centroid.CentroidBody;
+import edu.gatech.statics.modes.centroid.CentroidExercise;
+import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.modes.centroid.objects.RectangleCentroidPart;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.modes.centroid.objects.TriangleCentroidPart;
+import edu.gatech.statics.objects.bodies.representations.BoxRepresentation;
 
 /**
  *
  * @author vignesh
  */
-public class KnifeChopstickExercise extends OrdinaryExercise {
+public class KnifeChopstickExercise extends CentroidExercise {
     
     @Override
     public Description getDescription() {
@@ -40,8 +47,8 @@ public class KnifeChopstickExercise extends OrdinaryExercise {
         description.setGoals("Solve for the minimum distance of the contact of the knife and the plate from the tip of the knife so that" +
                 " the knife does not fall off the plate.");
 
-        description.addImage("knifechopstick/assets/knife1.jpg");
-        description.addImage("knifechopstick/assets/knife2.jpg");
+       // description.addImage("knifechopstick/assets/knife1.jpg");
+       // description.addImage("knifechopstick/assets/knife2.jpg");
 
     return description;
 
@@ -63,22 +70,40 @@ public class KnifeChopstickExercise extends OrdinaryExercise {
         Point A = new Point("A", "0", "0", "0");
         Point B = new Point("B", "120", "0", "0");
         Point C = new Point("C", "220", "0", "0");
+        Point D = new Point("D", "120", "-30", "0");
+        Point E = new Point("E", "170", "-10", "0");
 
-        A.createDefaultSchematicRepresentation();
-        B.createDefaultSchematicRepresentation();
-        C.createDefaultSchematicRepresentation();
+//        A.createDefaultSchematicRepresentation();
+//        B.createDefaultSchematicRepresentation();
+//        C.createDefaultSchematicRepresentation();
+//
+//        schematic.add(A);
+//        schematic.add(B);
+//        schematic.add(C);
+        
+        CentroidPartObject blade = new CentroidPartObject(new TriangleCentroidPart("blade", A, B, D));
+        blade.setName("Knife Blade");
+        blade.createDefaultSchematicRepresentation();
 
-        schematic.add(A);
-        schematic.add(B);
-        schematic.add(C);
+        CentroidPartObject handle = new CentroidPartObject(new RectangleCentroidPart("handle", E.getPosition(), 100, 20));
+        handle.setName("Knife Handle");
+        handle.createDefaultSchematicRepresentation();
+
+        //Center of Mass is a temporary value (B), put in correct value later
+        CentroidBody knife = new CentroidBody("Knife", B);
+        knife.addObject(blade);
+        knife.addObject(handle);
+
+        knife.addRepresentation(new BoxRepresentation(knife, 10f, 1f, 1f));
+        schematic.add(knife);
 
         DistanceMeasurement measureFullAB = new DistanceMeasurement(A, B);
         measureFullAB.createDefaultSchematicRepresentation();
-        schematic.add(measureFullAB);
+        blade.addMeasurement(measureFullAB);
 
         DistanceMeasurement measureFullBC = new DistanceMeasurement(B, C);
         measureFullBC.createDefaultSchematicRepresentation();
-        schematic.add(measureFullBC);
+        handle.addMeasurement(measureFullBC);
 
         DistanceMeasurement measureFullAC = new DistanceMeasurement(A, C);
         measureFullAC.createDefaultSchematicRepresentation();
