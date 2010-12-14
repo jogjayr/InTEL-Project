@@ -39,7 +39,7 @@ public class BookFrictionExercise extends OrdinaryExercise {
         description.setGoals("Find the maximum force she can pull " +
         " on her statics book before slipping occurs.");
 
-        description.addImage("bookfriction/assets/Thermodynamics.png");
+        description.addImage("bookfriction/assets/bookfriction.png");
 
         return description;
 
@@ -118,6 +118,7 @@ public class BookFrictionExercise extends OrdinaryExercise {
         Force forceB = new Force(B, Vector3bd.UNIT_X, "Force B");
         forceB.setName("Force B");
         forceB.createDefaultSchematicRepresentation();
+        
         schematic.add(forceB);
         book2.addObject(forceB);
         
