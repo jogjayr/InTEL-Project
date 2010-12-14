@@ -5,10 +5,8 @@
 
 package knifechopstick;
 
-import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidExercise;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
@@ -17,6 +15,7 @@ import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.modes.centroid.objects.TriangleCentroidPart;
+import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.objects.bodies.representations.BoxRepresentation;
 
 /**
@@ -47,8 +46,10 @@ public class KnifeChopstickExercise extends CentroidExercise {
         description.setGoals("Solve for the minimum distance of the contact of the knife and the plate from the tip of the knife so that" +
                 " the knife does not fall off the plate.");
 
-       // description.addImage("knifechopstick/assets/knife1.jpg");
-       // description.addImage("knifechopstick/assets/knife2.jpg");
+        description.setLayout(new ScrollbarLayout());
+
+        description.addImage("knifechopstick/assets/knife1.jpg");
+        description.addImage("knifechopstick/assets/knife2.jpg");
 
     return description;
 
@@ -73,13 +74,13 @@ public class KnifeChopstickExercise extends CentroidExercise {
         Point D = new Point("D", "120", "-30", "0");
         Point E = new Point("E", "170", "-10", "0");
 
-//        A.createDefaultSchematicRepresentation();
-//        B.createDefaultSchematicRepresentation();
-//        C.createDefaultSchematicRepresentation();
-//
-//        schematic.add(A);
-//        schematic.add(B);
-//        schematic.add(C);
+        A.createDefaultSchematicRepresentation();
+        B.createDefaultSchematicRepresentation();
+        C.createDefaultSchematicRepresentation();
+
+        schematic.add(A);
+        schematic.add(B);
+        schematic.add(C);
         
         CentroidPartObject blade = new CentroidPartObject(new TriangleCentroidPart("blade", A, B, D));
         blade.setName("Knife Blade");
@@ -103,10 +104,13 @@ public class KnifeChopstickExercise extends CentroidExercise {
 
         DistanceMeasurement measureFullBC = new DistanceMeasurement(B, C);
         measureFullBC.createDefaultSchematicRepresentation();
+        measureFullBC.forceHorizontal();
         handle.addMeasurement(measureFullBC);
+
 
         DistanceMeasurement measureFullAC = new DistanceMeasurement(A, C);
         measureFullAC.createDefaultSchematicRepresentation();
+        measureFullAC.forceHorizontal();
         schematic.add(measureFullAC);
 
 
