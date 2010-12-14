@@ -29,38 +29,7 @@ import java.math.BigDecimal;
  */
 public abstract class TreeSwingBase extends DistributedExercise {
 
-    @Override
-    public Description getDescription() {
-
-        Description description = new Description();
-
-        description.setNarrative("Jared is a Civil Engineering Student at Georgia Tech "
-                + "and he built a tree swing for his little sister Andrea.  He is a little concerned "
-                + "that the branch might not be strong enough to handle his sister swinging on it.  "
-                + "Before letting her try it out, he wants to make sure that he placed it appropriately "
-                + "along the length of the branch and he wants to calculate the forces that the branch will be exposed to.");
-
-        description.setProblemStatement("Part I: Assume the branch is prismatic (has the same cross sectional are through its "
-                + "entire length) and has a mass per unit length is 20 kg/m.  Assume that the leaves on the branch are evenly distributed "
-                + "through the entire length and have a mass per unit length of 2 kg/m.  Andrea’s mass is 30 kg and neglect the weight of the swing."
-                + "Part II: Assume the branch is not prismatic (varies along the length of the branch) and its mass per unit length "
-                + "can be expressed by F(x) = -5x + 30, where x denotes the position along the branch measured from where the branch connects "
-                + "to the trunk of tree.  Assume that the leaves on the branch are evenly distributed through the entire length and have "
-                + "a mass per unit length of 2 kg/m.  Andrea’s mass is 30 kg and neglect the weight of the swing.");
-
-        description.setGoals("Draw a FBD of the branch and solve for the reaction forces.  Solve for the total equivalent concentrated force and find its location.");
-
-
-        description.setLayout(new ScrollbarLayout());
-
-
-
-        description.addImage("treeswing/assets/swing1.jpg");
-        description.addImage("treeswing/assets/swing2.jpg");
-
-        return description;
-
-    }
+    //Descriptions in individual parts of the exercise
 
     @Override
     public void initExercise() {
@@ -138,6 +107,16 @@ public abstract class TreeSwingBase extends DistributedExercise {
         DistanceMeasurement measureFull = new DistanceMeasurement(A, B);
         measureFull.createDefaultSchematicRepresentation();
         schematic.add(measureFull);
+        
+        DistanceMeasurement measureAD = new DistanceMeasurement(A, D);
+        measureAD.createDefaultSchematicRepresentation();
+        schematic.add(measureAD);
+
+        DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
+        measureBC.createDefaultSchematicRepresentation();
+        schematic.add(measureBC);
+
+
 
 //        ModelNode modelNode = ModelNode.load("treeswing/assets/", "treeswing/assets/swing.mb");
 //        modelNode.extractLights();
