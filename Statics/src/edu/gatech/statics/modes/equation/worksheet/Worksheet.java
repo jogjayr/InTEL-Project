@@ -21,6 +21,7 @@ import edu.gatech.statics.modes.equation.solver.EquationSystem;
 import edu.gatech.statics.modes.equation.solver.EquationTerm.Constant;
 import edu.gatech.statics.modes.equation.solver.EquationTerm.Polynomial;
 import edu.gatech.statics.modes.equation.solver.EquationTerm.Symbol;
+import edu.gatech.statics.modes.equation.solver.LinearEquationSystem;
 import edu.gatech.statics.modes.equation.solver.NonlinearEquationSystem;
 import edu.gatech.statics.objects.ConstantObject;
 import edu.gatech.statics.util.Pair;
@@ -39,14 +40,14 @@ import java.util.TreeMap;
 public class Worksheet {
 
     final private Map<String, EquationMath> equations = new TreeMap<String, EquationMath>();
-    final private EquationSystem equationSystem;
+//    final private EquationSystem equationSystem;
     final private EquationDiagram diagram;
     private Map<Quantity, Float> solution = null;
     private boolean solved = false;
 
     public Worksheet(EquationDiagram diagram) {
         this.diagram = diagram;
-        equationSystem = new NonlinearEquationSystem();
+//        equationSystem = new NonlinearEquationSystem();
     }
 
     public Map<String, EquationMath> getEquations() {
@@ -99,86 +100,23 @@ public class Worksheet {
 
     public Map<Quantity, Float> solve() {
         if (!solved) {
-
             Map<String, Quantity> vectorNames = new HashMap<String, Quantity>();
+            EquationSystem equationSystem = new NonlinearEquationSystem();
+            prepareSystem(equationSystem, vectorNames);
 
-            equationSystem.resetTerms();
-
-            //int numberEquations = equations.size();
-
-            // go through each row
-            int row = 0;
-            for (EquationMath math : equations.values()) {
-
-                // now go through each term in the equation for the row
-                //EquationMath math = equations.get(row);
-                EquationMathState mathState = math.getState();
-
-                if (!mathState.isLocked()) {
-                    continue;
+            // try again with the linear system:
+            // occasionally the nonlinear solver fumbles with rounding errors.
+            // the linear solver may be better at solving it.
+            if (!equationSystem.isSolvable()) {
+                vectorNames.clear();
+                EquationSystem linearEquationSystem = new LinearEquationSystem();
+                try {
+                    prepareSystem(linearEquationSystem, vectorNames);
+                    equationSystem = linearEquationSystem;
+                } catch (IllegalArgumentException ex) {
+                    // do nothing...
+                    // this cannot be solved linearly.
                 }
-
-                if (mathState instanceof TermEquationMathState) {
-                    for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState) mathState).getTerms().entrySet()) {
-                        AnchoredVector load = entry.getKey();
-                        String coefficient = entry.getValue();
-
-                        AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
-
-                        // work with the term's quantity
-                        Quantity q = load.getVector().getQuantity();
-                        if (q.isSymbol() && !q.isKnown()) {
-                            // the vector represented by the term is an unknown symbol
-                            //equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
-                            equationSystem.addTerm(row, new Symbol(affineCoefficient.getConstant().floatValue(), q.getSymbolName()));
-                            vectorNames.put(q.getSymbolName(), q);
-
-                        } else {
-                            // the vector represented by this term is a constant
-
-                            if (affineCoefficient.isSymbolic()) {
-                                equationSystem.addTerm(row, new Constant(q.doubleValue() * affineCoefficient.getConstant().floatValue()));
-                                equationSystem.addTerm(row, new Symbol(q.doubleValue() * affineCoefficient.getConstant().floatValue(), affineCoefficient.getSymbolName()));
-                                Quantity measureQuantity = new Quantity(Unit.distance, affineCoefficient.getSymbolName());
-                                vectorNames.put(measureQuantity.getSymbolName(), measureQuantity);
-                            } else {
-                                equationSystem.addTerm(row, new Constant(q.doubleValue() * affineCoefficient.getConstant().floatValue()));
-                            }
-                        }
-                    }
-                } else if (mathState instanceof ArbitraryEquationMathState) {
-                    //throw new IllegalArgumentException("Arbitrary equation math states are not yet implemented in Worksheet.");
-                    ArbitraryEquationMathState arbitraryState = (ArbitraryEquationMathState) mathState;
-                    EquationNode leftSide = arbitraryState.getLeftSide();
-                    EquationNode rightSide = arbitraryState.getRightSide();
-
-                    // right now, equation nodes are multiplicative ONLY, so, we take advantage of this.
-                    // should they change, then we will need to modify this algorithm.
-                    Pair<Float, List<String>> leftSymbols = extractSymbolsFromEquationNode(leftSide);
-                    Pair<Float, List<String>> rightSymbols = extractSymbolsFromEquationNode(rightSide);
-
-                    // add both sides of the equation as polynomial terms
-                    equationSystem.addTerm(row, new Polynomial(leftSymbols.getLeft(), leftSymbols.getRight().toArray(new String[0])));
-                    equationSystem.addTerm(row, new Polynomial(-rightSymbols.getLeft(), rightSymbols.getRight().toArray(new String[0])));
-
-                    // add constant symbols to the name list
-                    for (String string : leftSymbols.getRight()) {
-                        ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
-                        if(constant != null)
-                            vectorNames.put(string, constant.getQuantity());
-                    }
-                    for (String string : rightSymbols.getRight()) {
-                        ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
-                        if(constant != null)
-                            vectorNames.put(string, constant.getQuantity());
-                    }
-
-                } else {
-                    throw new IllegalArgumentException("Unknown equation math state type! " + mathState);
-                }
-
-                // increment our row count.
-                row++;
             }
 
             if (!equationSystem.isSolvable()) {
@@ -204,6 +142,75 @@ public class Worksheet {
         }
 
         return solution;
+    }
+
+    private void prepareSystem(EquationSystem equationSystem, Map<String, Quantity> vectorNames) throws IllegalArgumentException {
+        equationSystem.resetTerms();
+        //int numberEquations = equations.size();
+        // go through each row
+        int row = 0;
+        for (EquationMath math : equations.values()) {
+            // now go through each term in the equation for the row
+            //EquationMath math = equations.get(row);
+            EquationMathState mathState = math.getState();
+            if (!mathState.isLocked()) {
+                continue;
+            }
+            if (mathState instanceof TermEquationMathState) {
+                for (Map.Entry<AnchoredVector, String> entry : ((TermEquationMathState) mathState).getTerms().entrySet()) {
+                    AnchoredVector load = entry.getKey();
+                    String coefficient = entry.getValue();
+                    AffineQuantity affineCoefficient = Parser.evaluateSymbol(coefficient);
+                    // work with the term's quantity
+                    Quantity q = load.getVector().getQuantity();
+                    if (q.isSymbol() && !q.isKnown()) {
+                        // the vector represented by the term is an unknown symbol
+                        //equationSystem.addTerm(row, affineCoefficient.getConstant().floatValue(), q.getSymbolName());
+                        equationSystem.addTerm(row, new Symbol(affineCoefficient.getConstant().floatValue(), q.getSymbolName()));
+                        vectorNames.put(q.getSymbolName(), q);
+                    } else {
+                        // the vector represented by this term is a constant
+                        if (affineCoefficient.isSymbolic()) {
+                            equationSystem.addTerm(row, new Constant(q.doubleValue() * affineCoefficient.getConstant().floatValue()));
+                            equationSystem.addTerm(row, new Symbol(q.doubleValue() * affineCoefficient.getConstant().floatValue(), affineCoefficient.getSymbolName()));
+                            Quantity measureQuantity = new Quantity(Unit.distance, affineCoefficient.getSymbolName());
+                            vectorNames.put(measureQuantity.getSymbolName(), measureQuantity);
+                        } else {
+                            equationSystem.addTerm(row, new Constant(q.doubleValue() * affineCoefficient.getConstant().floatValue()));
+                        }
+                    }
+                }
+            } else if (mathState instanceof ArbitraryEquationMathState) {
+                //throw new IllegalArgumentException("Arbitrary equation math states are not yet implemented in Worksheet.");
+                ArbitraryEquationMathState arbitraryState = (ArbitraryEquationMathState) mathState;
+                EquationNode leftSide = arbitraryState.getLeftSide();
+                EquationNode rightSide = arbitraryState.getRightSide();
+                // right now, equation nodes are multiplicative ONLY, so, we take advantage of this.
+                // should they change, then we will need to modify this algorithm.
+                Pair<Float, List<String>> leftSymbols = extractSymbolsFromEquationNode(leftSide);
+                Pair<Float, List<String>> rightSymbols = extractSymbolsFromEquationNode(rightSide);
+                // add both sides of the equation as polynomial terms
+                equationSystem.addTerm(row, new Polynomial(leftSymbols.getLeft(), leftSymbols.getRight().toArray(new String[0])));
+                equationSystem.addTerm(row, new Polynomial(-rightSymbols.getLeft(), rightSymbols.getRight().toArray(new String[0])));
+                // add constant symbols to the name list
+                for (String string : leftSymbols.getRight()) {
+                    ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
+                    if (constant != null) {
+                        vectorNames.put(string, constant.getQuantity());
+                    }
+                }
+                for (String string : rightSymbols.getRight()) {
+                    ConstantObject constant = Exercise.getExercise().getSymbolManager().getConstant(string);
+                    if (constant != null) {
+                        vectorNames.put(string, constant.getQuantity());
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Unknown equation math state type! " + mathState);
+            }
+            // increment our row count.
+            row++;
+        }
     }
 
     private Pair<Float, List<String>> extractSymbolsFromEquationNode(EquationNode node) {

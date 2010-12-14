@@ -394,7 +394,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         if (solution != null) {
 
             // attempt to update the diagram if the flag is passed
-            if (updateDiagram) {
+            if (updateDiagram || !diagram.isLocked()) {
                 diagram.performSolve(solution);
             }
 
