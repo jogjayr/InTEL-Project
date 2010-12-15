@@ -33,7 +33,6 @@ import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;

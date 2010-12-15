@@ -62,10 +62,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     private BScrollPane equationScrollPane;
     private EquationBar activeEquation;
     //private BButton momentSelectButton;
-    private static final ColorRGBA regularBackgroundColor = new ColorRGBA(0, 69f / 255, 95f / 255, 1); //ColorRGBA.black;
+    protected static final ColorRGBA regularBackgroundColor = new ColorRGBA(0, 69f / 255, 95f / 255, 1); //ColorRGBA.black;
     //private static final ColorRGBA regularBorderColor = ColorRGBA.darkGray;
-    private static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
-    private static final ColorRGBA activeBorderColor = ColorRGBA.white;
+    protected static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
+    protected static final ColorRGBA activeBorderColor = ColorRGBA.white;
 
     public void onClick(Load load) {
         if (activeEquation == null || load == null) {

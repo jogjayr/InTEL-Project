@@ -8,6 +8,7 @@ import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 
 /**
@@ -19,11 +20,19 @@ public class ChangeTerm implements DiagramAction<EquationState> {
     final private String equationName;
     final private AnchoredVector load;
     final private String coefficient;
-
+    final private AnchoredVector radiusVector;
     public ChangeTerm(String equationName, AnchoredVector load, String newCoefficient) {
         this.equationName = equationName;
         this.load = load;
         this.coefficient = newCoefficient;
+        this.radiusVector = null;
+    }
+
+    public ChangeTerm(String equationName, AnchoredVector load, AnchoredVector radiusVector) {
+        this.equationName = equationName;
+        this.load = load;
+        this.radiusVector = radiusVector;
+        this.coefficient = null;
     }
 
     public ChangeTerm(String equationName, AnchoredVector load) {
@@ -39,10 +48,19 @@ public class ChangeTerm implements DiagramAction<EquationState> {
         if (mathState.isLocked()) {
             return oldState;
         }
-        TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
-        mathBuilder.getTerms().put(load, coefficient);
-        builder.putEquationState(mathBuilder.build());
+
+        if(!((Class)oldState.getClass() == MomentEquationMathState.class)) {
+            TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
+            mathBuilder.getTerms().put(load, coefficient);
+            builder.putEquationState(mathBuilder.build());
+
+        } else {
+            MomentEquationMathState.Builder mathBuilder = new MomentEquationMathState.Builder((MomentEquationMathState)mathState);
+            mathBuilder.getTerms().put(load, new AnchoredVector(load.getAnchor(), null));
+            builder.putEquationState(mathBuilder.build());
+        }
         return builder.build();
+
     }
 
     @Override
