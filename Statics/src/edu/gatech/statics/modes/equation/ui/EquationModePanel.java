@@ -32,6 +32,8 @@ import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.actions.RemoveRow;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
@@ -53,7 +55,7 @@ import java.util.UUID;
 public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public static final String panelName = "equation";
-    protected Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
+    private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
     private BContainer equationBarContainer;
     //private BContainer equationButtonContainer;
     private BContainer solutionContainer;
@@ -242,6 +244,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+   
     protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
@@ -450,6 +453,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
         return false;
     }
+
+  
 
     private class EquationUIData {
 
