@@ -32,6 +32,7 @@ import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
 import java.io.IOException;
@@ -111,15 +112,37 @@ public class MomentEquationBar extends EquationBar {
         // go through terms present in the state to add
         // make sure that the values are correct, as well.
         EquationMathState state = getMath().getState();
-        for (Map.Entry<AnchoredVector, String> entry : ((MomentEquationMathState) state).getTerms().entrySet()) {
+        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((MomentEquationMathState) state).getTerms().entrySet()) {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box
-                addBox(entry.getKey(), entry.getValue());
+                AnchoredVector force = entry.getKey();
+                addBox(force, new AnchoredVector(force.getAnchor(), null));
             } else {
-                box.setCoefficient(entry.getValue());
+                box.setRadiusVector(entry.getValue());
             }
         }
+    }
+
+    protected void addBox(AnchoredVector load, AnchoredVector radiusVector) {
+        // add plus icon unless first box
+        if (terms.size() > 0) {
+
+            try {
+                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plus.png")));
+                add(1, new BLabel(icon));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        TermBox box = new TermBox(load, new AnchoredVector(load.getAnchor(), null));
+        terms.put(load, box);
+        add(1, box);
+        //box.coefficient.requestFocus();
+        focusOnTerm(load);
+        invalidate();
+        parent.refreshRows();
     }
 
     @Override
@@ -205,6 +228,10 @@ public class MomentEquationBar extends EquationBar {
                 setBorder(new LineBorder(regularBorderColor, 2));
             }
             invalidate();
+        }
+        
+        void setRadiusVector(AnchoredVector radiusVector) {
+            this.radiusVector = radiusVector;
         }
 
         /*void setCoefficient(String coefficient) {
