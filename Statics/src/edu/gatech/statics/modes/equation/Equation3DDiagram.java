@@ -28,7 +28,8 @@ public class Equation3DDiagram extends EquationDiagram {
     }
     
     @Override
-    protected EquationState createInitialState() {Builder builder = new EquationState.Builder();
+    protected EquationState createInitialState() {
+        Builder builder = new EquationState.Builder();
         builder.getEquationStates().put("F[x]", (new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build()));
         builder.getEquationStates().put("F[y]", (new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build()));
         builder.getEquationStates().put("F[z]", (new TermEquationMathState.Builder("F[z]", false, null, Vector3bd.UNIT_Z).build()));
@@ -41,7 +42,9 @@ public class Equation3DDiagram extends EquationDiagram {
         /*builder.getEquationStates().put("My[p]", (new TermEquationMathState.Builder("My[p]", true, null, Vector3bd.UNIT_Y).build()));
         builder.getEquationStates().put("Mz[p]", (new TermEquationMathState.Builder("Mz[p]", true, null, Vector3bd.UNIT_Z).build()));*/
 
-        checkWorksheet();
+        if(worksheet == null) {
+            worksheet = new Worksheet(this);
+        }
         return builder.build();
     }
 

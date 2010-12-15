@@ -85,7 +85,12 @@ public class Worksheet {
                 }
             } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof ArbitraryEquationMathState) {
                 equations.put(mathName, new ArbitraryEquationMath(mathName, diagram));
-            } else {
+            } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof  MomentEquationMathState) {
+
+                //MomentEquationMathState state = (MomentEquationMathState) mathState;
+                equations.put(mathName, new MomentEquationMath (mathName, diagram));
+                
+            }  else {
                 throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathName));
             }
         }

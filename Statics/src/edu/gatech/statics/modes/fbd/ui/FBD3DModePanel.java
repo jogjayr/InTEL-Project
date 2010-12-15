@@ -22,7 +22,7 @@ public class FBD3DModePanel extends FBDModePanel {
 
     public FBD3DModePanel() {
         super(); 
-        tools = makeTools();//new BContainer(GroupLayout.makeHoriz(GroupLayout.CENTER));
+        //tools = makeTools();//new BContainer(GroupLayout.makeHoriz(GroupLayout.CENTER));
         
     }
 

@@ -13,6 +13,8 @@ import edu.gatech.statics.modes.equation.Equation3DDiagram;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.ui.Equation3DModePanel;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
+import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
+import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
@@ -33,7 +35,7 @@ public class Simple3DExercise extends OrdinaryExercise {
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4, -1, 1);
         interfaceConfiguration.replaceModePanel(EquationModePanel.class, new Equation3DModePanel());
-
+        interfaceConfiguration.replaceModePanel(FBDModePanel.class, new FBD3DModePanel());
         return interfaceConfiguration;
     }
 
