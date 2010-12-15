@@ -240,7 +240,7 @@ public class ApplicationBar extends BWindow {
 //        }
 //    }
 
-    void updateUndoRedoState() {
+    public void updateUndoRedoState() {
         if (getModePanel() == null || getModePanel().getDiagram() == null) {
             undoButton.setEnabled(false);
             redoButton.setEnabled(false);

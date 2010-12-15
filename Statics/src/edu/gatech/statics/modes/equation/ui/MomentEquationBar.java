@@ -23,6 +23,7 @@ import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.Equation3DDiagram;
@@ -55,7 +56,7 @@ public class MomentEquationBar extends EquationBar {
     private BButton momentButton; //Present only for moment math. Pressing this sets the moment
     private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, MomentEquationBar.TermBox>();
     //private Equation3DModePanel parent;
-
+    private AnchoredVector currentHighlight;
     public MomentEquationBar(EquationMath math, Equation3DModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -147,22 +148,53 @@ public class MomentEquationBar extends EquationBar {
 
     @Override
     void focusOnTerm(AnchoredVector load) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TermBox box = terms.get(load);
+        if (box == null) {
+            return;
+        }
     }
 
     @Override
     void setLocked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        locked = true;
+
+        if (momentButton != null) {
+            momentButton.setEnabled(false);        // clear the current tool
+        }
+        StaticsApplication.getApp().setCurrentTool(null);
     }
 
     @Override
     void setUnlocked() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        locked = false;
+
+        if (momentButton != null) {
+            momentButton.setEnabled(true);        // clear the current tool
+        }
+        StaticsApplication.getApp().setCurrentTool(null);
     }
 
     @Override
     void highlightVector(AnchoredVector obj) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (obj == currentHighlight) {
+            return;
+        }
+
+        // make a box around given TermBox
+        if (currentHighlight != null) {
+            TermBox box = terms.get(currentHighlight);
+            if (box != null) {
+                box.setHighlight(false);
+            }
+        }
+
+        currentHighlight = obj;
+        if (currentHighlight != null) {
+            TermBox box = terms.get(currentHighlight);
+            if (box != null) {
+                box.setHighlight(true);
+            }
+        }
     }
 
     protected void performAdd(AnchoredVector source) {

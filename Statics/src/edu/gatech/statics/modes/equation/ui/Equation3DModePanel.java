@@ -23,6 +23,8 @@ import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.ui.InterfaceRoot;
+import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,7 +107,12 @@ public class Equation3DModePanel extends EquationModePanel {
      */
     @Override
     public void stateChanged() {
-        super.stateChanged();
+        //super.stateChanged(); As part of a terrible hack, this line has been replaced with the code in the grandparent class's stateChanged method to sidestep
+        //stateChanged method of the parent class.
+        //I also changed the visibility of the appbar updateUndoRedoState to public from non-mentioned
+        ApplicationBar appBar = InterfaceRoot.getInstance().getApplicationBar();
+        appBar.updateUndoRedoState();
+
         getDiagram().getWorksheet().updateEquations();
 
         // make sure that uiMap is consistent with our equation states
@@ -189,25 +196,14 @@ public class Equation3DModePanel extends EquationModePanel {
         data.checkButton = new BButton("check", new ActionListener() {
         
             public void actionPerformed(ActionEvent event) {
-                check(data.equationBar);
+                check(data.equationBar); 
             }
         }, "check");
 
         addEquationData(math, data);
     }
-    private void addEquationData(EquationMath math, final EquationUIData data) {
 
-        //data.checkButton.setStyleClass("smallcircle_button");
-
-        data.equationBar.addListener(new MouseAdapter() {
-
-            @Override
-            public void mousePressed(MouseEvent event) {
-                setActiveEquation(data.equationBar);
-            }
-        });
-    }
-    private void setCheckIcon(MomentEquationBar bar) {
+    private void setCheckIcon(EquationBar bar) {
 
         EquationUIData ui3DData = ui3DMap.get(bar.getMath());
         ui3DData.checkButton.setEnabled(false);
@@ -221,14 +217,14 @@ public class Equation3DModePanel extends EquationModePanel {
         ui3DData.checkButton.setIcon(icon);
         ui3DData.checkButton.setText("");
     }
-    private void check(MomentEquationBar bar) {
+    private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
             getDiagram().equationSolved();
 
             bar.setLocked();
 
-            setCheckIcon(bar);
+            setCheckIcon(bar); 
           
 
             performSolve(true);
@@ -310,10 +306,5 @@ public class Equation3DModePanel extends EquationModePanel {
         invalidate();
     }
 
-    private class EquationUIData {
-
-        public MomentEquationBar equationBar;
-        public BButton checkButton;
-        public BButton addButton;
-    }
+   
 }

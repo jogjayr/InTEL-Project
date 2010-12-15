@@ -212,7 +212,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
-    private void addEquationData(EquationMath math, final EquationUIData data) {
+    protected void addEquationData(EquationMath math, final EquationUIData data) {
 
         //data.checkButton.setStyleClass("smallcircle_button");
 
@@ -456,7 +456,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
   
 
-    private class EquationUIData {
+    protected class EquationUIData {
 
         public EquationBar equationBar;
         public BButton checkButton;
