@@ -125,6 +125,7 @@ public class TermEquationBar extends EquationBar {
             momentButton = new BButton(pointName, new ActionListener() {
 
                 public void actionPerformed(ActionEvent event) {
+                    //System.out.println("Setting the point name");
                     PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram(), math.getState().getName());
                     selector.activate();
 

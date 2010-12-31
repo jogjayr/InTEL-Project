@@ -187,4 +187,9 @@ public class MomentEquationMathState extends EquationMathState {
         
     }
 
+    @Override
+    public String toString() {
+        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment="+isMoment+", momentPoint="+momentPoint+", observationDirection="+observationDirection+"}";
+    }
+
 }

@@ -48,7 +48,9 @@ public class AddTerm implements DiagramAction<EquationState> {
         if (mathState.isLocked()) {
             return oldState;
         }
-        if(!((Class)oldState.getClass() == MomentEquationMathState.class)) { //Used to check what kind of equation
+
+        EquationMathState oldMathState = builder.getEquationStates().get(equationName);
+        if(!(oldMathState instanceof MomentEquationMathState)) { //Used to check what kind of equation
             //Here found not to be MomentEquationMathState; so either TermEquationMathState (most likely)
             //or ArbitraryEquationMathState (not even sure that exists)
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)(mathState));

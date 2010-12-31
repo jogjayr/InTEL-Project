@@ -53,7 +53,7 @@ public class PointSelector extends Tool {
         if (obj == null || !(obj instanceof Point)) {
             return;
         }
-
+        
         StaticsApplication.logger.info("Selected... " + obj);
 
         if (obj != null) {

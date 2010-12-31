@@ -48,8 +48,8 @@ public class ChangeTerm implements DiagramAction<EquationState> {
         if (mathState.isLocked()) {
             return oldState;
         }
-
-        if(!((Class)oldState.getClass() == MomentEquationMathState.class)) {
+        EquationMathState oldMathState = builder.getEquationStates().get(equationName);
+        if(!(oldMathState instanceof MomentEquationMathState)) {
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
             mathBuilder.getTerms().put(load, coefficient);
             builder.putEquationState(mathBuilder.build());

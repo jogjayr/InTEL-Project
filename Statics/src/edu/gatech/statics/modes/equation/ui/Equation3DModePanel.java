@@ -206,6 +206,10 @@ public class Equation3DModePanel extends EquationModePanel {
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData ui3DData = ui3DMap.get(bar.getMath());
+        if(ui3DData == null)
+            System.out.println("ui3DData is null");
+        if(ui3DData.checkButton == null)
+            System.out.println("ui3DData.checkButton is null");
         ui3DData.checkButton.setEnabled(false);
 
         ImageIcon icon = null;

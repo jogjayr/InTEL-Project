@@ -4,6 +4,7 @@
  */
 package edu.gatech.statics.modes.equation.ui;
 
+import com.jme.math.Vector2f;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BImage;
@@ -32,10 +33,10 @@ import edu.gatech.statics.modes.equation.actions.AddTerm;
 import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.objects.VectorObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ public class MomentEquationBar extends EquationBar {
     private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, MomentEquationBar.TermBox>();
     //private Equation3DModePanel parent;
     private AnchoredVector currentHighlight;
+
     public MomentEquationBar(EquationMath math, Equation3DModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -88,124 +90,10 @@ public class MomentEquationBar extends EquationBar {
         }
     }
 
-    @Override
-    void stateChanged() {
-        if (momentButton != null) {
-            Point momentPoint = ((MomentEquationMathState) math.getState()).getMomentPoint();
-            String momentName = momentPoint == null ? "?" : momentPoint.getName();
-            momentButton.setText(momentName);
-        }
-
-        // go through terms that are present in the UI and mark the ones to remove
-        List<TermBox> toRemove = new ArrayList<TermBox>();
-
-        for (Map.Entry<AnchoredVector, TermBox> entry : terms.entrySet()) {
-            if (!((MomentEquationMathState) getMath().getState()).getTerms().containsKey(entry.getKey())) {
-                toRemove.add(entry.getValue());
-            }
-        }
-
-        // remove them
-        for (TermBox box : toRemove) {
-            removeBox(box);
-        }
-
-        // go through terms present in the state to add
-        // make sure that the values are correct, as well.
-        EquationMathState state = getMath().getState();
-        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((MomentEquationMathState) state).getTerms().entrySet()) {
-            TermBox box = terms.get(entry.getKey());
-            if (box == null) {
-                // we do not have an existing term box
-                AnchoredVector force = entry.getKey();
-                addBox(force, new AnchoredVector(force.getAnchor(), null));
-            } else {
-                box.setRadiusVector(entry.getValue());
-            }
-        }
-    }
-
-    protected void addBox(AnchoredVector load, AnchoredVector radiusVector) {
-        // add plus icon unless first box
-        if (terms.size() > 0) {
-
-            try {
-                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plus.png")));
-                add(1, new BLabel(icon));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        TermBox box = new TermBox(load, new AnchoredVector(load.getAnchor(), null));
-        terms.put(load, box);
-        add(1, box);
-        //box.coefficient.requestFocus();
-        focusOnTerm(load);
-        invalidate();
-        parent.refreshRows();
-    }
-
-    @Override
-    void focusOnTerm(AnchoredVector load) {
-        TermBox box = terms.get(load);
-        if (box == null) {
-            return;
-        }
-    }
-
-    @Override
-    void setLocked() {
-        locked = true;
-
-        if (momentButton != null) {
-            momentButton.setEnabled(false);        // clear the current tool
-        }
-        StaticsApplication.getApp().setCurrentTool(null);
-    }
-
-    @Override
-    void setUnlocked() {
-        locked = false;
-
-        if (momentButton != null) {
-            momentButton.setEnabled(true);        // clear the current tool
-        }
-        StaticsApplication.getApp().setCurrentTool(null);
-    }
-
-    @Override
-    void highlightVector(AnchoredVector obj) {
-        if (obj == currentHighlight) {
-            return;
-        }
-
-        // make a box around given TermBox
-        if (currentHighlight != null) {
-            TermBox box = terms.get(currentHighlight);
-            if (box != null) {
-                box.setHighlight(false);
-            }
-        }
-
-        currentHighlight = obj;
-        if (currentHighlight != null) {
-            TermBox box = terms.get(currentHighlight);
-            if (box != null) {
-                box.setHighlight(true);
-            }
-        }
-    }
-
-    protected void performAdd(AnchoredVector source) {
-        AddTerm addTermAction = new AddTerm(getMath().getName(), source, new AnchoredVector(source.getAnchor(), null));
-        getMath().getDiagram().performAction(addTermAction);
-    }
-
     private BContainer makeStartContainer() throws IOException {
         BContainer startContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-        System.out.println("makeStartContainer of MomentEquationBar was called");
-        ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
+        //System.out.println("makeStartContainer of MomentEquationBar was called");
+        ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/sum.png")));
         startContainer.add(new BLabel(icon));
         /** TO DO:
          * Handle our math differently
@@ -222,7 +110,7 @@ public class MomentEquationBar extends EquationBar {
                 public void actionPerformed(ActionEvent event) {
                     PointSelector selector = new PointSelector((Equation3DDiagram) parent.getDiagram(), math.getState().getName());
                     selector.activate();
-
+                    //System.out.println("Selected moment point");
                     // activate the bar when the button is pressed.
                     parent.setActiveEquation(MomentEquationBar.this);
                 }
@@ -245,11 +133,14 @@ public class MomentEquationBar extends EquationBar {
         private AnchoredVector source;
         private Point pointOfForceApplication;
         private AnchoredVector radiusVector;
+
         AnchoredVector getSource() {
             return source;
         }
-        private BLabel vectorLabel;
+        private BLabel sourceLabel;
+        private BLabel radiusLabel;
         //private BTextField coefficient;
+        private BTextField radius;
 
         void setHighlight(boolean highlight) {
             if (highlight) {
@@ -261,101 +152,102 @@ public class MomentEquationBar extends EquationBar {
             }
             invalidate();
         }
-        
+
         void setRadiusVector(AnchoredVector radiusVector) {
             this.radiusVector = radiusVector;
         }
 
-        /*void setCoefficient(String coefficient) {
-        this.coefficient.setText(coefficient);
+        /*void setCoefficient(AnchoredVector radiusVector) {
+        this.coefficient.setText(radiusVector);
         }*/
         TermBox(AnchoredVector source) {
             this(source, new AnchoredVector(source.getAnchor(), null));
         }
 
-        TermBox(final AnchoredVector source, AnchoredVector radiusVector) {
+        //This constructor exists for the day that we can build a termbox that allow selection of radius vector by clicking
+        TermBox(final AnchoredVector source, final AnchoredVector radiusVector) {
             super(new BorderLayout());
             this.source = source;
 
             if (source.isSymbol()) {
-                vectorLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getVector().getQuantity().getSymbolName() + "))");
+                sourceLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getVector().getQuantity().getSymbolName() + "))");
             } else {
-                vectorLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
+                sourceLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
-            vectorLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
+            sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
 
 
-            //coefficient = new BTextField(coefficientText) {
+            this.radius = new BTextField(radiusVector.getSymbolName()) {
 
-//                @Override
-//                protected void lostFocus() {
-//                    super.lostFocus();
-//                    // if the box has lost focus, post a change term event.
-//                    // but do not post if the box has been removed.
-//                    if (isAdded()) {
-//                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, radiusVector);
-//                        // it is possible that the ui shift is to a different diagram, so check before using.
-//                        if (parent.getDiagram() instanceof EquationDiagram) {
-//                            parent.getDiagram().performAction(changeTermEvent);
-//                        }
-//                    }
-//                }
+                @Override
+                protected void lostFocus() {
+                    super.lostFocus();
+                    // if the box has lost focus, post a change term event.
+                    // but do not post if the box has been removed.
+                    if (isAdded()) {
+                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, radiusVector);
+                        // it is possible that the ui shift is to a different diagram, so check before using.
+                        if (parent.getDiagram() instanceof EquationDiagram) {
+                            parent.getDiagram().performAction(changeTermEvent);
+                        }
+                    }
+                }
 
-//                @Override
-//                public boolean dispatchEvent(BEvent event) {
-//                    boolean result = super.dispatchEvent(event);
-//                    if (event instanceof KeyEvent) {
-//                        // do not consume the key pressed event.
-//                        return false;
-//                    }
-//                    return result;
-//                }
-//            };
-//            coefficient.setStyleClass("textfield_appbar");
-            //coefficient.setPreferredWidth(10);
+                @Override
+                public boolean dispatchEvent(BEvent event) {
+                    boolean result = super.dispatchEvent(event);
+                    if (event instanceof KeyEvent) {
+                        // do not consume the key pressed event.
+                        return false;
+                    }
+                    return result;
+                }
+            };
+            radius.setStyleClass("textfield_appbar");
+            radius.setPreferredWidth(10);
 
-//            coefficient.addListener(new TextListener() {
+            radius.addListener(new TextListener() {
 
-//                public void textChanged(TextEvent event) {
-//                    Dimension dim = coefficient.getPreferredSize(0, 0);
-//                    coefficient.setSize(dim.width, dim.height);
+                public void textChanged(TextEvent event) {
+                    Dimension dim = radius.getPreferredSize(0, 0);
+                    radius.setSize(dim.width, dim.height);
 
-//                    MomentEquationBar.this.invalidate();
+                    MomentEquationBar.this.invalidate();
                     //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
                     //EquationBar.this.setSize(preferredSize.);
-//                    parent.refreshRows();
+                    parent.refreshRows();
                     //update();
-//                    }
- //           });
+                    }
+            });
 
-//            coefficient.addListener(new KeyListener() {
+            radius.addListener(new KeyListener() {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
 
-//                boolean destroyOK = true;
+                boolean destroyOK = true;
 
-//                public void keyReleased(KeyEvent event) {
-                    //System.out.println("*** KEY RELEASED " + event.getKeyCode());
-//                    if (coefficient.getText().length() == 0 &&
-//                           (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-//                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
-//                    {
-// /                       if (destroyOK) {
-//                           performRemove(source);
+                public void keyReleased(KeyEvent event) {
+                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
+                    if (radius.getText().length() == 0 &&
+                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
+                    {
+                        if (destroyOK) {
+                            performRemove(source);
                             //removeBox(TermBox.this);
-//                            } else {
-//                            destroyOK = true;
-//                        }
-//                    } else {
-//                        destroyOK = false;
-//                    }
-//                }
+                            } else {
+                            destroyOK = true;
+                        }
+                    } else {
+                        destroyOK = false;
+                    }
+                }
 
-//                public void keyPressed(KeyEvent event) {
-//                    //destroyOK = false;
-//                    }
-//            });
+                public void keyPressed(KeyEvent event) {
+                    destroyOK = false;
+                }
+            });
 
             MouseListener mouseTestListener = new MouseListener() {
 
@@ -383,11 +275,131 @@ public class MomentEquationBar extends EquationBar {
                 }
             };
 
-            vectorLabel.addListener(mouseTestListener);
+            sourceLabel.addListener(mouseTestListener);
 //            coefficient.addListener(mouseTestListener);
             addListener(mouseTestListener);
 
-            add(vectorLabel, BorderLayout.CENTER);
+            add(sourceLabel, BorderLayout.CENTER);
+//            add(coefficient, BorderLayout.WEST);
+            setHighlight(false);
+        }
+
+        TermBox(final AnchoredVector source, final String radiusString) {
+            super(new BorderLayout());
+            this.source = source;
+
+            if (source.isSymbol()) {
+                sourceLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getVector().getQuantity().getSymbolName() + "))");
+            } else {
+                sourceLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
+            }
+            sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
+
+
+            this.radius = new BTextField(radiusString) {
+                //new BTextField(radiusVector.getSymbolName()) {
+
+                @Override
+                protected void lostFocus() {
+                    super.lostFocus();
+                    // if the box has lost focus, post a change term event.
+                    // but do not post if the box has been removed.
+                    if (isAdded()) {
+                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, radiusVector);
+                        // it is possible that the ui shift is to a different diagram, so check before using.
+                        if (parent.getDiagram() instanceof EquationDiagram) {
+                            parent.getDiagram().performAction(changeTermEvent);
+                        }
+                    }
+                }
+
+                @Override
+                public boolean dispatchEvent(BEvent event) {
+                    boolean result = super.dispatchEvent(event);
+                    if (event instanceof KeyEvent) {
+                        // do not consume the key pressed event.
+                        return false;
+                    }
+                    return result;
+                }
+            };
+            radius.setStyleClass("textfield_appbar");
+            radius.setPreferredWidth(10);
+
+            radius.addListener(new TextListener() {
+
+                public void textChanged(TextEvent event) {
+                    Dimension dim = radius.getPreferredSize(0, 0);
+                    radius.setSize(dim.width, dim.height);
+
+                    MomentEquationBar.this.invalidate();
+                    //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
+                    //EquationBar.this.setSize(preferredSize.);
+                    parent.refreshRows();
+                    //update();
+                    }
+            });
+
+            radius.addListener(new KeyListener() {
+                // key release event occurs after the text has been adjusted.
+                // thus if we remove this right away, the user will see the box disappear after deleting
+                // only one character. With this, we check to see if this deletion was the last before destroying.
+
+                boolean destroyOK = true;
+
+                public void keyReleased(KeyEvent event) {
+                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
+                    if (radius.getText().length() == 0 &&
+                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
+                    {
+                        if (destroyOK) {
+                            performRemove(source);
+                            //removeBox(TermBox.this);
+                            } else {
+                            destroyOK = true;
+                        }
+                    } else {
+                        destroyOK = false;
+                    }
+                }
+
+                public void keyPressed(KeyEvent event) {
+                    destroyOK = false;
+                }
+            });
+
+            MouseListener mouseTestListener = new MouseListener() {
+
+                public void mouseEntered(MouseEvent event) {
+                    math.getDiagram().highlightVector(source);
+                    highlightVector(source);
+                    //math.getWorld().onHover(source);
+                    }
+
+                public void mouseExited(MouseEvent event) {
+                    if (getHitComponent(event.getX(), event.getY()) == null) {
+                        math.getDiagram().highlightVector(null);
+                        highlightVector(null);
+                        //math.getWorld().onHover(null);
+                        }
+                }
+
+                public void mousePressed(MouseEvent event) {
+                    if (!locked) {
+                        //coefficient.requestFocus();
+                    }
+                }
+
+                public void mouseReleased(MouseEvent event) {
+                }
+            };
+
+            sourceLabel.addListener(mouseTestListener);
+//            coefficient.addListener(mouseTestListener);
+            addListener(mouseTestListener);
+
+            add(sourceLabel, BorderLayout.CENTER);
 //            add(coefficient, BorderLayout.WEST);
             setHighlight(false);
         }
@@ -401,6 +413,105 @@ public class MomentEquationBar extends EquationBar {
     protected void performRemove(AnchoredVector source) {
         RemoveTerm removeTermAction = new RemoveTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(removeTermAction);
+    }
+
+    protected void performAdd(AnchoredVector source) {
+        AddTerm addTermAction = new AddTerm(getMath().getName(), source, new AnchoredVector(source.getAnchor(), null));
+        getMath().getDiagram().performAction(addTermAction);
+    }
+
+    protected void stateChanged() {
+
+        // update the moment point button
+        if (momentButton != null) {
+            Point momentPoint = ((MomentEquationMathState) math.getState()).getMomentPoint();
+            String momentName = momentPoint == null ? "?" : momentPoint.getName();
+            momentButton.setText(momentName);
+        }
+
+        // go through terms that are present in the UI and mark the ones to remove
+        List<TermBox> toRemove = new ArrayList<TermBox>();
+
+        for (Map.Entry<AnchoredVector, TermBox> entry : terms.entrySet()) {
+            if (!((MomentEquationMathState) getMath().getState()).getTerms().containsKey(entry.getKey())) {
+                toRemove.add(entry.getValue());
+            }
+        }
+
+        // remove them
+        for (TermBox box : toRemove) {
+            removeBox(box);
+        }
+
+        // go through terms present in the state to add
+        // make sure that the values are correct, as well.
+        EquationMathState state = getMath().getState();
+        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((MomentEquationMathState) state).getTerms().entrySet()) {
+            TermBox box = terms.get(entry.getKey());
+            if (box == null) {
+                // we do not have an existing term box
+                addBox(entry.getKey(), entry.getValue().toString());
+            } else {
+                box.setRadiusVector(entry.getValue());
+            }
+        }
+    }
+
+    protected void addBox(AnchoredVector load, String coefficient) {
+        // add plus icon unless first box
+        if (terms.size() > 0) {
+
+            try {
+                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plus.png")));
+                add(1, new BLabel(icon));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        TermBox box = new TermBox(load, coefficient);
+        terms.put(load, box);
+        add(1, box);
+        //box.coefficient.requestFocus();
+        focusOnTerm(load);
+        invalidate();
+        parent.refreshRows();
+    }
+
+    /**
+     * Put the component focus on the load that has been given.
+     * Do nothing if the load has not been added to the equation.
+     */
+    public void focusOnTerm(AnchoredVector load) {
+        TermBox box = terms.get(load);
+        if (box == null) {
+            return;
+        }
+        box.radius.requestFocus();
+    }
+
+    public void setLocked() {
+        for (TermBox box : terms.values()) {
+            box.radius.setEnabled(false);
+        }
+        locked = true;
+
+        if (momentButton != null) {
+            momentButton.setEnabled(false);        // clear the current tool
+        }
+        StaticsApplication.getApp().setCurrentTool(null);
+    }
+
+    public void setUnlocked() {
+        for (TermBox box : terms.values()) {
+            box.radius.setEnabled(true);
+        }
+        locked = false;
+
+        if (momentButton != null) {
+            momentButton.setEnabled(true);        // clear the current tool
+        }
+        StaticsApplication.getApp().setCurrentTool(null);
     }
 
     private void removeBox(TermBox box) {
@@ -430,5 +541,39 @@ public class MomentEquationBar extends EquationBar {
         }
         invalidate();
         parent.refreshRows();
+    }
+
+    @Override
+    void highlightVector(AnchoredVector obj) {
+        if (obj == currentHighlight) {
+            return;
+        }
+
+        // make a box around given TermBox
+        if (currentHighlight != null) {
+            TermBox box = terms.get(currentHighlight);
+            if (box != null) {
+                box.setHighlight(false);
+            }
+        }
+
+        currentHighlight = obj;
+        if (currentHighlight != null) {
+            TermBox box = terms.get(currentHighlight);
+            if (box != null) {
+                box.setHighlight(true);
+            }
+        }
+    }
+
+    public Vector2f getLineAnchor(VectorObject obj) {
+
+        TermBox box = terms.get(obj);
+        if (box != null) {
+            float xpos = box.getAbsoluteX() + box.getWidth() / 2;
+            float ypos = box.getAbsoluteY() + box.getHeight();
+            return new Vector2f(xpos, ypos);
+        }
+        return null;
     }
 }

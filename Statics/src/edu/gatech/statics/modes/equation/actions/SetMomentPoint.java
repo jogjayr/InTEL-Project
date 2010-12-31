@@ -6,8 +6,11 @@ package edu.gatech.statics.modes.equation.actions;
 
 import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState.Builder;
+
 import edu.gatech.statics.objects.Point;
 
 /**
@@ -29,12 +32,21 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
         if (oldState.isLocked()) {
             return oldState;
         }
-        TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
-        Builder mathBuilder = math.getBuilder();
-        mathBuilder.setMomentPoint(momentPoint);
 
-        builder.putEquationState(mathBuilder.build());
+        EquationMathState oldMathState = builder.getEquationStates().get(mathName);
 
+        //if(!((Class)oldState.getClass() == MomentEquationMathState.class)) {
+        if(!(oldMathState instanceof MomentEquationMathState)){
+            TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
+            Builder mathBuilder = math.getBuilder();
+            mathBuilder.setMomentPoint(momentPoint);
+            builder.putEquationState(mathBuilder.build());
+        } else {
+            MomentEquationMathState math = (MomentEquationMathState) builder.getEquationStates().get(mathName);
+            MomentEquationMathState.Builder mathBuilder = math.getBuilder();
+            mathBuilder.setMomentPoint(momentPoint);
+            builder.putEquationState(mathBuilder.build());
+        }
         return builder.build();
     }
 
