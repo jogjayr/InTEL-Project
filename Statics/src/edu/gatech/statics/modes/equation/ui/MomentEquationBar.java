@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -176,8 +178,9 @@ public class MomentEquationBar extends EquationBar {
             }
             sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
 
+            radiusLabel = new BLabel(radiusVector.getSymbolName());
 
-            this.radius = new BTextField(radiusVector.getSymbolName()) {
+            /* this.radius = new BTextField(radiusVector.getSymbolName()) {
 
                 @Override
                 protected void lostFocus() {
@@ -229,25 +232,24 @@ public class MomentEquationBar extends EquationBar {
 
                 public void keyReleased(KeyEvent event) {
                     System.out.println("*** KEY RELEASED " + event.getKeyCode());
-                    if (radius.getText().length() == 0 &&
-                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
-                    {
-                        if (destroyOK) {
-                            performRemove(source);
-                            //removeBox(TermBox.this);
-                            } else {
-                            destroyOK = true;
-                        }
-                    } else {
-                        destroyOK = false;
-                    }
-                }
+                    if (radius.getText().length() == 0 &&*/
+//                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+//                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
+//                    {
+//                       if (destroyOK) {
+//                            performRemove(source);
+//                            } else {
+//                            destroyOK = true;
+//                        }
+//                    } else {
+//                        destroyOK = false;
+//                    }
+//                }
 
-                public void keyPressed(KeyEvent event) {
-                    destroyOK = false;
-                }
-            });
+//                public void keyPressed(KeyEvent event) {
+//                    destroyOK = false;
+//                }
+//            });
 
             MouseListener mouseTestListener = new MouseListener() {
 
@@ -278,10 +280,17 @@ public class MomentEquationBar extends EquationBar {
             sourceLabel.addListener(mouseTestListener);
 //            coefficient.addListener(mouseTestListener);
             addListener(mouseTestListener);
-
-            add(sourceLabel, BorderLayout.CENTER);
+            try {
+                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
+                add(radiusLabel, BorderLayout.CENTER);
+                add(new BLabel(icon), BorderLayout.CENTER);
+                add(sourceLabel, BorderLayout.CENTER);
 //            add(coefficient, BorderLayout.WEST);
-            setHighlight(false);
+                setHighlight(false);
+            } catch (IOException ex) {
+                Logger.getLogger(MomentEquationBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
 
         TermBox(final AnchoredVector source, final String radiusString) {
@@ -294,80 +303,8 @@ public class MomentEquationBar extends EquationBar {
                 sourceLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
             sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
+            radiusLabel = new BLabel(radiusVector.getSymbolName());
 
-
-            this.radius = new BTextField(radiusString) {
-                //new BTextField(radiusVector.getSymbolName()) {
-
-                @Override
-                protected void lostFocus() {
-                    super.lostFocus();
-                    // if the box has lost focus, post a change term event.
-                    // but do not post if the box has been removed.
-                    if (isAdded()) {
-                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, radiusVector);
-                        // it is possible that the ui shift is to a different diagram, so check before using.
-                        if (parent.getDiagram() instanceof EquationDiagram) {
-                            parent.getDiagram().performAction(changeTermEvent);
-                        }
-                    }
-                }
-
-                @Override
-                public boolean dispatchEvent(BEvent event) {
-                    boolean result = super.dispatchEvent(event);
-                    if (event instanceof KeyEvent) {
-                        // do not consume the key pressed event.
-                        return false;
-                    }
-                    return result;
-                }
-            };
-            radius.setStyleClass("textfield_appbar");
-            radius.setPreferredWidth(10);
-
-            radius.addListener(new TextListener() {
-
-                public void textChanged(TextEvent event) {
-                    Dimension dim = radius.getPreferredSize(0, 0);
-                    radius.setSize(dim.width, dim.height);
-
-                    MomentEquationBar.this.invalidate();
-                    //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
-                    //EquationBar.this.setSize(preferredSize.);
-                    parent.refreshRows();
-                    //update();
-                    }
-            });
-
-            radius.addListener(new KeyListener() {
-                // key release event occurs after the text has been adjusted.
-                // thus if we remove this right away, the user will see the box disappear after deleting
-                // only one character. With this, we check to see if this deletion was the last before destroying.
-
-                boolean destroyOK = true;
-
-                public void keyReleased(KeyEvent event) {
-                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
-                    if (radius.getText().length() == 0 &&
-                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
-                    {
-                        if (destroyOK) {
-                            performRemove(source);
-                            //removeBox(TermBox.this);
-                            } else {
-                            destroyOK = true;
-                        }
-                    } else {
-                        destroyOK = false;
-                    }
-                }
-
-                public void keyPressed(KeyEvent event) {
-                    destroyOK = false;
-                }
-            });
 
             MouseListener mouseTestListener = new MouseListener() {
 
@@ -399,9 +336,17 @@ public class MomentEquationBar extends EquationBar {
 //            coefficient.addListener(mouseTestListener);
             addListener(mouseTestListener);
 
-            add(sourceLabel, BorderLayout.CENTER);
+            try {
+                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
+                add(radiusLabel, BorderLayout.CENTER);
+                add(new BLabel(icon), BorderLayout.CENTER);
+                add(sourceLabel, BorderLayout.CENTER);
 //            add(coefficient, BorderLayout.WEST);
-            setHighlight(false);
+                setHighlight(false);
+            } catch (IOException ex) {
+                Logger.getLogger(MomentEquationBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }
 
