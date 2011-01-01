@@ -205,6 +205,7 @@ public class Equation3DModePanel extends EquationModePanel {
         addEquationData(math, data);
     }
 
+    @Override
     protected void addEquationData(EquationMath math, final EquationUIData data) {
 
         //data.checkButton.setStyleClass("smallcircle_button");
@@ -238,6 +239,7 @@ public class Equation3DModePanel extends EquationModePanel {
     }
 
 
+    @Override
     protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
@@ -274,6 +276,7 @@ public class Equation3DModePanel extends EquationModePanel {
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
+            System.out.println("Equation check passed");
             getDiagram().equationSolved();
 
             bar.setLocked();
@@ -283,6 +286,8 @@ public class Equation3DModePanel extends EquationModePanel {
 
             performSolve(true);
         }
+        else
+            System.out.println("Equation check failed");
     }
 
     @Override

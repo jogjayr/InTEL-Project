@@ -10,7 +10,12 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  *
@@ -33,14 +38,24 @@ public class MomentEquationMath extends EquationMath {
 
    
     
+    @Override
     public MomentEquationMathState getState() {
         return (MomentEquationMathState)super.getState();
     }
     public boolean check() {
-
+        //System.out.println("Checking...");
         MomentEquationMathState state = (MomentEquationMathState)getState();
+        Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
+        Vector equationValue = new Vector(Unit.distance, Vector3bd.ZERO, new BigDecimal(0));
+        for(Map.Entry<AnchoredVector, AnchoredVector> term : terms.entrySet()) {
+            AnchoredVector force = term.getKey();
+            AnchoredVector radius = term.getValue();
+            equationValue.setVectorValue((radius.getVectorValue().cross(force.getVectorValue())).add(equationValue.getVectorValue()));
+        }
+        if(equationValue.getVectorValue() == Vector3bd.ZERO)
+            return true;
 
-        return true;
+        return false;
     }
 
     protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {

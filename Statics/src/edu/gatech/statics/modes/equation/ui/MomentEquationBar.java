@@ -361,6 +361,8 @@ public class MomentEquationBar extends EquationBar {
     }
 
     protected void performAdd(AnchoredVector source) {
+        //TODO Handle the divide by zero error occuring when the user clicks on a force acting at
+        //the point about which moment equation is being written
         AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
     }
@@ -425,7 +427,7 @@ public class MomentEquationBar extends EquationBar {
         terms.put(load, box);
         add(1, box);
         //box.coefficient.requestFocus();
-        focusOnTerm(load);
+        //focusOnTerm(load);
         invalidate();
         parent.refreshRows();
     }
@@ -439,12 +441,13 @@ public class MomentEquationBar extends EquationBar {
         if (box == null) {
             return;
         }
-        box.radius.requestFocus();
+        box.radiusLabel.requestFocus();
     }
 
     public void setLocked() {
+        System.out.println("Setting MomentEquationBar to locked");
         for (TermBox box : terms.values()) {
-            box.radius.setEnabled(false);
+            box.radiusLabel.setEnabled(false);
         }
         locked = true;
 

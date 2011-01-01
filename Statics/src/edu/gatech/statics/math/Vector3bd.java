@@ -228,12 +228,17 @@ public class Vector3bd {
                 Math.pow(x.doubleValue(), 2)
                 + Math.pow(y.doubleValue(), 2)
                 + Math.pow(z.doubleValue(), 2));
-        BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
-        BigDecimal xn = x.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
-        BigDecimal yn = y.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
-        BigDecimal zn = z.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+        if(magnitude != 0) {
+            BigDecimal bdMagnitude = BigDecimal.valueOf(magnitude);
 
-        return new Vector3bd(xn, yn, zn);
+            BigDecimal xn = x.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+            BigDecimal yn = y.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+            BigDecimal zn = z.divide(bdMagnitude, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
+
+            return new Vector3bd(xn, yn, zn);
+        }
+        else
+            return Vector3bd.ZERO;
     }
 
     public static class UnmodifiableVector3bd extends Vector3bd {
