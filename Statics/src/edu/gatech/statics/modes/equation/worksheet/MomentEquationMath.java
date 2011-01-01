@@ -22,8 +22,8 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
  */
 public class MomentEquationMath extends EquationMath {
 
-    String name;
-    EquationDiagram diagram;
+    protected final String name;
+    protected final EquationDiagram diagram;
 
     public MomentEquationMath(String name, EquationDiagram world) {
         super(name, world);
@@ -31,6 +31,7 @@ public class MomentEquationMath extends EquationMath {
         this.diagram = world;
     }
 
+   
     
     public MomentEquationMathState getState() {
         return (MomentEquationMathState)super.getState();

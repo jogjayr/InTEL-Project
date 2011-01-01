@@ -23,6 +23,7 @@ public class MomentEquationMathState extends EquationMathState {
     final private Point momentPoint;
     final private boolean isMoment;
     final private Vector3bd observationDirection;
+    
     public Map<AnchoredVector, AnchoredVector> getTerms() {
         return terms;
     }

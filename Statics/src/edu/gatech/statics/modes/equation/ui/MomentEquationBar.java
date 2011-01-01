@@ -416,13 +416,20 @@ public class MomentEquationBar extends EquationBar {
     }
 
     protected void performAdd(AnchoredVector source) {
-        AddTerm addTermAction = new AddTerm(getMath().getName(), source, new AnchoredVector(source.getAnchor(), null));
+        AddTerm addTermAction = new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
     }
-
+    
+    /**
+     * This is called when the bar is loaded or the state has changed.
+     * Note that this will generally be called after the above methods
+     * (performAddTerm and performRemoveTerm) are called.
+     */
     protected void stateChanged() {
 
         // update the moment point button
+
+        //System.out.println("The momentbutton text should be changed");
         if (momentButton != null) {
             Point momentPoint = ((MomentEquationMathState) math.getState()).getMomentPoint();
             String momentName = momentPoint == null ? "?" : momentPoint.getName();
@@ -450,14 +457,14 @@ public class MomentEquationBar extends EquationBar {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box
-                addBox(entry.getKey(), entry.getValue().toString());
+                addBox(entry.getKey(), entry.getValue());
             } else {
                 box.setRadiusVector(entry.getValue());
             }
         }
     }
 
-    protected void addBox(AnchoredVector load, String coefficient) {
+    protected void addBox(AnchoredVector load, AnchoredVector radius) {
         // add plus icon unless first box
         if (terms.size() > 0) {
 
@@ -469,7 +476,7 @@ public class MomentEquationBar extends EquationBar {
             }
         }
 
-        TermBox box = new TermBox(load, coefficient);
+        TermBox box = new TermBox(load, radius);
         terms.put(load, box);
         add(1, box);
         //box.coefficient.requestFocus();

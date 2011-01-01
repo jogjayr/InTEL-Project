@@ -56,11 +56,11 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public static final String panelName = "equation";
     private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
-    private BContainer equationBarContainer;
+    protected BContainer equationBarContainer; //Previously private
     //private BContainer equationButtonContainer;
-    private BContainer solutionContainer;
+    protected BContainer solutionContainer; //Previously private
     private BScrollPane equationScrollPane;
-    private EquationBar activeEquation;
+    protected EquationBar activeEquation; //Previously private
     //private BButton momentSelectButton;
     protected static final ColorRGBA regularBackgroundColor = new ColorRGBA(0, 69f / 255, 95f / 255, 1); //ColorRGBA.black;
     //private static final ColorRGBA regularBorderColor = ColorRGBA.darkGray;
@@ -215,7 +215,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     protected void addEquationData(EquationMath math, final EquationUIData data) {
 
         //data.checkButton.setStyleClass("smallcircle_button");
-
+        
         data.equationBar.addListener(new MouseAdapter() {
 
             @Override

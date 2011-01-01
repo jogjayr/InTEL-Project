@@ -15,6 +15,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
+import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
@@ -37,9 +38,9 @@ import java.util.Map;
  */
 public class Equation3DModePanel extends EquationModePanel {
 
-    private BContainer equationBarContainer;
-    private EquationBar activeEquation;
-    private BContainer solutionContainer;
+    //private BContainer equationBarContainer;
+    //private EquationBar activeEquation;
+    //private BContainer solutionContainer;
     private Map<EquationMath, EquationUIData> ui3DMap = new HashMap<EquationMath, EquationUIData>();
     
     public Equation3DModePanel() {
@@ -110,6 +111,7 @@ public class Equation3DModePanel extends EquationModePanel {
         //super.stateChanged(); As part of a terrible hack, this line has been replaced with the code in the grandparent class's stateChanged method to sidestep
         //stateChanged method of the parent class.
         //I also changed the visibility of the appbar updateUndoRedoState to public from non-mentioned
+        //System.out.println("Diagram state has changed in Equation3DModePanel and ui3DMap is empty is " + ui3DMap.isEmpty());
         ApplicationBar appBar = InterfaceRoot.getInstance().getApplicationBar();
         appBar.updateUndoRedoState();
 
@@ -202,6 +204,54 @@ public class Equation3DModePanel extends EquationModePanel {
 
         addEquationData(math, data);
     }
+
+    protected void addEquationData(EquationMath math, final EquationUIData data) {
+
+        //data.checkButton.setStyleClass("smallcircle_button");
+
+        data.equationBar.addListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent event) {
+                setActiveEquation(data.equationBar);
+            }
+        });
+
+        //equationBarContainer.add(data.equationBar);
+        //equationButtonContainer.add(data.checkButton);
+
+        BContainer barAndButtonContainer = new BContainer(new BorderLayout(5, 0));
+        barAndButtonContainer.add(data.checkButton, BorderLayout.WEST);
+        barAndButtonContainer.add(data.equationBar, BorderLayout.CENTER);
+        equationBarContainer.add(barAndButtonContainer);
+
+        ui3DMap.put(math, data);
+
+        if (math.isLocked()) {
+            data.equationBar.setLocked();
+            setCheckIcon(data.equationBar);
+        }
+
+        if (ui3DMap.size() == 1) {
+            setActiveEquation(data.equationBar);
+        }
+    }
+
+
+    protected void addTermEquationRow(TermEquationMath math) {
+        final EquationUIData data = new EquationUIData();
+
+        data.equationBar = new TermEquationBar(math, this);
+        data.checkButton = new BButton("check", new ActionListener() {
+
+            public void actionPerformed(ActionEvent event) {
+                check(data.equationBar);
+            }
+        }, "check");
+
+        addEquationData(math, data);
+    }
+
 
     private void setCheckIcon(EquationBar bar) {
 
