@@ -10,6 +10,7 @@ import com.jme.renderer.Renderer;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.objects.CoordinateSystem;
+import edu.gatech.statics.objects.SimulationObject;
 
 /**
  *
@@ -22,13 +23,62 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
     private float arrowsize = 6f; // pixels
     private ColorRGBA color = ColorRGBA.black;
 
+        private CoordinateLabel labelX;
+        private CoordinateLabel labelY;
+        private CoordinateLabel labelZ;
+
+    private static class CoordinateLabel extends LabelRepresentation {
+
+        private final Vector3f displayCenter;
+        private final String label;
+
+        public CoordinateLabel(SimulationObject target, Vector3f displayCenter, String label) {
+            super(target, "label_measurement");
+            this.displayCenter = displayCenter;
+            this.label = label;
+        }
+
+        @Override
+        protected Vector3f getDisplayCenter() {
+            return displayCenter;
+        }
+
+        @Override
+        protected String getLabelText() {
+            return label;
+        }
+    }
+
     public CoordinateSystemRepresentation(CoordinateSystem target, float axisSize) {
         super(target);
         setLayer(RepresentationLayer.measurement);
         this.axisSize = axisSize;
 
         // create labels: x, y, z (if target is 3d)
+
+
+        labelX = new CoordinateLabel(target, new Vector3f(axisSize, 0, 0), "X");
+        getRelativeNode().attachChild(labelX);
+        
+        labelY = new CoordinateLabel(target, new Vector3f(0, axisSize, 0), "Y");
+        getRelativeNode().attachChild(labelY);
+
+        if (getTarget().is3D()) {
+            labelZ = new CoordinateLabel(target, new Vector3f(0, 0, axisSize), "Z");
+            getRelativeNode().attachChild(labelZ);
+        }
     }
+
+    @Override
+    public void update() {
+        super.update();
+        labelX.update();
+        labelY.update();
+        if(labelZ != null)
+            labelZ.update();
+    }
+
+
 
     @Override
     public void draw(Renderer r) {
@@ -37,8 +87,8 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
         drawArrow(r, Vector3f.ZERO, new Vector3f(axisSize, 0, 0)); // X
         drawArrow(r, Vector3f.ZERO, new Vector3f(0, axisSize, 0)); // Y
 
-        if(getTarget().is3D()) {
-            drawArrow(r, Vector3f.ZERO, new Vector3f(0, 0, axisSize)); // Y
+        if (getTarget().is3D()) {
+            drawArrow(r, Vector3f.ZERO, new Vector3f(0, 0, axisSize)); // Z
         }
     }
     // keeping these like this is rather unseemly, but

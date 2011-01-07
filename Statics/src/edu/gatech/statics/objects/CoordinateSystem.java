@@ -17,6 +17,7 @@ public class CoordinateSystem extends SimulationObject {
 
     public CoordinateSystem(boolean is3D) {
         this.is3D = is3D;
+        setName("CoordinateSystem");
     }
 
     public boolean is3D() {

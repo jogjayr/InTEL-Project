@@ -15,6 +15,7 @@ import edu.gatech.statics.modes.equation.ui.Equation3DModePanel;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
+import edu.gatech.statics.objects.CoordinateSystem;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
@@ -112,5 +113,8 @@ public class Simple3DExercise extends OrdinaryExercise {
 //        schematic.add(C);
 
 
+        CoordinateSystem coords = new CoordinateSystem(true);
+        coords.createDefaultSchematicRepresentation();
+        schematic.add(coords);
     }
 }
