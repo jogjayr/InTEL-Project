@@ -72,7 +72,7 @@ if (isset($problem["extra"])) {
 //main java apps
 if ($problem["type"] == "java") {
     $exerciseJar = $problem["java_jar_name"]; //"PurseProblem.jar";
-    $jarPath = "../applet/";
+    $jarPath = $appletFolder;
 
     $loader = "edu.gatech.statics.applet.AppletLoader";
     $loaderArchive = $jarPath . "AppletLoader.jar";

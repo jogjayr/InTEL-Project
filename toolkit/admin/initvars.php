@@ -13,6 +13,8 @@ $dbpassword = 'gt00www';
 $dbname = 'intel_dev';
 $dbserver = 'localhost';
 
+$appletFolder = '../applet-dev';
+
 $db = connect($dbserver, $dbusername, $dbpassword, $dbname);
 
 session_start();
