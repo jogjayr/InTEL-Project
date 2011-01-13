@@ -4,7 +4,11 @@
  */
 package simple3d;
 
+import edu.gatech.statics.Mode;
 import edu.gatech.statics.exercise.BodySubset;
+import edu.gatech.statics.exercise.Diagram;
+import edu.gatech.statics.exercise.DiagramKey;
+import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Vector3bd;
@@ -15,6 +19,9 @@ import edu.gatech.statics.modes.equation.ui.Equation3DModePanel;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
+import edu.gatech.statics.modes.findpoints.FindPointsDiagram;
+import edu.gatech.statics.modes.findpoints.FindPointsMode;
+import edu.gatech.statics.modes.findpoints.ui.FindPointsModePanel;
 import edu.gatech.statics.objects.CoordinateSystem;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
@@ -37,7 +44,25 @@ public class Simple3DExercise extends OrdinaryExercise {
         interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4, -1, 1);
         interfaceConfiguration.replaceModePanel(EquationModePanel.class, new Equation3DModePanel());
         interfaceConfiguration.replaceModePanel(FBDModePanel.class, new FBD3DModePanel());
+        interfaceConfiguration.getModePanels().add(new FindPointsModePanel());
         return interfaceConfiguration;
+    }
+
+    @Override
+    protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
+        if (type == FindPointsMode.instance.getDiagramType()) {
+            return new FindPointsDiagram();
+        }
+        return super.createNewDiagramImpl(key, type);
+    }
+
+    // ********
+    // Jay, to get rid of the find points thing, just comment out this function.
+    @Override
+    public Mode loadStartingMode() {
+        //return super.loadStartingMode();
+        FindPointsMode.instance.load();
+        return FindPointsMode.instance;
     }
 
     @Override
@@ -46,8 +71,6 @@ public class Simple3DExercise extends OrdinaryExercise {
         // instead of returning the basic EquationDiagram, returns EquationDiagram3d
         return new Equation3DDiagram(bodies);
     }
-
-
 
     @Override
     public Description getDescription() {
