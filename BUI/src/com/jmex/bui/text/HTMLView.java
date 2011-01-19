@@ -51,6 +51,8 @@ import com.jmex.bui.Log;
 import com.jmex.bui.util.Dimension;
 import com.jmex.bui.util.Insets;
 
+import javax.swing.text.html.parser.ParserDelegator ;
+
 /**
  * Displays HTML using Java's HTML rendering support to layout and render the
  * HTML. This is not a part of the text factory system as we're not going to
@@ -151,6 +153,8 @@ public class HTMLView extends BComponent
         // then parse the HTML document
         HTMLDocument document = new HTMLDocument(_style);
         try {
+            // ADDED LINE: MAYBE THIS WILL CAUSE THINGS TO NOT EXPLODE??
+            new ParserDelegator();
             _kit.read(new StringReader(contents), document, 0);
             setContents(document);
         } catch (Throwable t) {
