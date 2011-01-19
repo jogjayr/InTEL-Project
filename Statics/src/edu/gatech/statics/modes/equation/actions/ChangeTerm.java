@@ -8,7 +8,7 @@ import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 
 /**
@@ -49,13 +49,13 @@ public class ChangeTerm implements DiagramAction<EquationState> {
             return oldState;
         }
         EquationMathState oldMathState = builder.getEquationStates().get(equationName);
-        if(!(oldMathState instanceof MomentEquationMathState)) {
+        if(!(oldMathState instanceof Moment3DEquationMathState)) {
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
             mathBuilder.getTerms().put(load, coefficient);
             builder.putEquationState(mathBuilder.build());
 
         } else {
-            MomentEquationMathState.Builder mathBuilder = new MomentEquationMathState.Builder((MomentEquationMathState)mathState);
+            Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)mathState);
             mathBuilder.getTerms().put(load, new AnchoredVector(load.getAnchor(), null));
             builder.putEquationState(mathBuilder.build());
         }

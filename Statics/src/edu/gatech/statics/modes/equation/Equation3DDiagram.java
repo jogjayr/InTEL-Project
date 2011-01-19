@@ -8,7 +8,7 @@ package edu.gatech.statics.modes.equation;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationState.Builder;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.Worksheet;
 
@@ -33,7 +33,7 @@ public class Equation3DDiagram extends EquationDiagram {
         builder.getEquationStates().put("F[x]", (new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build()));
         builder.getEquationStates().put("F[y]", (new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build()));
         builder.getEquationStates().put("F[z]", (new TermEquationMathState.Builder("F[z]", false, null, Vector3bd.UNIT_Z).build()));
-        builder.getEquationStates().put("R x F", (new MomentEquationMathState.Builder("R x F", true, null, Vector3bd.UNIT_X).build()));
+        builder.getEquationStates().put("R x F", (new Moment3DEquationMathState.Builder("R x F", true, null, Vector3bd.UNIT_X).build()));
 
         /**
          * Initially not included in list of equations because only one moment equation is to be written at first: the R x F one

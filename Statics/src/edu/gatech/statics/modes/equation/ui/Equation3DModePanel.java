@@ -19,8 +19,8 @@ import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
@@ -59,12 +59,12 @@ public class Equation3DModePanel extends EquationModePanel {
             if (activeEquation instanceof ArbitraryEquationBar) {
                 //do nothing
                 //} else if (activeEquation.getMath().getState() instanceof TermEquationMathState) {
-            } else if (activeEquation instanceof MomentEquationBar) {
-                if (((MomentEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(load.getAnchoredVector())) {
+            } else if (activeEquation instanceof Moment3DEquationBar) {
+                if (((Moment3DEquationMathState) activeEquation.getMath().getState()).getTerms().containsKey(load.getAnchoredVector())) {
                     activeEquation.focusOnTerm(load.getAnchoredVector());
                 } else {
                     // otherwise, add it.
-                    ((MomentEquationBar) activeEquation).performAdd(load.getAnchoredVector());
+                    ((Moment3DEquationBar) activeEquation).performAdd(load.getAnchoredVector());
                 }
             } else if (activeEquation instanceof TermEquationBar) {
                 // if the term has already been added, select it.
@@ -189,12 +189,12 @@ public class Equation3DModePanel extends EquationModePanel {
         activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
         activeEquation.setBorder(new LineBorder(activeBorderColor));
     }
-    protected void addMoment3DEquationRow(MomentEquationMath math) {
+    protected void addMoment3DEquationRow(Moment3DEquationMath math) {
         
 
         final EquationUIData data = new EquationUIData();
 
-        data.equationBar = new MomentEquationBar(math, this);
+        data.equationBar = new Moment3DEquationBar(math, this);
         data.checkButton = new BButton("check", new ActionListener() {
         
             public void actionPerformed(ActionEvent event) {
@@ -339,9 +339,9 @@ public class Equation3DModePanel extends EquationModePanel {
         for (String mathName : diagram.getWorksheet().getEquationNames()) {
 
             EquationMath math = diagram.getWorksheet().getMath(mathName);
-            if (math instanceof MomentEquationMath) {
+            if (math instanceof Moment3DEquationMath) {
                 System.out.println("MomentEquationBar created");
-                addMoment3DEquationRow((MomentEquationMath) math);
+                addMoment3DEquationRow((Moment3DEquationMath) math);
             } else if (math instanceof TermEquationMath) {
                 System.out.println("TermEquationBar created");
                 addTermEquationRow((TermEquationMath) math);

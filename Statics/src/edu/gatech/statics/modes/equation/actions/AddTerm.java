@@ -11,7 +11,7 @@ import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import java.math.BigDecimal;
@@ -58,7 +58,7 @@ public class AddTerm implements DiagramAction<EquationState> {
         }
 
         EquationMathState oldMathState = builder.getEquationStates().get(equationName);
-        if(!(oldMathState instanceof MomentEquationMathState)) { //Used to check what kind of equation
+        if(!(oldMathState instanceof Moment3DEquationMathState)) { //Used to check what kind of equation
             //Here found not to be MomentEquationMathState; so either TermEquationMathState (most likely)
             //or ArbitraryEquationMathState (not even sure that exists)
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)(mathState));
@@ -66,7 +66,7 @@ public class AddTerm implements DiagramAction<EquationState> {
             builder.putEquationState(mathBuilder.build());
             
         } else { //MomentEquationMathState
-            MomentEquationMathState.Builder mathBuilder = new MomentEquationMathState.Builder((MomentEquationMathState)(mathState));
+            Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)(mathState));
             Point momentPoint = mathBuilder.getMomentPoint();
             Vector3bd pointOfForceApplication = load.getAnchor().getPosition();
             Vector3bd distanceVector = pointOfForceApplication.subtract(momentPoint.getPosition()) ;//.subtract(momentPoint.getPosition());

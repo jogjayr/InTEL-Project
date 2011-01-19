@@ -21,6 +21,7 @@ import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.event.TextEvent;
 import com.jmex.bui.event.TextListener;
 import com.jmex.bui.icon.ImageIcon;
+import com.jmex.bui.layout.BLayoutManager;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
@@ -34,8 +35,8 @@ import edu.gatech.statics.modes.equation.actions.ChangeTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMath;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.objects.VectorObject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
 
 /**
  *
@@ -54,14 +56,14 @@ import java.util.logging.Logger;
  * SigmaMz equation bars you should probably look elsewhere (Probably
  * TermEquationBar)
  */
-public class MomentEquationBar extends EquationBar {
+public class Moment3DEquationBar extends EquationBar {
 
     private BButton momentButton; //Present only for moment math. Pressing this sets the moment
-    private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, MomentEquationBar.TermBox>();
+    private Map<AnchoredVector, TermBox> terms = new HashMap<AnchoredVector, Moment3DEquationBar.TermBox>();
     //private Equation3DModePanel parent;
     private AnchoredVector currentHighlight;
 
-    public MomentEquationBar(EquationMath math, Equation3DModePanel parent) {
+    public Moment3DEquationBar(EquationMath math, Equation3DModePanel parent) {
         super(math, parent);
         this.math = math;
         super.parent = parent;
@@ -100,11 +102,11 @@ public class MomentEquationBar extends EquationBar {
         /** TO DO:
          * Handle our math differently
          */
-        if (math instanceof MomentEquationMath) {
+        if (math instanceof Moment3DEquationMath) {
             // we do special handling for moment math
             startContainer.add(new BLabel("R x F ["));
 
-            Point momentPoint = ((MomentEquationMathState) math.getState()).getMomentPoint();
+            Point momentPoint = ((Moment3DEquationMathState) math.getState()).getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
 
             momentButton = new BButton(pointName, new ActionListener() {
@@ -114,7 +116,7 @@ public class MomentEquationBar extends EquationBar {
                     selector.activate();
                     //System.out.println("Selected moment point");
                     // activate the bar when the button is pressed.
-                    parent.setActiveEquation(MomentEquationBar.this);
+                    parent.setActiveEquation(Moment3DEquationBar.this);
                 }
             }, "momentpoint");
 
@@ -143,7 +145,7 @@ public class MomentEquationBar extends EquationBar {
         private BLabel radiusLabel;
         //private BTextField coefficient;
         private BTextField radius;
-
+        
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
@@ -168,7 +170,7 @@ public class MomentEquationBar extends EquationBar {
 
         //This constructor exists for the day that we can build a termbox that allow selection of radius vector by clicking
         TermBox(final AnchoredVector source, final AnchoredVector radiusVector) {
-            super(new BorderLayout());
+            super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             this.source = source;
 
             if (source.isSymbol()) {
@@ -281,20 +283,21 @@ public class MomentEquationBar extends EquationBar {
 //            coefficient.addListener(mouseTestListener);
             addListener(mouseTestListener);
             try {
+
                 ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
-                add(radiusLabel, BorderLayout.CENTER);
-                add(new BLabel(icon), BorderLayout.CENTER);
-                add(sourceLabel, BorderLayout.CENTER);
+                add(radiusLabel);
+                add(new BLabel(icon));
+                add(sourceLabel);
 //            add(coefficient, BorderLayout.WEST);
                 setHighlight(false);
             } catch (IOException ex) {
-                Logger.getLogger(MomentEquationBar.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
 
         TermBox(final AnchoredVector source, final String radiusString) {
-            super(new BorderLayout());
+            super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             this.source = source;
 
             if (source.isSymbol()) {
@@ -338,13 +341,13 @@ public class MomentEquationBar extends EquationBar {
 
             try {
                 ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
-                add(radiusLabel, BorderLayout.CENTER);
-                add(new BLabel(icon), BorderLayout.CENTER);
-                add(sourceLabel, BorderLayout.CENTER);
+                add(radiusLabel);
+                add(new BLabel(icon));
+                add(sourceLabel);
 //            add(coefficient, BorderLayout.WEST);
                 setHighlight(false);
             } catch (IOException ex) {
-                Logger.getLogger(MomentEquationBar.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
@@ -378,7 +381,7 @@ public class MomentEquationBar extends EquationBar {
 
         //System.out.println("The momentbutton text should be changed");
         if (momentButton != null) {
-            Point momentPoint = ((MomentEquationMathState) math.getState()).getMomentPoint();
+            Point momentPoint = ((Moment3DEquationMathState) math.getState()).getMomentPoint();
             String momentName = momentPoint == null ? "?" : momentPoint.getName();
             momentButton.setText(momentName);
         }
@@ -387,7 +390,7 @@ public class MomentEquationBar extends EquationBar {
         List<TermBox> toRemove = new ArrayList<TermBox>();
 
         for (Map.Entry<AnchoredVector, TermBox> entry : terms.entrySet()) {
-            if (!((MomentEquationMathState) getMath().getState()).getTerms().containsKey(entry.getKey())) {
+            if (!((Moment3DEquationMathState) getMath().getState()).getTerms().containsKey(entry.getKey())) {
                 toRemove.add(entry.getValue());
             }
         }
@@ -400,7 +403,7 @@ public class MomentEquationBar extends EquationBar {
         // go through terms present in the state to add
         // make sure that the values are correct, as well.
         EquationMathState state = getMath().getState();
-        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((MomentEquationMathState) state).getTerms().entrySet()) {
+        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((Moment3DEquationMathState) state).getTerms().entrySet()) {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box

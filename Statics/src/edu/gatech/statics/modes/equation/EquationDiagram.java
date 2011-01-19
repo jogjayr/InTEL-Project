@@ -34,7 +34,7 @@ import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
-import edu.gatech.statics.modes.equation.worksheet.MomentEquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FBDState;
@@ -592,9 +592,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
 
                 // update the state in the builder.
                 builder.putEquationState(mathBuilder.build());
-            } else if (state instanceof MomentEquationMathState) {
+            } else if (state instanceof Moment3DEquationMathState) {
                 //TODO handle this case
-                MomentEquationMathState.Builder mathBuilder = new MomentEquationMathState.Builder((MomentEquationMathState) state);
+                Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState) state);
 
                 List<AnchoredVector> toRemove = new ArrayList<AnchoredVector>(mathBuilder.getTerms().keySet());
                 toRemove.removeAll(fbdLoads); // take out everything in the fbdLoads

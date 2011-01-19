@@ -15,7 +15,7 @@ import edu.gatech.statics.objects.Point;
  *
  * @author Jayraj
  */ 
-public class MomentEquationMathState extends EquationMathState {
+public class Moment3DEquationMathState extends EquationMathState {
 
     final private String name;
     final private boolean locked;
@@ -27,7 +27,7 @@ public class MomentEquationMathState extends EquationMathState {
     public Map<AnchoredVector, AnchoredVector> getTerms() {
         return terms;
     }
-    private MomentEquationMathState(Builder builder) {
+    private Moment3DEquationMathState(Builder builder) {
         if (builder.getName() == null || builder.getName().equals("")) {
             throw new IllegalArgumentException("Equation state must have a name!");
         }
@@ -59,7 +59,7 @@ public class MomentEquationMathState extends EquationMathState {
 
 
 
-    static public class Builder implements edu.gatech.statics.util.Builder<MomentEquationMathState>{
+    static public class Builder implements edu.gatech.statics.util.Builder<Moment3DEquationMathState>{
 
         private String name;
         private boolean locked;
@@ -75,7 +75,7 @@ public class MomentEquationMathState extends EquationMathState {
             this.observationDirection = observationDirection;
         }
 
-        public Builder (MomentEquationMathState state) {
+        public Builder (Moment3DEquationMathState state) {
             this.name = state.getName();
             this.terms.putAll(state.getTerms());
             this.locked = state.locked;
@@ -160,7 +160,7 @@ public class MomentEquationMathState extends EquationMathState {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MomentEquationMathState other = (MomentEquationMathState) obj;
+        final Moment3DEquationMathState other = (Moment3DEquationMathState) obj;
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
             return false;
         }
@@ -182,8 +182,8 @@ public class MomentEquationMathState extends EquationMathState {
         return true;
     }
 
-        public MomentEquationMathState build() {
-            return new MomentEquationMathState(this);
+        public Moment3DEquationMathState build() {
+            return new Moment3DEquationMathState(this);
         }
         
     }
