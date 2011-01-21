@@ -30,17 +30,15 @@ public class Equation3DDiagram extends EquationDiagram {
     @Override
     protected EquationState createInitialState() {
         Builder builder = new EquationState.Builder();
-        builder.getEquationStates().put("F[x]", (new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build()));
-        builder.getEquationStates().put("F[y]", (new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build()));
-        builder.getEquationStates().put("F[z]", (new TermEquationMathState.Builder("F[z]", false, null, Vector3bd.UNIT_Z).build()));
-        builder.getEquationStates().put("R x F", (new Moment3DEquationMathState.Builder("R x F", true, null, Vector3bd.UNIT_X).build()));
+        builder.getEquationStates().put("F[x]", new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build());
+        builder.getEquationStates().put("F[y]", new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build());
+        builder.getEquationStates().put("F[z]", new TermEquationMathState.Builder("F[z]", false, null, Vector3bd.UNIT_Z).build());
+        builder.getEquationStates().put("R x F", new Moment3DEquationMathState.Builder("R x F", true, null, Vector3bd.UNIT_X).build());
+        builder.getEquationStates().put("M[x]", new TermEquationMathState.Builder("M[x]", true, null, Vector3bd.UNIT_X).build());
+        builder.getEquationStates().put("M[y]", new TermEquationMathState.Builder("M[y]", true, null, Vector3bd.UNIT_Y).build());
+        builder.getEquationStates().put("M[z]", new TermEquationMathState.Builder("M[z]", true, null, Vector3bd.UNIT_Z).build());
 
-        /**
-         * Initially not included in list of equations because only one moment equation is to be written at first: the R x F one
-         */
-
-        /*builder.getEquationStates().put("My[p]", (new TermEquationMathState.Builder("My[p]", true, null, Vector3bd.UNIT_Y).build()));
-        builder.getEquationStates().put("Mz[p]", (new TermEquationMathState.Builder("Mz[p]", true, null, Vector3bd.UNIT_Z).build()));*/
+      
 
         if(worksheet == null) {
             worksheet = new Worksheet(this);

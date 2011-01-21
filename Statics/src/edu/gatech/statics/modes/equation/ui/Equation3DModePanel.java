@@ -16,7 +16,10 @@ import com.jmex.bui.event.MouseAdapter;
 import com.jmex.bui.event.MouseEvent;
 import com.jmex.bui.icon.ImageIcon;
 import com.jmex.bui.layout.BorderLayout;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.EquationState;
+import edu.gatech.statics.modes.equation.EquationState.Builder;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
@@ -251,6 +254,11 @@ public class Equation3DModePanel extends EquationModePanel {
             }
         }, "check");
 
+        if(math.getState().isMoment()) {
+            data.equationBar.setEnabled(false);
+            data.checkButton.setEnabled(false);
+            //data.addButton.setEnabled(false);
+        }
         addEquationData(math, data);
     }
 
@@ -282,8 +290,8 @@ public class Equation3DModePanel extends EquationModePanel {
             bar.setLocked();
 
             setCheckIcon(bar); 
-          
-
+            if(bar instanceof Moment3DEquationBar)
+                activateMomentTermEquations();
             performSolve(true);
         }
         else
@@ -326,7 +334,7 @@ public class Equation3DModePanel extends EquationModePanel {
         }
 
         EquationDiagram diagram = (EquationDiagram) getDiagram();
-        System.out.println("The type of diagram being used is: " + diagram.getClass().getName());
+        //System.out.println("The type of diagram being used is: " + diagram.getClass().getName());
 
         if (diagram.getBodySubset().getSpecialName() != null) {
             //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
@@ -340,10 +348,10 @@ public class Equation3DModePanel extends EquationModePanel {
 
             EquationMath math = diagram.getWorksheet().getMath(mathName);
             if (math instanceof Moment3DEquationMath) {
-                System.out.println("MomentEquationBar created");
+                //System.out.println("MomentEquationBar created");
                 addMoment3DEquationRow((Moment3DEquationMath) math);
             } else if (math instanceof TermEquationMath) {
-                System.out.println("TermEquationBar created");
+                //System.out.println("TermEquationBar created");
                 addTermEquationRow((TermEquationMath) math);
                 
             } else if (math instanceof ArbitraryEquationMath) {
@@ -363,6 +371,15 @@ public class Equation3DModePanel extends EquationModePanel {
 
         refreshRows();
         invalidate();
+    }
+
+    private void activateMomentTermEquations() {
+        for (EquationUIData data : ui3DMap.values()) {
+            if(!data.equationBar.isEnabled())
+            data.equationBar.setEnabled(true);
+            //data.addButton.setEnabled(true);
+            data.checkButton.setEnabled(true);
+        }
     }
 
    

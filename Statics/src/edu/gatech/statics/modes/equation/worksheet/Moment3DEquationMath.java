@@ -10,11 +10,9 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationDiagram;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,23 +42,42 @@ public class Moment3DEquationMath extends EquationMath {
     }
     public boolean check() {
         //System.out.println("Checking...");
+//        Moment3DEquationMathState state = (Moment3DEquationMathState)getState();
+//        Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
+//        Vector equationValue = new Vector(Unit.distance, Vector3bd.ZERO, new BigDecimal(0));
+//        System.out.println("Before calculation: equationValue = " + equationValue.toString());
+//        for(Map.Entry<AnchoredVector, AnchoredVector> term : terms.entrySet()) {
+//
+//            AnchoredVector force = term.getKey();
+//            AnchoredVector radius = term.getValue();
+//            Vector3bd temp = radius.getVectorValue().cross(force.getVectorValue());
+//            System.out.println(force.toString() + "x" + radius.toString() + " = " + temp.toString());
+//            equationValue.setVectorValue(temp.add(equationValue.getVectorValue()));
+//            System.out.println("Checking: equationValue = " + equationValue.toString());
+//        }
+//        if(equationValue.getVectorValue() == Vector3bd.ZERO)
+//            return true;
         Moment3DEquationMathState state = (Moment3DEquationMathState)getState();
-        Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
-        Vector equationValue = new Vector(Unit.distance, Vector3bd.ZERO, new BigDecimal(0));
-        System.out.println("Before calculation: equationValue = " + equationValue.toString());
-        for(Map.Entry<AnchoredVector, AnchoredVector> term : terms.entrySet()) {
-            
-            AnchoredVector force = term.getKey();
-            AnchoredVector radius = term.getValue();
-            Vector3bd temp = radius.getVectorValue().cross(force.getVectorValue());
-            System.out.println(force.toString() + "x" + radius.toString() + " = " + temp.toString());
-            equationValue.setVectorValue(temp.add(equationValue.getVectorValue()));
-            System.out.println("Checking: equationValue = " + equationValue.toString());
-        }
-        if(equationValue.getVectorValue() == Vector3bd.ZERO)
-            return true;
+        List<AnchoredVector> allLoads = diagram.getDiagramLoads();
+        ArrayList<AnchoredVector> loadsNotThruMomentPoint = new ArrayList<AnchoredVector>();
+        //Discarding loads whose vectors pass through the moment point
+        for(AnchoredVector load : allLoads) {
 
-        return false;
+            if(load.getAnchor() != state.getMomentPoint())
+                loadsNotThruMomentPoint.add(load);
+
+        }
+        if(allLoads.isEmpty())
+            return false;
+        Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
+        for(AnchoredVector load : loadsNotThruMomentPoint) {
+
+            if(!terms.containsKey(load))
+                return false;
+            
+
+        }
+        return true;
     }
 
     protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {
