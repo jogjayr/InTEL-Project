@@ -81,9 +81,9 @@ public abstract class SimpleFBDExercise extends OrdinaryExercise {
 
         @Override
         public void createModePanels() {
-            //List<ApplicationModePanel> r = getModePanels();
-            //r.add(new SelectModePanel());
-            //r.add(new FBDModePanel());
+            List<ApplicationModePanel> r = getModePanels();
+            r.add(new SelectModePanel());
+            r.add(new FBDModePanel());
         }
     }
 }
