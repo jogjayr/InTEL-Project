@@ -18,10 +18,12 @@ import java.util.Map;
 public class FindPointsState implements DiagramState<FindPointsDiagram> {
 
     private final Map<Point, String> pointValues;
+    private final Map<Point, Boolean> pointLocks;
     private final boolean locked;
 
     private FindPointsState(Builder builder) {
         this.pointValues = Collections.unmodifiableMap(new HashMap<Point, String>(builder.pointValues));
+        this.pointLocks = Collections.unmodifiableMap(new HashMap<Point, Boolean>(builder.pointLocks));
         this.locked = builder.locked;
     }
 
@@ -29,13 +31,46 @@ public class FindPointsState implements DiagramState<FindPointsDiagram> {
         return locked;
     }
 
+    public boolean isLocked(Point point) {
+        Boolean pointLocked = pointLocks.get(point);
+        if (pointLocked == null) {
+            return false;
+        }
+        return pointLocked;
+    }
+
     public Builder getBuilder() {
         return new Builder(this);
+    }
+
+    public String getX(Point point) {
+        String value = pointValues.get(point);
+        if (value == null) {
+            return "";
+        }
+        return parse(value).x;
+    }
+
+    public String getY(Point point) {
+        String value = pointValues.get(point);
+        if (value == null) {
+            return "";
+        }
+        return parse(value).y;
+    }
+
+    public String getZ(Point point) {
+        String value = pointValues.get(point);
+        if (value == null) {
+            return "";
+        }
+        return parse(value).z;
     }
 
     public static class Builder implements edu.gatech.statics.util.Builder<FindPointsState> {
 
         private Map<Point, String> pointValues = new HashMap<Point, String>();
+        private Map<Point, Boolean> pointLocks = new HashMap<Point, Boolean>();
         private boolean locked;
 
         public Builder() {
@@ -43,6 +78,7 @@ public class FindPointsState implements DiagramState<FindPointsDiagram> {
 
         private Builder(FindPointsState state) {
             this.pointValues.putAll(state.pointValues);
+            this.pointLocks.putAll(state.pointLocks);
             this.locked = state.locked;
         }
 
@@ -58,28 +94,20 @@ public class FindPointsState implements DiagramState<FindPointsDiagram> {
             return pointValues;
         }
 
+        public Map<Point, Boolean> getPointLocks() {
+            return pointLocks;
+        }
+
         public void setPointValues(Map<Point, String> pointValues) {
             this.pointValues = pointValues;
         }
 
-        public FindPointsState build() {
-            return new FindPointsState(this);
+        public void setPointLocks(Map<Point, Boolean> pointLocks) {
+            this.pointLocks = pointLocks;
         }
 
-        private static final class LabelTriple {
-
-            String x, y, z;
-
-            @Override
-            public String toString() {
-                StringBuilder sb = new StringBuilder();
-                sb.append(x);
-                sb.append(":");
-                sb.append(y);
-                sb.append(":");
-                sb.append(z);
-                return sb.toString();
-            }
+        public FindPointsState build() {
+            return new FindPointsState(this);
         }
 
         public void setX(Point point, String xValue) {
@@ -120,14 +148,31 @@ public class FindPointsState implements DiagramState<FindPointsDiagram> {
             lt.z = zValue;
             pointValues.put(point, lt.toString());
         }
+    }
 
-        private LabelTriple parse(String s) {
-            String[] split = s.split(":");
-            LabelTriple lt = new LabelTriple();
-            lt.x = split[0];
-            lt.y = split[1];
-            lt.z = split[2];
-            return lt;
+    private static final class LabelTriple {
+
+        String x = "", y = "", z = "";
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(x);
+            sb.append(":");
+            sb.append(y);
+            sb.append(":");
+            sb.append(z);
+            return sb.toString();
         }
+    }
+
+    private static LabelTriple parse(String s) {
+        String[] split = s.split(":", 3);
+        LabelTriple lt = new LabelTriple();
+
+        lt.x = split[0];
+        lt.y = split[1];
+        lt.z = split[2];
+        return lt;
     }
 }

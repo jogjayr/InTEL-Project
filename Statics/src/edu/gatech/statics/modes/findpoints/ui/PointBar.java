@@ -11,6 +11,7 @@ import com.jmex.bui.BTextField;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.modes.findpoints.FindPointsState;
 import edu.gatech.statics.modes.findpoints.actions.SetCoordinateAction;
 import edu.gatech.statics.modes.findpoints.actions.SetCoordinateAction.Coord;
 import edu.gatech.statics.objects.Point;
@@ -25,9 +26,11 @@ public class PointBar extends BContainer {
     private Point point;
     private BTextField xValue, yValue, zValue;
     private BButton checkButton;
+    private FindPointsModePanel modePanel;
 
-    public PointBar(Point point) {
+    public PointBar(final FindPointsModePanel modePanel, final Point point) {
         this.point = point;
+        this.modePanel = modePanel;
 
         setLayoutManager(GroupLayout.makeHoriz(GroupLayout.LEFT));
 //        add(new BLabel("point: "+point.getName()), BorderLayout.WEST);
@@ -41,6 +44,12 @@ public class PointBar extends BContainer {
         add(new BLabel("z: "));
         add(zValue = new CoordTextField(Coord.z));
 
+        FindPointsState state = modePanel.getDiagram().getCurrentState();
+
+        xValue.setText(state.getX(point));
+        yValue.setText(state.getY(point));
+        zValue.setText(state.getZ(point));
+
         xValue.setPreferredWidth(100);
         yValue.setPreferredWidth(100);
         zValue.setPreferredWidth(100);
@@ -52,13 +61,24 @@ public class PointBar extends BContainer {
         add(checkButton = new NextButton("Check", new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
-                onCheck();
+//                onCheck();
+                if(modePanel.getDiagram().checkPoint(point, xValue.getText(), yValue.getText(), zValue.getText()))
+                    lockBar();
             }
         }, "check"));
         checkButton.setStyleClass("");
+
+        if (state.isLocked(point)) {
+            lockBar();
+        }
     }
 
-    protected void onCheck() {
+    private void lockBar() {
+
+        xValue.setEnabled(false);
+        yValue.setEnabled(false);
+        zValue.setEnabled(false);
+        checkButton.setEnabled(false);
     }
 
     private class CoordTextField extends BTextField {
@@ -75,6 +95,7 @@ public class PointBar extends BContainer {
             SetCoordinateAction action = new SetCoordinateAction(point, coord, getText());
 
             //DIAGRAM
+            modePanel.getDiagram().performAction(action);
         }
     }
 }

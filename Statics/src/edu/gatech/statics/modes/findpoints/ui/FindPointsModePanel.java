@@ -56,12 +56,11 @@ public class FindPointsModePanel extends ApplicationModePanel<FindPointsDiagram>
         for (SimulationObject simulationObject : Diagram.getSchematic().allObjects()) {
             if(simulationObject instanceof Point) {
                 Point point = (Point) simulationObject;
-                PointBar pointBar = new PointBar(point);
+                PointBar pointBar = new PointBar(this, point);
                 mainContainer.add(pointBar);
                 pointBars.put(point, pointBar);
             }
         }
     }
-
 
 }

@@ -94,7 +94,13 @@ public class ChromaButton extends BButton {
                 // ASSIGN TO THE BACKGROUND
                 BImage bImg = new BImage(image);
                 ImageBackground oldBackground = (ImageBackground) _backgrounds[i];
-                ImageBackground newBackground = new ImageBackground(ImageBackground.FRAME_XY, bImg, oldBackground.getFrame());
+//                ImageBackground newBackground = new ImageBackground(ImageBackground.FRAME_XY, bImg, oldBackground.getFrame());
+                ImageBackground newBackground;
+                if (oldBackground == null) {
+                    newBackground = new ImageBackground(ImageBackground.FRAME_XY, bImg);
+                } else {
+                    newBackground = new ImageBackground(ImageBackground.FRAME_XY, bImg, oldBackground.getFrame());
+                }
 
                 setBackground(i, newBackground);
 

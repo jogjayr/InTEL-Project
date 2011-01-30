@@ -186,6 +186,9 @@ public class Parser {
         return new AffineQuantity(constant, multiplier, symbolName);
     }
 
+    /**
+     * This may return null if the expression fails to evaluate.
+     */
     public static BigDecimal evaluate(String expression) {
         // parse non-symbolic expressions
         BigDecimal result = new Parser().evaluateInternal(expression);

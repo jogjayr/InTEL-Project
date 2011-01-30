@@ -56,6 +56,14 @@ public class Simple3DExercise extends OrdinaryExercise {
         return super.createNewDiagramImpl(key, type);
     }
 
+    @Override
+    public boolean supportsType(DiagramType type) {
+        return type == FindPointsMode.instance.getDiagramType() ||
+                super.supportsType(type);
+    }
+
+
+
     // ********
     // Jay, to get rid of the find points thing, just comment out this function.
     @Override
