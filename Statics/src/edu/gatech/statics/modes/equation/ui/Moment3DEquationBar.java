@@ -135,8 +135,8 @@ public class Moment3DEquationBar extends EquationBar {
     private class TermBox extends BContainer {
 
         private AnchoredVector source;
-        private Point pointOfForceApplication;
-        private AnchoredVector radiusVector;
+//        private Point pointOfForceApplication;
+        private AnchoredVector momentArm;
 
         AnchoredVector getSource() {
             return source;
@@ -144,7 +144,7 @@ public class Moment3DEquationBar extends EquationBar {
         private BLabel sourceLabel;
         private BLabel radiusLabel;
         //private BTextField coefficient;
-        private BTextField radius;
+        private BTextField momentArmField;
         
         void setHighlight(boolean highlight) {
             if (highlight) {
@@ -157,19 +157,19 @@ public class Moment3DEquationBar extends EquationBar {
             invalidate();
         }
 
-        void setRadiusVector(AnchoredVector radiusVector) {
-            this.radiusVector = radiusVector;
+        void setMomentArm(AnchoredVector momentArm) {
+            this.momentArm = momentArm;
         }
 
-        /*void setCoefficient(AnchoredVector radiusVector) {
-        this.coefficient.setText(radiusVector);
+        /*void setCoefficient(AnchoredVector momentArm) {
+        this.coefficient.setText(momentArm);
         }*/
         TermBox(AnchoredVector source) {
             this(source, new AnchoredVector(source.getAnchor(), null));
         }
 
-        //This constructor exists for the day that we can build a termbox that allow selection of radius vector by clicking
-        TermBox(final AnchoredVector source, final AnchoredVector radiusVector) {
+        //This constructor exists for the day that we can build a termbox that allow selection of momentArmField vector by clicking
+        TermBox(final AnchoredVector source, final AnchoredVector momentArm) {
             super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             this.source = source;
 
@@ -180,9 +180,9 @@ public class Moment3DEquationBar extends EquationBar {
             }
             sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
 
-            radiusLabel = new BLabel(radiusVector.getSymbolName());
+            radiusLabel = new BLabel(momentArm.getSymbolName());
 
-            /* this.radius = new BTextField(radiusVector.getSymbolName()) {
+            this.momentArmField = new BTextField(momentArm.getSymbolName()) {
 
                 @Override
                 protected void lostFocus() {
@@ -190,7 +190,7 @@ public class Moment3DEquationBar extends EquationBar {
                     // if the box has lost focus, post a change term event.
                     // but do not post if the box has been removed.
                     if (isAdded()) {
-                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, radiusVector);
+                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, momentArm);
                         // it is possible that the ui shift is to a different diagram, so check before using.
                         if (parent.getDiagram() instanceof EquationDiagram) {
                             parent.getDiagram().performAction(changeTermEvent);
@@ -208,16 +208,16 @@ public class Moment3DEquationBar extends EquationBar {
                     return result;
                 }
             };
-            radius.setStyleClass("textfield_appbar");
-            radius.setPreferredWidth(10);
+            momentArmField.setStyleClass("textfield_appbar");
+            momentArmField.setPreferredWidth(10);
 
-            radius.addListener(new TextListener() {
+            momentArmField.addListener(new TextListener() {
 
                 public void textChanged(TextEvent event) {
-                    Dimension dim = radius.getPreferredSize(0, 0);
-                    radius.setSize(dim.width, dim.height);
+                    Dimension dim = momentArmField.getPreferredSize(0, 0);
+                    momentArmField.setSize(dim.width, dim.height);
 
-                    MomentEquationBar.this.invalidate();
+                    Moment3DEquationBar.this.invalidate();
                     //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
                     //EquationBar.this.setSize(preferredSize.);
                     parent.refreshRows();
@@ -225,7 +225,7 @@ public class Moment3DEquationBar extends EquationBar {
                     }
             });
 
-            radius.addListener(new KeyListener() {
+            momentArmField.addListener(new KeyListener() {
                 // key release event occurs after the text has been adjusted.
                 // thus if we remove this right away, the user will see the box disappear after deleting
                 // only one character. With this, we check to see if this deletion was the last before destroying.
@@ -234,24 +234,24 @@ public class Moment3DEquationBar extends EquationBar {
 
                 public void keyReleased(KeyEvent event) {
                     System.out.println("*** KEY RELEASED " + event.getKeyCode());
-                    if (radius.getText().length() == 0 &&*/
-//                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-//                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
-//                    {
-//                       if (destroyOK) {
-//                            performRemove(source);
-//                            } else {
-//                            destroyOK = true;
-//                        }
-//                    } else {
-//                        destroyOK = false;
-//                    }
-//                }
+                    if (//momentArmField.getText().length() == 0 &&
+                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
+                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
+                    {
+                       if (destroyOK) {
+                            performRemove(source);
+                            } else {
+                            destroyOK = true;
+                        }
+                    } else {
+                        destroyOK = false;
+                    }
+                }
 
-//                public void keyPressed(KeyEvent event) {
-//                    destroyOK = false;
-//                }
-//            });
+                public void keyPressed(KeyEvent event) {
+                    destroyOK = false;
+                }
+            });
 
             MouseListener mouseTestListener = new MouseListener() {
 
@@ -271,7 +271,8 @@ public class Moment3DEquationBar extends EquationBar {
 
                 public void mousePressed(MouseEvent event) {
                     if (!locked) {
-                        //coefficient.requestFocus();
+                        //momentArmField.requestFocus();
+                        
                     }
                 }
 
@@ -306,7 +307,7 @@ public class Moment3DEquationBar extends EquationBar {
                 sourceLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
             }
             sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
-            radiusLabel = new BLabel(radiusVector.getSymbolName());
+            radiusLabel = new BLabel(momentArm.getSymbolName());
 
 
             MouseListener mouseTestListener = new MouseListener() {
@@ -409,7 +410,7 @@ public class Moment3DEquationBar extends EquationBar {
                 // we do not have an existing term box
                 addBox(entry.getKey(), entry.getValue());
             } else {
-                box.setRadiusVector(entry.getValue());
+                box.setMomentArm(entry.getValue());
             }
         }
     }
@@ -462,7 +463,7 @@ public class Moment3DEquationBar extends EquationBar {
 
     public void setUnlocked() {
         for (TermBox box : terms.values()) {
-            box.radius.setEnabled(true);
+            box.momentArmField.setEnabled(true);
         }
         locked = false;
 

@@ -647,6 +647,13 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
                             DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
                 }
+            } else if(equationMathState instanceof Moment3DEquationMathState) {
+                Moment3DEquationMathState termState = (Moment3DEquationMathState) equationMathState;
+                if(termState.getMomentPoint() != null) {
+                    CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
+                            DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
+                }
+
             }
         }
 //        if (getMomentPoint() != null) {

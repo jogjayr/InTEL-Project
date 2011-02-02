@@ -116,8 +116,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         // ie, remove rows that are no longer present.
         // rows are added elsewhere, though. (Should that get moved here?)
         List<EquationMath> toRemove = new ArrayList<EquationMath>();
+        ArrayList<String> equationNames = (ArrayList<String>) getDiagram().getWorksheet().getEquationNames();
         for (EquationMath equationMath : uiMap.keySet()) {
-            if (!getDiagram().getWorksheet().getEquationNames().contains(equationMath.getName())) {
+            if (!equationNames.contains(equationMath.getName())) {
                 // the entry in uiMap is NOT present in the worksheet list of names, so mark it for removal.
                 toRemove.add(equationMath);
             }
@@ -495,8 +496,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
 
         diagram.getWorksheet().updateEquations();
-
-        for (String mathName : diagram.getWorksheet().getEquationNames()) {
+        ArrayList<String> equationNames = (ArrayList<String>) diagram.getWorksheet().getEquationNames();
+        for (String mathName : equationNames) {
             
             EquationMath math = diagram.getWorksheet().getMath(mathName);
             if (math instanceof TermEquationMath) {

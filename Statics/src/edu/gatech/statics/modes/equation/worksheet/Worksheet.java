@@ -55,7 +55,9 @@ public class Worksheet {
     }
 
     public List<String> getEquationNames() {
-        return new ArrayList(equations.keySet());
+        ArrayList<String> equationNames = new ArrayList<String>(equations.keySet());
+        System.out.println("getEquationName called");
+        return equationNames;
     }
 
     public List<String> getEquationStateNames() {
@@ -96,7 +98,8 @@ public class Worksheet {
         }
 
         //remove math not present in state but present in the equation list
-        for (String names : getEquationNames()) {
+        ArrayList<String> equationNames = (ArrayList<String>) getEquationNames();
+        for (String names : equationNames) {
             if (!diagram.getCurrentState().getEquationStates().containsKey(names)) {
                 equations.remove(names);
             }

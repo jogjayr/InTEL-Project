@@ -124,8 +124,9 @@ public class Equation3DModePanel extends EquationModePanel {
         // ie, remove rows that are no longer present.
         // rows are added elsewhere, though. (Should that get moved here?)
         List<EquationMath> toRemove = new ArrayList<EquationMath>();
+        ArrayList<String> equationNames = (ArrayList<String>) getDiagram().getWorksheet().getEquationNames();
         for (EquationMath equationMath : ui3DMap.keySet()) {
-            if (!getDiagram().getWorksheet().getEquationNames().contains(equationMath.getName())) {
+            if (!equationNames.contains(equationMath.getName())) {
                 // the entry in uiMap is NOT present in the worksheet list of names, so mark it for removal.
                 toRemove.add(equationMath);
             }
@@ -196,7 +197,7 @@ public class Equation3DModePanel extends EquationModePanel {
         
 
         final EquationUIData data = new EquationUIData();
-
+        //System.out.println("Momentequation3dRow is added");
         data.equationBar = new Moment3DEquationBar(math, this);
         data.checkButton = new BButton("check", new ActionListener() {
         
@@ -245,7 +246,7 @@ public class Equation3DModePanel extends EquationModePanel {
     @Override
     protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
-
+        //System.out.println("Add termequationrow called");
         data.equationBar = new TermEquationBar(math, this);
         data.checkButton = new BButton("check", new ActionListener() {
 
@@ -343,17 +344,31 @@ public class Equation3DModePanel extends EquationModePanel {
         }
 
         diagram.getWorksheet().updateEquations();
+        //System.out.println("Size of equationdiagram list"+diagram.getWorksheet().getEquationNames().size());
+        //Here and elsewhere, calls to getEquationNames on every pass of a for loop have been replaced with a
+        //variable that contaiins the value of getEquationNames. So getEquationNames is only called once.
+        ArrayList<String> equationNames = (ArrayList<String>) diagram.getWorksheet().getEquationNames();
+        ArrayList<String> equationNamesModded = new ArrayList<String>();
 
-        for (String mathName : diagram.getWorksheet().getEquationNames()) {
-
+        //Manually reordering the equation names in this array to make the three moment equations come last
+        equationNamesModded.add(equationNames.get(0));
+        equationNamesModded.add(equationNames.get(1));
+        equationNamesModded.add(equationNames.get(2));
+        equationNamesModded.add(equationNames.get(6));
+        equationNamesModded.add(equationNames.get(3));
+        equationNamesModded.add(equationNames.get(4));
+        equationNamesModded.add(equationNames.get(5));
+        equationNames = equationNamesModded;
+        for (String mathName : equationNames) {
+            
             EquationMath math = diagram.getWorksheet().getMath(mathName);
+            
             if (math instanceof Moment3DEquationMath) {
                 //System.out.println("MomentEquationBar created");
                 addMoment3DEquationRow((Moment3DEquationMath) math);
             } else if (math instanceof TermEquationMath) {
                 //System.out.println("TermEquationBar created");
-                addTermEquationRow((TermEquationMath) math);
-                
+                addTermEquationRow((TermEquationMath) math);                
             } else if (math instanceof ArbitraryEquationMath) {
                 addArbitraryEquationRow((ArbitraryEquationMath) math);
             } else {
@@ -375,10 +390,11 @@ public class Equation3DModePanel extends EquationModePanel {
 
     private void activateMomentTermEquations() {
         for (EquationUIData data : ui3DMap.values()) {
-            if(!data.equationBar.isEnabled())
-            data.equationBar.setEnabled(true);
-            //data.addButton.setEnabled(true);
-            data.checkButton.setEnabled(true);
+            if(!data.equationBar.isEnabled() && !data.checkButton.isEnabled())
+            {
+                data.equationBar.setEnabled(true);
+                data.checkButton.setEnabled(true);
+            }
         }
     }
 

@@ -182,12 +182,26 @@ public class Moment3DEquationMathState extends EquationMathState {
         return true;
     }
 
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 89 * hash + (this.name != null ? this.name.hashCode() : 0);
+            hash = 89 * hash + (this.locked ? 1 : 0);
+            hash = 89 * hash + (this.terms != null ? this.terms.hashCode() : 0);
+            hash = 89 * hash + (this.isMoment ? 1 : 0);
+            hash = 89 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
+            hash = 89 * hash + (this.observationDirection != null ? this.observationDirection.hashCode() : 0);
+            return hash;
+        }
+
         public Moment3DEquationMathState build() {
             return new Moment3DEquationMathState(this);
         }
         
     }
 
+   
+    
     @Override
     public String toString() {
         return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment="+isMoment+", momentPoint="+momentPoint+", observationDirection="+observationDirection+"}";
