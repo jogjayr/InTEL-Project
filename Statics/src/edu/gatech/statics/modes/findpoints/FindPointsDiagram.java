@@ -13,6 +13,7 @@ import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.SimulationObject;
 import edu.gatech.statics.util.SelectionFilter;
+import edu.gatech.statics.util.SolveListener;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -92,6 +93,11 @@ public class FindPointsDiagram extends Diagram<FindPointsState> {
 
             pushState(builder.build());
             clearStateStack();
+
+            // update knowns containers:
+            for (SolveListener listener : StaticsApplication.getApp().getSolveListeners()) {
+                listener.onLoadSolved(null);
+            }
 
             // are all points solved?
             if (allLocked()) {

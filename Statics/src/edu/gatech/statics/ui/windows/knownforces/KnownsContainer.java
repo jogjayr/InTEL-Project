@@ -16,6 +16,8 @@ import edu.gatech.statics.modes.centroid.CentroidBody;
 import edu.gatech.statics.modes.centroid.CentroidDiagram;
 import edu.gatech.statics.modes.centroid.CentroidMode;
 import edu.gatech.statics.modes.centroid.objects.CentroidPartObject;
+import edu.gatech.statics.modes.findpoints.FindPointsDiagram;
+import edu.gatech.statics.modes.findpoints.FindPointsMode;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.Connector;
 import edu.gatech.statics.objects.ConstantObject;
@@ -105,15 +107,31 @@ public class KnownsContainer extends BContainer implements SolveListener {
             writeConstantObject(constObj);
         }
 
-        if (obj instanceof CentroidBody){
+        if (obj instanceof CentroidBody) {
             CentroidBody cb = (CentroidBody) obj;
             writeCentroidBody(cb);
+        }
+
+        if (obj instanceof Point) {
+            Point point = (Point) obj;
+            FindPointsDiagram diagram = (FindPointsDiagram) Exercise.getExercise().getDiagram(null, FindPointsMode.instance.getDiagramType());
+            if (diagram != null && diagram.getCurrentState().isLocked(point)) {
+                writePoint(point, diagram);
+            }
         }
 
 //        if (obj instanceof CentroidPartObject) {
 //            CentroidPartObject cpo = (CentroidPartObject) obj;
 //            writeCentroidPartObject(cpo);
 //        }
+    }
+
+    protected void writePoint(Point point, FindPointsDiagram findPointsDiagram) {
+        //******8
+        BLabel label = new BLabel("@=b("+point.getName()+")");
+        add(label);
+        label = new BLabel(point.getPosition().toString());
+        add(label);
     }
 
     protected void writeWeightReaction(Body body) {
@@ -202,8 +220,8 @@ public class KnownsContainer extends BContainer implements SolveListener {
         add(label2);
     }
 
-    protected void writeCentroidBody(CentroidBody cb){
-        CentroidDiagram cDiagram = (CentroidDiagram)Exercise.getExercise().getDiagram(cb, CentroidMode.instance.getDiagramType());
+    protected void writeCentroidBody(CentroidBody cb) {
+        CentroidDiagram cDiagram = (CentroidDiagram) Exercise.getExercise().getDiagram(cb, CentroidMode.instance.getDiagramType());
 
         BigDecimal surfaceArea = new BigDecimal("0.0");
 
@@ -211,7 +229,7 @@ public class KnownsContainer extends BContainer implements SolveListener {
             surfaceArea = surfaceArea.add(cpo.getCentroidPart().getSurfaceArea());
         }
 
-        if(cDiagram != null && cDiagram.getCurrentState() != null && cDiagram.isSolved()) {
+        if (cDiagram != null && cDiagram.getCurrentState() != null && cDiagram.isSolved()) {
             BLabel label1 = new BLabel(" @=b#ff0000(" + cb.getName() + ")");
             BLabel label2 = new BLabel("Surface area: @=b(" + surfaceArea + ")");
             BLabel label3 = new BLabel("Center X: @=b(" + cb.getCenterOfMass().getPosition().getX().toString() + ")");
@@ -246,7 +264,6 @@ public class KnownsContainer extends BContainer implements SolveListener {
 //            add(label4);
 ////        }
 //    }
-
     protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
         if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
