@@ -388,6 +388,9 @@ public class Parser {
         if (token.equals("/")) {
             return new BinaryNode(BinaryNode.Operation.divide);
         }
+        if (token.equals("^")) {
+            return new BinaryNode(BinaryNode.Operation.pow);
+        }
         if (token.equals("(")) {
             return new UnaryNode(UnaryNode.Operation.identity);
         }

@@ -35,6 +35,7 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 
 import edu.gatech.statics.modes.fbd.actions.RemoveLoad;
 import edu.gatech.statics.objects.Load;
+import edu.gatech.statics.ui.components.ChromaButton;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 
 /**
@@ -123,6 +124,10 @@ public class LabelSelector /*extends SelectionTool*/ {
                         diagram.performAction(removeLoadAction);
                     }
                     dismiss();
+                } else if (event.getAction().equals("delete")) {
+                    RemoveLoad removeLoadAction = new RemoveLoad(load.getAnchoredVector());
+                    diagram.performAction(removeLoadAction);
+                    dismiss();
                 } else {
                     // try to set the label to be the new value
                     boolean success = labelListener.onLabel(textfield.getText());
@@ -140,6 +145,10 @@ public class LabelSelector /*extends SelectionTool*/ {
         buttonContainer.add(okButton, BorderLayout.CENTER);
         BButton cancelButton = new BButton("Cancel", listener, "cancel");
         buttonContainer.add(cancelButton, BorderLayout.WEST);
+        if (!isCreating) {
+            BButton deleteButton = new ChromaButton("rsrc/interfaceTextures/button",ColorRGBA.red,"Delete", listener, "delete");
+            buttonContainer.add(deleteButton, BorderLayout.EAST);
+        }
 
         popup.add(buttonContainer, BorderLayout.SOUTH);
 

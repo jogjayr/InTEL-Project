@@ -10,6 +10,7 @@ package edu.gatech.statics.math.expressionparser;
 
 import edu.gatech.statics.math.Unit;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
@@ -21,10 +22,10 @@ class BinaryNode extends Node {
     enum Operation {
 
         add, subtract,
-        multiply, divide
+        multiply, divide, pow
     };
     private Operation operation;
-    private Node child1,  child2;
+    private Node child1, child2;
 
     public Operation getOperation() {
         return operation;
@@ -69,6 +70,12 @@ class BinaryNode extends Node {
                 } catch (ArithmeticException ex) {
                     return null;
                 }
+            case pow:
+                try {
+                    return new BigDecimal(Math.pow(result1.doubleValue(), result2.doubleValue()), new MathContext(Unit.getGlobalPrecision()));
+                } catch (ArithmeticException ex) {
+                    return null;
+                }
             default:
                 return null;
         }
@@ -94,6 +101,8 @@ class BinaryNode extends Node {
                 return child1.printout() + "*" + child2.printout();
             case divide:
                 return child1.printout() + "/" + child2.printout();
+            case pow:
+                return child1.printout() + "^" + child2.printout();
             default:
                 return "???";
         }
