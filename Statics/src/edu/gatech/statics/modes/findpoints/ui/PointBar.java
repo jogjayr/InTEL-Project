@@ -68,12 +68,12 @@ public class PointBar extends BContainer {
         }, "check"));
         checkButton.setStyleClass("");
 
-        if (state.isLocked(point)) {
-            lockBar();
-        }
+//        if (state.isLocked(point)) {
+//            lockBar();
+//        }
     }
 
-    private void lockBar() {
+    public void lockBar() {
 
         xValue.setEnabled(false);
         yValue.setEnabled(false);

@@ -28,7 +28,6 @@ public class FindPointsModePanel extends ApplicationModePanel<FindPointsDiagram>
     public DiagramType getDiagramType() {
         return FindPointsMode.instance.getDiagramType();
     }
-
     private BContainer mainContainer;
     private BScrollPane mainScrollPane;
     private Map<Point, PointBar> pointBars = new HashMap<Point, PointBar>();
@@ -54,13 +53,16 @@ public class FindPointsModePanel extends ApplicationModePanel<FindPointsDiagram>
 
         // refresh
         for (SimulationObject simulationObject : Diagram.getSchematic().allObjects()) {
-            if(simulationObject instanceof Point) {
+            if (simulationObject instanceof Point) {
                 Point point = (Point) simulationObject;
                 PointBar pointBar = new PointBar(this, point);
                 mainContainer.add(pointBar);
                 pointBars.put(point, pointBar);
+
+                if (getDiagram().getCurrentState().isLocked(point)) {
+                    pointBar.lockBar();
+                }
             }
         }
     }
-
 }

@@ -87,8 +87,8 @@ application_popup {
 
 application_popup_navigator {
     //background: solid #cbd1f0;
-    background: solid #99a2e544;
-    border: 1 solid #00000044;
+    background: solid #99a2e5aa;
+    border: 1 solid #000000aa;
     padding: 2;
 }
 

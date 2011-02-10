@@ -66,12 +66,12 @@ public class Simple3DExercise extends OrdinaryExercise {
 
     // ********
     // Jay, to get rid of the find points thing, just comment out this function.
-//    @Override
-//    public Mode loadStartingMode() {
-//        //return super.loadStartingMode();
-//        FindPointsMode.instance.load();
-//        return FindPointsMode.instance;
-//    }
+    @Override
+    public Mode loadStartingMode() {
+        //return super.loadStartingMode();
+        FindPointsMode.instance.load();
+        return FindPointsMode.instance;
+    }
 
     @Override
     protected EquationDiagram createEquationDiagram(BodySubset bodies) {
