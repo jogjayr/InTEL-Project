@@ -146,6 +146,7 @@ public class CentergyFrameExercise extends DistributedExercise {
         int arrowDensity = 2;
         distributedtrussObject.createDefaultSchematicRepresentation(18f / 6, 2 * arrowDensity, 1.75f);
 
+
         //creating distance measurement between points
         DistanceMeasurement measureFull = new DistanceMeasurement(A, F);
         measureFull.createDefaultSchematicRepresentation();

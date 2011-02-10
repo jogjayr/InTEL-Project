@@ -9,15 +9,15 @@ import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import edu.gatech.statics.Representation;
-import edu.gatech.statics.RepresentationLayer;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Body;
 import edu.gatech.statics.objects.DistanceMeasurement;
+import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Beam;
 import edu.gatech.statics.objects.connectors.Fix2d;
@@ -109,6 +109,11 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         horizontalDistance.createDefaultSchematicRepresentation();
         world.add(horizontalDistance);
 
+        Force weightB = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(14700));
+        weightB.setName("Weight B");
+        weightB.createDefaultSchematicRepresentation();
+
+
         Fix2d jointA = new Fix2d(A);
 
         A.createDefaultSchematicRepresentation();
@@ -119,7 +124,12 @@ public class SimpleTowerExercise extends SimpleFBDExercise {
         tower.setCenterOfMassPoint(G);
         tower.createDefaultSchematicRepresentation();
         tower.getWeight().setDiagramValue(new BigDecimal("14700"));
+        
+        tower.addObject(weightB);
+
         world.add(tower);
+
+        
 
         jointA.attachToWorld(tower);
 

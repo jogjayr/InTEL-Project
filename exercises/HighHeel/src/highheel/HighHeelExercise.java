@@ -106,6 +106,9 @@ public class HighHeelExercise extends DistributedExercise {
 
        DistributedForceObject distributedhighheelObject = new DistributedForceObject(distributedhighheel, "1");
 
+       int arrowDensity = 2;
+       distributedhighheelObject.createDefaultSchematicRepresentation(18f / 6, 1 * arrowDensity, 0.75f);
+
        distributedhighheelObject.createDefaultSchematicRepresentation();
        AB.addObject(distributedhighheelObject);
        schematic.add(distributedhighheelObject);
@@ -118,6 +121,9 @@ public class HighHeelExercise extends DistributedExercise {
        Pin2d pinH = new Pin2d(H);
        pinH.setName("Pin H");
        pinH.attachToWorld(GGO);
+
+       int arrowDensityGGO = 2;
+       distributedhighheelGGOObject.createDefaultSchematicRepresentation(18f / 6, 1 * arrowDensityGGO, 0.75f);
 
        distributedhighheelGGOObject.createDefaultSchematicRepresentation();
        GGO.addObject(distributedhighheelGGOObject);

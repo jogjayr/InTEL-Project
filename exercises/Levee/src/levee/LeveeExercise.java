@@ -45,7 +45,7 @@ public class LeveeExercise extends DistributedExercise {
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-15f, 15f, 1f, 14f);
-        vc.setZoomConstraints(0.35f, 0.8f);
+        vc.setZoomConstraints(0.5f, 2f);
         vc.setRotationConstraints(-1, 1);
         interfaceConfiguration.setViewConstraints(vc);
         return interfaceConfiguration;

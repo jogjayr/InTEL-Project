@@ -43,7 +43,7 @@ public class SpaceStationExercise extends CentroidExercise {
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-5f, 5f, -4f, 6f);
-        vc.setZoomConstraints(0.5f, 1.5f);
+        vc.setZoomConstraints(0.5f, 2f);
         vc.setRotationConstraints(-1, 1, -1, 1);
         interfaceConfiguration.setViewConstraints(vc);
 //        DisplayConstants dc = new DisplayConstants();

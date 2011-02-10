@@ -30,8 +30,8 @@ import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.modes.equation.ui.Default3DInterfaceConfiguration;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
@@ -88,8 +88,8 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
             }
         };
         ViewConstraints vc = new ViewConstraints();
-        vc.setPositionConstraints(-1, 1, 0, 3);
-        vc.setZoomConstraints(0.5f, 0.8f);
+        vc.setPositionConstraints(-1, 1, 0.5f, 2);
+        vc.setZoomConstraints(0.5f, 3f);
         ic.setViewConstraints(vc);
         //***Remove after testing pointiness of moment arrows
         ic.replaceModePanel(FBDModePanel.class, new FBD3DModePanel());

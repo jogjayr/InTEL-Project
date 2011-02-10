@@ -8,6 +8,7 @@ import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.OrdinaryExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import java.math.BigDecimal;
 
 import edu.gatech.statics.math.Unit;
@@ -22,12 +23,32 @@ import edu.gatech.statics.objects.connectors.ContactPoint;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveConnectorTask;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 
 /**
  *
  * @author Calvin Ashmore
  */
 public class SpiderwomanExercise extends OrdinaryExercise {
+
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        
+        AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-1, 1, -1, 2);
+        vc.setZoomConstraints(0.5f, 4f);
+        vc.setRotationConstraints(-1, 1, -1, 1);
+        interfaceConfiguration.setViewConstraints(vc);
+
+        return interfaceConfiguration;
+
+    }
+
+
 
     @Override
     public Description getDescription() {
@@ -68,6 +89,7 @@ public class SpiderwomanExercise extends OrdinaryExercise {
         getDisplayConstants().setForceSize(1);
         getDisplayConstants().setMomentSize(1);
         getDisplayConstants().setPointSize(1);
+        getDisplayConstants().setMeasurementBarSize(1f);
 
     }
     //check with dae file for joint variables
@@ -76,7 +98,7 @@ public class SpiderwomanExercise extends OrdinaryExercise {
     Potato body;
     ConstantObject frictionObjectB;
     //BigDecimal mu;
-//pin2dconnector for G, A - 
+    //pin2dconnector for G, A -
 
     @Override
     public void loadExercise() {
@@ -123,6 +145,7 @@ public class SpiderwomanExercise extends OrdinaryExercise {
 
         AngleMeasurement measureBody = new FixedAngleMeasurement(A, Vector3bd.UNIT_X, ropeAngle.toVector3f());
         measureBody.setName("Angle Body");
+       
 
         body.getWeight().setDiagramValue(Weight);
 

@@ -29,6 +29,9 @@ import edu.gatech.statics.objects.bodies.LongBody;
 import edu.gatech.statics.objects.connectors.Connector2ForceMember2d;
 import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.representations.ImageRepresentation;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
 /**
@@ -36,6 +39,23 @@ import java.math.BigDecimal;
  * @author Calvin Ashmore
  */
 public class PurseExercise extends FrameExercise {
+
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+
+        AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-1, 1, 1, 10);
+        vc.setZoomConstraints(0.5f, 2f);
+        vc.setRotationConstraints(-1, 1, -1, 1);
+        interfaceConfiguration.setViewConstraints(vc);
+
+        return interfaceConfiguration;
+
+    }
+
 
     @Override
     public Description getDescription() {
@@ -122,7 +142,9 @@ public class PurseExercise extends FrameExercise {
         getDisplayConstants().setPointSize(2f);
         getDisplayConstants().setCylinderRadius(2f);
         getDisplayConstants().setMomentLabelDistance(40f);
-        getDisplayConstants().setMeasurementBarSize(0.5f);
+        getDisplayConstants().setMeasurementBarSize(1f);
+       
+     
         //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
     }
 

@@ -372,6 +372,7 @@ public class BicycleExercise extends FrameExercise {
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
+        
 
         rep = modelNode.extractElement(GE_frontBar, "VisualSceneNode/model/bike/bar_GE");
         GE_frontBar.addRepresentation(rep);
