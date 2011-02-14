@@ -414,7 +414,7 @@ public class TermEquationBar extends EquationBar {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
-    private void removeBox(TermBox box) {
+    protected void removeBox(TermBox box) {
         if (locked) {
             return;
         }

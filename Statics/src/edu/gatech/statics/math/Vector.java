@@ -8,6 +8,7 @@
  */
 package edu.gatech.statics.math;
 
+import edu.gatech.statics.objects.Point;
 import java.math.BigDecimal;
 
 /**
@@ -86,6 +87,15 @@ public class Vector implements Quantified {
     public Vector3bd getVectorValue() {
         return value;
     }
+
+    /*
+     * Return a vector from Point a to Point b
+     *
+     */
+    public static Vector getVectorBetween(Point a, Point b) {
+        return new Vector(Unit.distance, a.getPosition().addLocal(b.getPosition().negateLocal()), a.getName()+b.getName());
+    }
+
 
     /** Creates a new instance of Vector */
     public Vector(Unit unit, Vector3bd value, BigDecimal magnitude) {

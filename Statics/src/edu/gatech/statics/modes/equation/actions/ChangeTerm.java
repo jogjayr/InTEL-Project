@@ -20,18 +20,18 @@ public class ChangeTerm implements DiagramAction<EquationState> {
     final private String equationName;
     final private AnchoredVector load;
     final private String coefficient;
-    final private AnchoredVector radiusVector;
+    final private AnchoredVector momentArm;
     public ChangeTerm(String equationName, AnchoredVector load, String newCoefficient) {
         this.equationName = equationName;
         this.load = load;
         this.coefficient = newCoefficient;
-        this.radiusVector = null;
+        this.momentArm = null;
     }
 
-    public ChangeTerm(String equationName, AnchoredVector load, AnchoredVector radiusVector) {
+    public ChangeTerm(String equationName, AnchoredVector load, AnchoredVector momentArm) {
         this.equationName = equationName;
         this.load = load;
-        this.radiusVector = radiusVector;
+        this.momentArm = momentArm;
         this.coefficient = null;
     }
 
@@ -56,7 +56,7 @@ public class ChangeTerm implements DiagramAction<EquationState> {
 
         } else {
             Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)mathState);
-            mathBuilder.getTerms().put(load, new AnchoredVector(load.getAnchor(), null));
+            mathBuilder.getTerms().put(load, momentArm);
             builder.putEquationState(mathBuilder.build());
         }
         return builder.build();

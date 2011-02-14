@@ -8,6 +8,7 @@ import edu.gatech.statics.exercise.state.DiagramAction;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 
 /**
@@ -31,7 +32,13 @@ public class RemoveTerm implements DiagramAction<EquationState> {
         if (mathState.isLocked()) {
             return oldState;
         }
-        TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
+        if(mathState instanceof TermEquationMathState) {
+            TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
+            mathBuilder.getTerms().remove(load);
+            builder.putEquationState(mathBuilder.build());
+            return builder.build();
+        }
+        Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)mathState);
         mathBuilder.getTerms().remove(load);
         builder.putEquationState(mathBuilder.build());
         return builder.build();

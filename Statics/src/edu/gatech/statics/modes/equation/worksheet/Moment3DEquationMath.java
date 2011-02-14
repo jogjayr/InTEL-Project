@@ -10,6 +10,7 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class Moment3DEquationMath extends EquationMath {
 //            return true;
         Moment3DEquationMathState state = (Moment3DEquationMathState)getState();
         List<AnchoredVector> allLoads = diagram.getDiagramLoads();
+        
         ArrayList<AnchoredVector> loadsNotThruMomentPoint = new ArrayList<AnchoredVector>();
         //Discarding loads whose vectors pass through the moment point
         for(AnchoredVector load : allLoads) {
@@ -71,12 +73,28 @@ public class Moment3DEquationMath extends EquationMath {
             return false;
         Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
         for(AnchoredVector load : loadsNotThruMomentPoint) {
-
+            //state.getTerms().get(load);
+           
             if(!terms.containsKey(load))
                 return false;
+
+            AnchoredVector momentArm = state.getTerms().get(load);
+            
+            
+            if(momentArm == null)
+                System.out.println("momentarm is null");
+            //System.out.println("moment arm is " + momentArm.getSymbolName() + "moment point is " + state.getMomentPoint().getName() + "load anchor point is " + load.getAnchor().getName());
+            if(!(momentArm.getSymbolName().equalsIgnoreCase( state.getMomentPoint().getName() + load.getAnchor().getName()))) {
+            
+
+                
+                return false;
+            }
             
 
         }
+
+        
         return true;
     }
 

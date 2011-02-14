@@ -93,7 +93,10 @@ public class AnchoredVector implements Quantified {
 
     @Override
     public String toString() {
-        return "(" + vector.toString() + " @ " + anchor.getName() + ")";
+        if(vector != null && anchor != null)
+            return "(" + vector.toString() + " @ " + anchor.getName() + ")";
+        else
+            return "";
     }
 
     @Override

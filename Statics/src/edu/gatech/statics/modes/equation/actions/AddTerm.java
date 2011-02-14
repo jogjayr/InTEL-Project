@@ -26,21 +26,21 @@ public class AddTerm implements DiagramAction<EquationState> {
     final private String equationName;
     final private AnchoredVector load;
     final private String coefficient;
-    private AnchoredVector radiusVector; //This is not private because its value needs to be set
+    private AnchoredVector momentArm; //This is not final because its value needs to be set
                                         //in performAction, where the EquationMathState is passed
 
     public AddTerm(String equationName, AnchoredVector load, String coefficient) {
         this.equationName = equationName;
         this.load = load;
         this.coefficient = coefficient;
-        this.radiusVector = null;
+        this.momentArm = null;
     }
 
-    public AddTerm(String equationName, AnchoredVector load, AnchoredVector radiusVector) {
+    public AddTerm(String equationName, AnchoredVector load, AnchoredVector momentArm) {
       
         this.equationName = equationName;
         this.load = load;
-        this.radiusVector = radiusVector;
+        this.momentArm = momentArm;
         this.coefficient = "";
     }
 
@@ -67,12 +67,14 @@ public class AddTerm implements DiagramAction<EquationState> {
             
         } else { //MomentEquationMathState
             Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)(mathState));
-            Point momentPoint = mathBuilder.getMomentPoint();
-            Vector3bd pointOfForceApplication = load.getAnchor().getPosition();
-            Vector3bd distanceVector = pointOfForceApplication.subtract(momentPoint.getPosition()) ;//.subtract(momentPoint.getPosition());
-            this.radiusVector = new AnchoredVector(momentPoint, new Vector(Unit.distance, distanceVector, new BigDecimal(distanceVector.length())));
-            this.radiusVector.setSymbol(momentPoint.getName()+ load.getAnchor().getName());
-            mathBuilder.getTerms().put(load, radiusVector);
+//            Point momentPoint = mathBuilder.getMomentPoint();
+//            Vector3bd pointOfForceApplication = load.getAnchor().getPosition();
+//            Vector3bd distanceVector = pointOfForceApplication.subtract(momentPoint.getPosition()) ;//.subtract(momentPoint.getPosition());
+//
+//            this.momentArm = new AnchoredVector(momentPoint, new Vector(Unit.distance, distanceVector, new BigDecimal(distanceVector.length())));
+//            this.momentArm.setSymbol(momentPoint.getName()+ load.getAnchor().getName());
+//            System.out.println("Added this moment arm" +this.momentArm.getSymbolName());
+            mathBuilder.getTerms().put(load, momentArm);
             builder.putEquationState(mathBuilder.build());
         }
         return builder.build();
