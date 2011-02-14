@@ -14,6 +14,7 @@
     <target name="-post-jar">
         <signjar jar="dist/Simple3D.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
         <copyfile src="dist/Simple3D.jar" dest="../../applet/Simple3D.jar" />
+
     </target>
     <!--
 
