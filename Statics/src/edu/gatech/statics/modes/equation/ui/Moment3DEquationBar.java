@@ -302,7 +302,6 @@ public class Moment3DEquationBar extends EquationBar {
             add(momentArmField, BorderLayout.WEST);
             momentArmField.setText(momentArm);
             setHighlight(false);
-
         }
     }
 
@@ -385,7 +384,7 @@ public class Moment3DEquationBar extends EquationBar {
         terms.put(load, box);
         add(1, box);
         //box.coefficient.requestFocus();
-        //focusOnTerm(load);
+        focusOnTerm(load);
         invalidate();
         parent.refreshRows();
     }

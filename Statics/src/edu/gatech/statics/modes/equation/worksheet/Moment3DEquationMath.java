@@ -8,8 +8,11 @@
  */
 package edu.gatech.statics.modes.equation.worksheet;
 
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
+import edu.gatech.statics.modes.equation.actions.LockEquation;
+import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,8 @@ import java.util.Map;
  */
 public class Moment3DEquationMath extends EquationMath {
 
+    // this is the name that is used internally, it is not seen by users.
+    public static final String DEFAULT_NAME = "R X F";
     protected final String name;
     protected final EquationDiagram diagram;
 
@@ -91,10 +96,24 @@ public class Moment3DEquationMath extends EquationMath {
                 return false;
             }
         }
+
+
+        // lock the math.
+        LockEquation lockEquationAction = new LockEquation(name, true);
+        diagram.performAction(lockEquationAction);
+
+        StaticsApplication.logger.info("check: PASSED!");
+        StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_success");
+
+        // refresh the mode panel.
+        // this is a kludgy way to do it, but it will get the job done.
+        InterfaceRoot.getInstance().getModePanel(getDiagram().getMode().getModeName()).activate();
+*********
+
         return true;
     }
 
-    protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {
-        return TermError.none;
-    }
+//    protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {
+//        return TermError.none;
+//    }
 }

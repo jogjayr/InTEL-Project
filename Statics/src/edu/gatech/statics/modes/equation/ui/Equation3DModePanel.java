@@ -12,6 +12,7 @@ import com.jmex.bui.icon.ImageIcon;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
+import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
@@ -20,7 +21,6 @@ import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.applicationbar.ApplicationBar;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  *
@@ -224,29 +224,29 @@ public class Equation3DModePanel extends EquationModePanel {
 //            setActiveEquation(data.equationBar);
 //        }
 //    }
-    @Override
-    protected void addTermEquationRow(TermEquationMath math) {
-
-        super.addTermEquationRow(math);
-        EquationUIData data = uiMap.get(math);
+//    @Override
+//    protected void addTermEquationRow(TermEquationMath math) {
 //
-//        final EquationUIData data = new EquationUIData();
-//        //System.out.println("Add termequationrow called");
-//        data.equationBar = new TermEquationBar(math, this);
-//        data.checkButton = new BButton("check", new ActionListener() {
+//        super.addTermEquationRow(math);
+//        EquationUIData data = uiMap.get(math);
+////
+////        final EquationUIData data = new EquationUIData();
+////        //System.out.println("Add termequationrow called");
+////        data.equationBar = new TermEquationBar(math, this);
+////        data.checkButton = new BButton("check", new ActionListener() {
+////
+////            public void actionPerformed(ActionEvent event) {
+////                check(data.equationBar);
+////            }
+////        }, "check");
 //
-//            public void actionPerformed(ActionEvent event) {
-//                check(data.equationBar);
-//            }
-//        }, "check");
-
-        if (math.getState().isMoment()) {
-            data.equationBar.setEnabled(false);
-            data.checkButton.setEnabled(false);
-            //data.addButton.setEnabled(false);
-        }
-//        addEquationData(math, data);
-    }
+////        if (math.getState().isMoment()) {
+////            data.equationBar.setEnabled(false);
+////            data.checkButton.setEnabled(false);
+////            //data.addButton.setEnabled(false);
+////        }
+////        addEquationData(math, data);
+//    }
 
     private void setCheckIcon(EquationBar bar) {
 
@@ -272,15 +272,15 @@ public class Equation3DModePanel extends EquationModePanel {
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
-            System.out.println("Equation check passed");
+//            System.out.println("Equation check passed");
             getDiagram().equationSolved();
 
             bar.setLocked();
 
             setCheckIcon(bar);
-            if (bar instanceof Moment3DEquationBar) {
-                activateMomentTermEquations();
-            }
+//            if (bar instanceof Moment3DEquationBar) {
+//                activateMomentTermEquations();
+//            }
             performSolve(true);
         } else {
             System.out.println("Equation check failed");
@@ -307,6 +307,14 @@ public class Equation3DModePanel extends EquationModePanel {
             //System.out.println("MomentEquationBar created");
             addMoment3DEquationRow((Moment3DEquationMath) math);
         } else if (math instanceof TermEquationMath) {
+            
+            // this is the vector math
+            EquationMath math3d = diagram.getWorksheet().getMath(Moment3DEquationMath.DEFAULT_NAME);
+
+            // if the vector math is not solved, do not add the moment term equations
+            if(math instanceof EquationMathMoments && !math3d.isLocked())
+                return;
+
             addTermEquationRow((TermEquationMath) math);
             //System.out.println("TermEquationRow added for equation: " + math.getName());
         } else if (math instanceof ArbitraryEquationMath) {
@@ -398,12 +406,12 @@ public class Equation3DModePanel extends EquationModePanel {
 //        invalidate();
 //    }
 //
-    private void activateMomentTermEquations() {
-        for (EquationUIData data : uiMap.values()) {
-            if (!data.equationBar.isEnabled() && !data.checkButton.isEnabled()) {
-                data.equationBar.setEnabled(true);
-                data.checkButton.setEnabled(true);
-            }
-        }
-    }
+//    private void activateMomentTermEquations() {
+//        for (EquationUIData data : uiMap.values()) {
+//            if (!data.equationBar.isEnabled() && !data.checkButton.isEnabled()) {
+//                data.equationBar.setEnabled(true);
+//                data.checkButton.setEnabled(true);
+//            }
+//        }
+//    }
 }
