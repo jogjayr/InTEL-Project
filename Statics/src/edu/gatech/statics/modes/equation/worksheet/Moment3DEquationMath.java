@@ -108,7 +108,7 @@ public class Moment3DEquationMath extends EquationMath {
         // refresh the mode panel.
         // this is a kludgy way to do it, but it will get the job done.
         InterfaceRoot.getInstance().getModePanel(getDiagram().getMode().getModeName()).activate();
-*********
+//*********
 
         return true;
     }
