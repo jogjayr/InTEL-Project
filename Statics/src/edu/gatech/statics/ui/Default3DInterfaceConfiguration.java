@@ -3,9 +3,11 @@
  * and open the template in the editor.
  */
 
-package edu.gatech.statics.modes.equation.ui;
+package edu.gatech.statics.ui;
 
+import edu.gatech.statics.modes.equation.ui.Equation3DModePanel;
 import edu.gatech.statics.ui.*;
+import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.equation.ui.EquationModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBD3DModePanel;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;

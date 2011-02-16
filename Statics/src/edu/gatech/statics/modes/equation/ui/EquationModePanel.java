@@ -55,7 +55,7 @@ import java.util.UUID;
 public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     public static final String panelName = "equation";
-    private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
+    protected Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationModePanel.EquationUIData>();
     protected BContainer equationBarContainer; //Previously private
     //private BContainer equationButtonContainer;
     protected BContainer solutionContainer; //Previously private
@@ -187,7 +187,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         equationScrollPane.layout();
     }
 
-    private void removeEquationData(EquationUIData data) {
+    protected void removeEquationData(EquationUIData data) {
 
         // look through the equation bar container for the container that has our
         // check button and equation bar.
@@ -216,7 +216,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     protected void addEquationData(EquationMath math, final EquationUIData data) {
 
         //data.checkButton.setStyleClass("smallcircle_button");
-        
+
         data.equationBar.addListener(new MouseAdapter() {
 
             @Override
@@ -245,7 +245,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
-   
     protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
@@ -277,8 +276,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
             public void keyPressed(KeyEvent event) {
                 System.out.println("*** Key pressed " + event);
-                if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-                        event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
+                if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ || event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
                     RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
                     getDiagram().performAction(removeRowAction);
                 }
@@ -387,8 +385,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     protected void performSolve(boolean updateDiagram) {
 
-        if(!enoughSolved())
+        if (!enoughSolved()) {
             return;
+        }
 
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         //boolean firstTime = !diagram.getCurrentState().isLocked();
@@ -409,8 +408,8 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
                 q.setDiagramValue(BigDecimal.valueOf(entry.getValue()));
 
                 BLabel entryLabel = new BLabel(
-                        "@=b(@=#ff0000(" + q.getSymbolName() + ")" +
-                        " = " + q.getDiagramValue() + //entry.getValue() +
+                        "@=b(@=#ff0000(" + q.getSymbolName() + ")"
+                        + " = " + q.getDiagramValue() + //entry.getValue() +
                         " " + q.getUnit().getSuffix() + ")");
                 solutionContainer.add(entryLabel);
             }
@@ -455,8 +454,6 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         return false;
     }
 
-  
-
     protected class EquationUIData {
 
         public EquationBar equationBar;
@@ -479,6 +476,21 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         uiMap.clear();
     }
 
+    // called during activate()
+    protected void setupEquationMath(String mathName) {
+        EquationDiagram diagram = (EquationDiagram) getDiagram();
+        EquationMath math = diagram.getWorksheet().getMath(mathName);
+        if (math instanceof TermEquationMath) {
+            addTermEquationRow((TermEquationMath) math);
+            //System.out.println("TermEquationRow added for equation: " + math.getName());
+        } else if (math instanceof ArbitraryEquationMath) {
+            addArbitraryEquationRow((ArbitraryEquationMath) math);
+            //System.out.println("ArbitraryEquationRow added for equation: " + math.getName());
+        } else {
+            throw new IllegalArgumentException("Unknown math type: " + math);
+        }
+    }
+
     @Override
     public void activate() {
         super.activate();
@@ -489,26 +501,17 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
         EquationDiagram diagram = (EquationDiagram) getDiagram();
 
-        if (diagram.getBodySubset().getSpecialName() != null) {
-            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
-        } else {
-            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
-        }
+//        if (diagram.getBodySubset().getSpecialName() != null) {
+//            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset().getSpecialName());
+//        } else {
+//            //getTitleLabel().setText("My Diagram: " + diagram.getBodySubset());
+//        }
 
         diagram.getWorksheet().updateEquations();
         ArrayList<String> equationNames = (ArrayList<String>) diagram.getWorksheet().getEquationNames();
         for (String mathName : equationNames) {
-            
-            EquationMath math = diagram.getWorksheet().getMath(mathName);
-            if (math instanceof TermEquationMath) {
-                addTermEquationRow((TermEquationMath) math);
-                //System.out.println("TermEquationRow added for equation: " + math.getName());
-            } else if (math instanceof ArbitraryEquationMath) {
-                addArbitraryEquationRow((ArbitraryEquationMath) math);
-                //System.out.println("ArbitraryEquationRow added for equation: " + math.getName());
-            } else {
-                throw new IllegalArgumentException("Unknown math type: " + math);
-            }
+
+            setupEquationMath(mathName);
         }
 
         // only add the button to create extra rows if the diagram has friction in it.

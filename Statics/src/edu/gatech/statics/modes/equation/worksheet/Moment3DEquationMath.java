@@ -6,11 +6,9 @@
  * hashmap of vector (from point about which moment is calculated to point of application of force)
  * and vector (force acting at that point)
  */
-
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +33,11 @@ public class Moment3DEquationMath extends EquationMath {
         this.diagram = world;
     }
 
-   
-    
     @Override
     public Moment3DEquationMathState getState() {
-        return (Moment3DEquationMathState)super.getState();
+        return (Moment3DEquationMathState) super.getState();
     }
+
     public boolean check() {
         //System.out.println("Checking...");
 //        Moment3DEquationMathState state = (Moment3DEquationMathState)getState();
@@ -58,48 +55,46 @@ public class Moment3DEquationMath extends EquationMath {
 //        }
 //        if(equationValue.getVectorValue() == Vector3bd.ZERO)
 //            return true;
-        Moment3DEquationMathState state = (Moment3DEquationMathState)getState();
+        Moment3DEquationMathState state = (Moment3DEquationMathState) getState();
         List<AnchoredVector> allLoads = diagram.getDiagramLoads();
-        
+
         ArrayList<AnchoredVector> loadsNotThruMomentPoint = new ArrayList<AnchoredVector>();
         //Discarding loads whose vectors pass through the moment point
-        for(AnchoredVector load : allLoads) {
+        for (AnchoredVector load : allLoads) {
 
-            if(load.getAnchor() != state.getMomentPoint())
+            if (load.getAnchor() != state.getMomentPoint()) {
                 loadsNotThruMomentPoint.add(load);
+            }
 
         }
-        if(allLoads.isEmpty())
+        if (allLoads.isEmpty()) {
             return false;
-        Map<AnchoredVector, AnchoredVector> terms = state.getTerms();
-        for(AnchoredVector load : loadsNotThruMomentPoint) {
+        }
+        Map<AnchoredVector, String> terms = state.getTerms();
+        for (AnchoredVector load : loadsNotThruMomentPoint) {
             //state.getTerms().get(load);
-           
-            if(!terms.containsKey(load))
-                return false;
 
-            AnchoredVector momentArm = state.getTerms().get(load);
-            
-            
-            if(momentArm == null)
-                System.out.println("momentarm is null");
-            //System.out.println("moment arm is " + momentArm.getSymbolName() + "moment point is " + state.getMomentPoint().getName() + "load anchor point is " + load.getAnchor().getName());
-            if(!(momentArm.getSymbolName().equalsIgnoreCase( state.getMomentPoint().getName() + load.getAnchor().getName()))) {
-            
-
-                
+            if (!terms.containsKey(load)) {
                 return false;
             }
-            
 
+            String momentArm = state.getTerms().get(load);
+
+            if (momentArm == null) {
+                return false;
+            }
+            // this is the value that the moment arm String should be, equal to the name of the moment point
+            // appended to the name of the anchor
+            String comparison = state.getMomentPoint().getName() + load.getAnchor().getName();
+
+            if (!comparison.equalsIgnoreCase(momentArm)) {
+                return false;
+            }
         }
-
-        
         return true;
     }
 
     protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {
         return TermError.none;
     }
-
 }

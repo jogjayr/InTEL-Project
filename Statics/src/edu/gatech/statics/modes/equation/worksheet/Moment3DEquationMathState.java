@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
@@ -11,22 +10,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import edu.gatech.statics.objects.Point;
+
 /**
  *
  * @author Jayraj
- */ 
+ */
 public class Moment3DEquationMathState extends EquationMathState {
 
     final private String name;
     final private boolean locked;
-    final private Map<AnchoredVector, AnchoredVector> terms;
+    final private Map<AnchoredVector, String> terms;
     final private Point momentPoint;
-    final private boolean isMoment;
-    final private Vector3bd observationDirection;
-    
-    public Map<AnchoredVector, AnchoredVector> getTerms() {
+
+    public Map<AnchoredVector, String> getTerms() {
         return terms;
     }
+
     private Moment3DEquationMathState(Builder builder) {
         if (builder.getName() == null || builder.getName().equals("")) {
             throw new IllegalArgumentException("Equation state must have a name!");
@@ -35,10 +34,9 @@ public class Moment3DEquationMathState extends EquationMathState {
         name = builder.getName();
         terms = Collections.unmodifiableMap(builder.getTerms());
         locked = builder.isLocked();
-        isMoment = builder.getIsMoment();
         momentPoint = builder.getMomentPoint();
-        observationDirection = builder.getObservationDirection();
     }
+
     @Override
     public String getName() {
         return name;
@@ -57,34 +55,28 @@ public class Moment3DEquationMathState extends EquationMathState {
         return new Builder(this);
     }
 
-
-
-    static public class Builder implements edu.gatech.statics.util.Builder<Moment3DEquationMathState>{
+    static public class Builder implements edu.gatech.statics.util.Builder<Moment3DEquationMathState> {
 
         private String name;
         private boolean locked;
-        private Map<AnchoredVector, AnchoredVector> terms = new HashMap<AnchoredVector, AnchoredVector>();
-        private boolean isMoment;
+        private Map<AnchoredVector, String> terms = new HashMap<AnchoredVector, String>();
         private Point momentPoint;
-        private Vector3bd observationDirection;
+        
+        public Builder() {}
 
-        public Builder(String name, boolean isMoment, Point momentPoint, Vector3bd observationDirection) {
+        public Builder(String name, Point momentPoint) {
             this.name = name;
-            this.isMoment = isMoment;
             this.momentPoint = momentPoint;
-            this.observationDirection = observationDirection;
         }
 
-        public Builder (Moment3DEquationMathState state) {
+        public Builder(Moment3DEquationMathState state) {
             this.name = state.getName();
             this.terms.putAll(state.getTerms());
             this.locked = state.locked;
-            this.isMoment = state.isMoment;
             this.momentPoint = state.momentPoint;
-            this.observationDirection = state.observationDirection;
         }
 
-         public boolean isLocked() {
+        public boolean isLocked() {
             return locked;
         }
 
@@ -92,13 +84,13 @@ public class Moment3DEquationMathState extends EquationMathState {
             this.locked = locked;
         }
 
-        public void setTerms(Map<AnchoredVector, AnchoredVector> terms) {
+        public void setTerms(Map<AnchoredVector, String> terms) {
             this.terms.clear();
             this.terms.putAll(terms);
             //this.terms = terms;
         }
 
-        public Map<AnchoredVector, AnchoredVector> getTerms() {
+        public Map<AnchoredVector, String> getTerms() {
             return terms;
         }
 
@@ -106,16 +98,8 @@ public class Moment3DEquationMathState extends EquationMathState {
             return name;
         }
 
-        public boolean getIsMoment() {
-            return isMoment;
-        }
-
         public Point getMomentPoint() {
             return momentPoint;
-        }
-
-        public Vector3bd getObservationDirection() {
-            return observationDirection;
         }
 
         /**
@@ -128,59 +112,33 @@ public class Moment3DEquationMathState extends EquationMathState {
             this.name = name;
         }
 
-        /**
-         * For persistence, do not use.
-         * @param isMoment
-         * @deprecated
-         */
-        @Deprecated
-        public void setIsMoment(boolean isMoment) {
-            this.isMoment = isMoment;
-        }
-
         public void setMomentPoint(Point momentPoint) {
             this.momentPoint = momentPoint;
         }
 
-        /**
-         * For persistence, do not use.
-         * @param observationDirection
-         * @deprecated
-         */
-        @Deprecated
-        public void setObservationDirection(Vector3bd observationDirection) {
-            this.observationDirection = observationDirection;
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Moment3DEquationMathState other = (Moment3DEquationMathState) obj;
+            if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+                return false;
+            }
+            if (this.locked != other.locked) {
+                return false;
+            }
+            if (this.terms != other.terms && (this.terms == null || !this.terms.equals(other.terms))) {
+                return false;
+            }
+            if (this.momentPoint != other.momentPoint && (this.momentPoint == null || !this.momentPoint.equals(other.momentPoint))) {
+                return false;
+            }
+            return true;
         }
-
-         @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Moment3DEquationMathState other = (Moment3DEquationMathState) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        if (this.locked != other.locked) {
-            return false;
-        }
-        if (this.terms != other.terms && (this.terms == null || !this.terms.equals(other.terms))) {
-            return false;
-        }
-        if (this.isMoment != other.isMoment) {
-            return false;
-        }
-        if (this.momentPoint != other.momentPoint && (this.momentPoint == null || !this.momentPoint.equals(other.momentPoint))) {
-            return false;
-        }
-        if (this.observationDirection != other.observationDirection && (this.observationDirection == null || !this.observationDirection.equals(other.observationDirection))) {
-            return false;
-        }
-        return true;
-    }
 
         @Override
         public int hashCode() {
@@ -188,23 +146,17 @@ public class Moment3DEquationMathState extends EquationMathState {
             hash = 89 * hash + (this.name != null ? this.name.hashCode() : 0);
             hash = 89 * hash + (this.locked ? 1 : 0);
             hash = 89 * hash + (this.terms != null ? this.terms.hashCode() : 0);
-            hash = 89 * hash + (this.isMoment ? 1 : 0);
             hash = 89 * hash + (this.momentPoint != null ? this.momentPoint.hashCode() : 0);
-            hash = 89 * hash + (this.observationDirection != null ? this.observationDirection.hashCode() : 0);
             return hash;
         }
 
         public Moment3DEquationMathState build() {
             return new Moment3DEquationMathState(this);
         }
-        
     }
 
-   
-    
     @Override
     public String toString() {
-        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment="+isMoment+", momentPoint="+momentPoint+", observationDirection="+observationDirection+"}";
+        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", momentPoint=" + momentPoint + "}";
     }
-
 }

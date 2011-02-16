@@ -16,7 +16,7 @@ import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.util.List;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.modes.equation.ui.Default3DInterfaceConfiguration;
+import edu.gatech.statics.ui.Default3DInterfaceConfiguration;
 
 /**
  *

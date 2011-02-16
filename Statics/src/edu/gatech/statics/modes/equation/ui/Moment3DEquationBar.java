@@ -21,20 +21,15 @@ import com.jmex.bui.event.MouseListener;
 import com.jmex.bui.event.TextEvent;
 import com.jmex.bui.event.TextListener;
 import com.jmex.bui.icon.ImageIcon;
-import com.jmex.bui.layout.BLayoutManager;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Unit;
-import edu.gatech.statics.math.Vector;
-import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.Equation3DDiagram;
 import edu.gatech.statics.modes.equation.EquationDiagram;
-import edu.gatech.statics.modes.equation.actions.AddTerm;
-import edu.gatech.statics.modes.equation.actions.ChangeTerm;
+import edu.gatech.statics.modes.equation.actions.Change3DTerm;
 import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
@@ -48,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 
 /**
  *
@@ -107,7 +101,7 @@ public class Moment3DEquationBar extends EquationBar {
          */
         if (math instanceof Moment3DEquationMath) {
             // we do special handling for moment math
-            startContainer.add(new BLabel("R x F ["));
+            startContainer.add(new BLabel("M ["));
 
             Point momentPoint = ((Moment3DEquationMathState) math.getState()).getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
@@ -139,7 +133,7 @@ public class Moment3DEquationBar extends EquationBar {
 
         private AnchoredVector source;
 //        private Point pointOfForceApplication;
-        private AnchoredVector momentArm;
+//        private AnchoredVector momentArm;
 
         AnchoredVector getSource() {
             return source;
@@ -148,7 +142,7 @@ public class Moment3DEquationBar extends EquationBar {
         //private BLabel radiusLabel;
         //private BTextField coefficient;
         private BTextField momentArmField;
-        
+
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
@@ -160,19 +154,22 @@ public class Moment3DEquationBar extends EquationBar {
             invalidate();
         }
 
-        void setMomentArm(AnchoredVector momentArm) {
-            this.momentArm = momentArm;
+//        void setMomentArm(AnchoredVector momentArm) {
+//            this.momentArm = momentArm;
+//        }
+        void setMomentArm(String momentArm) {
+            momentArmField.setText(momentArm);
         }
 
         /*void setCoefficient(AnchoredVector momentArm) {
         this.coefficient.setText(momentArm);
         }*/
         TermBox(AnchoredVector source) {
-            this(source, new AnchoredVector(source.getAnchor(), null));
+            this(source, "");
         }
 
         //This constructor exists for the day that we can build a termbox that allow selection of momentArmField vector by clicking
-        TermBox(final AnchoredVector source, final AnchoredVector momentArm) {
+        TermBox(final AnchoredVector source, final String momentArm) {
 //            super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             super(new BorderLayout());
             this.source = source;
@@ -185,42 +182,44 @@ public class Moment3DEquationBar extends EquationBar {
             sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
 
             //radiusLabel = new BLabel(momentArm.getSymbolName());
-           
 
-                this.momentArmField = new BTextField("") {
 
-                    @Override
-                    protected void lostFocus() {
-                        super.lostFocus();
-                        // if the box has lost focus, post a change term event.
-                        // but do not post if the box has been removed.
-                        if (isAdded()) {
-                            //AnchoredVector momentArm = math.getDiagram().getAnchoredVectorFromSymbol(getText());
-                            AnchoredVector momentArm = new AnchoredVector(source.getAnchor(), Vector.getVectorBetween(new Point(getText().substring(0, 1)), new Point(getText().substring(1,1))));
-                            momentArm.setSymbol(getText());
-                            if(momentArm == null)
-                                System.out.println("momentArm calculate as null for text" + getText());
-                            ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, momentArm);
-                            // it is possible that the ui shift is to a different diagram, so check before using.
-                            if (parent.getDiagram() instanceof EquationDiagram) {
-                                parent.getDiagram().performAction(changeTermEvent);
-                            }
+            this.momentArmField = new BTextField("") {
+
+                @Override
+                protected void lostFocus() {
+                    super.lostFocus();
+                    // if the box has lost focus, post a change term event.
+                    // but do not post if the box has been removed.
+                    if (isAdded()) {
+                        //AnchoredVector momentArm = math.getDiagram().getAnchoredVectorFromSymbol(getText());
+//                        AnchoredVector momentArm = new AnchoredVector(source.getAnchor(), Vector.getVectorBetween(new Point(getText().substring(0, 1)), new Point(getText().substring(1, 1))));
+//                        momentArm.setSymbol(getText());
+//                        if (momentArm == null) {
+//                            System.out.println("momentArm calculate as null for text" + getText());
+//                        }
+                        String momentArm = getText();
+                        Change3DTerm changeTermEvent = new Change3DTerm(math.getName(), source, momentArm);
+                        // it is possible that the ui shift is to a different diagram, so check before using.
+                        if (parent.getDiagram() instanceof EquationDiagram) {
+                            parent.getDiagram().performAction(changeTermEvent);
                         }
                     }
+                }
 
-                    @Override
-                    public boolean dispatchEvent(BEvent event) {
-                        boolean result = super.dispatchEvent(event);
-                        if (event instanceof KeyEvent) {
-                            // do not consume the key pressed event.
-                            return false;
-                        }
-                        return result;
+                @Override
+                public boolean dispatchEvent(BEvent event) {
+                    boolean result = super.dispatchEvent(event);
+                    if (event instanceof KeyEvent) {
+                        // do not consume the key pressed event.
+                        return false;
                     }
-                };
-          
+                    return result;
+                }
+            };
+
             momentArmField.setStyleClass("textfield_appbar");
-            momentArmField.setPreferredWidth(10);
+            momentArmField.setPreferredWidth(25);
 
             momentArmField.addListener(new TextListener() {
 
@@ -233,7 +232,7 @@ public class Moment3DEquationBar extends EquationBar {
                     //EquationBar.this.setSize(preferredSize.);
                     parent.refreshRows();
                     //update();
-                    }
+                }
             });
 
             momentArmField.addListener(new KeyListener() {
@@ -244,14 +243,13 @@ public class Moment3DEquationBar extends EquationBar {
                 boolean destroyOK = true;
 
                 public void keyReleased(KeyEvent event) {
-                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
-                    if (momentArmField.getText().length() == 0 &&
-                            (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ ||
-                            event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
+//                    System.out.println("*** KEY RELEASED " + event.getKeyCode());
+                    if (momentArmField.getText().length() == 0
+                            && (event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ || event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) // for some reason, BUI uses its own key codes for these?
                     {
-                       if (destroyOK) {
+                        if (destroyOK) {
                             performRemove(source);
-                            } else {
+                        } else {
                             destroyOK = true;
                         }
                     } else {
@@ -270,20 +268,20 @@ public class Moment3DEquationBar extends EquationBar {
                     math.getDiagram().highlightVector(source);
                     highlightVector(source);
                     //math.getWorld().onHover(source);
-                    }
+                }
 
                 public void mouseExited(MouseEvent event) {
                     if (getHitComponent(event.getX(), event.getY()) == null) {
                         math.getDiagram().highlightVector(null);
                         highlightVector(null);
                         //math.getWorld().onHover(null);
-                        }
+                    }
                 }
 
                 public void mousePressed(MouseEvent event) {
                     if (!locked) {
                         momentArmField.requestFocus();
-                        
+
                     }
                 }
 
@@ -302,117 +300,10 @@ public class Moment3DEquationBar extends EquationBar {
                 Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
             }
             add(momentArmField, BorderLayout.WEST);
+            momentArmField.setText(momentArm);
             setHighlight(false);
-            
-        }
 
-//        TermBox(final AnchoredVector source, final String momentArmString) {
-//            //super(GroupLayout.makeHoriz(GroupLayout.LEFT));
-//            super(new BorderLayout());
-//            this.source = source;
-//
-//            if (source.isSymbol()) {
-//                sourceLabel = new BLabel("(@=b#" + symbolColor + "(" + source.getVector().getQuantity().getSymbolName() + "))");
-//            } else {
-//                sourceLabel = new BLabel("(@=b(" + source.getVector().getQuantity().toStringDecimal() + "))");
-//            }
-//            sourceLabel.setTooltipText("at @=b(" + source.getAnchor().getName() + ")");
-//            //radiusLabel = new BLabel(momentArm.getSymbolName());
-//            momentArmField = new BTextField(momentArmString) {
-//
-//                @Override
-//                protected void lostFocus() {
-//                    super.lostFocus();
-//                    // if the box has lost focus, post a change term event.
-//                    // but do not post if the box has been removed.
-//                    if (isAdded()) {
-//                        ChangeTerm changeTermEvent = new ChangeTerm(math.getName(), source, getText());
-//                        // it is possible that the ui shift is to a different diagram, so check before using.
-//                        if (parent.getDiagram() instanceof EquationDiagram) {
-//                            parent.getDiagram().performAction(changeTermEvent);
-//                        }
-//                    }
-//                }
-//                @Override
-//                public boolean dispatchEvent(BEvent event) {
-//                    boolean result = super.dispatchEvent(event);
-//                    if (event instanceof KeyEvent) {
-//                        // do not consume the key pressed event.
-//                        return false;
-//                    }
-//                    return result;
-//                }
-//            };
-//
-//
-//            MouseListener mouseTestListener = new MouseListener() {
-//
-//                public void mouseEntered(MouseEvent event) {
-//                    math.getDiagram().highlightVector(source);
-//                    highlightVector(source);
-//                    //math.getWorld().onHover(source);
-//                    }
-//
-//                public void mouseExited(MouseEvent event) {
-//                    if (getHitComponent(event.getX(), event.getY()) == null) {
-//                        math.getDiagram().highlightVector(null);
-//                        highlightVector(null);
-//                        //math.getWorld().onHover(null);
-//                        }
-//                }
-//
-//                public void mousePressed(MouseEvent event) {
-//                    if (!locked) {
-//                        //coefficient.requestFocus();
-//                    }
-//                }
-//
-//                public void mouseReleased(MouseEvent event) {
-//                }
-//            };
-//            momentArmField.setStyleClass("textfield_appbar");
-//            //coefficient.setPreferredWidth(10);
-//
-//            momentArmField.addListener(new TextListener() {
-//
-//                public void textChanged(TextEvent event) {
-//                    Dimension dim = momentArmField.getPreferredSize(0, 0);
-//                    momentArmField.setSize(dim.width, dim.height);
-//
-//                    Moment3DEquationBar.this.invalidate();
-//                    //Dimension preferredSize = EquationBar.this.getPreferredSize(-1, -1);
-//                    //EquationBar.this.setSize(preferredSize.);
-//                    parent.refreshRows();
-//                    //update();
-//                }
-//            });
-//
-//            sourceLabel.addListener(mouseTestListener);
-//            momentArmField.addListener(mouseTestListener);
-////            @Override
-//            addListener(mouseTestListener);
-//            add(sourceLabel, BorderLayout.CENTER);
-////            try {
-////                add(new BLabel(new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")))), BorderLayout.CENTER);
-////            } catch (IOException ex) {
-////                Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
-////            }
-//            add(momentArmField, BorderLayout.WEST);
-//            setHighlight(false);
-////
-////            try {
-////                ImageIcon icon = new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/cross.png")));
-//////                add(radiusLabel);
-////                add(momentArmField);
-////                add(new BLabel(icon));
-////                add(sourceLabel);
-//////            add(coefficient, BorderLayout.WEST);
-////                setHighlight(false);
-////            } catch (IOException ex) {
-////                Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
-////            }
-//
-//        }
+        }
     }
 
     /**
@@ -428,12 +319,12 @@ public class Moment3DEquationBar extends EquationBar {
     protected void performAdd(AnchoredVector load) {
         //TODO Handle the divide by zero error occuring when the user clicks on a force acting at
         //the point about which moment equation is being written
-        AnchoredVector momentArm = new AnchoredVector(null, new Vector(Unit.distance, Vector3bd.ZERO, ""));
-        
-        AddTerm addTermAction = new AddTerm(getMath().getName(), load, momentArm);//new AddTerm(getMath().getName(), source);
+//        AnchoredVector momentArm = new AnchoredVector(null, new Vector(Unit.distance, Vector3bd.ZERO, ""));
+
+        Change3DTerm addTermAction = new Change3DTerm(getMath().getName(), load, "");//new AddTerm(getMath().getName(), source);
         getMath().getDiagram().performAction(addTermAction);
     }
-    
+
     /**
      * This is called when the bar is loaded or the state has changed.
      * Note that this will generally be called after the above methods
@@ -467,30 +358,30 @@ public class Moment3DEquationBar extends EquationBar {
         // go through terms present in the state to add
         // make sure that the values are correct, as well.
         EquationMathState state = getMath().getState();
-        for (Map.Entry<AnchoredVector, AnchoredVector> entry : ((Moment3DEquationMathState) state).getTerms().entrySet()) {
+        for (Map.Entry<AnchoredVector, String> entry : ((Moment3DEquationMathState) state).getTerms().entrySet()) {
             TermBox box = terms.get(entry.getKey());
             if (box == null) {
                 // we do not have an existing term box
                 addBox(entry.getKey(), entry.getValue());
             } else {
+//                box.setMomentArm(entry.getValue());
                 box.setMomentArm(entry.getValue());
             }
         }
     }
 
-    protected void addBox(AnchoredVector load, AnchoredVector radius) {
+    protected void addBox(AnchoredVector load, String momentArm) {
         // add plus icon unless first box
         if (terms.size() > 0) {
 
             try {
-             
                 add(1, new BLabel(new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/plus.png")))));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        TermBox box = new TermBox(load, radius);
+        TermBox box = new TermBox(load, momentArm);
         terms.put(load, box);
         add(1, box);
         //box.coefficient.requestFocus();
@@ -565,7 +456,6 @@ public class Moment3DEquationBar extends EquationBar {
         parent.refreshRows();
     }
 
-    
     void highlightVector(AnchoredVector obj) {
         if (obj == currentHighlight) {
             return;

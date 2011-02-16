@@ -20,20 +20,20 @@ public class ChangeTerm implements DiagramAction<EquationState> {
     final private String equationName;
     final private AnchoredVector load;
     final private String coefficient;
-    final private AnchoredVector momentArm;
+//    final private AnchoredVector momentArm;
     public ChangeTerm(String equationName, AnchoredVector load, String newCoefficient) {
         this.equationName = equationName;
         this.load = load;
         this.coefficient = newCoefficient;
-        this.momentArm = null;
+//        this.momentArm = null;
     }
 
-    public ChangeTerm(String equationName, AnchoredVector load, AnchoredVector momentArm) {
-        this.equationName = equationName;
-        this.load = load;
-        this.momentArm = momentArm;
-        this.coefficient = null;
-    }
+//    public ChangeTerm(String equationName, AnchoredVector load, AnchoredVector momentArm) {
+//        this.equationName = equationName;
+//        this.load = load;
+//        this.momentArm = momentArm;
+//        this.coefficient = null;
+//    }
 
     public ChangeTerm(String equationName, AnchoredVector load) {
         this(equationName, load, "");
@@ -49,16 +49,16 @@ public class ChangeTerm implements DiagramAction<EquationState> {
             return oldState;
         }
         EquationMathState oldMathState = builder.getEquationStates().get(equationName);
-        if(!(oldMathState instanceof Moment3DEquationMathState)) {
+//        if(!(oldMathState instanceof Moment3DEquationMathState)) {
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
             mathBuilder.getTerms().put(load, coefficient);
             builder.putEquationState(mathBuilder.build());
 
-        } else {
-            Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)mathState);
-            mathBuilder.getTerms().put(load, momentArm);
-            builder.putEquationState(mathBuilder.build());
-        }
+//        } else {
+//            Moment3DEquationMathState.Builder mathBuilder = new Moment3DEquationMathState.Builder((Moment3DEquationMathState)mathState);
+//            mathBuilder.getTerms().put(load, momentArm);
+//            builder.putEquationState(mathBuilder.build());
+//        }
         return builder.build();
 
     }

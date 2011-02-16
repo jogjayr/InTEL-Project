@@ -36,7 +36,7 @@ public class Equation3DDiagram extends EquationDiagram {
         builder.getEquationStates().put("F[x]", new TermEquationMathState.Builder("F[x]", false, null, Vector3bd.UNIT_X).build());
         builder.getEquationStates().put("F[y]", new TermEquationMathState.Builder("F[y]", false, null, Vector3bd.UNIT_Y).build());
         builder.getEquationStates().put("F[z]", new TermEquationMathState.Builder("F[z]", false, null, Vector3bd.UNIT_Z).build());
-        builder.getEquationStates().put("R x F", new Moment3DEquationMathState.Builder("R x F", true, null, Vector3bd.UNIT_X).build());
+        builder.getEquationStates().put("R X F", new Moment3DEquationMathState.Builder("R X F", null).build());
         builder.getEquationStates().put("M[x]", new TermEquationMathState.Builder("M[x]", true, null, Vector3bd.UNIT_X).build());
         builder.getEquationStates().put("M[y]", new TermEquationMathState.Builder("M[y]", true, null, Vector3bd.UNIT_Y).build());
         builder.getEquationStates().put("M[z]", new TermEquationMathState.Builder("M[z]", true, null, Vector3bd.UNIT_Z).build());
