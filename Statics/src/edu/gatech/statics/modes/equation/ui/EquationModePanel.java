@@ -32,8 +32,6 @@ import edu.gatech.statics.modes.equation.EquationState;
 import edu.gatech.statics.modes.equation.actions.RemoveRow;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
-import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
-import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Load;
@@ -249,8 +247,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         final EquationUIData data = new EquationUIData();
 
         data.equationBar = new TermEquationBar(math, this);
-        data.checkButton = new BButton("check", new ActionListener() {
 
+        StaticsApplication.logger.info("Equation bar created" + math.getName());
+        data.checkButton = new BButton("check", new ActionListener() {
+        
             public void actionPerformed(ActionEvent event) {
                 check(data.equationBar);
             }
@@ -275,7 +275,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         data.equationBar.addListener(new KeyListener() {
 
             public void keyPressed(KeyEvent event) {
-                System.out.println("*** Key pressed " + event);
+//                System.out.println("*** Key pressed " + event);
                 if ((event.getKeyCode() == 211 /*java.awt.event.KeyEvent.VK_DELETE*/ || event.getKeyCode() == 14 /*java.awt.event.KeyEvent.VK_BACK_SPACE*/)) {
                     RemoveRow removeRowAction = new RemoveRow(data.equationBar.getMath().getName());
                     getDiagram().performAction(removeRowAction);

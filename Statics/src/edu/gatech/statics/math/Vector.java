@@ -90,7 +90,7 @@ public class Vector implements Quantified {
 
     /*
      * Return a vector from Point a to Point b
-     *
+     * @param a, b
      */
     public static Vector getVectorBetween(Point a, Point b) {
         return new Vector(Unit.distance, a.getPosition().addLocal(b.getPosition().negateLocal()), a.getName()+b.getName());

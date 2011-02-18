@@ -5,7 +5,6 @@
 package edu.gatech.statics.modes.equation.worksheet;
 
 import edu.gatech.statics.math.AnchoredVector;
-import edu.gatech.statics.math.Vector3bd;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

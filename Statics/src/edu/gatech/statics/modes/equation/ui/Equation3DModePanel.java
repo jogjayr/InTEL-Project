@@ -9,6 +9,7 @@ import com.jmex.bui.BImage;
 import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.icon.ImageIcon;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.arbitrary.ArbitraryEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
@@ -34,7 +35,7 @@ public class Equation3DModePanel extends EquationModePanel {
 //    private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationUIData>();
     public Equation3DModePanel() {
         super();
-        System.out.println("Equation3DModePanel was created");
+        //System.out.println("Equation3DModePanel was created");
     }
 
     @Override
@@ -252,10 +253,10 @@ public class Equation3DModePanel extends EquationModePanel {
 
         EquationUIData ui3DData = uiMap.get(bar.getMath());
         if (ui3DData == null) {
-            System.out.println("ui3DData is null");
+            StaticsApplication.logger.info("ui3DData is null");
         }
         if (ui3DData.checkButton == null) {
-            System.out.println("ui3DData.checkButton is null");
+           StaticsApplication.logger.info("ui3DData.checkButton is null");
         }
         ui3DData.checkButton.setEnabled(false);
 
@@ -273,6 +274,7 @@ public class Equation3DModePanel extends EquationModePanel {
         boolean success = bar.getMath().check();
         if (success) {
 //            System.out.println("Equation check passed");
+            StaticsApplication.logger.info("Moment equation check passed");
             getDiagram().equationSolved();
 
             bar.setLocked();
@@ -283,7 +285,8 @@ public class Equation3DModePanel extends EquationModePanel {
 //            }
             performSolve(true);
         } else {
-            System.out.println("Equation check failed");
+//            System.out.println("Equation check failed");
+                StaticsApplication.logger.info("Moment equation check failed");
         }
     }
 
@@ -304,7 +307,7 @@ public class Equation3DModePanel extends EquationModePanel {
         EquationMath math = diagram.getWorksheet().getMath(mathName);
 
         if (math instanceof Moment3DEquationMath) {
-            //System.out.println("MomentEquationBar created");
+            
             addMoment3DEquationRow((Moment3DEquationMath) math);
         } else if (math instanceof TermEquationMath) {
             
@@ -316,10 +319,10 @@ public class Equation3DModePanel extends EquationModePanel {
                 return;
 
             addTermEquationRow((TermEquationMath) math);
-            //System.out.println("TermEquationRow added for equation: " + math.getName());
+           
         } else if (math instanceof ArbitraryEquationMath) {
             addArbitraryEquationRow((ArbitraryEquationMath) math);
-            //System.out.println("ArbitraryEquationRow added for equation: " + math.getName());
+           
         } else {
             throw new IllegalArgumentException("Unknown math type: " + math);
         }

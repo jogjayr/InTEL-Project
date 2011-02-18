@@ -402,7 +402,7 @@ public class Moment3DEquationBar extends EquationBar {
     }
 
     public void setLocked() {
-        System.out.println("Setting MomentEquationBar to locked");
+        StaticsApplication.logger.info("Setting MomentEquationBar to locked");
         for (TermBox box : terms.values()) {
             box.momentArmField.setEnabled(false);
         }

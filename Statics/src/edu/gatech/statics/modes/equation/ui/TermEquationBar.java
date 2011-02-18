@@ -122,18 +122,20 @@ public class TermEquationBar extends EquationBar {
             Point momentPoint = ((TermEquationMathState) math.getState()).getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
 
-            momentButton = new BButton(pointName, new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-                    //System.out.println("Setting the point name");
-                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram(), math.getState().getName());
-                    selector.activate();
-
-                    // activate the bar when the button is pressed.
-                    parent.setActiveEquation(TermEquationBar.this);
-                }
-            }, "momentpoint");
-
+            momentButton = new BButton(pointName,
+//                    new ActionListener() {
+//
+//                public void actionPerformed(ActionEvent event) {
+//                    //System.out.println("Setting the point name");
+//                    PointSelector selector = new PointSelector((EquationDiagram) parent.getDiagram(), math.getState().getName());
+//                    selector.activate();
+//
+//                    // activate the bar when the button is pressed.
+//                    parent.setActiveEquation(TermEquationBar.this);
+//                }
+//            }
+             "momentpoint");
+            momentButton.setEnabled(false);
             startContainer.add(momentButton);
             startContainer.add(new BLabel("]"));
         } else {
