@@ -49,6 +49,10 @@ public class DistanceRepresentation extends Representation<DistanceMeasurement> 
         this.color = color;
     }
 
+    public LabelRepresentation getLabel() {
+        return label;
+    }
+
     //public void drawLabel(boolean drawLabel) {this.drawLabel = drawLabel;}
     /** Creates a new instance of DistanceRepresentation */
     public DistanceRepresentation(DistanceMeasurement target) {
