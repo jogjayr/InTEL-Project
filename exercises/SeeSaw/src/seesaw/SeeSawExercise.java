@@ -29,9 +29,8 @@ import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
 import edu.gatech.statics.objects.UnknownPoint;
 import edu.gatech.statics.tasks.CompleteFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.modes.equation.ui.Default3DInterfaceConfiguration;
+import edu.gatech.statics.ui.Default3DInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 
