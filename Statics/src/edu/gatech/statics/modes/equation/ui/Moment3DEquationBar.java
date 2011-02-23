@@ -143,6 +143,7 @@ public class Moment3DEquationBar extends EquationBar {
         //private BTextField coefficient;
         private BTextField momentArmField;
         private BContainer momentArmBox;
+
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
@@ -173,6 +174,11 @@ public class Moment3DEquationBar extends EquationBar {
 //            super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             super(new BorderLayout());
             momentArmBox = new BContainer(new BorderLayout());
+            try {
+                momentArmBox.add(new BLabel(new ImageIcon(new BImage(getClass().getClassLoader().getResource("rsrc/FBD_Interface/vector-arrow.png")))), BorderLayout.NORTH);
+            } catch (IOException ex) {
+                Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.source = source;
 
             if (source.isSymbol()) {
@@ -300,7 +306,8 @@ public class Moment3DEquationBar extends EquationBar {
             } catch (IOException ex) {
                 Logger.getLogger(Moment3DEquationBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            add(momentArmField, BorderLayout.WEST);
+            momentArmBox.add(momentArmField, BorderLayout.CENTER);
+            add(momentArmBox, BorderLayout.WEST);
             momentArmField.setText(momentArm);
             setHighlight(false);
         }
