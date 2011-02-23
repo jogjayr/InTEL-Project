@@ -142,7 +142,7 @@ public class Moment3DEquationBar extends EquationBar {
         //private BLabel radiusLabel;
         //private BTextField coefficient;
         private BTextField momentArmField;
-
+        private BContainer momentArmBox;
         void setHighlight(boolean highlight) {
             if (highlight) {
                 //_borders[getState()] = highlightBorder;
@@ -172,6 +172,7 @@ public class Moment3DEquationBar extends EquationBar {
         TermBox(final AnchoredVector source, final String momentArm) {
 //            super(GroupLayout.makeHoriz(GroupLayout.LEFT));
             super(new BorderLayout());
+            momentArmBox = new BContainer(new BorderLayout());
             this.source = source;
 
             if (source.isSymbol()) {

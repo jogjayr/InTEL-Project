@@ -16,6 +16,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -65,23 +66,33 @@ public class Moment3DEquationMath extends EquationMath {
 
         ArrayList<AnchoredVector> loadsNotThruMomentPoint = new ArrayList<AnchoredVector>();
         //Discarding loads whose vectors pass through the moment point
+        ArrayList<AnchoredVector> loadsThruMomentPoint = new ArrayList<AnchoredVector>();
         for (AnchoredVector load : allLoads) {
 
-            if (load.getAnchor() != state.getMomentPoint()) {
+            if (load.getAnchor() == state.getMomentPoint())
+                loadsThruMomentPoint.add(load);
+            
+            else
                 loadsNotThruMomentPoint.add(load);
-            }
+
 
         }
         if (allLoads.isEmpty()) {
             return false;
         }
-        Map<AnchoredVector, String> terms = state.getTerms();
-        for (AnchoredVector load : loadsNotThruMomentPoint) {
+        //Map<AnchoredVector, String> terms = state.getTerms();
+        Set<AnchoredVector> equationLoads = state.getTerms().keySet();
+        for (AnchoredVector load : equationLoads) {
             //state.getTerms().get(load);
 
-            if (!terms.containsKey(load)) {
+//            if (!terms.containsKey(load)) {
+//                return false;
+//            }
+//            if(t)
+            if(!loadsNotThruMomentPoint.contains(load))
                 return false;
-            }
+            else if(loadsThruMomentPoint.contains(load))
+                return false;
 
             String momentArm = state.getTerms().get(load);
 

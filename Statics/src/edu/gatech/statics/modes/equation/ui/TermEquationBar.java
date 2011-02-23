@@ -26,6 +26,7 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.AnchoredVector;
+import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.actions.AddTerm;
 import edu.gatech.statics.modes.equation.actions.ChangeTerm;
@@ -33,6 +34,7 @@ import edu.gatech.statics.modes.equation.actions.RemoveTerm;
 import edu.gatech.statics.modes.equation.worksheet.EquationMath;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathMoments;
 import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
+import edu.gatech.statics.modes.equation.worksheet.TermEquationMath;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.VectorObject;
@@ -117,7 +119,19 @@ public class TermEquationBar extends EquationBar {
 
         if (math instanceof EquationMathMoments) {
             // we do special handling for moment math
-            startContainer.add(new BLabel("M["));
+            /*TermEquationMath eqMath = */
+            String momentSubscript = "";
+            if(((TermEquationMath) math).getObservationDirection() == Vector3bd.UNIT_X) {
+                momentSubscript = "x";
+            }
+            else if(((TermEquationMath) math).getObservationDirection() == Vector3bd.UNIT_Y) {
+                momentSubscript = "y";
+            }
+            else if(((TermEquationMath) math).getObservationDirection() == Vector3bd.UNIT_Z) {
+                momentSubscript = "z";
+            }
+
+            startContainer.add(new BLabel("M" + momentSubscript + "["));
 
             Point momentPoint = ((TermEquationMathState) math.getState()).getMomentPoint();
             String pointName = momentPoint == null ? "?" : momentPoint.getName();
