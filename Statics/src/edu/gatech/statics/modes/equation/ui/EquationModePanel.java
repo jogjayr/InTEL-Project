@@ -160,9 +160,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         equationBarContainer = new BContainer(equationLayout);
 
         equationScrollPane = new BScrollPane(equationBarContainer, true, true);
-        equationScrollPane.setShowScrollbarAlways(false);
+        equationScrollPane.setShowScrollbarAlways(true);
         //equationScrollPane.setSize(equationScrollPane.getWidth(), 9000);
         fullEquationContainer.add(equationScrollPane, BorderLayout.CENTER);
+        fullEquationContainer.setPreferredSize(-1, 180);
 
 
 //        equationButtonContainer = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
@@ -172,9 +173,11 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         // will contain the solution to the equations.
         GroupLayout solutionLayout = GroupLayout.makeVert(GroupLayout.CENTER);
         solutionLayout.setOffAxisJustification(GroupLayout.LEFT);
-        BScrollPane newPane = new BScrollPane(fullEquationContainer, true, false);
-        newPane.setShowScrollbarAlways(false);
-        add(newPane, BorderLayout.CENTER);
+
+//        BScrollPane newPane = new BScrollPane(fullEquationContainer, true, false);
+//        newPane.setShowScrollbarAlways(false);
+//        add(newPane, BorderLayout.CENTER);
+        add(fullEquationContainer, BorderLayout.CENTER);
 
         solutionContainer = new BContainer(solutionLayout);
         solutionContainer.setPreferredSize(200, -1);
