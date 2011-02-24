@@ -118,10 +118,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
             if (vector.equals(load.getAnchoredVector())) {
                 return load;
             }
-            if (vector.getAnchor() == load.getAnchor() &&
-                    vector.isSymbol() && load.isSymbol() &&
-                    vector.getVector().equalsSymbolic(load.getVector()) &&
-                    vector.getSymbolName().equals(load.getSymbolName())) {
+            if (vector.getAnchor() == load.getAnchor()
+                    && vector.isSymbol() && load.isSymbol()
+                    && vector.getVector().equalsSymbolic(load.getVector())
+                    && vector.getSymbolName().equals(load.getSymbolName())) {
                 return load;
             }
         }
@@ -163,6 +163,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     //TODO write this in!
                 } else if (equationMathState instanceof TermEquationMathState) {
                     anythingEntered |= !((TermEquationMathState) equationMathState).getTerms().isEmpty();
+                } else if (equationMathState instanceof Moment3DEquationMathState) {
+                    // ignore.
                 } else {
                     throw new IllegalArgumentException("Unknown equation math state type! " + equationMathState);
                 }
@@ -310,6 +312,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                             }
                             terms.put(newLoad, coefficient);
                             eqBuilder.getEquationStates().put(equationMathState.getName(), mathBuilder.build());
+                        } else if (equationMathState instanceof Moment3DEquationMathState) {
+                            // ignore.
                         } else {
                             throw new IllegalArgumentException("Unknown equation math state type! " + equationMathState);
                         }
@@ -392,8 +396,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public void onClick(SimulationObject obj) {
         super.onClick(obj);
 
-        if (StaticsApplication.getApp().getCurrentTool() != null &&
-                StaticsApplication.getApp().getCurrentTool().isActive()) {
+        if (StaticsApplication.getApp().getCurrentTool() != null
+                && StaticsApplication.getApp().getCurrentTool().isActive()) {
             return;
         } // do not select vectors if we have a tool active
 
@@ -505,8 +509,8 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
         int maxUnknowns = 3;
 
-        if (fbd.getBodySubset().getBodies().size() == 1 &&
-                fbd.getBodySubset().getBodies().toArray()[0] instanceof PointBody) {
+        if (fbd.getBodySubset().getBodies().size() == 1
+                && fbd.getBodySubset().getBodies().toArray()[0] instanceof PointBody) {
             maxUnknowns = 2;
         }
 
@@ -647,9 +651,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
                     CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
                             DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
                 }
-            } else if(equationMathState instanceof Moment3DEquationMathState) {
+            } else if (equationMathState instanceof Moment3DEquationMathState) {
                 Moment3DEquationMathState termState = (Moment3DEquationMathState) equationMathState;
-                if(termState.getMomentPoint() != null) {
+                if (termState.getMomentPoint() != null) {
                     CurveUtil.renderCircle(r, ColorRGBA.blue, termState.getMomentPoint().getTranslation(),
                             DisplayConstants.getInstance().getMomentCircleRadius(), r.getCamera().getDirection());
                 }
@@ -706,7 +710,7 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         for (EquationMathState state : builder.getEquationStates().values()) {
             if (state instanceof ArbitraryEquationMathState) {
                 //TODO write this in!
-                } else if (state instanceof TermEquationMathState) {
+            } else if (state instanceof TermEquationMathState) {
                 // make sure the sub-states are all unlocked.
                 TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState) state);
                 mathBuilder.setLocked(false);

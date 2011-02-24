@@ -64,16 +64,21 @@ public class Moment3DEquationMath extends EquationMath {
         Moment3DEquationMathState state = (Moment3DEquationMathState) getState();
         List<AnchoredVector> allLoads = diagram.getDiagramLoads();
 
+        // make sure the moment point is set.
+        if (state.getMomentPoint() == null) {
+            return false;
+        }
+
         ArrayList<AnchoredVector> loadsNotThruMomentPoint = new ArrayList<AnchoredVector>();
         //Discarding loads whose vectors pass through the moment point
         ArrayList<AnchoredVector> loadsThruMomentPoint = new ArrayList<AnchoredVector>();
         for (AnchoredVector load : allLoads) {
 
-            if (load.getAnchor() == state.getMomentPoint())
+            if (load.getAnchor() == state.getMomentPoint()) {
                 loadsThruMomentPoint.add(load);
-            
-            else
+            } else {
                 loadsNotThruMomentPoint.add(load);
+            }
 
 
         }
@@ -89,10 +94,11 @@ public class Moment3DEquationMath extends EquationMath {
 //                return false;
 //            }
 //            if(t)
-            if(!loadsNotThruMomentPoint.contains(load))
+            if (!loadsNotThruMomentPoint.contains(load)) {
                 return false;
-            else if(loadsThruMomentPoint.contains(load))
+            } else if (loadsThruMomentPoint.contains(load)) {
                 return false;
+            }
 
             String momentArm = state.getTerms().get(load);
 
@@ -123,7 +129,6 @@ public class Moment3DEquationMath extends EquationMath {
 
         return true;
     }
-
 //    protected TermError checkTerm(AnchoredVector force, AnchoredVector rVector) {
 //        return TermError.none;
 //    }

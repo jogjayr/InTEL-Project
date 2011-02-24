@@ -87,12 +87,12 @@ public class Worksheet {
                 }
             } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof ArbitraryEquationMathState) {
                 equations.put(mathName, new ArbitraryEquationMath(mathName, diagram));
-            } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof  Moment3DEquationMathState) {
+            } else if (diagram.getCurrentState().getEquationStates().get(mathName) instanceof Moment3DEquationMathState) {
 
                 //MomentEquationMathState state = (MomentEquationMathState) mathState;
-                equations.put(mathName, new Moment3DEquationMath (mathName, diagram));
-                
-            }  else {
+                equations.put(mathName, new Moment3DEquationMath(mathName, diagram));
+
+            } else {
                 throw new IllegalArgumentException("Unknown equation math state type! " + diagram.getCurrentState().getEquationStates().get(mathName));
             }
         }
@@ -213,8 +213,10 @@ public class Worksheet {
                         vectorNames.put(string, constant.getQuantity());
                     }
                 }
+            } else if (mathState instanceof Moment3DEquationMathState) {
+                // skip
             } else {
-                throw new IllegalArgumentException("Unknown equation math state type! " + mathState);
+                throw new IllegalArgumentException("Unknown equation math state type! " + mathState + " (" + mathState.getClass() + ")");
             }
             // increment our row count.
             row++;
