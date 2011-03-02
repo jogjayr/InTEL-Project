@@ -29,13 +29,9 @@ import java.io.IOException;
  */
 public class Equation3DModePanel extends EquationModePanel {
 
-    //private BContainer equationBarContainer;
-    //private EquationBar activeEquation;
-    //private BContainer solutionContainer;
-//    private Map<EquationMath, EquationUIData> uiMap = new HashMap<EquationMath, EquationUIData>();
     public Equation3DModePanel() {
         super();
-        //System.out.println("Equation3DModePanel was created");
+        
     }
 
     @Override
@@ -278,7 +274,7 @@ public class Equation3DModePanel extends EquationModePanel {
             getDiagram().equationSolved();
 
             bar.setLocked();
-
+            
             setCheckIcon(bar);
 //            if (bar instanceof Moment3DEquationBar) {
 //                activateMomentTermEquations();
