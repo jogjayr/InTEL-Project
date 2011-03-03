@@ -22,10 +22,8 @@ class CentroidUtil {
     private final float sat = 0.86f;
     private final float light = 0.70f;
     private final float alpha = 0.9f;
-
     private float temp2 = (light + sat) - (light * sat);
     private float temp1 = 2.0f * light - temp2;
-
     private float red, green, blue;
 
     public CentroidUtil() {
@@ -60,7 +58,7 @@ class CentroidUtil {
      * @param color
      * @return
      */
-    public ColorRGBA highlight(ColorRGBA color) {
+    public ColorRGBA highlight() {
         float highlight = 0.85f;
         float temp0 = (highlight + sat) - (highlight * sat);
         float temp = 2.0f * highlight - temp0;
@@ -109,5 +107,22 @@ class CentroidUtil {
         } else {
             return temp1;
         }
+    }
+
+    ColorRGBA hoverHighlight() {
+        float highlight = 0.5f;
+        float temp0 = (highlight + sat) - (highlight * sat);
+        float temp = 2.0f * highlight - temp0;
+        float newRed, newGreen, newBlue;
+
+        newRed = personalHue + 0.33f;
+        newGreen = personalHue;
+        newBlue = personalHue - 0.33f;
+
+        newRed = RGBConvert(temp, temp0, newRed);
+        newGreen = RGBConvert(temp, temp0, newGreen);
+        newBlue = RGBConvert(temp, temp0, newBlue);
+
+        return new ColorRGBA(newRed, newGreen, newBlue, alpha);
     }
 }

@@ -5,19 +5,14 @@
 package edu.gatech.statics.modes.centroid.objects;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.TriMesh;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.CullState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
 import edu.gatech.statics.RepresentationLayer;
-import edu.gatech.statics.math.Unit;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 /**
  * This class is responsible for drawing the colored regions that represent the
@@ -105,8 +100,11 @@ import java.nio.IntBuffer;
         //been solved and has been clicked on the color of the region is set to be
         //highlighted. If not clicked on it is the default color.
         if (isSelected() && (target.getState() == null || !target.getState().isLocked())) {
-            surface.setDefaultColor(util.highlight(color));
+            surface.setDefaultColor(util.highlight());
             surface.setLocalTranslation(0, 0, 0.01f);
+        } else if(isHover() && (target.getState() == null || !target.getState().isLocked())) {
+            surface.setDefaultColor(util.hoverHighlight());
+            surface.setLocalTranslation(0, 0, 0.005f);
         } else {
             surface.setDefaultColor(color);
             surface.setLocalTranslation(0, 0, 0);

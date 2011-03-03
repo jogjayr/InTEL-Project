@@ -89,6 +89,21 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     }
 
     @Override
+    public void onHover(SimulationObject obj) {
+        super.onHover(obj);
+
+        for (SimulationObject simulationObject : allObjects()) {
+            if (simulationObject instanceof CentroidPartObject) {
+                simulationObject.setDisplayHighlight(false);
+            }
+        }
+
+        if (obj != null) {
+            obj.setDisplayHighlight(true);
+        }
+    }
+
+    @Override
     public void onClick(SimulationObject obj) {
         //somethind like that. also needs to be selectable = true
         //CentroidModePanel modePanel = (CentroidModePanel) InterfaceRoot.getInstance().getModePanel(CentroiMode.instance.getModeName());
@@ -377,8 +392,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
         // add the centroid body marker, so the dot shows up in the centroid diagram.
         for (SimulationObject obj : body.getAttachedObjects()) {
-            if(obj instanceof CentroidBodyMarker)
+            if (obj instanceof CentroidBodyMarker) {
                 objects.add(obj);
+            }
         }
 
         return objects;
