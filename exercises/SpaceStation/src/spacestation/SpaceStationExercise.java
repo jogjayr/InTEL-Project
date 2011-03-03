@@ -96,12 +96,13 @@ public class SpaceStationExercise extends CentroidExercise {
 
         getDisplayConstants().setPointSize(0.25f);
         getDisplayConstants().setMeasurementBarSize(0.2f);
+  
     }
 
     @Override
     public void loadExercise() {
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.9f, .9f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.8f, .8f, .8f, 1.0f));
 
         Schematic schematic = getSchematic();
 

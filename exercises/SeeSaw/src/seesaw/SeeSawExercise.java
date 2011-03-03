@@ -40,6 +40,7 @@ import java.math.BigDecimal;
  */
 public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
+
     @Override
     public Description getDescription() {
         Description description = new Description();
@@ -88,6 +89,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         };
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-1, 1, 0.5f, 2);
+        vc.setRotationConstraints(-5f, 5f, 0f, 5f);
         vc.setZoomConstraints(0.5f, 3f);
         ic.setViewConstraints(vc);
         //***Remove after testing pointiness of moment arrows
@@ -99,7 +101,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
 
     @Override
     public void loadExercise() {
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.6f, .6f, .6f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .7f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 0.8f));
         Schematic schematic = getSchematic();
 
@@ -138,6 +140,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         seesaw.addObject(child1Point);
         seesaw.addObject(child2Point);
 
+
         Connector pin = new Pin2d(base);
         pin.setName("pin B");
         pin.attachToWorld(seesaw);
@@ -169,6 +172,8 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelOffset);
         rep.setModelRotation(modelRotation);
+        rep.setSelectLightColor(new ColorRGBA(.5f, 1f, 1f, 1f));
+        rep.setHoverLightColor(new ColorRGBA(.5f, 1f, 1f, 1f));
         seesaw.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());
