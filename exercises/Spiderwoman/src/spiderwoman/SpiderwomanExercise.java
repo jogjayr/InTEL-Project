@@ -39,7 +39,7 @@ public class SpiderwomanExercise extends OrdinaryExercise {
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
 
         ViewConstraints vc = new ViewConstraints();
-        vc.setPositionConstraints(-1, 1, -1, 2);
+        vc.setPositionConstraints(-1, 1, -1, 10);
         vc.setZoomConstraints(0.5f, 4f);
         vc.setRotationConstraints(-1, 1, -1, 1);
         interfaceConfiguration.setViewConstraints(vc);

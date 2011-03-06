@@ -163,7 +163,7 @@ public class SeeSawExercise extends SimpleFBDExercise {//OrdinaryExercise {
         modelRotation.fromAngleAxis((float) Math.PI / 2, Vector3f.UNIT_Y);
 
         ModelRepresentation rep;
-        ModelNode modelNode = ModelNode.load("seesaw/assets", "seesaw/assets/seesaw.dae");
+        ModelNode modelNode = ModelNode.load("seesaw/assets/", "seesaw/assets/seesaw.dae");
 
         modelNode.extractLights();
 

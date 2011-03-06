@@ -110,7 +110,7 @@ class CentroidUtil {
     }
 
     ColorRGBA hoverHighlight() {
-        float highlight = 0.5f;
+        float highlight = 0.85f;
         float temp0 = (highlight + sat) - (highlight * sat);
         float temp = 2.0f * highlight - temp0;
         float newRed, newGreen, newBlue;

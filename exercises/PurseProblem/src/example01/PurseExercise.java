@@ -138,7 +138,7 @@ public class PurseExercise extends FrameExercise {
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
         getDisplayConstants().setMomentSize(2f);
-        getDisplayConstants().setForceSize(2f);
+        getDisplayConstants().setForceSize(1f);
         getDisplayConstants().setPointSize(2f);
         getDisplayConstants().setCylinderRadius(2f);
         getDisplayConstants().setMomentLabelDistance(40f);
@@ -338,6 +338,9 @@ public class PurseExercise extends FrameExercise {
             imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm.png"));
             imageRep.setScale(repScale * 1738, repScale * 501f);
             imageRep.setTranslation(-1, 1.75f, 0);
+
+            imageRep.setGrayColors(new ColorRGBA(.5f, .5f, .5f, .25f),
+                new ColorRGBA(.4f, .4f, .4f, .25f));
             forearm.addRepresentation(imageRep);
 
             imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm_bone.png"));
