@@ -48,7 +48,7 @@ public class ChangeTerm implements DiagramAction<EquationState> {
         if (mathState.isLocked()) {
             return oldState;
         }
-        EquationMathState oldMathState = builder.getEquationStates().get(equationName);
+//        EquationMathState oldMathState = builder.getEquationStates().get(equationName);
 //        if(!(oldMathState instanceof Moment3DEquationMathState)) {
             TermEquationMathState.Builder mathBuilder = new TermEquationMathState.Builder((TermEquationMathState)mathState);
             mathBuilder.getTerms().put(load, coefficient);

@@ -40,8 +40,8 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
 
         for(EquationMathState oldMathState : oldMathStates){
             String mathName = oldMathState.getName();
-            //Wrote this as three if elses instead of an OR statement for reasons of speed
-            //the entire OR would have to be evaluate on every pass but only one if-else need
+            //Wrote this as consecutive if elses instead of an OR statement for reasons of speed
+            //the entire OR would have to be evaluated on every pass but only one if-else need
             //match. Hopefully this wasn't misguided. 
             if(mathName.equalsIgnoreCase("M[x]")) {
                 TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
@@ -54,6 +54,11 @@ public class SetMomentPoint implements DiagramAction<EquationState> {
                 mathBuilder.setMomentPoint(momentPoint);
                 builder.putEquationState(mathBuilder.build());
             } else if (mathName.equalsIgnoreCase("M[z]")){
+                TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
+                Builder mathBuilder = math.getBuilder();
+                mathBuilder.setMomentPoint(momentPoint);
+                builder.putEquationState(mathBuilder.build());
+            } else if (mathName.equalsIgnoreCase("M[p]")) {
                 TermEquationMathState math = (TermEquationMathState) builder.getEquationStates().get(mathName);
                 Builder mathBuilder = math.getBuilder();
                 mathBuilder.setMomentPoint(momentPoint);
