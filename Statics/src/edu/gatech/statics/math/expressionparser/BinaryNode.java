@@ -111,6 +111,8 @@ class BinaryNode extends Node {
     int getPrecedence() {
         if (operation == Operation.add || operation == Operation.subtract) {
             return 1;
+        } else if (operation == Operation.pow) {
+            return 3;
         } else {
             return 2;
         }

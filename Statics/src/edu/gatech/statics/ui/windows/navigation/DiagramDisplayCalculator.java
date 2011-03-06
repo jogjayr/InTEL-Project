@@ -19,11 +19,43 @@ import edu.gatech.statics.exercise.Diagram;
  */
 public class DiagramDisplayCalculator {
 
-    private float radiusMultiplier = 1.1f;
+    private float radiusMultiplier = 1.3f;
     private float radiusOffset = 1f;
     private float verticalViewOffsetProportion = 0.13f;
     private float viewAspectRatio = 1.5f;
     private ViewDiagramState defaultState = new ViewDiagramState();
+
+    /**
+     * Default value 1.3f
+     * @param radiusMultiplier
+     */
+    public void setRadiusMultiplier(float radiusMultiplier) {
+        this.radiusMultiplier = radiusMultiplier;
+    }
+
+    /**
+     * Default value 1f
+     * @param radiusOffset
+     */
+    public void setRadiusOffset(float radiusOffset) {
+        this.radiusOffset = radiusOffset;
+    }
+
+    /**
+     * default value 0.13f
+     * @param verticalViewOffsetProportion
+     */
+    public void setVerticalViewOffsetProportion(float verticalViewOffsetProportion) {
+        this.verticalViewOffsetProportion = verticalViewOffsetProportion;
+    }
+
+    /**
+     * default value 1.5f
+     * @param viewAspectRatio
+     */
+    public void setViewAspectRatio(float viewAspectRatio) {
+        this.viewAspectRatio = viewAspectRatio;
+    }
 
     /**
      * Returns a view diagram state if calculation is successful,

@@ -23,6 +23,7 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveCentroidBodyTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 //import edu.gatech.statics.modes.centroid.objects.RectangleCentroidPart;
@@ -46,6 +47,10 @@ public class SpaceStationExercise extends CentroidExercise {
         vc.setZoomConstraints(0.5f, 2f);
         vc.setRotationConstraints(-1, 1, -1, 1);
         interfaceConfiguration.setViewConstraints(vc);
+
+        DiagramDisplayCalculator displayCalc = interfaceConfiguration.getDisplayCalculator();
+        displayCalc.setRadiusMultiplier(1.8f);
+
 //        DisplayConstants dc = new DisplayConstants();
 //        dc.setPointSize(0.5);
 //        getDisplayConstants().setPointSize(.15f);
@@ -103,6 +108,7 @@ public class SpaceStationExercise extends CentroidExercise {
     public void loadExercise() {
 
         DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.8f, .8f, .8f, 1.0f));
+
 
         Schematic schematic = getSchematic();
 
