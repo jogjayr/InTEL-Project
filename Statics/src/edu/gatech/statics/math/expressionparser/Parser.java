@@ -102,8 +102,8 @@ public class Parser {
 
             if (node instanceof UnaryNode) {
                 UnaryNode unaryNode = (UnaryNode) node;
-                if (unaryNode.getOperation() == UnaryNode.Operation.identity ||
-                        unaryNode.getOperation() == UnaryNode.Operation.negate) {
+                if (unaryNode.getOperation() == UnaryNode.Operation.identity
+                        || unaryNode.getOperation() == UnaryNode.Operation.negate) {
                     //continue;
                 } else {
                     // symbol is underneath a nonlinear term, like sqrt, sin, cos, atan, etc
@@ -137,8 +137,8 @@ public class Parser {
                     constant = constant.negate();
                     multiplier = multiplier.negate();
                 }
-            // the only other option would be identity, and this leaves the values
-            // the same, so it is not necessary to check for it
+                // the only other option would be identity, and this leaves the values
+                // the same, so it is not necessary to check for it
             } else if (node instanceof BinaryNode) {
                 BinaryNode binaryNode = (BinaryNode) node;
                 BigDecimal otherValue;
@@ -193,10 +193,10 @@ public class Parser {
         // parse non-symbolic expressions
         BigDecimal result = new Parser().evaluateInternal(expression);
         return result;
-    //if (result == null) {
-    //    return Float.NaN;
-    //}
-    //return result.floatValue();
+        //if (result == null) {
+        //    return Float.NaN;
+        //}
+        //return result.floatValue();
     }
 
     private List<String> tokenize(String s) {
@@ -205,11 +205,47 @@ public class Parser {
         // however, I can see no way for actually returning delimiters with regex.
         // we need delimiters, so we use StringTokenizer for now.
 
-        StringTokenizer tokenizer = new StringTokenizer(s, "+-*/()", true);
+        StringTokenizer tokenizer = new StringTokenizer(s, "+-*/() ", true);
         List<String> r = new ArrayList();
         while (tokenizer.hasMoreTokens()) {
-            r.add(tokenizer.nextToken());
+
+            String token = tokenizer.nextToken();
+            StringTokenizer numericTokenizer = new StringTokenizer(token, "0123456789.", true);
+
+            String numericToken = "";
+            while (numericTokenizer.hasMoreTokens()) {
+
+                String token2 = numericTokenizer.nextToken();
+
+                if (token.equals(" ")) {
+                    continue;
+                }
+
+                if (token2.length() == 1 && (".".equals(token2) || Character.isDigit(token2.charAt(0)))) {
+
+                    // token is a digit, so append to the current numeric token list
+                    numericToken += token2;
+                } else {
+
+                    // token is nondigit.
+
+                    // first add numeric, if it exists--
+                    if (!numericToken.equals("")) {
+                        r.add(numericToken);
+                        numericToken = "";
+                    }
+
+                    // add the actual token.
+                    r.add(token2);
+                }
+            }
+
+            if (!numericToken.equals("")) {
+                r.add(numericToken);
+            }
         }
+        //System.out.println("*** -> "+r);
+
         return r;
     }
     private Node rootNode = new UnaryNode(UnaryNode.Operation.identity);
@@ -288,15 +324,15 @@ public class Parser {
         if (token.trim().equals(")")) {
 
             // go up until we hit the matching identity node created by a "("
-            while (!(currentNode instanceof UnaryNode &&
-                    ((UnaryNode) currentNode).getOperation() == UnaryNode.Operation.identity)) {
+            while (!(currentNode instanceof UnaryNode
+                    && ((UnaryNode) currentNode).getOperation() == UnaryNode.Operation.identity)) {
                 currentNode = currentNode.getParent();
             }
 
             // pop up if this is a sin(...), so currentNode points to sin and not the parens.
-            if (currentNode.getParent() != null &&
-                    currentNode.getParent() instanceof UnaryNode &&
-                    ((UnaryNode) currentNode.getParent()).getOperation() != UnaryNode.Operation.identity) {
+            if (currentNode.getParent() != null
+                    && currentNode.getParent() instanceof UnaryNode
+                    && ((UnaryNode) currentNode.getParent()).getOperation() != UnaryNode.Operation.identity) {
                 // this is a unary operation surrounding the parens. Pop to it
                 currentNode = currentNode.getParent();
             }
@@ -340,9 +376,17 @@ public class Parser {
 
             currentNode.addChild(newNode);
             currentNode = newNode;
-        // this is a finish
+            // this is a finish
 
         } else if (newNode instanceof UnaryNode) {
+
+            // special case to handle instances of "5sin(30)"
+            if(currentNode instanceof ConstantNode) {
+                // a constant node is being followed by a unary node.
+                // chances are the user is trying to do multiplication here.
+                // insert a multiplication sign.
+                addToken("*");
+            }
 
             currentNode.addChild(newNode);
             currentNode = newNode;
@@ -359,9 +403,9 @@ public class Parser {
             if (lhs.getParent() instanceof BinaryNode) {
                 if (((BinaryNode) lhs.getParent()).getPrecedence() < precedence) {
                     return lhs.getParent();
-                // HERE the left hand side has less precedence than the new
-                // binary operator. Thus we steal its rhs child.
-                // otherwise we continue upwards.
+                    // HERE the left hand side has less precedence than the new
+                    // binary operator. Thus we steal its rhs child.
+                    // otherwise we continue upwards.
                 }
             }
             lhs = lhs.getParent();
@@ -408,7 +452,7 @@ public class Parser {
         }
         if (token.toLowerCase().equals("sqrt")) {
             return new UnaryNode(UnaryNode.Operation.sqrt);
-        // special case of subtraction / negation
+            // special case of subtraction / negation
         }
         if (token.equals("-")) {
             if (currentNode instanceof UnaryNode && ((UnaryNode) currentNode).getChild() == null) {

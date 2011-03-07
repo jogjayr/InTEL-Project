@@ -18,8 +18,9 @@ public class Test {
 
     public static void main(String args[]) {
 
-        String expression = "1-(2*sin(atan(.5)^.5)+23)/2";
+//        String expression = "1-(2*sin(atan(.5)^.5)+23)/2";
 //        String expression = "";
+        String expression = "5sin30*2";
 
         System.out.println(expression);
         System.out.println(Parser.evaluate(expression));
