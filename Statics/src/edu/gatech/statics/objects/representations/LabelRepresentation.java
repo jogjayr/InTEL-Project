@@ -27,6 +27,8 @@ public class LabelRepresentation extends Representation {
     private BWindow bWindow;
     private BLabel label;
     private Vector3f offset = new Vector3f();
+    private Vector3f displayOffset = new Vector3f();
+    private String overrideLabelText;
 
     //public Text getText() {return text;}
     public float getWidth() {
@@ -35,6 +37,14 @@ public class LabelRepresentation extends Representation {
 
     public float getHeight() {
         return bWindow.getHeight();
+    }
+
+    public void setLabelText(String labelText) {
+        this.overrideLabelText = labelText;
+    }
+
+    public void setDisplayOffset(Vector3f displayOffset) {
+        this.displayOffset = displayOffset;
     }
 
     public void setOffset(float xOffset, float yOffset) {
@@ -98,7 +108,11 @@ public class LabelRepresentation extends Representation {
     private String labelText = null;
 
     protected String getLabelText() {
-        return getTarget().getLabelText();
+        if (overrideLabelText != null) {
+            return overrideLabelText;
+        } else {
+            return getTarget().getLabelText();
+        }
     }
 
     @Override
@@ -120,7 +134,7 @@ public class LabelRepresentation extends Representation {
             return;
         }
 
-        pos2d = app.getCamera().getScreenCoordinates(getDisplayCenter());
+        pos2d = app.getCamera().getScreenCoordinates(getDisplayCenter().add(displayOffset));
         pos2d.addLocal(-getWidth() / 2, -getHeight() / 2, 0);
         pos2d.addLocal(offset);
         pos2d.z = 0;

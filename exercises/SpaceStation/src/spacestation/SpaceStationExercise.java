@@ -19,6 +19,7 @@ import edu.gatech.statics.objects.CoordinateAxis;
 import edu.gatech.statics.objects.CoordinateAxis.Direction;
 import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Point;
+import edu.gatech.statics.objects.representations.LabelRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveCentroidBodyTask;
@@ -355,15 +356,29 @@ public class SpaceStationExercise extends CentroidExercise {
         
         CoordinateAxis xAxis = new CoordinateAxis(origin, Direction.horizontal);//new Point("xAxis","0.0","0.0","0.0"));
         xAxis.setName("xAxis");
-        xAxis.setDistance(new BigDecimal("4.0"));
+        xAxis.setDistance(new BigDecimal("1.0"));
         xAxis.createDefaultSchematicRepresentation(0f);
+        LabelRepresentation label = new LabelRepresentation(xAxis, "label_measurement");
+        label.setDisplayOffset(new Vector3f(1.1f, 0, 0));
+        label.setLabelText("x");
+        xAxis.addRepresentation(label);
+        label = new LabelRepresentation(xAxis, "label_measurement");
+        label.setDisplayOffset(new Vector3f(0, 0, 0));
+        label.setOffset(10, 10);
+        label.setLabelText("O");
+        xAxis.addRepresentation(label);
+
         B.addMeasurement(xAxis);
 //        schematic.add(xAxis);
 
         CoordinateAxis yAxis = new CoordinateAxis(origin, Direction.vertical);//new Point("xAxis","0.0","0.0","0.0"));
         yAxis.setName("yAxis");
-        yAxis.setDistance(new BigDecimal("2.5"));
+        yAxis.setDistance(new BigDecimal("1"));
         yAxis.createDefaultSchematicRepresentation(0f);
+        label = new LabelRepresentation(yAxis, "label_measurement");
+        label.setDisplayOffset(new Vector3f(0, 1.1f, 0));
+        label.setLabelText("y");
+        yAxis.addRepresentation(label);
         B.addMeasurement(yAxis);
 //        schematic.add(yAxis);
 
