@@ -4,33 +4,22 @@
  */
 package panel;
 
-import edu.gatech.statics.exercise.OrdinaryExercise;
+import edu.gatech.statics.exercise.Ordinary3DExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
-import edu.gatech.statics.objects.bodies.representations.BoxRepresentation;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
-import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
-import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import java.math.BigDecimal;
 
 /**
  *
  * @author gtg126z
  */
-public class PanelExercise extends OrdinaryExercise {
-
-    @Override
-    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
-        AbstractInterfaceConfiguration interfaceConfiguration = super.createInterfaceConfiguration();
-        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
-        interfaceConfiguration.getViewConstraints().setRotationConstraints(-4, 4, -1, 1);
-        return interfaceConfiguration;
-    }
+public class PanelExercise extends Ordinary3DExercise {
 
     @Override
     public Description getDescription() {
