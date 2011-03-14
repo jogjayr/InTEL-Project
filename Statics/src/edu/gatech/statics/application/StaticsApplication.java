@@ -61,10 +61,9 @@ import java.util.logging.Logger;
  *
  * @author Calvin Ashmore
  */
-public class StaticsApplication {
+final public class StaticsApplication {
 
     public static final Logger logger = Logger.getLogger("Statics");
-
     private static StaticsApplication app;
     private static Lock cleanupLock = new ReentrantLock();
 
@@ -87,7 +86,6 @@ public class StaticsApplication {
     private boolean initialized = false; // this is set after init() completes
     private boolean drawLabels = true;
     private boolean drawInterface = true;
-
 
     public boolean getDrawInterface() {
         return drawInterface;
@@ -345,9 +343,12 @@ public class StaticsApplication {
 
     /** Creates a new instance of StaticsApplication */
     public StaticsApplication() {
-        cleanupLock.lock();
-        app = this;
-        cleanupLock.unlock();
+        try {
+            cleanupLock.lock();
+            app = this;
+        } finally {
+            cleanupLock.unlock();
+        }
     }
 
     public DisplaySystem initDisplay() {
@@ -654,7 +655,7 @@ public class StaticsApplication {
 
         camera = display.getRenderer().createCamera(display.getWidth(), display.getHeight());
         camera.setFrustumPerspective(45.0f, (float) display.getWidth() / (float) display.getHeight(), 1, 1000);
-        camera.setParallelProjection(false); 
+        camera.setParallelProjection(false);
         camera.update();
 
         display.getRenderer().setCamera(camera);

@@ -34,22 +34,33 @@
         <subant buildpath="BUI/" target="jar"/>
         
         <echo>*** Building Exercises:</echo>
-        <!-- simple fbd -->
         <subant buildpath="exercises/Archer/" target="jar"/>
-        <subant buildpath="exercises/SeeSaw/" target="jar"/>
-        <subant buildpath="exercises/PisaProblem/" target="jar"/>
-        <!-- frame -->
-        <subant buildpath="exercises/Bicycle/" target="jar"/>
-        <subant buildpath="exercises/Keyboard/" target="jar"/>
-        <subant buildpath="exercises/PurseProblem/" target="jar"/>
-        <!-- distributed -->
         <subant buildpath="exercises/Awning/" target="jar"/>
+        <subant buildpath="exercises/Bicycle/" target="jar"/>
+<!--        <subant buildpath="exercises/BookFriction/" target="jar"/>-->
         <subant buildpath="exercises/Bookshelf/" target="jar"/>
-        <subant buildpath="exercises/Levee/" target="jar"/>
-        <!-- truss -->
-        <subant buildpath="exercises/SimpleTruss/" target="jar"/>
         <subant buildpath="exercises/Bridge/" target="jar"/>
-        
+        <subant buildpath="exercises/CentergyFrame/" target="jar"/>
+        <subant buildpath="exercises/CentergyTruss/" target="jar"/>
+        <subant buildpath="exercises/CRCRoof/" target="jar"/>
+<!--        <subant buildpath="exercises/Door/" target="jar"/>-->
+<!--        <subant buildpath="exercises/HighHeel/" target="jar"/>-->
+        <subant buildpath="exercises/Keyboard/" target="jar"/>
+<!--        <subant buildpath="exercises/Knife/" target="jar"/>-->
+        <subant buildpath="exercises/LadderDrill/" target="jar"/>
+        <subant buildpath="exercises/Levee/" target="jar"/>
+        <subant buildpath="exercises/Panel/" target="jar"/>
+        <subant buildpath="exercises/PisaProblem/" target="jar"/>
+        <subant buildpath="exercises/PurseProblem/" target="jar"/>
+        <subant buildpath="exercises/PushUp/" target="jar"/>
+        <subant buildpath="exercises/SeeSaw/" target="jar"/>
+<!--        <subant buildpath="exercises/Simple3D/" target="jar"/>-->
+        <subant buildpath="exercises/SpaceStation/" target="jar"/>
+        <subant buildpath="exercises/Spiderwoman/" target="jar"/>
+        <subant buildpath="exercises/TreeSwing/" target="jar"/>
+        <subant buildpath="exercises/TriangleYoga/" target="jar"/>
+<!--        <subant buildpath="exercises/WeightLifter/" target="jar"/>-->
+
     </target>
     <target name="clean">
         <echo>*** Cleaning ALL</echo>
@@ -61,20 +72,41 @@
         <subant buildpath="Statics/" target="clean"/>
         
         <echo>*** Cleaning exercises</echo>
-        <!-- simple fbd -->
         <subant buildpath="exercises/Archer/" target="clean"/>
-        <subant buildpath="exercises/SeeSaw/" target="clean"/>
-        <subant buildpath="exercises/PisaProblem/" target="clean"/>
-        <!-- frame -->
-        <subant buildpath="exercises/Bicycle/" target="clean"/>
-        <subant buildpath="exercises/Keyboard/" target="clean"/>
-        <subant buildpath="exercises/PurseProblem/" target="clean"/>
-        <!-- distributed -->
         <subant buildpath="exercises/Awning/" target="clean"/>
+        <subant buildpath="exercises/Bicycle/" target="clean"/>
+<!--        <subant buildpath="exercises/BookFriction/" target="clean"/>-->
         <subant buildpath="exercises/Bookshelf/" target="clean"/>
-        <subant buildpath="exercises/Levee/" target="clean"/>
-        <!-- truss -->
-        <subant buildpath="exercises/SimpleTruss/" target="clean"/>
         <subant buildpath="exercises/Bridge/" target="clean"/>
+        <subant buildpath="exercises/CentergyFrame/" target="clean"/>
+        <subant buildpath="exercises/CentergyTruss/" target="clean"/>
+        <subant buildpath="exercises/CRCRoof/" target="clean"/>
+<!--        <subant buildpath="exercises/Door/" target="clean"/>-->
+<!--        <subant buildpath="exercises/HighHeel/" target="clean"/>-->
+        <subant buildpath="exercises/Keyboard/" target="clean"/>
+<!--        <subant buildpath="exercises/Knife/" target="clean"/>-->
+        <subant buildpath="exercises/LadderDrill/" target="clean"/>
+        <subant buildpath="exercises/Levee/" target="clean"/>
+        <subant buildpath="exercises/Panel/" target="clean"/>
+        <subant buildpath="exercises/PisaProblem/" target="clean"/>
+        <subant buildpath="exercises/PurseProblem/" target="clean"/>
+        <subant buildpath="exercises/PushUp/" target="clean"/>
+        <subant buildpath="exercises/SeeSaw/" target="clean"/>
+<!--        <subant buildpath="exercises/Simple3D/" target="clean"/>-->
+        <subant buildpath="exercises/SpaceStation/" target="clean"/>
+        <subant buildpath="exercises/Spiderwoman/" target="clean"/>
+        <subant buildpath="exercises/TreeSwing/" target="clean"/>
+        <subant buildpath="exercises/TriangleYoga/" target="clean"/>
+<!--        <subant buildpath="exercises/WeightLifter/" target="clean"/>-->
+    </target>
+
+    <target name="make-checksums">
+
+        <echo>*** Making checksums</echo>
+        <checksum >
+            <fileset dir="applet">
+                <include name="*.jar"/>
+            </fileset>
+        </checksum>
     </target>
 </project>
