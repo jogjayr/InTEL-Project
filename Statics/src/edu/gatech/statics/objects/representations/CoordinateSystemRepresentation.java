@@ -22,10 +22,10 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
     private float margin = 4f; // pixels
     private float arrowsize = 6f; // pixels
     private ColorRGBA color = ColorRGBA.black;
-
-        private CoordinateLabel labelX;
-        private CoordinateLabel labelY;
-        private CoordinateLabel labelZ;
+    private CoordinateLabel labelX;
+    private CoordinateLabel labelY;
+    private CoordinateLabel labelZ;
+    private CoordinateLabel labelOrigin;
 
     private static class CoordinateLabel extends LabelRepresentation {
 
@@ -59,7 +59,7 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
 
         labelX = new CoordinateLabel(target, new Vector3f(axisSize, 0, 0), "X");
         getRelativeNode().attachChild(labelX);
-        
+
         labelY = new CoordinateLabel(target, new Vector3f(0, axisSize, 0), "Y");
         getRelativeNode().attachChild(labelY);
 
@@ -67,6 +67,9 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
             labelZ = new CoordinateLabel(target, new Vector3f(0, 0, axisSize), "Z");
             getRelativeNode().attachChild(labelZ);
         }
+
+        labelOrigin = new CoordinateLabel(target, new Vector3f(0, 0, 0), "O");
+        getRelativeNode().attachChild(labelOrigin);
     }
 
     @Override
@@ -74,11 +77,11 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
         super.update();
         labelX.update();
         labelY.update();
-        if(labelZ != null)
+        if (labelZ != null) {
             labelZ.update();
+        }
+        labelOrigin.update();
     }
-
-
 
     @Override
     public void draw(Renderer r) {

@@ -10,6 +10,10 @@
 <project name="LadderDrill" default="default" basedir=".">
     <description>Builds, tests, and runs the project LadderDrill.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-post-jar">
+        <signjar jar="dist/LadderDrill.jar" alias="mykey" storepass="monkeys" keystore="../../applet/.keystore"/>
+        <copyfile src="dist/LadderDrill.jar" dest="../../applet/LadderDrill.jar" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

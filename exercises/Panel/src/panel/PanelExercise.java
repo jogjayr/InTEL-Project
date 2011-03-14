@@ -6,8 +6,11 @@ package panel;
 
 import edu.gatech.statics.exercise.Ordinary3DExercise;
 import edu.gatech.statics.exercise.Schematic;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.objects.CoordinateSystem;
+import edu.gatech.statics.objects.DistanceMeasurement;
 import edu.gatech.statics.objects.Force;
 import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
@@ -26,7 +29,21 @@ public class PanelExercise extends Ordinary3DExercise {
         Description description = new Description();
 
         description.setTitle("Panel");
-        description.setNarrative("This is a simple 3d exercise.");
+        description.setNarrative(
+                "Three Georgia Tech students, Alison, Andy and Mark, "
+                + "have decided to volunteer for Habitat for Humanity and help "
+                + "build homes in the Atlanta area.  Over this past weekend "
+                + "they carried a panel for the side of a house, how much "
+                + "lifting force did each of them exert in order to carry the"
+                + " panel?.");
+
+        description.setGoals("Assume the panel is homogeneous and weighs 120 lb."
+                + " Alison, Andy, and Mark are positioned at points A, B, and"
+                + " C respectively.");
+
+        description.setProblemStatement(
+                "Calculate the lifting force exerted by each worker.  "
+                + "If you have back pain, which position among the three would you prefer?");
 
         return description;
     }
@@ -34,13 +51,17 @@ public class PanelExercise extends Ordinary3DExercise {
     @Override
     public void initExercise() {
         super.initExercise();
+
+        Unit.setSuffix(Unit.distance, " ft");
+        Unit.setSuffix(Unit.force, " lbs");
+        Unit.setSuffix(Unit.moment, " ft*lbs");
     }
 
     @Override
     public void loadExercise() {
         Schematic schematic = getSchematic();
 
-        Potato panel = new Potato("board");
+        Potato panel = new Potato("panel");
 
 //        panel.addRepresentation(new BoxRepresentation(panel, 2, .1f, 1));
 
@@ -50,14 +71,14 @@ public class PanelExercise extends Ordinary3DExercise {
         Point B = new Point("B", "6", "0", "-6");
         Point C = new Point("C", "10", "0", "-4");
 
-        Force forceG = new Force(D, Vector3bd.UNIT_Y.negate(), new BigDecimal("500"));
+        Force forceG = new Force(D, Vector3bd.UNIT_Y.negate(), new BigDecimal("150"));
         forceG.setName("weight");
-        Force forceA = new Force(A, Vector3bd.UNIT_Y, "Alice");
-        forceA.setName("Alice");
-        Force forceB = new Force(B, Vector3bd.UNIT_Y, "Bob");
-        forceB.setName("Bob");
-        Force forceC = new Force(C, Vector3bd.UNIT_Y, "Cathy");
-        forceC.setName("Cathy");
+        Force forceA = new Force(A, Vector3bd.UNIT_Y, "Alison");
+        forceA.setName("Alison");
+        Force forceB = new Force(B, Vector3bd.UNIT_Y, "Andy");
+        forceB.setName("Andy");
+        Force forceC = new Force(C, Vector3bd.UNIT_Y, "Mark");
+        forceC.setName("Mark");
 
         panel.addObject(D);
         panel.addObject(A);
@@ -79,6 +100,60 @@ public class PanelExercise extends Ordinary3DExercise {
         forceC.createDefaultSchematicRepresentation();
 
         schematic.add(panel);
+
+
+        // measurements
+
+        CoordinateSystem coords = new CoordinateSystem(true);
+        coords.createDefaultSchematicRepresentation();
+        schematic.add(coords);
+
+        Point origin = new Point("origin", "0", "0", "0");
+        Point midl = new Point("midl", "0", "0", "-3");
+        Point ul = new Point("ul", "0", "0", "-6");
+        Point bmid = new Point("bmid", "5","0","0");
+        Point br = new Point("br", "10","0","0");
+
+        float distanceOffset = .1f;
+
+        DistanceMeasurement measure;
+
+        measure = new DistanceMeasurement(origin, midl);
+        measure.createDefaultSchematicRepresentation(-distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(midl, ul);
+        measure.createDefaultSchematicRepresentation(-distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(ul, B);
+        measure.createDefaultSchematicRepresentation(-distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(origin, A);
+        measure.createDefaultSchematicRepresentation(distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(A, bmid);
+        measure.createDefaultSchematicRepresentation(distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(bmid, br);
+        measure.createDefaultSchematicRepresentation(distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        measure = new DistanceMeasurement(br, C);
+        measure.createDefaultSchematicRepresentation(distanceOffset);
+        panel.addObject(measure);
+        schematic.add(measure);
+
+        // model
 
         ModelNode modelNode = ModelNode.load("panel/assets/", "panel/assets/panel.dae");
         modelNode.extractLights();
