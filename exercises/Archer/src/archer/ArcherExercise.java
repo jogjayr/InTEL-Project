@@ -144,6 +144,8 @@ public class ArcherExercise extends SimpleFBDExercise {
         bowString.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setSelectLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
+        rep.setHoverLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
 
         rep = modelNode.extractElement(bowString, "VisualSceneNode/BowStringBound");
         rep.getRelativeNode().setLocalScale(scale);
@@ -159,6 +161,8 @@ public class ArcherExercise extends SimpleFBDExercise {
         bow.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setSelectLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
+        rep.setHoverLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
 
 
         rep = modelNode.getRemainder(schematic.getBackground());

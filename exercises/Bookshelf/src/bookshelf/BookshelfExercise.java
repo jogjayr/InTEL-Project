@@ -129,16 +129,19 @@ public class BookshelfExercise extends DistributedExercise {
         DistributedForce dlBooks1 = new ConstantDistributedForce("books1", bookshelf, A, mid1,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.20")));
         DistributedForceObject dlObjectBooks1 = new DistributedForceObject(dlBooks1, "1");
+        dlObjectBooks1.setName("Force for Book Group 1");
         bookshelf.addObject(dlObjectBooks1);
 
         DistributedForce dlBooks2 = new ConstantDistributedForce("books2", bookshelf, mid1, mid2,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.30")));
         DistributedForceObject dlObjectBooks2 = new DistributedForceObject(dlBooks2, "2");
+        dlObjectBooks2.setName("Force for Book Group 2");
         bookshelf.addObject(dlObjectBooks2);
 
         DistributedForce dlBooks3 = new ConstantDistributedForce("books3", bookshelf, mid3, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("0.15")));
         DistributedForceObject dlObjectBooks3 = new DistributedForceObject(dlBooks3, "3");
+        dlObjectBooks3.setName("Force for Book Group 3");
         bookshelf.addObject(dlObjectBooks3);
 
         bookshelf.addObject(mid1);
@@ -151,7 +154,7 @@ public class BookshelfExercise extends DistributedExercise {
 
         int arrowDensity = 2;
         dlObjectBooks1.createDefaultSchematicRepresentation(18f / 6, 2 * arrowDensity, 1.75f);
-        dlObjectBooks2.createDefaultSchematicRepresentation(22f / 6, 4 * arrowDensity, 2.0f);
+        dlObjectBooks2.createDefaultSchematicRepresentation(21f / 6, 4 * arrowDensity, 2.0f);
         dlObjectBooks3.createDefaultSchematicRepresentation(15f / 6, 3 * arrowDensity, 2.25f);
 
         DistanceMeasurement measureFull = new DistanceMeasurement(A, B);

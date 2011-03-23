@@ -42,8 +42,8 @@ public class AwningExercise extends DistributedExercise {
 
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-1, 1, -1, 2);
-        vc.setZoomConstraints(0.5f, 1.5f);
-        vc.setRotationConstraints(0, 1);
+        vc.setZoomConstraints(0.5f, 2.5f);
+        vc.setRotationConstraints(-5, 5, 0, 5);
         interfaceConfiguration.setViewConstraints(vc);
 
         return interfaceConfiguration;
@@ -117,16 +117,17 @@ public class AwningExercise extends DistributedExercise {
         DistributedForce snowForce = new TriangularDistributedForce("snow", awning, A, B,
                 new Vector(Unit.forceOverDistance, Vector3bd.UNIT_Y.negate(), new BigDecimal("10")));
         DistributedForceObject snowForceObject = new DistributedForceObject(snowForce, "");
-
+        snowForceObject.setName("Force on AB");
         awning.addObject(snowForceObject);
 
         A.createDefaultSchematicRepresentation();
         B.createDefaultSchematicRepresentation();
         //awning.createDefaultSchematicRepresentation();
-        snowForceObject.createDefaultSchematicRepresentation(.75f, 5, 1.0f);
+        snowForceObject.createDefaultSchematicRepresentation(.8f, 7, 1f);
+   
 
         DistanceMeasurement measure = new DistanceMeasurement(A, B);
-        measure.createDefaultSchematicRepresentation(.5f);
+        measure.createDefaultSchematicRepresentation(.2f);
         schematic.add(measure);
 
         Connector base = new Fix2d(A);
@@ -146,8 +147,8 @@ public class AwningExercise extends DistributedExercise {
         rep.setSynchronizeTranslation(false);
         rep.setModelOffset(modelTranslation);
         rep.setModelScale(modelScale);
-        rep.setSelectLightColor(new ColorRGBA(1f, 1f, 1f, 1));
-        rep.setHoverLightColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 1));
+        rep.setSelectLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
+        rep.setHoverLightColor(new ColorRGBA(1f, 1f, 0f, 1f));
         awning.addRepresentation(rep);
 
         rep = modelNode.getRemainder(schematic.getBackground());

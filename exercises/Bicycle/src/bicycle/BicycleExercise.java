@@ -15,10 +15,12 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.DescriptionLayout;
+import edu.gatech.statics.modes.description.DescriptionUI;
+import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 import edu.gatech.statics.modes.equation.EquationState;
-import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
 import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.Body;
@@ -35,6 +37,9 @@ import edu.gatech.statics.objects.connectors.Roller2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -48,11 +53,26 @@ public class BicycleExercise extends FrameExercise {
     }
 
     @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
+        interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-15f, 15f, 0f, 14f);
+        vc.setZoomConstraints(0.5f, 2.5f);
+        vc.setRotationConstraints(-1, 3, 0, 1.5f);
+        interfaceConfiguration.setViewConstraints(vc);
+        return interfaceConfiguration;
+    }
+
+
+    @Override
     public Description getDescription() {
         Description description = new Description();
+        ScrollbarLayout scrollbarLayout = new ScrollbarLayout();
 
         description.setTitle("Bicycle");
 
+       
         description.setNarrative(
                 "Anna Smith is a ME student at GT who has a passion for bikes. " +
                 "She's learned in her MSE 2001 materials lab class that titanium has " +
@@ -75,8 +95,9 @@ public class BicycleExercise extends FrameExercise {
                 "It is recommended to first use the overall FBD to solve for the support forces, " +
                 "and then either start at joint D or beam FBGA to solve all remaining unknowns.");
 
-        //description.setGoals("Solve for the tension or compression in each of the two-force members.");
-
+        description.setGoals("Solve for the tension or compression in each of the two-force members.");
+        description.setLayout(new ScrollbarLayout());
+        
         description.addImage("bicycle/assets/bicycle-main.png");
         description.addImage("bicycle/assets/IMG_3406.JPG");
         description.addImage("bicycle/assets/IMG_3410.JPG");
@@ -165,79 +186,78 @@ public class BicycleExercise extends FrameExercise {
         jointAtE = new PointBody("Joint E", E);
 
         DistanceMeasurement distance1 = new DistanceMeasurement(F, A);
-        distance1.setName("Measure FA");
-        distance1.createDefaultSchematicRepresentation(1.0f);
+        distance1.setName("Measure AF Vertical");
+        distance1.createDefaultSchematicRepresentation(2.0f);
         distance1.forceVertical();
         schematic.add(distance1);
 
         DistanceMeasurement distance1a = new DistanceMeasurement(F, B);
         distance1a.setName("Measure FB");
-        distance1a.createDefaultSchematicRepresentation(4.5f);
+        distance1a.createDefaultSchematicRepresentation(3.9f);
         distance1a.forceVertical();
         schematic.add(distance1a);
-
-
+        
         DistanceMeasurement distance2 = new DistanceMeasurement(A, E);
         distance2.setName("Measure AE");
-        distance2.createDefaultSchematicRepresentation(0.5f);
+        distance2.createDefaultSchematicRepresentation(1.0f);
         schematic.add(distance2);
 
         DistanceMeasurement distance3 = new DistanceMeasurement(E, D);
         distance3.setName("Measure ED");
-        distance3.createDefaultSchematicRepresentation(0.5f);
+        distance3.createDefaultSchematicRepresentation(1.0f);
         schematic.add(distance3);
 
         DistanceMeasurement distance4 = new DistanceMeasurement(B, A);
         distance4.setName("Measure AB");
-        distance4.createDefaultSchematicRepresentation(0.5f);
+        distance4.createDefaultSchematicRepresentation(0.9f);
         distance4.forceVertical();
         schematic.add(distance4);
 
         DistanceMeasurement distance5 = new DistanceMeasurement(F, A);
-        distance5.setName("Measure AF");
-        distance5.createDefaultSchematicRepresentation(0.5f);
+        distance5.setName("Measure AF Horizontal");
+        distance5.createDefaultSchematicRepresentation(2.0f);
         distance5.forceHorizontal();
         schematic.add(distance5);
 
         DistanceMeasurement distance6 = new DistanceMeasurement(F, G);
         distance6.setName("Measure AG");
-        distance6.createDefaultSchematicRepresentation(1.0f);
+        distance6.createDefaultSchematicRepresentation(1.2f);
         distance6.forceHorizontal();
         schematic.add(distance6);
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(B, G, E);
         angle1.setName("Angle GBE");
-        angle1.createDefaultSchematicRepresentation(0.5f);
+        angle1.createDefaultSchematicRepresentation(0.9f);
         schematic.add(angle1);
 
         PointAngleMeasurement angle2 = new PointAngleMeasurement(B, E, C);
         angle2.setName("Angle EBC");
-        angle2.createDefaultSchematicRepresentation(0.5f);
+        angle2.createDefaultSchematicRepresentation(0.9f);
         schematic.add(angle2);
 
         PointAngleMeasurement angle3 = new PointAngleMeasurement(C, B, E);
         angle3.setName("Angle BCE");
-        angle3.createDefaultSchematicRepresentation(0.5f);
+        angle3.createDefaultSchematicRepresentation(0.9f);
         schematic.add(angle3);
 
         PointAngleMeasurement angle4 = new PointAngleMeasurement(D, C, E);
         angle4.setName("Angle CDE");
-        angle4.createDefaultSchematicRepresentation(0.5f);
+        angle4.createDefaultSchematicRepresentation(0.8f);
         schematic.add(angle4);
 
         PointAngleMeasurement angle6 = new PointAngleMeasurement(E, C, D);
         angle6.setName("Angle CED");
-        angle6.createDefaultSchematicRepresentation(0.5f);
+        angle6.createDefaultSchematicRepresentation(0.9f);
         schematic.add(angle6);
 
         PointAngleMeasurement angle7 = new PointAngleMeasurement(E, G, A);
         angle7.setName("Angle GEA");
-        angle7.createDefaultSchematicRepresentation(0.5f);
+        angle7.createDefaultSchematicRepresentation(1.0f);
         schematic.add(angle7);
 
         PointAngleMeasurement angle8 = new PointAngleMeasurement(A, G, E);
         angle8.setName("Angle GAE");
-        angle8.createDefaultSchematicRepresentation(0.5f);
+        angle8.createDefaultSchematicRepresentation(0.9f);
         schematic.add(angle8);
 
         Force seatWeight = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal(500));
@@ -259,7 +279,7 @@ public class BicycleExercise extends FrameExercise {
 
         FixedAngleMeasurement angle5 = new FixedAngleMeasurement(F, Vector3bd.UNIT_X.negate(), handleForceDirection.toVector3f());
         angle5.setName("Angle F");
-        angle5.createDefaultSchematicRepresentation(0.5f);
+        angle5.createDefaultSchematicRepresentation(1.0f);
         schematic.add(angle5);
 
         Force handleWeight = new Force(F, handleForceDirection, new BigDecimal(20));
@@ -346,6 +366,7 @@ public class BicycleExercise extends FrameExercise {
 
         ModelRepresentation rep;
 
+
         Matrix3f matrix = new Matrix3f();
         matrix.fromStartEndVectors(Vector3f.UNIT_Z, Vector3f.UNIT_X.negate());
 
@@ -372,6 +393,8 @@ public class BicycleExercise extends FrameExercise {
         rep.setModelRotation(matrix);
         rep.setLocalScale(scale);
         rep.setModelOffset(modelTranslation);
+        rep.setSelectLightColor(new ColorRGBA(0f, 0f, 1f, 1f));
+        rep.setHoverLightColor(new ColorRGBA(0f, 0f, 1f, 1f));
         
 
         rep = modelNode.extractElement(GE_frontBar, "VisualSceneNode/model/bike/bar_GE");
