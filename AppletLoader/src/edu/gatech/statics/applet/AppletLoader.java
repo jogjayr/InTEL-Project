@@ -54,6 +54,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
@@ -171,7 +172,8 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
     /** classLoader used to add downloaded jars to the classpath */
     protected static AppletClassLoader classLoader;
     /** actual thread that does the loading */
-    protected Thread loaderThread;
+    protected static Thread loaderThread;
+    private static AppletLoader owningLoader; // this is the applet loader that is PRIMARY
     /** animation thread that renders our load screen while loading */
     protected Thread animationThread;
     /** applet to load after all downloads are complete */
@@ -373,27 +375,42 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         if (lwjglApplet != null) {
             lwjglApplet.start();
         } else {
+
             if (loaderThread == null && !fatalError) {
-                logger.info("### AppletLoader: starting loader thread");
-                loaderThread = new Thread(this);
-                loaderThread.setName("AppletLoader.loaderThread");
-                loaderThread.start();
-
-                animationThread = new Thread() {
-
-                    @Override
-                    public void run() {
-                        while (loaderThread != null) {
-                            repaint();
-                            AppletLoader.this.sleep(100);
-                        }
-                        animationThread = null;
-                    }
-                };
-                animationThread.setName("AppletLoader.animationthread");
-                animationThread.start();
+                startLoaderThread();
+            } else {
+                showCloseInstanceMessage();
             }
         }
+    }
+
+    private void showCloseInstanceMessage() {
+        logger.info("### AppletLoader: showCloseInstanceMessage - PLACEHOLDER");
+
+        // IMPLEMENT
+    }
+
+    private void startLoaderThread() {
+        logger.info("### AppletLoader: starting loader thread");
+        loaderThread = new Thread(this);
+        loaderThread.setName("AppletLoader.loaderThread");
+        loaderThread.start();
+
+        owningLoader = this;
+
+        animationThread = new Thread() {
+
+            @Override
+            public void run() {
+                while (loaderThread != null) {
+                    repaint();
+                    AppletLoader.this.sleep(100);
+                }
+                animationThread = null;
+            }
+        };
+        animationThread.setName("AppletLoader.animationthread");
+        animationThread.start();
     }
 
     /*
@@ -406,6 +423,15 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             lwjglApplet.stop();
             lwjglApplet.destroy();
         }
+
+        if (this == owningLoader) {
+            // release the loader thread ONLY if this is the instance that owns it.
+            logger.info("### AppletLoader: stop - this applet owns the thread, so release it");
+            loaderThread = null;
+        } else {
+            logger.info("### AppletLoader: stop - this applet does not own the loader thread");
+        }
+
         super.stop();
     }
 
