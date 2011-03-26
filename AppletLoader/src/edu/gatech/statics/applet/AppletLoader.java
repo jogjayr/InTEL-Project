@@ -39,6 +39,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -80,6 +82,9 @@ import java.util.jar.Pack200;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import sun.security.util.SecurityConstants;
 
 /**
@@ -383,11 +388,57 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             }
         }
     }
+    private boolean showingCloseInstanceMessage = false;
 
     private void showCloseInstanceMessage() {
-        logger.info("### AppletLoader: showCloseInstanceMessage - PLACEHOLDER");
+        logger.info("### AppletLoader: showCloseInstanceMessage");
 
-        // IMPLEMENT
+        showingCloseInstanceMessage = true;
+
+        add(new JLabel("There appears to be another instance of InTEL running right now. \n"
+                + "Force the other instance to shut down?"));
+
+        JPanel panel = new JPanel();
+        JButton shutDown, tryAgain;
+        panel.add(shutDown = new JButton("Shut it down"));
+        panel.add(tryAgain = new JButton("Try again"));
+        add(panel);
+
+        shutDown.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                doShutDownOtherInstance();
+            }
+        });
+
+        tryAgain.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                doTryAgain();
+            }
+        });
+    }
+
+    private void doShutDownOtherInstance() {
+
+        owningLoader.stop();
+        owningLoader.destroy();
+
+        doTryAgain();
+
+    }
+
+    private void doTryAgain() {
+
+        boolean success = false;
+
+        success = loaderThread == null ;
+
+        if (success) {
+            removeAll();
+            showingCloseInstanceMessage = false;
+            startLoaderThread();
+        }
     }
 
     private void startLoaderThread() {
@@ -484,6 +535,11 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             return;
         }
 
+        if (showingCloseInstanceMessage) {
+            super.paint(g);
+            return;
+        }
+
         // create offscreen if missing
         if (offscreen == null) {
             offscreen = createImage(getWidth(), getHeight());
@@ -504,6 +560,8 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             x = (getWidth() - logo.getWidth(this)) / 2;
             y = (getHeight() - logo.getHeight(this)) / 2;
         }
+
+//        paintComponents(g);
 
         og.setColor(fgColor);
         String message = getDescriptionForState();
