@@ -187,4 +187,8 @@ public class DiagramDisplayCalculator {
         state.setCameraFrame(cameraPos, center);
         return state;
     }
+
+    public ViewDiagramState getDefaultState() {
+        return defaultState;
+    }
 }

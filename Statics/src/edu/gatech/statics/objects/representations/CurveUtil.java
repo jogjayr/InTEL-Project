@@ -36,6 +36,10 @@ public class CurveUtil {
     private static Arc curveUtil_arc;
 
     public static void renderLine(Renderer r, ColorRGBA color, Vector3f point1, Vector3f point2) {
+        renderLine(r, color, point1, point2, 1f);
+    }
+
+    public static void renderLine(Renderer r, ColorRGBA color, Vector3f point1, Vector3f point2, float width) {
 
         if (curveUtil_line == null) {
 
@@ -69,6 +73,8 @@ public class CurveUtil {
         curveUtil_line_points.rewind();
         curveUtil_line_points.put(point1.x).put(point1.y).put(point1.z);
         curveUtil_line_points.put(point2.x).put(point2.y).put(point2.z);
+
+        curveUtil_line.setLineWidth(width);
 
         r.draw(curveUtil_line);
     }

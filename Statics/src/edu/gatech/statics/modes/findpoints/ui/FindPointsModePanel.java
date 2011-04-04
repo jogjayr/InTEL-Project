@@ -8,6 +8,7 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BScrollPane;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.modes.findpoints.FindPointsDiagram;
@@ -40,12 +41,15 @@ public class FindPointsModePanel extends ApplicationModePanel<FindPointsDiagram>
 
         mainScrollPane = new BScrollPane(mainContainer, true, true);
         mainScrollPane.setShowScrollbarAlways(false);
+        mainScrollPane.setPreferredSize(-1, 175);
         add(mainScrollPane, BorderLayout.CENTER);
     }
 
     @Override
     public void activate() {
         super.activate();
+
+        StaticsApplication.getApp().setUIFeedback("Find the coordinates of points in the diagram");
 
         // empty contents
         mainContainer.removeAll();

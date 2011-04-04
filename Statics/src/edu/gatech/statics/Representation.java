@@ -287,8 +287,10 @@ abstract public class Representation<SimType extends SimulationObject> extends N
     private Light light;
     private ColorRGBA selectLightColor = new ColorRGBA(.5f, .5f, .5f, 1);
     private ColorRGBA hoverLightColor = new ColorRGBA(.3f, .3f, .3f, 1);
-    //private ColorRGBA selectLightColor = ColorRGBA.green;
-    //private ColorRGBA hoverLightColor = ColorRGBA.green;
+
+    public Light getLight() {
+        return light;
+    }
 
     public void setHoverLightColor(ColorRGBA color) {
         hoverLightColor = color;

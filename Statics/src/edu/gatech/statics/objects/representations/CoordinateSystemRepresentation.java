@@ -19,8 +19,8 @@ import edu.gatech.statics.objects.SimulationObject;
 public class CoordinateSystemRepresentation extends Representation<CoordinateSystem> {
 
     private float axisSize;
-    private float margin = 4f; // pixels
-    private float arrowsize = 6f; // pixels
+    private float margin = 15f; // pixels
+    private float arrowsize = 10f; // pixels
     private ColorRGBA color = ColorRGBA.black;
     private CoordinateLabel labelX;
     private CoordinateLabel labelY;
@@ -149,6 +149,11 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
         // now that the textWorldLength is calculated, it may be good to do some tests
         // we may wish to display text differently if the text size is greater than the line length, etc.
 
+
+        offsetDirection.set(r.getCamera().getDirection());
+        offsetDirection.crossLocal(worldPointDifference);
+        offsetDirection.normalizeLocal();
+
         arrowOffset.set(offsetDirection);
         arrowOffset.multLocal(worldRatio * arrowsize);
         measureExtent.set(pDirection);
@@ -167,7 +172,7 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
         arrowHead2.subtractLocal(arrowOffset);
 
         // draw line:
-        CurveUtil.renderLine(r, color, arrow1, arrow2);
+        CurveUtil.renderLine(r, color, arrow1, arrow2, 3);
 
         arrowHead1a.set(arrowHead1).multLocal(-1);
         arrowHead2a.set(arrowHead2).multLocal(-1);
@@ -178,7 +183,7 @@ public class CoordinateSystemRepresentation extends Representation<CoordinateSys
         arrowHead2a.addLocal(pCenter);
 
         // draw arrowheads:
-        CurveUtil.renderLine(r, color, arrow2, arrowHead1a);
-        CurveUtil.renderLine(r, color, arrow2, arrowHead2a);
+        CurveUtil.renderLine(r, color, arrow2, arrowHead1a, 3);
+        CurveUtil.renderLine(r, color, arrow2, arrowHead2a, 3);
     }
 }

@@ -5,13 +5,14 @@
 package edu.gatech.statics.objects;
 
 import edu.gatech.statics.Representation;
+import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.objects.representations.CoordinateSystemRepresentation;
 
 /**
  *
  * @author gtg126z
  */
-public class CoordinateSystem extends SimulationObject {
+public class CoordinateSystem extends Measurement {
 
     private boolean is3D;
 
@@ -26,7 +27,11 @@ public class CoordinateSystem extends SimulationObject {
 
     @Override
     public void createDefaultSchematicRepresentation() {
-        Representation rep = new CoordinateSystemRepresentation(this, 2.0f);
+        Representation rep = new CoordinateSystemRepresentation(this, 1.0f);
         addRepresentation(rep);
+    }
+
+    public Unit getUnit() {
+        return Unit.none;
     }
 }

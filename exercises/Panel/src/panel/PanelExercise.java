@@ -4,6 +4,8 @@
  */
 package panel;
 
+import com.jme.light.DirectionalLight;
+import com.jme.math.Vector3f;
 import edu.gatech.statics.exercise.Ordinary3DExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
@@ -16,6 +18,8 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.ViewDiagramState;
 import java.math.BigDecimal;
 
 /**
@@ -23,6 +27,16 @@ import java.math.BigDecimal;
  * @author gtg126z
  */
 public class PanelExercise extends Ordinary3DExercise {
+
+    @Override
+    public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+        AbstractInterfaceConfiguration ic = super.createInterfaceConfiguration();
+        ViewDiagramState defaultViewState = ic.getDisplayCalculator().getDefaultState();
+        defaultViewState.setCameraFrame(new Vector3f(0, 1, 2), Vector3f.ZERO);
+        ic.getDisplayCalculator().setRadiusMultiplier(2f);
+
+        return ic;
+    }
 
     @Override
     public Description getDescription() {
@@ -33,7 +47,7 @@ public class PanelExercise extends Ordinary3DExercise {
                 "Three Georgia Tech students, Alison, Andy and Mark, "
                 + "have decided to volunteer for Habitat for Humanity and help "
                 + "build homes in the Atlanta area.  Over this past weekend "
-                + "they carried a panel for the side of a house, how much "
+                + "they carried a panel for the side of a house. How much "
                 + "lifting force did each of them exert in order to carry the"
                 + " panel?.");
 
@@ -45,6 +59,10 @@ public class PanelExercise extends Ordinary3DExercise {
                 "Calculate the lifting force exerted by each worker.  "
                 + "If you have back pain, which position among the three would you prefer?");
 
+        description.addImage("panel/assets/panel1.png");
+        description.addImage("panel/assets/panel3.jpg");
+        description.addImage("panel/assets/panel2.jpg");
+
         return description;
     }
 
@@ -55,6 +73,11 @@ public class PanelExercise extends Ordinary3DExercise {
         Unit.setSuffix(Unit.distance, " ft");
         Unit.setSuffix(Unit.force, " lbs");
         Unit.setSuffix(Unit.moment, " ft*lbs");
+
+        getDisplayConstants().setMomentSize(0.3f);
+        getDisplayConstants().setForceSize(0.3f);
+        getDisplayConstants().setPointSize(0.3f);
+        getDisplayConstants().setCylinderRadius(0.3f);
     }
 
     @Override
@@ -161,11 +184,15 @@ public class PanelExercise extends Ordinary3DExercise {
         float scale = 2;
 
         ModelRepresentation rep;
-        rep = modelNode.extractElement(panel, "RootNode/scene/panel");
+        rep = modelNode.extractElement(panel, "VisualSceneNode/scene/panel");
         panel.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
         rep.setLocalScale(scale);
+
+        // re orient the light that is used for highlights so that the flat panel is illuminated correctly
+        DirectionalLight light = (DirectionalLight) rep.getLight();
+        light.setDirection(Vector3f.UNIT_Y.negate());
 
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.setLocalScale(scale);
