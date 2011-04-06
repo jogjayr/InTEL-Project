@@ -66,6 +66,11 @@ public class Moment3DEquationMath extends EquationMath {
 
         // make sure the moment point is set.
         if (state.getMomentPoint() == null) {
+
+            StaticsApplication.logger.info("check: Moment point is not set!");
+            StaticsApplication.logger.info("check: FAILED");
+
+            StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_moment_point_not_set");
             return false;
         }
 
@@ -82,27 +87,34 @@ public class Moment3DEquationMath extends EquationMath {
 
 
         }
-        if (allLoads.isEmpty()) {
-            return false;
-        }
-        //Map<AnchoredVector, String> terms = state.getTerms();
-        Set<AnchoredVector> equationLoads = state.getTerms().keySet();
-        for (AnchoredVector load : equationLoads) {
-            //state.getTerms().get(load);
 
-//            if (!terms.containsKey(load)) {
-//                return false;
-//            }
-//            if(t)
-            if (!loadsNotThruMomentPoint.contains(load)) {
+        Set<AnchoredVector> equationLoads = state.getTerms().keySet();
+
+        // go through all the loads that are NOT supposed to be there.
+        for (AnchoredVector load : loadsThruMomentPoint) {
+            if(equationLoads.contains(load)) {
+                StaticsApplication.logger.info("check: equation has unnecessary term: " + load);
+                StaticsApplication.logger.info("check: FAILED");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_unnecessary", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return false;
-            } else if (loadsThruMomentPoint.contains(load)) {
+            }
+        }
+
+        // go through all forces that ARE supposed to be in the diagram
+        for (AnchoredVector load : loadsNotThruMomentPoint) {
+            if (!equationLoads.contains(load)) {
+                StaticsApplication.logger.info("check: equation has not added all terms"+load);
+                StaticsApplication.logger.info("check: FAILED");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_missing_forces_3d");
                 return false;
             }
 
             String momentArm = state.getTerms().get(load);
 
             if (momentArm == null) {
+                StaticsApplication.logger.info("check: no moment arm for " + load);
+                StaticsApplication.logger.info("check: FAILED");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_no_moment_arm_3d", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return false;
             }
             // this is the value that the moment arm String should be, equal to the name of the moment point
@@ -110,6 +122,9 @@ public class Moment3DEquationMath extends EquationMath {
             String comparison = state.getMomentPoint().getName() + load.getAnchor().getName();
 
             if (!comparison.equalsIgnoreCase(momentArm)) {
+                StaticsApplication.logger.info("check: no moment arm for " + load);
+                StaticsApplication.logger.info("check: FAILED");
+                StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_check_fail_no_moment_arm_3d", load.getVector().getPrettyName(), load.getAnchor().getName());
                 return false;
             }
         }

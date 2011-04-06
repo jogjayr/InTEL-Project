@@ -10,7 +10,7 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
 import edu.gatech.statics.modes.equation.EquationMode;
 
 /**
- *
+ * This task is complete when the user has completed the equations for the specified BodySubset. 
  * @author Calvin Ashmore
  */
 public class SolveFBDTask extends Task {

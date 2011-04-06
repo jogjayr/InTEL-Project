@@ -6,6 +6,7 @@ package panel;
 
 import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
+import edu.gatech.statics.exercise.BodySubset;
 import edu.gatech.statics.exercise.Ordinary3DExercise;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
@@ -18,6 +19,8 @@ import edu.gatech.statics.objects.Point;
 import edu.gatech.statics.objects.bodies.Potato;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
+import edu.gatech.statics.tasks.CompleteFBDTask;
+import edu.gatech.statics.tasks.SolveFBDTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
 import edu.gatech.statics.ui.windows.navigation.ViewDiagramState;
 import java.math.BigDecimal;
@@ -198,5 +201,7 @@ public class PanelExercise extends Ordinary3DExercise {
         rep.setLocalScale(scale);
         schematic.getBackground().addRepresentation(rep);
 
+
+        addTask(new SolveFBDTask("Solve FBD", new BodySubset(panel)));
     }
 }

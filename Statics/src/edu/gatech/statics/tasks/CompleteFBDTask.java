@@ -10,7 +10,8 @@ import edu.gatech.statics.modes.fbd.FBDMode;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 
 /**
- *
+ * This task is completed when the student successfully builds a FBD of the specified body subset.
+ * This does not check equations.
  * @author Calvin Ashmore
  */
 public class CompleteFBDTask extends Task {
