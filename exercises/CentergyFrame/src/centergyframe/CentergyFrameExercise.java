@@ -11,6 +11,7 @@ import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
+import edu.gatech.statics.modes.description.DescriptionLayout;
 import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.distributed.DistributedExercise;
 import edu.gatech.statics.modes.distributed.objects.ConstantDistributedForce;
@@ -67,6 +68,8 @@ public class CentergyFrameExercise extends DistributedExercise {
 
         Description description = new Description();
 
+        description.setTitle("Centergy Frame");
+
         description.setNarrative("As you may have heard, there was a partial collapse of the parking deck behind the Centergy Building" +
                                  "in Technology Square on Monday, June 29, 2009, around noon time. " +
                                  "Though not on Georgia Tech campus, some Tech employees do lease parking spaces within this deck. " +
@@ -80,9 +83,7 @@ public class CentergyFrameExercise extends DistributedExercise {
 
         description.setGoals("Find the reaction forces at points A and F.");
 
-        description.setLayout(new ScrollbarLayout());
-
-        description.addImage("centergyframe/assets/screenshot.png");
+        description.addImage("centergyframe/assets/screenshotframe.png");
         description.addImage("centergyframe/assets/mainpicture.png");
         description.addImage("centergyframe/assets/outsidebeam.png");
         description.addImage("centergyframe/assets/insidedeck.png");
@@ -97,12 +98,11 @@ public class CentergyFrameExercise extends DistributedExercise {
         Unit.setSuffix(Unit.moment, " kip*ft");
         Unit.setSuffix(Unit.force, " kip");
         Unit.setSuffix(Unit.forceOverDistance, " kip/ft");
-
-
     }
 
     @Override
     public void loadExercise() {
+
         Schematic schematic = getSchematic();
 
         Point A = new Point("A", "0", "0", "0");
@@ -140,12 +140,9 @@ public class CentergyFrameExercise extends DistributedExercise {
         //distributedtrussObject.setName("trussForce");
         CD.addObject(distributedtrussObject);
 
-
-
         //arrow graphic size and create schematic representation of arrows (adding to visual scene)
         int arrowDensity = 2;
         distributedtrussObject.createDefaultSchematicRepresentation(18f / 6, 2 * arrowDensity, 1.75f);
-
 
         //creating distance measurement between points
         DistanceMeasurement measureFull = new DistanceMeasurement(A, F);
@@ -177,8 +174,6 @@ public class CentergyFrameExercise extends DistributedExercise {
         Fix2d fixD = new Fix2d(D);
         fixD.setName("fix D");
         fixD.attach(DEF, CD);
-
-
 
         schematic.add(BE);
         schematic.add(ABC);

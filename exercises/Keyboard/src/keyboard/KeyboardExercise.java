@@ -32,6 +32,7 @@ import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
 import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -46,11 +47,13 @@ public class KeyboardExercise extends FrameExercise {
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
 
         AbstractInterfaceConfiguration ic = super.createInterfaceConfiguration();
+        ic.setNavigationWindow(new Navigation3DWindow());
         ic.setCameraSpeed(.2f, 0.02f, .05f);
 
         ViewConstraints vc = new ViewConstraints();
         vc.setPositionConstraints(-2, 2, -1, 4);
         vc.setZoomConstraints(0.5f, 1.5f);
+        vc.setRotationConstraints(-5, 5, 0, 5);
         ic.setViewConstraints(vc);
         
         return ic;
@@ -142,7 +145,7 @@ public class KeyboardExercise extends FrameExercise {
     public void loadExercise() {
         Schematic schematic = getSchematic();
 
-        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .7f, .9f, 1.0f));
+        DisplaySystem.getDisplaySystem().getRenderer().setBackgroundColor(new ColorRGBA(.7f, .8f, .9f, 1.0f));
         StaticsApplication.getApp().getCamera().setLocation(new Vector3f(0.0f, 0.0f, 65.0f));
 
         A = new Point("A", "0", "6", "0");
@@ -243,6 +246,8 @@ public class KeyboardExercise extends FrameExercise {
         leftLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setHoverLightColor(ColorRGBA.yellow);
+        rep.setSelectLightColor(ColorRGBA.yellow);
 
         rep = modelNode.extractElement(rightLeg, "VisualSceneNode/stand/leg2");
         rep.setLocalScale(scale);
@@ -250,6 +255,8 @@ public class KeyboardExercise extends FrameExercise {
         rightLeg.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setHoverLightColor(ColorRGBA.yellow);
+        rep.setSelectLightColor(ColorRGBA.yellow);
 
         rep = modelNode.extractElement(bar, "VisualSceneNode/stand/middle_support");
         rep.setLocalScale(scale);
@@ -257,6 +264,8 @@ public class KeyboardExercise extends FrameExercise {
         bar.addRepresentation(rep);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setHoverLightColor(ColorRGBA.yellow);
+        rep.setSelectLightColor(ColorRGBA.yellow);
 
         rep = modelNode.getRemainder(schematic.getBackground());
 

@@ -25,6 +25,9 @@ import edu.gatech.statics.objects.connectors.Pin2d;
 import edu.gatech.statics.objects.representations.ModelNode;
 import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.Solve2FMTask;
+import edu.gatech.statics.ui.AbstractInterfaceConfiguration;
+import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
+import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import java.math.BigDecimal;
 import java.util.Collections;
 
@@ -33,6 +36,22 @@ import java.util.Collections;
  * @author vignesh
  */
 public class CRCRoof extends FrameExercise {
+
+    @Override
+      public AbstractInterfaceConfiguration createInterfaceConfiguration() {
+
+        AbstractInterfaceConfiguration ic = super.createInterfaceConfiguration();
+        ic.setNavigationWindow(new Navigation3DWindow());
+        ic.setCameraSpeed(.2f, 0.02f, .05f);
+
+        ViewConstraints vc = new ViewConstraints();
+        vc.setPositionConstraints(-2, 2, -1, 4);
+        vc.setZoomConstraints(0.5f, 1.5f);
+        vc.setRotationConstraints(-5, 5, 0, 5);
+        ic.setViewConstraints(vc);
+
+        return ic;
+    }
 
     @Override
     public Description getDescription() {
@@ -50,7 +69,6 @@ public class CRCRoof extends FrameExercise {
 
         description.setGoals("Solve for the tension in cable CE.");
 
-        description.setLayout(new ScrollbarLayout());
 
         description.addImage("crcroof/assets/CRC1.png");
         description.addImage("crcroof/assets/CRC2.png");
@@ -74,7 +92,7 @@ public class CRCRoof extends FrameExercise {
         Point A = new Point("A", "0", "0", "0");
         Point B = new Point("B", "0", "4.5", "0");
         Point C = new Point("C", "0", "6", "0");
-        Point D = new Point("D", "-2", "4", "0");
+        Point D = new Point("D", "-2", "3.8", "0");
         Point E = new Point("E", "6", "5.47506802", "0");
         Point F = new Point("F", "0", "0.535898385", "0");
         Point G = new Point("G", "0", "3", "0");

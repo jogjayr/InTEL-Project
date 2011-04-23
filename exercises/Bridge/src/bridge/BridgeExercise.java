@@ -6,6 +6,7 @@ package bridge;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector;
@@ -128,6 +129,8 @@ public class BridgeExercise extends TrussExercise {
                 "Then continue to solve for the unknowns by using either the method of sections " +
                 "(which is recommended) or the method of joints. Due to symmetry, <b>U14-L14</b> and <b>L13-L14</b> are " +
                 "zero-force members.");
+
+        description.setGoals("");
 
         description.setLayout(new ScrollbarLayout());
 
@@ -378,6 +381,7 @@ public class BridgeExercise extends TrussExercise {
         rep.setModelScale(modelScale);
         rep.setSynchronizeRotation(false);
         rep.setSynchronizeTranslation(false);
+        rep.setHoverLightColor(ColorRGBA.yellow);
         pointBody.addRepresentation(rep);
 
         return pointBody;

@@ -137,12 +137,12 @@ public class PurseExercise extends FrameExercise {
         Unit.setSuffix(Unit.distance, " mm");
         Unit.setSuffix(Unit.moment, " N*mm");
         Unit.setDisplayScale(Unit.distance, new BigDecimal(".1"));
-        getDisplayConstants().setMomentSize(2f);
-        getDisplayConstants().setForceSize(1f);
+        getDisplayConstants().setMomentSize(4f);
+        getDisplayConstants().setForceSize(3f);
         getDisplayConstants().setPointSize(2f);
-        getDisplayConstants().setCylinderRadius(2f);
+        getDisplayConstants().setCylinderRadius(3f);
         getDisplayConstants().setMomentLabelDistance(40f);
-        getDisplayConstants().setMeasurementBarSize(1f);
+        getDisplayConstants().setMeasurementBarSize(3f);
        
      
         //Unit.setDisplayScale(Unit.force, new BigDecimal(".1")); // this doesn't work yet
@@ -242,6 +242,7 @@ public class PurseExercise extends FrameExercise {
         DistanceMeasurement distance1 = new DistanceMeasurement(A, C);
         distance1.setName("measure AC");
         distance1.createDefaultSchematicRepresentation(6f);
+
         world.add(distance1);
 
         DistanceMeasurement distance2 = new DistanceMeasurement(G, B);
@@ -266,7 +267,7 @@ public class PurseExercise extends FrameExercise {
 
         PointAngleMeasurement angle1 = new PointAngleMeasurement(B, D, C);
         angle1.setName("Angle BDC");
-        angle1.createDefaultSchematicRepresentation(2f);
+        angle1.createDefaultSchematicRepresentation(4f);
         world.add(angle1);
 
         //AngleMeasurement angle2 = new AngleMeasurement(A, B, E);
@@ -275,7 +276,7 @@ public class PurseExercise extends FrameExercise {
 
         PointAngleMeasurement angle3 = new PointAngleMeasurement(D, B, C);
         angle3.setName("Angle DBC");
-        angle3.createDefaultSchematicRepresentation(2f);
+        angle3.createDefaultSchematicRepresentation(14f);
         world.add(angle3);
 
         purse = new Force(A, Vector3bd.UNIT_Y.negate(), BigDecimal.ONE);
@@ -338,6 +339,7 @@ public class PurseExercise extends FrameExercise {
             imageRep = new ImageRepresentation(forearm, loadTexture("example01/assets/lowerArm.png"));
             imageRep.setScale(repScale * 1738, repScale * 501f);
             imageRep.setTranslation(-1, 1.75f, 0);
+            
 
             imageRep.setGrayColors(new ColorRGBA(.5f, .5f, .5f, .25f),
                 new ColorRGBA(.4f, .4f, .4f, .25f));

@@ -118,13 +118,17 @@ public class CentergyTrussExercise extends TrussExercise {
         DistanceMeasurement measureAD = new DistanceMeasurement(A, D);
         measureCD.createDefaultSchematicRepresentation();
         schematic.add(measureAD);
-
+        getDisplayConstants().setMeasurementBarSize(1f);
+        
         Force f1 = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal("15"));
         Force f2 = new Force(C, Vector3bd.UNIT_Y.negate(), new BigDecimal("15"));
         f1.setName("f1");
         f2.setName("f2");
         f1.createDefaultSchematicRepresentation();
         f2.createDefaultSchematicRepresentation();
+        getDisplayConstants().setForceSize(0.5f);
+        getDisplayConstants().setPointSize(0.5f);
+        getDisplayConstants().setForceLabelDistance(1.1f);
 
         Bb.addObject(f1);
         Cb.addObject(f2);
