@@ -14,8 +14,8 @@ exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
 dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
       <source_data>file:///C:/Intel%20Project/exercises/Bookshelf/src/bookshelf/assets/bookshelfmodel.mb</source_data>
     </contributor>
-    <created>2011-04-24T01:06:58Z</created>
-    <modified>2011-04-24T01:06:59Z</modified>
+    <created>2011-04-26T19:10:25Z</created>
+    <modified>2011-04-26T19:10:26Z</modified>
     <unit meter="0.01" name="centimeter"/>
     <up_axis>Y_UP</up_axis>
   </asset>
@@ -2561,7 +2561,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape3" name="pCubeShape3">
       <mesh>
         <source id="pCubeShape3-positions" name="position">
-          <float_array id="pCubeShape3-positions-array" count="24">-0.694 0.454395 0.2465 -0.694 -0.445605 0.2465 0.694 0.454395 0.2465 0.694 -0.445605 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape3-positions-array" count="24">11.8574 8.90473 0.15242 11.8574 0.172867 0.15242 13.0516 8.90473 0.15242 13.0516 0.172867 0.15242 13.0516 8.86209 0.08753 13.0516 0.130227 0.08753 11.8574 8.86209 0.08753 11.8574 0.130227 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape3-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2571,7 +2571,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           </technique_common>
         </source>
         <source id="pCubeShape3-normals" name="normal">
-          <float_array id="pCubeShape3-normals-array" count="72">0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -0.99996 0.008914 0 -0.99996 0.008914 0 -0.99996 0.008914 0 -0.99996 0.008914 0 0.99996 -0.008914 0 0.99996 -0.008914 0 0.99996 -0.008914 0 0.99996 -0.008914</float_array>
+          <float_array id="pCubeShape3-normals-array" count="72">0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -1 0 0 -1 0 0 -1 0 0 -1 0 0 0 -0.835718 0.549159 0 -0.835718 0.549159 0 -0.835718 0.549159 0 -0.835718 0.549159 0 0.835721 -0.549154 0 0.835721 -0.549154 0 0.835721 -0.549154 0 0.835721 -0.549154</float_array>
           <technique_common>
             <accessor source="#pCubeShape3-normals-array" count="24" stride="3">
               <param name="X" type="float"/>
@@ -2608,7 +2608,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape4" name="pCubeShape4">
       <mesh>
         <source id="pCubeShape4-positions" name="position">
-          <float_array id="pCubeShape4-positions-array" count="24">-0.694003 0.45 0.2465 -0.694003 -0.45 0.2465 0.693997 0.45 0.2465 0.693997 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape4-positions-array" count="24">10.6068 8.52151 0.15242 10.6068 0.131205 0.15242 11.801 8.52151 0.15242 11.801 0.131205 0.15242 11.801 8.52151 0.08753 11.801 0.131205 0.08753 10.6068 8.52151 0.08753 10.6068 0.131205 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape4-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2618,7 +2618,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
           </technique_common>
         </source>
         <source id="pCubeShape4-normals" name="normal">
-          <float_array id="pCubeShape4-normals-array" count="60">1 0 0.000005 1 0 0.000005 1 0 0.000005 1 0 0.000005 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -1 0 -0.000005 -1 0 -0.000005 -1 0 -0.000005 -1 0 -0.000005 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+          <float_array id="pCubeShape4-normals-array" count="60">1 0 0.000088 1 0 0.000088 1 0 0.000088 1 0 0.000088 0 0 -1 0 0 -1 0 0 -1 0 0 -1 -1 0 -0.000073 -1 0 -0.000073 -1 0 -0.000073 -1 0 -0.000073 0 -1 0 0 -1 0 0 -1 0 0 -1 0 0 1 0.000012 0 1 0.000012 0 1 0.000012 0 1 0.000012</float_array>
           <technique_common>
             <accessor source="#pCubeShape4-normals-array" count="20" stride="3">
               <param name="X" type="float"/>
@@ -2655,7 +2655,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape5" name="pCubeShape5">
       <mesh>
         <source id="pCubeShape5-positions" name="position">
-          <float_array id="pCubeShape5-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape5-positions-array" count="24">9.05604 8.02986 0.15242 9.05604 0.410305 0.15242 10.3496 8.02986 0.15242 10.3496 0.410305 0.15242 10.3496 8.02986 0.08753 10.3496 0.410305 0.08753 9.05604 8.02986 0.08753 9.05604 0.410305 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape5-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2702,7 +2702,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape6" name="pCubeShape6">
       <mesh>
         <source id="pCubeShape6-positions" name="position">
-          <float_array id="pCubeShape6-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape6-positions-array" count="24">6.77817 8.48072 0.15242 6.77817 0.215024 0.15242 7.64945 8.48072 0.15242 7.64945 0.215024 0.15242 7.64945 8.48072 0.08753 7.64945 0.215024 0.08753 6.77817 8.48072 0.08753 6.77817 0.215024 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape6-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2749,7 +2749,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape7" name="pCubeShape7">
       <mesh>
         <source id="pCubeShape7-positions" name="position">
-          <float_array id="pCubeShape7-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape7-positions-array" count="24">17.7633 5.91032 0.15242 17.7633 0.343254 0.15242 19.3277 5.91032 0.15242 19.3277 0.343254 0.15242 19.3277 5.91032 0.08753 19.3277 0.343254 0.08753 17.7633 5.91032 0.08753 17.7633 0.343254 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2796,7 +2796,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape8" name="pCubeShape8">
       <mesh>
         <source id="pCubeShape8-positions" name="position">
-          <float_array id="pCubeShape8-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape8-positions-array" count="24">20.952 5.91032 0.15242 20.952 0.343254 0.15242 22.5165 5.91032 0.15242 22.5165 0.343254 0.15242 22.5165 5.91032 0.08753 22.5165 0.343254 0.08753 20.952 5.91032 0.08753 20.952 0.343254 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape8-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2843,7 +2843,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape9" name="pCubeShape9">
       <mesh>
         <source id="pCubeShape9-positions" name="position">
-          <float_array id="pCubeShape9-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape9-positions-array" count="24">3.54727 7.5254 0.15242 3.54727 0.025013 0.15242 4.81373 7.5254 0.15242 4.81373 0.025013 0.15242 4.81373 7.5254 0.08753 4.81373 0.025013 0.08753 3.54727 7.5254 0.08753 3.54727 0.025013 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape9-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2890,7 +2890,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
     <geometry id="pCubeShape10" name="pCubeShape10">
       <mesh>
         <source id="pCubeShape10-positions" name="position">
-          <float_array id="pCubeShape10-positions-array" count="24">-0.694 0.45 0.2465 -0.694 -0.45 0.2465 0.694 0.45 0.2465 0.694 -0.45 0.2465 0.694 0.45 -0.2465 0.694 -0.45 -0.2465 -0.694 0.45 -0.2465 -0.694 -0.45 -0.2465</float_array>
+          <float_array id="pCubeShape10-positions-array" count="24">0.924755 7.5254 0.15242 0.924755 0.025013 0.15242 2.19122 7.5254 0.15242 2.19122 0.025013 0.15242 2.19122 7.5254 0.08753 2.19122 0.025013 0.08753 0.924755 7.5254 0.08753 0.924755 0.025013 0.08753</float_array>
           <technique_common>
             <accessor source="#pCubeShape10-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -3218,7 +3218,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </node>
       </node>
       <node id="pCube3" name="pCube3" type="NODE">
-        <matrix sid="transform">0.860394 0 0 12.4545 0 9.70206 0 4.49616 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape3">
           <bind_material>
             <technique_common>
@@ -3231,7 +3231,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube4" name="pCube4" type="NODE">
-        <matrix sid="transform">0.860394 0 0 11.2039 0 9.32256 0 4.32636 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape4">
           <bind_material>
             <technique_common>
@@ -3241,7 +3241,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube5" name="pCube5" type="NODE">
-        <matrix sid="transform">0.931956 0 0 9.70282 0 8.46617 0 4.22008 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape5">
           <bind_material>
             <technique_common>
@@ -3254,7 +3254,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube6" name="pCube6" type="NODE">
-        <matrix sid="transform">0.627725 0 0 7.21381 0 9.18411 0 4.34787 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape6">
           <bind_material>
             <technique_common>
@@ -3267,7 +3267,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube7" name="pCube7" type="NODE">
-        <matrix sid="transform">1.12712 0 0 18.5455 0 6.18563 0 3.12679 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape7">
           <bind_material>
             <technique_common>
@@ -3280,7 +3280,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube8" name="pCube8" type="NODE">
-        <matrix sid="transform">1.12712 0 0 21.7343 0 6.18563 0 3.12679 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape8">
           <bind_material>
             <technique_common>
@@ -3293,7 +3293,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube9" name="pCube9" type="NODE">
-        <matrix sid="transform">0.912436 0 0 4.1805 0 8.33376 0 3.77521 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape9">
           <bind_material>
             <technique_common>
@@ -3306,7 +3306,7 @@ dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
         </instance_geometry>
       </node>
       <node id="pCube10" name="pCube10" type="NODE">
-        <matrix sid="transform">0.912436 0 0 1.55798 0 8.33376 0 3.77521 0 0 0.131624 0.119975 0 0 0 1</matrix>
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#pCubeShape10">
           <bind_material>
             <technique_common>
