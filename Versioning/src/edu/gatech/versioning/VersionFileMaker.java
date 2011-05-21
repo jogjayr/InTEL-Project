@@ -28,7 +28,7 @@ public class VersionFileMaker {
     public void createVersionFile() {
         FileWriter w = null;
         try {
-            w = new FileWriter(new File(versionFilePath.getPath() + "/version.jar"));
+            w = new FileWriter(new File(versionFilePath.getPath() + "/version.json"));
             w.write("[");
             Hasher h = new Hasher();
             HashMap fileHashes = h.getFileHashes();
