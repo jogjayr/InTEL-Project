@@ -20,19 +20,20 @@ import java.util.logging.Logger;
  * @author jayraj
  */
 public class Hasher {
-    //ArrayList<String> jarFilePaths = new ArrayList<String>();
+    
     HashMap<String, byte[]> fileHashes = new HashMap<String, byte[]>();
-    static File currentWorkingDirectory, jarDirectory;
+    static File jarDirectory;
     MessageDigest md;
     public Hasher() {
-        currentWorkingDirectory = new File(System.getProperty("user.dir"));
-        jarDirectory = getJarPath();//new File(currentWorkingDirectory.getParent() + "/applet/");
+        jarDirectory = getJarPath();
         try {
             md = MessageDigest.getInstance("SHA1");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Hasher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    //Returns a path to the intel/applet folder from the current working directory
     public static File getJarPath() {
         return new File(new File(System.getProperty("user.dir")).getParent() + "/applet");
     }
@@ -57,9 +58,4 @@ public class Hasher {
         hashFiles();
         return fileHashes;
     }
-    public static void main(String args[]) {
-        Hasher h = new Hasher();
-        System.out.println(h.getFileHashes());
-    }
-
 }
