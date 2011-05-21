@@ -18,17 +18,17 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class VersionFileMaker {
-    String versionFilePath;
+    File versionFilePath;
 
     public VersionFileMaker() {
-        versionFilePath = "/home/jayraj/intel/InTEL/applet/version.json";
+        versionFilePath = Hasher.getJarPath();
         
     }
 
     public void createVersionFile() {
         FileWriter w = null;
         try {
-            w = new FileWriter(new File(versionFilePath));
+            w = new FileWriter(new File(versionFilePath.getPath() + "/version.jar"));
             w.write("[");
             Hasher h = new Hasher();
             HashMap fileHashes = h.getFileHashes();
