@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pushup;
 
 import com.jme.math.Vector3f;
@@ -22,53 +21,47 @@ import edu.gatech.statics.objects.representations.ModelRepresentation;
 import edu.gatech.statics.tasks.SolveConnectorTask;
 import java.math.BigDecimal;
 
-
-
-
 /**
  *
  * @author vignesh
  */
-public class PushUpExercise extends OrdinaryExercise{
+public class PushUpExercise extends OrdinaryExercise {
 
     @Override
     public Description getDescription() {
 
         Description description = new Description();
 
-        description.setNarrative("Michael and Kathy are doing a push-up exercise.  " +
-                "Michael wants to strengthen his arms and have an intense workout " +
-                "while Kathy wants to have a light workout.  There are three different " +
-                "types of push-ups that they can do which involve shifting the person’s " +
-                "center of gravity.  The first is a standard push-up, the second is a knee " +
-                "push-up, and the third is an elevated push-up.");
+        description.setNarrative("Michael and Kathy are doing a push-up exercise.  "
+                + "Michael wants to strengthen his arms and have an intense workout "
+                + "while Kathy wants to have a light workout.  There are three different "
+                + "types of push-ups that they can do which involve shifting the person’s "
+                + "center of gravity.  The first is a standard push-up, the second is a knee "
+                + "push-up, and the third is an elevated push-up.");
 
-        description.setProblemStatement("As you know from your statics class, the center of gravity " +
-                "of a person may change when the orientation of the person changes.  The horizontal " +
-                "locations of center of gravity for each style of push-up are described on each diagram " +
-                "as proportions.  Both Michael and Kathy have a mass of 60 kg.  Assume that they push the" +
-                "ground vertically, not horizontally, so you can neglect friction.");
+        description.setProblemStatement("As you know from your statics class, the center of gravity "
+                + "of a person may change when the orientation of the person changes.  The horizontal "
+                + "locations of center of gravity for each style of push-up are described on each diagram "
+                + "as proportions.  Both Michael and Kathy have a mass of 60 kg.  Assume that they push the"
+                + "ground vertically, not horizontally, so you can neglect friction.");
 
-        description.setGoals("Solve for the reactions at their hands and feet. Then pick the exercise that " +
-                "Michael would likely do and pick one that Kathy is likely to do");
+        description.setGoals("Solve for the reactions at their hands and feet.");
 
-
+        description.addImage("pushupexercise/assets/pushup0.png");
         description.addImage("pushupexercise/assets/pushup.png");
-        
+
         return description;
 
     }
 
-    
     public void initExercise() {
 
         Unit.setSuffix(Unit.distance, " ft");
-        Unit.setSuffix(Unit.moment, "kg*ft");
-        Unit.setSuffix(Unit.force, "kg");
+        Unit.setSuffix(Unit.moment, " N*ft");
+        Unit.setSuffix(Unit.force, " N");
 
     }
-    
-    
+
     @Override
     public void loadExercise() {
 
@@ -91,7 +84,7 @@ public class PushUpExercise extends OrdinaryExercise{
         measureAB.createDefaultSchematicRepresentation();
         schematic.add(measureAB);
 
-    
+
         DistanceMeasurement measureBC = new DistanceMeasurement(B, C);
         measureBC.createDefaultSchematicRepresentation();
         schematic.add(measureBC);
@@ -100,7 +93,7 @@ public class PushUpExercise extends OrdinaryExercise{
         DistanceMeasurement measureDE = new DistanceMeasurement(D, E);
         measureDE.createDefaultSchematicRepresentation();
         schematic.add(measureDE);
-        
+
 
         DistanceMeasurement measureEF = new DistanceMeasurement(E, F);
         measureEF.createDefaultSchematicRepresentation();
@@ -162,10 +155,11 @@ public class PushUpExercise extends OrdinaryExercise{
         schematic.add(I);
         schematic.add(J);
 
-        Force Bf = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal(60));
-        Force Ef = new Force(E, Vector3bd.UNIT_Y.negate(), new BigDecimal(54));
-        Force Gf = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(6));
-        Force If = new Force(I, Vector3bd.UNIT_Y.negate(), new BigDecimal(60));
+        float gravity = 9.8f;
+        Force Bf = new Force(B, Vector3bd.UNIT_Y.negate(), new BigDecimal(60*gravity));
+        Force Ef = new Force(E, Vector3bd.UNIT_Y.negate(), new BigDecimal(54*gravity));
+        Force Gf = new Force(G, Vector3bd.UNIT_Y.negate(), new BigDecimal(6*gravity));
+        Force If = new Force(I, Vector3bd.UNIT_Y.negate(), new BigDecimal(60*gravity));
 
         Bf.setName("Force B");
         Ef.setName("Force E");
@@ -218,7 +212,7 @@ public class PushUpExercise extends OrdinaryExercise{
         String prefix = "VisualSceneNode/";
 
         float scale = 10;//50f;
-        Vector3f translation = new Vector3f(12,0,0);//(45, 5, 0);
+        Vector3f translation = new Vector3f(12, 0, 0);//(45, 5, 0);
 
         rep = modelNode.getRemainder(schematic.getBackground());
         schematic.getBackground().addRepresentation(rep);
@@ -243,23 +237,17 @@ public class PushUpExercise extends OrdinaryExercise{
         rep.setSynchronizeTranslation(false);
         rep.getRelativeNode().setLocalScale(scale);
         rep.getRelativeNode().setLocalTranslation(translation);
-        
+
         rep = modelNode.getRemainder(schematic.getBackground());
         rep.getRelativeNode().setLocalScale(scale);
         schematic.getBackground().addRepresentation(rep);
         rep.getRelativeNode().setLocalTranslation(translation);
-        
+
         addTask(new SolveConnectorTask("Solve forces at A", rollerA));
         addTask(new SolveConnectorTask("Solve forces at C", rollerC));
         addTask(new SolveConnectorTask("Solve forces at D", rollerD));
         addTask(new SolveConnectorTask("Solve forces at F", rollerF));
         addTask(new SolveConnectorTask("Solve forces at H", rollerH));
         addTask(new SolveConnectorTask("Solve forces at J", rollerJ));
-
-
-
-
-        
     }
-
 }
