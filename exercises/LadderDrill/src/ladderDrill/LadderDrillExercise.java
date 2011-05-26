@@ -36,18 +36,18 @@ import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
  */
 public class LadderDrillExercise extends OrdinaryExercise {
 
-    /*
+    
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = (AbstractInterfaceConfiguration) super.createInterfaceConfiguration();
         interfaceConfiguration.setNavigationWindow(new Navigation3DWindow());
         ViewConstraints vc = new ViewConstraints();
-        vc.setPositionConstraints(-15f, 15f, -15f, 14f);
+        vc.setPositionConstraints(-3f, 3f, -1f, 4f);
         vc.setZoomConstraints(0.35f, 2f);
-        vc.setRotationConstraints(-4, 4,-4,4);
+        vc.setRotationConstraints(-1, 1,-.5f,.5f);
         interfaceConfiguration.setViewConstraints(vc);
         return interfaceConfiguration;
-    }*/
+    }
 
     @Override
     public Description getDescription() {
@@ -63,9 +63,10 @@ public class LadderDrillExercise extends OrdinaryExercise {
         description.setProblemStatement("She weighs 550 N, which acts at point D, and the weight of the ladder is 200 N, which acts " +
                 "at the midpoint (point C) of the ladder.");
 
-        description.setGoals("Draw a free body diagram of the ladder. Find the maximum force she can apply with the power drill before" +
+        description.setGoals("Draw a free body diagram of the ladder. Find the maximum force she can apply with the power drill before " +
                 "the ladder begins to slip.");
 
+        description.addImage("ladderDrill/assets/drill0.png");
         description.addImage("ladderDrill/assets/ladderDrill.png");
 
         return description;
@@ -73,8 +74,8 @@ public class LadderDrillExercise extends OrdinaryExercise {
 
     public void initExercise() {
 
-        Unit.setSuffix(Unit.distance, "m");
-        Unit.setSuffix(Unit.force, "N");
+        Unit.setSuffix(Unit.distance, " m");
+        Unit.setSuffix(Unit.force, " N");
 
         Unit.setPrecision(Unit.distance, 2);
     }
