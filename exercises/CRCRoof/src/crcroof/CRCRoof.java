@@ -10,7 +10,6 @@ import edu.gatech.statics.exercise.Schematic;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.modes.description.Description;
-import edu.gatech.statics.modes.description.layouts.ScrollbarLayout;
 import edu.gatech.statics.modes.frame.FrameExercise;
 import edu.gatech.statics.objects.AngleMeasurement;
 import edu.gatech.statics.objects.DistanceMeasurement;
@@ -59,9 +58,9 @@ public class CRCRoof extends FrameExercise {
         Description description = new Description();
 
         description.setNarrative("The roof of the entrance into the Campus Recreation Center (CRC) "
-                + "at Georgia Tech is comprised of several beams and cables.");
+                + "at Georgia Tech is a frame comprised of several beams and cables.");
 
-        description.setProblemStatement("In this exercise, you will analyze a simplified structure of the "
+        description.setProblemStatement("In this exercise, you will analyze a simplified model of the "
                 + "CRC entrance roof.  The tension in the cable connecting to point D is 2000 N. The angle "
                 + "between this cable and the vertical member is 30°.  The angle between beam ABC and the cable "
                 + "CE is 30°.  The weight of beam ABC is 1200 N and the weight of the DBE is 2000 N. The necessary "
@@ -70,6 +69,7 @@ public class CRCRoof extends FrameExercise {
         description.setGoals("Solve for the tension in cable CE.");
 
 
+        description.addImage("crcroof/assets/CRC0.png");
         description.addImage("crcroof/assets/CRC1.png");
         description.addImage("crcroof/assets/CRC2.png");
 
