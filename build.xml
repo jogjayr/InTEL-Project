@@ -11,7 +11,7 @@
     <target name="getJME" unless="jme_exists">
         <echo>*** Downloading JavaMonkeyEngine.zip</echo>
         <echo>*** This may take a moment...</echo>
-        <get src="http://lcc.gatech.edu/~cashmore/Statics/JavaMonkeyEngine.zip" dest="./JavaMonkeyEngine.zip"/>
+<!--        <get src="http://lcc.gatech.edu/~cashmore/Statics/JavaMonkeyEngine.zip" dest="./JavaMonkeyEngine.zip"/>-->
         <unzip src="JavaMonkeyEngine.zip" dest="."/>
 <!--        <delete file="JavaMonkeyEngine.zip"/>-->
         <copyfile src="JavaMonkeyEngine/dist/JavaMonkeyEngine.jar" dest="applet/JavaMonkeyEngine.jar" />

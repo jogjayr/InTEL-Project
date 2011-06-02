@@ -134,7 +134,7 @@ public class LadderDrillExercise extends OrdinaryExercise {
         ladder.getWeight().setDiagramValue(Weight);
         ladder.setCenterOfMassPoint(C);
 
-        Force forceE = new Force(E, Vector3bd.UNIT_X, "Drill Froce");
+        Force forceE = new Force(E, Vector3bd.UNIT_X, "Drill Force");
         forceE.setName("Force E");
         forceE.createDefaultSchematicRepresentation();
 
