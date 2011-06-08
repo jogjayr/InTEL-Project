@@ -72,6 +72,7 @@ import java.security.PermissionCollection;
 import java.security.PrivilegedExceptionAction;
 import java.security.SecureClassLoader;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -665,17 +666,18 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
      * also finds out which OS you are on and adds appropriate native
      * jar to the urlList
      */
-    protected void loadJarURLs() throws Exception {
+    protected void loadJarURLs(String pathForVersion) throws Exception {
         state = STATE_DETERMINING_PACKAGES;
 
         // jars to load
         String jarList = getParameter("al_jars");
-
+        String jarVersions = getParameter("al_jar_versions");
+        
         jarList = trimExtensionByCapabilities(jarList);
-
+        
         StringTokenizer jar = new StringTokenizer(jarList, ", ");
-
-        int jarCount = jar.countTokens() + 1;
+        ArrayList<String> downloadJarList = VersionChecker.getJarList(jarVersions, pathForVersion, jar);
+        int jarCount = downloadJarList.size();//jar.countTokens() + 1;
 
         urlList = new URL[jarCount];
 
@@ -683,7 +685,8 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         // set jars urls
         for (int i = 0; i < jarCount - 1; i++) {
-            urlList[i] = new URL(path, jar.nextToken());
+            //urlList[i] = new URL(path, jar.nextToken());
+            urlList[i] = new URL(path, downloadJarList.get(i));
         }
 
         // native jar url
@@ -727,9 +730,6 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         try {
             debug_sleep(2000);
 
-            // parse the urls for the jars into the url list
-            logger.info("### AppletLoader: loadJarURLs()");
-            loadJarURLs();
 
             // get path where applet will be stored
             String path = (String) AccessController.doPrivileged(new PrivilegedExceptionAction() {
@@ -748,6 +748,10 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
                     return System.getProperty("java.io.tmpdir") + File.separator + codebase + getParameter("al_title") + File.separator;
                 }
             });
+           
+            // parse the urls for the jars into the url list
+            logger.info("### AppletLoader: loadJarURLs()");
+            loadJarURLs(path);
 
             File dir = new File(path);
 
