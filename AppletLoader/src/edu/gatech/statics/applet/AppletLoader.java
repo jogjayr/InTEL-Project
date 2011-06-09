@@ -56,7 +56,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
@@ -72,7 +71,6 @@ import java.security.PermissionCollection;
 import java.security.PrivilegedExceptionAction;
 import java.security.SecureClassLoader;
 import java.security.cert.Certificate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -211,6 +209,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         "Please accept the permissions dialog to allow",
         "the applet to continue the loading process."};
     private static AppletLoader instance;
+    private VersionChecker versionChecker;
 
     public static AppletLoader getInstance() {
         return instance;
@@ -433,7 +432,7 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         boolean success = false;
 
-        success = loaderThread == null ;
+        success = loaderThread == null;
 
         if (success) {
             removeAll();
@@ -671,13 +670,13 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         // jars to load
         String jarList = getParameter("al_jars");
-        String jarVersions = getParameter("al_jar_versions");
-        
+//        String jarVersions = getParameter("al_versions");
+
         jarList = trimExtensionByCapabilities(jarList);
-        
+
         StringTokenizer jar = new StringTokenizer(jarList, ", ");
-        ArrayList<String> downloadJarList = VersionChecker.getJarList(jarVersions, pathForVersion, jar);
-        int jarCount = downloadJarList.size();//jar.countTokens() + 1;
+//        ArrayList<String> downloadJarList = VersionChecker.getJarList(jarVersions, pathForVersion, jar);
+        int jarCount = jar.countTokens() + 1;
 
         urlList = new URL[jarCount];
 
@@ -685,8 +684,8 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         // set jars urls
         for (int i = 0; i < jarCount - 1; i++) {
-            //urlList[i] = new URL(path, jar.nextToken());
-            urlList[i] = new URL(path, downloadJarList.get(i));
+            urlList[i] = new URL(path, jar.nextToken());
+//            urlList[i] = new URL(path, downloadJarList.get(i));
         }
 
         // native jar url
@@ -748,7 +747,12 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
                     return System.getProperty("java.io.tmpdir") + File.separator + codebase + getParameter("al_title") + File.separator;
                 }
             });
-           
+
+            // parse json version file
+            logger.info("### AppletLoader: loading versions");
+            versionChecker = new VersionChecker(path, getParameter("al_versions"));
+//            versionData = VersionChecker.readVersionFile(path);
+
             // parse the urls for the jars into the url list
             logger.info("### AppletLoader: loadJarURLs()");
             loadJarURLs(path);
@@ -766,28 +770,28 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             boolean cacheAvailable = false;
 
             // version of applet
-            String version = getParameter("al_version");
-            float latestVersion = 0;
-
-            // if applet version specifed, check if you have latest version of applet
-            if (version != null) {
-
-                latestVersion = Float.parseFloat(version);
-
-                // if version file exists
-                if (dir.exists()) {
-                    // compare to new version
-                    if (latestVersion <= readVersionFile(dir)) {
-                        cacheAvailable = true;
-                        percentage = 90;
-
-                        if (debugMode) {
-                            System.out.println("Loading Cached Applet Version " + latestVersion);
-                        }
-                        debug_sleep(2000);
-                    }
-                }
-            }
+//            String version = getParameter("al_version");
+//            float latestVersion = 0;
+//
+//            // if applet version specifed, check if you have latest version of applet
+//            if (version != null) {
+//
+//                latestVersion = Float.parseFloat(version);
+//
+//                // if version file exists
+//                if (dir.exists()) {
+//                    // compare to new version
+//                    if (latestVersion <= readVersionFile(dir)) {
+//                        cacheAvailable = true;
+//                        percentage = 90;
+//
+//                        if (debugMode) {
+//                            System.out.println("Loading Cached Applet Version " + latestVersion);
+//                        }
+//                        debug_sleep(2000);
+//                    }
+//                }
+//            }
 
             // if jars not available or need updating download them
             if (!cacheAvailable) {
@@ -801,14 +805,22 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
                 // Extracts Native Files
                 logger.info("### AppletLoader: extractNatives()");
-                extractNatives(path);	// 65-85%
+                try {
+                    extractNatives(path);	// 65-85%
+                } catch (FileNotFoundException ex) {
+                    // try to continue anyway
+                }
 
                 // add version information once jars downloaded successfully
-                if (version != null) {
-                    percentage = 90;
-                    writeVersionFile(dir, latestVersion);
-                }
+//                if (version != null) {
+//                    percentage = 90;
+//                    writeVersionFile(dir, latestVersion);
+//                }
             }
+
+
+            // now all that has been done, save the updated version file
+            versionChecker.saveUpdatedVersions(path);
 
             // add the downloaded jars and natives to classpath
             logger.info("### AppletLoader: updateClassPath()");
@@ -964,6 +976,15 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
             int unsuccessfulAttempts = 0;
             int maxUnsuccessfulAttempts = 5;
             boolean downloadFile = true;
+
+            // **** EDIT FROM VERSIONING
+            // if we do not need to download the new file, then skip it.
+            if (!versionChecker.shouldDownload(currentFile)) {
+                continue;
+            } else {
+                // mark the current file version as needing to be updated.
+                versionChecker.markUpdate(currentFile);
+            }
 
             // download the jar a max of 3 times
             while (downloadFile) {

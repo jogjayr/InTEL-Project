@@ -54,7 +54,7 @@ public class PanelExercise extends Ordinary3DExercise {
                 + "lifting force did each of them exert in order to carry the"
                 + " panel?.");
 
-        description.setGoals("Assume the panel is homogeneous and weighs 120 lb."
+        description.setGoals("Assume the panel is homogeneous and weighs 150 lb."
                 + " Alison, Andy, and Mark are positioned at points A, B, and"
                 + " C respectively.");
 

@@ -99,6 +99,10 @@ if ($problem["type"] == "java") {
             $archiveString .= ", " . $jarPath . $jar;
     }
 
+    // deal with versioning.
+    $versionString = file_get_contents($jarPath . "version.json");
+    
+
     $resWidth = $problem["width"]; // 1100;
     $resHeight = $problem["height"]; // 768;
 
@@ -131,6 +135,7 @@ if ($problem["type"] == "java") {
             <param name="al_windows" value="<?php echo $jarPath; ?>natives_windows.jar"/>
             <param name="al_linux" value="<?php echo $jarPath; ?>natives_linux.jar"/>
             <param name="al_mac" value="<?php echo $jarPath; ?>natives_macosx.jar"/>
+            <param name="al_versions" value="<?php echo $versionString; ?>"/>
 
             <param name="exercise" value="<?php echo $exerciseClass; ?>"/>
             <param name="width" value="<?php echo $resWidth; ?>"/>
