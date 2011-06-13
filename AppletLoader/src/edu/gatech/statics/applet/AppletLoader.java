@@ -81,6 +81,7 @@ import java.util.jar.Pack200;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -1211,80 +1212,88 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
         }
 
         // open jar file
-        JarFile jarFile = new JarFile(path + nativeJar, true);
+        try {
+            JarFile jarFile = new JarFile(path + nativeJar, true);
+        
+        
 
-        // get list of files in jar
-        Enumeration entities = jarFile.entries();
+            // get list of files in jar
+            Enumeration entities = jarFile.entries();
 
-        totalSizeExtract = 0;
+            totalSizeExtract = 0;
 
-        // calculate the size of the files to extract for progress bar
-        while (entities.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entities.nextElement();
+            // calculate the size of the files to extract for progress bar
+            while (entities.hasMoreElements()) {
+                JarEntry entry = (JarEntry) entities.nextElement();
 
-            // skip directories and anything in directories
-            // conveniently ignores the manifest
-            if (entry.isDirectory() || entry.getName().indexOf('/') != -1) {
-                continue;
-            }
-            totalSizeExtract += entry.getSize();
-        }
-
-        currentSizeExtract = 0;
-
-        // reset point to begining by getting list of file again
-        entities = jarFile.entries();
-
-        // extract all files from the jar
-        while (entities.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entities.nextElement();
-
-            // skip directories and anything in directories
-            // conveniently ignores the manifest
-            if (entry.isDirectory() || entry.getName().indexOf('/') != -1) {
-                continue;
-            }
-
-            // check if native file already exists if so delete it to make room for new one
-            // useful when using the reload button on the browser
-            File f = new File(path + "natives" + File.separator + entry.getName());
-            if (f.exists()) {
-                if (!f.delete()) {
-                    continue; // unable to delete file, it is in use, skip extracting it
+                // skip directories and anything in directories
+                // conveniently ignores the manifest
+                if (entry.isDirectory() || entry.getName().indexOf('/') != -1) {
+                    continue;
                 }
+                totalSizeExtract += entry.getSize();
             }
 
-            debug_sleep(1000);
+            currentSizeExtract = 0;
 
-            InputStream in = jarFile.getInputStream(jarFile.getEntry(entry.getName()));
-            OutputStream out = new FileOutputStream(path + "natives" + File.separator + entry.getName());
+            // reset point to begining by getting list of file again
+            entities = jarFile.entries();
 
-            int bufferSize;
-            byte buffer[] = new byte[65536];
+            // extract all files from the jar
+            while (entities.hasMoreElements()) {
+                JarEntry entry = (JarEntry) entities.nextElement();
 
-            while ((bufferSize = in.read(buffer, 0, buffer.length)) != -1) {
-                debug_sleep(10);
-                out.write(buffer, 0, bufferSize);
-                currentSizeExtract += bufferSize;
+                // skip directories and anything in directories
+                // conveniently ignores the manifest
+                if (entry.isDirectory() || entry.getName().indexOf('/') != -1) {
+                    continue;
+                }
 
-                // update progress bar
-                percentage = initialPercentage + ((currentSizeExtract * 20) / totalSizeExtract);
-                subtaskMessage = "Extracting: " + entry.getName() + " " + ((currentSizeExtract * 100) / totalSizeExtract) + "%";
+                // check if native file already exists if so delete it to make room for new one
+                // useful when using the reload button on the browser
+                File f = new File(path + "natives" + File.separator + entry.getName());
+                if (f.exists()) {
+                    if (!f.delete()) {
+                        continue; // unable to delete file, it is in use, skip extracting it
+                    }
+                }
+
+                debug_sleep(1000);
+
+                InputStream in = jarFile.getInputStream(jarFile.getEntry(entry.getName()));
+                OutputStream out = new FileOutputStream(path + "natives" + File.separator + entry.getName());
+
+                int bufferSize;
+                byte buffer[] = new byte[65536];
+
+                while ((bufferSize = in.read(buffer, 0, buffer.length)) != -1) {
+                    debug_sleep(10);
+                    out.write(buffer, 0, bufferSize);
+                    currentSizeExtract += bufferSize;
+
+                    // update progress bar
+                    percentage = initialPercentage + ((currentSizeExtract * 20) / totalSizeExtract);
+                    subtaskMessage = "Extracting: " + entry.getName() + " " + ((currentSizeExtract * 100) / totalSizeExtract) + "%";
+                }
+
+                // validate if the certificate for native file is correct
+                validateCertificateChain(certificate, entry.getCertificates());
+
+                in.close();
+                out.close();
             }
+            subtaskMessage = "";
 
-            // validate if the certificate for native file is correct
-            validateCertificateChain(certificate, entry.getCertificates());
-
-            in.close();
-            out.close();
+            jarFile.close();
         }
-        subtaskMessage = "";
-
-        jarFile.close();
-
-        // delete native jar as it is no longer needed
-        File f = new File(path + nativeJar);
-        f.delete();
+        catch (ZipException e) {
+            logger.throwing("Zip exception ", " caught", e);
+        }
+            // delete native jar as it is no longer needed
+            File f = new File(path + nativeJar);
+            f.delete();
+        
+        
     }
 
     /**
