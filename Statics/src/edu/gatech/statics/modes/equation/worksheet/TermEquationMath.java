@@ -32,15 +32,25 @@ abstract public class TermEquationMath extends EquationMath{
     private final String name;
     private final EquationDiagram diagram;
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public TermEquationMathState getState() {
         return (TermEquationMathState) super.getState();
     }
 
+    /**
+     * 
+     */
     public Vector3bd getObservationDirection() {
         return ((TermEquationMathState)getState()).getObservationDirection();
     }
 
+    /**
+     * 
+     */
     public String getAxis() {
         if (getObservationDirection().dot(Vector3bd.UNIT_X).floatValue() != 0) {
             return "X";
@@ -49,13 +59,21 @@ abstract public class TermEquationMath extends EquationMath{
         }
     }
 
-    /** Creates a new instance of Equation */
+    
+    /**
+     * Creates a new instance of Equation 
+     * @param name
+     * @param world 
+     */
     public TermEquationMath(String name, EquationDiagram world) {
         super(name, world);
         this.name = name;
         this.diagram = world;
     }
-
+    /**
+     * Checks the correctness of the entered equation
+     * @return Was the equation correct?
+     */
     public boolean check() {
 
         // get the state
@@ -128,9 +146,9 @@ abstract public class TermEquationMath extends EquationMath{
     /**
      * This method produces the error response for the error code and the 
      * load and coefficient.
-     * @param error
-     * @param load
-     * @param coefficient
+     * @param error Type of error
+     * @param load Load which was wrong
+     * @param coefficient Coefficient which was wrong
      */
     protected void reportError(TermError error, AnchoredVector load, String coefficient) {
 
@@ -200,7 +218,8 @@ abstract public class TermEquationMath extends EquationMath{
     /**
      * Returns true if the load in question is pointing any at all in the observation 
      * direction. This specific test depends on the TEST_ACCURACY constant. 
-     * @return
+     * @param load 
+     * @return true if the load in question is pointing any at all in the observation direction
      */
     protected boolean isLoadAligned(AnchoredVector load) {
         return Math.abs(load.getVectorValue().dot(getObservationDirection()).floatValue()) > valueComparePrecision();

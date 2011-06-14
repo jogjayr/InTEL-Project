@@ -37,12 +37,20 @@ public abstract class EquationBar extends BContainer {
      */
     abstract void clear();
 
+    /**
+     * 
+     * @return 
+     */
     public EquationModePanel getModePanel() {
         return parent;
     }
 
 
-
+    /**
+     * Constructor. Makes equation bar given equation math and parent mode panel
+     * @param math 
+     * @param parent 
+     */
     public EquationBar(EquationMath math, EquationModePanel parent) {
         super(GroupLayout.makeHoriz(GroupLayout.CENTER));
         this.math = math;

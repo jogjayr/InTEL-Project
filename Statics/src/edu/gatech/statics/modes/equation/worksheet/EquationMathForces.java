@@ -22,6 +22,12 @@ public class EquationMathForces extends TermEquationMath {
         super(name, world);
     }
 
+    /**
+     * 
+     * @param load
+     * @param coefficient
+     * @return 
+     */
     @Override
     protected TermError checkTerm(AnchoredVector load, String coefficient) {
 
@@ -68,12 +74,22 @@ public class EquationMathForces extends TermEquationMath {
         return compareValues(userValue, targetValue);
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected float valueComparePrecision() {
         //return 0.22f;
         return (float) (.22 * Math.pow(10, -Unit.force.getDecimalPrecision()));
     }
 
+    /**
+     * 
+     * @param error
+     * @param load
+     * @param coefficient 
+     */
     @Override
     protected void reportError(TermError error, AnchoredVector load, String coefficient) {
 

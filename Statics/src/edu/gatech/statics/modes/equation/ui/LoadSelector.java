@@ -21,7 +21,11 @@ public class LoadSelector extends Tool {
     private EquationBar activeEquation;
     private EquationNode toReplace;
 
-    /** Creates a new instance of LoadSelector */
+    /**
+     * Creates a new instance of LoadSelector for the activeEquation
+     * @param activeEquation Equation for which LoadSelector is created
+     * @param toReplace 
+     */
     public LoadSelector(EquationBar activeEquation, EquationNode toReplace) {
         this.activeEquation = activeEquation;
         this.toReplace = toReplace;
@@ -33,16 +37,26 @@ public class LoadSelector extends Tool {
         }
     };
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
-
+    /**
+     * 
+     */
     @Override
     protected void onActivate() {
         StaticsApplication.getApp().setStaticsFeedbackKey("equation_feedback_loadSelect");
     }
 
+    /**
+     * Handles the event of clicking on an anchored vector
+     * @param obj The object that was clicked on
+     */
     @Override
     public void onClick(SimulationObject obj) {
 

@@ -60,6 +60,12 @@ public class Moment3DEquationBar extends EquationBar {
     //private Equation3DModePanel parent;
     private AnchoredVector currentHighlight;
 
+    /**
+     * Constructor. Creates an equation bar for 3d moment equations given the EquationMath math and
+     * mode panel parent
+     * @param math Type of math that this equation bar handles
+     * @param parent Parent mode panel that the equation bar should belong to
+     */
     public Moment3DEquationBar(EquationMath math, Equation3DModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -83,6 +89,9 @@ public class Moment3DEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * 
+     */
     @Override
     void clear() {
         List<TermBox> allBoxes = new ArrayList<TermBox>(terms.values());
@@ -323,6 +332,10 @@ public class Moment3DEquationBar extends EquationBar {
         getMath().getDiagram().performAction(removeTermAction);
     }
 
+    /**
+     * 
+     * @param load 
+     */
     protected void performAdd(AnchoredVector load) {
         //TODO Handle the divide by zero error occuring when the user clicks on a force acting at
         //the point about which moment equation is being written
@@ -377,6 +390,11 @@ public class Moment3DEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * Add a new term box to this equation bar
+     * @param load Load of the term to which the term box corresponds
+     * @param momentArm Moment arm of the term to which term box corresponds
+     */
     protected void addBox(AnchoredVector load, String momentArm) {
         // add plus icon unless first box
         if (terms.size() > 0) {
@@ -400,6 +418,7 @@ public class Moment3DEquationBar extends EquationBar {
     /**
      * Put the component focus on the load that has been given.
      * Do nothing if the load has not been added to the equation.
+     * @param load Load on which focus is to be set
      */
     public void focusOnTerm(AnchoredVector load) {
         TermBox box = terms.get(load);
@@ -409,6 +428,9 @@ public class Moment3DEquationBar extends EquationBar {
         box.momentArmField.requestFocus();
     }
 
+    /**
+     * Lock equation bar
+     */
     public void setLocked() {
         StaticsApplication.logger.info("Setting MomentEquationBar to locked");
         for (TermBox box : terms.values()) {
@@ -422,6 +444,9 @@ public class Moment3DEquationBar extends EquationBar {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
+    /**
+     * Unlock equation bar
+     */
     public void setUnlocked() {
         for (TermBox box : terms.values()) {
             box.momentArmField.setEnabled(true);
@@ -434,6 +459,10 @@ public class Moment3DEquationBar extends EquationBar {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
+    /**
+     * Remove box from the equation bar
+     * @param box Term box to be removed
+     */
     private void removeBox(TermBox box) {
         if (locked) {
             return;
@@ -485,6 +514,12 @@ public class Moment3DEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * This method has not been used in Statics. Difficult to ascertain purpose
+     * TODO: Find out what this method does
+     * @param obj VectorObject whose line anchor has to be found
+     * @return Anchor as a Vector2f Object
+     */
     public Vector2f getLineAnchor(VectorObject obj) {
 
         TermBox box = terms.get(obj);

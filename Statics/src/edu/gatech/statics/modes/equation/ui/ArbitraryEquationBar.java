@@ -51,6 +51,11 @@ public class ArbitraryEquationBar extends EquationBar {
     private BContainer leftContainer;
     private BContainer rightContainer;
 
+    /**
+     * 
+     * @param math
+     * @param parent 
+     */
     public ArbitraryEquationBar(EquationMath math, Equation3DModePanel parent) {
         super(math, parent);
     }
@@ -64,6 +69,11 @@ public class ArbitraryEquationBar extends EquationBar {
         rightContainer.removeAll();
     }
 
+    /**
+     * Constructor for arbitrary equation bar with equation math mat, and parent mode panel parent
+     * @param math 
+     * @param parent 
+     */
     public ArbitraryEquationBar(EquationMath math, EquationModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -87,6 +97,9 @@ public class ArbitraryEquationBar extends EquationBar {
         add(rightContainer);
     }
 
+    /**
+     * 
+     */
     private NodeBox buildBox(EquationNode node) {
         if (node instanceof EmptyNode /*|| node == null*/) {
             return new NodeBoxEmpty((EmptyNode) node);

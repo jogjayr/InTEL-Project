@@ -25,6 +25,10 @@ public class Moment3DEquationMathState extends EquationMathState {
         return terms;
     }
 
+    /**
+     * 
+     * @param builder 
+     */
     private Moment3DEquationMathState(Builder builder) {
         if (builder.getName() == null || builder.getName().equals("")) {
             throw new IllegalArgumentException("Equation state must have a name!");
@@ -36,20 +40,36 @@ public class Moment3DEquationMathState extends EquationMathState {
         momentPoint = builder.getMomentPoint();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Point getMomentPoint() {
         return momentPoint;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public boolean isLocked() {
         return locked;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Builder getBuilder() {
         return new Builder(this);
     }
@@ -63,11 +83,20 @@ public class Moment3DEquationMathState extends EquationMathState {
         
         public Builder() {}
 
+        /**
+         * 
+         * @param name
+         * @param momentPoint 
+         */
         public Builder(String name, Point momentPoint) {
             this.name = name;
             this.momentPoint = momentPoint;
         }
 
+        /**
+         * Factory constructor for building new object from given state
+         * @param state 
+         */
         public Builder(Moment3DEquationMathState state) {
             this.name = state.getName();
             this.terms.putAll(state.getTerms());
@@ -75,28 +104,52 @@ public class Moment3DEquationMathState extends EquationMathState {
             this.momentPoint = state.momentPoint;
         }
 
+        /**
+         * Find out if equation is locked
+         * @return 
+         */
         public boolean isLocked() {
             return locked;
         }
 
+        /**
+         * Set equation to value of locked
+         * @param locked 
+         */
         public void setLocked(boolean locked) {
             this.locked = locked;
         }
 
+        /**
+         * Set map of terms of the equation
+         * @param terms  Map, each object consisting of vector and coefficient
+         */
         public void setTerms(Map<AnchoredVector, String> terms) {
             this.terms.clear();
             this.terms.putAll(terms);
             //this.terms = terms;
         }
 
+        /**
+         * Get a map of terms of the equation
+         * @return Map, each object consisting of vector and coefficient
+         */
         public Map<AnchoredVector, String> getTerms() {
             return terms;
         }
-
+        
+        /**
+         * 
+         * @return 
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Get moment point of this equation
+         * @return 
+         */
         public Point getMomentPoint() {
             return momentPoint;
         }
@@ -111,10 +164,19 @@ public class Moment3DEquationMathState extends EquationMathState {
             this.name = name;
         }
 
+        /**
+         * Set the moment point for this equation
+         * @param momentPoint 
+         */
         public void setMomentPoint(Point momentPoint) {
             this.momentPoint = momentPoint;
         }
 
+        /**
+         * Compare for equality to obj
+         * @param obj Object to compare with. Should be of type Moment3DEquationMathState
+         * @return is equal?
+         */
         @Override
         public boolean equals(Object obj) {
             if (obj == null) {
@@ -139,6 +201,10 @@ public class Moment3DEquationMathState extends EquationMathState {
             return true;
         }
 
+        /**
+         * 
+         * @return A hash value representing name, locked-ness, terms and moment point
+         */
         @Override
         public int hashCode() {
             int hash = 3;
@@ -149,11 +215,19 @@ public class Moment3DEquationMathState extends EquationMathState {
             return hash;
         }
 
+        /**
+         * Factory method for creating a new instance of this class
+         * @return New object copied from this object
+         */
         public Moment3DEquationMathState build() {
             return new Moment3DEquationMathState(this);
         }
     }
 
+    /**
+     * Get a string representation of the math state
+     * @return String representation containing name, locked, terms list, and moment point
+     */
     @Override
     public String toString() {
         return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", momentPoint=" + momentPoint + "}";

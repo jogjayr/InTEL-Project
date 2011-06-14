@@ -173,6 +173,10 @@ public class Equation3DModePanel extends EquationModePanel {
 //        activeEquation.setBackground(new TintedBackground(activeBackgroundColor));
 //        activeEquation.setBorder(new LineBorder(activeBorderColor));
 //    }
+    /**
+     * Adds a 3d moment equation row
+     * @param math The math object with which to make an equation row
+     */
     protected void addMoment3DEquationRow(Moment3DEquationMath math) {
 
 
@@ -245,6 +249,10 @@ public class Equation3DModePanel extends EquationModePanel {
 ////        addEquationData(math, data);
 //    }
 
+    /**
+     * Sets the icon for the check button corresponding to EquationBar bar
+     * @param bar EquationBar for which check icon should be set
+     */
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData ui3DData = uiMap.get(bar.getMath());
@@ -266,6 +274,10 @@ public class Equation3DModePanel extends EquationModePanel {
         ui3DData.checkButton.setText("");
     }
 
+    /**
+     * Checks correctness for equation in bar
+     * @param bar EquationBar to be checked
+     */
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
@@ -297,6 +309,10 @@ public class Equation3DModePanel extends EquationModePanel {
 //        solutionContainer.removeAll();
 //        uiMap.clear();
 //    }
+    /**
+     * Creates appropriate equation row depending on mathName
+     * @param mathName Type of math represented as string (possible values: )
+     */
     @Override
     protected void setupEquationMath(String mathName) {
         EquationDiagram diagram = (EquationDiagram) getDiagram();

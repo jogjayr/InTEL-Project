@@ -24,10 +24,18 @@ final public class TermEquationMathState extends EquationMathState {
     final private Point momentPoint; // if this is a moment equation, this contains the point about which the moment is calculated
     final private Vector3bd observationDirection; // this denotes the observation direction for this equation (partially intended for use in 3d)
 
+    /**
+     * 
+     * @return 
+     */
     public Map<AnchoredVector, String> getTerms() {
         return terms;
     }
 
+    /**
+     * 
+     * @param builder 
+     */
     private TermEquationMathState(Builder builder) {
         if (builder.getName() == null || builder.getName().equals("")) {
             throw new IllegalArgumentException("Equation state must have a name!");
@@ -41,24 +49,44 @@ final public class TermEquationMathState extends EquationMathState {
         observationDirection = builder.getObservationDirection();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public boolean isLocked() {
         return locked;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isMoment() {
         return isMoment;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Point getMomentPoint() {
         return momentPoint;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Vector3bd getObservationDirection() {
         return observationDirection;
     }
@@ -80,6 +108,13 @@ final public class TermEquationMathState extends EquationMathState {
         public Builder() {
         }
 
+        /**
+         * Factoru constructor. Set equation math state from arguments
+         * @param name Name of equation math state
+         * @param isMoment Moment equation?
+         * @param momentPoint Moment point, for moment equations
+         * @param observationDirection 
+         */
         public Builder(String name, boolean isMoment, Point momentPoint, Vector3bd observationDirection) {
             this.name = name;
             this.isMoment = isMoment;
@@ -87,6 +122,10 @@ final public class TermEquationMathState extends EquationMathState {
             this.observationDirection = observationDirection;
         }
 
+        /**
+         * Factory constructor. Sets equation math state from state
+         * @param state Equation math state used by factory to build this state
+         */
         public Builder(TermEquationMathState state) {
             this.name = state.getName();
             this.terms.putAll(state.getTerms());
@@ -96,36 +135,68 @@ final public class TermEquationMathState extends EquationMathState {
             this.observationDirection = state.observationDirection;
         }
 
+        /**
+         * 
+         * @return Is equation state locked?
+         */
         public boolean isLocked() {
             return locked;
         }
 
+        /**
+         * Set equation state to be locked or unlocked, according to locked
+         * @param locked To or or not to lock
+         */
         public void setLocked(boolean locked) {
             this.locked = locked;
         }
 
+        /**
+         * Set the equation terms
+         * @param terms A map of terms, each term consisting of a vector and a string coefficient
+         */
         public void setTerms(Map<AnchoredVector, String> terms) {
             this.terms.clear();
             this.terms.putAll(terms);
             //this.terms = terms;
         }
 
+        /**
+         * Get the equation terms
+         * @return A map of terms, each term consisting of a vector and a string coefficient
+         */
         public Map<AnchoredVector, String> getTerms() {
             return terms;
         }
 
+        /**
+         * Get name of equation
+         * @return 
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * 
+         * @return Is this equation of type moment?
+         */
         public boolean getIsMoment() {
             return isMoment;
         }
 
+        /**
+         * 
+         * @return Point about which moment is calculated
+         */
         public Point getMomentPoint() {
             return momentPoint;
         }
 
+        /**
+         * 
+         * @return 
+         */
         public Vector3bd getObservationDirection() {
             return observationDirection;
         }
@@ -150,6 +221,10 @@ final public class TermEquationMathState extends EquationMathState {
             this.isMoment = isMoment;
         }
 
+        /**
+         * Set moment point of the equation, if this is a moment equation
+         * @param momentPoint Point about which moment is to be calculated 
+         */
         public void setMomentPoint(Point momentPoint) {
             this.momentPoint = momentPoint;
         }
@@ -169,6 +244,11 @@ final public class TermEquationMathState extends EquationMathState {
         }
     }
 
+    /**
+     * Compare for equality to obj
+     * @param obj Object to compare with. Should be of type TermEquationMathState
+     * @return Is equal?
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -199,6 +279,10 @@ final public class TermEquationMathState extends EquationMathState {
         return true;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -211,11 +295,18 @@ final public class TermEquationMathState extends EquationMathState {
         return hash;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
-        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment="+isMoment+", momentPoint="+momentPoint+", observationDirection="+observationDirection+"}";
+        return "EquationMathState: {name=" + name + ", locked=" + locked + ", terms=" + terms + ", isMoment=" + isMoment + ", momentPoint=" + momentPoint + ", observationDirection=" + observationDirection + "}";
     }
 
+    /**
+     * 
+     */
     public Builder getBuilder() {
         return new Builder(this);
     }

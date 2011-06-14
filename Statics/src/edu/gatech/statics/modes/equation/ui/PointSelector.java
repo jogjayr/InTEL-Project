@@ -25,7 +25,11 @@ public class PointSelector extends Tool {
     private EquationDiagram diagram;
     private String mathName;
 
-    /** Creates a new instance of PointSelector */
+    /**
+     * Creates a new instance of PointSelector
+     * @param diagram EquationDiagram instance in which PointSelector will work
+     * @param mathName Name of equation math
+     */
     public PointSelector(EquationDiagram diagram, String mathName) {
         this.diagram = diagram;
         this.mathName = mathName;

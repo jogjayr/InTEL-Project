@@ -33,6 +33,11 @@ public class Moment3DEquationMath extends EquationMath {
     protected final String name;
     protected final EquationDiagram diagram;
 
+    /**
+     * Constructor
+     * @param name Name of the equation math
+     * @param world World equation diagram object
+     */
     public Moment3DEquationMath(String name, EquationDiagram world) {
         super(name, world);
         this.name = name;
@@ -44,6 +49,11 @@ public class Moment3DEquationMath extends EquationMath {
         return (Moment3DEquationMathState) super.getState();
     }
 
+    /**
+     * Checks the equation for correctness. First by making sure no forces
+     * pass through the moment point and then checks terms
+     * @return Did the equation pass?
+     */
     public boolean check() {
         //System.out.println("Checking...");
 //        Moment3DEquationMathState state = (Moment3DEquationMathState)getState();

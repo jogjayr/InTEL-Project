@@ -45,29 +45,53 @@ public class Worksheet {
     private Map<Quantity, Float> solution = null;
     private boolean solved = false;
 
+    /**
+     * 
+     * @param diagram 
+     */
     public Worksheet(EquationDiagram diagram) {
         this.diagram = diagram;
 //        equationSystem = new NonlinearEquationSystem();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Map<String, EquationMath> getEquations() {
         return Collections.unmodifiableMap(equations);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<String> getEquationNames() {
         ArrayList<String> equationNames = new ArrayList<String>(equations.keySet());
         System.out.println("getEquationName called");
         return equationNames;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<String> getEquationStateNames() {
         return new ArrayList(diagram.getCurrentState().getEquationStates().keySet());
     }
 
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     public EquationMath getMath(String name) {
         return equations.get(name);
     }
 
+    /**
+     * 
+     */
     public void updateEquations() {
         //add math present in state but not the equation list
         for (String mathName : getEquationStateNames()) {
@@ -106,6 +130,10 @@ public class Worksheet {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Map<Quantity, Float> solve() {
         if (!solved) {
             Map<String, Quantity> vectorNames = new HashMap<String, Quantity>();
@@ -152,6 +180,12 @@ public class Worksheet {
         return solution;
     }
 
+    /**
+     * 
+     * @param equationSystem
+     * @param vectorNames
+     * @throws IllegalArgumentException 
+     */
     private void prepareSystem(EquationSystem equationSystem, Map<String, Quantity> vectorNames) throws IllegalArgumentException {
         equationSystem.resetTerms();
         //int numberEquations = equations.size();
@@ -223,6 +257,11 @@ public class Worksheet {
         }
     }
 
+    /**
+     * 
+     * @param node
+     * @return 
+     */
     private Pair<Float, List<String>> extractSymbolsFromEquationNode(EquationNode node) {
         if (node instanceof OperatorNode) {
             OperatorNode opNode = (OperatorNode) node;

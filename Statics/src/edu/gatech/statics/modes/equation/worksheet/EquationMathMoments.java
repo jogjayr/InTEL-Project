@@ -23,11 +23,19 @@ import java.math.BigDecimal;
  */
 public class EquationMathMoments extends TermEquationMath {
 
-    /** Creates a new instance of EquationMoments */
+    /**
+     * Creates a new instance of EquationMoments
+     * @param name
+     * @param world 
+     */
     public EquationMathMoments(String name, EquationDiagram world) {
         super(name, world);
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public boolean check() {
 
@@ -42,6 +50,12 @@ public class EquationMathMoments extends TermEquationMath {
         return super.check();
     }
 
+    /**
+     * Check correctness of term described by load and coefficient
+     * @param load Load of the term
+     * @param coefficient Coeffient of the term
+     * @return Is the equation correct?
+     */
     @Override
     protected TermError checkTerm(AnchoredVector load, String coefficient) {
 
@@ -156,6 +170,12 @@ public class EquationMathMoments extends TermEquationMath {
         return error;
     }
 
+    /**
+     * 
+     * @param userValue
+     * @param targetValue
+     * @return 
+     */
     @Override
     protected TermError compareValues(BigDecimal userValue, BigDecimal targetValue) {
 
@@ -191,12 +211,22 @@ public class EquationMathMoments extends TermEquationMath {
 
         return error;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected float valueComparePrecision() {
         return (float) (.6 * Math.pow(10, -Unit.distance.getDecimalPrecision()));
     }
 
+    /**
+     * 
+     * @param error
+     * @param load
+     * @param coefficient 
+     */
     @Override
     protected void reportError(TermError error, AnchoredVector load,
             String coefficient) {
@@ -241,11 +271,13 @@ public class EquationMathMoments extends TermEquationMath {
         super.reportError(error, load, coefficient);
     }
 
+
     /**
      * This check returns true if either the force anchor is unknown, or the 
      * moment point is unknown. A point must be both an instance of UnknownPoint and 
      * have isKnown() return false. 
-     * @return
+     * @param load
+     * @return 
      */
     private boolean isAffine(AnchoredVector load) {
 //        // check the force anchor
@@ -264,7 +296,9 @@ public class EquationMathMoments extends TermEquationMath {
     /**
      * This is a special method for handling terms which involve unknown points and 
      * have an affine quantity inside of them.
-     * @return
+     * @param load
+     * @param coefficient
+     * @return 
      */
     private TermError affineCheck(AnchoredVector load, String coefficient) {
         // not supporting affine at the moment.....

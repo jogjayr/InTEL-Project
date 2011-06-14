@@ -88,6 +88,11 @@ public class TermEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * Constructor. Builds a TermEquationBar given math and modepanel parent
+     * @param math EquationMath that this equation bar stands for
+     * @param parent Parent mode panel to which the equation bar should belong
+     */
     public TermEquationBar(EquationMath math, EquationModePanel parent) {
         super(math, parent);
         this.math = math;
@@ -382,6 +387,11 @@ public class TermEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * Adds a new term box to the equation
+     * @param load Load for the term represented by the term box
+     * @param coefficient Coefficient of the term represented by the term box
+     */
     protected void addBox(AnchoredVector load, String coefficient) {
         // add plus icon unless first box
         if (terms.size() > 0) {
@@ -406,6 +416,7 @@ public class TermEquationBar extends EquationBar {
     /**
      * Put the component focus on the load that has been given.
      * Do nothing if the load has not been added to the equation.
+     * @param load Load on which to put component focus
      */
     public void focusOnTerm(AnchoredVector load) {
         TermBox box = terms.get(load);
@@ -415,6 +426,9 @@ public class TermEquationBar extends EquationBar {
         box.coefficient.requestFocus();
     }
 
+    /**
+     * Locks the equation bar
+     */
     public void setLocked() {
         for (TermBox box : terms.values()) {
             box.coefficient.setEnabled(false);
@@ -427,6 +441,9 @@ public class TermEquationBar extends EquationBar {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
+    /**
+     * Unlocks the equation bar
+     */
     public void setUnlocked() {
         for (TermBox box : terms.values()) {
             box.coefficient.setEnabled(true);
@@ -439,6 +456,10 @@ public class TermEquationBar extends EquationBar {
         StaticsApplication.getApp().setCurrentTool(null);
     }
 
+    /**
+     * Removes box from the equation bar
+     * @param box TermBox to be removed from the equation bar
+     */
     protected void removeBox(TermBox box) {
         if (locked) {
             return;
@@ -492,6 +513,12 @@ public class TermEquationBar extends EquationBar {
         }
     }
 
+    /**
+     * This method has not been used in Statics. Difficult to ascertain purpose
+     * TODO: Find out what this method does
+     * @param obj VectorObject whose line anchor has to be found
+     * @return Line Anchor as a Vector2f Object
+     */
     public Vector2f getLineAnchor(VectorObject obj) {
 
         TermBox box = terms.get(obj);

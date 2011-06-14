@@ -27,6 +27,10 @@ abstract public class EquationMath {
     private final String name;
     private final EquationDiagram diagram;
 
+    /**
+     * Get the equation diagram for this equation math
+     * @return Equation diagram belonging to this math
+     */
     public EquationDiagram getDiagram() {
         return diagram;
     }
@@ -51,7 +55,11 @@ abstract public class EquationMath {
         return getDiagram().getCurrentState().getEquationStates().get(getName());
     }
 
-    /** Creates a new instance of Equation */
+    /**
+     * Creates a new instance of Equation
+     * @param name Name for this equation math
+     * @param world Equation digram object for the world
+     */
     public EquationMath(String name, EquationDiagram world) {
         this.name = name;
         this.diagram = world;

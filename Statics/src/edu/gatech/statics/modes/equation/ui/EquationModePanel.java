@@ -65,6 +65,12 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
     protected static final ColorRGBA activeBackgroundColor = ColorRGBA.darkGray;
     protected static final ColorRGBA activeBorderColor = ColorRGBA.white;
 
+    /**
+     * After checking that the active equation is not locked, load is either added
+     * to the active equation (if not already added), or is highlighted (if already added)
+     * and the corresponding term in the active equation is focused on
+     * @param load Load that was clicked on
+     */
     public void onClick(Load load) {
         if (activeEquation == null || load == null) {
             return;
@@ -96,6 +102,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+    /**
+     * 
+     * @param load 
+     */
     public void onHover(Load load) {
         for (EquationUIData data : uiMap.values()) {
             data.equationBar.highlightVector(load == null ? null : load.getAnchoredVector());
@@ -135,10 +145,18 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         // then, add new bar, and equationuidata
     }
 
+    /**
+     * Get active equation
+     * @return Active equation in mode panel
+     */
     public EquationBar getActiveEquation() {
         return activeEquation;
     }
 
+    /**
+     * Set bar to active equation
+     * @param bar 
+     */
     void setActiveEquation(EquationBar bar) {
         if (activeEquation != null) {
             activeEquation.setBackground(new TintedBackground(regularBackgroundColor));
@@ -150,6 +168,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         activeEquation.setBorder(new LineBorder(activeBorderColor));
     }
 
+    /**
+     * 
+     */
     public EquationModePanel() {
         super();
         BContainer fullEquationContainer = new BContainer(new BorderLayout());
@@ -188,6 +209,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         equationScrollPane.layout();
     }
 
+    /**
+     * Removes data from uiMap
+     * @param data Data to remove
+     */
     protected void removeEquationData(EquationUIData data) {
 
         // look through the equation bar container for the container that has our
@@ -214,6 +239,11 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+    /**
+     * Populates uiMap with equation data for math
+     * @param data 
+     * @param math 
+     */
     protected void addEquationData(EquationMath math, final EquationUIData data) {
 
         //data.checkButton.setStyleClass("smallcircle_button");
@@ -246,6 +276,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         }
     }
 
+    /**
+     * Adds new term equation row given equation math math
+     * @param math equation math for which term equation row is to be created
+     */
     protected void addTermEquationRow(TermEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
@@ -262,6 +296,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         addEquationData(math, data);
     }
 
+    /**
+     * Adds an equation row for an arbitrary equation (not term, moment or moment 3d)
+     * @param math 
+     */
     protected void addArbitraryEquationRow(ArbitraryEquationMath math) {
         final EquationUIData data = new EquationUIData();
 
@@ -292,6 +330,9 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         addEquationData(math, data);
     }
 
+    /**
+     * 
+     */
     protected void addRowCreator() {
         final EquationUIData data = new EquationUIData();
         data.addButton = new BButton("Add new equation", new ActionListener() {
@@ -328,6 +369,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         equationBarContainer.add(data.addButton);
     }
 
+    /**
+     * Set the check icon for bar
+     * @param bar EquationBar to set check icon for
+     */
     private void setCheckIcon(EquationBar bar) {
 
         EquationUIData data = uiMap.get(bar.getMath());
@@ -343,6 +388,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         data.checkButton.setText("");
     }
 
+    /**
+     * Checks the equation bar for correctness of answer
+     * @param bar EquatonBar to check
+     */
     private void check(EquationBar bar) {
         boolean success = bar.getMath().check();
         if (success) {
@@ -372,7 +421,7 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
 
     /**
      * Returns true if enough unknowns have been solved for.
-     * @return
+     * @return Enough unknowns solved for?
      */
     private boolean enoughSolved() {
         int numberSolved = 0;
@@ -386,6 +435,11 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         return numberSolved >= getDiagram().getNumberUnknowns();
     }
 
+    /**
+     * Attempts to solve the equations. Returns without attempting to solve
+     * if enough equations aren't solved. Updates diagram for non-null solution
+     * @param updateDiagram Update diagram on solve?
+     */
     protected void performSolve(boolean updateDiagram) {
 
         if (!enoughSolved()) {
@@ -479,7 +533,10 @@ public class EquationModePanel extends ApplicationModePanel<EquationDiagram> {
         uiMap.clear();
     }
 
-    // called during activate()
+    /**
+     * called during activate(). Creates an equation row depending on math
+     * @param mathName name of equation math for which equation row is to be created
+     */ 
     protected void setupEquationMath(String mathName) {
         EquationDiagram diagram = (EquationDiagram) getDiagram();
         EquationMath math = diagram.getWorksheet().getMath(mathName);
