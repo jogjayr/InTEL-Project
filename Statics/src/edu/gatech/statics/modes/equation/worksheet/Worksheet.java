@@ -46,8 +46,8 @@ public class Worksheet {
     private boolean solved = false;
 
     /**
-     * 
-     * @param diagram 
+     * constructor
+     * @param diagram Equation diagram for which to prepare worksheet
      */
     public Worksheet(EquationDiagram diagram) {
         this.diagram = diagram;
@@ -55,8 +55,8 @@ public class Worksheet {
     }
 
     /**
-     * 
-     * @return 
+     * Get equations in worksheet
+     * @return
      */
     public Map<String, EquationMath> getEquations() {
         return Collections.unmodifiableMap(equations);

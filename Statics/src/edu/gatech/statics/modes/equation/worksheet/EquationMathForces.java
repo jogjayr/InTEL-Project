@@ -23,9 +23,9 @@ public class EquationMathForces extends TermEquationMath {
     }
 
     /**
-     * 
-     * @param load
-     * @param coefficient
+     * Checks term described by load and coefficient
+     * @param load Load to be checked
+     * @param coefficient Coefficient of load
      * @return 
      */
     @Override
@@ -85,10 +85,10 @@ public class EquationMathForces extends TermEquationMath {
     }
 
     /**
-     * 
-     * @param error
-     * @param load
-     * @param coefficient 
+     * Report error in solving equation
+     * @param error Type of error
+     * @param load Load on which error occurred
+     * @param coefficient Coefficient of load
      */
     @Override
     protected void reportError(TermError error, AnchoredVector load, String coefficient) {

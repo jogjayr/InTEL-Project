@@ -118,7 +118,7 @@ public class EquationMathMoments extends TermEquationMath {
      * This method compares values for moment terms, but checks for moment
      * special cases, specifically the inclination check.
      * EDIT: commented out the inclination case.
-     * @param coefficient
+     * @param coefficient 
      * @param targetValue
      * @param distanceValue
      * @return
@@ -222,10 +222,10 @@ public class EquationMathMoments extends TermEquationMath {
     }
 
     /**
-     * 
-     * @param error
-     * @param load
-     * @param coefficient 
+     * Report error that occurred on equation check
+     * @param error type of error that occurred
+     * @param load load on which error occurred
+     * @param coefficient coefficient of load
      */
     @Override
     protected void reportError(TermError error, AnchoredVector load,
