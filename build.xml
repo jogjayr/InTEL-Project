@@ -30,9 +30,6 @@
         <echo>*** Building Statics</echo>
         <subant buildpath="Statics/" target="jar"/>
         
-        <echo>*** Building BUI</echo>
-        <subant buildpath="BUI/" target="jar"/>
-        
         <echo>*** Building Exercises:</echo>
         <subant buildpath="exercises/Archer/" target="jar"/>
         <subant buildpath="exercises/Awning/" target="jar"/>
@@ -60,6 +57,8 @@
         <subant buildpath="exercises/TreeSwing/" target="jar"/>
         <subant buildpath="exercises/TriangleYoga/" target="jar"/>
 <!--        <subant buildpath="exercises/WeightLifter/" target="jar"/>-->
+
+        <subant buildpath="Versioning" target="run"/>
 
     </target>
     <target name="clean">
