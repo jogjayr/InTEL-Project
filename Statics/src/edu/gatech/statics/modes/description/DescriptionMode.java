@@ -19,6 +19,11 @@ public class DescriptionMode extends Mode {
 
     public static final DescriptionMode instance = new DescriptionMode();
 
+    /**
+     * 
+     * @param key
+     * @return 
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         if (key != null) {
@@ -27,6 +32,10 @@ public class DescriptionMode extends Mode {
         return Exercise.getExercise().getDiagram(null, getDiagramType());
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("description", 1);

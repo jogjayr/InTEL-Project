@@ -31,14 +31,24 @@ public class Description {
     private List<BufferedImage> images;
     private DescriptionLayout layout = new StandardLayout();
 
+    /**
+     * 
+     * @return 
+     */
     public String getGoals() {
         return goals;
     }
 
+    /**
+     * 
+     */
     public void setGoals(String goals) {
         this.goals = goals;
     }
 
+    /**
+     * 
+     */
     public List<BufferedImage> getImages() {
         if (images == null) {
             return Collections.emptyList();
@@ -46,6 +56,9 @@ public class Description {
         return Collections.unmodifiableList(images);
     }
 
+    /**
+     * 
+     */
     public void addImage(String imageURL) {
         if (images == null) {
             images = new ArrayList<BufferedImage>();
@@ -60,6 +73,9 @@ public class Description {
         }
     }
 
+    /**
+     * 
+     */
     public void setImageAt(String imageURL, int index) {
         if (images == null) {
             images = new ArrayList<BufferedImage>();
@@ -75,14 +91,25 @@ public class Description {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getNarrative() {
         return narrative;
     }
 
+    /**
+     * 
+     */
     public void setNarrative(String narrative) {
         this.narrative = narrative;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getProblemStatement() {
         return problemStatement;
     }
@@ -91,18 +118,34 @@ public class Description {
         this.problemStatement = problemStatement;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * 
+     * @param title 
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public DescriptionLayout getLayout() {
         return layout;
     }
 
+    /**
+     * 
+     * @param layout 
+     */
     public void setLayout(DescriptionLayout layout) {
         this.layout = layout;
     }

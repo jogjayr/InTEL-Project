@@ -24,6 +24,10 @@ public class FBDRedirectPopup extends ModalPopupWindow {
 
     private DiagramKey key;
     
+    /**
+     * 
+     * @param key 
+     */
     public FBDRedirectPopup(DiagramKey key) {
         super(new BorderLayout());
         this.key = key;

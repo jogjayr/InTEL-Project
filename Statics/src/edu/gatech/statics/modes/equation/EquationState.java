@@ -27,6 +27,10 @@ final public class EquationState implements DiagramState<EquationDiagram> {
     final private Map<String, EquationMathState> equationStates;
     final private boolean locked;
 
+    /**
+     * 
+     * @return 
+     */
     public Map<String, EquationMathState> getEquationStates() {
         return equationStates;
     }
@@ -42,24 +46,43 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         //private Point momentPoint;
         private boolean locked;
 
+        /**
+         * 
+         * @return 
+         */
         public Map<String, EquationMathState> getEquationStates() {
             return equationStates;
         }
 
+        /**
+         * 
+         */
         public void putEquationState(EquationMathState mathState) {
             equationStates.put(mathState.getName(), mathState);
         }
 
+        /**
+         * 
+         * @param equationStates 
+         */
         public void setEquationStates(Map<String, EquationMathState> equationStates) {
             this.equationStates.clear();
             this.equationStates.putAll(equationStates);
             //this.equationStates = equationStates;
         }
 
+        /**
+         * 
+         * @return 
+         */
         public boolean isLocked() {
             return locked;
         }
 
+        /**
+         * 
+         * @param locked 
+         */
         public void setLocked(boolean locked) {
             this.locked = locked;
         }
@@ -138,6 +161,10 @@ final public class EquationState implements DiagramState<EquationDiagram> {
 //            momentPoint = null;
 //        }
 
+        /**
+         * 
+         * @param state 
+         */
         public Builder(EquationState state) {
             this.equationStates = new TreeMap<String, EquationMathState>(state.getEquationStates());
             this.locked = state.locked;
@@ -161,6 +188,11 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         return this;
     }
 
+    /**
+     * 
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -179,6 +211,10 @@ final public class EquationState implements DiagramState<EquationDiagram> {
         return true;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 5;

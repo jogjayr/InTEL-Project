@@ -62,16 +62,26 @@ public class DescriptionUI extends AppWindow {
         return button;
     }
 
+    /**
+     * 
+     */
     private void nextPressed() {
         Exercise.getExercise().loadStartingMode();
     }
 
+    /**
+     * 
+     */
     void updatePlacement() {
         pack();
         //setLocation(0, MainTabBar.MAIN_TAB_BAR_HEIGHT);
         setLocation(0, 0);
     }
 
+    /**
+     * 
+     * @param description 
+     */
     void layout(Description description) {
         if (!addedComponents) {
             description.getLayout().addComponents(this);

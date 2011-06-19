@@ -24,6 +24,11 @@ public class EquationMode extends Mode {
 
     public static final EquationMode instance = new EquationMode();
 
+    /**
+     * 
+     * @param key
+     * @return 
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         if (key instanceof BodySubset) {

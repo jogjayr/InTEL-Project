@@ -27,22 +27,37 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
         ui = new DescriptionUI();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getName() {
         return "Description";
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getDescriptionText() {
         return "";
         //return Exercise.getExercise().getName();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected DescriptionState createInitialState() {
         return new DescriptionState();
     }
 
+    /**
+     * 
+     */
     @Override
     public void completed() {
         // load the starting mode for the exercise once the user has finished reading
@@ -50,17 +65,28 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
         Exercise.getExercise().loadStartingMode();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Mode getMode() {
         return DescriptionMode.instance;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         //return getSchematic().allObjects();
         return Collections.emptyList();
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         super.activate();
@@ -79,6 +105,9 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
         ui.updatePlacement();
     }
 
+    /**
+     * 
+     */
     @Override
     public void deactivate() {
         super.deactivate();

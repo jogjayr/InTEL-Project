@@ -13,14 +13,23 @@ import edu.gatech.statics.util.Builder;
  */
 public class DescriptionState implements DiagramState<DescriptionDiagram> {
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isLocked() {
         return true;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public DescriptionBuilder getBuilder() {
         return new DescriptionBuilder();
     }
 
+    
     public static class DescriptionBuilder implements Builder<DescriptionState> {
 
         public DescriptionState build() {

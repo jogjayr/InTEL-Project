@@ -146,6 +146,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return null;
     }
 
+    /**
+     * 
+     */
     @Override
     protected void stateChanged() {
         super.stateChanged();
@@ -190,6 +193,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return fbd.getCurrentState().getAddedLoads();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         //FreeBodyDiagram fbd = StaticsApplication.getApp().getExercise().getFreeBodyDiagram(getBodySubset());
@@ -199,7 +206,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return objects;
     }
 
-    /** Creates a new instance of EquationWorld */
+    /**
+     * Creates a new instance of EquationWorld 
+     * @param bodies 
+     */
     public EquationDiagram(BodySubset bodies) {
         super(bodies);
 
@@ -392,6 +402,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
     }
 
+    /**
+     * 
+     * @param obj 
+     */
     @Override
     public void onClick(SimulationObject obj) {
         super.onClick(obj);
@@ -405,6 +419,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         eqPanel.onClick((Load) obj);
     }
 
+    /**
+     * 
+     */
     @Override
     public void onHover(SimulationObject obj) {
         super.onHover(obj);
@@ -449,6 +466,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         return symbols.size();
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         // make sure the FBD is set before doing anything else
@@ -624,6 +644,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         }
     };
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         return selector;
@@ -636,6 +660,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         clearStateStack();
     }
 
+    /**
+     * 
+     */
     @Override
     public void render(Renderer r) {
         super.render(r);
@@ -667,6 +694,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     }
     private SimulationObject currentHover;
 
+    /**
+     * 
+     * @param v 
+     */
     public void highlightVector(final AnchoredVector v) {
 
         // handle visual highlighting
@@ -725,6 +756,10 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         clearStateStack();
     }
 
+    /**
+     * 
+     * @param target 
+     */
     private void showMomentArm(Load target) {
 //
 //        if (target instanceof Moment) {
@@ -773,6 +808,9 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     private boolean showingCurve = false;
     private Vector3f curvePoints[] = new Vector3f[3];
 
+    /**
+     * 
+     */
     private void showCurve(Load obj, Vector2f pos) {
         if (obj == null || pos == null) {
             showingCurve = false;
@@ -788,11 +826,20 @@ public class EquationDiagram extends SubDiagram<EquationState> {
         showingCurve = true;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Mode getMode() {
         return EquationMode.instance;
     }
 
+    /**
+     * 
+     * @return 
+     * 
+     */
     @Override
     protected EquationState createInitialState() {
         Builder builder = new EquationState.Builder();
@@ -819,6 +866,11 @@ public class EquationDiagram extends SubDiagram<EquationState> {
     public void completed() {
     }
 
+    /**
+     * 
+     * @param obj
+     * @param values 
+     */
     private void solveConnector(SimulationObject obj, Map<Quantity, Float> values) {
         Connector connector = (Connector) obj;
 
