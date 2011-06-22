@@ -28,16 +28,28 @@ public class DistributedSelectDiagram extends SelectDiagram {
         }
     };
 
+    /**
+     * Returns description text for distributed select
+     * @return Returns "Select a body or distributed load to continue"
+     */
     @Override
     public String getDescriptionText() {
         return "Select a body or distributed load to continue";
     }
 
+    /**
+     * Whether a simulation objectcan be selected
+     * @return Returns the selection filter for
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
 
+    /**
+     * Activates the distributed select diagram by graying out solved distributed objects (handled here)
+     * and setting current highlighted object to null, resetting state stack (in super)
+     */
     @Override
     public void activate() {
         super.activate();
@@ -46,6 +58,9 @@ public class DistributedSelectDiagram extends SelectDiagram {
         StaticsApplication.getApp().setDefaultUIFeedbackKey("exercise_tools_distributed_Selection1");
     }
 
+    /**
+     * Called when diagram is solved?
+     */
     @Override
     public void completed() {
         List<SimulationObject> selected = getCurrentState().getCurrentlySelected();
@@ -58,6 +73,10 @@ public class DistributedSelectDiagram extends SelectDiagram {
         }
     }
 
+    /**
+     * Handles click event on simulation objects in the distributed select diagram
+     * @param obj SimulationObject clicked on
+     */
     @Override
     public void onClick(SimulationObject obj) {
 
@@ -70,6 +89,11 @@ public class DistributedSelectDiagram extends SelectDiagram {
         super.onClick(obj);
     }
 
+    /**
+     * Creates a select action object associated with a click event that selects a simulation object
+     * @param obj SimulationObject clicked on
+     * @return SelectAction object associated with the click event that occured in the diagram
+     */
     @Override
     protected SelectAction createSelectAction(SimulationObject obj) {
         return new SelectAction(obj) {

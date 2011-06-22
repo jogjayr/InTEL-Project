@@ -33,29 +33,55 @@ abstract public class OrdinaryExercise extends Exercise {
         super(schematic);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new DefaultInterfaceConfiguration();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Mode loadStartingMode() {
         SelectMode.instance.load();
         return SelectMode.instance;
     }
 
+    /**
+     * 
+     * @return
+     */
     protected SelectDiagram createSelectDiagram() {
         return new SelectDiagram();
     }
 
+    /**
+     *
+     * @param bodies
+     * @return
+     */
     protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodies) {
         return new FreeBodyDiagram(bodies);
     }
 
+    /**
+     * 
+     * @param bodies
+     * @return
+     */
     protected EquationDiagram createEquationDiagram(BodySubset bodies) {
         return new EquationDiagram(bodies);
     }
 
+    /**
+     * 
+     * @return
+     */
     private Diagram createDescriptionDiagram() {
         return new DescriptionDiagram();
     }
@@ -80,6 +106,12 @@ abstract public class OrdinaryExercise extends Exercise {
         return false;
     }
 
+    /**
+     * 
+     * @param key
+     * @param type
+     * @return
+     */
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (!supportsType(type)) {

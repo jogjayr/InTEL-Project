@@ -56,7 +56,7 @@ public class DescriptionUI extends AppWindow {
 
     /**
      * Accessible so that layouts can move the button around.
-     * @return
+     * @return the "Model and Solve" button
      */
     public BButton getButton() {
         return button;

@@ -19,6 +19,11 @@ public class DistributedMode extends Mode {
 
     public static final DistributedMode instance = new DistributedMode();
 
+    /**
+     * Gets the Diagram of the problem
+     * @param key DiagramKey representing Distributed Diagrams
+     * @return DistributedDiagram of this problem
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         if (key instanceof DistributedForce) {
@@ -28,6 +33,10 @@ public class DistributedMode extends Mode {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("distributed", 150);

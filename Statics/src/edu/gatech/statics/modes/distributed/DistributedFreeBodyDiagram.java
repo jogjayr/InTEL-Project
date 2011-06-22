@@ -21,11 +21,18 @@ class DistributedFreeBodyDiagram extends FreeBodyDiagram {
         super(bodies);
     }
 
+    /**
+     * Get a checker for this diagram
+     * @return DistributedFBDChecker that can be used to check the diagram
+     */
     @Override
     public FBDChecker getChecker() {
         return new DistributedFBDChecker(this);
     }
 
+    /**
+     * Activate the diagram by graying out solved objects and clearing the state stack
+     */
     @Override
     public void activate() {
         super.activate();

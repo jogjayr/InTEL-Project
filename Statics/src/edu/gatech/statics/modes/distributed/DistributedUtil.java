@@ -19,6 +19,9 @@ class DistributedUtil {
     private DistributedUtil() {
     }
 
+    /**
+     * Grays out distributed objects that have been solved
+     */
     static void grayoutSolvedDistributedObjects() {
         List<SimulationObject> allObjects = StaticsApplication.getApp().getCurrentDiagram().allObjects();
         for (SimulationObject obj : allObjects) {
