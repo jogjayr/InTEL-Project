@@ -37,14 +37,14 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     /**
      * 
-     * @return
+     * @return Is diagram solved?
      */
     public boolean isSolved() {
         return getCurrentState().isLocked();
     }
 
     /**
-     * 
+     * Activate this diagram
      */
     @Override
     public void activate() {
@@ -61,7 +61,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     /**
      * 
-     * @param text
+     * @param text Postion to set
      */
     public void setPosition(String text) {
         SetPositionValue action = new SetPositionValue(text);
@@ -70,7 +70,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     /**
      * 
-     * @param text
+     * @param text Magnitude to set
      */
     public void setMagnitude(String text) {
         SetMagnitudeValue action = new SetMagnitudeValue(text);
@@ -78,7 +78,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     * 
+     * Set diagram to solved
      */
     public void setSolved() {
         //updateResultant();
@@ -89,8 +89,9 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     * 
-     * @return
+     * Get base objects consisting of distributed load, surface, start and end points, measure between them,
+     * resultant force, anchor point
+     * @return Base objects of diagram
      */
     @Override
     protected List<SimulationObject> getBaseObjects() {
@@ -115,7 +116,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     * 
+     * Consrtructor
      * @param dl
      */
     public DistributedDiagram(DistributedForce dl) {
@@ -137,7 +138,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     * 
+     * Called when state changes
      */
     @Override
     protected void stateChanged() {
@@ -146,10 +147,10 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     * 
+     * Check if diagram solved
      * @param positionValue
      * @param magnitudeValue
-     * @return
+     * @return Solved?
      */
     public boolean check(String positionValue, String magnitudeValue) {
 
@@ -258,7 +259,7 @@ public class DistributedDiagram extends Diagram<DistributedState> {
 
     /**
      * 
-     * @return
+     * @return Mode to which this diagram belongs
      */
     @Override
     public Mode getMode() {
@@ -266,8 +267,8 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     }
 
     /**
-     *
-     * @return
+     * Object factory for DistributedDiagram
+     * @return new DistributedDiagram object
      */
     @Override
     protected DistributedState createInitialState() {

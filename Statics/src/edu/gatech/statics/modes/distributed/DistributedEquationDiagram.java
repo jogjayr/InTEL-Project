@@ -15,14 +15,14 @@ public class DistributedEquationDiagram extends EquationDiagram {
 
     /**
      * 
-     * @param bodies
+     * @param bodies Subset of bodies to create EquationDiagram for
      */
     public DistributedEquationDiagram(BodySubset bodies) {
         super(bodies);
     }
 
     /**
-     *
+     * Activate this diagram
      */
     @Override
     public void activate() {

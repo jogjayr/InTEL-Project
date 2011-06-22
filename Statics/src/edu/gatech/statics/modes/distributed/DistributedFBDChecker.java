@@ -23,8 +23,9 @@ public class DistributedFBDChecker extends FBDChecker {
     }
 
     /**
-     * 
-     * @return
+     * Performs first regular FBD check and then checks specific to
+     * distributed statics problems
+     * @return Is distributed FBD correct?
      */
     @Override
     public boolean checkDiagram() {

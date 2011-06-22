@@ -19,7 +19,7 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
 
     /**
      * 
-     * @return
+     * @return Is state locked?
      */
     public boolean isLocked() {
         return solved;
@@ -51,6 +51,9 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
         return position;
     }
 
+    /**
+     * Object factory for distributed state
+     */
     public static class Builder implements edu.gatech.statics.util.Builder<DistributedState> {
 
         private boolean solved;
