@@ -33,10 +33,18 @@ abstract public class DistributedForce implements DiagramKey {
     private Vector peak;
     private String name;
 
+    /**
+     * 
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String toString() {
         return getName();
@@ -144,14 +152,26 @@ abstract public class DistributedForce implements DiagramKey {
         return position;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point getEndPoint() {
         return endPoint;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Vector getPeak() {
         return peak;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point getStartPoint() {
         return startPoint;
     }
@@ -168,6 +188,11 @@ abstract public class DistributedForce implements DiagramKey {
      */
     abstract float getCurveValue(float x);
 
+    /**
+     * 
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -195,6 +220,10 @@ abstract public class DistributedForce implements DiagramKey {
         return true;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;

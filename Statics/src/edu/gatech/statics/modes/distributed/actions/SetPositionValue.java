@@ -18,6 +18,11 @@ public class SetPositionValue implements DiagramAction<DistributedState> {
         this.positionValue = newPositionValue;
     }
 
+    /**
+     * 
+     * @param oldState
+     * @return
+     */
     public DistributedState performAction(DistributedState oldState) {
         Builder builder = oldState.getBuilder();
         builder.setPosition(positionValue);

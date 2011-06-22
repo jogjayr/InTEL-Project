@@ -26,16 +26,29 @@ public class ConstantDistributedForce extends DistributedForce {
         super(name, surface, startPoint, endPoint, peak);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected BigDecimal getPositionMultiplier() {
         return new BigDecimal(".5");
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         return new BigDecimal(1);
     }
 
+    /**
+     * 
+     * @param x
+     * @return
+     */
     @Override
     float getCurveValue(float x) {
         return 1;

@@ -47,11 +47,20 @@ public class TrapezoidalDistributedForce extends DistributedForce {
         return constantAmount;
     }
 
+    /**
+     * 
+     * @param x
+     * @return (float) ((1 - x) * (1 - constantRatio) + constantRatio)
+     */
     @Override
     float getCurveValue(float x) {
         return (float) ((1 - x) * (1 - constantRatio) + constantRatio);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected BigDecimal getPositionMultiplier() {
         double constantPosition = (1.0 / 2) * constantRatio;
@@ -60,6 +69,10 @@ public class TrapezoidalDistributedForce extends DistributedForce {
         return new BigDecimal(constantPosition + triangularPosition);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         double constantMagnitude = (1.0) * constantRatio;

@@ -35,16 +35,29 @@ public class QuarterEllipseDistributedForce extends DistributedForce {
         super(name, surface, startPoint, endPoint, peak);
     }
 
+    /**
+     * 
+     * @param x
+     * @return (float) Math.sqrt(1 - x * x)
+     */
     @Override
     float getCurveValue(float x) {
         return (float) Math.sqrt(1 - x * x);
     }
 
+    /**
+     * 
+     * @return new BigDecimal(4 / (3 * Math.PI))
+     */
     @Override
     protected BigDecimal getPositionMultiplier() {
         return new BigDecimal(4 / (3 * Math.PI));
     }
 
+    /**
+     * 
+     * @return new BigDecimal(Math.PI / 4);
+     */
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         return new BigDecimal(Math.PI / 4);

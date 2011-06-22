@@ -66,14 +66,26 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         }
     }
 
+    /**
+     * 
+     * @return suffix at the end of the resultant and centroid.
+     */
     public String getSuffix() {
         return suffix;
     }
 
+    /**
+     * 
+     * @return get DistanceMeasurement between start and end points of distributed force
+     */
     public DistanceMeasurement getMeasure() {
         return measure;
     }
 
+    /**
+     * Is the force solved?
+     * @return
+     */
     public boolean isSolved() {
         Diagram diagram = Exercise.getExercise().getDiagram(dl, DistributedMode.instance.getDiagramType());
         if (diagram == null) {
@@ -82,18 +94,34 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         return diagram.isLocked();
     }
 
+    /**
+     *
+     * @return DistributedForce associated with this object
+     */
     public DistributedForce getDistributedForce() {
         return dl;
     }
 
+    /**
+     * 
+     * @return Anchor of resultant force of distributed forces
+     */
     public Point getResultantAnchor() {
         return resultantAnchor;
     }
 
+    /**
+     * 
+     * @return Resultant force of distributed force
+     */
     public Force getResultantForce() {
         return resultantForce;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Vector3f getTranslation() {
 
@@ -105,18 +133,34 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         return dl.getStartPoint().getTranslation().add(dl.getEndPoint().getTranslation()).mult(.5f);
     }
 
+    /**
+     * 
+     * @return End point of distributed force
+     */
     public Point getEndPoint() {
         return dl.getEndPoint();
     }
 
+    /**
+     * 
+     * @return Start point of distributed force
+     */
     public Point getStartPoint() {
         return dl.getStartPoint();
     }
 
+    /**
+     * 
+     * @return Beam on hwich force acts
+     */
     public Beam getSurface() {
         return dl.getSurface();
     }
 
+    /**
+     * 
+     * @return Rotation of surface on which force acts
+     */
     @Override
     public Matrix3f getRotation() {
         //return surface.getRotation();
@@ -142,6 +186,10 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         return mat;
     }
 
+    /**
+     * 
+     * @return Logical center of the DistributedForceObject
+     */
     @Override
     public Vector3f getDisplayCenter() {
         Vector3f endpoint;
@@ -160,17 +208,30 @@ public class DistributedForceObject extends SimulationObject implements Resolvab
         return endpoint.add(peakValue.mult(DisplayConstants.getInstance().getDistributedLabelMultiplier()));
     }
 
+    /**
+     * 
+     * @return Label text of DistributedForceObject
+     */
     @Override
     public String getLabelText() {
         return dl.getPeak().getPrettyName();
     }
 
+    /**
+     * 
+     */
     @Override
     public void createDefaultSchematicRepresentation() {
         // only one sample is necessary here.
         createDefaultSchematicRepresentation(5, 10, 2f);
     }
 
+    /**
+     * 
+     * @param displayScale Display scale of the representation
+     * @param arrows number of arrows to represent force with 
+     * @param measureDistance DistanceMeasurement between start and end of the distributed force
+     */
     public void createDefaultSchematicRepresentation(float displayScale, int arrows, float measureDistance) {
         addRepresentation(new DistributedForceRepresentation(this, 30, displayScale, arrows));
 

@@ -34,6 +34,13 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
     private TriMesh surface;
     private Line border;
 
+    /**
+     * Constructor
+     * @param target Object for which representation is created
+     * @param samples number of sample points to use in creating mesh for representation. Should be 1
+     * @param displayScale local scale of this node
+     * @param arrows
+     */
     public DistributedForceRepresentation(DistributedForceObject target, int samples, float displayScale, int arrows) {
         super(target);
 
@@ -95,6 +102,10 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
     }
 
+    /**
+     * 
+     * @param grayed Flag to set display grayed. True if yes, false if no
+     */
     @Override
     public void setDisplayGrayed(boolean grayed) {
         super.setDisplayGrayed(grayed);
@@ -137,7 +148,7 @@ public class DistributedForceRepresentation extends Representation<DistributedFo
      * with the peak value scaled to 1 in the y direction. The mesh should also have length 2,
      * going from -1 to 1 into the +x direction.
      * @param samples the number of sample points to use in constructing the mesh. Should be 1 for a single triangle/quad.
-     * @return
+     * @return TriMesh making up surface describing distributed load
      */
     protected TriMesh createSurface(int samples) {
 

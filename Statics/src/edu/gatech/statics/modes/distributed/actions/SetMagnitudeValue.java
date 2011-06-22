@@ -13,17 +13,30 @@ public class SetMagnitudeValue implements DiagramAction<DistributedState> {
 
     final private String magnitudeValue;
 
+    /**
+     * 
+     * @param newMagnitudeValue
+     */
     public SetMagnitudeValue(String newMagnitudeValue) {
         //this.force = force;
         this.magnitudeValue = newMagnitudeValue;
     }
 
+    /**
+     * 
+     * @param oldState
+     * @return
+     */
     public DistributedState performAction(DistributedState oldState) {
         Builder builder = oldState.getBuilder();
         builder.setMagnitude(magnitudeValue);
         return builder.build();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String toString() {
         return "ChangeMagnitudeValue [" + magnitudeValue + "]";

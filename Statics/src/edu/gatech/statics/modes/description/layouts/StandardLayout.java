@@ -33,6 +33,10 @@ public class StandardLayout implements DescriptionLayout {
     private static final int IMAGE_WIDTH = 550;
     private static final int IMAGE_HEIGHT = 325;
 
+    /**
+     * 
+     * @param ui
+     */
     public void addComponents(DescriptionUI ui) {
 
         imageLabel1 = new BLabel("");
@@ -56,6 +60,11 @@ public class StandardLayout implements DescriptionLayout {
         ui.add(goalsView);
     }
 
+    /**
+     * 
+     * @param ui
+     * @param description
+     */
     //@Override
     public void layout(DescriptionUI ui, Description description) {
 

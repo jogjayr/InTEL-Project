@@ -43,6 +43,10 @@ public class SlideshowControl extends BContainer {
 
     }
 
+    /**
+     * 
+     * @param images
+     */
     public void setImages(List<BufferedImage> images) {
 
         if (icons.size() > 0) {
@@ -87,6 +91,9 @@ public class SlideshowControl extends BContainer {
         }
     }
 
+    /**
+     * 
+     */
     private void onPrevious() {
         if (icons.size() == 0) {
             return;
@@ -100,6 +107,9 @@ public class SlideshowControl extends BContainer {
         setIcon(position);
     }
 
+    /**
+     * 
+     */
     private void onNext() {
         if (icons.size() == 0) {
             return;
@@ -113,6 +123,10 @@ public class SlideshowControl extends BContainer {
         setIcon(position);
     }
 
+    /**
+     *
+     * @param position
+     */
     private void setIcon(int position) {
         ImageIcon icon = icons.get(position);
         mainLabel.setIcon(icon);

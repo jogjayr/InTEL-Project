@@ -34,16 +34,29 @@ public class TriangularDistributedForce extends DistributedForce {
         super(name, surface, startPoint, endPoint, peak);
     }
 
+    /**
+     * 
+     * @param x
+     * @return 1 - x
+     */
     @Override
     float getCurveValue(float x) {
         return 1 - x;
     }
 
+    /**
+     * 
+     * @return new BigDecimal(1.0 / 3);
+     */
     @Override
     protected BigDecimal getPositionMultiplier() {
         return new BigDecimal(1.0 / 3);
     }
 
+    /**
+     * 
+     * @return new BigDecimal(.5);
+     */
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
         return new BigDecimal(.5);

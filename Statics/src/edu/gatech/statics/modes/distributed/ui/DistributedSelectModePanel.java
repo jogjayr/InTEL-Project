@@ -17,6 +17,13 @@ import edu.gatech.statics.objects.SimulationObject;
  */
 public class DistributedSelectModePanel extends SelectModePanel {
 
+    /**
+     * Called when diagram state changes (like when an object is selected)
+     * For distributed problems, the text of nextButton in the mode panel
+     * also changes depending on type of object selected. If it's a distributed
+     * force, then nextButton has text "Find Resultant", whereas if it's a body
+     * it has text "Create FBD"
+     */
     @Override
     public void stateChanged() {
         super.stateChanged();

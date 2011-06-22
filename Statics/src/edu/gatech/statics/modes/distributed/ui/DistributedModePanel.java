@@ -33,6 +33,9 @@ public class DistributedModePanel extends ApplicationModePanel {
     //private String positionValue;
     //private String magnitudeValue;
 
+    /**
+     * Constructor
+     */
     public DistributedModePanel() {
 
         //getTitleLabel().setText("Find the Resultant");
@@ -93,6 +96,9 @@ public class DistributedModePanel extends ApplicationModePanel {
 
     }
 
+    /**
+     * Checks correctness of answer. Locks input fields and buttons if correct
+     */
     protected void performCheck() {
         DistributedDiagram diagram = (DistributedDiagram) getDiagram();
         // check to see if the distributed check succeeds
@@ -109,6 +115,10 @@ public class DistributedModePanel extends ApplicationModePanel {
         }
     }
 
+    /**
+     * Called when state of modepanel changes
+     * Locks the input fields if the diagram is locked
+     */
     @Override
     public void stateChanged() {
         super.stateChanged();
@@ -125,6 +135,9 @@ public class DistributedModePanel extends ApplicationModePanel {
         }
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         DistributedState state = (DistributedState) getDiagram().getCurrentState();
@@ -139,6 +152,10 @@ public class DistributedModePanel extends ApplicationModePanel {
 //    protected ApplicationTab createTab() {
 //        return new ApplicationTab("Resultant");
 //    }
+    /**
+     * Gets the diagram type that this mode panel is associated with
+     * @return DiagramType of the mode panel
+     */
     @Override
     public DiagramType getDiagramType() {
         return DistributedMode.instance.getDiagramType();

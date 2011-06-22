@@ -13,6 +13,9 @@ import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
  */
 public class DistributedInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
+    /**
+     * Constructor
+     */
     public DistributedInterfaceConfiguration() {
         getModePanels().add(new DistributedModePanel());
         replaceModePanel(SelectModePanel.class, new DistributedSelectModePanel());
