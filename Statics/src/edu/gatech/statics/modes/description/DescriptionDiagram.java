@@ -21,6 +21,9 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
     private DescriptionUI ui;
     private Description description;
 
+    /**
+     * Constructor
+     */
     public DescriptionDiagram() {
         super(null);
 
@@ -29,7 +32,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
 
     /**
      * 
-     * @return 
+     * @return "Description"
      */
     @Override
     public String getName() {
@@ -38,7 +41,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
 
     /**
      * 
-     * @return 
+     * @return ""
      */
     @Override
     public String getDescriptionText() {
@@ -48,7 +51,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
 
     /**
      * 
-     * @return 
+     * @return A new description state
      */
     @Override
     protected DescriptionState createInitialState() {
@@ -56,7 +59,8 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
     }
 
     /**
-     * 
+     * load the starting mode for the exercise once the user has finished reading
+     * the description
      */
     @Override
     public void completed() {
@@ -67,7 +71,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
 
     /**
      * 
-     * @return 
+     * @return DescriptionMode that the diagram belongs to
      */
     @Override
     public Mode getMode() {
@@ -85,7 +89,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
     }
 
     /**
-     * 
+     * Runs when diagram is activated. Loads description (once)
      */
     @Override
     public void activate() {
@@ -106,7 +110,7 @@ public class DescriptionDiagram extends Diagram<DescriptionState> {
     }
 
     /**
-     * 
+     * Deactivates description diagram
      */
     @Override
     public void deactivate() {

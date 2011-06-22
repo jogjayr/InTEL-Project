@@ -34,8 +34,8 @@ public class StandardLayout implements DescriptionLayout {
     private static final int IMAGE_HEIGHT = 325;
 
     /**
-     * 
-     * @param ui
+     * Add a description UI, slideshow control, and views for narrative, problem statement and goals to standard layout
+     * @param ui The DescriptionUI object to add to standard layout
      */
     public void addComponents(DescriptionUI ui) {
 
@@ -61,9 +61,9 @@ public class StandardLayout implements DescriptionLayout {
     }
 
     /**
-     * 
-     * @param ui
-     * @param description
+     * Layout description UI
+     * @param ui DescriptionUI object for the standard layout
+     * @param description Problem description object for ui
      */
     //@Override
     public void layout(DescriptionUI ui, Description description) {

@@ -26,6 +26,9 @@ public class DescriptionUI extends AppWindow {
     private BButton button;
     private boolean addedComponents = false;
 
+    /**
+     * Constructor
+     */
     public DescriptionUI() {
         //super(new AbsoluteLayout());
         super(null);
@@ -63,14 +66,14 @@ public class DescriptionUI extends AppWindow {
     }
 
     /**
-     * 
+     * Handles next button click event
      */
     private void nextPressed() {
         Exercise.getExercise().loadStartingMode();
     }
 
     /**
-     * 
+     * Sets window to preferred sized and moves to top left
      */
     void updatePlacement() {
         pack();
@@ -80,7 +83,7 @@ public class DescriptionUI extends AppWindow {
 
     /**
      * 
-     * @param description 
+     * @param description to be added to UI
      */
     void layout(Description description) {
         if (!addedComponents) {

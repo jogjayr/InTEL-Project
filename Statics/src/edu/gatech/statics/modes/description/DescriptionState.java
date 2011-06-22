@@ -15,7 +15,7 @@ public class DescriptionState implements DiagramState<DescriptionDiagram> {
 
     /**
      * 
-     * @return 
+     * @return Is DescriptionState locked?
      */
     public boolean isLocked() {
         return true;
@@ -23,7 +23,7 @@ public class DescriptionState implements DiagramState<DescriptionDiagram> {
 
     /**
      * 
-     * @return 
+     * @return Object factory for DescriptionState
      */
     public DescriptionBuilder getBuilder() {
         return new DescriptionBuilder();

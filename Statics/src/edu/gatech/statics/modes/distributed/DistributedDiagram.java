@@ -35,10 +35,17 @@ public class DistributedDiagram extends Diagram<DistributedState> {
     private DistributedForceObject dlObj;
     //private DistanceMeasurement measure;
 
+    /**
+     * 
+     * @return
+     */
     public boolean isSolved() {
         return getCurrentState().isLocked();
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         super.activate();
@@ -52,16 +59,27 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         StaticsApplication.getApp().resetUIFeedback();
     }
 
+    /**
+     * 
+     * @param text
+     */
     public void setPosition(String text) {
         SetPositionValue action = new SetPositionValue(text);
         performAction(action);
     }
 
+    /**
+     * 
+     * @param text
+     */
     public void setMagnitude(String text) {
         SetMagnitudeValue action = new SetMagnitudeValue(text);
         performAction(action);
     }
 
+    /**
+     * 
+     */
     public void setSolved() {
         //updateResultant();
         Builder builder = getCurrentState().getBuilder();
@@ -70,6 +88,10 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         clearStateStack();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
@@ -92,6 +114,10 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         return baseObjects;
     }
 
+    /**
+     * 
+     * @param dl
+     */
     public DistributedDiagram(DistributedForce dl) {
         super(dl);
 
@@ -110,12 +136,21 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         //String pointName = dl.getName()+" pos";
     }
 
+    /**
+     * 
+     */
     @Override
     protected void stateChanged() {
         super.stateChanged();
         updateResultant();
     }
 
+    /**
+     * 
+     * @param positionValue
+     * @param magnitudeValue
+     * @return
+     */
     public boolean check(String positionValue, String magnitudeValue) {
 
         //AffineQuantity userMagnitude = Parser.evaluateSymbol(magnitudeValue);
@@ -213,26 +248,45 @@ public class DistributedDiagram extends Diagram<DistributedState> {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     protected DistributedForce getDistributedForce() {
         return (DistributedForce) getKey();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Mode getMode() {
         return DistributedMode.instance;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected DistributedState createInitialState() {
         DistributedState.Builder builder = new DistributedState.Builder();
         return builder.build();
     }
 
+    /**
+     * 
+     */
     @Override
     public void completed() {
         // do nothing yet
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String getDescriptionText() {
         return "Calculate the resultant for distributed force: " + getKey();

@@ -33,21 +33,22 @@ public class Description {
 
     /**
      * 
-     * @return 
+     * @return Problem goals
      */
     public String getGoals() {
         return goals;
     }
 
     /**
-     * 
+     * Set problem goals
+     * @param goals Problem goals
      */
     public void setGoals(String goals) {
         this.goals = goals;
     }
 
     /**
-     * 
+     * @return Images in problem description
      */
     public List<BufferedImage> getImages() {
         if (images == null) {
@@ -57,7 +58,7 @@ public class Description {
     }
 
     /**
-     * 
+     * @param imageURL URL of image to be added
      */
     public void addImage(String imageURL) {
         if (images == null) {
@@ -74,7 +75,9 @@ public class Description {
     }
 
     /**
-     * 
+     * Set image at index to imageURL
+     * @param imageURL Url of image
+     * @param index Position in image list to set to imageURL
      */
     public void setImageAt(String imageURL, int index) {
         if (images == null) {
@@ -93,14 +96,14 @@ public class Description {
 
     /**
      * 
-     * @return 
+     * @return Problem narrative
      */
     public String getNarrative() {
         return narrative;
     }
 
     /**
-     * 
+     * @param narrative Problem narrative
      */
     public void setNarrative(String narrative) {
         this.narrative = narrative;
@@ -108,19 +111,23 @@ public class Description {
 
     /**
      * 
-     * @return 
+     * @return Problem statement
      */
     public String getProblemStatement() {
         return problemStatement;
     }
 
+    /**
+     * 
+     * @param problemStatement Problem statement
+     */
     public void setProblemStatement(String problemStatement) {
         this.problemStatement = problemStatement;
     }
 
     /**
      * 
-     * @return 
+     * @return Problem title
      */
     public String getTitle() {
         return title;
@@ -128,7 +135,7 @@ public class Description {
 
     /**
      * 
-     * @param title 
+     * @param title Problem title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -136,7 +143,7 @@ public class Description {
 
     /**
      * 
-     * @return 
+     * @return DescriptionLayout for this description
      */
     public DescriptionLayout getLayout() {
         return layout;
@@ -144,7 +151,7 @@ public class Description {
 
     /**
      * 
-     * @param layout 
+     * @param layout DescriptionLayout for this description
      */
     public void setLayout(DescriptionLayout layout) {
         this.layout = layout;

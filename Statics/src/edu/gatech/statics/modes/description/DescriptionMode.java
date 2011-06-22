@@ -21,8 +21,8 @@ public class DescriptionMode extends Mode {
 
     /**
      * 
-     * @param key
-     * @return 
+     * @param key Diagram key for the diagram required
+     * @return  Diagram for description mode for the problem
      */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
@@ -33,7 +33,7 @@ public class DescriptionMode extends Mode {
     }
 
     /**
-     * 
+     * Creates a diagram with type description
      * @return 
      */
     @Override

@@ -13,6 +13,11 @@ public class SetPositionValue implements DiagramAction<DistributedState> {
     //final private DistributedForce force;
     final private String positionValue;
 
+    /**
+     * Constructor
+     * @param newPositionValue
+     */
+
     public SetPositionValue(String newPositionValue) {
         //this.force = force;
         this.positionValue = newPositionValue;
@@ -20,8 +25,8 @@ public class SetPositionValue implements DiagramAction<DistributedState> {
 
     /**
      * 
-     * @param oldState
-     * @return
+     * @param oldState Previous state
+     * @return New DistributedState with changed position value
      */
     public DistributedState performAction(DistributedState oldState) {
         Builder builder = oldState.getBuilder();

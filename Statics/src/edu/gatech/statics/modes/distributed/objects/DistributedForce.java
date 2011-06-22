@@ -35,7 +35,7 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return Name of the force
      */
     public String getName() {
         return name;
@@ -43,7 +43,7 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return Name of the force
      */
     @Override
     public String toString() {
@@ -154,7 +154,7 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return End point of force
      */
     public Point getEndPoint() {
         return endPoint;
@@ -162,7 +162,7 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return Peak of force (direction, unit and magnitude. Eg. Tip of triangular of force)
      */
     public Vector getPeak() {
         return peak;
@@ -170,12 +170,16 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return Start point of force
      */
     public Point getStartPoint() {
         return startPoint;
     }
 
+    /**
+     * 
+     * @return Beam on which force acts
+     */
     public Beam getSurface() {
         return surface;
     }
@@ -190,8 +194,8 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @param obj
-     * @return
+     * @param obj Object to check equality with 
+     * @return This equal to obj ?
      */
     @Override
     public boolean equals(Object obj) {
@@ -222,7 +226,7 @@ abstract public class DistributedForce implements DiagramKey {
 
     /**
      * 
-     * @return
+     * @return Hash code representing the object
      */
     @Override
     public int hashCode() {

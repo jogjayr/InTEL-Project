@@ -22,6 +22,10 @@ public class DistributedFBDChecker extends FBDChecker {
         super(diagram);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public boolean checkDiagram() {
         // perform the regular FBD check here

@@ -38,7 +38,8 @@ public class ScrollbarLayout implements DescriptionLayout {
     private static final int IMAGE_HEIGHT = 325;
 
     /**
-     * 
+     * Populates layout with a DescriptionUI and views for narrative, goals and and problem statement,
+     * along with an image viewer
      * @param ui
      */
     public void addComponents(DescriptionUI ui) {
@@ -74,8 +75,8 @@ public class ScrollbarLayout implements DescriptionLayout {
 
     /**
      * 
-     * @param ui
-     * @param description
+     * @param ui DescriptionUI object to use for layout
+     * @param description Description object for layout
      */
     //@Override
     public void layout(DescriptionUI ui, Description description) {

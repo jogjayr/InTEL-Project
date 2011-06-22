@@ -13,10 +13,17 @@ import edu.gatech.statics.modes.equation.EquationDiagram;
  */
 public class DistributedEquationDiagram extends EquationDiagram {
 
+    /**
+     * 
+     * @param bodies
+     */
     public DistributedEquationDiagram(BodySubset bodies) {
         super(bodies);
     }
 
+    /**
+     *
+     */
     @Override
     public void activate() {
         super.activate();

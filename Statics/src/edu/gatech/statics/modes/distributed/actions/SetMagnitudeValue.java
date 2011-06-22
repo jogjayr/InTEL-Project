@@ -14,8 +14,8 @@ public class SetMagnitudeValue implements DiagramAction<DistributedState> {
     final private String magnitudeValue;
 
     /**
-     * 
-     * @param newMagnitudeValue
+     * Constructor
+     * @param newMagnitudeValue 
      */
     public SetMagnitudeValue(String newMagnitudeValue) {
         //this.force = force;
@@ -24,8 +24,8 @@ public class SetMagnitudeValue implements DiagramAction<DistributedState> {
 
     /**
      * 
-     * @param oldState
-     * @return
+     * @param oldState Previous state
+     * @return new DistributedState with new magnitude value
      */
     public DistributedState performAction(DistributedState oldState) {
         Builder builder = oldState.getBuilder();

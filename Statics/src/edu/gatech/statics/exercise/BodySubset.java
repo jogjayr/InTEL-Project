@@ -23,10 +23,18 @@ public class BodySubset implements DiagramKey {
     private Set<Body> bodies;
     private String specialName;
 
+    /**
+     * 
+     * @param bodies
+     */
     public BodySubset(Body... bodies) {
         this(Arrays.asList(bodies));
     }
 
+    /**
+     * 
+     * @param bodies
+     */
     public BodySubset(Collection<Body> bodies) {
         this.bodies = new HashSet<Body>(bodies);
         if (bodies.size() == 0) {
@@ -34,18 +42,35 @@ public class BodySubset implements DiagramKey {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getSpecialName() {
         return specialName;
     }
 
+    /**
+     * 
+     * @param specialName
+     */
     public void setSpecialName(String specialName) {
         this.specialName = specialName;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Set<Body> getBodies() {
         return Collections.unmodifiableSet(bodies);
     }
 
+    /**
+     * 
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

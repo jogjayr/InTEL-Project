@@ -17,20 +17,36 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
     final private String magnitude;
     final private String position;
 
+    /**
+     * 
+     * @return
+     */
     public boolean isLocked() {
         return solved;
     }
 
+    /**
+     * 
+     * @param builder
+     */
     private DistributedState(Builder builder) {
         this.solved = builder.solved;
         this.magnitude = builder.magnitude;
         this.position = builder.position;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getMagnitude() {
         return magnitude;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getPosition() {
         return position;
     }
@@ -48,26 +64,49 @@ public class DistributedState implements DiagramState<DistributedDiagram> {
             this.position = state.position;
         }
 
+        /**
+         *
+         * @return
+         */
         public boolean isSolved() {
             return solved;
         }
-
+        /**
+         * 
+         * @param magnitudeValue
+         */
         public void setMagnitude(String magnitudeValue) {
             this.magnitude = magnitudeValue;
         }
 
+        /**
+         * 
+         * @param positionValue
+         */
         public void setPosition(String positionValue) {
             this.position = positionValue;
         }
 
+        /**
+         * 
+         * @param solved
+         */
         public void setSolved(boolean solved) {
             this.solved = solved;
         }
 
+        /**
+         * 
+         * @return
+         */
         public String getMagnitude() {
             return magnitude;
         }
 
+        /**
+         * 
+         * @return
+         */
         public String getPosition() {
             return position;
         }

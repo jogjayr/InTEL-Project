@@ -28,7 +28,7 @@ public class ConstantDistributedForce extends DistributedForce {
 
     /**
      * 
-     * @return
+     * @return new BigDecimal(".5")
      */
     @Override
     protected BigDecimal getPositionMultiplier() {
@@ -37,7 +37,7 @@ public class ConstantDistributedForce extends DistributedForce {
 
     /**
      * 
-     * @return
+     * @return new BigDecimal(1)
      */
     @Override
     protected BigDecimal getMagnitudeMultiplier() {
@@ -47,7 +47,7 @@ public class ConstantDistributedForce extends DistributedForce {
     /**
      * 
      * @param x
-     * @return
+     * @return returns 1
      */
     @Override
     float getCurveValue(float x) {

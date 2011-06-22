@@ -30,6 +30,12 @@ public class SlideshowControl extends BContainer {
     private int width, height;
     private BButton previousButton, nextButton;
 
+
+    /**
+     * 
+     * @param width of control
+     * @param height of control
+     */
     public SlideshowControl(int width, int height) {
 
         super(new AbsoluteLayout());
@@ -45,7 +51,7 @@ public class SlideshowControl extends BContainer {
 
     /**
      * 
-     * @param images
+     * @param images List of images displayed by control
      */
     public void setImages(List<BufferedImage> images) {
 
@@ -92,7 +98,7 @@ public class SlideshowControl extends BContainer {
     }
 
     /**
-     * 
+     * Handles previous button click
      */
     private void onPrevious() {
         if (icons.size() == 0) {
@@ -108,7 +114,7 @@ public class SlideshowControl extends BContainer {
     }
 
     /**
-     * 
+     * Handles next button click
      */
     private void onNext() {
         if (icons.size() == 0) {
@@ -125,7 +131,7 @@ public class SlideshowControl extends BContainer {
 
     /**
      *
-     * @param position
+     * @param position 
      */
     private void setIcon(int position) {
         ImageIcon icon = icons.get(position);
