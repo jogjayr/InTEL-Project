@@ -1,19 +1,19 @@
 <?php
 
 // This loads all of the library functions that are used by the PHP backend.
-require_once('model/lib_accounts.php');
-require_once('model/lib_assignments.php');
-require_once('model/lib_classes.php');
-require_once('model/lib_submissions.php');
-require_once('model/util.php');
+require_once('lib_accounts.php');
+require_once('lib_assignments.php');
+require_once('lib_classes.php');
+require_once('lib_submissions.php');
+require_once('util.php');
 
 // information for titling and contact information
 $site_title = "Interactive Toolkit for Engineering Learning";
 $site_email_address = "eschechter3@gatech.edu";
 
 // addresses used for redirects
-$base_address = 'http://intel.gatech.edu/toolkit-dev/';
-$base_file_path = '/www/virtual/intel/toolkit-dev/';
+$base_address = 'http://intel.gatech.edu/toolkit/';
+$base_file_path = '/www/virtual/intel/toolkit/';
 
 // error string if present.
 $err = '';

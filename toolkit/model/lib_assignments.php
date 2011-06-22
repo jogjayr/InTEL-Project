@@ -46,7 +46,9 @@ function getAssignments($uuid) {
     global $db;
 
     if (isAnonymous ()) {
-        $query = "SELECT id AS problem_id, name, description, image FROM app_problem WHERE is_active=1 ORDER BY name DESC";
+        /*$query = "SELECT id AS problem_id, name, description, image FROM app_problem WHERE is_active=1 ORDER BY name DESC";*/
+		$query = "SELECT id AS problem_id, name, description, image FROM app_problem WHERE (description LIKE 'Introduction:%' OR description LIKE 'Frame Exercise:%' OR description LIKE 'Friction Exercise:%' OR description LIKE 'Free Body Diagram Exercise:%' OR description LIKE 'Equilibrium Exercise:%' OR description LIKE 'Truss Exercise:%' OR description LIKE 'Distributed Load Exercise:%' OR description LIKE 'Centroid Exercise:%') AND  is_active='1' ORDER BY ordseq, description ASC;";
+		
     } else {
         $class = getClassByUUID($uuid);
         $dateTime = mktime();

@@ -4,6 +4,7 @@ html {
 
 #header {
     width: 100%;
+	/*height: auto;*/
     /*border-bottom: solid 4px #5FC806;*/
 }
 
@@ -41,10 +42,18 @@ html {
     border: 2px solid #888;
 }
 
+
 .loginpanel {
-    float: right;
+    /*float: right;*/
+	float: left; clear:both;
     /*border: 2px solid #AEC3FF;*/
-    padding: 4px;
+    padding: 0px;/*was 4px*/
+	/*padding-left:0;*/
+	/*margin-left:0;*/
+	width:864;
+	display:inline-block;
+	/*float: right;*/
+	/*float: right; clear:both;*/
 }
 
 .button {
@@ -78,6 +87,68 @@ html {
     border: 2px solid #008;
     background-color: #eef;
     padding: 5px;
+}
+#navWrapper {
+	margin: 0;
+	width: 264px;
+	height:auto;
+	float: left;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+#navTop {
+	width: 264px;
+	height: 12px;
+	background-color:#666666;
+	float:left;
+}
+.navContainer{
+	width: 264px;
+	height: auto;
+	float: left;
+}
+.navBodyWrapper{
+	width: 864px;
+	height:auto;
+	float: left; clear:both;
+}
+#bodyWrapper {
+	width: 600px;
+	height:auto;
+	float:left;
+}
+#bodyTop{
+	width: 600px;
+	background-color: #5FC806;
+	height: 12px;
+	float:left;
+}
+#bodyBanner {
+	width: 600px;
+	height: 153px;
+	float: left;
+}
+#loginWrapper {
+	width: 864px;
+	
+	height:auto;
+	float: left; clear: left;
+}
+#navWrapper {
+	margin: 0;
+	width: 264px;
+	height:auto;
+	float:left;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.bodyTitle {	
+	font-size: 18px;
+	color: #5FC806;
+	padding-left: 10px;
+	/*width:inherit;
+	height:inherit;*/
+	/*padding: 10px;*/
+	/*margin: 0 0 10 0;*/
+	/*margin: 0 0 0 10px;*/
 }
 .nav_button {
     position: relative;
@@ -168,3 +239,9 @@ table.sortable tr.sortbottom td {
     background-color: #ccc;
     font-weight: bold;
 }
+#header .loginpanel form {
+	display: inline;
+}
+/*#header .navBodyWrapper #bodyWrapper .bodyContainer .bodyTitle {
+	padding-left: 10px;
+}*/

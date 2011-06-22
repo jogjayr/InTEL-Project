@@ -1,5 +1,7 @@
 <?php
-require_once('admin/initvars.php');
+require_once('admin/initvars.php');/*Calls all Components*/
+$banner = '../images/bridgeRender.jpg';
+
 
 //compact nav test for launch app window
 //$navId = 'main_nav'; //change this to get a side bar when the app is not running
@@ -12,10 +14,10 @@ require_once('admin/initvars.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
             var feedbackBoxVisible = false;
             function showFeedbackBox() {
                 if(!feedbackBoxVisible) {
@@ -54,8 +56,18 @@ require_once('admin/initvars.php');
                     feedbackBoxVisible = false;
                 });
             }
+			function loginNo(){
+        		document.getElementById('login_form').style.display = "none"
+        	}
+        	function loginYes(){
+        	document.getElementById('login_form').style.display = "block"
+        	}
+			function submitForm(fieldValue){
+  			document.logoutForm.logout.value=fieldValue;
+  			document.logoutForm.submit();
+			}
         </script>
-        <script type="text/javascript">
+<script type="text/javascript">
         
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', 'UA-23394980-1']);
@@ -67,90 +79,248 @@ require_once('admin/initvars.php');
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
           })();
         </script>
-
-        <title><?php
+<title><?php
 echo t2h($site_title);
 if ($title != '') {
     echo ' - ' . t2h($title);
 }
 ?></title>
-        <link rel="stylesheet" type="text/css" href="styles/toolkit.css" />
-        <?php if (isset($headExtra))
+	<link rel="stylesheet" type="text/css" href="styles/toolkit.css" />
+	<?php if (isset($headExtra))
             echo $headExtra; ?>
-    </head>
-
-    <body <?php if (isset($bodyExtra))
+	</head>
+	<body <?php if (isset($bodyExtra))
             echo $bodyExtra; ?>>
+            
 
-        <div class="loginpanel">
-            <?php
+  <div id="header">
+  <div class="loginpanel">
+			<?php
             // this is the login panel; the user can login and logout from this panel.
             if (isLoggedIn ()) {
-                echo "Welcome, <strong>{$user['first_name']} {$user['last_name']}</strong><br/>";
+                echo "Welcome, <strong>{$user['first_name']} {$user['last_name']}</strong>&nbsp;&nbsp;";
                 $userClass = getClassByUUID($uuid);
                 $class = getClassById($userClass['class_id']);
-                echo "You are in section: {$class['description']}<br/>";
-                echo 'Account type: ' . getUserType($uuid) . '<br/>';
-                echo '<a href="account.php">Manage account</a><br/>';
-                echo '<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
+                echo "Section: {$class['description']}&nbsp;&nbsp;";
+                /*echo 'Account type: ' . getUserType($uuid) . '<br/>';*/
+				getUserType($uuid);
+                echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
+				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
+					<form id="logoutForm" method="post" action="">
+  						<input type="hidden" name="logout" value="Logout">
+						<a href="javascript:;" onclick="submitForm(\'Logout\')">Log out</a>
+					</form>';*/
+					
+				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
+				<form name="logoutForm">
+						<input type="hidden" name="myHiddenField" value="Logout">
+						<a href="javascript:submitForm('Logout')">Log out</a>
+					</form>';*/
+					
+				/*echo '
+				<form id=/"logoutForm/" method=/"post/" action=/"/">
+  					<input type=/"hidden/" name=/"logout/" value=/"Logout/">
+				</form>
+				<a href=/"index.php/" onclick=/"submitForm.submit('Logout')/">';*/
+				
+				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
+				<form id="logoutForm" method="post" action="">
+  					<input type="hidden" name="logout" value="Logout">
+					<a href="javascript:submitForm(\'Logout\')">Log out</a>
+				</form>';*/
+				
+				/*<a href="index.php" onclick="logoutUser(\'Logout\')">Log out</a>';*/
+					  /*<a href="" onclick="submitForm()">Log out</a>';*/
+
             } else {
 
                 // if there was an attempted login and there is an error message, display it here.
                 if (isset($_POST['login']) && $err != '')
                     para($err, 'errorMessage');
+			}?>
+  </div><!--login panel-->	
+<div class="navBodyWrapper">		
+  <div id="navWrapper">
+  		<div id="navTop"></div><!--Gray Line-->
+  		<div class="navContainer"><a href="http://intel.gatech.edu/" target="_blank"><img src="../images/InTel_logo.jpg" width="264" border="0" height="114" /></a></div>
+  		<div class="navContainer"><img src="../images/header.jpg" width="264" height="69" /></div>
+  </div><!--navWrapper-->
+  <div id="bodyWrapper">
+			<div id="bodyTop"></div><!--Green line-->
+			<div id="bodyBanner"><img src="<?php echo($banner); ?>" width="600" height="153" /></div>
+			<div class="bodyContainer">
+				<div ALIGN="left" class="bodyTitle">
+					<?php echo($title); ?>
+				</div>
+			</div><!--BodyContainer-->
+</div><!--BodyWrapper-->
+</div><!--navBodyWrapper-->
+</div><!--header-->
+		
+  <!-- table-->
+ <?php
+            if (isAnonymous ()) {
             ?>
-                <form method="post" action="">
+<div id="loginWrapper">
+<!--table>
+  <tr>
+    <td>Register?&nbsp;No
+      <INPUT TYPE="radio" NAME="login" VALUE="no"  onclick="loginNo()"/>
+      &nbsp;&nbsp;Yes
+      <INPUT TYPE="radio" NAME="login" VALUE="yes" onclick="loginYes()"/></td>
+  </tr>
+  <tr id="login_form" style="display:none">
+  <td>
+ 	 <form method="post" action="">
+        <table>
+          <tr>
+            <td>Email Address: </td>
+            <td><input type=\"text\"  name=\"email\" /></td>
+          </tr>
+          <tr>
+            <td>Password: </td>
+            <td><input type="password"  name="password" /></td>
+          </tr>
+          <tr>
+        </table>
+        <p>
+          <input type="submit" name="login" value="Login" />
+          <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+      </form>
+      </td>
+      </tr>
+</table-->
+
+	<!--table id="loginWrapper">
+    <tr>
+      <td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a></td>
+    </tr>
+    <tr id="login_form" style="display:none">
+      <td><form method="post" action="">
+          <table>
+            <tr>
+              <td>Email Address: </td><td><input type=\"text\"  name=\"email\" /></td>
+            </tr>
+            <tr>
+              <td>Password: </td><td><input type="password"  name="password" /></td>
+            </tr>
+          </table>
+          <p>
+            <input type="submit" name="login" value="Login" />
+            <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+        </form>
+      </td>
+    </tr>
+  </table-->
+  <table>
+  	<tr>
+    	<td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a>
+        </td>
+    </tr>
+    <tr id="login_form" style="display:none">
+    	<td>
+  <form method="post" action="">
                     <table>
-                        <tr><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
+                        <tr ><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
                         <tr><td>Password: </td><td><input type="password"  name="password" /></td></tr>
                     </table>
                     <p><input type="submit" name="login" value="Login" /> <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
                 </form>
-            <?
+</td>
+    </tr>
+  </table>
+  <!--? was for end of if
+            }
+            ?-->
+</div><!--loginWrapper-->
+ <?php
             }
             ?>
-        </div>
 
-        <div id="header">
-            <a href="http://intel.gatech.edu"><img src="resources/logo.gif" alt = "InTEL" /></a><br />
-            <h1>Statics Toolkit</h1>
-        </div>
+<!--*************LOGIN***************-->
+            <!-- ******LOGO *******-->
+  <!--div id="navWrapper">
+  		<div id="navTop"></div>
+  		<div class="navContainer"><a href="index.php" target="_blank"><img src="../images/InTel_logo.jpg" width="264" border="0" height="114" /></a></div>
+  		<div class="navContainer"><img src="../images/header.jpg" width="264" height="69" /></div>
+  </div--><!--navWrapper-->
+  
+  <!--*************BANNER***************-->
+  <!--div id="bodyWrapper">
+			<div id="bodyTop"></div>
+			<div id="bodyBanner"><img src="<!--?php echo($banner); ?>" width="600" height="153" /></div-->
+			<!--div class="bodyContainer">
+				<span class="bodyTitle"-->
+					<!--?php echo($title); ?-->
+				<!--/span>
+			</div--><!--BodyContainer1-->
+<!--/div--><!--BodyWrapper-->
 
-        <?php
+<?php
             // primary navigation:
         ?>
-            <div id="compact_nav">
-            <?php
+<!-- nav -->
+<div id="compact_nav">
+  <?php
             if (isAnonymous ()) {
             ?>
-                <div class='nav_button'><a href="myAssignments.php">View Problems</a></div>
-            <?php
-            } elseif (isStudent ()) {
-            ?>
-                <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
-            <?php
-            } elseif (isInstructor ()) {
-            ?>
-                <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
-                <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
-                <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
-            <?php
-            } elseif (isAdmin ()) {
-            ?>
-                <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
-                <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
-                <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
-                <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
-                <div class='nav_button'><a href="manageAccounts.php">Manage Accounts</a></div>
-                <div class='nav_button'><a href="viewLoggerData.php">Logger Data</a></div>
-                <div class='nav_button'><a href="viewFeedback.php">View Feedback</a></div>
-            <?php
-            } // end user type switch
-            ?>
-            <div class='nav_button'><a href="help.php">Instructions</a></div>
-            <div class='nav_button'><a href="javascript:showFeedbackBox()">Give us feedback!</a></div>
-            <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Email Site Support</a></div>
-            <!--            </ul>-->
-        </div>
-        <div id="content">
-            <h2><?php echo t2h($title); ?></h2>
+<!--div id="loginWrapper"-->
+   <!--table id="loginWrapper">
+    <tr>
+      <td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a></td>
+    </tr>
+    <tr id="login_form" style="display:none">
+      <td><form method="post" action="">
+          <table>
+            <tr>
+              <td>Email Address: </td>
+              <td><input type=\"text\"  name=\"email\" /></td>
+            </tr>
+            <tr>
+              <td>Password: </td>
+              <td><input type="password"  name="password" /></td>
+            </tr>
+          </table>
+          <p>
+            <input type="submit" name="login" value="Login" />
+            <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+        </form></td>
+    </tr>
+  </table-->
+  <!--/div--><!--loginWrapper-->
+
+<!--*************LOGIN***************-->
+<!--/div--><!--header--> 
+ 
+  
+  <div class='nav_button'><a href="myAssignments.php">View Problems</a></div>
+  <?php
+    } elseif (isStudent ()) {
+  ?>
+	<div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
+  <?php
+    } elseif (isInstructor ()) {
+   ?>
+		<div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
+		<div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
+		<div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
+  <?php
+    } elseif (isAdmin ()) {
+    ?>
+  <div class='nav_button'><a href="viewSubmissions.php">View Submissions</a></div>
+  <div class='nav_button'><a href="myAssignments.php">My Assignments</a></div>
+  <div class='nav_button'><a href="manageAssignments.php">Manage Assignments</a></div>
+  <div class='nav_button'><a href="manageClasses.php">Manage Classes</a></div>
+  <div class='nav_button'><a href="manageAccounts.php">Manage Accounts</a></div>
+  <div class='nav_button'><a href="viewLoggerData.php">Logger Data</a></div>
+  <div class='nav_button'><a href="viewFeedback.php">View Feedback</a></div>
+  <?php
+    } // end user type switch
+   ?>
+  <div class='nav_button'><a href="help.php">Instructions</a></div>
+  <div class='nav_button'><a href="javascript:showFeedbackBox()">Give us feedback!</a></div>
+  <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Email Site Support</a></div>
+  <!--            </ul>-->
+</div>
+<div id="content">
+<h2><?php echo t2h($title); ?></h2>

@@ -10,10 +10,10 @@ require_once('model/mysql.php');
 
 $dbusername = 'idtweb';
 $dbpassword = 'gt00www';
-$dbname = 'intel_dev';
+$dbname = 'intel';
 $dbserver = 'localhost';
 
-$appletFolder = '../applet-dev';
+$appletFolder = '../applet-dev/';
 
 $db = connect($dbserver, $dbusername, $dbpassword, $dbname);
 
