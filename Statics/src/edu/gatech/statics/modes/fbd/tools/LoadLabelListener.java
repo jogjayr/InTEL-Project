@@ -17,10 +17,19 @@ public class LoadLabelListener implements LabelListener {
 
     private Load myLoad;
 
+    /**
+     * Constructor
+     * @param load
+     */
     public LoadLabelListener(Load load) {
         this.myLoad = load;
     }
 
+    /**
+     * Called when load is labeled. Creates and performs a labelLoadAction
+     * @param label
+     * @return Action performed successfully?
+     */
     public boolean onLabel(String label) {
         if (label.length() == 0) {
             return false;

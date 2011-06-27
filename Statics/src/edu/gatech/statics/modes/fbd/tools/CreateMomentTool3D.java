@@ -29,6 +29,10 @@ public class CreateMomentTool3D extends CreateLoadTool {
 
     
 
+    /**
+     * Creates a label selector
+     * @return
+     */
     @Override
     protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), moment, moment.getAnchor().getTranslation());
@@ -36,6 +40,11 @@ public class CreateMomentTool3D extends CreateLoadTool {
         return labelTool;
     }
 
+    /**
+     * Creates a moment at anchor
+     * @param anchor
+     * @return SingletonList with moment created
+     */
     @Override
     protected List<Load> createLoads(Point anchor) {
         moment = new Moment(anchor, new Vector3bd("0", "0", "1"), "M");
@@ -44,6 +53,9 @@ public class CreateMomentTool3D extends CreateLoadTool {
         return Collections.singletonList((Load) moment);
     }
 
+    /**
+     * Perfors setup
+     */
     @Override
      protected void onActivate() {
         super.onActivate();
@@ -51,6 +63,9 @@ public class CreateMomentTool3D extends CreateLoadTool {
         //System.out.println("***onActivate in 3DMoment");
     }
 
+    /**
+     * 
+     */
     @Override
     protected void onFinish() {
         super.onFinish();
@@ -59,13 +74,20 @@ public class CreateMomentTool3D extends CreateLoadTool {
         moment.addListener(momentListener);
     }
 
+    /**
+     * 
+     */
     protected void enableOrientationManipulator() {
 
         orientationHandler = new OrientationHandler(getDiagram(), this, moment);
 
     }
 
-        @Override
+    /**
+     * Shows label selector tool when the orientationHandler is released
+     * @param time
+     */
+    @Override
     public void update(float time) {
         super.update(time);
 
@@ -78,6 +100,9 @@ public class CreateMomentTool3D extends CreateLoadTool {
         }
     }
 
+    /**
+     * 
+     */
     @Override
     public void onMouseDown() {
         if (getDragManipulator() != null) {

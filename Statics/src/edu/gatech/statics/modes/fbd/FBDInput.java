@@ -23,6 +23,10 @@ public class FBDInput extends InputHandler {
 
     private FreeBodyDiagram diagram;
 
+    /**
+     * Constructor
+     * @param diagram For which inputs are expected
+     */
     public FBDInput(FreeBodyDiagram diagram) {
         this.diagram = diagram;
 
@@ -38,6 +42,9 @@ public class FBDInput extends InputHandler {
         addAction(action, "backspace", KeyInput.KEY_BACK, false);
     }
 
+    /**
+     * Handles cancellation of orientation change. Sets orientation handler to null
+     */
     public void cancelOrientationHandler() {
         if (orientationHandler != null && orientationHandler.isEnabled()) {
             orientationHandler.stop();
@@ -45,6 +52,9 @@ public class FBDInput extends InputHandler {
         }
     }
 
+    /**
+     * Deletes a node
+     */
     private void performDelete() {
         if (diagram.isSolved()) {
             return;
@@ -57,6 +67,10 @@ public class FBDInput extends InputHandler {
         }
     }
 
+    /**
+     * Handles selection of a load
+     * @param selection selected load
+     */
     void onSelect(Load selection) {
         if (diagram.isSolved()) {
             return;
@@ -91,6 +105,11 @@ public class FBDInput extends InputHandler {
     // TODO: this is not a good means for handling releasing the orientation 
     // manipulator. We need something that is slightly more responsive.
 
+    /**
+     * we keep track of the time between mouse down and up, and if
+     * it is brief enough, we do not deselect the force we are rotating
+     * @param time
+     */
     @Override
     public void update(float time) {
         super.update(time);
@@ -98,8 +117,6 @@ public class FBDInput extends InputHandler {
         if (orientationHandler != null && orientationHandler.isEnabled()) {
             if (orientationHandler.release()) {
 
-                // we keep track of the time between mouse down and up, and if
-                // it is brief enough, we do not deselect the force we are rotating
                 if (System.currentTimeMillis() - orientationPress > clickThreshold) {
                     diagram.onClick(null);
                 }

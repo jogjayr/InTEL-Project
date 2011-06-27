@@ -43,8 +43,11 @@ public class OrientationHandler {
     private boolean firstClick; // set to true if the user did not position the force before releasing the mouse, if the user simply released the mouse afterward
     private boolean secondClick; // set to true when the mouse has been clicked a second time.
 
-    /*
-     * An orientation handler for allowing orientation of moments. Added by Jayraj 11/2/2010
+    /**
+     * An orientation handler for allowing orientation of moments.
+     * @param diagram
+     * @param inputHandler
+     * @param moment
      */
 
     public OrientationHandler(FreeBodyDiagram diagram, InputHandler inputHandler, Moment moment) {

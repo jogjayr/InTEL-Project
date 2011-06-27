@@ -29,10 +29,6 @@ import com.jmex.bui.layout.BorderLayout;
 import edu.gatech.statics.application.StaticsApplication;
 import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
-
-
-
-
 import edu.gatech.statics.modes.fbd.actions.RemoveLoad;
 import edu.gatech.statics.objects.Load;
 import edu.gatech.statics.ui.components.ChromaButton;
@@ -58,11 +54,20 @@ public class LabelSelector /*extends SelectionTool*/ {
     private FreeBodyDiagram diagram;
     private BPopupWindow popup;
 
+    /**
+     * 
+     * @param advice
+     */
     public void setAdvice(String advice) {
         this.advice = advice;
     }
 
-    /** Creates a new instance of LabelSelector */
+    /**
+     * Creates a new instance of LabelSelector
+     * @param fbd
+     * @param force
+     * @param displayPoint
+     */
     public LabelSelector(FreeBodyDiagram fbd, Load force, Vector3f displayPoint) {
         diagram = fbd;
         this.load = force;
@@ -71,6 +76,10 @@ public class LabelSelector /*extends SelectionTool*/ {
         //super(world, VectorObject.class);
     }
 
+    /**
+     * Set text as hint for LabelSelector
+     * @param text
+     */
     public void setHintText(String text) {
         hintText = text;
     }
@@ -78,15 +87,26 @@ public class LabelSelector /*extends SelectionTool*/ {
 //    public void setUnits(String units) {
 //        this.units = units;
 //    }
+    
+    /**
+     * 
+     * @param isCreating
+     */
     public void setIsCreating(boolean isCreating) {
         this.isCreating = isCreating;
     }
 
+    /**
+     * Dismiss label popup
+     */
     public void dismiss() {
         popup.dismiss();
         StaticsApplication.getApp().resetUIFeedback();
     }
 
+    /**
+     * Create modal text field window for labeling the force or moment
+     */
     public void popup() {
         StaticsApplication.getApp().setUIFeedback(advice);
 
@@ -179,12 +199,20 @@ public class LabelSelector /*extends SelectionTool*/ {
         private int mouseX;
         private int mouseY;
 
+        /**
+         * Handles mouse press event
+         * @param event
+         */
         public void mousePressed(MouseEvent event) {
             dragging = true;
             mouseX = event.getX();
             mouseY = event.getY();
         }
 
+        /**
+         * Handles mouse release event
+         * @param event
+         */
         public void mouseReleased(MouseEvent event) {
             dragging = false;
         }
@@ -201,6 +229,10 @@ public class LabelSelector /*extends SelectionTool*/ {
             }
         }
 
+        /**
+         * Handles mouse drag event, makes sure label window can't be dragged off screen
+         * @param event
+         */
         public void mouseDragged(MouseEvent event) {
 
             if (!dragging) {

@@ -32,6 +32,10 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
     //private boolean labelingEnabled = true;
     private Load myLoad;
 
+    /**
+     * Constructor
+     * @param vectorObject
+     */
     public LabelManipulator(Load vectorObject) {
         myLoad = vectorObject;
 
@@ -47,6 +51,9 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
         }
     }
 
+    /**
+     * 
+     */
     protected void performSingleClick() {
         if (InterfaceRoot.getInstance().hasMouse()) {
             return;
@@ -55,6 +62,9 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
         StaticsApplication.getApp().getCurrentDiagram().onClick(myLoad);
     }
 
+    /**
+     * 
+     */
     protected void performDoubleClick() {
         if (InterfaceRoot.getInstance().hasMouse()) {
             return;
@@ -71,6 +81,9 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
 
     }
 
+    /**
+     * 
+     */
     protected class LabelClickListener implements MouseListener {
 
         protected static final int clickThreshold = 200;
@@ -89,6 +102,10 @@ public class LabelManipulator /*extends Manipulator<VectorObject>*/ {
             lastPress = event.getWhen();
         }
 
+        /**
+         * Called when mouse is released. Used for detection of double clicks
+         * @param event
+         */
         public void mouseReleased(com.jmex.bui.event.MouseEvent event) {
             if (event.getWhen() - lastPress <= clickThreshold) {
                 if (hasClicked && event.getWhen() - lastClick <= doubleClickThreshold) {

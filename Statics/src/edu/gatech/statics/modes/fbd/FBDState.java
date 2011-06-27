@@ -12,7 +12,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * This class describes the state of the FBD, and allows it to be modified.
+ * Things like whether it's solved can be found out. Loads can be added or removed
+ * 
  * @author Calvin Ashmore
  */
 final public class FBDState implements DiagramState<FreeBodyDiagram> {
@@ -23,6 +25,10 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
      */
     final private List<AnchoredVector> addedLoads;// = new ArrayList<AnchoredVector>();
 
+    /**
+     *
+     * @return Is solved?
+     */
     public boolean isSolved() {
         return solved;
     }
@@ -31,6 +37,10 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         return addedLoads;
     }
 
+    /**
+     * constructor
+     * @param builder
+     */
     private FBDState(Builder builder) {
         //this.addedLoads = Collections.unmodifiableList(builder.addedLoads);
         List<AnchoredVector> _addedLoads = new ArrayList<AnchoredVector>();
@@ -42,11 +52,18 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         this.solved = builder.solved;
     }
 
+    /**
+     * Class Factory
+     */
     public static class Builder implements edu.gatech.statics.util.Builder<FBDState> {
 
         private List<AnchoredVector> addedLoads = new ArrayList<AnchoredVector>();
         private boolean solved;
 
+        /**
+         * Constructor
+         * @param state FBDState to create
+         */
         public Builder(FBDState state) {
             // make mutable copies for the builder
             this.solved = state.solved;
@@ -55,18 +72,33 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             }
         }
 
+        /**
+         * Add a load to the FBD
+         * @param newLoad Load to add
+         */
         public void addLoad(AnchoredVector newLoad) {
             if (!addedLoads.contains(newLoad)) {
                 addedLoads.add(newLoad);
             }
         }
 
+        /**
+         * Change the orientation of an existing load
+         * @param oldLoad
+         * @param newLoad Same load, but with new orientation (ideally. In reality, this function swaps out oldLoad with newLoad)
+         */
         public void changeOrientation(AnchoredVector oldLoad, AnchoredVector newLoad) {
             if (addedLoads.contains(oldLoad)) {
                 addedLoads.remove(oldLoad);
                 addedLoads.add(newLoad);
             }
         }
+
+        /**
+         * Set label symbol for load
+         * @param load
+         * @param symbol
+         */
 
         public void setLabel(AnchoredVector load, String symbol) {
             // occasionally it is possible that the load might get moved before the label is set,
@@ -80,6 +112,11 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             }
         }
 
+        /**
+         * Set label value for load
+         * @param load
+         * @param value
+         */
         public void setLabel(AnchoredVector load, BigDecimal value) {
             if (addedLoads.contains(load)) {
                 load = addedLoads.get(addedLoads.indexOf(load));
@@ -89,16 +126,28 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
             }
         }
 
+        /**
+         * remove oldLoad (if it has been added)
+         * @param oldLoad
+         */
         public void removeLoad(AnchoredVector oldLoad) {
             if (addedLoads.contains(oldLoad)) {
                 addedLoads.remove(oldLoad);
             }
         }
 
+        /**
+         *
+         * @return List of loads added to FBD
+         */
         public List<AnchoredVector> getAddedLoads() {
             return addedLoads;
         }
 
+        /**
+         * Set added loads to addedLoads
+         * @param addedLoads
+         */
         public void setAddedLoads(List<AnchoredVector> addedLoads) {
             this.addedLoads.clear();
             this.addedLoads.addAll(addedLoads);
@@ -116,6 +165,10 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         public Builder() {
         }
 
+        /**
+         * Object factory for making FBDState objects
+         * @return FBDState object
+         */
         public FBDState build() {
             return new FBDState(this);
         }
@@ -135,6 +188,11 @@ final public class FBDState implements DiagramState<FreeBodyDiagram> {
         return this;
     }
 
+    /**
+     * Compares type, solved-ness and added loads to establish equality
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

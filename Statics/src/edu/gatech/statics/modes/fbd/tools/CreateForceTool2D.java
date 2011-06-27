@@ -33,6 +33,11 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         super(diagram);
     }
 
+    /**
+     * Creates force at anchor
+     * @param anchor
+     * @return Singleton list with force created
+     */
     protected List<Load> createLoads(Point anchor) {
         force = new Force(anchor, new Vector3bd("1.5", "1", "0").normalize(), "F");
         force.createDefaultSchematicRepresentation();
@@ -40,11 +45,17 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         return Collections.singletonList((Load) force);
     }
 
+    /**
+     *
+     */
     @Override
     protected void onActivate() {
         super.onActivate();
         StaticsApplication.getApp().setUIFeedbackKey("fbd_tools_createForce1");
     }
+    /**
+     * 
+     */
     @Override
     protected void onFinish() {
         super.onFinish();
@@ -52,6 +63,10 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         forceListener.valueChanged(force.getVectorValue());
         force.addListener(forceListener);
     }
+    /**
+     * 
+     * @return
+     */
     @Override
     protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), force, force.getAnchor().getTranslation());
@@ -59,6 +74,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         return labelTool;
     }
 
+    /**
+     * Creats an OrientationHandler
+     */
     protected void enableOrientationManipulator() {
 
         orientationHandler = new OrientationHandler(getDiagram(), this, force);
@@ -73,6 +91,10 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
     // NOTE: 
     // TODO: this is not a good means for handling releasing the orientation 
     // manipulator. We need something that is slightly more responsive.
+    /**
+     * If orientationHandler.release(), label selector is shown
+     * @param time
+     */
     @Override
     public void update(float time) {
         super.update(time);
@@ -86,6 +108,9 @@ public class CreateForceTool2D extends CreateLoadTool /*implements ClickListener
         }
     }
 
+    /**
+     * Handles mouse down events, calls enableOrientationManipulator
+     */
     @Override
     public void onMouseDown() {
         if (getDragManipulator() != null) {

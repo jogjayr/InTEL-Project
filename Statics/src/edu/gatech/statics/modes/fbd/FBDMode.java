@@ -19,6 +19,11 @@ public class FBDMode extends Mode {
 
     public static final FBDMode instance = new FBDMode();
 
+    /**
+     * 
+     * @param key DiagramKey for this diagram
+     * @return Diagram belonging to this FBD
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         //BodySubset bodies = (BodySubset) key;
@@ -29,6 +34,10 @@ public class FBDMode extends Mode {
         }
     }
 
+    /**
+     * Creates a DiagramType with name "fbd" and priority 200
+     * @return DiagramType that was created
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("fbd", 200);

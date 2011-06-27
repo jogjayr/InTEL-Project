@@ -25,11 +25,20 @@ public class VectorOverlapDetector implements VectorListener {
     private VectorObject myVector;
     private FreeBodyDiagram world;
 
+    /**
+     * Constructor
+     * @param world
+     * @param vector
+     */
     public VectorOverlapDetector(FreeBodyDiagram world, VectorObject vector) {
         this.myVector = vector;
         this.world = world;
     }
 
+    /**
+     * Called when a vector value changes
+     * @param oldValue
+     */
     public void valueChanged(Vector3bd oldValue) {
 
         List<VectorObject> nearVectors = getVectors();
@@ -37,6 +46,10 @@ public class VectorOverlapDetector implements VectorListener {
         updateVectors(nearVectors, myVector.getVectorValue());
     }
 
+    /**
+     * 
+     * @return
+     */
     private List<VectorObject> getVectors() {
         List<VectorObject> r = new ArrayList<VectorObject>();
 
@@ -56,6 +69,12 @@ public class VectorOverlapDetector implements VectorListener {
         return r;
     }
 
+    /**
+     * Checks if direction is equal to the direction of any nearVectors,
+     * if so, adds an offset to vector arrow
+     * @param nearVectors
+     * @param direction
+     */
     private void updateVectors(List<VectorObject> nearVectors, Vector3bd direction) {
 
         // sort vectors pointing towards oldValue

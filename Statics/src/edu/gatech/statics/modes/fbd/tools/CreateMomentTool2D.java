@@ -30,6 +30,10 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
         super(world);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected LabelSelector createLabelSelector() {
         LabelSelector labelTool = new LabelSelector(getDiagram(), moment, moment.getAnchor().getTranslation());
@@ -37,12 +41,20 @@ public class CreateMomentTool2D extends CreateLoadTool { //implements ClickListe
         return labelTool;
     }
 
+    /**
+     * 
+     */
     @Override
     protected void onActivate() {
         super.onActivate();
         StaticsApplication.getApp().setUIFeedbackKey("fbd_tools_createMoment");
     }
 
+    /**
+     * Creates 2D moment at anchor
+     * @param anchor
+     * @return Singleton list containing moment created
+     */
     @Override
     protected List<Load> createLoads(Point anchor) {
 

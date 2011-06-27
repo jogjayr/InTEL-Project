@@ -143,6 +143,18 @@ public class FBDChecker {
         }
     }
 
+    /**
+     * Logs info from connectorResult, after checking the type of result,
+     * connector, userAnchoredVectorsAtConnector and body. For example,
+     * if connectorResult was "inappropriateDirection", it will spit out the
+     * expected vectors. If it was "missingSomething" then it will output the missing vector
+     * and so on
+     * @param connectorResult
+     * @param connector
+     * @param userAnchoredVectorsAtConnector
+     * @param body
+     * @return
+     */
     private boolean reportConnectorResult(ConnectorCheckResult connectorResult, Connector connector, List<AnchoredVector> userAnchoredVectorsAtConnector, Body body) {
         switch (connectorResult) {
             case passed:

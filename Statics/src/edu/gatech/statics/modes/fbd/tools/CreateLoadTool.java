@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * An abstract class that is extended for describing tools that create different kinds of
+ * loads: forces and 2D and 3D moments
  * @author Calvin Ashmore
  */
 public abstract class CreateLoadTool extends Tool implements MousePressListener {
@@ -60,6 +61,9 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
 
     protected abstract LabelSelector createLabelSelector();
 
+    /**
+     * 
+     */
     protected void showLabelSelector() {
         labelTool = createLabelSelector();
         //labelTool.setUnits(Unit.force.getSuffix());
@@ -68,6 +72,10 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         labelTool.popup();
     }
 
+    /**
+     * Constructor
+     * @param diagram
+     */
     public CreateLoadTool(FreeBodyDiagram diagram) {
         this.diagram = diagram;
         loadAnchor = new Point("default", new Vector3bd());
@@ -93,6 +101,9 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
      */
     abstract protected List<Load> createLoads(Point anchor);
 
+    /**
+     * 
+     */
     public void onMouseDown() {
         if (getDragManipulator() != null) {
             if (releaseDragManipulator()) {
@@ -110,6 +121,9 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
         enableDragManipulator();
     }
 
+    /**
+     * 
+     */
     @Override
     protected void onCancel() {
         for (Load load : loads) {
@@ -131,6 +145,9 @@ public abstract class CreateLoadTool extends Tool implements MousePressListener 
     protected void onFinish() {
     }
 
+    /**
+     * 
+     */
     protected void enableDragManipulator() {
 
         List<Point> pointList = new ArrayList();
