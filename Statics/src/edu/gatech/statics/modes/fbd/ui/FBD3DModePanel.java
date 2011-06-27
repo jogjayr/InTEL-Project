@@ -18,8 +18,9 @@ import edu.gatech.statics.modes.fbd.FBDMode;
 public class FBD3DModePanel extends FBDModePanel {
 
    
-
-
+    /**
+     * Constructor. Only a super() call
+     */
     public FBD3DModePanel() {
         super(); 
         //tools = makeTools();//new BContainer(GroupLayout.makeHoriz(GroupLayout.CENTER));

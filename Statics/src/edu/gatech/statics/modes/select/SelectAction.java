@@ -19,17 +19,29 @@ public class SelectAction implements DiagramAction<SelectState> {
     /**
      * Creates a new SelectAction that represents the user having clicked on
      * the given object. The action will deselect everything if the given object
-     * is null, and otherwise it will toggle selection of the given object.
+     * is null* Creates a SelectAction for use in this diagram.
+     * Subclasses of SelectDiagram that want to do interesting things with
+     * user selection should override this and supply their own version of
+     * SelectAction., and otherwise it will toggle selection of the given object.
      * @param clicked
      */
     public SelectAction(SimulationObject clicked) {
         this.clicked = clicked;
     }
 
+    /**
+     * 
+     * @return
+     */
     protected SimulationObject getClicked() {
         return clicked;
     }
 
+    /**
+     * performs a SelectState action
+     * @param oldState
+     * @return
+     */
     public SelectState performAction(SelectState oldState) {
         Builder builder = oldState.getBuilder();
 

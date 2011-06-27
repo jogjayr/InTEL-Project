@@ -32,19 +32,33 @@ public class SelectDiagram extends Diagram<SelectState> {
         return "Select";
     }
 
+    /**
+     * The description text of this diagram
+     * @return "Select a body to continue"
+     */
     @Override
     public String getDescriptionText() {
         return "Select a body to continue";
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         return getSchematic().allObjects();
     }
 
+    /**
+     * 
+     */
     public SelectDiagram() {
         super(null);
     }
+    /**
+     * 
+     */
     private static final SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -62,6 +76,9 @@ public class SelectDiagram extends Diagram<SelectState> {
         super.deactivate();
     }
 
+    /**
+     * Resets to initiail state, sets currentHighlight to null, and simulates an initial empty click
+     */
     @Override
     public void activate() {
         super.activate();
@@ -79,6 +96,10 @@ public class SelectDiagram extends Diagram<SelectState> {
     }
     private SimulationObject currentHighlight;
 
+    /**
+     * Higlights obj on mouse hover
+     * @param obj
+     */
     @Override
     public void onHover(SimulationObject obj) {
 
@@ -114,10 +135,21 @@ public class SelectDiagram extends Diagram<SelectState> {
         return new SelectAction(obj);
     }
 
+    /**
+     * Creates a SelectAction for use in this diagram.
+     * Subclasses of SelectDiagram that want to do interesting things with
+     * user selection should override this and supply their own version of
+     * SelectAction.
+     * @param objects
+     * @return
+     */
     protected SelectAllAction createSelectAllAction(List<SimulationObject> objects) {
         return new SelectAllAction(objects);
     }
 
+    /**
+     * Selects all bodies in diagram
+     */
     public void selectAll() {
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
         for (Body body : allBodies()) {
@@ -131,6 +163,10 @@ public class SelectDiagram extends Diagram<SelectState> {
         performAction(selectAll);
     }
 
+    /**
+     * Selects object that was clicked
+     * @param clicked
+     */
     @Override
     public void onClick(SimulationObject clicked) {
 
@@ -156,6 +192,10 @@ public class SelectDiagram extends Diagram<SelectState> {
         //modePanel.updateSelection();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Mode getMode() {
         return SelectMode.instance;
@@ -166,6 +206,9 @@ public class SelectDiagram extends Diagram<SelectState> {
         return new SelectState.Builder().build();
     }
 
+    /**
+     * 
+     */
     @Override
     public void completed() {
 

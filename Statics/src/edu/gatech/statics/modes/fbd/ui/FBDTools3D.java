@@ -24,10 +24,23 @@ import edu.gatech.statics.ui.ButtonUtil;
  */
 public class FBDTools3D extends FBDTools {
 
+    /**
+     * An "Add Force" button
+     */
     private BButton addForce;
+    /**
+     * An "Add Moment" button
+     */
     private BButton addMoment;
-
+    /**
+     * Tool currently being used
+     */
     private Tool currentTool;
+
+    /**
+     * Constructor
+     * @param modePanel which contains the tools
+     */
 
     public FBDTools3D(FBD3DModePanel modePanel) {
         super(modePanel);
@@ -45,8 +58,15 @@ public class FBDTools3D extends FBDTools {
 
     
 
+    /**
+     * 
+     */
     private class ToolListener implements ActionListener {
 
+        /**
+         * Called when action is performed with tool, such as force or moment creation
+         * @param event
+         */
         public void actionPerformed(ActionEvent event) {
 
             FreeBodyDiagram diagram = (FreeBodyDiagram) getModePanel().getDiagram();

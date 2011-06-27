@@ -16,13 +16,17 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.ui.components.ModalPopupWindow;
 
 /**
- *
+ * This popup is shown when user clicks on the "Reset" button for the diagram, asking them to confirm
  * @author Calvin Ashmore
  */
 public class ResetPopup extends ModalPopupWindow {
 
     private FreeBodyDiagram diagram;
 
+    /**
+     * Constructor
+     * @param diagram
+     */
     public ResetPopup(FreeBodyDiagram diagram) {
         super(new BorderLayout());
         this.diagram = diagram;

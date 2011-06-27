@@ -27,10 +27,19 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
     public DiagramType getDiagramType() {
         return FBDMode.instance.getDiagramType();
     }
+    /**
+     * FBD2DTools
+     */
     protected FBDTools tools;
+    /**
+     * Contains checkButton and resetButton
+     */
     protected BContainer checkContainer;
     protected BButton checkButton,  resetButton;
 
+    /**
+     * Constructor
+     */
     public FBDModePanel() {
         super();
 
@@ -66,6 +75,9 @@ public class FBDModePanel extends ApplicationModePanel<FreeBodyDiagram> {
 //        return new ApplicationTab("Add Loads");
 //    }
 
+    /**
+     * Activates the mode panel after checking solved-ness of diagram
+     */
     @Override
     public void activate() {
         super.activate();

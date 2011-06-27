@@ -38,6 +38,10 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         return false;
     }
 
+    /**
+     * Constructor
+     * @param builder
+     */
     private SelectState(Builder builder) {
         this.currentlySelected = Collections.unmodifiableList(builder.currentlySelected);
     }
@@ -49,10 +53,19 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         public Builder() {
         }
 
+        /**
+         * Constructor
+         * @param state 
+         */
         public Builder(SelectState state) {
             currentlySelected.addAll(state.getCurrentlySelected());
         }
 
+        /**
+         * If obj selected, removes it, else adds it
+         * @param obj
+         * @return
+         */
         public boolean toggle(SimulationObject obj) {
             if (currentlySelected.contains(obj)) {
                 return currentlySelected.remove(obj);
@@ -65,12 +78,20 @@ public final class SelectState implements DiagramState<SelectDiagram> {
             currentlySelected.clear();
         }
 
+        /**
+         * 
+         * @param currentlySelected
+         */
         public void setCurrentlySelected(List<SimulationObject> currentlySelected) {
             //this.currentlySelected = currentlySelected;
             this.currentlySelected.clear();
             this.currentlySelected.addAll(currentlySelected);
         }
 
+        /**
+         * 
+         * @return
+         */
         public List<SimulationObject> getCurrentlySelected() {
             return currentlySelected;
         }
@@ -92,6 +113,11 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         return new Builder().build();
     }
 
+    /**
+     * Compares currentlySelected
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -107,6 +133,10 @@ public final class SelectState implements DiagramState<SelectDiagram> {
         return true;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;

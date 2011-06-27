@@ -25,6 +25,10 @@ public class FBDTools2D extends FBDTools {
 
     private Tool currentTool;
 
+    /**
+     * Constructor
+     * @param modePanel
+     */
     public FBDTools2D(FBDModePanel modePanel) {
         super(modePanel);
         ToolListener listener = new ToolListener();
@@ -41,6 +45,10 @@ public class FBDTools2D extends FBDTools {
 
     private class ToolListener implements ActionListener {
 
+        /**
+         * Called when action is performed, such as force or moment creation
+         * @param event
+         */
         public void actionPerformed(ActionEvent event) {
 
             FreeBodyDiagram diagram = (FreeBodyDiagram) getModePanel().getDiagram();

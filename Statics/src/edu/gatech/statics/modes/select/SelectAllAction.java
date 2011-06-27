@@ -17,10 +17,19 @@ public class SelectAllAction implements DiagramAction<SelectState> {
 
     private List<SimulationObject> objects;
 
+    /**
+     * Constructor
+     * @param objects
+     */
     public SelectAllAction(List<SimulationObject> objects) {
         this.objects = objects;
     }
 
+    /**
+     * 
+     * @param oldState
+     * @return
+     */
     public SelectState performAction(SelectState oldState) {
         Builder builder = oldState.getBuilder();
         builder.setCurrentlySelected(objects);
