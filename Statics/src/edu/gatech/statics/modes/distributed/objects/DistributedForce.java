@@ -16,7 +16,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
- *
+ * DistributedForce holds the concept of a distributed force: the end points, magnitude
+ * and shape of the force. This is distinct from DistributedForceObject, which is the
+ * physical representation of a DistributedForce
  * @author Calvin Ashmore
  */
 abstract public class DistributedForce implements DiagramKey {
