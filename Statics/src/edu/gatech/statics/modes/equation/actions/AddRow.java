@@ -16,12 +16,24 @@ import edu.gatech.statics.modes.equation.worksheet.EquationMathState;
  */
 public class AddRow implements DiagramAction<EquationState> {
 
+    /**
+     * 
+     */
     private EquationMathState mathState;
 
+    /**
+     * Constructor
+     * @param mathState 
+     */
     public AddRow(EquationMathState mathState) {
         this.mathState = mathState;
     }
 
+    /**
+     * Performs an Add Row action 
+     * @param oldState
+     * @return new EquationState, after adding a row
+     */
     public EquationState performAction(EquationState oldState) {
         Builder builder = oldState.getBuilder();
         builder.putEquationState(mathState);

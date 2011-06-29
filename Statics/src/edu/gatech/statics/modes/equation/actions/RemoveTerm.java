@@ -17,14 +17,30 @@ import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
  */
 public class RemoveTerm implements DiagramAction<EquationState> {
 
+    /**
+     * Name of equation from which term is to be removed
+     */
     final private String equationName;
+    /**
+     * Load corresponding to the term to be removed
+     */
     final private AnchoredVector load;
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load 
+     */
     public RemoveTerm(String equationName, AnchoredVector load) {
         this.equationName = equationName;
         this.load = load;
     }
 
+    /**
+     * Performs a RemoveTerm action
+     * @param oldState
+     * @return new EquationState, after removing term
+     */
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);

@@ -17,10 +17,25 @@ import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
  */
 public class ChangeTerm implements DiagramAction<EquationState> {
 
+    /**
+     * Name of equation whose term is to be changed
+     */
     final private String equationName;
+    /**
+     * Load corresponding to the term to be changed
+     */
     final private AnchoredVector load;
+    /**
+     * New coefficient of the term
+     */
     final private String coefficient;
 //    final private AnchoredVector momentArm;
+    /**
+     * Constructor
+     * @param equationName
+     * @param load
+     * @param newCoefficient 
+     */
     public ChangeTerm(String equationName, AnchoredVector load, String newCoefficient) {
         this.equationName = equationName;
         this.load = load;
@@ -35,10 +50,20 @@ public class ChangeTerm implements DiagramAction<EquationState> {
 //        this.coefficient = null;
 //    }
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load 
+     */
     public ChangeTerm(String equationName, AnchoredVector load) {
         this(equationName, load, "");
     }
 
+    /**
+     * Performs a change term action
+     * @param oldState Current EquationState
+     * @return new EquationState, after changing term
+     */
     public EquationState performAction(EquationState oldState) {
         // this operates identically to AddTerm, but no reason to avoid it, really
         EquationState.Builder builder = new EquationState.Builder(oldState);

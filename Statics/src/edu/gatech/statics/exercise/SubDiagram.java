@@ -17,11 +17,18 @@ abstract public class SubDiagram<StateType extends DiagramState> extends Diagram
     //private Diagram<?> currentDiagram = StaticsApplication.getApp().getCurrentDiagram();
     private List<Body> currentDiagram = Exercise.getExercise().getSchematic().allBodies();
     private int totalBodies;
-
+    /**
+     * 
+     * @return BodySubset in the SubDiagram
+     */
     public BodySubset getBodySubset() {
         return (BodySubset) getKey();
     }
 
+    /**
+     * Constructor
+     * @param bodies 
+     */
     public SubDiagram(BodySubset bodies) {
         super(bodies);
 

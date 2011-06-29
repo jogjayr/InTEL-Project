@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * As the name implies, a body subset is a subset of the bodies in a problem. 
+ * BodySubset is used in the equation mode. TODO More explanation
  * @author ashmore
  */
 public class BodySubset implements DiagramKey {
@@ -24,7 +25,7 @@ public class BodySubset implements DiagramKey {
     private String specialName;
 
     /**
-     * 
+     * Constructor
      * @param bodies
      */
     public BodySubset(Body... bodies) {
@@ -32,7 +33,7 @@ public class BodySubset implements DiagramKey {
     }
 
     /**
-     * 
+     * Constructor
      * @param bodies
      */
     public BodySubset(Collection<Body> bodies) {
@@ -67,9 +68,9 @@ public class BodySubset implements DiagramKey {
     }
 
     /**
-     * 
+     * Checks for equality with obj. Compares bodies of both this and obj
      * @param obj
-     * @return
+     * @return Is equal to obj?
      */
     @Override
     public boolean equals(Object obj) {
@@ -103,10 +104,9 @@ public class BodySubset implements DiagramKey {
      * This method returns a nicely formatted version of the bodies within the subset.
      * It will return a listing that is more legible in plain English. The format
      * depends on the number of bodies in the subset.
-     * For one body, it will return the body name,
+     * @return For one body, it will return the body name,
      * For two bodies, it will return "A and B" where A and B are the names of the bodies.
      * For three or more, it will return something like, "A, B, C, and D".
-     * @return
      */
     public String toStringPretty() {
 

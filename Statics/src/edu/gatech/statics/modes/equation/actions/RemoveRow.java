@@ -15,12 +15,24 @@ import edu.gatech.statics.modes.equation.EquationState.Builder;
  */
 public class RemoveRow implements DiagramAction<EquationState> {
 
+    /**
+     * Name of row to be removed
+     */
     private String rowName;
 
+    /**
+     * Constructor
+     * @param rowName 
+     */
     public RemoveRow(String rowName) {
         this.rowName = rowName;
     }
 
+    /**
+     * Performs a Remove Row action
+     * @param oldState
+     * @return new EquationState after removing row
+     */
     public EquationState performAction(EquationState oldState) {
         Builder builder = oldState.getBuilder();
         builder.getEquationStates().remove(rowName);

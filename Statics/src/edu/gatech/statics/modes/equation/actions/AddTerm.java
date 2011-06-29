@@ -23,12 +23,27 @@ import java.util.Map;
  */
 public class AddTerm implements DiagramAction<EquationState> {
 
+    /**
+     * Name of equation to which term is to be added
+     */
     final private String equationName;
+    /**
+     * Load of term to be added
+     */
     final private AnchoredVector load;
+    /**
+     * Coefficient of term to be added
+     */
     final private String coefficient;
 //    private AnchoredVector momentArm; //This is not final because its value needs to be set
 //                                        //in performAction, where the EquationMathState is passed
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load
+     * @param coefficient 
+     */
     public AddTerm(String equationName, AnchoredVector load, String coefficient) {
         this.equationName = equationName;
         this.load = load;
@@ -44,10 +59,20 @@ public class AddTerm implements DiagramAction<EquationState> {
 //        this.coefficient = "";
 //    }
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load 
+     */
     public AddTerm(String equationName, AnchoredVector load) {
         this(equationName, load, "");
     }
 
+    /**
+     * Performs an AddTerm action
+     * @param oldState current EquationState
+     * @return new EquationState after adding term
+     */
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);

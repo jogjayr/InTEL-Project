@@ -12,20 +12,62 @@ package edu.gatech.statics.exercise;
  */
 public class DisplayConstants {
 
+    /**
+     * 
+     */
     private static DisplayConstants instance;
     //private float jointSize = 0.2f; // use pointSize instead
+    /**
+     * 
+     */
     private float measurementBarSize = 0.1f;
+    /**
+     * 
+     */
     private float momentLabelDistance = 0f;
+    /**
+     * 
+     */
     private float forceLabelDistance = 1.15f;
+    /**
+     * 
+     */
     private float cylinderRadius = 0.2f;
+    /**
+     * Size of force representation
+     */
     private float forceSize = 0.2f;
+    /**
+     * 
+     */    
     private float pointSize = 0.2f;
+    /**
+     * 
+     */
     private float momentSize = 0.2f;
+    /**
+     * 
+     */
     private float distributedLabelMultiplier = 5f;
+    /**
+     * Size of arrows denoting distributed force
+     */
     private float distributedArrowSize = 1f;
+    /**
+     * Radius of circle about moment point
+     */
     private float momentCircleRadius = 2f;
+    /**
+     * 
+     */
     private float angleLabelExtra = 1f;
+    /**
+     * Show bounding volumes of objects
+     */
     private boolean showBoundingVolumes = false;
+    /**
+     * 
+     */
     private boolean showNormals = false;
 
     public static DisplayConstants getInstance() {

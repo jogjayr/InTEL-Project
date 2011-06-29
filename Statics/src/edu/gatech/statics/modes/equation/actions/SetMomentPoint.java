@@ -22,14 +22,30 @@ import java.util.Collection;
  */
 public class SetMomentPoint implements DiagramAction<EquationState> {
 
+    /**
+     * Moment point of equation
+     */
     private final Point momentPoint;
+    /**
+     * 
+     */
     private final String mathName;
 
+    /**
+     * Constructor
+     * @param momentPoint
+     * @param mathName 
+     */
     public SetMomentPoint(Point momentPoint, String mathName) {
         this.momentPoint = momentPoint;
         this.mathName = mathName;
     }
 
+    /**
+     * Performs a SetMomentPoint action
+     * @param oldState
+     * @return new EquationState
+     */
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);// cannot modify the state if the equation is locked
         if (oldState.isLocked()) {

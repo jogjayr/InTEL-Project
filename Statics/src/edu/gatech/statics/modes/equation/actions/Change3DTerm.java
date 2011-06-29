@@ -16,20 +16,45 @@ import edu.gatech.statics.modes.equation.worksheet.Moment3DEquationMathState;
  */
 public class Change3DTerm implements DiagramAction<EquationState> {
 
+    /**
+     * Name of equation whose term is to be changed
+     */
     final private String equationName;
+    /**
+     * Load corresponding to the term to be changed
+     */
     final private AnchoredVector load;
+    /**
+     * New moment arm of the term to be changed
+     */
     final private String momentArm;
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load
+     * @param momentArm 
+     */
     public Change3DTerm(String equationName, AnchoredVector load, String momentArm) {
         this.equationName = equationName;
         this.load = load;
         this.momentArm = momentArm;
     }
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param load 
+     */
     public Change3DTerm(String equationName, AnchoredVector load) {
         this(equationName, load, "");
     }
 
+    /**
+     * Performs a change term action in 3D equation
+     * @param oldState current EquationState
+     * @return new EquationState, after changing term
+     */
     public EquationState performAction(EquationState oldState) {
         // this operates identically to AddTerm, but no reason to avoid it, really
         EquationState.Builder builder = new EquationState.Builder(oldState);

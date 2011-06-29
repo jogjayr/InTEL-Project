@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
+ * Abstract class representing an exercise. 
  * @author Calvin Ashmore
  */
 public abstract class Exercise {
@@ -67,13 +67,14 @@ public abstract class Exercise {
     public ExerciseState getState() {
         return state;
     }
+    
+    final private long sessionID;
+
     /**
      * The exercise session is used for logging. The session is not part of the state,
      * and lives in this class. It should be generated when the exercise is constructed,
      * according to the system time and a random number.
      */
-    final private long sessionID;
-
     public long getSessionID() {
         return sessionID;
     }

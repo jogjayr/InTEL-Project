@@ -72,7 +72,7 @@ final public class DiagramType {
      * This gives the priority of a diagram. The most straightforward explanation
      * of the priority is that it represents which diagram is the greatest ranking, or
      * has the furthest progress for a given key.
-     * @return
+     * @return Priority of diagrm
      */
     public int getPriority() {
         return priority;

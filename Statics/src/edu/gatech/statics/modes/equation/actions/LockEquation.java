@@ -17,14 +17,30 @@ import edu.gatech.statics.modes.equation.worksheet.TermEquationMathState;
  */
 public class LockEquation implements DiagramAction<EquationState> {
 
+    /**
+     * Name of equation to lock
+     */
     final private String equationName;
+    /**
+     * Boolean flag that determines whether to lock
+     */
     final private boolean locked;
 
+    /**
+     * Constructor
+     * @param equationName
+     * @param locked 
+     */
     public LockEquation(String equationName, boolean locked) {
         this.equationName = equationName;
         this.locked = locked;
     }
 
+    /**
+     * Performs a lock equation action
+     * @param oldState current state
+     * @return new EquationState after locking equation
+     */
     public EquationState performAction(EquationState oldState) {
         EquationState.Builder builder = new EquationState.Builder(oldState);
         EquationMathState mathState = builder.getEquationStates().get(equationName);
