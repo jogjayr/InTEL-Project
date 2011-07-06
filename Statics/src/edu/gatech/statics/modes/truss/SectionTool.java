@@ -23,10 +23,18 @@ public class SectionTool extends Tool {
     private Vector2f mouseStart = new Vector2f();
     private Vector2f mouseCurrent = new Vector2f();
 
+    /**
+     * 
+     * @return True if mouse is down
+     */
     public boolean isMouseDown() {
         return mouseDown;
     }
 
+    /**
+     * Creates a section cut between the mouse's start and current positions
+     * @return Created section cut
+     */
     public SectionCut getSectionCut() {
         return new SectionCut(mouseStart, mouseCurrent);
     }
@@ -35,6 +43,9 @@ public class SectionTool extends Tool {
         addAction(new MouseControl());
     }
 
+    /**
+     * Do not automatically cancel section selection tool
+     */
     @Override
     protected void onKeyEscape() {
         // do not automatically cancel.
@@ -56,6 +67,10 @@ public class SectionTool extends Tool {
 
     private class MouseControl extends MouseInputAction {
 
+        /**
+         * start capturing once the UI has the mouse, then react appropriately on mouse down and mouse up
+         * @param evt
+         */
         public void performAction(InputActionEvent evt) {
             Vector3f screenPos = StaticsApplication.getApp().getMouse().getLocalTranslation();
             mouseCurrent.set(screenPos.x, screenPos.y);
@@ -75,6 +90,9 @@ public class SectionTool extends Tool {
         }
     }
 
+    /**
+     * Saves the start position of the mouse when mouse down
+     */
     private void onMouseDown() {
         Vector3f screenPos = StaticsApplication.getApp().getMouse().getLocalTranslation();
         mouseStart.set(screenPos.x, screenPos.y);
@@ -83,11 +101,17 @@ public class SectionTool extends Tool {
         currentDiagram.onStartSection();
     }
 
+    /**
+     * creates a section cut on the current diagram when the mouse button is released
+     */
     private void onMouseUp() {
         TrussSectionDiagram currentDiagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
         currentDiagram.onCreateSection(getSectionCut());
     }
 
+    /**
+     * 
+     */
     private void onMouseMove() {
         // okay, we are just mousing around
         // if the diagram has a section, let it know what side of the section

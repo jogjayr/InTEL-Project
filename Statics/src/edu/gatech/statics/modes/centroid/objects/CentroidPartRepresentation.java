@@ -39,6 +39,11 @@ import edu.gatech.statics.RepresentationLayer;
         TriMesh createMesh();
     }
 
+    /**
+     * Constructor
+     * @param target
+     * @param surfaceBuilder
+     */
     CentroidPartRepresentation(CentroidPartObject target, SurfaceBuilder surfaceBuilder) {
         super(target);
         this.target = target;
@@ -76,6 +81,11 @@ import edu.gatech.statics.RepresentationLayer;
         setAmbient(new ColorRGBA(.5f, .1f, .1f, 1f));
     }
 
+    /**
+     * 
+     * @param surfaceBuilder
+     * @return
+     */
     private TriMesh createSurface(SurfaceBuilder surfaceBuilder) {
 
        TriMesh mesh = surfaceBuilder.createMesh();
@@ -86,6 +96,11 @@ import edu.gatech.statics.RepresentationLayer;
         return mesh;
     }
 
+    /**
+     * If the CentroidPartObject associated with this Representation has been
+     * solved set the colored region to blue. if the CentroidPartObject associated with this Representation has not
+     * been solved and has been clicked on the color of the region is set to be highlighted.
+     */
     @Override
     protected void updateMaterial() {
         super.updateMaterial();

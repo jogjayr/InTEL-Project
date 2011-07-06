@@ -16,6 +16,9 @@ import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
  * 940-391-3200
  */
 public class CentroidInterfaceConfiguration extends DefaultInterfaceConfiguration{
+    /**
+     * Adds CentroidModePanel to DefaultInterfaceConfiguration, and removes SelectModePanel from it
+     */
     public CentroidInterfaceConfiguration() {
         getModePanels().add(new CentroidModePanel());
         replaceModePanel(SelectModePanel.class, new CentroidSelectModePanel());

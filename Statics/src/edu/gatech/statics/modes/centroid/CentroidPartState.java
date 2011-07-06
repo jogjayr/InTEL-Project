@@ -23,6 +23,10 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
     final private String yPosition;
     final private String myPart;
 
+    /**
+     * Constructor
+     * @param builder Object factory
+     */
     private CentroidPartState(Builder builder) {
         this.locked = builder.locked;
         this.area = builder.area;
@@ -35,18 +39,34 @@ public class CentroidPartState implements Buildable<CentroidPartState>{
         return locked;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getArea() {
         return area;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getXPosition() {
         return xPosition;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getYPosition() {
         return yPosition;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getMyPart() {
         return myPart;
     }

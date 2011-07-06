@@ -29,6 +29,9 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
     private SectionPopup popup1, popup2;
     private BLabel label;
 
+    /**
+     * 
+     */
     public TrussModePanel() {
         //getTitleLabel().setText("Create a Section");
 
@@ -40,11 +43,19 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
         add(container, BorderLayout.CENTER);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public DiagramType getDiagramType() {
         return TrussSectionMode.instance.getDiagramType();
     }
 
+    /**
+     * Shows section boxes for section
+     * @param section
+     */
     public void showSectionBoxes(SectionCut section) {
 
         Pair<Vector2f, Vector2f> popupCoordinates = getPopupCoordinates(section);
@@ -62,6 +73,10 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
         updateText(section);
     }
 
+    /**
+     * Updates text around section
+     * @param section
+     */
     protected void updateText(SectionCut section) {
 
         if (section == null) {
@@ -91,12 +106,18 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
         InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
+    /**
+     * Hides section boxes
+     */
     public void hideSectionBoxes() {
         popup1.dismiss();
         popup2.dismiss();
         updateText(null);
     }
 
+    /**
+     * Initialize popups if they do not exist yet
+     */
     @Override
     public void activate() {
         super.activate();
@@ -116,6 +137,11 @@ public class TrussModePanel extends ApplicationModePanel<TrussSectionDiagram> {
 //        tab.setPreferredSize(125, -1);
 //        return tab;
 //    }
+    /**
+     * Calculates and returns coordinates of section boxes for section
+     * @param section
+     * @return
+     */
     private Pair<Vector2f, Vector2f> getPopupCoordinates(SectionCut section) {
         // we need to position the popup coordinates according to the section.
         Vector2f sectionDirection = section.getSectionEnd().subtract(section.getSectionStart()).normalize();

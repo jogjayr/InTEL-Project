@@ -10,22 +10,37 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * Holds the diagram state of the ZFMMode
  * @author Calvin Ashmore
  */
 public class ZFMState implements DiagramState<ZFMDiagram> {
 
+    /**
+     * List of selected zero force members
+     */
     private final List<PotentialZFM> selectedZFMs;
     private final boolean locked;
 
+    /**
+     *
+     * @return
+     */
     public boolean isLocked() {
         return locked;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public List<PotentialZFM> getSelectedZFMs() {
         return selectedZFMs;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Builder getBuilder() {
         Builder builder = new Builder();
         builder.setLocked(locked);
@@ -33,11 +48,18 @@ public class ZFMState implements DiagramState<ZFMDiagram> {
         return builder;
     }
 
+    /**
+     * Constructor
+     * @param builder
+     */
     private ZFMState(Builder builder) {
         this.selectedZFMs = Collections.unmodifiableList(builder.selectedZFMs);
         this.locked = builder.locked;
     }
 
+    /**
+     * Class factory
+     */
     public static class Builder implements edu.gatech.statics.util.Builder<ZFMState> {
 
         private List<PotentialZFM> selectedZFMs = new ArrayList<PotentialZFM>();
@@ -76,6 +98,11 @@ public class ZFMState implements DiagramState<ZFMDiagram> {
         }
     }
 
+    /**
+     * Compares selected ZFMs, locked-ness, etc for equality test
+     * @param obj
+     * @return equal?be
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

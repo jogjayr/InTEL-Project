@@ -18,6 +18,11 @@ public class TrussSectionMode extends Mode {
 
     public static final TrussSectionMode instance = new TrussSectionMode();
 
+    /**
+     * 
+     * @param key
+     * @return
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         if (key != null) {
@@ -26,6 +31,10 @@ public class TrussSectionMode extends Mode {
         return Exercise.getExercise().getDiagram(null, getDiagramType());
     }
 
+    /**
+     * Creates a section diagram with name "sections" and priority 150
+     * @return
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("sections", 150);

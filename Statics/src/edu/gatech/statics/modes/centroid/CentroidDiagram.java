@@ -42,6 +42,10 @@ public class CentroidDiagram extends Diagram<CentroidState> {
     private CentroidBody body;
     private CentroidPartObject currentlySelected;
 
+    /**
+     * 
+     * @param body
+     */
     public CentroidDiagram(CentroidBody body) {
         super(body);
         this.body = body;
@@ -57,6 +61,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //        }
     }
 
+    /**
+     * State change event handler for diagram
+     */
     @Override
     protected void stateChanged() {
         super.stateChanged();
@@ -72,9 +79,16 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public CentroidBody getBody() {
         return body;
     }
+    /**
+     * Can select only CentroidPartObject
+     */
     private SelectionFilter selector = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -82,12 +96,20 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
     };
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         //can select CentroidPartObjects. not the body
         return selector;
     }
 
+    /**
+     * Handles hover event on obj. Sets and unsets highlight
+     * @param obj
+     */
     @Override
     public void onHover(SimulationObject obj) {
         super.onHover(obj);
@@ -103,6 +125,10 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         }
     }
 
+    /**
+     * Handles click event on obj; toggles select display
+     * @param obj
+     */
     @Override
     public void onClick(SimulationObject obj) {
         //somethind like that. also needs to be selectable = true
@@ -249,6 +275,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         performAction(action);
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         super.activate();
@@ -283,6 +312,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 //        }
     }
 
+    /**
+     * Deactivate diagram
+     */
     @Override
     public void deactivate() {
         super.deactivate();
@@ -305,6 +337,9 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
     }
 
+    /**
+     * Set diagram state to solved
+     */
     public void setSolved() {
         //updateResultant();
         Builder builder = getCurrentState().getBuilder();
@@ -324,19 +359,35 @@ public class CentroidDiagram extends Diagram<CentroidState> {
 
     }
 
+    /**
+     * Is the diagram solved?
+     * @return
+     */
     public boolean isSolved() {
         return getCurrentState().isLocked();
     }
 
+    /**
+     * 
+     * @return Currently selected centroid part
+     */
     protected CentroidPart getCentroidPart() {
         return currentlySelected.getCentroidPart();//getKey();
     }
 
+    /**
+     * 
+     * @return "Determine the centroid for the part: " + getKey()
+     */
     @Override
     public String getDescriptionText() {
         return "Determine the centroid for the part: " + getKey();
     }
 
+    /**
+     * Builds a new centroid state
+     * @return
+     */
     @Override
     protected CentroidState createInitialState() {
         CentroidState.Builder builder = new CentroidState.Builder();
@@ -348,18 +399,26 @@ public class CentroidDiagram extends Diagram<CentroidState> {
         //nothing apparently
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Mode getMode() {
         return CentroidMode.instance;
     }
 
+    /**
+     * Gets base objects of digram. Includes objects of type
+     * CentroidPartObject, CentroidBodyMarker, and Measurement
+     * @return
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> objects = new ArrayList<SimulationObject>();
         //objects.add(cpObj);
         objects.add(body);
         objects.addAll(body.getParts());
-
         for (CentroidPartObject part : body.getParts()) {
 
             for (SimulationObject obj : this.allObjects()) {

@@ -49,6 +49,10 @@ public class PotentialZFM extends SimulationObject implements ResolvableByName {
         return StaticsApplication.getApp().getCurrentDiagram() instanceof ZFMDiagram;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public boolean isDisplayGrayed() {
         if (inZFMMode()) {
@@ -59,6 +63,10 @@ public class PotentialZFM extends SimulationObject implements ResolvableByName {
         }
     }
 
+    /**
+     * Grays the display by flag grayed
+     * @param grayed
+     */
     @Override
     public void setDisplayGrayed(boolean grayed) {
 
@@ -82,10 +90,18 @@ public class PotentialZFM extends SimulationObject implements ResolvableByName {
         }
     }
 
+    /**
+     * 
+     * @param zfm
+     */
     public PotentialZFM(boolean zfm) {
         this.zfm = zfm;
     }
 
+    /**
+     * 
+     * @return Is it a potential zero force member
+     */
     public boolean isZfm() {
         return zfm;
     }

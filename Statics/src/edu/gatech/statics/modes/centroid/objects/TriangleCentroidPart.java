@@ -4,11 +4,9 @@
  */
 package edu.gatech.statics.modes.centroid.objects;
 
-import com.jme.math.Vector3f;
 import com.jme.scene.TriMesh;
 import com.jme.util.geom.BufferUtils;
 import edu.gatech.statics.Representation;
-import edu.gatech.statics.math.Unit;
 import edu.gatech.statics.math.Vector3bd;
 import edu.gatech.statics.objects.Point;
 import java.math.BigDecimal;
@@ -16,15 +14,31 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 /**
- *
+ * Class for triangular parts in centroid problems
  * @author Calvin
  */
 public class TriangleCentroidPart extends CentroidPart {
 
+    /**
+     * Three points of the triangle
+     */
     final private Point p1, p2, p3;
+    /**
+     * Centroid of the triangle
+     */
     final private Vector3bd centroid;
+    /**
+     * Surface area of the triangle
+     */
     private final BigDecimal surfaceArea;
 
+    /**
+     * Constructor
+     * @param partName
+     * @param p1
+     * @param p2
+     * @param p3
+     */
     public TriangleCentroidPart(String partName, Point p1, Point p2, Point p3) {
         super(partName);
 
@@ -44,16 +58,29 @@ public class TriangleCentroidPart extends CentroidPart {
         surfaceArea = new BigDecimal(.5 * p1p2magnitude * perpindicular);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public Vector3bd getCentroid() {
         return centroid;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public BigDecimal getSurfaceArea() {
         return surfaceArea;
     }
 
+    /**
+     * Creates the representation of the TriangleCentroidPart
+     * @param obj
+     * @return
+     */
     @Override
     public Representation<CentroidPartObject> createRepresentation(CentroidPartObject obj) {
                 return new CentroidPartRepresentation(obj, new CentroidPartRepresentation.SurfaceBuilder() {

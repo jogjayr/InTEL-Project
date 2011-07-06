@@ -14,6 +14,11 @@ import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
  */
 public class TrussInterfaceConfiguration extends DefaultInterfaceConfiguration {
 
+    /**
+     * Creates an interface configuation. Adds new TrussModePanel and ZFMModePanel
+     * to the mode panels list. Replaces SelectModePanel in DefaultInterfaceConfiguration
+     * with TrussSelectModePanel
+     */
     public TrussInterfaceConfiguration() {
         getModePanels().add(new TrussModePanel());
         getModePanels().add(new ZFMModePanel());

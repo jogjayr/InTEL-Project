@@ -33,42 +33,77 @@ public class CentroidPartObject extends SimulationObject implements ResolvableBy
         this.part = part;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public CentroidPart getCentroidPart() {
         return part;
     }
 
+    /**
+     * Scalar multiplication of centroid vector with 1?
+     * @return part.getCentroid().toVector3f().mult(Unit.distance.getDisplayScale().floatValue());
+     */
     @Override
     public Vector3f getTranslation() {
         //return super.getTranslation();
         return part.getCentroid().toVector3f().mult(Unit.distance.getDisplayScale().floatValue());
     }
 
+    /**
+     * Create a representation of the part
+     */
     @Override
     public void createDefaultSchematicRepresentation() {
 //        addRepresentation(new CentroidPartRepresentation(this));
         addRepresentation(part.createRepresentation(this));
     }
 
+    /**
+     * Setter
+     * @param myPartState
+     */
     public void setState(CentroidPartState myPartState) {
         this.state = myPartState;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public CentroidPartState getState() {
         return state;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Vector3f getMarkerOffset() {
         return markerOffset;
     }
 
+    /**
+     * Setter
+     * @param markerOffset
+     */
     public void setMarkerOffset(Vector3f markerOffset) {
         this.markerOffset = markerOffset;
     }
 
+    /**
+     * Adds a distance to measurements
+     * @param distance
+     */
     public void addMeasurement(Measurement distance) {
         measurements.add(distance);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public ArrayList<Measurement> getMeasurements() {
         return measurements;
     }

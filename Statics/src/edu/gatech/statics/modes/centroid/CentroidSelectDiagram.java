@@ -25,6 +25,10 @@ public class CentroidSelectDiagram extends SelectDiagram {
 
     public CentroidSelectDiagram() {
     }
+
+    /**
+     * A filter that can select SimulationObject or CentroidPartObject
+     */
     private SelectionFilter filter = new SelectionFilter() {
 
         public boolean canSelect(SimulationObject obj) {
@@ -32,16 +36,27 @@ public class CentroidSelectDiagram extends SelectDiagram {
         }
     };
 
+    /**
+     * 
+     * @return "Select a part to begin calculating the centroid"
+     */
     @Override
     public String getDescriptionText() {
         return "Select a part to begin calculating the centroid";
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
 
+    /**
+     * Activates this diagram
+     */
     @Override
     public void activate() {
         super.activate();
@@ -52,11 +67,18 @@ public class CentroidSelectDiagram extends SelectDiagram {
         StaticsApplication.getApp().setDefaultUIFeedbackKey("exercise_tools_centroid_selection");
     }
 
+    /**
+     * Deactivates this diagram
+     */
     @Override
     public void deactivate() {
         super.deactivate();
     }
 
+    /**
+     * Checks if centroid has been found; if so, super.completed is called, otherwise,
+     * centroid mode is loaded
+     */
     @Override
     public void completed() {
         List<SimulationObject> selected = getCurrentState().getCurrentlySelected();
@@ -78,11 +100,20 @@ public class CentroidSelectDiagram extends SelectDiagram {
         }
     }
 
+    /**
+     * Handles click event on obj
+     * @param obj
+     */
     @Override
     public void onClick(SimulationObject obj) {
         super.onClick(obj);
     }
 
+    /**
+     * Creates a select action on obj. Performs it; toggles selected state
+     * @param obj
+     * @return
+     */
     @Override
     protected SelectAction createSelectAction(SimulationObject obj) {
         return new SelectAction(obj) {
@@ -100,8 +131,10 @@ public class CentroidSelectDiagram extends SelectDiagram {
         };
     }
 
-
-
+    /**
+     *Get the base objects of the diagram, that aren't CentroidPartObject
+     * @return
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         //return super.getBaseObjects();

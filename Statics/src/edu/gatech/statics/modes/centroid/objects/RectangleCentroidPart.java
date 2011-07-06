@@ -16,21 +16,51 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 /**
- *
+ * Class to represent rectangular parts in centroid problems
  * @author Calvin
  */
 public class RectangleCentroidPart extends CentroidPart {
 
+    /**
+     * Rectangle width
+     */
     private final double width;
+    /**
+     * Rectangle height
+     */
     private final double height;
+    /**
+     * Rectangle rotation
+     */
     private final double rotation;
+    /**
+     * Centroid position
+     */
     private final Vector3bd centroid;
+    /**
+     * Rectangle surface area
+     */
     private final BigDecimal surfaceArea;
 
+    /**
+     * Constructor
+     * @param partName
+     * @param centroid
+     * @param width
+     * @param height
+     */
     public RectangleCentroidPart(String partName, Vector3bd centroid, double width, double height) {
         this(partName, centroid, width, height, 0);
     }
 
+    /**
+     * Constructor
+     * @param partName
+     * @param centroid
+     * @param width
+     * @param height
+     * @param rotation
+     */
     public RectangleCentroidPart(String partName, Vector3bd centroid, double width, double height, double rotation) {
         super(partName);
         this.centroid = centroid;
@@ -40,16 +70,29 @@ public class RectangleCentroidPart extends CentroidPart {
         this.surfaceArea = new BigDecimal(width * height);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public Vector3bd getCentroid() {
         return centroid;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public BigDecimal getSurfaceArea() {
         return surfaceArea;
     }
 
+    /**
+     * Create representation for obj
+     * @param obj
+     * @return
+     */
     @Override
     public Representation<CentroidPartObject> createRepresentation(CentroidPartObject obj) {
         return new CentroidPartRepresentation(obj, new CentroidPartRepresentation.SurfaceBuilder() {

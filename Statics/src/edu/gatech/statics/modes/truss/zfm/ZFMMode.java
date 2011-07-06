@@ -18,11 +18,20 @@ public class ZFMMode extends Mode {
 
     public static final ZFMMode instance = new ZFMMode();
 
+    /**
+     * 
+     * @param key
+     * @return
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         return Exercise.getExercise().getDiagram(null, getDiagramType());
     }
 
+    /**
+     * Creates DiagramType with name "zfm" and priority 90
+     * @return
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("zfm", 90);

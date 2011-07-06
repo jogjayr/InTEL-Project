@@ -31,20 +31,35 @@ import java.util.List;
  */
 abstract public class TrussExercise extends OrdinaryExercise {
 
+    /**
+     * creates an interface configuration for the truss exercise
+     * @return
+     */
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new TrussInterfaceConfiguration();
     }
 
+    /**
+     * Constructor
+     */
     public TrussExercise() {
         //  set the "Whole Frame" label in FrameUtil to "Whole Truss"
         FrameUtil.whatToCallTheWholeDiagram = "Whole Truss";
     }
 
+    /**
+     * Constructor
+     * @param schematic
+     */
     public TrussExercise(Schematic schematic) {
         super(schematic);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public Mode loadStartingMode() {
         //return super.loadStartingMode();
@@ -52,6 +67,12 @@ abstract public class TrussExercise extends OrdinaryExercise {
         return ZFMMode.instance;
     }
 
+    /**
+     * Checks type and returns either a section or zero force memeber diagram
+     * @param key 
+     * @param type
+     * @return 
+     */
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (type == TrussSectionMode.instance.getDiagramType()) {
@@ -64,14 +85,27 @@ abstract public class TrussExercise extends OrdinaryExercise {
         return super.createNewDiagramImpl(key, type);
     }
 
+    /**
+     * 
+     * @return
+     */
     protected TrussSectionDiagram createSectionDiagram() {
         return new TrussSectionDiagram();
     }
 
+    /**
+     * 
+     * @return
+     */
     protected ZFMDiagram createZFMDiagram() {
         return new ZFMDiagram();
     }
 
+    /**
+     * Creates an FBD from bodies. Sets up the special name for the whole truss, in truss problems
+     * @param bodies
+     * @return A special truss fbd which handles a few things that aren't covered elsewhere
+     */
     @Override
     protected FreeBodyDiagram createFreeBodyDiagram(BodySubset bodies) {
 

@@ -10,7 +10,7 @@ import edu.gatech.statics.exercise.Diagram;
 import edu.gatech.statics.exercise.DiagramKey;
 import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
-import edu.gatech.statics.modes.centroid.objects.CentroidPart;
+
 
 /**
  * The specific implementation of the Mode class for use with centroids.
@@ -22,11 +22,20 @@ public class CentroidMode extends Mode{
 
     public static final CentroidMode instance = new CentroidMode();
 
+    /**
+     * Creates a diagram type for Centroids with name "centroid" and priority 150
+     * @return
+     */
     @Override
     protected DiagramType createDiagramType() {
         return DiagramType.create("centroid", 150);
     }
 
+    /**
+     * Gets diagram corresponding to key
+     * @param key
+     * @return
+     */
     @Override
     protected Diagram getDiagram(DiagramKey key) {
         if (key instanceof CentroidBody) {

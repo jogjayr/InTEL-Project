@@ -32,6 +32,12 @@ public class SetAreaValue implements DiagramAction<CentroidState> {
         this.allSolved = false;
     }
 
+    /**
+     * Constructor
+     * @param newAreaValue
+     * @param currentlySelected
+     * @param allSolved
+     */
     public SetAreaValue(String newAreaValue, CentroidPartObject currentlySelected, boolean allSolved) {
         //this.force = force;
         this.areaValue = newAreaValue;
@@ -44,6 +50,12 @@ public class SetAreaValue implements DiagramAction<CentroidState> {
 //        builder.setArea(areaValue);
 //        return builder.build();
 //    }
+
+    /**
+     * Creates new state if diagram solved or returns new state given oldState
+     * @param oldState
+     * @return
+     */
     public CentroidState performAction(CentroidState oldState) {
         if (allSolved) {
             CentroidState.Builder builder = oldState.getBuilder();

@@ -14,6 +14,11 @@ import edu.gatech.statics.modes.truss.zfm.ZFMState.Builder;
  */
 public class ClearAction implements DiagramAction<ZFMState> {
 
+    /**
+     * Clears oldState
+     * @param oldState
+     * @return
+     */
     public ZFMState performAction(ZFMState oldState) {
         Builder builder = oldState.getBuilder();
         builder.getSelectedZFMs().clear();

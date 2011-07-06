@@ -129,6 +129,10 @@ public class CentroidModePanel extends ApplicationModePanel {
         }
     }
 
+    /**
+     * Handler for state change event for CentroidModePanel
+     * Checks if diagram is locked, all parts are solved or not
+     */
     @Override
     public void stateChanged() {
         super.stateChanged();
@@ -163,6 +167,9 @@ public class CentroidModePanel extends ApplicationModePanel {
         }
     }
 
+    /**
+     * Activates centroid mode panel. Populates text boxes
+     */
     @Override
     public void activate() {
         //needed because activate() gets called sometimes before we're ready
@@ -211,15 +218,22 @@ public class CentroidModePanel extends ApplicationModePanel {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public DiagramType getDiagramType() {
         return CentroidMode.instance.getDiagramType();
     }
 
-    //generates the UI to reflect the text fields for the particular part selected
-    //if you click in the background of the exercise it removes the UI components
-    //if you click on a part it only generates the parts if they don't exist and
-    //always calls activate() to populate the text boxes with the proper state information
+    /**
+     * generates the UI to reflect the text fields for the particular part selected
+     * if you click in the background of the exercise it removes the UI components
+     * if you click on a part it only generates the parts if they don't exist and
+     * always calls activate() to populate the text boxes with the proper state information
+     * @param currentlySelected
+     */
     public void updateSelection(CentroidPartObject currentlySelected) {
         this.currentlySelected = currentlySelected;
         if (currentlySelected != null) {
@@ -254,7 +268,9 @@ public class CentroidModePanel extends ApplicationModePanel {
         InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }
 
-    // brings up the special UI elements in the bottom menu for solving bodies
+    /**
+     * brings up the special UI elements in the bottom menu for solving bodies
+     */
     public void displayBodySolver() {
         StaticsApplication.getApp().setUIFeedback("Enter the total surface area, x, and y values for the centroid of " + getDiagram().getName());
         if (!checkButton.isAdded()) {
@@ -281,7 +297,9 @@ public class CentroidModePanel extends ApplicationModePanel {
         stateChanged();
     }
 
-    //initializes all of the UI components
+    /**
+     * initializes all of the UI components
+     */
     private void generateUI() {
         ActionListener listener = new ActionListener() {
 
@@ -339,7 +357,10 @@ public class CentroidModePanel extends ApplicationModePanel {
         yLabel = new BLabel("Y Position: ");
     }
 
-    //utility method to let us know if everything is solved
+    /**
+     * utility method to let us know if everything is solved
+     * @return
+     */
     private boolean allSolved() {
         return ((CentroidState) getDiagram().getCurrentState()).allPartsSolved((CentroidDiagram) getDiagram());
     }

@@ -31,6 +31,12 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
         this.allSolved = false;
     }
 
+    /**
+     * Constructor
+     * @param newYValue
+     * @param currentlySelected
+     * @param allSolved
+     */
     public SetYPositionValue(String newYValue, CentroidPartObject currentlySelected, boolean allSolved) {
         this.yValue = newYValue;
         this.currentlySelected = currentlySelected;
@@ -48,6 +54,11 @@ public class SetYPositionValue implements DiagramAction<CentroidState> {
 //        builder.setYPosition(yValue);
 //        return builder.build();
 //    }
+    /**
+     * Returns new state if the diagram is solved, else, builds new state given oldState
+     * @param oldState
+     * @return
+     */
     public CentroidState performAction(CentroidState oldState) {
         if (allSolved) {
             CentroidState.Builder builder = oldState.getBuilder();

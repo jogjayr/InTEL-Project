@@ -23,6 +23,9 @@ import edu.gatech.statics.objects.SimulationObject;
  */
 public class CentroidSelectModePanel extends SelectModePanel {
 
+    /**
+     * 
+     */
     @Override
     public void stateChanged() {
         super.stateChanged();
@@ -42,6 +45,11 @@ public class CentroidSelectModePanel extends SelectModePanel {
         }
     }
 
+    /**
+     * 
+     * @param selectedBody
+     * @return
+     */
     public boolean allPartsSolved(CentroidBody selectedBody) {
         int totalSolved = 0;
         for (CentroidPartObject cpo : selectedBody.getParts()) {

@@ -19,11 +19,19 @@ class TrussTools2D extends FrameTools {
     private BButton selectAll;
     private BButton makeSection;
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected TrussSelectModePanel getModePanel() {
         return (TrussSelectModePanel) super.getModePanel();
     }
 
+    /**
+     * 
+     * @param modePanel
+     */
     public TrussTools2D(TrussSelectModePanel modePanel) {
         super(modePanel);
         ToolListener listener = new ToolListener();
@@ -37,6 +45,10 @@ class TrussTools2D extends FrameTools {
 
     private class ToolListener implements ActionListener {
 
+        /**
+         * 
+         * @param event
+         */
         public void actionPerformed(ActionEvent event) {
             if (event.getAction().equals("all")) {
                 getModePanel().performSelectAll();

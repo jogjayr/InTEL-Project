@@ -53,6 +53,10 @@ public abstract class CentroidPart implements DiagramKey {
 //
 //        this.part = part;
 //    }
+    /**
+     * Getter
+     * @return
+     */
     public String getPartName() {
         return partName;
     }

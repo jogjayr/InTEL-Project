@@ -21,6 +21,11 @@ public class SectionPopup extends BPopupWindow {
 
     private final int side;
 
+    /**
+     * Constructor
+     * @param parent
+     * @param side
+     */
     public SectionPopup(BWindow parent, int side) {
         super(parent, new BorderLayout());
         this.side = side;
@@ -35,6 +40,9 @@ public class SectionPopup extends BPopupWindow {
         setStyleClass("application_popup");
     }
 
+    /**
+     * Handles select event
+     */
     private void onSelect() {
         TrussSectionDiagram diagram = (TrussSectionDiagram) StaticsApplication.getApp().getCurrentDiagram();
         diagram.selectSection(side);

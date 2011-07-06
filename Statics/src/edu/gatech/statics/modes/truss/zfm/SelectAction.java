@@ -9,7 +9,9 @@ import edu.gatech.statics.modes.truss.zfm.ZFMState.Builder;
 import edu.gatech.statics.objects.SimulationObject;
 
 /**
- *
+ * SelectionAction represents user having clicked on an object.
+ * It will deselect everything if given object is null, otherwise
+ * toggle selection of the given object
  * @author Calvin Ashmore
  */
 public class SelectAction implements DiagramAction<ZFMState> {
@@ -30,6 +32,11 @@ public class SelectAction implements DiagramAction<ZFMState> {
         return clicked;
     }
 
+    /**
+     * Performs selection toggle action
+     * @param oldState
+     * @return
+     */
     public ZFMState performAction(ZFMState oldState) {
         Builder builder = oldState.getBuilder();
 

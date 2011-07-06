@@ -28,6 +28,10 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
     final private String yPosition;
     final private Map<String, CentroidPartState> myParts;
 
+    /**
+     * Constructor
+     * @param builder
+     */
     private CentroidState(Builder builder) {
         this.locked = builder.locked;
         this.area = builder.area;
@@ -36,26 +40,51 @@ public class CentroidState implements DiagramState<CentroidDiagram> {
         this.myParts = Collections.unmodifiableMap(builder.getMyParts());
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Map<String, CentroidPartState> getMyParts() {
         return myParts;
     }
 
+    /**
+     * Get state for part identified by partName
+     * @param partName
+     * @return
+     */
     public CentroidPartState getMyPartState(String partName) {
         return myParts.get(partName);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public boolean isLocked() {
         return locked;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getArea() {
         return area;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getXPosition() {
         return xPosition;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getYPosition() {
         return yPosition;
     }

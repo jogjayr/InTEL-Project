@@ -31,7 +31,13 @@ abstract public class CentroidExercise extends OrdinaryExercise {
     public CentroidExercise(Schematic schematic) {
         super(schematic);
     }
-    
+
+    /**
+     * Creates a CentroidDiagram
+     * @param key 
+     * @param type
+     * @return
+     */
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (type == CentroidMode.instance.getDiagramType()) {
@@ -40,16 +46,29 @@ abstract public class CentroidExercise extends OrdinaryExercise {
 
         return super.createNewDiagramImpl(key, type);
     }
-    
+
+    /**
+     * 
+     * @param body
+     * @return
+     */
     protected CentroidDiagram createCentroidDiagram(CentroidBody body) {
         return new CentroidDiagram(body);
     }
-    
+
+    /**
+     * Creates a CentroidSelectDiagram
+     * @return
+     */
     @Override
     protected SelectDiagram createSelectDiagram() {
         return new CentroidSelectDiagram();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         return new CentroidInterfaceConfiguration();

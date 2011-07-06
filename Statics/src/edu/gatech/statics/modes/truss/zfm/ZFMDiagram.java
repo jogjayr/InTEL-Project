@@ -31,11 +31,18 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         super(null);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String getName() {
         return "Find ZFMs";
     }
 
+    /**
+     * 
+     */
     @Override
     public void completed() {
         SelectMode.instance.load();
@@ -46,6 +53,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         return ZFMMode.instance;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         // here, we add everything that is not a body. Primarily, we want to capture
@@ -68,6 +79,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         }
     };
 
+    /**
+     * Activates all zeMarks selected objects
+     * as selectedro force members
+     */
     @Override
     public void activate() {
         super.activate();
@@ -83,6 +98,9 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         stateChanged();
     }
 
+    /**
+     * Deactivates all potential zero force members
+     */
     @Override
     public void deactivate() {
         super.deactivate();
@@ -95,6 +113,11 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         }
     }
 
+    /**
+     * Sets potential zero force member potential to active
+     * @param potential
+     * @param active
+     */
     private void setPotentialZfmActive(PotentialZFM potential, boolean active) {
         for (Representation representation : potential.allRepresentations()) {
             if (representation instanceof MimicRepresentation) {
@@ -108,11 +131,19 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         }
     }
 
+    /**
+     * Getter
+     * @return
+     */
     @Override
     public SelectionFilter getSelectionFilter() {
         return filter;
     }
 
+    /**
+     * Diagram state change event handler. Displays selected objects
+     * as selected
+     */
     @Override
     protected void stateChanged() {
         super.stateChanged();
@@ -129,6 +160,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
 //        }
     }
 
+    /**
+     * Object factory for ZMFState
+     * @return
+     */
     @Override
     protected ZFMState createInitialState() {
         return (new ZFMState.Builder()).build();
@@ -146,6 +181,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         return new SelectAction(obj);
     }
 
+    /**
+     * Handle click event handler for simulation object
+     * @param clicked
+     */
     @Override
     public void onClick(SimulationObject clicked) {
 
@@ -156,6 +195,9 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         performAction(action);
     }
 
+    /**
+     * Set diagram state solved
+     */
     public void setSolved() {
         Builder builder = getCurrentState().getBuilder();
         builder.setLocked(true);
@@ -166,6 +208,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         //completed();
     }
 
+    /**
+     * Checks if diagram is correct
+     * @return
+     */
     public boolean check() {
 
         checkCount++;
@@ -214,6 +260,10 @@ public class ZFMDiagram extends Diagram<ZFMState> {
         return true;
     }
 
+    /**
+     *
+     * @return "Select Zero Force Members"
+     */
     @Override
     public String getDescriptionText() {
         return "Select Zero Force Members";

@@ -35,6 +35,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
 
     private static Vector3f intendedSectionDirection = Vector3f.UNIT_X;
 
+    /**
+     * 
+     * @param intendedSectionDirection
+     */
     public static void setIntendedSectionDirection(Vector3f intendedSectionDirection) {
         TrussSectionDiagram.intendedSectionDirection = intendedSectionDirection;
     }
@@ -42,15 +46,26 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
     private SectionCut currentCut;
     private int selectionSide;
 
+    /**
+     * Getter
+     * @return
+     */
     public SectionCut getCurrentCut() {
         return currentCut;
     }
 
+    /**
+     *
+     * @return "Create Section"
+     */
     @Override
     public String getName() {
         return "Create Section";
     }
 
+    /**
+     * Constructor
+     */
     public TrussSectionDiagram() {
         super(null);
         sectionTool = new SectionTool();
@@ -96,6 +111,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         recentDiagram.getMode().load(bodies);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     protected TrussSectionState createInitialState() {
         return new TrussSectionState();
@@ -111,6 +130,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         return TrussSectionMode.instance;
     }
 
+    /**
+     * 
+     * @return All diagram objects that aren't ZeroForceMember or Background
+     */
     @Override
     protected List<SimulationObject> getBaseObjects() {
         List<SimulationObject> baseObjects = new ArrayList<SimulationObject>();
@@ -126,6 +149,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         return baseObjects;
     }
 
+    /**
+     * Enables the SectionTool for the diagram, disables dragging, and prompts user to
+     * "Click and drag to create a selection"
+     */
     @Override
     public void activate() {
         super.activate();
@@ -138,6 +165,9 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         StaticsApplication.getApp().resetUIFeedback();
     }
 
+    /**
+     * Deactivates SectionTool, enables dragging, de-highligths objects
+     */
     @Override
     public void deactivate() {
         super.deactivate();
@@ -149,6 +179,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         clearHighlights();
     }
 
+    /**
+     * Used for drawaing the section cuts selected by SectionTool
+     * @param r
+     */
     @Override
     public void render(Renderer r) {
         super.render(r);
@@ -166,6 +200,11 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         onStartSection();
     }
 
+    /**
+     * Renders the sectionCut
+     * @param r
+     * @param sectionCut
+     */
     private void drawCut(Renderer r, SectionCut sectionCut) {
         Vector2f sectionStart = sectionCut.getSectionStart();
         Vector2f sectionEnd = sectionCut.getSectionEnd();
@@ -185,6 +224,11 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         CurveUtil.renderLine(r, ColorRGBA.blue, sectionStart3d, sectionEnd3d);
     }
 
+    /**
+     * Handles the create section event. Confirms that the section is valid by
+     * checking that its size is > 0 and then makes the selection
+     * @param section
+     */
     public void onCreateSection(SectionCut section) {
         //System.out.println("***** Drawing a section");
 
@@ -204,6 +248,9 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         }
     }
 
+    /**
+     * 
+     */
     public void onStartSection() {
         currentCut = null;
         TrussModePanel modePanel = (TrussModePanel) InterfaceRoot.getInstance().getModePanel(TrussSectionMode.instance.getModeName());
@@ -314,6 +361,10 @@ public class TrussSectionDiagram extends Diagram<TrussSectionState> {
         return distance1 * distance2 < 0;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String getDescriptionText() {
         return "Create Section";

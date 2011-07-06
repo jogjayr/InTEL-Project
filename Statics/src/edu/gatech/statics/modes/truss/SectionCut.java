@@ -17,23 +17,44 @@ public class SectionCut {
     private final Vector2f sectionStart;
     private final Vector2f sectionEnd;
 
+    /**
+     * Constructor
+     * @param sectionStart Start of the section cut
+     * @param sectionEnd End of the section cut
+     */
     public SectionCut(Vector2f sectionStart, Vector2f sectionEnd) {
         this.sectionStart = new Vector2f(sectionStart);
         this.sectionEnd = new Vector2f(sectionEnd);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Vector2f getSectionEnd() {
         return sectionEnd;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Vector2f getSectionStart() {
         return sectionStart;
     }
 
+    /**
+     * Get the section end as a 3 dimensional vector
+     * @return
+     */
     public Vector3f getSectionEnd3d() {
         return StaticsApplication.getApp().getCamera().getWorldCoordinates(sectionEnd, 0.1f);
     }
 
+    /**
+     * Get the section start as a 3 dimensional vector
+     * @return
+     */
     public Vector3f getSectionStart3d() {
         return StaticsApplication.getApp().getCamera().getWorldCoordinates(sectionStart, 0.1f);
     }

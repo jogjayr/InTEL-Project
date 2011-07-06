@@ -29,6 +29,10 @@ class CentroidUtil {
     public CentroidUtil() {
     }
 
+    /**
+     * Generates a new color by adding 0.15 to hue, and setting red = hue+0.33f, green=hue, blue=hue-0.33f
+     * @return Generated color
+     */
     public ColorRGBA generatePastelColor() {
 
         //adds a value of 0.15 to the hue, maxing out at 1.0.
@@ -109,6 +113,10 @@ class CentroidUtil {
         }
     }
 
+    /**
+     * Color with which to highlight centroid part
+     * @return
+     */
     ColorRGBA hoverHighlight() {
         float highlight = 0.85f;
         float temp0 = (highlight + sat) - (highlight * sat);

@@ -33,6 +33,12 @@ public class SetXPositionValue implements DiagramAction<CentroidState> {
         this.allSolved = false;
     }
 
+    /**
+     * Constructor
+     * @param newXValue
+     * @param currentlySelected
+     * @param allSolved
+     */
     public SetXPositionValue(String newXValue, CentroidPartObject currentlySelected, boolean allSolved) {
         this.xValue = newXValue;
         this.currentlySelected = currentlySelected;
@@ -50,6 +56,12 @@ public class SetXPositionValue implements DiagramAction<CentroidState> {
 //        builder.setXPosition(xValue);
 //        return builder.build();
 //    }
+
+    /**
+     * Creates new state if solved, else returns new state given oldState
+     * @param oldState
+     * @return
+     */
     public CentroidState performAction(CentroidState oldState) {
         if (allSolved) {
             CentroidState.Builder builder = oldState.getBuilder();

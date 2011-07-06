@@ -23,7 +23,8 @@ import edu.gatech.statics.ui.components.NextButton;
 import java.util.List;
 
 /**
- *
+ * This class is the ModePanel for Zero For Member Mode
+ * 
  * @author Calvin Ashmore
  */
 public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
@@ -33,6 +34,9 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
     private BButton checkButton;
     private BButton clearButton;
 
+    /**
+     * Constructor
+     */
     public ZFMModePanel() {
         //getTitleLabel().setText("Identify Zero Force Members");
 
@@ -63,10 +67,12 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         buttonContainer.add(clearButton, BorderLayout.SOUTH);
     }
 
+    /**
+     * 
+     */
     @Override
     public void activate() {
         super.activate();
-
         //getTitleLabel().setText("Nothing Selected");
         selectionList.setContents("");
         // *********** need special 
@@ -83,17 +89,28 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
         stateChanged();
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public DiagramType getDiagramType() {
         return ZFMMode.instance.getDiagramType();
     }
 
+    /**
+     * 
+     */
     @Override
     public void stateChanged() {
         super.stateChanged();
         updateSelection();
     }
 
+    /**
+     * Refines the selection to only bodies. If the diagram is locked, it
+     * also changes the UI Feedback message
+     */
     public void updateSelection() {
 
         // refine list to only bodies.
@@ -109,7 +126,6 @@ public class ZFMModePanel extends ApplicationModePanel<ZFMDiagram> {
             selectionList.setContents(getContents(selection));
             StaticsApplication.getApp().setUIFeedbackKey("exercise_tools_Selection2");
         }
-
         // Update the AppBar size
         InterfaceRoot.getInstance().getApplicationBar().updateSize();
     }

@@ -36,12 +36,23 @@ public class CentroidBody extends Body implements DiagramKey {
         this.centerOfMass = null;
     }
 
+    /**
+     * Constructor
+     * @param name
+     * @param centerOfMass
+     */
     public CentroidBody(String name, Point centerOfMass) {
         super(name);
         this.centerOfMass = centerOfMass;
         parts = new ArrayList<CentroidPartObject>();
     }
 
+    /**
+     * Constructor
+     * @param name
+     * @param centerOfMass
+     * @param parts
+     */
     public CentroidBody(String name, Point centerOfMass, List<CentroidPartObject> parts) {
         super(name);
         this.centerOfMass = centerOfMass;
@@ -64,6 +75,10 @@ public class CentroidBody extends Body implements DiagramKey {
         return parts;
     }
 
+    /**
+     * Adds obj to centroid body parts
+     * @param obj
+     */
     @Override
     public void addObject(SimulationObject obj) {
         super.addObject(obj);
@@ -74,6 +89,10 @@ public class CentroidBody extends Body implements DiagramKey {
         }
     }
 
+    /**
+     * Remvoes obj from the centroid body parts
+     * @param obj
+     */
     @Override
     public void removeObject(SimulationObject obj) {
         super.removeObject(obj);
