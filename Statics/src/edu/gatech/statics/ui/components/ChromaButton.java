@@ -42,9 +42,9 @@ public class ChromaButton extends BButton {
     }
     /**
      * Constructor
-     * @param imagePath
+     * @param imagePath 
      * @param chroma
-     * @param icon
+     * @param icon 
      * @param action 
      */
     public ChromaButton(String imagePath, ColorRGBA chroma, BIcon icon, String action) {
@@ -54,11 +54,11 @@ public class ChromaButton extends BButton {
     }
     /**
      * Constructor
-     * @param imagePath
-     * @param chroma
-     * @param text
-     * @param listener
-     * @param action 
+     * @param imagePath Path to icon
+     * @param chroma Button color
+     * @param text Button text/label
+     * @param listener Button action listener
+     * @param action Button action
      */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text, ActionListener listener, String action) {
         super(text, listener, action);
@@ -67,10 +67,10 @@ public class ChromaButton extends BButton {
     }
     /**
      * Constructor
-     * @param imagePath
-     * @param chroma
-     * @param text
-     * @param action 
+     * @param imagePath Path to icon
+     * @param chroma Button color
+     * @param text Button label/text
+     * @param action Button action
      */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text, String action) {
         super(text, action);
@@ -79,9 +79,9 @@ public class ChromaButton extends BButton {
     }
     /**
      * Constructor
-     * @param imagePath
-     * @param chroma
-     * @param text 
+     * @param imagePath Path to button icon
+     * @param chroma Button color
+     * @param text Button label
      */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text) {
         super(text);
@@ -89,7 +89,8 @@ public class ChromaButton extends BButton {
         setChroma(chroma);
     }
     /**
-     * 
+     * Sets button color to chroma. Only works if button doesn't have a color and
+     * the current color is not equal to chroma
      * @param chroma 
      */
     public void setChroma(ColorRGBA chroma) {
@@ -103,7 +104,7 @@ public class ChromaButton extends BButton {
         }
     }
     /**
-     * 
+     * Updates button image, background when color is changed. 
      */
     private void updateChroma() {
         String imageSuffix[] = new String[]{
@@ -155,7 +156,9 @@ public class ChromaButton extends BButton {
         updateChroma();
     }
     /**
-     * 
+     * Used for changing the color of the button from the basic blue. Shifts
+     * button color through hueShift, brightnessShift and saturationShift in HSB
+     * space
      * @param image
      * @param hueShift
      * @param brightnessShift
@@ -201,7 +204,7 @@ public class ChromaButton extends BButton {
 
     }
     /**
-     * 
+     * Finds amount of shift between base color (RBG [59, 96, 161]) and the current color
      */
     private void calculateShift() {
 
