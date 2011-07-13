@@ -34,23 +34,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * This is the UI section that contains the problem knowns
  * @author Calvin Ashmore
  */
 public class KnownsContainer extends BContainer implements SolveListener {
-
+    /**
+     * Constructor. Has a table layout and listens for a solve event with SolveListener
+     */
     public KnownsContainer() {
-
         // columns, row gap, column gap
         TableLayout layout = new TableLayout(2, 5, 5);
         setLayoutManager(layout);
-
         setStyleClass("sidebar_container");
-
         StaticsApplication.getApp().addSolveListener(this);
         updateView();
     }
-
+    /**
+     * 
+     */
     protected void handleConnector(Connector connector, List<Connector2ForceMember2d> handledConnectors) {
         // iterate through reactions at joint
         if (connector instanceof Connector2ForceMember2d) {
@@ -65,7 +66,9 @@ public class KnownsContainer extends BContainer implements SolveListener {
             }
         }
     }
-
+    /**
+     * 
+     */
     private void updateView() {
 
         removeAll();
@@ -80,7 +83,12 @@ public class KnownsContainer extends BContainer implements SolveListener {
             checkObject(obj, handledConnectors);
         }
     }
-
+    /**
+     * Sees what type of object obj is (Connector, Load, Body, ConstantObject,
+     * CentroidBody, or Point, and calls the appropriate handler
+     * @param obj 
+     * @param handledConnectors 
+     */
     protected void checkObject(SimulationObject obj, List<Connector2ForceMember2d> handledConnectors) {
 
         // look at joints, specifically
@@ -125,7 +133,11 @@ public class KnownsContainer extends BContainer implements SolveListener {
 //            writeCentroidPartObject(cpo);
 //        }
     }
-
+    /**
+     * Adds point name and position as label to container
+     * @param point
+     * @param findPointsDiagram 
+     */
     protected void writePoint(Point point, FindPointsDiagram findPointsDiagram) {
         //******8
         BLabel label = new BLabel("@=b("+point.getName()+")");
@@ -133,7 +145,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
         label = new BLabel(point.getPosition().toString());
         add(label);
     }
-
+    /**
+     * Writes the weight reaction of body to the container
+     * @param body 
+     */
     protected void writeWeightReaction(Body body) {
         if (body.getWeight().doubleValue() == 0) {
             return;
@@ -150,7 +165,11 @@ public class KnownsContainer extends BContainer implements SolveListener {
         label = new BLabel(body.getWeight().toString());
         add(label);
     }
-
+    /**
+     * Writes type of connector member (cable, bar), name of reactions, whether member is 
+     * in tension or compression to knowns container
+     * @param connector 
+     */
     protected void writeReaction2FM(Connector2ForceMember2d connector) {
 
         TwoForceMember member = connector.getMember();
@@ -164,71 +183,62 @@ public class KnownsContainer extends BContainer implements SolveListener {
         } else {
             text1 = "??? ";
         }
-
         text1 += member.getConnector1().getAnchor().getName()
                 + member.getConnector2().getAnchor().getName();
 
         // this is the vector value for the 2fm
         Vector reaction = connector.getReactions(member).get(0);
-
         AnchoredVector reaction1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(connector.getAnchor(), reaction), connector);
         if (reaction1 != null) {
             reaction = reaction1.getVector();
         }
-
         text1 += " @=b#ff0000(" + reaction.getSymbolName() + ")";
-
         String tensionOrCompression;
         if (connector.inTension()) {
             tensionOrCompression = "tension";
         } else {
             tensionOrCompression = "compression";
         }
-
         String value = reaction.getQuantity().toStringDecimal() + reaction.getUnit().getSuffix();
-
         String text2 = value + " " + tensionOrCompression;
-
         BLabel label1 = new BLabel(text1);
         BLabel label2 = new BLabel(text2);
-
         add(label1);
         add(label2);
     }
-
+    /**
+     * Writes name, coords of load, if load is known
+     */
     protected void writeReaction(Vector load, Point applicationPoint, Connector connector) {
-
         AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), null);
         if (load1 != null) {
             load = load1.getVector();
         }
-
         writeReaction(load, applicationPoint, connector, load.getSymbolName());
     }
-
+    /**
+     * Writes name and quantity of constObj to knowns container
+     * @param constObj 
+     */
     protected void writeConstantObject(ConstantObject constObj) {
-
         // only write known constants
         if (!constObj.getQuantity().isKnown()) {
             return;
         }
-
         BLabel label1 = new BLabel(constObj.getName());
         BLabel label2 = new BLabel(constObj.getQuantity().toString());
-
         add(label1);
         add(label2);
     }
-
+    /**
+     * Adds name, surface area and centroid coordinates of cb to the container
+     */
     protected void writeCentroidBody(CentroidBody cb) {
         CentroidDiagram cDiagram = (CentroidDiagram) Exercise.getExercise().getDiagram(cb, CentroidMode.instance.getDiagramType());
-
         BigDecimal surfaceArea = new BigDecimal("0.0");
-
         for (CentroidPartObject cpo : cb.getParts()) {
             surfaceArea = surfaceArea.add(cpo.getCentroidPart().getSurfaceArea());
         }
-
         if (cDiagram != null && cDiagram.getCurrentState() != null && cDiagram.isSolved()) {
             BLabel label1 = new BLabel(" @=b#ff0000(" + cb.getName() + ")");
             BLabel label2 = new BLabel("Surface area: @=b(" + surfaceArea + ")");
@@ -264,6 +274,13 @@ public class KnownsContainer extends BContainer implements SolveListener {
 //            add(label4);
 ////        }
 //    }
+    /**
+     * Adds load to list of knowns and updates labels with position, coordinates, if load is known
+     * @param load
+     * @param applicationPoint
+     * @param connector
+     * @param name 
+     */
     protected void writeReaction(Vector load, Point applicationPoint, Connector connector, String name) {
         if (!isGivenLoad(load) || load.isSymbol()) {
             AnchoredVector load1 = Exercise.getExercise().getSymbolManager().getLoad(new AnchoredVector(applicationPoint, load), connector);
@@ -271,27 +288,25 @@ public class KnownsContainer extends BContainer implements SolveListener {
                 load = load1.getVector();
             }
         }
-
         if (load.isSymbol() && !load.isKnown()) {
             return;
         }
-
         String text1 = load.getUnit().name() + " ";
         text1 += "@=b#ff0000(" + name + ")";
-
         if (applicationPoint != null) {
             text1 += " at @=b(" + applicationPoint.getName() + "): ";
         }
-
         String text2 = load.getQuantity().toStringDecimal() + load.getUnit().getSuffix();
-
         BLabel label1 = new BLabel(text1);
         BLabel label2 = new BLabel(text2);
-
         add(label1);
         add(label2);
     }
-
+    /**
+     * Returns true if load was given
+     * @param load
+     * @return 
+     */
     protected boolean isGivenLoad(Vector load) {
         for (Body body : Exercise.getExercise().getSchematic().allBodies()) {
             for (SimulationObject obj : body.getAttachedObjects()) {
@@ -302,15 +317,22 @@ public class KnownsContainer extends BContainer implements SolveListener {
         }
         return false;
     }
-
+    /**
+     * 
+     */
     public void update() {
         updateView();
     }
-
+    /**
+     * 
+     */
     public void onLoadSolved(Load load) {
         update();
     }
-
+    /**
+     * 
+     * @param joint 
+     */
     public void onJointSolved(Connector joint) {
         update();
     }

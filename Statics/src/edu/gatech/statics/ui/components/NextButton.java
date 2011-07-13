@@ -18,26 +18,53 @@ public class NextButton extends ChromaButton {
     private static final String imagePath = "rsrc/interfaceTextures/button";
     private static final ColorRGBA chroma = new ColorRGBA(83f / 255, 242f / 255, 53f / 255, 1);
 
+    /**
+     * Constructor. Set button label to text
+     * @param text 
+     */
     public NextButton(String text) {
         super(imagePath, chroma, text);
     }
-
+    /**
+     * Constructor. Set button label to text and action to action
+     * @param text
+     * @param action 
+     */
     public NextButton(String text, String action) {
         super(imagePath, chroma, text, action);
     }
-
+    /**
+     * Constructor. Set button label to text, listener listens for action
+     * @param text
+     * @param listener
+     * @param action 
+     */
     public NextButton(String text, ActionListener listener, String action) {
         super(imagePath, chroma, text, listener, action);
     }
-
+    /**
+     * Constructor. Set button icon to icon, and perform action
+     * @param icon
+     * @param action 
+     */
     public NextButton(BIcon icon, String action) {
         super(imagePath, chroma, icon, action);
     }
-
+    /**
+     * Constructor. Set button icon to icon, listener listens for action
+     * @param icon
+     * @param listener
+     * @param action 
+     */
     public NextButton(BIcon icon, ActionListener listener, String action) {
         super(imagePath, chroma, icon, listener, action);
     }
-
+    /**
+     * Gets a Dimension with width and height, whint and hhint
+     * @param whint
+     * @param hhint
+     * @return 
+     */
     @Override
     public Dimension getPreferredSize(int whint, int hhint) {
         Dimension preferredSize = super.getPreferredSize(whint, hhint);

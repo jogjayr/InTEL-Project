@@ -23,6 +23,11 @@ public class DraggablePopupWindow extends BPopupWindow {
     private MouseListener dragControl;
     private static final int WINDOW_TOLERANCE = 10;
 
+    /**
+     * Constructor
+     * @param parentWindow
+     * @param layout 
+     */
     public DraggablePopupWindow(BWindow parentWindow, BLayoutManager layout) {
         super(parentWindow, layout);
         dragControl = new DragController();
@@ -30,38 +35,61 @@ public class DraggablePopupWindow extends BPopupWindow {
 
         setStyleClass("application_popup");
     }
-
+    /**
+     * Adds a drag event handler
+     * @param component 
+     */
     protected void addDragHandle(BComponent component) {
         component.addListener(dragControl);
     }
-
+    /**
+     * 
+     */
     private class DragController implements MouseListener, MouseMotionListener {
 
         private boolean dragging;
         private int mouseX;
         private int mouseY;
-
+        /**
+         * Handles mouse press event. Starts dragging
+         * @param event 
+         */
         public void mousePressed(MouseEvent event) {
             dragging = true;
             mouseX = event.getX();
             mouseY = event.getY();
         }
-
+        /**
+         * Handles mouse release event. Stops dragging
+         * @param event 
+         */
         public void mouseReleased(MouseEvent event) {
             dragging = false;
         }
-
+        /**
+         * 
+         * @param event 
+         */
         public void mouseEntered(MouseEvent event) {
         }
-
+        /**
+         * 
+         * @param event 
+         */
         public void mouseExited(MouseEvent event) {
         }
-
+        /**
+         * Handles mouse move event. 
+         * @param event 
+         */
         public void mouseMoved(MouseEvent event) {
             if(!MouseInput.get().isButtonDown(0))
                 dragging = false;
         }
-
+        /**
+         * Handles mouse dragging event. Checks the boundary so the window can't be moved off screen
+         * @param event 
+         */
         public void mouseDragged(MouseEvent event) {
             
             if(!dragging)

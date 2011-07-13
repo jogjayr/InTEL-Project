@@ -38,6 +38,10 @@ public class ApplicationBar extends BWindow {
     private BLabel feedbackLabel;
     private BContainer sideBox;
 
+    /**
+     * Setter
+     * @param feedback 
+     */
     public void setUIFeedback(String feedback) {
         feedbackLabel.setText(feedback);
         //updateSize();
@@ -49,6 +53,10 @@ public class ApplicationBar extends BWindow {
 //    public void setAdvice(String advice) {
 //        adviceBox.setContents(advice);
 //    }
+    /**
+     * Getter
+     * @return 
+     */
     public ApplicationModePanel getModePanel() {
         return modePanel;
     }
@@ -101,6 +109,9 @@ public class ApplicationBar extends BWindow {
         updateSize();
     }
 
+    /**
+     * Resizes application window
+     */
     public void updateSize() {
         // this is where a size change animation would occur
         //pack();
@@ -153,6 +164,9 @@ public class ApplicationBar extends BWindow {
 //            }
 //        }
 //    }
+    /**
+     * Constructor. Creates application bar with BorderLayout, adds various containers and feedback labels
+     */
     public ApplicationBar() {
         super(InterfaceRoot.getInstance().getStyle(), new BorderLayout(0, 2));
 
@@ -188,6 +202,10 @@ public class ApplicationBar extends BWindow {
         //setPreferredSize(DisplaySystem.getDisplaySystem().getWidth(), APPLICATION_BAR_HEIGHT);
     }
 
+    /**
+     * Creates a new BContainer as diagramBox
+     * @return 
+     */
     private BContainer createDiagramBox() {
         diagramBox = new BContainer(new BorderLayout());
         diagramBox.setStyleClass("advice_box"); // this will change.
@@ -195,6 +213,10 @@ public class ApplicationBar extends BWindow {
         return diagramBox;
     }
 
+    /**
+     * Creates a new BContainer and puts in BButtons for Undo and Redo
+     * @return 
+     */
     private BContainer createUndoRedoBox() {
 
         BContainer inner = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
@@ -239,7 +261,10 @@ public class ApplicationBar extends BWindow {
 //            }
 //        }
 //    }
-
+    /**
+     * Enables or disables the undo and redo buttons based on whether the mode panel and
+     * the diagram exist
+     */
     public void updateUndoRedoState() {
         if (getModePanel() == null || getModePanel().getDiagram() == null) {
             undoButton.setEnabled(false);
@@ -249,7 +274,9 @@ public class ApplicationBar extends BWindow {
         undoButton.setEnabled(getModePanel().getDiagram().canUndo());
         redoButton.setEnabled(getModePanel().getDiagram().canRedo());
     }
-
+    /**
+     * 
+     */
     private final class UndoRedoListener implements ActionListener {
 
         public void actionPerformed(ActionEvent event) {

@@ -13,15 +13,18 @@ import edu.gatech.statics.ui.sidebar.Sidebar;
  * @author Calvin Ashmore
  */
 public class KnownsSidebarWindow extends SidebarWindow {
-
+    /**
+     * Constructor
+     */
     public KnownsSidebarWindow() {
         super(new BorderLayout(), "Knowns");
-
         getContentContainer().add(createKnownsContainer(), BorderLayout.CENTER);
-
         setPreferredSize(Sidebar.WIDTH, -1);
     }
-
+    /**
+     * 
+     * @return new KnownsContainer
+     */
     protected KnownsContainer createKnownsContainer() {
         return new KnownsContainer();
     }

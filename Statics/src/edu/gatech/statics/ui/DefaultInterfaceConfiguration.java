@@ -16,18 +16,22 @@ import edu.gatech.statics.ui.windows.knownforces.KnownsSidebarWindow;
 import edu.gatech.statics.ui.windows.navigation.CameraControl;
 import edu.gatech.statics.ui.windows.navigation.DiagramDisplayCalculator;
 import edu.gatech.statics.ui.windows.navigation.Navigation2DWindow;
-
 import edu.gatech.statics.ui.windows.navigation.NavigationWindow;
 import edu.gatech.statics.ui.windows.navigation.ViewConstraints;
 import edu.gatech.statics.ui.windows.tasks.TasksSidebarWindow;
 import java.util.List;
 
 /**
- *
+ * This class represents the default UI configuration for any problem. It adds
+ * a SelectModePanel, FBDModePanel and EquationModePanel, display names, a CoordinateSystemWindow
+ * NavigationWindow, ViewConstraints, a DisplayCalculator and a Sidebar
  * @author Calvin Ashmore
  */
 public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguration {
 
+    /**
+     * Constructor
+     */
     public DefaultInterfaceConfiguration() {
 
         //createPopupWindows();
@@ -84,6 +88,10 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
 ////        popups.add(selectFBDWindow);
 //
 //    }
+    /**
+     * Adds a TasksSidebarWindow and KnownsSidebarWindow to a Sidebar and returns it
+     * @return 
+     */
     public Sidebar createSidebar() {
         Sidebar sidebar = new Sidebar();
         sidebar.addWindow(new TasksSidebarWindow());
@@ -92,6 +100,9 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         return sidebar;
     }
 
+    /**
+     * Adds a SelectModePanel, FBDModePanel and EquationModePanel
+     */
     public void createModePanels() {
         List<ApplicationModePanel> r = getModePanels();
         r.add(new SelectModePanel());
@@ -102,22 +113,37 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
     //public String getDefaultModePanelName() {
     //    return SelectModePanel.panelName;
     //}
+    /**
+     * Returns a new Navigation2DWindow
+     * @return 
+     */
     public NavigationWindow createNavigationWindow() {
         return new Navigation2DWindow();
     }
 
   
-
+    /**
+     * 
+     * @return a new SimpleCoordinateSystemWindow 
+     */
     public CoordinateSystemWindow createCoordinateSystemWindow() {
         return new SimpleCoordinateSystemWindow();
     }
 
+    /**
+     * Adds "measurements, "real world" and "schematic" to the displayNames
+     */
     public void createDisplayNames() {
         getDisplayNames().add("measurements");
         getDisplayNames().add("real world");
         getDisplayNames().add("schematic");
     }
 
+    /**
+     * 
+     * @return new ViewConstraints with PositionConstraints(-20, 20, -20, 20)
+     * ZoomConstraints(.5f, 2) and RotationConstraints(-1f, 1f)
+     */
     public ViewConstraints createViewConstraints() {
         ViewConstraints constraints = new ViewConstraints();
 
@@ -128,6 +154,10 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         return constraints;
     }
 
+    /**
+     * Sets pan speed, zoom speed and rotate speed of cameraControl
+     * @param cameraControl 
+     */
     public void setupCameraControl(CameraControl cameraControl) {
         //cameraControl.setInitialState(xpos, ypos, yaw, pitch, zoom);
         //cameraControl.setRotationCenter(rotationCenter);
@@ -137,6 +167,10 @@ public class DefaultInterfaceConfiguration extends AbstractInterfaceConfiguratio
         cameraControl.setMovementSpeed(getPanSpeed(), getZoomSpeed(), getRotateSpeed());
     }
 
+    /**
+     * 
+     * @return new DiagramDisplayCalculator
+     */
     public DiagramDisplayCalculator createDisplayCalculator() {
         return new DiagramDisplayCalculator();
     }

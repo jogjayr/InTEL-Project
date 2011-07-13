@@ -11,19 +11,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 
  * @author Calvin Ashmore
  */
 public class ModalPopupWindow extends BPopupWindow {
 
     private static Map<Class, ModalPopupWindow> instances = new HashMap<Class, ModalPopupWindow>();
-
+    /**
+     * Constructor
+     * @param layout 
+     */
     public ModalPopupWindow(BLayoutManager layout) {
         super(InterfaceRoot.getInstance().getMenuBar(), layout);
         setModal(true);
         InterfaceRoot.getInstance().setModalWindow(this);
     }
-
+    /**
+     * Creates a popup at position x, y and if above, then above the current window
+     * @param x
+     * @param y
+     * @param above 
+     */
     @Override
     public void popup(int x, int y, boolean above) {
 
@@ -35,7 +43,9 @@ public class ModalPopupWindow extends BPopupWindow {
 
         instances.put(getClass(), this);
     }
-
+    /**
+     * Handles dialog dismiss
+     */
     @Override
     public void dismiss() {
         super.dismiss();

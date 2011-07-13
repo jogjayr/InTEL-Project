@@ -25,7 +25,9 @@ public class FeedbackWindow extends AppWindow {
 
     public static final int WIDTH = 200;
     private HTMLView view;
-
+    /**
+     * Constructor. Sets BorderLayout, creates title "Feedback", closeButton
+     */
     public FeedbackWindow() {
         super(new BorderLayout());
 
@@ -68,14 +70,19 @@ public class FeedbackWindow extends AppWindow {
             }
         });
     }
-
+    /**
+     * Handles the close button press event
+     */
     private void closePressed() {
         // close
         if (InterfaceRoot.getInstance().getBuiNode().getWindows().contains(this)) {
             InterfaceRoot.getInstance().getBuiNode().removeWindow(this);
         }
     }
-
+    /**
+     * Sets the window's content to feedback
+     * @param feedback 
+     */
     public void setFeedback(String feedback) {
 
         if (!InterfaceRoot.getInstance().getBuiNode().getWindows().contains(this)) {

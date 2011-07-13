@@ -25,6 +25,10 @@ public class MainTab extends BContainer {
     // The type of the active diagram corresponding to this key may change over time, though.
     private ChromaButton button;
 
+    /**
+     * Constructor
+     * @param diagram 
+     */
     public MainTab(Diagram diagram) {
         super(new BorderLayout());
         this.diagramKey = diagram.getKey();
@@ -56,6 +60,9 @@ public class MainTab extends BContainer {
         // change style
     }
 
+    /**
+     * Handles click event on the main tab. 
+     */
     private void onClicked() {
         //StaticsApplication.getApp().get
         //Diagram recentDiagram = Exercise.getExercise().getRecentDiagram(diagramKey);
@@ -64,6 +71,10 @@ public class MainTab extends BContainer {
         updateLabel(diagram);
     }
 
+    /**
+     * Sets button text to name of diagram
+     * @param diagram 
+     */
     void updateLabel(Diagram diagram) {
 
         button.setText(diagram.getName());
@@ -73,10 +84,18 @@ public class MainTab extends BContainer {
         //label.setText(diagram.toString());
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     DiagramKey getDiagramKey() {
         return diagramKey;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     DiagramType getDiagramType() {
         return diagramType;
     }

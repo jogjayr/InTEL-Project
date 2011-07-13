@@ -21,6 +21,9 @@ public class DemoGame extends SimpleGame {
 
     InterfaceRoot iRoot;
 
+    /**
+     * 
+     */
     @Override
     protected void simpleInitGame() {
 
@@ -56,6 +59,9 @@ public class DemoGame extends SimpleGame {
     }
 
 
+    /**
+     * 
+     */
     @Override
     protected void simpleUpdate() {
         super.simpleUpdate();
@@ -63,6 +69,10 @@ public class DemoGame extends SimpleGame {
         iRoot.update();
     }
     
+    /**
+     * 
+     * @throws JmeException 
+     */
     @Override
     protected void initSystem() throws JmeException {
         super.initSystem();

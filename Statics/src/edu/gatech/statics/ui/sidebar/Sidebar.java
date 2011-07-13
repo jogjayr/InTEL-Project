@@ -17,7 +17,7 @@ import edu.gatech.statics.ui.InterfaceRoot;
 import edu.gatech.statics.ui.maintabbar.MainTabBar;
 
 /**
- *
+ * 
  * @author Calvin Ashmore
  */
 public class Sidebar extends AppWindow {
@@ -25,7 +25,9 @@ public class Sidebar extends AppWindow {
     public static final int WIDTH = 200;
     private BContainer mainContainer;
     BScrollPane scrollPane;
-
+    /**
+     * Constructor. Creates a new BContainer, and puts a BScrollPane inside it, with a BorderLayout
+     */
     public Sidebar() {
         //super(GroupLayout.makeVert(GroupLayout.TOP));
         super(new BorderLayout());
@@ -39,12 +41,17 @@ public class Sidebar extends AppWindow {
         add(scrollPane, BorderLayout.CENTER);
         //add(mainContainer, BorderLayout.CENTER);
     }
-
+    /**
+     * Adds a SidebarWindow to the mainContainer
+     * @param window 
+     */
     public void addWindow(SidebarWindow window) {
         mainContainer.add(window);
         window.setSize(WIDTH, -1);
     }
-
+    /**
+     * Resizes sidebar
+     */
     public void adjustSize() {
         int allowedHeight = DisplaySystem.getDisplaySystem().getHeight();
         allowedHeight -= MainTabBar.MAIN_TAB_BAR_HEIGHT;
@@ -71,7 +78,11 @@ public class Sidebar extends AppWindow {
         remove(scrollPane);
         add(scrollPane, BorderLayout.CENTER);
     }
-
+    /**
+     * Replaces window of class windowType with window
+     * @param windowType
+     * @param window 
+     */
     public void replaceWindow(Class windowType, SidebarWindow window) {
 
         BComponent toReplace = null;

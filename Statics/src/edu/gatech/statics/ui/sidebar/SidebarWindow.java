@@ -20,7 +20,11 @@ public class SidebarWindow extends BContainer {
     private BContainer titleContainer;
     private BLabel titleLabel;
     private BContainer contentContainer;
-
+    /**
+     * Constructor
+     * @param layout
+     * @param title 
+     */
     public SidebarWindow(BLayoutManager layout, String title) {
         super(new BorderLayout());
 
@@ -35,11 +39,17 @@ public class SidebarWindow extends BContainer {
         add(titleContainer, BorderLayout.NORTH);
         add(contentContainer, BorderLayout.CENTER);
     }
-
+    /**
+     * Getter
+     * @return 
+     */
     public BLabel getTitleLabel() {
         return titleLabel;
     }
-
+    /**
+     * Getter
+     * @return 
+     */
     protected BContainer getContentContainer() {
         return contentContainer;
     }

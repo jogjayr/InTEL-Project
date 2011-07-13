@@ -67,14 +67,26 @@ public class InterfaceRoot {
     private Sidebar sidebar;
     private FeedbackWindow feedbackWindow;
 
+    /**
+     * Getter
+     * @return 
+     */
     public InterfaceConfiguration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public InputHandler getInput() {
         return input;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Timer getTimer() {
         return timer;
     }
@@ -82,38 +94,74 @@ public class InterfaceRoot {
 //    public List<TitledDraggablePopupWindow> getAllPopupWindows() {
 //        return allPopupWindows;
 //    }
+    /**
+     * Getter
+     * @return 
+     */
     public List<ApplicationModePanel> getAllModePanels() {
         return Collections.unmodifiableList(allModePanels);
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public PolledRootNode getBuiNode() {
         return buiNode;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public static InterfaceRoot getInstance() {
         return instance;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public BStyleSheet getStyle() {
         return style;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public ApplicationBar getApplicationBar() {
         return applicationBar;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public MainTabBar getMenuBar() {
         return mainTabBar;
     }
 
+    /**
+     * Setter
+     * @param window 
+     */
     public void setModalWindow(ModalPopupWindow window) {
         this.modalWindow = window;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public ModalPopupWindow getModalWindow() {
         return modalWindow;
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public CameraControl getCameraControl() {
         return cameraControl;
     }
@@ -213,6 +261,9 @@ public class InterfaceRoot {
         input.addAction(load, "Load", KeyInput.KEY_F10, false);
     }
 
+    /**
+     * 
+     */
     private void setupDisplayControls() {
         InputAction toggleLabels = new InputAction() {
 
@@ -231,6 +282,10 @@ public class InterfaceRoot {
         input.addAction(toggleInterface, "ToggleInterface", KeyInput.KEY_F12, false);
     }
 
+    /**
+     * Loads configuration
+     * @param configuration 
+     */
     public void loadConfiguration(InterfaceConfiguration configuration) {
         if (this.configuration != null) {
             throw new IllegalStateException("Attempting to load a configuration while existing configuration is loaded");
@@ -308,6 +363,9 @@ public class InterfaceRoot {
         coordinatesWindow.setLocation(5, 200 + navWindow.getPreferredSize(-1, -1).height + 10 );
     }
 
+    /**
+     * Sets all configuration elements (modepanels, cameracontrol etc to null)
+     */
     public void unloadConfiguration() {
 
         // CLEAR POPUPS
@@ -336,11 +394,18 @@ public class InterfaceRoot {
         this.configuration = null;
     }
 
+    /**
+     * 
+     * @param windowName 
+     */
     public void togglePopupVisibility(String windowName) {
         BPopupWindow popup = popupWindows.get(windowName);
         popup.setVisible(!popup.isVisible());
     }
 
+    /**
+     * 
+     */
     protected void createWindows() {
         // CREATE MENU BAR
 //        menuBar = new TopMenuBar();
@@ -391,6 +456,10 @@ public class InterfaceRoot {
     }
     }
     }*/
+    /**
+     * 
+     * @return 
+     */
     public boolean hasMouse() {
         if (modalWindow != null) {
             return true;
@@ -405,6 +474,9 @@ public class InterfaceRoot {
         return false;
     }
 
+    /**
+     * 
+     */
     public void update() {
         //checkBrowsePopupMenu();
     }

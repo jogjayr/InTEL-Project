@@ -26,18 +26,24 @@ public class CoordinateSystem3DWindow extends CoordinateSystemWindow {
 
     private MainComponent mainComponent;
     private static final int WINDOW_SIZE = 100;
-
+    /**
+     * Constructor. 
+     */
     public CoordinateSystem3DWindow() {
 
         add(mainComponent = new MainComponent(), BorderLayout.CENTER);
         mainComponent.setPreferredSize(WINDOW_SIZE, WINDOW_SIZE);
     }
-
+    /**
+     * 
+     */
     private class MainComponent extends BContainer {
 
         private BLabel yLabel;
         private BLabel xLabel;
-
+        /**
+         * Constructor
+         */
         public MainComponent() {
             setLayoutManager(new AbsoluteLayout());
             xLabel = new BLabel("x");
@@ -46,7 +52,10 @@ public class CoordinateSystem3DWindow extends CoordinateSystemWindow {
             add(xLabel, new Point(0, 0));
             add(yLabel, new Point(0, 0));
         }
-
+        /**
+         * Renders the axes
+         * @param renderer 
+         */
         @Override
         public void render(Renderer renderer) {
             super.render(renderer);

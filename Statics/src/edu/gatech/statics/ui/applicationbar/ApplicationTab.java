@@ -10,7 +10,7 @@ import com.jmex.bui.BLabel;
 import com.jmex.bui.background.TintedBackground;
 
 /**
- *
+ * Represents a tab in the UI. For switching modes
  * @author Calvin Ashmore
  */
 public class ApplicationTab extends BLabel {
@@ -27,6 +27,10 @@ public class ApplicationTab extends BLabel {
     
     private boolean enabled, active;
     
+    /**
+     * Constructor. Tab is labeled text
+     * @param text 
+     */
     public ApplicationTab(String text) {
         super(text);
         setStyleClass("application_tab");
@@ -35,6 +39,10 @@ public class ApplicationTab extends BLabel {
         //setBackground(new TintedBackground(BACKGROUND_DISABLED));
     }
 
+    /**
+     * Sets this tab's active to active
+     * @param active 
+     */
     void setActive(boolean active) {
         this.active = active;
         if(active) {
@@ -47,6 +55,10 @@ public class ApplicationTab extends BLabel {
         invalidate();
     }
     
+    /**
+     * Sets tab enabled to enabled
+     * @param enabled 
+     */
     void setTabEnabled(boolean enabled) {
         this.enabled = enabled;
         if(enabled) {

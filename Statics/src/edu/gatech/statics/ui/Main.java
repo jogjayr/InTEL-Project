@@ -6,7 +6,7 @@
 package edu.gatech.statics.ui;
 
 /**
- *
+ * 
  * @author Calvin Ashmore
  */
 public class Main {

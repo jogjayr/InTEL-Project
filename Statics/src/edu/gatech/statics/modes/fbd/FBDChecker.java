@@ -45,7 +45,11 @@ public class FBDChecker {
     protected FreeBodyDiagram getDiagram() {
         return diagram;
     }
-
+    
+    /**
+     * Constructor
+     * @param diagram Diagram to check
+     */
     public FBDChecker(FreeBodyDiagram diagram) {
         this.diagram = diagram;
     }
@@ -53,7 +57,7 @@ public class FBDChecker {
     /**
      * Get all of the symbolic measurements in the schematic, for making sure their names
      * do are not being used for AnchoredVectors.
-     * @return
+     * @return 
      */
     private List<Measurement> getSymbolicMeasurements() {
         List<Measurement> m = new ArrayList<Measurement>();
@@ -143,6 +147,9 @@ public class FBDChecker {
         }
     }
 
+
+
+
     /**
      * Logs info from connectorResult, after checking the type of result,
      * connector, userAnchoredVectorsAtConnector and body. For example,
@@ -155,6 +162,7 @@ public class FBDChecker {
      * @param body
      * @return
      */
+
     private boolean reportConnectorResult(ConnectorCheckResult connectorResult, Connector connector, List<AnchoredVector> userAnchoredVectorsAtConnector, Body body) {
         switch (connectorResult) {
             case passed:
@@ -253,6 +261,11 @@ public class FBDChecker {
         return true;
     }
 
+    /**
+     * 
+     * @param key
+     * @param parameters 
+     */
     private void setAdviceKey(String key, Object... parameters) {
         if (verbose) {
             StaticsApplication.getApp().setStaticsFeedbackKey(key, parameters);

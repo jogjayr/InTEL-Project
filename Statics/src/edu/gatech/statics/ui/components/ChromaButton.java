@@ -27,42 +27,74 @@ public class ChromaButton extends BButton {
     private float hueShift;
     private float saturationShift;
     private float brightnessShift;
-
+    /**
+     * Constructor
+     * @param imagePath
+     * @param chroma
+     * @param icon
+     * @param listener
+     * @param action 
+     */
     public ChromaButton(String imagePath, ColorRGBA chroma, BIcon icon, ActionListener listener, String action) {
         super(icon, listener, action);
         this.imagePath = imagePath;
         setChroma(chroma);
     }
-
+    /**
+     * Constructor
+     * @param imagePath
+     * @param chroma
+     * @param icon
+     * @param action 
+     */
     public ChromaButton(String imagePath, ColorRGBA chroma, BIcon icon, String action) {
         super(icon, action);
         this.imagePath = imagePath;
         setChroma(chroma);
     }
-
+    /**
+     * Constructor
+     * @param imagePath
+     * @param chroma
+     * @param text
+     * @param listener
+     * @param action 
+     */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text, ActionListener listener, String action) {
         super(text, listener, action);
         this.imagePath = imagePath;
         setChroma(chroma);
     }
-
+    /**
+     * Constructor
+     * @param imagePath
+     * @param chroma
+     * @param text
+     * @param action 
+     */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text, String action) {
         super(text, action);
         this.imagePath = imagePath;
         setChroma(chroma);
     }
-
+    /**
+     * Constructor
+     * @param imagePath
+     * @param chroma
+     * @param text 
+     */
     public ChromaButton(String imagePath, ColorRGBA chroma, String text) {
         super(text);
         this.imagePath = imagePath;
         setChroma(chroma);
     }
-
+    /**
+     * 
+     * @param chroma 
+     */
     public void setChroma(ColorRGBA chroma) {
-
         // only update if the color is non-null and actually different.
         if (chroma != null && !chroma.equals(this.chroma)) {
-
             this.chroma = chroma;
             calculateShift();
             if (isAdded()) {
@@ -70,7 +102,9 @@ public class ChromaButton extends BButton {
             }
         }
     }
-
+    /**
+     * 
+     */
     private void updateChroma() {
         String imageSuffix[] = new String[]{
             "_up.png",
@@ -111,14 +145,22 @@ public class ChromaButton extends BButton {
             throw new RuntimeException("Can't seem to load the image: " + imagePath);
         }
     }
-
+    /**
+     * 
+     */
     @Override
     protected void wasAdded() {
         super.wasAdded();
 
         updateChroma();
     }
-
+    /**
+     * 
+     * @param image
+     * @param hueShift
+     * @param brightnessShift
+     * @param saturationShift 
+     */
     private void performChromaShift(BufferedImage image, float hueShift, float brightnessShift, float saturationShift) {
 
         int w = image.getWidth();
@@ -158,7 +200,9 @@ public class ChromaButton extends BButton {
         }
 
     }
-
+    /**
+     * 
+     */
     private void calculateShift() {
 
         //int argbBase = 0xff3b60a1;

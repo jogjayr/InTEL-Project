@@ -25,7 +25,9 @@ public class DescriptionWindow extends TitledDraggablePopupWindow implements Tas
     }
     
     private HTMLView description;
-    
+    /**
+     * Constructor
+     */
     public DescriptionWindow() {
         super(new BorderLayout(), "Description");
         
@@ -37,29 +39,42 @@ public class DescriptionWindow extends TitledDraggablePopupWindow implements Tas
         getContentContainer().add(description, BorderLayout.CENTER);
     }
     
-
+    /**
+     * Creates popup window at x, y according to above
+     * @param x
+     * @param y
+     * @param above 
+     */
     @Override
     public void popup(int x, int y, boolean above) {
         super.popup(x, y, above);
         StaticsApplication.getApp().getExercise().addTaskListener(this);
     }
-
+    /**
+     * Dismisses DescriptionWindow
+     */
     @Override
     public void dismiss() {
         super.dismiss();
         StaticsApplication.getApp().getExercise().removeTaskListener(this);
     }
-    
+    /**
+     * 
+     */
     public void update() {
         //description.setContents(StaticsApplication.getApp().getExercise().getFullDescription());
     }
-    
+    /**
+     * 
+     * @param task 
+     */
     public void taskSatisfied(Task task) {
         update();
     }
-
+    /**
+     * 
+     */
     public void tasksChanged() {
         update();
     }
-    
 }

@@ -23,27 +23,52 @@ public class RepeatingButton extends BButton {
 
     private static final int period = 50;
     private static final TimeUnit timeUnit = TimeUnit.MILLISECONDS;
-    
+    /**
+     * Constructor. Set button label to text
+     * @param text 
+     */
     public RepeatingButton(String text) {
         super(text);
     }
-
+    /**
+     * Constructor. Set button label to text and action to action
+     * @param text
+     * @param action 
+     */
     public RepeatingButton(String text, String action) {
         super(text, action);
     }
-
+    /**
+     * Constructor. Set button label to text, listener listens for action
+     * @param text
+     * @param listener
+     * @param action 
+     */
     public RepeatingButton(String text, ActionListener listener, String action) {
         super(text, listener, action);
     }
-
+    /**
+     * Constructor. Set button icon to icon, and perform action
+     * @param icon
+     * @param action 
+     */
     public RepeatingButton(BIcon icon, String action) {
         super(icon, action);
     }
-
+    /**
+     * Constructor. Set button icon to icon, listener listens for action
+     * @param icon
+     * @param listener
+     * @param action 
+     */
     public RepeatingButton(BIcon icon, ActionListener listener, String action) {
         super(icon, listener, action);
     }
-    
+    /**
+     * intercept mouse presses and use that to start our repeater
+     * @param event
+     * @return 
+     */
     @Override
     public boolean dispatchEvent (BEvent event) {
         boolean result = super.dispatchEvent(event);
@@ -59,7 +84,9 @@ public class RepeatingButton extends BButton {
     }
     
     private ScheduledFuture future;
-
+    /**
+     * Handles the button press event
+     */
     private void onPress() {
         if(future != null)
             return; // should not occur, but for safety
@@ -68,7 +95,9 @@ public class RepeatingButton extends BButton {
         ActionCaller caller = new ActionCaller();
         future = executor.scheduleAtFixedRate(caller, 0, period, timeUnit);
     }
-    
+    /**
+     * Handles button release. Sets future button presses to false
+     */
     private void onRelease() {
         future.cancel(false);
         future = null;

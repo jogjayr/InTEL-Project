@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author Calvin Ashmore
  */
 public class MainTabBar extends AppWindow {
@@ -52,6 +52,9 @@ public class MainTabBar extends AppWindow {
     private boolean scrollButtonsAdded = false;
 
     //private BContainer mainLabelContainer;
+    /**
+     * Constructor
+     */
     public MainTabBar() {
         super(new BorderLayout());
 
@@ -111,6 +114,10 @@ public class MainTabBar extends AppWindow {
         return null;
     }
 
+    /**
+     * Adds a tab to diagram
+     * @param diagram 
+     */
     protected void addTab(Diagram diagram) {
 
         // do not add if tab already exists
@@ -190,6 +197,11 @@ public class MainTabBar extends AppWindow {
         }
     }
 
+    /**
+     * Gets text color for diagram
+     * @param diagram
+     * @return 
+     */
     static ColorRGBA getTextColor(Diagram diagram) {
         // perform a brute force case check here.
         Mode mode = diagram.getMode();
@@ -201,6 +213,9 @@ public class MainTabBar extends AppWindow {
         }
     }
 
+    /**
+     * Adds scroll buttons to the tab bar
+     */
     private void addScrollButtons() {
         scrollButtonsAdded = true;
 

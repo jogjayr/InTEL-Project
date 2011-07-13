@@ -14,7 +14,9 @@ import edu.gatech.statics.ui.InterfaceRoot;
  * @author Calvin Ashmore
  */
 public class CoordinateSystemWindow extends BWindow {
-
+    /**
+     * Constructor
+     */
     public CoordinateSystemWindow() {
         super(InterfaceRoot.getInstance().getStyle(), new BorderLayout());
     }

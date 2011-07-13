@@ -36,10 +36,18 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
      */
     abstract public DiagramType getDiagramType();
 
+    /**
+     * Getter
+     * @return 
+     */
     public final String getPanelName() {
         return getDiagramType().getName();
     }
 
+    /**
+     * Getter
+     * @return 
+     */
     public boolean isActive() {
         return active;
     }
@@ -58,6 +66,9 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
 //    protected BLabel getTitleLabel() {
 //        return titleLabel;
 //    }
+    /**
+     * Constructor. Creates a new ApplicationModePanel with BorderLayour
+     */
     public ApplicationModePanel() {
         super(new BorderLayout());
         //tab = createTab();
@@ -66,11 +77,16 @@ public abstract class ApplicationModePanel<T extends Diagram> extends BContainer
     }
 
     //abstract public void activate();
+    /**
+     * Activates ApplicationModePanel
+     */
     public void activate() {
         active = true;
         stateChanged();
     }
-
+    /**
+     * Deactivates ApplicationModePanel
+     */
     public void deactivate() {
         active = false;
     }
