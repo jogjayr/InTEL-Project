@@ -17,10 +17,18 @@ public class DatabaseLogHandler extends Handler {
 
     private PostLogger poster;
 
+    /**
+     * Constructor. Creates a postLogger with urlBase
+     * @param urlBase
+     */
     public DatabaseLogHandler(String urlBase) {
         poster = new PostLogger(urlBase);
     }
 
+    /**
+     * Records record using poster
+     * @param record
+     */
     @Override
     public void publish(LogRecord record) {
         Map<String, String> postMap = poster.getNewPostMap();
@@ -50,6 +58,9 @@ public class DatabaseLogHandler extends Handler {
         poster.post(postMap);
     }
 
+    /**
+     * 
+     */
     @Override
     public void flush() {
     }

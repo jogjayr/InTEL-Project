@@ -53,7 +53,9 @@ public class Schematic {
     /*public boolean isLocked() {
     return locked;
     }*/
-    /** Creates a new instance of ExercizeWorld */
+    /** 
+     * Creates a new instance of ExerciseWorld
+     */
     public Schematic() {
         background = new Background();
         allObjects.add(background);
@@ -62,14 +64,26 @@ public class Schematic {
     private List<Body> allBodies = new ArrayList<Body>();
     private Map<String, SimulationObject> objectsByName = new HashMap<String, SimulationObject>();
 
+    /**
+     * Getter
+     * @return
+     */
     public List<SimulationObject> allObjects() {
         return Collections.unmodifiableList(allObjects);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public List<Body> allBodies() {
         return Collections.unmodifiableList(allBodies);
     }
 
+    /**
+     * 
+     * @param obj
+     */
     public void remove(SimulationObject obj) {
         //if (locked) {
         //    throw new IllegalStateException("Objects may not be removed from the Schematic after it has been locked.");
@@ -152,6 +166,10 @@ public class Schematic {
         return objectsByName.get(name);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Map<String, SimulationObject> getAllObjectsByName() {
         return Collections.unmodifiableMap(objectsByName);
     }

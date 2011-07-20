@@ -20,27 +20,48 @@ import java.util.List;
  */
 public class SymbolManager {
 
+
     private List<Pair<Connector, AnchoredVector>> symbolicLoads = new ArrayList<Pair<Connector, AnchoredVector>>();
     private List<String> symbols = new ArrayList<String>();
     private List<ConstantObject> symbolicConstants = new ArrayList<ConstantObject>();
 
+    /**
+     * Getter
+     * @return
+     */
     public List<Pair<Connector, AnchoredVector>> getSymbolicLoads() {
         return Collections.unmodifiableList(symbolicLoads);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public List<ConstantObject> getSymbolicConstants() {
         return Collections.unmodifiableList(symbolicConstants);
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String toString() {
         return "SymbolManager: {symbols=" + symbols + ", symbolicLoads=" + symbolicLoads + ", symbolicConstants=" + symbolicConstants + "}";
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public List<String> getSymbols() {
         return Collections.unmodifiableList(symbols);
     }
 
+    /**
+     * Adds a symbol obj to symbolicConstants, if not already present
+     * @param obj
+     */
     public void addSymbol(ConstantObject obj) {
         if (!symbols.contains(obj.getName())) {
             symbols.add(obj.getName());
@@ -48,6 +69,11 @@ public class SymbolManager {
         }
     }
 
+    /**
+     * 
+     * @param name
+     * @return
+     */
     public ConstantObject getConstant(String name) {
         for (ConstantObject constantObject : symbolicConstants) {
             if (constantObject.getName().equals(name)) {
@@ -57,6 +83,11 @@ public class SymbolManager {
         return null;
     }
 
+    /**
+     * Adds symbol described by load and connector to symbolicLoads
+     * @param load
+     * @param connector
+     */
     public void addSymbol(AnchoredVector load, Connector connector) {
         if (!load.isSymbol()) {
             throw new UnsupportedOperationException(
@@ -64,7 +95,7 @@ public class SymbolManager {
         }
         String name = load.getSymbolName();
 
-        // remove the old load
+        // remove the old loadgetSymbolicLoads
         if (symbols.contains(name)) {
             symbols.remove(name);
             Pair<Connector, AnchoredVector> old = null;
@@ -87,6 +118,14 @@ public class SymbolManager {
         symbolicLoads.add(new Pair<Connector, AnchoredVector>(connector, load));
     }
 
+    /**
+     * Gets the load corresponding to connector and tests whether
+     * load is equal to that corresponding load. It checks for connector
+     * and the opposite of connector, in case of a 2-force member
+     * @param load
+     * @param connector
+     * @return
+     */
     public AnchoredVector getLoad(AnchoredVector load, Connector connector) {
 
         // check to see if this is a 2fm connector, and if it is, we want to check against
@@ -121,6 +160,12 @@ public class SymbolManager {
         return null;
     }
 
+    /**
+     * Gets the Connector,AnchoredVector Pair correspoding to
+     * symbolName
+     * @param symbolName
+     * @return
+     */
     public Pair<Connector, AnchoredVector> getLoadPair(String symbolName) {
         for (Pair<Connector, AnchoredVector> pair : symbolicLoads) {
             if (symbolName.equals(pair.getRight().getSymbolName())) {

@@ -20,6 +20,11 @@ public class Quantity implements Quantified {
     private boolean symbol;
     private Unit unit;
 
+    /**
+     * Constructor
+     * @param unit
+     * @param symbolName
+     */
     public Quantity(Unit unit, String symbolName) {
 
         this.unit = unit;
@@ -29,7 +34,11 @@ public class Quantity implements Quantified {
 
         known = false;
     }
-
+    /**
+     * Constructor
+     * @param unit
+     * @param value
+     */
     public Quantity(Unit unit, BigDecimal value) {
         this.unit = unit;
         _setValue(value);
@@ -37,7 +46,10 @@ public class Quantity implements Quantified {
         symbol = false;
         known = true;
     }
-
+    /**
+     * Constructor
+     * @param quantity
+     */
     public Quantity(Quantity quantity) {
         unit = quantity.unit;
         known = quantity.known;
@@ -45,7 +57,10 @@ public class Quantity implements Quantified {
         symbolName = quantity.symbolName;
         _setValue(quantity.value);
     }
-
+    /**
+     * Returns this as an UnmodifiableQuantity
+     * @return
+     */
     public Quantity getUnmodifiableQuantity() {
         return new UnmodifiableQuantity(this);
     }
@@ -60,7 +75,10 @@ public class Quantity implements Quantified {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
-
+    /**
+     * Unit of this quantity
+     * @return
+     */
     public Unit getUnit() {
         return unit;
     }
@@ -73,7 +91,10 @@ public class Quantity implements Quantified {
     public BigDecimal getDiagramValue() {
         return value.multiply(unit.getDisplayScale());
     }
-
+    /**
+     * Setter
+     * @param v
+     */
     public void setDiagramValue(BigDecimal v) {
         _setValue(v.divide(unit.getDisplayScale()));
     }
@@ -87,7 +108,10 @@ public class Quantity implements Quantified {
     public BigDecimal get3DValue() {
         return value;
     }
-
+    /**
+     * Setter
+     * @param v
+     */
     public void set3DValue(BigDecimal v) {
         _setValue(v);
     }
@@ -99,19 +123,31 @@ public class Quantity implements Quantified {
     private void _setValue(BigDecimal v) {
         this.value = v.setScale(unit.getDecimalPrecision(), BigDecimal.ROUND_HALF_UP);
     }
-
+    /**
+     * 
+     * @return
+     */
     public double doubleValue() {
         return getDiagramValue().doubleValue();
     }
-
+    /**
+     * 
+     * @param known
+     */
     public void setKnown(boolean known) {
         this.known = known;
     }
-
+    /**
+     * 
+     * @return
+     */
     public boolean isKnown() {
         return known;
     }
-
+    /**
+     * 
+     * @param symbolName
+     */
     public void setSymbol(String symbolName) {
         if (symbolName == null) {
             symbol = false;
@@ -125,11 +161,17 @@ public class Quantity implements Quantified {
             }
         }
     }
-
+    /**
+     * 
+     * @return
+     */
     public boolean isSymbol() {
         return symbol;
     }
-
+    /**
+     * 
+     * @return
+     */
     public String getSymbolName() {
         return symbolName;
     }
@@ -183,7 +225,11 @@ public class Quantity implements Quantified {
             throw new UnsupportedOperationException("Cannot set value on an unmodifiable quantity");
         }
     }
-
+    /**
+     * 
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

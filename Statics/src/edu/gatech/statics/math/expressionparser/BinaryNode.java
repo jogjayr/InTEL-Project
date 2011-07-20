@@ -27,28 +27,51 @@ class BinaryNode extends Node {
     private Operation operation;
     private Node child1, child2;
 
+    /**
+     * Getter
+     * @return
+     */
     public Operation getOperation() {
         return operation;
     }
-
+    
+    /**
+     * Getter
+     * @return
+     */
     public Node getChild1() {
         return child1;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Node getChild2() {
         return child2;
     }
 
+    /**
+     * Setter
+     * @param child1
+     */
     public void setChild1(Node child1) {
         this.child1 = child1;
         child1.setParent(this);
     }
 
+    /**
+     * Setter
+     * @param child2
+     */
     public void setChild2(Node child2) {
         this.child2 = child2;
         child2.setParent(this);
     }
-
+    /**
+     * Evaluates child1 and child2, applies operation on them and returns the result
+     * @return 
+     */
     BigDecimal evaluate() {
 
         BigDecimal result1 = child1.evaluate();
@@ -80,7 +103,11 @@ class BinaryNode extends Node {
                 return null;
         }
     }
-
+    /**
+     * Adds a childNode, upto two nodes. First sets child1, then child2. Cannot
+     * set anymore after that
+     * @param node
+     */
     void addChild(Node node) {
         if (child1 == null) {
             setChild1(node);
@@ -107,7 +134,13 @@ class BinaryNode extends Node {
                 return "???";
         }
     }
-
+    /**
+     * Returns operator precedence as an integer  value
+     * 1: add or subtract
+     * 3: power
+     * 2: everything else
+     * @return
+     */
     int getPrecedence() {
         if (operation == Operation.add || operation == Operation.subtract) {
             return 1;

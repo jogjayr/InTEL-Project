@@ -24,6 +24,9 @@ public class ExerciseUtilities {
     private ExerciseUtilities() {
     }
 
+    /**
+     * Shows a popup when the user has completed the exercise
+     */
     public static void showCompletionPopup() {
 
         final ModalPopupWindow popup = new ModalPopupWindow(

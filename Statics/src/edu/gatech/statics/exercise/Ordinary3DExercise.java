@@ -23,6 +23,13 @@ import edu.gatech.statics.ui.windows.navigation.Navigation3DWindow;
  */
 abstract public class Ordinary3DExercise extends OrdinaryExercise {
 
+    /**
+     * Creates an interface configuration for this type of exercise.
+     * Sets navigation window to Navigation3DWindow, rotationConstraints to (-4, 4, -1, 1)
+     * replaces EquationModePanel and FBDModePanel with Equation3DModePanel and FBD3DModePanel
+     * and adds a FindPointsModePanel
+     * @return
+     */
     @Override
     public AbstractInterfaceConfiguration createInterfaceConfiguration() {
         AbstractInterfaceConfiguration interfaceConfiguration = super.createInterfaceConfiguration();
@@ -34,6 +41,12 @@ abstract public class Ordinary3DExercise extends OrdinaryExercise {
         return interfaceConfiguration;
     }
 
+    /**
+     * Overrides parent implementation to handle type FindPointsMode
+     * @param key
+     * @param type
+     * @return
+     */
     @Override
     protected Diagram createNewDiagramImpl(DiagramKey key, DiagramType type) {
         if (type == FindPointsMode.instance.getDiagramType()) {
@@ -42,12 +55,21 @@ abstract public class Ordinary3DExercise extends OrdinaryExercise {
         return super.createNewDiagramImpl(key, type);
     }
 
+    /**
+     * 
+     * @param type
+     * @return Does exercise contain type
+     */
     @Override
     public boolean supportsType(DiagramType type) {
         return type == FindPointsMode.instance.getDiagramType()
                 || super.supportsType(type);
     }
 
+    /**
+     * Loads FindPointsMode (this is the starting mode of 3D exercises)
+     * @return
+     */
     @Override
     public Mode loadStartingMode() {
         //return super.loadStartingMode();
@@ -55,6 +77,11 @@ abstract public class Ordinary3DExercise extends OrdinaryExercise {
         return FindPointsMode.instance;
     }
 
+    /**
+     * Creates a new Equation3DDiagram composed of bodies
+     * @param bodies
+     * @return
+     */
     @Override
     protected EquationDiagram createEquationDiagram(BodySubset bodies) {
         //return super.createEquationDiagram(bodies);

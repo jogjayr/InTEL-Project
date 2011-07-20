@@ -13,7 +13,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- *
+ * Unary node represents operators that take a single operand
+ * sinc, cos, tan, sqrt, ata, negate and identity
  * @author Calvin Ashmore
  */
 class UnaryNode extends Node {
@@ -26,20 +27,33 @@ class UnaryNode extends Node {
     };
     private Operation operation;
     private Node child;
-
+    /**
+     * Getter
+     * @return
+     */
     public Operation getOperation() {
         return operation;
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public Node getChild() {
         return child;
     }
-
+    /**
+     * Setter
+     * @param child
+     */
     public void setChild(Node child) {
         this.child = child;
         child.setParent(this);
     }
 
+    /**
+     * Evaluates the node and returns the value
+     * @return
+     */
     BigDecimal evaluate() {
 
         /*if(child == null && operation == Operation.negate)
@@ -72,7 +86,10 @@ class UnaryNode extends Node {
                 return null;
         }
     }
-
+    /**
+     * Allows adding one child (since this is a unary operator)
+     * @param node
+     */
     void addChild(Node node) {
         if (child == null) {
             setChild(node);
@@ -102,7 +119,9 @@ class UnaryNode extends Node {
         }
     }
 
-    /** Creates a new instance of UnaryNode */
+    /** 
+     * Creates a new instance of UnaryNode
+     */
     public UnaryNode(Operation operation) {
         this.operation = operation;
     }

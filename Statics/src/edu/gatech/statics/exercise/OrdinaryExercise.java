@@ -34,7 +34,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
+     * Creates a new DefaultInterfaceConfiguration
      * @return
      */
     @Override
@@ -43,8 +43,8 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
-     * @return
+     * Loads SelectMode
+     * @return SelectMode.instance
      */
     @Override
     public Mode loadStartingMode() {
@@ -53,7 +53,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
+     * Creates a new SelectDiagram
      * @return
      */
     protected SelectDiagram createSelectDiagram() {
@@ -61,7 +61,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     *
+     * Creates a new FreeBodyDiagram composed of bodies
      * @param bodies
      * @return
      */
@@ -70,7 +70,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
+     * Creates  new EquationDiagram composed of bodies
      * @param bodies
      * @return
      */
@@ -79,7 +79,7 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
+     * Creates a new DescriptionDiagram
      * @return
      */
     private Diagram createDescriptionDiagram() {
@@ -107,7 +107,8 @@ abstract public class OrdinaryExercise extends Exercise {
     }
 
     /**
-     * 
+     * Calls the appropriate diagram creating function (createDescriptionDiagram, createSelectDiagram etc)
+     * Depending on type
      * @param key
      * @param type
      * @return

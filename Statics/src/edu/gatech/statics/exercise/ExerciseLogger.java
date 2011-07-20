@@ -35,6 +35,9 @@ public class ExerciseLogger {
     private int instance; // used for uniqueness of logger data
     private ScheduledExecutorService loggerService;
 
+    /**
+     * Constructor
+     */
     public ExerciseLogger(/*String loggerAddress*/) {
 
         //this.loggerAddress = loggerAddress;
@@ -47,6 +50,9 @@ public class ExerciseLogger {
         scheduleLogger();
     }
 
+    /**
+     * Schedules a call of sendData with initial delay and period of 10 seconds
+     */
     public void scheduleLogger() {
 
         loggerService = Executors.newSingleThreadScheduledExecutor();
@@ -61,10 +67,16 @@ public class ExerciseLogger {
         loggerService.scheduleAtFixedRate(loggerCall, 10, 10, TimeUnit.SECONDS);
     }
 
+    /**
+     * Stops periodic logging
+     */
     public void terminate() {
         loggerService.shutdown();
     }
 
+    /**
+     * Sends log data to loggerAddress
+     */
     private void sendData() {
 
         /*URL documentBase = null;

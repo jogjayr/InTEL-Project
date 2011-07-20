@@ -20,7 +20,10 @@ import edu.gatech.statics.ui.components.ModalPopupWindow;
  * @author Calvin Ashmore
  */
 public class SubmittingErrorPopup extends ModalPopupWindow {
-    
+
+    /**
+     * Constructor
+     */
     public SubmittingErrorPopup() {
         super(new BorderLayout());
         //this.key = key;
@@ -47,6 +50,10 @@ public class SubmittingErrorPopup extends ModalPopupWindow {
 
     private class MyActionListener implements ActionListener {
 
+        /**
+         * 
+         * @param event
+         */
         public void actionPerformed(ActionEvent event) {
             
             dismiss();

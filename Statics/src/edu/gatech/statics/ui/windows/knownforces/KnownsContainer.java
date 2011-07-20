@@ -8,7 +8,6 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.layout.TableLayout;
 import edu.gatech.statics.application.StaticsApplication;
-import edu.gatech.statics.exercise.DiagramType;
 import edu.gatech.statics.exercise.Exercise;
 import edu.gatech.statics.math.AnchoredVector;
 import edu.gatech.statics.math.Vector;
@@ -50,7 +49,10 @@ public class KnownsContainer extends BContainer implements SolveListener {
         updateView();
     }
     /**
-     * 
+     * checks if connector is Connector2ForceMember2d and adds it to handledConnectors if it doesn't belong already
+     * Else, it calls writeReaction with the reactions of the connector
+     * @param connector
+     * @param handledConnectors
      */
     protected void handleConnector(Connector connector, List<Connector2ForceMember2d> handledConnectors) {
         // iterate through reactions at joint
@@ -318,19 +320,19 @@ public class KnownsContainer extends BContainer implements SolveListener {
         return false;
     }
     /**
-     * 
+     * Calls updateView();
      */
     public void update() {
         updateView();
     }
     /**
-     * 
+     * Calls update() when load is solved
      */
     public void onLoadSolved(Load load) {
         update();
     }
     /**
-     * 
+     * Calls update() when joint is solved
      * @param joint 
      */
     public void onJointSolved(Connector joint) {

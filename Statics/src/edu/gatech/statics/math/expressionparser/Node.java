@@ -20,18 +20,30 @@ abstract class Node {
     public Node() {
     }
     private Node parent;
-
+    /**
+     * Getter
+     * @return
+     */
     public Node getParent() {
         return parent;
     }
-
+    /**
+     * Setter
+     * @param parent
+     */
     protected void setParent(Node parent) {
         this.parent = parent;
     }
-
+    /**
+     * Abstract function. Evaluate the node value
+     * @return
+     */
     abstract BigDecimal evaluate();
 
     abstract String printout();
-
+    /**
+     * Add a child node
+     * @param node
+     */
     abstract void addChild(Node node);
 }

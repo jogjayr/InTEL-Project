@@ -8,7 +8,7 @@ import com.jme.math.Vector3f;
 import java.math.BigDecimal;
 
 /**
- *
+ * A class representing a three-dimensional vector
  * @author Calvin Ashmore
  */
 public class Vector3bd {
@@ -47,16 +47,29 @@ public class Vector3bd {
         }
     }
 
+    /**
+     * Constructs a zero vector
+     */
     public Vector3bd() {
         this("0", "0", "0");
     }
 
+    /**
+     * Copy constructor
+     * @param vec
+     */
     public Vector3bd(Vector3bd vec) {
         this.x = vec.x;
         this.y = vec.y;
         this.z = vec.z;
     }
 
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param z
+     */
     public Vector3bd(BigDecimal x, BigDecimal y, BigDecimal z) {
         //this(x, y.toString(), z.toString());
         this.x = x;
@@ -64,17 +77,33 @@ public class Vector3bd {
         this.z = z;
     }
 
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param z
+     */
     public Vector3bd(String x, String y, String z) {
         this.x = new BigDecimal(x);
         this.y = new BigDecimal(y);
         this.z = new BigDecimal(z);
     }
 
+    /**
+     * String representation of vector. [x, y, z]
+     * @return [x, y, z]
+     */
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
     }
 
+    /**
+     * Subtracts vec from this vector, stores result in this vector
+     * THEREBY MODIFYING IT (THIS IS DIFFERENT FROM SUBTRACT), and returns this
+     * @param vec
+     * @return
+     */
     public Vector3bd subtractLocal(Vector3bd vec) {
         x = x.subtract(vec.x);
         y = y.subtract(vec.y);
@@ -82,6 +111,11 @@ public class Vector3bd {
         return this;
     }
 
+    /**
+     * Returns difference between this and vec. Doesn't modify this (unlike subtractLocal)
+     * @param vec
+     * @return
+     */
     public Vector3bd subtract(Vector3bd vec) {
         return new Vector3bd(
                 x.subtract(vec.x),
@@ -89,32 +123,55 @@ public class Vector3bd {
                 z.subtract(vec.z));
     }
 
+    /**
+     * Sets z-component
+     * @param z
+     */
     public void setZ(BigDecimal z) {
         this.z = z;
     }
-
+    /**
+     * Sets y-component
+     * @param y
+     */
     public void setY(BigDecimal y) {
         this.y = y;
     }
-
+    /**
+     * Sets x-component
+     * @param x
+     */
     public void setX(BigDecimal x) {
         this.x = x;
     }
 
+    /**
+     * Negates this vector and stores it (THEREBY MODIFYING IT)
+     * Then returns this
+     * @return
+     */
     public Vector3bd negateLocal() {
         x = x.negate();
         y = y.negate();
         z = z.negate();
         return this;
     }
-
+    /**
+     * Returns negation of this vector
+     * @return
+     */
     public Vector3bd negate() {
         return new Vector3bd(
                 x.negate(),
                 y.negate(),
                 z.negate());
     }
-
+    /**
+     * Multiplies components of this with scalar and stores the result
+     * (THEREBY MODIFYING THIS). Returns this
+     * @param scalar
+     * @return
+     */
     public Vector3bd multLocal(BigDecimal scalar) {
         x = x.multiply(scalar);
         y = y.multiply(scalar);
@@ -122,13 +179,23 @@ public class Vector3bd {
         return this;
     }
 
+    /**
+     * Returns a vector that is this divided by scalar
+     * @param scalar
+     * @return
+     */
     public Vector3bd divide(BigDecimal scalar) {
         return new Vector3bd(
                 x.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP),
                 y.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP),
                 z.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP));
     }
-
+    /**
+     * Divides components of this by scalar and stores the result
+     * (THEREBY MODIFYING THIS). Returns this
+     * @param scalar
+     * @return
+     */
     public Vector3bd divideLocal(BigDecimal scalar) {
         x = x.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
         y = y.divide(scalar, Unit.getGlobalPrecision(), BigDecimal.ROUND_HALF_UP);
@@ -136,6 +203,11 @@ public class Vector3bd {
         return this;
     }
 
+    /**
+     * Returns the result of scalar multiplication of this by scalar
+     * @param scalar
+     * @return
+     */
     public Vector3bd mult(BigDecimal scalar) {
         return new Vector3bd(
                 x.multiply(scalar),
@@ -143,6 +215,11 @@ public class Vector3bd {
                 z.multiply(scalar));
     }
 
+    /**
+     * Returns magnitude of vector (calculated by distance formula
+     * sqrt(x^2+y^2+z^2) )
+     * @return
+     */
     public double length() {
         double xd = x.doubleValue();
         double yd = y.doubleValue();
@@ -150,42 +227,74 @@ public class Vector3bd {
         return Math.sqrt(xd * xd + yd * yd + zd * zd);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public BigDecimal getZ() {
         return z;
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public BigDecimal getY() {
         return y;
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public BigDecimal getX() {
         return x;
     }
-
+    /**
+     * Finds distance between this and v
+     * @param v
+     * @return
+     */
     public double distance(Vector3bd v) {
         return subtract(v).length();
     }
-
+    /**
+     * Adds vec to this and stores the result
+     * THEREBY MODIFYING THIS. Returns this
+     * @param vec
+     * @return
+     */
     public Vector3bd addLocal(Vector3bd vec) {
         x = x.add(vec.x);
         y = y.add(vec.y);
         z = z.add(vec.z);
         return this;
     }
-
+    /**
+     * Returns vector sum of this and vec
+     * @param vec
+     * @return
+     */
     public Vector3bd add(Vector3bd vec) {
         return new Vector3bd(
                 x.add(vec.x),
                 y.add(vec.y),
                 z.add(vec.z));
     }
-
+    /**
+     * Returns dot product of this and vec
+     * @param vec
+     * @return
+     */
     public BigDecimal dot(Vector3bd vec) {
         return vec.x.multiply(x).
                 add(vec.y.multiply(y)).
                 add(vec.z.multiply(z));
     }
 
+    /**
+     * Returns corss product of this and vec
+     * @param vec
+     * @return
+     */
     public Vector3bd cross(Vector3bd vec) {
         BigDecimal resX = y.multiply(vec.z).subtract(z.multiply(vec.y));
         BigDecimal resY = z.multiply(vec.x).subtract(x.multiply(vec.z));
@@ -193,6 +302,12 @@ public class Vector3bd {
         return new Vector3bd(resX, resY, resZ);
     }
 
+    /**
+     * Checks equality of this to obj, by performing a type check then
+     * comparing the x, y and z components
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -222,7 +337,10 @@ public class Vector3bd {
         hash = 73 * hash + (this.z != null ? this.z.hashCode() : 0);
         return hash;
     }
-
+    /**
+     * Normalizes this vector and returns the result. THIS IS NOT MODIFIED
+     * @return
+     */
     public Vector3bd normalize() {
         double magnitude = Math.sqrt(
                 Math.pow(x.doubleValue(), 2)
@@ -240,7 +358,10 @@ public class Vector3bd {
         else
             return Vector3bd.ZERO;
     }
-
+/**
+ * Same as a Vector3bd, except that the **Local methods (like addLocal) and the set methods
+ * (like setX) are unsupported, since the vector is supposed to be unmodifiable
+ */
     public static class UnmodifiableVector3bd extends Vector3bd {
 
         public UnmodifiableVector3bd(String x, String y, String z) {

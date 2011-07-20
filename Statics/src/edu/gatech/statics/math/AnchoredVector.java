@@ -16,81 +16,137 @@ public class AnchoredVector implements Quantified {
 
     private Point anchor;
     private Vector vector;
-    
+    /**
+     * Constructor
+     * @param anchor
+     * @param vector
+     */
     public AnchoredVector(Point anchor, Vector vector) {
         //setAnchor(anchor);
         //setVector(vector);
         this.anchor = anchor;
         this.vector = vector;
     }
-
+    /**
+     * Constructor
+     * @param anchoredVector
+     */
     public AnchoredVector(AnchoredVector anchoredVector) {
         //setAnchor(anchoredVector.getAnchor());
         //setVector(new Vector(anchoredVector.getVector()));
         this.anchor = anchoredVector.getAnchor();
         this.vector = new Vector(anchoredVector.getVector());
     }
-
+    /**
+     * 
+     * @return
+     */
     public Quantity getQuantity() {
         return vector.getQuantity();
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public Vector getVector() {
         return vector;
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public Point getAnchor() {
         return anchor;
     }
-
+    /**
+     * Setter
+     * @param anchor
+     */
     public void setAnchor(Point anchor) {
         this.anchor = anchor;
     }
-
+    /**
+     * Setter
+     * @param vector
+     */
     public void setVector(Vector vector) {
         this.vector = vector;
     }
 
+    /**
+     *
+     * @return Symbol name of vector
+     */
     public String getSymbolName() {
         return vector.getSymbolName();
     }
-
+    /**
+     *
+     * @return vector unit
+     */
     public Unit getUnit() {
         return vector.getUnit();
     }
-
+    /**
+     * 
+     * @return
+     */
     public double doubleValue() {
         return vector.doubleValue();
     }
-
+    /**
+     *
+     * @return is vector a symbol
+     */
     public boolean isSymbol() {
         return vector.isSymbol();
     }
-
+    /**
+     * 
+     * @return
+     */
     public boolean isKnown() {
         return vector.isKnown();
     }
-
+    /**
+     * 
+     * @param known
+     */
     public void setKnown(boolean known) {
         vector.setKnown(known);
     }
-
+    /**
+     * 
+     * @param symbolName
+     */
     public void setSymbol(String symbolName) {
         vector.setSymbol(symbolName);
     }
-
+    /**
+     * 
+     * @return
+     */
     public BigDecimal getDiagramValue() {
         return vector.getDiagramValue();
     }
-
+    /**
+     * 
+     * @param v
+     */
     public void setDiagramValue(BigDecimal v) {
         vector.setDiagramValue(v);
     }
-
+    /**
+     * 
+     * @return
+     */
     public Vector3bd getVectorValue() {
         return vector.getVectorValue();
     }
-
+    /**
+     * 
+     * @return
+     */
     @Override
     public String toString() {
         if(vector != null && anchor != null)
@@ -98,7 +154,11 @@ public class AnchoredVector implements Quantified {
         else
             return "";
     }
-
+    /**
+     * 
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -116,7 +176,10 @@ public class AnchoredVector implements Quantified {
         }
         return true;
     }
-
+    /**
+     * 
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 7;

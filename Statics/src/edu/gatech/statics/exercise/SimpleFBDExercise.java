@@ -11,7 +11,6 @@ import edu.gatech.statics.modes.fbd.FreeBodyDiagram;
 import edu.gatech.statics.modes.select.SelectMode;
 import edu.gatech.statics.modes.fbd.SimpleFreeBodyDiagram;
 import edu.gatech.statics.modes.fbd.ui.FBDModePanel;
-import edu.gatech.statics.ui.DefaultInterfaceConfiguration;
 import edu.gatech.statics.ui.applicationbar.ApplicationModePanel;
 import java.util.List;
 import edu.gatech.statics.modes.select.ui.SelectModePanel;
@@ -31,6 +30,10 @@ public abstract class SimpleFBDExercise extends OrdinaryExercise {
     public SimpleFBDExercise() {
     }
 
+    /**
+     * Loads the SelectMode
+     * @return SelectMode.instance
+     */
     @Override
     public Mode loadStartingMode() {
         SelectMode.instance.load();

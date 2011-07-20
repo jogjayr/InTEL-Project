@@ -100,7 +100,7 @@ public class StateStack<T extends DiagramState> {
     }
 
     /**
-     * Adds a new state to the stack and makes it active.
+     * Adds newState to the stack and makes it active.
      */
     public void push(T newState) {
         

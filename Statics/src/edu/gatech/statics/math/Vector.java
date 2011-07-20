@@ -24,34 +24,59 @@ public class Vector implements Quantified {
     private Vector3bd value; // normalized value
     private Quantity magnitude;
 
+    /**
+     *
+     * @return
+     */
     public Unit getUnit() {
         return magnitude.getUnit();
     }
-
+    /**
+     * 
+     * @return
+     */
     public boolean isKnown() {
         return magnitude.isKnown();
     }
-
+    /**
+     * 
+     * @return
+     */
     public boolean isSymbol() {
         return magnitude.isSymbol();
     }
-
+    /**
+     *
+     * @param known
+     */
     public void setKnown(boolean known) {
         magnitude.setKnown(known);
     }
-
+    /**
+     * 
+     * @param symbolName
+     */
     public void setSymbol(String symbolName) {
         magnitude.setSymbol(symbolName);
     }
-
+    /**
+     * 
+     * @return
+     */
     public double doubleValue() {
         return magnitude.doubleValue();
     }
-
+    /**
+     *
+     * @return
+     */
     public Quantity getQuantity() {
         return magnitude.getUnmodifiableQuantity();
     }
-
+    /**
+     *
+     * @param magnitude
+     */
     public void setDiagramValue(BigDecimal magnitude) {
 
         if (magnitude.signum() < 0) {
@@ -61,11 +86,17 @@ public class Vector implements Quantified {
 
         this.magnitude.setDiagramValue(magnitude);
     }
-
+    /**
+     * 
+     * @return
+     */
     public BigDecimal getDiagramValue() {
         return magnitude.getDiagramValue();
     }
-
+    /**
+     * Negates the Vector3bd underlying this. That is, negates value
+     * @return
+     */
     public Vector negate() {
         Vector r = new Vector(this);
         r.setVectorValue(r.getVectorValue().negate());
@@ -83,7 +114,10 @@ public class Vector implements Quantified {
     public void setVectorValue(Vector3bd value) {
         this.value = value.normalize();
     }
-
+    /**
+     * Returns the Vector3bd that represents the vector 
+     * @return
+     */
     public Vector3bd getVectorValue() {
         return value;
     }
@@ -102,12 +136,20 @@ public class Vector implements Quantified {
         this.magnitude = new Quantity(unit, magnitude);
         this.value = value.normalize();
     }
-
+    /**
+     * Constructor
+     * @param unit
+     * @param value
+     * @param symbolName
+     */
     public Vector(Unit unit, Vector3bd value, String symbolName) {
         magnitude = new Quantity(unit, symbolName);
         this.value = value.normalize();
     }
-
+    /**
+     * Copy constructor
+     * @param vector
+     */
     public Vector(Vector vector) {
         magnitude = new Quantity(vector.getQuantity());
         this.value = new Vector3bd(vector.getVectorValue());
@@ -138,7 +180,10 @@ public class Vector implements Quantified {
         hash = 59 * hash + (this.magnitude != null ? this.magnitude.hashCode() : 0);
         return hash;
     }
-
+    /**
+     * 
+     * @return
+     */
     public String getSymbolName() {
         return magnitude.getSymbolName();
     }

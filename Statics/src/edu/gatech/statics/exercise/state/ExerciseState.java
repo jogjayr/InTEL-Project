@@ -39,56 +39,110 @@ public class ExerciseState implements State {
     private List<Task> satisfiedTasks = new ArrayList<Task>();
     private Map<String, Object> exerciseParameters = new HashMap<String, Object>();
 
+    /**
+     * Getter
+     * @param name
+     * @return
+     */
     public Object getParameter(String name) {
         return exerciseParameters.get(name);
     }
 
+    /**
+     * Adds a name, value pair to exerciseParameters
+     * @param name
+     * @param value
+     */
     public void setParameter(String name, Object value) {
         exerciseParameters.put(name, value);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Map<String, Object> getParameters() {
         return Collections.unmodifiableMap(exerciseParameters);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public Map<String, List<Vector>> getSolvedReactions() {
         return Collections.unmodifiableMap(solvedReactions);
     }
 
+    /**
+     * Adds satisfiedTask to list satisfiedTasks
+     * @param satisfiedTask
+     */
     public void satisfyTask(Task satisfiedTask) {
         if (!satisfiedTasks.contains(satisfiedTask)) {
             satisfiedTasks.add(satisfiedTask);
         }
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public List<Task> getSatisfiedTasks() {
         return Collections.unmodifiableList(satisfiedTasks);
     }
 
+    /**
+     * Checks if task is in satisfiedTasks
+     * @param task
+     * @return
+     */
     public boolean isSatisfied(Task task) {
         return satisfiedTasks.contains(task);
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public int getAssignmentID() {
         return assignmentID;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * Setter
+     * @param exerciseID
+     */
     public void setAssignmentID(int exerciseID) {
         this.assignmentID = exerciseID;
     }
 
+    /**
+     * 
+     * @param userID
+     */
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public SymbolManager getSymbolManager() {
         return symbolManager;
     }
 
+    /**
+     * Constructor
+     */
     public ExerciseState() {
         symbolManager = new SymbolManager();
     }
@@ -258,6 +312,10 @@ public class ExerciseState implements State {
         diagram.clearStateStack();
     }
 
+    /**
+     * String representation of the exercise state
+     * @return
+     */
     @Override
     public String toString() {
         String s = "ExerciseState: {\n";

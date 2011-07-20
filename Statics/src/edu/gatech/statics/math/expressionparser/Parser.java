@@ -18,17 +18,20 @@ import java.util.StringTokenizer;
 
 /**
  *
+ * Attempts to parse and evaluate the expression as a linear symbolic term
+ * That is, the expression has the form A+B*S, where A and B are known floating
+ * point values, and S is an expression term. This method will fail and return
+ * null if there is an error in the expression or if there are more than one symbolic
+ * terms.
  * @author Calvin Ashmore
  */
 public class Parser {
 
-    /**
-     * Attempts to parse and evaluate the expression as a linear symbolic term
-     * That is, the expression has the form A+B*S, where A and B are known floating
-     * point values, and S is an expression term. This method will fail and return
-     * null if there is an error in the expression or if there are more than one symbolic
-     * terms.
-     */
+   /**
+    * Evalaues expression to return a
+    * @param expression
+    * @return
+    */
     public static AffineQuantity evaluateSymbol(String expression) {
 
         expression = expression.trim();
@@ -199,6 +202,13 @@ public class Parser {
         //return result.floatValue();
     }
 
+    /**
+     * Tokenizes the expression string s, splitting it by operators (+, -, *, /)
+     * and parentheses. Then tokenizes each token with a digit, to separate
+     * numeric and non-numeric inputs (coefficients and variables)
+     * @param s
+     * @return
+     */
     private List<String> tokenize(String s) {
         // SUPPOSEDLY
         // there is a better way to do this with the REGEX package,
@@ -278,7 +288,11 @@ public class Parser {
         // should not get here
         return null;
     }
-
+    /**
+     * Calls tokenize() on expression. 
+     * @param expression
+     * @return
+     */
     Node parse(String expression) {
 
         List<String> tokens = tokenize(expression);
@@ -288,7 +302,11 @@ public class Parser {
         }
         return rootNode;
     }
-
+    /**
+     * 
+     * @param expression
+     * @return
+     */
     private BigDecimal evaluateInternal(String expression) {
         try {
 
@@ -315,7 +333,10 @@ public class Parser {
             return null;
         }
     }
-
+    /**
+     * 
+     * @param token
+     */
     private void addToken(String token) {
 
         // will need to account for special cases: 
@@ -392,7 +413,11 @@ public class Parser {
             currentNode = newNode;
         }
     }
-
+    /**
+     * 
+     * @param precedence
+     * @return
+     */
     private Node getLHSParent(int precedence) {
 
         Node lhs = currentNode;
@@ -411,7 +436,12 @@ public class Parser {
             lhs = lhs.getParent();
         }
     }
-
+    /**
+     * Creates a binary, unary, constant, or symbol node depending on token
+     * (which is an operator)
+     * @param token
+     * @return Created node
+     */
     private Node createNode(String token) {
         token = token.trim();
 

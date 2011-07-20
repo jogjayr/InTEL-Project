@@ -24,6 +24,14 @@ public class PostLogger extends Poster {
 //        }
 //        return defaultURL;
 //    }
+    /**
+     * 
+     * @param urlBase
+     */
+    /**
+     * Cconstructor
+     * @param urlBase
+     */
     public PostLogger(String urlBase) {
         super(urlBase + destination, "problem_id", "user_id", "session_id", "java_class", "java_method", "level", "message", "timestamp");
         System.out.println("Initializing PostLogger with URL "+urlBase);

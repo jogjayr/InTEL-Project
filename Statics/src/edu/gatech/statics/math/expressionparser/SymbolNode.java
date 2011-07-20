@@ -13,25 +13,40 @@ import java.math.BigDecimal;
 class SymbolNode extends Node {
 
     private String symbolName;
-
+    /**
+     * Getter
+     * @return
+     */
     public String getSymbolName() {
         return symbolName;
     }
-
+    /**
+     * Constructor
+     * @param symbolName
+     */
     public SymbolNode(String symbolName) {
         this.symbolName = symbolName;
     }
-
+    /**
+     * Symbol nodes cannot be evaluated, since there is no operator or value
+     * @return
+     */
     @Override
     BigDecimal evaluate() {
         throw new UnsupportedOperationException("Cannot evaluate symbol \"" + symbolName + "\"");
     }
-
+    /**
+     * 
+     * @return
+     */
     @Override
     String printout() {
         return symbolName;
     }
-
+    /**
+     * Symbol nodes cannot have children so this operation is unsupported
+     * @param node
+     */
     @Override
     void addChild( Node node) {
         throw new UnsupportedOperationException();

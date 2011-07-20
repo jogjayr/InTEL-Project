@@ -42,6 +42,13 @@ public abstract class Exercise {
      */
     public abstract Description getDescription();
 
+    /**
+     * Returns exercise completion status
+     * @return  1: not started
+     *          2: started
+     *          3: partially completed
+     *          4: solved
+     */
     public int getCompletionStatus() {
         // 1: not started
         // 2: started
@@ -79,14 +86,26 @@ public abstract class Exercise {
         return sessionID;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public static Exercise getExercise() {
         return currentExercise;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public DisplayConstants getDisplayConstants() {
         return displayConstants;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public SymbolManager getSymbolManager() {
         return state.getSymbolManager();
     }
@@ -99,6 +118,10 @@ public abstract class Exercise {
     abstract public InterfaceConfiguration createInterfaceConfiguration();
     private List<Task> tasks = new ArrayList<Task>();
 
+    /**
+     * Adds task to the exercise. Calls tasksChanged on taskStatusListener
+     * @param task
+     */
     public void addTask(Task task) {
         tasks.add(task);
         for (TaskStatusListener taskStatusListener : taskListeners) {
@@ -115,6 +138,11 @@ public abstract class Exercise {
         return tasks;
     }
 
+    /**
+     * Finds task with name name
+     * @param name
+     * @return 
+     */
     public Task getTask(String name) {
         for (Task task : tasks) {
             if (task.getName().equals(name)) {
@@ -125,10 +153,18 @@ public abstract class Exercise {
     }
     private List<TaskStatusListener> taskListeners = new ArrayList<TaskStatusListener>();
 
+    /**
+     * Adds listener to taskListeners
+     * @param listener
+     */
     public void addTaskListener(TaskStatusListener listener) {
         taskListeners.add(listener);
     }
 
+    /**
+     * Remvoes listener from taskListeners
+     * @param listener
+     */
     public void removeTaskListener(TaskStatusListener listener) {
         taskListeners.remove(listener);
     }
@@ -144,20 +180,36 @@ public abstract class Exercise {
         this.appletExerciseName = problemName;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public String getAppletExerciseName() {
         return appletExerciseName;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public int getProblemID() {
         return problemID;
     }
 
+    /**
+     * Getter
+     * @param problemID
+     */
     public void setProblemID(int problemID) {
         this.problemID = problemID;
     }
 
     private Schematic schematic;
 
+    /**
+     * Getter
+     * @return
+     */
     public Schematic getSchematic() {
         return schematic;
     }
@@ -175,7 +227,10 @@ public abstract class Exercise {
         this(new Schematic());
     }
 
-    /** Creates a new instance of Exercise */
+    /**
+     * Creates a new instance of Exercise
+     * @param world 
+     */
     public Exercise(Schematic world) {
         this.schematic = world;
         currentExercise = this;
@@ -362,6 +417,9 @@ public abstract class Exercise {
         return texture;
     }
 
+    /**
+     * Loads exercise description mode
+     */
     public void loadDescriptionMode() {
         DescriptionMode.instance.load();
     }

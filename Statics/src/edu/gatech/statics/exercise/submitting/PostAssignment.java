@@ -33,10 +33,18 @@ public class PostAssignment extends Poster {
 //        }
 //        return defaultURL;
 //    }
+    /**
+     * 
+     * @param urlBase
+     */
     public PostAssignment(String urlBase) {
         super(urlBase + destination, "assignment_id", "user_id", "exercise_status", "state_data", "verifier_key", "timestamp");
     }
 
+    /**
+     * Creates a state containing the assignmentId, userId, exerciseStatus, stateData, timestamp
+     * and verifierKey and posts it to server
+     */
     public void postState() {
         Map<String, String> postMap = getNewPostMap();
 
@@ -57,6 +65,15 @@ public class PostAssignment extends Poster {
         post(postMap);
     }
 
+    /**
+     * Creates the verified key using userId, assignmentId, exerciseStatus and stateData,
+     * for verification when posting to server
+     * @param userId
+     * @param assignmentId
+     * @param exerciseStatus
+     * @param stateData
+     * @return
+     */
     private String generateVerfierKey(String userId, String assignmentId, String exerciseStatus, String stateData) {
 
         String preHash = userId + ":" + assignmentId + ":" + exerciseStatus + ":" + stateData;
@@ -83,6 +100,10 @@ public class PostAssignment extends Poster {
         return verifierKey;
     }
 
+    /**
+     * Handles failed post event. Creates a SubmittingErrorPopup
+     * @param ex
+     */
     @Override
     protected void failedPost(Exception ex) {
         StaticsApplication.logger.log(Level.SEVERE, "Cannot submit assignment progress!", ex);

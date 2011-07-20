@@ -11,13 +11,16 @@ package edu.gatech.statics.math.expressionparser;
 import java.math.BigDecimal;
 
 /**
- *
+ * Represents a node which is a constant value
  * @author Calvin Ashmore
  */
 class ConstantNode extends Node {
 
     private BigDecimal value;
-
+    /**
+     * Getter
+     * @return
+     */
     BigDecimal evaluate() {
         return value;
     }
@@ -25,16 +28,24 @@ class ConstantNode extends Node {
     String printout() {
         return "" + value;
     }
-
+    /**
+     * Can't add a child since this is a constant value node
+     * @param node
+     */
     void addChild(Node node) {
         throw new UnsupportedOperationException();
     }
 
-    /** Creates a new instance of ConstantNode */
+    /** 
+     * Creates a new instance of ConstantNode 
+     */
     public ConstantNode(BigDecimal value) {
         this.value = value;
     }
-
+    /**
+     * Constructor
+     * @param value
+     */
     public ConstantNode(float value) {
         this.value = new BigDecimal(value);
     }

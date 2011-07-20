@@ -32,6 +32,11 @@ public class Poster {
     private List<String> fieldNames;
     private Executor executor;
 
+    /**
+     * 
+     * @param url
+     * @param fieldNames
+     */
     public Poster(String url, String... fieldNames) {
         this.url = url;
         this.fieldNames = Collections.unmodifiableList(Arrays.asList(fieldNames));
@@ -76,6 +81,12 @@ public class Poster {
         }
     }
 
+    /**
+     * Converts data to an HTTP-style key-value string
+     * ("?key1=value1&key2=value" etc) and then makes a call to
+     * url
+     * @param data
+     */
     private void performPost(Map<String, String> data) {
 
 //        System.out.println("Poster: performing post");
