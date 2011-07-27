@@ -16,10 +16,21 @@ import java.lang.reflect.Field;
  */
 public class ClassPersistenceDelegate extends PersistenceDelegate {
 
+    /**
+     * 
+     * @param type
+     * @return
+     */
     public static Class typeToClass(Class type) {
         return type.isPrimitive() ? ObjectHandler.typeNameToClass(type.getName()) : type;
     }
 
+    /**
+     * 
+     * @param oldInstance
+     * @param newInstance
+     * @return
+     */
     @Override
     protected boolean mutatesTo(Object oldInstance, Object newInstance) {
         return oldInstance.equals(newInstance);
@@ -27,6 +38,10 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
     private static final boolean LOGGING = false;
     private static long lastLog = 0;
 
+    /**
+     * 
+     * @param message
+     */
     private static void logTime(String message) {
         if (LOGGING) {
             long timestamp = System.nanoTime();
@@ -35,7 +50,11 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
             System.out.println("********** " + timestamp + " (" + delta + ") " + message);
         }
     }
-
+    /**
+     * 
+     * @param oldInstance
+     * @param out
+     */
     @Override
     public void writeObject(Object oldInstance, Encoder out) {
 //super.writeObject(oldInstance, out);
@@ -61,6 +80,12 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
         }
     }
 
+    /**
+     * 
+     * @param oldInstance
+     * @param out
+     * @return
+     */
     protected Expression instantiate(Object oldInstance, Encoder out) {
         Class c = (Class) oldInstance;
 // As of 1.3 it is not possible to call Class.forName("int"),

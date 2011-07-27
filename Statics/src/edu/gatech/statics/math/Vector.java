@@ -131,7 +131,12 @@ public class Vector implements Quantified {
     }
 
 
-    /** Creates a new instance of Vector */
+    /**
+     * Creates a new instance of Vector
+     * @param magnitude 
+     * @param unit 
+     * @param value 
+     */
     public Vector(Unit unit, Vector3bd value, BigDecimal magnitude) {
         this.magnitude = new Quantity(unit, magnitude);
         this.value = value.normalize();

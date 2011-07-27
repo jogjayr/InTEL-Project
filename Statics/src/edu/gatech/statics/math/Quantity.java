@@ -7,7 +7,8 @@ package edu.gatech.statics.math;
 import java.math.BigDecimal;
 
 /**
- *
+ * A quantity is identified by a synbolName, value and unit
+ * It can be known or unknown, a symbol or not
  * @author Calvin Ashmore
  */
 public class Quantity implements Quantified {
@@ -131,7 +132,7 @@ public class Quantity implements Quantified {
         return getDiagramValue().doubleValue();
     }
     /**
-     * 
+     * Set whether quantity is known
      * @param known
      */
     public void setKnown(boolean known) {
@@ -139,13 +140,13 @@ public class Quantity implements Quantified {
     }
     /**
      * 
-     * @return
+     * @return Is quantity known?
      */
     public boolean isKnown() {
         return known;
     }
     /**
-     * 
+     * Set quantity symbolName. If symbolName == null, then symbol = false
      * @param symbolName
      */
     public void setSymbol(String symbolName) {
@@ -163,13 +164,13 @@ public class Quantity implements Quantified {
     }
     /**
      * 
-     * @return
+     * @return Is quantity a symbol?
      */
     public boolean isSymbol() {
         return symbol;
     }
     /**
-     * 
+     * Getter
      * @return
      */
     public String getSymbolName() {

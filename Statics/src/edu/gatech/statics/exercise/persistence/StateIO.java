@@ -21,7 +21,8 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
- *
+ * This class is responsible for saving exercise state to file and
+ * retrieving it
  * @author Calvin Ashmore
  */
 public class StateIO {
@@ -29,6 +30,10 @@ public class StateIO {
     private StateIO() {
     }
 
+    /**
+     * Save exercise state to filename
+     * @param filename
+     */
     public static void saveToFile(String filename) {
         try {
             FileOutputStream output = new FileOutputStream(filename);
@@ -42,6 +47,10 @@ public class StateIO {
         }
     }
 
+    /**
+     * Reads stored exercise state from file
+     * @param filename
+     */
     public static void loadFromFile(String filename) {
         try {
             FileInputStream fileInput = new FileInputStream(filename);

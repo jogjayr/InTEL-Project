@@ -10,7 +10,8 @@
 package edu.gatech.statics.util;
 
 /**
- *
+ * This is a utility class used for holding pairs of objects.
+ * The pair is described by <code>A</code> and <code>B</code>
  * @author Calvin Ashmore
  */
 public class Pair<A, B> {
@@ -26,10 +27,18 @@ public class Pair<A, B> {
         this.b = b;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public A getLeft() {
         return a;
     }
 
+    /**
+     * Getter
+     * @return
+     */
     public B getRight() {
         return b;
     }

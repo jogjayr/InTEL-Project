@@ -32,6 +32,10 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
         return obj;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     ModifiedObjectHandler createObjectHandler() {
         return new ModifiedObjectHandler(this, getClassLoader()) {

@@ -14,7 +14,7 @@ import java.math.RoundingMode;
 
 /**
  * Unary node represents operators that take a single operand
- * sinc, cos, tan, sqrt, ata, negate and identity
+ * sin, cos, tan, sqrt, ata, negate and identity
  * @author Calvin Ashmore
  */
 class UnaryNode extends Node {

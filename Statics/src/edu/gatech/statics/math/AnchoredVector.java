@@ -38,8 +38,8 @@ public class AnchoredVector implements Quantified {
         this.vector = new Vector(anchoredVector.getVector());
     }
     /**
-     * 
-     * @return
+     * Getter
+     * @return vector.getQuantity()
      */
     public Quantity getQuantity() {
         return vector.getQuantity();
@@ -109,35 +109,35 @@ public class AnchoredVector implements Quantified {
         return vector.isKnown();
     }
     /**
-     * 
+     * Setter
      * @param known
      */
     public void setKnown(boolean known) {
         vector.setKnown(known);
     }
     /**
-     * 
+     * Setter
      * @param symbolName
      */
     public void setSymbol(String symbolName) {
         vector.setSymbol(symbolName);
     }
     /**
-     * 
-     * @return
+     * Getter
+     * @return vector.getDiagramValue()
      */
     public BigDecimal getDiagramValue() {
         return vector.getDiagramValue();
     }
     /**
-     * 
+     * Setter
      * @param v
      */
     public void setDiagramValue(BigDecimal v) {
         vector.setDiagramValue(v);
     }
     /**
-     * 
+     * Getter
      * @return
      */
     public Vector3bd getVectorValue() {

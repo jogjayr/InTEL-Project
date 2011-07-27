@@ -69,6 +69,10 @@ import java.util.logging.Logger;
  */
 public class StaticsXMLEncoder extends XMLEncoder {
 
+    /**
+     * 
+     * @param out
+     */
     public StaticsXMLEncoder(OutputStream out) {
         super(out);
 
@@ -343,6 +347,11 @@ public class StaticsXMLEncoder extends XMLEncoder {
         return super.get(oldInstance);
     }
 
+    /**
+     * 
+     * @param exp
+     * @return
+     */
     @Override
     public Object getValue(Expression exp) {
         if (exp != null && exp.getTarget() == Class.class &&

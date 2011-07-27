@@ -32,7 +32,10 @@ public enum Unit {
         precision = 1;
         displayScale = new BigDecimal("1");
     }
-
+    /**
+     * This means weight (mass * gravitational_acceleration)
+     * @return
+     */
     public static BigDecimal getForcePerMass() {
         return forcePerMass;
     }
@@ -59,7 +62,7 @@ public enum Unit {
 //    private static Map<Unit, BigDecimal> displayScaleMap = new HashMap<Unit, BigDecimal>();
 
     static {
-        setSuffix(angle, "°");
+        setSuffix(angle, "ï¿½");
         setSuffix(distance, " m");
         setSuffix(force, " N");
         setSuffix(forceOverDistance, " N/m");

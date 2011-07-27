@@ -26,6 +26,14 @@ import java.util.Map;
  */
 public class ExerciseStatePersistenceDelegate extends DefaultPersistenceDelegate {
 
+    /**
+     * Writes exercise state to out. This includes symbolic loads, symbolic constants,
+     * solved reactions, diagram list and diagram states of oldInstance.
+     * @param type
+     * @param oldInstance
+     * @param newInstance
+     * @param out
+     */
     @Override
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
 

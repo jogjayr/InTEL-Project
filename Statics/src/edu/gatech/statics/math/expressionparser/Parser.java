@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 public class Parser {
 
    /**
-    * Evalaues expression to return a
+    * Evalaues expression to return an AffineQuantity
     * @param expression
     * @return
     */
@@ -289,7 +289,7 @@ public class Parser {
         return null;
     }
     /**
-     * Calls tokenize() on expression. 
+     * Calls tokenize() on expression. Adds each token to the parse tree
      * @param expression
      * @return
      */
@@ -303,9 +303,11 @@ public class Parser {
         return rootNode;
     }
     /**
-     * 
+     * Handles minus sign at beginning of expression as negation
+     * shaves of stray * at the end, evaluates expression and
+     * returns value
      * @param expression
-     * @return
+     * @return Calculated value of expression
      */
     private BigDecimal evaluateInternal(String expression) {
         try {
@@ -334,7 +336,12 @@ public class Parser {
         }
     }
     /**
-     * 
+     * Each token is added to the binary expression tree as a node,
+     * Depending on the type of token, the appropriate node is created
+     * ("5" makes a ConstantNode, "sin" makes a UnaryNode and so on).
+     * It also infers things like 5sin30 means 5*sin30 and inserts the
+     * extra multiplication operator node (a BinaryNode) into the
+     * parse tree. It also removes stray parens from the end
      * @param token
      */
     private void addToken(String token) {
@@ -414,7 +421,8 @@ public class Parser {
         }
     }
     /**
-     * 
+     * Goes up the left hand side of the binary tree (parent every time)
+     * till a Unary or BinaryNode is found and returns this node
      * @param precedence
      * @return
      */
