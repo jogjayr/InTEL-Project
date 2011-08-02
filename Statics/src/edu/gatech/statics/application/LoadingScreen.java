@@ -21,6 +21,9 @@ import java.net.URL;
  */
 public class LoadingScreen extends Node {
 
+    /**
+     * Constructor
+     */
     public LoadingScreen() {
 
         String imagePath = "rsrc/logo.png";

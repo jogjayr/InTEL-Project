@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Applet launcher is responsible for launching the exercise applet
  * @author Calvin Ashmore
  */
 public class AppletLauncher extends StaticsApplet {
@@ -25,7 +25,9 @@ public class AppletLauncher extends StaticsApplet {
     /** Creates a new instance of AppletLauncher */
     public AppletLauncher() {
     }
-
+    /**
+     * Initializes the applet with the exercise
+     */
     @Override
     public void init() {
 
@@ -130,7 +132,11 @@ public class AppletLauncher extends StaticsApplet {
             exercise.getState().setUserID(userID);
         }
     }
-
+    /**
+     * Checks the verifier key passed to the applet against the key
+     * computed from the userId, problemId, problemName and exerciseState
+     * @return
+     */
     private boolean checkVerifierKey() {
         String userIDString = getParameter("userID");
         //String assignmentIDString = getParameter("assignmentID");

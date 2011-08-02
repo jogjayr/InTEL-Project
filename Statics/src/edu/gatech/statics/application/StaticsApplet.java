@@ -15,7 +15,9 @@ package edu.gatech.statics.application;
 public class StaticsApplet extends BaseStaticsApplet {
 
     private StaticsApplication application;
-
+    /**
+     * Constructor
+     */
     public StaticsApplet() {
         instance = this;
         application = new StaticsApplication();
@@ -55,17 +57,26 @@ public class StaticsApplet extends BaseStaticsApplet {
     }
 
     private static StaticsApplet instance;
-
+    /**
+     * Get the applet instance
+     * @return
+     */
     public static StaticsApplet getInstance() {
         return instance;
     }
 
     private String exercise;
-
+    /**
+     * Setter
+     * @param exercise
+     */
     public void setExercise(String exercise) {
         this.exercise = exercise;
     }
-
+    /**
+     * Getter
+     * @return
+     */
     public String getExercise() {
         if (exercise != null) {
             return exercise;

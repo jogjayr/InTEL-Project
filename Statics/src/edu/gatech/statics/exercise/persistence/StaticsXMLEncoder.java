@@ -70,7 +70,8 @@ import java.util.logging.Logger;
 public class StaticsXMLEncoder extends XMLEncoder {
 
     /**
-     * 
+     * Sets class persistence delegates for each class whose objects
+     * need to be serialized and stored
      * @param out
      */
     public StaticsXMLEncoder(OutputStream out) {
@@ -341,7 +342,18 @@ public class StaticsXMLEncoder extends XMLEncoder {
             throw ex;   
         }
     }
-
+   /**
+     * Returns a tentative value for <code>oldInstance</code> in
+     * the environment created by this stream. A persistence
+     * delegate can use its <code>mutatesTo</code> method to
+     * determine whether this value may be initialized to
+     * form the equivalent object at the output or whether
+     * a new object must be instantiated afresh. If the
+     * stream has not yet seen this value, null is returned.
+     *
+     * @param  oldInstance The instance to be looked up.
+     * @return The object, null if the object has not been seen before.
+     */
     @Override
     public Object get(Object oldInstance) {
         return super.get(oldInstance);

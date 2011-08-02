@@ -23,11 +23,16 @@ public class StaticsGame extends BaseGame {
         return application;
     }
 
-    /** Creates a new instance of StaticsGame */
+    /** 
+     * Creates a new instance of StaticsGame
+     */
     public StaticsGame() {
         application = new StaticsApplication();
     }
-
+    /**
+     * 
+     * @param interpolation
+     */
     protected void update(float interpolation) {
         if (application.isFinished()) {
             finished = true;
@@ -74,11 +79,16 @@ public class StaticsGame extends BaseGame {
         }
 
     }
-
+    /**
+     * 
+     * @param interpolation
+     */
     protected void render(float interpolation) {
         application.render();
     }
-
+    /**
+     * 
+     */
     protected void initSystem() {
         display = application.initDisplay();
 

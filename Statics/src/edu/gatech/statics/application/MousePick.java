@@ -74,7 +74,10 @@ public class MousePick extends MouseInputAction {
     void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
+    /**
+     * Highlights objects that were selected
+     * @param evt
+     */
     public void performAction(InputActionEvent evt) {
 
         if (!enabled) {
@@ -159,7 +162,11 @@ public class MousePick extends MouseInputAction {
             }
         }
     }
-
+    /**
+     * Finds the root parent of geom and returns as Representation
+     * @param geom
+     * @return
+     */
     private SimulationObject getSimObject(Geometry geom) {
         Node parent = geom.getParent();
         while (parent != null && !(parent instanceof Representation)) {
@@ -171,7 +178,10 @@ public class MousePick extends MouseInputAction {
         }
         return null;
     }
-
+    /**
+     * Calls the onHover action for obj
+     * @param obj
+     */
     public void hover(SimulationObject obj) {
         // check to see that the mouse is free first
         if (!InterfaceRoot.getInstance().hasMouse()) {
@@ -183,7 +193,10 @@ public class MousePick extends MouseInputAction {
         }
     //    StaticsApplication.getApp().getSelectionListener().onHover(obj);
     }
-
+    /**
+     * Calls the onClick action for obj
+     * @param obj
+     */
     public void click(SimulationObject obj) {
         // check to see that the mouse is free first
         if (!InterfaceRoot.getInstance().hasMouse()) {

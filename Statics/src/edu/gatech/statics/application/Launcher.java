@@ -17,7 +17,11 @@ import java.util.logging.Level;
  * @author Calvin Ashmore
  */
 public class Launcher {
-    
+    /**
+     * Main class for exercises. Gets exercise name from args,
+     * loads exercise and starts the game loop
+     * @param args
+     */
     public static void main(String args[]) {
         
         //LoggingSystem.getLogger().setLevel(Level.OFF);

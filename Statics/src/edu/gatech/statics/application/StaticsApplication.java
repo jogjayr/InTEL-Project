@@ -226,11 +226,17 @@ final public class StaticsApplication {
             iRoot.setUIFeedback(advice);
         }
     }
-
+    /**
+     * Sets UIFeedback to feedback
+     * @param feedback
+     */
     public void setUIFeedback(String feedback) {
         iRoot.setUIFeedback(feedback);
     }
-
+    /**
+     * Sets StaticsFeedback to feedback
+     * @param feedback
+     */
     public void setStaticsFeedback(String feedback) {
         iRoot.setStaticsFeedback(feedback);
     }
@@ -287,7 +293,10 @@ final public class StaticsApplication {
     public Exercise getExercise() {
         return currentExercise;
     }
-
+    /**
+     * Sets current diagram to diagram
+     * @param diagram
+     */
     public void setCurrentDiagram(Diagram diagram) {
         logger.info("Loading diagram: " + diagram);
         if (diagram instanceof SubDiagram) {
@@ -341,7 +350,9 @@ final public class StaticsApplication {
         return currentDiagram;
     }
 
-    /** Creates a new instance of StaticsApplication */
+    /** 
+     * Creates a new instance of StaticsApplication
+     */
     public StaticsApplication() {
         try {
             cleanupLock.lock();
@@ -416,7 +427,9 @@ final public class StaticsApplication {
             stateChanged = false;
         }
     }
-
+    /**
+     *
+     */
     private void updateLabels() {
 
         for (LabelRepresentation label : currentDiagram.getLabels()) {
@@ -514,7 +527,10 @@ final public class StaticsApplication {
     }
     private ByteBuffer screenshotBuffer = null;
     private BufferedImage screenshotImage = null;
-
+    /**
+     * Takes each pixel and stores it to a returned BufferedImage
+     * @return
+     */
     private BufferedImage takeScreenshot() {
         // Create a pointer to the image info and create a buffered image to
         // hold it.

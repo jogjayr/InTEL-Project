@@ -33,7 +33,8 @@ public class StaticsXMLDecoder extends ModifiedXMLDecoder {
     }
 
     /**
-     * 
+     * Finds value of the object expression. Uses the name of the
+     * object to create a SimulationObject or Exercise
      * @return
      */
     @Override

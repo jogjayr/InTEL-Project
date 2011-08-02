@@ -11,13 +11,13 @@ import edu.gatech.newbeans.PersistenceDelegate;
 import java.lang.reflect.Field;
 
 /**
- *
+ * This class is responsible for handling serialization of objects
  * @author Calvin Ashmore
  */
 public class ClassPersistenceDelegate extends PersistenceDelegate {
 
     /**
-     * 
+     * Returns a class object of class type
      * @param type
      * @return
      */
@@ -81,7 +81,9 @@ public class ClassPersistenceDelegate extends PersistenceDelegate {
     }
 
     /**
-     * 
+     * Creates a new Expression with value oldInstance, target the declared field
+     * of the class object of oldInstance, and methodName "get" (if oldInstance is a primitive
+     * type), "getClass" (if oldInstance is a String or Class) and "forName" if anything else
      * @param oldInstance
      * @param out
      * @return

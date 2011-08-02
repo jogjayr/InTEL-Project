@@ -55,7 +55,11 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     protected void destroy() {
         ; // ignore
     }
-
+    /**
+     *
+     * @param buttonName
+     * @return 0 for buttonName = "MOUSE0", 1 for "MOUSE1" and 2 for "MOUSE2"
+     */
     public int getButtonIndex(String buttonName) {
 		if ("MOUSE0".equalsIgnoreCase(buttonName)) {
 			return 0;
@@ -89,7 +93,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     public int getWheelDelta() {
         return wheelDelta;
     }
-
+    /**
+     * 
+     * @return
+     */
     public int getXDelta() {
         if (deltaRelative != null) {
 			if (!enabled) {
@@ -101,7 +108,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
              
         return deltaPoint.x;        
     }
-
+    /**
+     * 
+     * @return
+     */
     public int getYDelta() {
         if (deltaRelative != null) {
 			if (!enabled) {
@@ -141,7 +151,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
         int height = glCanvas.getHeight(); //DisplaySystem.getDisplaySystem().getHeight();
         return height - y;
     }
-
+    /**
+     * Calculates new values of lastEventX, lastEventY, wheelDelta, currentWheelDelta
+     * deltaPoint and currentDeltaPoint
+     */
     public void update() {
         int x = lastEventX;
         int y = lastEventY;
@@ -258,7 +271,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
     public void mouseClicked(MouseEvent arg0) {
         ; // ignore
     }
-
+    /**
+     * 
+     * @param arg0
+     */
     public void mousePressed(MouseEvent arg0) {
 		if (!enabled) {
 			return;
@@ -286,7 +302,10 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
         }
         return index;
     }
-
+    /**
+     * 
+     * @param arg0
+     */
     public void mouseReleased(MouseEvent arg0) {
 		if (!enabled) {
 			return;
@@ -371,6 +390,11 @@ public class AppletMouse extends MouseInput implements MouseListener, MouseWheel
      * @param dragOnly true to enable mouse input to jME only when the mouse is dragged
      */
     private static Canvas glCanvas;
+    /**
+     * 
+     * @param glCanvas
+     * @param dragOnly
+     */
     public static void setup( Canvas glCanvas, boolean dragOnly ) {
         AppletMouse.glCanvas = glCanvas;
         setProvider( AppletMouse.class );

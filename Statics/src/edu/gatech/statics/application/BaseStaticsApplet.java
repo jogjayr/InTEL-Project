@@ -167,7 +167,9 @@ public abstract class BaseStaticsApplet extends Applet {
         };
         gameThread.start();
     }
-
+    /**
+     * Stops the game thread
+     */
     @Override
     public void stop() {
         super.stop();
@@ -193,14 +195,19 @@ public abstract class BaseStaticsApplet extends Applet {
 //        Display.destroy();
         logger.info("Applet stopped.");
     }
-
+    /**
+     * 
+     */
     @Override
     public void destroy() {
 
         super.destroy();
         logger.info("Clear up");
     }
-
+    /**
+     * This is the function that is called in a loop to perform
+     * all the functions (update, rendering etc) needed to maintain the exercise
+     */
     public void gameLoop() {
         try {
             if (!finished) {

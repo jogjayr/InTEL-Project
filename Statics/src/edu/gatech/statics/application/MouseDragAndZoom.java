@@ -11,11 +11,15 @@ import com.jme.input.action.MouseInputAction;
 import edu.gatech.statics.ui.InterfaceRoot;
 
 /**
- *
+ * This class implements drag and zoom behavior for the mouse
  * @author Calvin Ashmore
  */
 public class MouseDragAndZoom extends MouseInputAction {
 
+    /**
+     * Constructor
+     * @param app
+     */
     public MouseDragAndZoom(StaticsApplication app) {
         mouse = app.getMouse();
         mouseWasDown = MouseInput.get().isButtonDown(0);
@@ -35,7 +39,11 @@ public class MouseDragAndZoom extends MouseInputAction {
     private int lastX, lastY;
 
    
-
+    /**
+     * Pans camera on mouse button down and drag, rotates it on Ctrl+click-drag
+     * and zooms on mouse wheel
+     * @param evt
+     */
     public void performAction(InputActionEvent evt) {
         
 
@@ -66,13 +74,8 @@ public class MouseDragAndZoom extends MouseInputAction {
         if(mouseWasDown && mouseIsDown && isControlDown) {
             float deltaX = -mouseSpeed * (currentX - lastX);
             float deltaY = -mouseSpeed * (currentY - lastY);
-
-            
-
-
             InterfaceRoot.getInstance().getCameraControl().rotateCamera(deltaX, 0);
             InterfaceRoot.getInstance().getCameraControl().rotateCamera(0, deltaY);
-            
         }
 
         float deltaZoom = zoomSpeed * MouseInput.get().getWheelDelta();
