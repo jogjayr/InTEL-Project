@@ -278,7 +278,18 @@ public class AppletLoader extends Applet implements Runnable, AppletStub {
 
         logger.info("### AppletLoader: init done");
     }
-
+    /**
+     * Download a jar file
+     * @param currentFile File to be downloaded
+     * @param urlconnection
+     * @param path Path to file
+     * @param buffer to write file to
+     * @param initialPercentage
+     * @return file size
+     * @throws IOException
+     * @throws Exception
+     * @throws FileNotFoundException
+     */
     private int downloadJar(final String currentFile, URLConnection urlconnection, String path, byte[] buffer, int initialPercentage)
             throws IOException, Exception, FileNotFoundException {
 

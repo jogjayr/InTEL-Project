@@ -4,26 +4,30 @@
  */
 package edu.gatech.statics.applet;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.*;
 
 /**
- *
+ * This class is responsible for interfacing with the applet version file
+ * (applet/version.json). It checks the version numbers of JAR files in the local
+ * stored copy of version.json and the copy on the server and tells AppletLoader whether
+ * to re-download a JAR
  * @author Jayraj
  */
 public class VersionChecker {
 
     private JSONObject newVersions, oldVersions;
     private JSONObject updatedVersions;
-
+    /**
+     * Constructor
+     * @param path Path to version.json
+     * @param parameterVersionString JSON string containing version numbers of JARs on the server
+     */
     public VersionChecker(String path, String parameterVersionString) {
 
         try {
@@ -52,7 +56,12 @@ public class VersionChecker {
             newVersions = null;
         }
     }
-
+    /**
+     * Checks the local version number and version number on server of a JAR and
+     * decides whether it needs to be downloaded again
+     * @param jarFilename
+     * @return
+     */
     public boolean shouldDownload(String jarFilename) {
 
         try {
@@ -67,7 +76,11 @@ public class VersionChecker {
             return true;
         }
     }
-
+    /**
+     * Puts currentFile into a list of files whose local version numbers need to be
+     * updated
+     * @param currentFile
+     */
     void markUpdate(String currentFile) {
         try {
             updatedVersions.put(currentFile, newVersions.get(currentFile));
@@ -76,7 +89,10 @@ public class VersionChecker {
             // this shouldn't happen....
         }
     }
-
+    /**
+     * Writes the updated version numbers to the local file
+     * @param path
+     */
     void saveUpdatedVersions(String path) {
         try {
             FileWriter writer = new FileWriter(path + "version.json");
