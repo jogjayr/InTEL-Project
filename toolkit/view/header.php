@@ -60,9 +60,11 @@ $banner = '../images/bridgeRender.jpg';
         		document.getElementById('login_form').style.display = "none"
         	}
         	function loginYes(){
-        	document.getElementById('login_form').style.display = "block"
+        	document.getElementById('login_form').style.display = "block";
+			
         	}
 			function submitForm(fieldValue){
+			/*document.getElementByID('panelWrapper').style.display="block";*/
   			document.logoutForm.logout.value=fieldValue;
   			document.logoutForm.submit();
 			}
@@ -79,12 +81,7 @@ $banner = '../images/bridgeRender.jpg';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
           })();
         </script>
-<title><?php
-echo t2h($site_title);
-if ($title != '') {
-    echo ' - ' . t2h($title);
-}
-?></title>
+        
 	<link rel="stylesheet" type="text/css" href="styles/toolkit.css" />
 	<?php if (isset($headExtra))
             echo $headExtra; ?>
@@ -93,7 +90,8 @@ if ($title != '') {
             echo $bodyExtra; ?>>
             
 
-  <div id="header">
+  <div class="wrapper" style="clear:left;">
+  <div id="panelWrapper" >
   <div class="loginpanel">
 			<?php
             // this is the login panel; the user can login and logout from this panel.
@@ -105,193 +103,43 @@ if ($title != '') {
                 /*echo 'Account type: ' . getUserType($uuid) . '<br/>';*/
 				getUserType($uuid);
                 echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;<form method="post" action=""><input type="submit" name="logout" value="Logout" /></form>';
-				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
-					<form id="logoutForm" method="post" action="">
-  						<input type="hidden" name="logout" value="Logout">
-						<a href="javascript:;" onclick="submitForm(\'Logout\')">Log out</a>
-					</form>';*/
-					
-				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
-				<form name="logoutForm">
-						<input type="hidden" name="myHiddenField" value="Logout">
-						<a href="javascript:submitForm('Logout')">Log out</a>
-					</form>';*/
-					
-				/*echo '
-				<form id=/"logoutForm/" method=/"post/" action=/"/">
-  					<input type=/"hidden/" name=/"logout/" value=/"Logout/">
-				</form>
-				<a href=/"index.php/" onclick=/"submitForm.submit('Logout')/">';*/
-				
-				/*echo '<a href="account.php">Manage account</a>&nbsp;&nbsp;
-				<form id="logoutForm" method="post" action="">
-  					<input type="hidden" name="logout" value="Logout">
-					<a href="javascript:submitForm(\'Logout\')">Log out</a>
-				</form>';*/
-				
-				/*<a href="index.php" onclick="logoutUser(\'Logout\')">Log out</a>';*/
-					  /*<a href="" onclick="submitForm()">Log out</a>';*/
-
             } else {
 
                 // if there was an attempted login and there is an error message, display it here.
                 if (isset($_POST['login']) && $err != '')
                     para($err, 'errorMessage');
 			}?>
-  </div><!--login panel-->	
-<div class="navBodyWrapper">		
+  </div><!--login panel-->
+</div><!-- end panelWrapper-->  
+</div><!--wrapper-->
+
+<div class="wrapper">
   <div id="navWrapper">
-  		<div id="navTop"></div><!--Gray Line-->
-  		<div class="navContainer"><a href="http://intel.gatech.edu/" target="_blank"><img src="../images/InTel_logo.jpg" width="264" border="0" height="114" /></a></div>
-  		<div class="navContainer"><img src="../images/header.jpg" width="264" height="69" /></div>
-  </div><!--navWrapper-->
-  <div id="bodyWrapper">
-			<div id="bodyTop"></div><!--Green line-->
-			<div id="bodyBanner"><img src="<?php echo($banner); ?>" width="600" height="153" /></div>
-			<div class="bodyContainer">
-				<div ALIGN="left" class="bodyTitle">
-					<?php echo($title); ?>
-				</div>
-			</div><!--BodyContainer-->
-</div><!--BodyWrapper-->
-</div><!--navBodyWrapper-->
-</div><!--header-->
-		
-  <!-- table-->
- <?php
-            if (isAnonymous ()) {
-            ?>
-<div id="loginWrapper">
-<!--table>
-  <tr>
-    <td>Register?&nbsp;No
-      <INPUT TYPE="radio" NAME="login" VALUE="no"  onclick="loginNo()"/>
-      &nbsp;&nbsp;Yes
-      <INPUT TYPE="radio" NAME="login" VALUE="yes" onclick="loginYes()"/></td>
-  </tr>
-  <tr id="login_form" style="display:none">
-  <td>
- 	 <form method="post" action="">
-        <table>
-          <tr>
-            <td>Email Address: </td>
-            <td><input type=\"text\"  name=\"email\" /></td>
-          </tr>
-          <tr>
-            <td>Password: </td>
-            <td><input type="password"  name="password" /></td>
-          </tr>
-          <tr>
-        </table>
-        <p>
-          <input type="submit" name="login" value="Login" />
-          <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
-      </form>
-      </td>
-      </tr>
-</table-->
+    <div class="navContainer"><a href="../../index.php" target="_self"><img src="../../images/InTel_logo3.jpg" border="0" width="317"height="90" /></a></div>
+      <div id="bodyBanner"><img src="../../images/bridgeRender.jpg" width="434" height="105" /></div><!--bodyBanner-->
+            <!--div id="navTop"></div--><!--top indent-->
+            	<ul id="navBar">
+                  <li><a href="../../overview.php">Overview</a></li>
+                  <li><a href="../../presentations.php">Presentations+Publications</a></li>
+                  <li><a href="../../code.php">Code+Documentation</a></li>
+                  <li><a href="../../team.php">Team</a></li>
+                  <li><a href="">Practice Problems</a></li>
+                </ul>
+    <!--div id="firstSpace"></div--><!--top indent-->
+    </div><!--navContainer-->
+  <!--End Main Header-->
 
-	<!--table id="loginWrapper">
-    <tr>
-      <td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a></td>
-    </tr>
-    <tr id="login_form" style="display:none">
-      <td><form method="post" action="">
-          <table>
-            <tr>
-              <td>Email Address: </td><td><input type=\"text\"  name=\"email\" /></td>
-            </tr>
-            <tr>
-              <td>Password: </td><td><input type="password"  name="password" /></td>
-            </tr>
-          </table>
-          <p>
-            <input type="submit" name="login" value="Login" />
-            <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
-        </form>
-      </td>
-    </tr>
-  </table-->
-  <table>
-  	<tr>
-    	<td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a>
-        </td>
-    </tr>
-    <tr id="login_form" style="display:none">
-    	<td>
-  <form method="post" action="">
-                    <table>
-                        <tr ><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
-                        <tr><td>Password: </td><td><input type="password"  name="password" /></td></tr>
-                    </table>
-                    <p><input type="submit" name="login" value="Login" /> <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
-                </form>
-</td>
-    </tr>
-  </table>
-  <!--? was for end of if
-            }
-            ?-->
-</div><!--loginWrapper-->
- <?php
-            }
-            ?>
-
-<!--*************LOGIN***************-->
-            <!-- ******LOGO *******-->
-  <!--div id="navWrapper">
-  		<div id="navTop"></div>
-  		<div class="navContainer"><a href="index.php" target="_blank"><img src="../images/InTel_logo.jpg" width="264" border="0" height="114" /></a></div>
-  		<div class="navContainer"><img src="../images/header.jpg" width="264" height="69" /></div>
-  </div--><!--navWrapper-->
-  
-  <!--*************BANNER***************-->
-  <!--div id="bodyWrapper">
-			<div id="bodyTop"></div>
-			<div id="bodyBanner"><img src="<!--?php echo($banner); ?>" width="600" height="153" /></div-->
-			<!--div class="bodyContainer">
-				<span class="bodyTitle"-->
-					<!--?php echo($title); ?-->
-				<!--/span>
-			</div--><!--BodyContainer1-->
-<!--/div--><!--BodyWrapper-->
+<!--/div--><!--header-->
 
 <?php
             // primary navigation:
         ?>
-<!-- nav -->
+        <div class="wrapper">
+<!-- nav ********************************************************************************************-->
 <div id="compact_nav">
   <?php
             if (isAnonymous ()) {
             ?>
-<!--div id="loginWrapper"-->
-   <!--table id="loginWrapper">
-    <tr>
-      <td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a></td>
-    </tr>
-    <tr id="login_form" style="display:none">
-      <td><form method="post" action="">
-          <table>
-            <tr>
-              <td>Email Address: </td>
-              <td><input type=\"text\"  name=\"email\" /></td>
-            </tr>
-            <tr>
-              <td>Password: </td>
-              <td><input type="password"  name="password" /></td>
-            </tr>
-          </table>
-          <p>
-            <input type="submit" name="login" value="Login" />
-            <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
-        </form></td>
-    </tr>
-  </table-->
-  <!--/div--><!--loginWrapper-->
-
-<!--*************LOGIN***************-->
-<!--/div--><!--header--> 
- 
   
   <div class='nav_button'><a href="myAssignments.php">View Problems</a></div>
   <?php
@@ -319,8 +167,39 @@ if ($title != '') {
    ?>
   <div class='nav_button'><a href="help.php">Instructions</a></div>
   <div class='nav_button'><a href="javascript:showFeedbackBox()">Give us feedback!</a></div>
-  <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Email Site Support</a></div>
+  <div class='nav_button'><a href="mailto:<?php echo $site_email_address; ?>">Site Support</a></div>
   <!--            </ul>-->
 </div>
+<!--***********************************************Put Login here****************************************************-->
+ <?php
+            if (isAnonymous ()) {
+            ?>
+<div id="loginWrapper">
+  <table>
+  	<tr>
+    	<td>Are you a student taking this for class credit? <a href="javascript:;" onclick="loginYes()">Log in</a>
+        </td>
+    </tr>
+    <tr id="login_form" style="display:none">
+    	<td>
+  <form method="post" action="">
+                    <table>
+                        <tr ><td>Email Address: </td><td><input type="text"  name="email" /></td></tr>
+                        <tr><td>Password: </td><td><input type="password"  name="password" /></td></tr>
+                    </table>
+                    <p><input type="submit" name="login" value="Login"/> <a href="resetPassword.php">Forgot your password?</a> <a href="register.php">Register</a></p>
+          </form>
+</td>
+    </tr>
+  </table>
+  <!--? was for end of if
+            }
+            ?-->
+</div><!--loginWrapper-->
+</div><!--wrapper-->
+ <?php
+            }
+            ?>
+            <div class="wrapper">
 <div id="content">
 <h2><?php echo t2h($title); ?></h2>

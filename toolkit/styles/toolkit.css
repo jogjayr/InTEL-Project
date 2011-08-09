@@ -2,11 +2,24 @@ html {
     font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-#header {
-    width: 100%;
-	/*height: auto;*/
-    /*border-bottom: solid 4px #5FC806;*/
+body{ 
+margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	vertical-align:top;
+	
+	margin-left:5.1em;
+	margin-right:5.1em;
+	/*margin-left:auto;
+	margin-right:auto;*/
 }
+}
+/*#header {
+	margin:0px;
+	padding:0px;
+	width: 1100px;
+	height: auto;
+	float:left;
+}*/
 
 #main_nav{
     position: relative;
@@ -16,7 +29,7 @@ html {
     height: 400px;
     border-bottom: solid 2px #F1F1F1;
     border-right: solid 2px #F1F1F1;
-    background-color: #AEC3FF;
+    /*background-color: #AEC3FF;*/
 }
 #compact_nav{
     position: relative;
@@ -24,9 +37,9 @@ html {
     text-align: left;
     width: 100%;
     height: auto;
-    border-bottom: solid 2px #F1F1F1;
-    border-right: solid 2px #F1F1F1;
-    background-color: #AEC3FF;
+    /*border-bottom: solid 2px #F1F1F1;
+    border-right: solid 2px #F1F1F1;*/
+    /*background-color: #AEC3FF;*/
 }
 
 .feedbackBox {
@@ -45,13 +58,17 @@ html {
 
 .loginpanel {
     /*float: right;*/
-	float: left; clear:both;
+	/*float: left; clear:both; just changed*/
+	
     /*border: 2px solid #AEC3FF;*/
     padding: 0px;/*was 4px*/
+	margin: 0px;
 	/*padding-left:0;*/
 	/*margin-left:0;*/
-	width:864;
+	width:1100px;
+	height:auto;
 	display:inline-block;
+	float: left;
 	/*float: right;*/
 	/*float: right; clear:both;*/
 }
@@ -89,24 +106,76 @@ html {
     padding: 5px;
 }
 #navWrapper {
-	margin: 0;
-	width: 264px;
+	/*margin: 0px;
+	padding: 0px;*/
+	/*margin-left:7.5em;
+	margin-right:7.5em;*/
+	/*margin-left:100px;*/
+	/*padding-left:82px;*/
+	width:1100px;
 	height:auto;
 	float: left;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
-#navTop {
+/*#navTop {
 	width: 264px;
 	height: 12px;
 	background-color:#666666;
 	float:left;
+}*/
+#navTop {
+	width: 1100px;
+	height: 12px;
+	float:left;clear:both;
+}
+#firstSpace {
+	width: 1095px;
+	height: 12px;
+	float:left;clear:both;
 }
 .navContainer{
-	width: 264px;
-	height: auto;
-	float: left;
+	/*width: 264px;*/
+	/*padding:0px;
+	margin:0px;*/
+	/*padding:7px 0px 8px 0px;*/
+	padding-top:35px;
+	padding-right:10px;
+	/*padding-right:783px;*/
+	width:auto;
+	height:auto;
+	/*width: 500px;*/
+	/*height: 138px;*/
+	float:left;
 }
-.navBodyWrapper{
+#navBar{
+	margin:0;
+	padding:0;width: 1100px;
+	height: auto;
+	float:left;clear:both;
+	margin-top:12px;
+	margin-bottom:12px;
+}
+#navBar li{
+	/*width: 1100px;*/
+	height: 15px;
+	float:left;
+	/*float:left;clear:both;*/
+	margin:0;
+	padding:0;
+	padding-right:30px;
+	display:inline;
+	/*text-align: center;*/
+	/*word-spacing: 5px;*/
+	font-size:15px;
+	text-decoration: none;
+	font-weight: bold;
+}
+#navBar li a{
+	text-decoration: none;
+	height:auto;
+}
+
+/*.navBodyWrapper{
 	width: 864px;
 	height:auto;
 	float: left; clear:both;
@@ -115,6 +184,41 @@ html {
 	width: 600px;
 	height:auto;
 	float:left;
+}*/
+/*#wrapper {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 5px;
+	width: 1100px;
+	height: auto;
+}*/
+/*wrapperExtract{
+	margin:0px;
+	padding-left:10px;
+	float: left;clear:left;
+	margin-left:10px;
+	width: 864px;
+	padding: 0;
+}*/
+	
+.wrapper {
+	margin:0px;
+	padding:0px;
+	/*float: left;/*just changed*/
+	/*margin-left:auto;
+	margin-right:auto;*/
+	/*width: 864px;*/
+	width: 1100px;
+	height: auto;
+	/*padding: 0;*/
+}
+#loginWrapper {
+	width: 1100px;
+	height:auto;
+	float: left; clear: left;
+}
+#panelWrapper .loginpanel form {
+	display: inline;
+	width:1100px;
 }
 #bodyTop{
 	width: 600px;
@@ -122,24 +226,33 @@ html {
 	height: 12px;
 	float:left;
 }
-#bodyBanner {
+/*#bodyBanner {
 	width: 600px;
 	height: 153px;
 	float: left;
-}
-#loginWrapper {
-	width: 864px;
-	
+}*/
+#bodyBanner {
+	/*width: 600px;
+	height: 153px;*/
+	/*padding:0px;
+	margin:0px;just changed*/
+	width:auto;
+	/*width:600;*/
 	height:auto;
-	float: left; clear: left;
-}
-#navWrapper {
+	padding-top:20px;/
+	padding-right:783px;
+	/*padding-left:317px;*/
+	float:left;
+	/*float: left;clear:right;*/
+}	
+
+/*#navWrapper {
 	margin: 0;
 	width: 264px;
 	height:auto;
 	float:left;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-}
+}*/
 .bodyTitle {	
 	font-size: 18px;
 	color: #5FC806;
@@ -154,9 +267,13 @@ html {
     position: relative;
     float: left;
     text-align: left;
-    width: 220px;
-    height: 25px;
-    padding: 4px 0px 0px 5px;
+    /*width: 220px;
+    height: 25px;*/
+	width:auto;
+	height:auto;
+    /*padding: 4px 0px 0px 5px;*/
+	padding: 5px 5px 5px 5px;
+	font-size:13px;
     background-color: #AEC3FF;
     border-style: solid;
     border-color: #F1F1F1;
@@ -167,7 +284,7 @@ html {
     text-align: left;
     float:left;
     width: auto;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 
 #content_text{
@@ -176,11 +293,11 @@ html {
     float:left;
     width: 525px;
 }
-table, input, textarea, select, li {
+/*table, input, textarea, select, li {
     font: 100% Verdana, Arial, Helvetica, Sans-Serif;
     line-height: 160%;
     color: #333;
-}
+}*/
 
 form p{
     clear: left;
@@ -239,9 +356,72 @@ table.sortable tr.sortbottom td {
     background-color: #ccc;
     font-weight: bold;
 }
-#header .loginpanel form {
-	display: inline;
-}
+
 /*#header .navBodyWrapper #bodyWrapper .bodyContainer .bodyTitle {
 	padding-left: 10px;
 }*/
+a:hover {
+	color: #5FC806;
+}
+#bottomText{
+	float:left;
+	width:1100px;
+	text-align: center;
+}
+#bottomImageL{
+	width: auto;
+	height: 65px;
+	float: left;
+	margin-left: 80px;
+	/*margin-left: 158px*/
+}
+#bottomImageR{
+	width: auto;
+	height: 65px;
+	float: right;
+}
+#bottom{
+	margin-left:auto;
+	margin-right:auto;
+	/*width: 864px;*/
+	width: 1100px;
+	height: auto;
+	float: left;clear:both;
+	text-align: center;
+	background-color: #F7F9F9;
+}
+#navTop {
+	/*width: 264px;//Grey top border
+	height: 12px;
+	background-color:#666666;*/
+	float:left;clear:both;
+	width: 1100px;
+	height: 12px;
+}
+#navDivider{
+	width: 265px; 
+	height: 9px;
+	background-color:#666666;
+	float:left;
+	font-size: 1px;
+}
+#navBottom{
+	/*width: 264px;*/
+	width: 367px;
+	height: auto;
+	float:left;
+}
+#bodyDivider{
+	/*width: 600px;*/
+	width: 835px;
+	height: 9px;
+	background-color: #5FC806;
+	float:left;
+	font-size: 1px;
+}
+#bodyBottom{
+	/*width: 600px;*/
+	width:733px;
+	height: auto;
+	float:left;
+}

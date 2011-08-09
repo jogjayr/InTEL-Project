@@ -16,13 +16,15 @@ if (isLoggedIn ()) {
 //get assignments specific for user, all for anonymous
 $assignments = getAssignments($uuid);
 
+$loggedIn = !isAnonymous();
+
 if (count($assignments) > 0) {
 ?>
     <script type="text/javascript" src="js/sortable.js"></script>
     <table class="sortable" id="sortabletable">
         <tr>
             <th></th>
-            <th>Type</th>
+            <?php if($loggedIn) { echo "<th>Type</th>"; }?>
             <!--<th>Problem</th>-->
             <th class="startsort">Name</th>
             <th>Description</th>
@@ -49,7 +51,9 @@ if (count($assignments) > 0) {
 
         echo '<tr>';
         echo '<td style="text-align: center;"><img src="images/'.$app['image'].'"/></td>';
-        echo '<td><strong>' . t2h($type) . ': </strong></td>';
+        if($loggedIn) {
+            echo '<td><strong>' . t2h($type) . ': </strong></td>';
+        }
         //echo '<td><a href="' . $url . '">View</a></td>';
         //echo '<td>' . t2h($name) . '</td>';
         echo '<td><a href="' . $url . '">' . t2h($name) . '</a></td>';

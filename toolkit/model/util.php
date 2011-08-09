@@ -84,7 +84,7 @@ function getRandomPassword($len) {
  * @param <type> $end
  * @return string
  */
-function date_diff($start, $end="NOW") {
+/*function date_diff($start, $end="NOW") {
     $sdate = strtotime($start);
     $edate = strtotime($end);
 
@@ -130,5 +130,5 @@ function date_diff($start, $end="NOW") {
         $timeshift = $preday[0] . ' days ' . $prehour[0] . ' hrs ' . $min[0] . ' min ' . round($sec, 0) . ' sec ';
     }
     return $timeshift;
-}
+}*/
 ?>
