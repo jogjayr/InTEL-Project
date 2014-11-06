@@ -7,5 +7,5 @@ When you get it, unzip it into the project directory. Please do not add it to th
 test
 
 Calvin Ashmore
-ashmore@gmail.com
+
 
